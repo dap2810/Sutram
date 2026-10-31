@@ -113,7 +113,7 @@ class DocsAndWindows(unittest.TestCase):
     def test_migration_idempotent(self):
         x=d.migrate(b'nasm src/sutram_compiler.asm\n');self.assertEqual(d.migrate(x),x)
     def test_history_exclusion(self):
-        for n in ('docs/CHANGELOG.md','ChatGPT-to-Sarvam/ROUND-69-HANDOFF.md','docs/R65-SOURCE-REVIEW.md'):self.assertFalse(d.current_document(n))
+        for n in ('docs/CHANGELOG.md','ChatGPT-to-Sarvam/ROUND-69-HANDOFF.md','docs/rounds/R65-SOURCE-REVIEW.md'):self.assertFalse(d.current_document(n))
         for n in ('README.md','PROJECT-MASTER.md','docs/WINDOWS-SETUP.md'):self.assertTrue(d.current_document(n))
     def test_cmd_no_policy_override(self):self.assertNotIn('ExecutionPolicy',(ROOT/'windows/BUILD-WINDOWS-SETUP.cmd').read_text())
     def test_wrappers_actual_paths(self):
@@ -126,5 +126,5 @@ class DocsAndWindows(unittest.TestCase):
     def test_staged_payload_hash_gate(self):
         s=(ROOT/'windows/build-windows-setup.ps1').read_text();self.assertIn('bin\\sutram.exe',s);self.assertIn('win\\sutram.exe',s);self.assertIn('Installer staged a different',s)
     def test_malayalam_named_gap(self):
-        s=(ROOT/'docs/INDIC-COVERAGE.md').read_text();self.assertIn('Malayalam',s);self.assertIn('Not implemented',s)
+        s=(ROOT/'docs/reports/INDIC-COVERAGE.md').read_text();self.assertIn('Malayalam',s);self.assertIn('Not implemented',s)
 if __name__=='__main__':unittest.main()

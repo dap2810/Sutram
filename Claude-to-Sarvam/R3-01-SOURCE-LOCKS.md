@@ -190,7 +190,7 @@ Two things for ChatGPT, which I did not change:
    (hindi/gujarati/bengali/punjabi → True).
 4. **`tests/r66` `test_exhaustive_indic_second_third_bytes`** expected digits only in the four R66 blocks.
    The lexer recognises eight, because **R68 deliberately added** Odia (E0 AD), Tamil (E0 AF), Telugu
-   (E0 B1) and Kannada (E0 B3), per `lang/*.lang` and `docs/R68-INDIC-DEVICES.md`. All 40 mismatches were
+   (E0 B1) and Kannada (E0 B3), per `lang/*.lang` and `docs/rounds/R68-INDIC-DEVICES.md`. All 40 mismatches were
    those four blocks × 10 digits. Malayalam (E0 B5) is still rejected. I updated the expectation and
    commented it.
 5. **`tests/r66`, `tests/r67` pack-preservation guards** compared the packs to pre-v157 baselines. Every

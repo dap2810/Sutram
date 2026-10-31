@@ -67,7 +67,7 @@ saturating. **That is a question about Sanskrit, and it is not answered here.**
 **`len`, `cmp` and `cpy` were the only English in the builtin names.** **They stayed English because they begin with a
 keyword prefix - `prati` is `return`, so `vartani_pratilip` looked like it might not lex.**
 
-**`docs/LEXER-BOUNDARY-TEST.md` settled it: 672 boundary cases, both scripts, all pass.** **The lexer was never
+**`docs/reports/LEXER-BOUNDARY-TEST.md` settled it: 672 boundary cases, both scripts, all pass.** **The lexer was never
 broken.** **So the three words are now Sanskrit:**
 
 | Was | Now | Devanagari | Meaning |

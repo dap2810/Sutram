@@ -27,7 +27,7 @@ And the charter's standard, which now governs every round:
 
 ## Workstream 1 — mark the library's layers
 Add a machine-readable layer marker to every module in `lib/`: **core** (no allocator, no OS),
-**alloc** (needs a heap), or **std** (OS services). Produce `docs/LIBRARY-LAYERS.md` listing each of the
+**alloc** (needs a heap), or **std** (OS services). Produce `docs/reports/LIBRARY-LAYERS.md` listing each of the
 21 modules with its layer and the reason. **Then verify the claim**: a core-layer module must not call
 into an alloc- or std-layer module. Write that check as a tool that fails if a core module depends
 upward. A layer claim nobody can check is decoration.

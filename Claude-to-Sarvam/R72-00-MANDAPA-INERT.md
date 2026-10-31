@@ -80,7 +80,7 @@ a `mandapa` in a `prakriya` — the shape the block is for — printing 5 and 3.
 
 - **The R70 corpus pins `lang/sanskrit.lang`** (ChatGPT's R136/R137 recorded the same blob as the vocabulary
   snapshot they checked). Adding the `मण्डप` row moved it: `27eda2b6` → the new blob, in
-  `tests/negative/r70/manifest.json` and `docs/NEGATIVE-CORPUS.md`, with the reason in `repinned`. The corpus
+  `tests/negative/r70/manifest.json` and `docs/reports/NEGATIVE-CORPUS.md`, with the reason in `repinned`. The corpus
   passes 6/0 on the new pin.
 - **`tests/r72/` already existed** (a baseline test from an earlier numbering); this round's files are in
   `tests/r72_mandapa/` so nothing there was touched.

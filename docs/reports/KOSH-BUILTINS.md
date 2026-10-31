@@ -2,7 +2,7 @@
 
 **Status:** specification of the builtins as merged (R63) and verified by
 execution against the compiler below. This is the user-facing spec. The
-R63 implementation handoff (`docs/R63-KOSH-BUILTINS.md`) describes the
+R63 implementation handoff (`docs/rounds/R63-KOSH-BUILTINS.md`) describes the
 source-level implementation and its pre-execution claims; this document
 states the behaviour as measured from real compiled programs.
 

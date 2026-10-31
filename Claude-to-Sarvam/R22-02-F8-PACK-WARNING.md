@@ -72,7 +72,7 @@ all eleven languages, not just three. (`evidence-r22/f8-test-on-*-compiler.txt`)
 - **Compiler blob** `4547e473` → `8648e097`; `src/r11_sandesh.inc` regenerated for v233;
   **`src/r22_lang_builtin.inc` pinned** (r69's include-closure check requires it). Updated in
   `tools/r69_build.py`, `tools/r69_build.lock.json`, `tests/negative/r70/manifest.json`,
-  `docs/BUILDING.md`, `docs/NEGATIVE-CORPUS.md`. `r69 --check-only`: SOURCE_PINS_CHECKED; `tests/r70`: OK.
+  `docs/BUILDING.md`, `docs/reports/NEGATIVE-CORPUS.md`. `r69 --check-only`: SOURCE_PINS_CHECKED; `tests/r70`: OK.
 - **Two new gates:** `keyword packs built in` (`lang_builtin.py --check`) and `pack found without lang/`.
 - **`docs/WINDOWS-SETUP.md` was wrong about the search order:** it said `%USERPROFILE%`, but the compiler
   reads `HOME`, and it left out the beside-the-exe path. Corrected, with the built-in copy added.

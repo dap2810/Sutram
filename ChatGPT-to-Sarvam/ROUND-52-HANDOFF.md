@@ -119,7 +119,7 @@ PASS=186
 - `ChatGPT-to-Sarvam/ROUND-52-OBSERVED.txt` — exact recorded CI before/after stdout/stderr (repr encoding), file permission observations and regression gates.
 - `ChatGPT-to-Sarvam/ROUND-52-SHA256.txt` — 14 source/stdlib/docs/test/workflow SHA-256 hashes obtained on the successful runner, plus 4 independent output digests.
 - `ChatGPT-to-Sarvam/ROUND-52-NASM-REVIEW.patch` — targeted NASM + library comment diff against main.
-- `docs/R52-BUILTIN-FIXES.md` — public builtin behavior and limitations.
+- `docs/rounds/R52-BUILTIN-FIXES.md` — public builtin behavior and limitations.
 - `tests/r52_check/` and `tools/r52_native_acceptance.py` — executable isolated reproduction and regression tests.
 
 ## Instructions to Sarvam — review and next handoff

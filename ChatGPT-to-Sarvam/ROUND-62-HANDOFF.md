@@ -11,7 +11,7 @@ Five reviewable files on `feature/r62-windows-acceptance-20261014`:
 1. `tools/r61_windows_compiler_diagnostics.ps1` — identical carry-forward of the existing R61 actual-Windows compile/execute, 8-probe, 64-KiB guard and optional pre-fix A/B harness.
 2. `windows/native-installer/install-core.ps1` — restore bounded 8,000 ms `--version` / `--help` checks (both preinstall and postinstall), fail closed, and preserve a copy of the *successful* `install.log` under the installed per-user tree for independent inspection. Failed install leaves diagnostic logs in `%TEMP%\Sutram-Setup-*`.
 3. `tools/r62_windows_acceptance.ps1` — offline, non-elevated **manual** `Prepare`, `Audit`, `Screenshot` test stages. The actual Windows compiler success gate stops before rebuilding GUI/installer; after installation the audit verifies HKCU, Start Menu target/icon SHA, saved log, compiler byte identity, native stdout and installed GUI window.
-4. `docs/R62-WINDOWS-ACCEPTANCE.md` — exact operator steps and honesty requirements for a *visually reviewed* representative five-colour fixture, editor Run, `>>>` shell, Start Menu icon and wizard.
+4. `docs/rounds/R62-WINDOWS-ACCEPTANCE.md` — exact operator steps and honesty requirements for a *visually reviewed* representative five-colour fixture, editor Run, `>>>` shell, Start Menu icon and wizard.
 5. `.github/workflows/r59-native.yml` — restore `workflow_dispatch`-only because `main` unexpectedly retained a `push` trigger despite accepted notification policy. Checked all 8 branch workflows have manual-only events.
 
 ## Workstreams — exact status
@@ -35,6 +35,6 @@ Five reviewable files on `feature/r62-windows-acceptance-20261014`:
 
 ## Independent next actions
 
-Use a genuine **standard-user Windows 10/11 desktop** with NASM + MinGW PE64 tools and check out PR #20. Follow [docs/R62-WINDOWS-ACCEPTANCE.md](../docs/R62-WINDOWS-ACCEPTANCE.md) for `-Stage Prepare` (optional `-LegacyCompiler`), build the wizard with the current fixed compiler, complete the install, then `-Stage Audit` and `-Stage Screenshot -CaptureGui`. Inspect actual screenshot for orange/teal/green/purple/grey tokens, shell and editor Run outputs. Report exact Win64 timings, size, stdout, actual setup logs, canonical icon visuals, proof gates; fix any observed failure before accepting.
+Use a genuine **standard-user Windows 10/11 desktop** with NASM + MinGW PE64 tools and check out PR #20. Follow [docs/rounds/R62-WINDOWS-ACCEPTANCE.md](../docs/rounds/R62-WINDOWS-ACCEPTANCE.md) for `-Stage Prepare` (optional `-LegacyCompiler`), build the wizard with the current fixed compiler, complete the install, then `-Stage Audit` and `-Stage Screenshot -CaptureGui`. Inspect actual screenshot for orange/teal/green/purple/grey tokens, shell and editor Run outputs. Report exact Win64 timings, size, stdout, actual setup logs, canonical icon visuals, proof gates; fix any observed failure before accepting.
 
 Do not merge the unexecuted code into main on source reasoning alone. **This is a partial Round 62 handoff**, not a claim all five workstreams are finished. No background monitoring will occur; check the inbox manually when asked.

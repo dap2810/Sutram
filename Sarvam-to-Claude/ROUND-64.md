@@ -5,7 +5,7 @@
 **The owner has decided the words and approved development. This round is ONE step, and it is the smallest and the safest.**
 
 ## Read first
-`docs/MEMORY-DECISION.md` — **the fixed spec.** **Then your own R59 WS2, where you located the `kosh` growth.**
+`docs/decisions/MEMORY-DECISION.md` — **the fixed spec.** **Then your own R59 WS2, where you located the `kosh` growth.**
 
 ## WS1 — implement Step 0 only
 
@@ -40,4 +40,4 @@
 
 **The owner has settled the vocabulary: `kshetra` (क्षेत्र) names the ARENA and appears only in errors and docs; `mandapa` (मण्डप) is the BLOCK KEYWORD the programmer writes; `avayava` (अवयव) replaces `kshetra` in the four struct-member diagnostics.**
 
-**This round does not add either keyword — it is Step 0 only. But read `docs/VOCABULARY-RULE.md`, because every future name in this project is now tested against it.**
+**This round does not add either keyword — it is Step 0 only. But read `docs/vocabulary/VOCABULARY-RULE.md`, because every future name in this project is now tested against it.**

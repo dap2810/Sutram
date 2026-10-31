@@ -11,7 +11,7 @@ Suite 187/3, proof_lib **175/175**, proof_props **65/65**.
   suite **187/3**; library now **21 modules / 274 functions**.
 - **Every new test shipped `.sm` + `.out` + `.exit`** — that was the R21 lesson and you applied it.
   `proof_lib` is green on the first try.
-- Reconciling `docs/KOSH-BUILTINS.md` against the *measured* R64 messages (rather than the R63 text)
+- Reconciling `docs/reports/KOSH-BUILTINS.md` against the *measured* R64 messages (rather than the R63 text)
   and correcting the `LANGUAGE-REFERENCE.md` §16 line is exactly the right kind of documentation work.
 - `list_find` / `list_is_sorted` / `list_binary_search` completing the `sort.smlib` analytics, and
   `queue_to_array` giving a **non-destructive** FIFO read, are both real gaps closed.

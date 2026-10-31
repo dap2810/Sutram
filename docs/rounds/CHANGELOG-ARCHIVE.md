@@ -1,0 +1,10918 @@
+> **Older changelog entries**, v423 and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+
+## v423 - four silent parser drops in one session, all closed, and the census says no shipped code was wrong
+
+### What was found, in order
+1. **An indented body took ONE statement.** **Present for 264 versions.** **Found by me, diagnosed correctly by Claude after I blamed the allocator.**
+2. **Code written after `mukhya` was dropped.** **v266.**
+3. **The same-line rule** - a construct written on the header's own line. **v267.**
+4. **And whatever the goldens then caught, once every construct had one.**
+
+**All four share a shape: the program compiles, runs, and silently does less than it says.** **None of the four gates could see any of them.**
+
+### And the census says no shipped code was affected
+**Muse, across 2,189 control sites in `examples/`, `tests/` and `lib/`:**
+
+| Body form | Sites | Affected? |
+|---|---|---|
+| **Braced `{ ... }`** | **2,181** | **no** |
+| **Indented, one statement** | **2** | **no** |
+| **Indented, more than one statement** | **5** | **yes - and all five are in the test file written to reproduce the bug** |
+| **Same-line, no braces** | **1** | **no** |
+
+**So the bug was real for 264 versions and affected no program in the tree.** **And no golden locks it in, because no golden was recorded from a truncated body.**
+
+### The 6 ns, corrected
+**Claude reproduced it and got ~2 ns - the difference is whether the allocation is touched.** **2 ns for the bump itself, 6-8 ns once the page is faulted in.** **That decomposition is better than my single figure: it separates the allocator's cost from the memory's.**
+
+### And the lesson, which is now the pattern of this whole session
+**My eight hand-written tests showed the class was fixed for the seven constructs I thought of.** **Claude's "every construct as a golden" is what makes it STAY fixed.** **Testing what you thought of is not testing the class.**
+
+## v422 - I tested the parser class myself on v265: eight cases, all correct, and one expectation of mine that was wrong
+
+### The class is closed, as far as I can construct it
+| Construct | Body | Result |
+|---|---|---|
+| **`yavat`** | **2 statements** | **pass** |
+| **`yadi`** | **2 statements** | **pass** |
+| **`prakriya`** | **2 statements + `nivartanam`** | **pass** |
+| **`yavat`** | **4 statements** | **pass** |
+| **`yavat` nested in `yadi`** | **2 + 2** | **pass** |
+| **`anya`** | **2 statements** | **pass** |
+| **`mukhya`** | **4 statements** | **pass** |
+
+**So the v265 fix handles multi-statement indented bodies everywhere I could construct one, including four statements and nesting.**
+
+### And `chakra`, where I was wrong
+**`chakra i = 0 tak 3` gave `s=12` where I expected `s=9`.** **12 is four iterations, not three.** **`tak` is INCLUSIVE - and `tests/expect/11_forloop.out` pins exactly that: `chakra i = 0 tak 5` expects `0 1 2 3 4 5`.**
+
+**So it is documented, tested and correct, and my expectation came from C habits rather than from this language's spec.**
+
+### Three times in one session, the same error
+1. **I assumed the allocator caused the loop hang.** **It was a parser bug from 264 versions earlier, found only by testing the baseline.**
+2. **I assumed `tak 3` meant three iterations.** **It means four, and a golden says so.**
+3. **Earlier I assumed a one-sentence scope rule was sufficient.** **Three parties disproved it in a day.**
+
+**All three are trusting an expectation instead of checking the artefact.** **And in all three the fix was the same: run it, or read it, rather than reason about it.**
+
+### What my eight tests do not establish
+**That no other construct has the same defect.** **I tested the seven I thought of.** **A construct nobody thought of is exactly the shape of the bug that shipped - nobody thought of allocating in a loop.**
+
+**So the durable answer is a test that counts statements per body against the source, not my eight cases.** **That is priced in the open round.**
+
+## v421 - the loop bug was a PARSER bug, it predates the arena, and allocation is now 6 nanoseconds
+
+### I was wrong about the cause
+**I tested v264, saw a hang, and assumed the newest change was at fault.** **Claude tested v261 - before the arena existed - and it hangs there too.**
+
+**The real bug: an indented body was parsed as ONE STATEMENT.** **So in my reproduction, `i = i + 1` was outside the loop and the counter never advanced.** **A parser bug, present through 264 versions.**
+
+**One test on the baseline would have told me that, and I did not run it.** **That is the same error as trusting a brief instead of reading the tree.**
+
+### Fixed at v265, and verified by me
+**`i=0 i=1 i=2 done`.** **Suite 227 (two new examples), gates 49 PASS / 0 FAIL / 1 NOT-RUN, guard 0 DIFFER on ELF, PE and Wine.** **And the fix changes no existing program, because no program in the tree wrote what it fixes.**
+
+### And the number the whole memory effort was for
+**1,000,000 allocations of 64 bytes on v265:**
+
+| | |
+|---|---|
+| **wall** | **6.4 ms** |
+| **per allocation** | **6 nanoseconds** |
+| **peak RSS** | **16 MB** |
+
+**The old path was one `mmap` plus first touch - about 250,000 cycles, ~62,500 ns.** **So roughly 10,000x.**
+
+**That is the first time this project has a number it can put beside another language's.** **And the honest framing stands: allocation is now competitive with C's `malloc`, not ahead of it.**
+
+### But the parser bug is a class, and it is now the more important question
+**A parser that silently accepts fewer statements than written is worse than a memory bug, because the program compiles, runs, and does less than it says.** **Nothing in the four gates could see it: the outputs were consistent, just wrong.**
+
+**So the next round asks what else the indentation parser gets wrong, and how many programs in the tree wrote multi-statement indented bodies that were silently truncated.** **Step 3 waits.**
+
+## v420 - I ran it, and found a bug every gate passed: `nirmmita` in a loop clobbers a live variable
+
+**While the three were working, I built v264 and ran an allocation benchmark. It did not finish.**
+
+```
+mukhya()
+    vitti i = 0
+    yavat (i < 3)
+        likha("i=", i)
+        vitti p = nirmmita(64)
+        i = i + 1
+    likha("done")
+```
+
+**Prints `i=0` forever on v264.** **Expected `i=0 i=1 i=2 done`.**
+
+### What I isolated
+| Test | Result |
+|---|---|
+| **`nirmmita` inside `yavat`** | **infinite loop** |
+| **`nirmmita` inside `yadi`** | **works** |
+| **`nirmmita` once, then a loop with no allocation** | **works** |
+| **`nirmmita` after the increment, in a loop** | **runs once, prints `i=3` - also wrong** |
+| **1,000 allocations in a loop** | **does not finish in 15 seconds** |
+
+### And every gate passed
+**The guard compares outputs of programs that exist - no program in the tree allocates in a loop with a variable live across the call.** **The guard-page gate detects out-of-bounds memory - a clobbered register touches none.** **The 225-test suite has no test that holds a variable across an allocation.**
+
+**So 49 gates, 225 tests, 226 proofs, 86 property proofs, a guard-page compiler and a 577-program byte-comparison all passed a compiler that cannot allocate in a loop.**
+
+### The honest reading
+**This is not a failure of the collaborators. It is a failure of the evidence, and of me for reporting it as sufficient.** **ChatGPT said twice that matching outputs is regression evidence rather than proof of safety; this is the concrete demonstration.** **I have asked it what class of bug is invisible to all three gates, because that is now the more important question than this one fix.**
+
+### What is not withdrawn
+**Claude's R69 is good work: Step 2 built at v264, a new `guard pages` gate, the splitters fixed, the block's scope written into `MEMORY-DECISION.md`.** **None of that is in question.** **But nothing further gets built until allocation in a loop works, because that is the pattern every real program uses.**
+
+## v419 - gates green again, the library audited, and a guard-page compiler that proves memory safety
+
+### The gate failure was mine and is fixed
+**48 PASS / 0 FAIL / 1 NOT-RUN.** **My v411 banner said "property proofs 86/86", which `doc_counts_gate.py` read as an impossible gate claim.** **Corrected to "86 of 86".** **Claude reported it rather than editing docs prose, which was right.**
+
+### `pad_vam`: the contract was wrong, not the body
+**The function writes a terminator at `dst[w]`, so its contract should say `width + 1`.** **It said `width`, which made every caller allocate one cell short.** **A doc bug that became a bug in every caller.**
+
+**Three commits: the contract corrected; `217_r12_report` allocates the 22 cells its callees ask for; and a property proof's own buffer that was one cell short, found by the audit.**
+
+### And the audit's number
+**Across 305 library functions, 371 write sites and 419 call sites, nothing else writes past a block.** **One live finding beyond `217`: `proof_props.py` gave `khand_mukt` 8 cells for lengths up to 8 and it writes cell `n`, so `n = 8` was one past - the fixed seed never drew 8.**
+
+### The new thing: a guard-page compiler
+**Every `nirmmita` block ends flush against a `PROT_NONE` page, so one byte written or read past a block is a SIGSEGV.** **It runs the whole suite, all 226 library proofs and all 86 property proofs with ZERO faults - and faults on the two known bugs as controls.**
+
+**That is a better safety argument than "247 of 248 outputs unchanged", because it does not compare outputs; it proves nothing touches memory it does not own.**
+
+### And the block's scope, stated honestly
+**ChatGPT has said three times that K0 is scalar-scratch only and a checked function cannot contain `kosh`.** **So a `mandapa` block holds scalar scratch, not vectors - a smaller feature than earlier rounds described.** **That goes into `docs/decisions/MEMORY-DECISION.md` where a programmer will read it, not into a handback.**
+
+### Guard
+**577 programs, 485 byte-identical, 91 refused identically, 1 DIFFER, 0 new - on ELF, PE and Wine.** **The one DIFFER is `217`, whose source changed, and its output is byte-identical to the original on v261.**
+
+## v418 - 217 settled, the leak has a real number, and the allocator exposed a library bug
+
+### `217` is the example's bug, and the proof is decisive
+**`examples/217_r12_report.sm` allocates `nirmmita(32)` - four cells - then calls `pad_vam(koshtha, cnt, 6, 32)`, whose contract says the caller must allocate at least `width` cells. Width 6 is 48 bytes. So it writes cells 4 and 5, sixteen bytes past the block.**
+
+**On v261 those sixteen bytes were the zeroed rest of `koshtha`'s own page, so the over-write landed nowhere. On v263 they belong to the next allocation.**
+
+**And the deciding fact: the write past the block happens on v261 TOO.** **The old allocator only gave it somewhere harmless to land.** **Step 1 stands, and what changed is that a latent overflow stopped being masked.**
+
+### The leak now has a number, and the common case is zero
+| Case | v261 | v263 |
+|---|---|---|
+| **one `kosh`, grown in a loop** | 16,000 KB | **7,808 KB, 0 bytes abandoned** |
+| **two interleaved** | 32,128 KB | 32,000 KB, **8.39 B per append per `kosh`** |
+| **three round-robin** | 48,256 KB | 48,000 KB, **8.39 B** |
+
+**The formula: `abandoned = 8*(C - c0) + 16*g`.** **And the honest bound: worst case 16 bytes per append, typical 8.4, and abandoned memory never exceeds the memory in use.**
+
+**So the single-`kosh` case - the common one - now leaks nothing and halves peak memory.**
+
+### And ChatGPT found a second bug, in the library
+**`pad_vam` writes `dst[w] = 0` after filling positions 0 to w-1.** **So it writes one cell past its own stated width - which means the example's `nirmmita(48)` fix would still over-write, and every other caller does too.**
+
+**That is a library bug that the tighter allocator turned from harmless into corrupting.** **Claude is verifying and fixing it, and auditing `lib/` for the same shape.**
+
+### And ChatGPT's safety bar is accepted
+**"247/248 matching outputs are useful regression evidence, not sufficient evidence of safety."** **So v263 is not marked safe from the aggregate score.** **The bar needs stating as a number, and that is asked for.**
+
+## v417 - Step 1 is built and shipped: v263, and 247 of 248 programs unchanged
+
+**Claude's R65 landed two commits on `main`: `817cd89` the `avayava` reword (v262), `8e6ae35` Step 1 (v263).**
+
+### The reword is provably inert
+**577 programs, 486 byte-identical, 91 refused identically, 0 DIFFER on ELF, PE and Wine.** **19 files changed, 0 rejected hunks, and the ten frozen packs changed ONLY in their comment lines - zero translation lines touched.**
+
+### Step 1 changed what it had to change, and nothing else
+**248 programs changed bytes - every program that allocates - and 238 are byte-identical: the programs that neither allocate nor grow a `kosh`.** **247 of the 248 produce the same output and exit code.** **PE and Wine: 0 DIFFER.**
+
+**Suite PASS=225 · proofs 226/226 · property 86/86 · crash corpus 227/0 · linker, separate compilation, fail-alloc and corpus all pass.**
+
+### One program differs, and it is being investigated rather than excused
+**`examples/217_r12_report.sm`.** **Claude calls it "a bug in the example, exposed not caused".** **I have asked for the mechanism, and specifically: if the allocator were reverted, would the example still be wrong?** **If yes it is the example's bug; if no it is mine.** **One program differing is acceptable only if the program was already wrong.**
+
+### The gate FAIL was mine
+**47 PASS / 1 FAIL, and the FAIL was "doc counts" - because my own v411 banner in `PROJECT-MASTER.md` says "property proofs 86/86", which `tools/doc_counts_gate.py` reads as an impossible gate claim.** **Corrected to "86 of 86".** **Claude reported it rather than fixing docs prose, which was the right call.**
+
+### And ChatGPT's objection is now a question about the build, not the design
+**Its R138 recommended not shipping the growth optimization at all.** **It shipped before the review was read.** **So the question is now whether 247 of 248 unchanged is sufficient evidence - and I have asked ChatGPT what the evidence does NOT cover, rather than for a restatement of its recommendation.**
+
+**And its point that *"bounded leak must state a bound"* is right: I have been saying "bounded" without a figure.** **Both Claude and Muse are asked for bytes abandoned per append.**
+
+## v416 - Claude stopped Step 0, and both of its invariants were false
+
+**The `kosh` leak fix as designed was impossible, and it would have created a silent use-after-free.** **It did not ship, because the brief said "confirm both invariants before building" and both were false.**
+
+### What was false
+**"Capacities are always powers of two":** **`kosh k[3]` reaches 12, `kosh k[5]` reaches 10, `kosh k[1000000]` is 1000000.** **33 of 131 declarations are not a power of two.** **So the freelist bins have no size class to index.**
+
+**"The old buffer is dead after growth":** **`vitti a = k` makes `a` a second live `kosh`.** **After `k` grows, `a` and `k` are two working buffers.** **So recycling would hand a live buffer to a different `kosh` - `a` would read another vector's header.** **A silent use-after-free, exactly what R59 warned the `munmap`-on-move fix would create.**
+
+**And in-place extension could not exist in Step 0 at all, because there is no cursor yet.**
+
+### What survives
+**Only in-place extension, moved into Step 1 where a cursor exists.** **It is safe because it does not RELOCATE - `a` and `k` stay on the same buffer, which merely gets bigger.** **Nothing dangles, because nothing moved.**
+
+**The interleaved-`kosh` leak remains and is documented as a bounded leak.** **A bounded leak is better than a use-after-free.**
+
+### And the pattern, stated plainly
+**Both invariants were asserted and never checked against the tree.** **I passed them to Claude as "confirm both before building" - and that instruction is the only reason this did not ship.**
+
+**That is the same failure as the one-sentence scope rule, the fourth time this week: a claim that looked true, never measured, and caught by someone who checked.**
+
+### Meanwhile, two pieces are ready
+**Muse's `avayava` reword is complete as a patch** - four strings in both registers, no third collision, full-tree grep clean.
+**ChatGPT's K0 freeze is complete**, with an honest caveat that its verification was scoped rather than a full census.
+
+## v415 - the vocabulary is settled: `kshetra` the field, `mandapa` the pavilion, `avayava` the member
+
+**Five words, one new keyword.** **And a standing rule for every word from now on.**
+
+### The vocabulary, and why it went this way
+**`kshetra` (क्षेत्र) names the whole arena - the field.** **`mandapa` (मण्डप) is the scratch block - a pavilion raised in the field and struck when it is done.** **`avayava` (अवयव) is a member of a `rachana`, and replaces `kshetra` in the four field diagnostics.**
+
+**The owner's insight: a `kshetra` contains `mandapa`s.** **A field contains pavilions.** **The Sanskrit already had the nesting built into it, and we were making one word do both jobs.**
+
+**And `avayava` means "member", which is what a struct member is - so the reword improves the diagnostics rather than merely renaming them.**
+
+### Collision-checked before proposing, this time
+**`mandapa`, `avayava`, `ardhamandapa`, `mahamandapa`: ZERO occurrences in the compiler, the language pack, the 11 `.sandesh` packs, or any program.** **`kshetra`: four diagnostics, 44 pack entries, 8 expected-output files, and no program identifier.**
+
+**That check exists because `kshetra` had already passed a dictionary check and failed a compiler check in the same week.**
+
+### The size tiers are reported, not chosen
+**`ardhamandapa` and `mahamandapa` earn their place as size classes the COMPILER reports - `ardhamandapa purnam` tells a programmer which tier ran out - not as boxes the programmer picks from.** **The programmer writes `mandapa` and the compiler decides the tier.**
+
+**That is the difference between a vocabulary that teaches and a vocabulary that burdens.**
+
+### And `docs/vocabulary/VOCABULARY-RULE.md` is now the standing test
+**Three rules: a new word must remove an ambiguity or replace an existing word; prefer a compound over a new root; and anything the compiler can name, the programmer should not have to choose.**
+
+**The budget it protects: 33 keywords and about 80 builtins is already ~113 words before a beginner can read someone else's program.** **For a language aimed at a school in India, that is a great deal, and every future word is expensive.**
+
+**Worth stating plainly: the vocabulary work this week was almost entirely SUBTRACTION.** **20 library names that described the wrong operation, two collisions caught, one prefix replaced by a real noun, seven wrong Devanagari words.** **That is the direction that made the language better, and the three rules protect it.**
+
+## v414 - the real number: an arena is about 1,000x faster than `nirmmita` as it is today
+
+**I measured the exact sequence `nirmmita` emits, not a strawman.** **`r38_nirm_seq` does `mmap` per call and never `munmap`s - so that
+is what I benchmarked against an arena.**
+
+**200,000 allocations of 64 bytes, `rdtsc` cycles, three runs:**
+
+| | Run 1 | Run 2 | Run 3 |
+|---|---|---|---|
+| **TODAY: `mmap` per `nirmmita`, never freed** | **50,126,173,152** | 56,996,467,638 | 47,723,581,180 |
+| **PROPOSED: one arena, bump pointer** | **39,713,212** | 60,867,004 | 53,320,344 |
+| **ratio** | **1,262x** | 936x | 895x |
+
+**So roughly 1,000x - and this time it is the real comparison.**
+
+**Per allocation that is about 250,000 cycles today against about 250 for a bump.** **The 250,000 is kernel page-table work for a fresh
+mapping; the 250 is a cache miss on memory the arena already owns.**
+
+### And the earlier 3,000x was measuring the wrong thing
+**My first benchmark included `munmap` on the "today" side.** **`nirmmita` does not `munmap` - it leaks.** **So the earlier figure
+overstated the gap by about 3x, and the honest number is 1,000x.**
+
+**That matters because the direction of the conclusion does not change but the reason does:** **today's cost is the `mmap`, not the
+release.** **The release is missing, and it is free to add - the arena gets both.**
+
+### What this settles and what it does not
+**Settled: allocation through `nirmmita` is roughly a thousand times more expensive than a bump, measured on the real emitted sequence.**
+**Not settled: whether a region is USABLE - that needs Muse's escape classification, because an object that outlives its region cannot
+live in one, however fast the allocation is.**
+
+**So the speed question is answered and the correctness question is open.** **That is the right order, and the open one is the one that
+decides.**
+
+## v413 - the memory block begins: design written, three rounds issued, nothing implemented
+
+**`docs/decisions/MEMORY-DESIGN.md` is the authoritative page.** **Every fact in it is measured or read from the tree, and it says which is which.**
+
+### What is verified about `nirmmita` today
+**It emits `mmap` per allocation on Linux and `VirtualAlloc` per call on Windows.** **There is no `munmap` anywhere, and no `free` keyword
+at all.** **A plain `nirmmita` has NO header - the 16-byte header belongs to `kosh`, and I had claimed it was universal.** **ChatGPT
+corrected that.**
+
+### The measurement, and its limit
+**200,000 allocations of 64 bytes, three runs: `mmap`+`munmap` per allocation ~625,000 cycles, arena bump ~200, ratio about 3,000x.**
+**But that compared `mmap` against a strawman, not the real `nirmmita` against a region.** **So the design document says so, and the first
+round asks for the real measurement.**
+
+### The three options, and the one refusal
+**A: explicit allocate/free - small, but the leak becomes the programmer's problem.**
+**B: `kosa` regions - allocation stops being a syscall, nothing can leak, and the region boundary is lexical so the compiler knows every
+release at compile time.** **But an object cannot outlive its region, and that needs an escape check or it is a use-after-free
+generator.**
+**C: compile-time ownership - the strongest guarantee, and the biggest change to the language since it began.**
+**Refused: a garbage collector - it needs a runtime, and the promise is a native binary with no runtime.**
+
+### And the question nobody has measured
+**Muse R59 is asked to classify every `nirmmita` site: (a) allocated and released in one function, (b) allocated and RETURNED,
+(c) stored beyond its scope.** **If most are (a), a region is a clean win.** **If many are (b) or (c), a region is a trap and option A is
+the honest answer.**
+
+**That classification decides the design, and it is counting, not opinion.**
+
+### And the bug that is not a design question
+**`kosh` growth reallocates and abandons the old block - ~15.3 bytes per item.** **That is a bug today, whatever we decide.** **Claude is
+asked whether it can be fixed on its own by `munmap`-ing the old block, and what could go wrong if a `kosh` still referenced it.**
+
+### And the words wait
+**Nothing gets named until ChatGPT has checked `nyasa`, `pratyarpana`, `kosa`, `samskara` and `rna`.** **I have been wrong four times this
+session on Sanskrit, and `samskara` is the one I am most likely wrong about - it is a beautiful word, and that is exactly why I distrust
+it here.**
+
+## v412 - I ran the tests myself instead of relaying Claude's numbers, and synced the four docs that were stale
+
+**The owner asked whether I had tested everything, updated everything, merged and audited.** **The honest answer was no on the last three,
+so I did them.**
+
+### I ran the checks myself, from a fresh clone, with the compiler built here
+| Check | Result |
+|---|---|
+| **Suite** | **NO-EXPECTATION=4 PASS=225** |
+| **Crash corpus** | **227 cases + manifest, 0 failed** |
+| **Library proofs** | **226 passed, 0 failed, 226 total** |
+| **Doc signatures** | **PASS** |
+| **Layers** | **14 core, 9 alloc, 1 std** |
+| **Alloc bounds** | **26 computed, 13 bounded before the multiply, 13 exempt** |
+| **Built-in packs** | **CURRENT: 11 keyword packs** |
+
+**So Claude's numbers are real.** **I had been relaying them for many rounds without checking one, which is the same failure as trusting a
+brief instead of reading the tree.**
+
+**One number I did NOT verify: gates 48 PASS.** **`tools/gates.sh` exceeds this sandbox's 300-second limit, so that stays Claude's
+measurement.** **Saying so is better than implying I checked it.**
+
+### Merge: not applicable, and that is worth stating
+**Claude pushes to `main` directly with git, not `--force`.** **There are no branches, so there is nothing to merge.** **The "merge" the
+owner has been asking about is the conceptual one - are all the collaborators' work on the same tree - and the answer is yes, because
+they all write to `main` and I read `main`.**
+
+### The docs that were stale, and are not now
+**Four pages still described an older project:**
+- **`PROJECT-MASTER.md`** - mentioned v237 and v261, and had **zero** occurrences of `nivartanam`
+- **`ROADMAP.md`** - zero
+- **`docs/PATH-TO-COMPLETION.md`** - v245 and v250, zero
+- **`docs/LANGUAGE-REFERENCE.md`** - content had `nivartanam` 20 times, but its version line still said v257
+
+**All four now carry a banner with the verified state, and the banner names `docs/WHATS-LEFT.md` as authoritative.**
+
+### Audit: what is covered and what is not
+**Covered:** 305 library names against their bodies (20 wrong, all fixed) · the Sanskrit pack (11 defects, 7 fixed, 4 verified by
+compiling) · 33 contract comments · the print forms and loop forms documented.
+**Not covered, and named rather than glossed:** the **818 undecided mutants** (the round that would have measured them was superseded) ·
+**`Sutram Error` -> `Sutram dosh`** (blocked on the IDE decision) · **Windows execution** (the NOT-RUN, and the owner's own test).
+
+## v411 - Claude's R57: the 33 comments applied, Patch A stopped at two hunks, and why
+
+**The comments are in - commit `d0ff986`, guard 0 DIFFER on all three paths.** **So a comment cannot change a binary, and the proof is
+that it did not.** **Suite PASS=225, proofs 226/226, property proofs 86/86, gates 48 PASS / 0 FAIL / 1 NOT-RUN.**
+
+### Patch A was stopped, and it was right to stop
+**`git apply --check` rejects 2 of its 36 files, and the reason is a dependency I created:**
+
+| File | Why |
+|---|---|
+| `examples/126_numeric_pipeline.sm` | its context line `likha(bindu(u, v))` is now **`likha(bindu_gunan(u, v))`** |
+| `examples/208_kalana.sm` | it rewrites `likha(pravan2(...))`, and that line now says **`dvitiya_pravan`** |
+
+**Both are my R56 renames.** **Muse made the patch at `8236bdd`, before them, and on that base it applies cleanly.** **So this is not
+Muse's error - it is the ordinary consequence of two rounds touching the same files in the same session.**
+
+**Claude stopped instead of hand-editing around a rejected hunk.** **That is the rule from R54, and it held.**
+
+### The fix is one small round, and it is issued
+**Muse R58: rebase the two hunks onto current main, regenerate, and prove `git apply --check` passes.** **Do not re-derive the whole
+patch - 34 of the 36 hunks are still correct.**
+
+**And one question worth asking: of the 12 names in Patch A, which does a beginner actually meet in the first ten example files?** **That
+subset is the only one that matters for readability, and it may be fewer than 12.**
+
+### And Muse's own question got answered
+**"After this, does a beginner reading `examples/01_hello.sm` still meet an English word?"** **Claude: *"Line 1 is the comment `# Sutram -
+Hello World`; it has no variables, so no English variable name, with or without Patch A."*** **So the answer is no, and the honest
+version is that the file never had one.**
+
+## v410 - the vocabulary work is done: v261, 20 names renamed, guard 0 DIFFER nine times
+
+**Compiler v261 (three commits: `d01059ac`, `1acb1654`, `9903e73c`).** **Suite PASS=225 after each, library proofs 226/226,
+property proofs 86/86, crash corpus 227/0.**
+
+**Gates: 48 PASS / 0 FAIL / 1 NOT-RUN.** **And "keyword packs built in" is GREEN** - the gate I broke is fixed, because v259 is the
+first binary built after I regenerated `src/r22_lang_builtin.inc`.
+
+**And that confirms my fix was necessary but not sufficient on its own:** **the committed v258 REFUSED अन्य, अग्रिम, माला and चक्र.**
+**v259 and later accept them, with output byte-identical to the Latin.** **Regenerating the file was half; rebuilding was the other
+half.**
+
+### The guard, nine times
+**After EACH of the three commits, against the commit before it: 577 programs, 486 byte-identical, 91 refused identically, 0
+DIFFER** - on Linux ELF, Linux PE and the Windows compiler under Wine. **A library name never reaches the executable, so 0 DIFFER
+is what a correct rename must give.**
+
+### Muse's two patches, and its own judgement about churn
+- **`ROUND-56-patchA.patch` - the 12 names declared 3+ times.** **"Apply this alone and the suite still passes. This is the recommended patch."**
+- **`ROUND-56-patchB.patch` - the 96 names declared 1-2 times.** **"This is the churn set - the owner decides whether to apply it."**
+
+**That distinction is the most useful thing in the round.** **Renaming a variable used twice is churn with no reader benefit, and Muse
+said so instead of applying all 108 to look thorough.**
+
+### ChatGPT's 33 comments, ready
+**One TSV line each, in the form that goes above the declaration, with an application rule that matters: "insert only after checking
+whether Muse already added an equivalent comment" - and prefer reconciling a duplicate over stacking two.**
+
+### And the thing I have to flag for the third time
+**Claude's R56 says: *"The names are the owner's choice, made this session. I put a table to the owner before renaming... and the
+owner chose that table."***
+
+**I did not put a naming table to the owner, and the owner has not seen one.** **If the owner answered Claude directly, fine. If not, a
+table of 20 names has been attributed to a decision that was not made.**
+
+**Three times now: `laghu`, the four patches, and this.** **It is a pattern, and it needs an answer from the owner rather than
+another assumption from me.**
+
+## v409 - the three tables become three rounds, and the vocabulary work is all in flight
+
+**The owner delegated the review decision, so I made it and issued the work.**
+
+### Claude R56 - the 20 wrong library names
+**ChatGPT read all 305 bodies and judged 285 accurate.** **Two of the 20 have the OPERATION wrong, not just the word:**
+- **`sadish_yoga`** - the name says VECTOR ADDITION; the body is a DOT PRODUCT. **A caller gets a different answer of the same type - the worst kind of wrong.**
+- **`chandas.dviguna`** - `dviguna` means DOUBLING; the body computes **2^n**.
+
+**Plus `mahattam`/`laghuttam` returning GCD and LCM with the relation missing, `sankhyiki.bindu` (point) computing an inner product,
+`roop_varg_mool` (square root) formatting digit groups, three `_ashtak` functions handling an 8-byte LENGTH PREFIX, `asti_vilom`
+testing a palindrome, and `nirnaya2`/`nirnaya3` being determinants of order 2 and 3.**
+
+**Three commits, smallest risk first, `sadish_yoga` and `dviguna` LAST with their call sites counted first.**
+
+### Muse R56 - the 108 English variables
+**Not 140 - 108, by Muse's own stated method.** **Batches of 20, every golden byte-identical.** **And a question at the end: after
+this round, does a beginner reading `01_hello.sm` meet an English word?** **If the answer is "yes, but fewer", I want the file list.**
+
+### ChatGPT R130 - the 33 comments, and four names reconsidered
+**The 33 are right-named traps: `fnv1a` is a hash not encryption; `ganita_paripurna_bhaj` returns a sentinel zero on
+divide-by-zero and zero is also a legitimate quotient.** **Comment text only - Muse is in the library.**
+
+**And four suggestions are much longer than what they replace: `mahattam` (8) -> 22 characters.** **Asked for a shorter exact
+compound; if none exists I will take the long name.**
+
+**And the one I want on the record: is there ANY reading of `sadish_yoga` under which a dot product is correct?**
+
+### The rubric now applied to every name
+**Complete word or compound, never a fragment. Sense must match the body. Shorter is better, but a correct long name beats a wrong
+short one. No collision. Nothing breaks a program.**
+**Plus the rule I added after being wrong all session: if a suggested name is longer, ask for the shorter correct alternative
+rather than accepting the first suggestion.**
+
+## v408 - my pack fix verified from the repo tree: the failing gate is green
+
+**I did not wait for a partner to confirm it. I built from the tree and ran the gate that was failing.**
+
+### The gate
+**`python3 -B tools/lang_builtin.py --check` -> `BUILT-IN PACKS CURRENT: 11 keyword packs`, exit 0.**
+**It said `STALE: src/r22_lang_builtin.inc is not lang/*.lang` before my fix.** **Green now.**
+
+### And three things proved from the repo tree, not from a local copy
+- **The pack carries all seven words.**
+- **The compiler builds, and `चक्र i = 0 पर्यन्त 3 { likha(i) }` prints `0 1 2 3`.** **So the Devanagari loop keyword works from a
+  fresh clone.**
+- **`nivartanam` and `prati` produce IDENTICAL 76-byte binaries.** **The alias is real at the byte level.**
+
+**That last one is the whole justification for keeping `prati` as an alias: a program written either way produces the same
+executable.** **Not similar - identical.**
+
+### State
+**Compiler v258, changelog v408.** **`nivartanam` in the compiler, `lib/`, `examples/`, `tests/` and `docs/` - 235 files across
+R53, R54 and R55, zero goldens changed.**
+
+**Waiting on the owner, and nothing else blocks:**
+- **Muse's variable table** - the English names in `examples/`, counted properly, with Sanskrit proposals
+- **ChatGPT's 20 wrong library names** - out of 305, names whose sense does not match the body
+- **The 305-name review page** the owner has not been through
+
+**Waiting on nobody:**
+- **The two gates I broke are green.**
+- **The `तक्` loop-parser limitation is a compiler change, not a data change, and it is documented.**
+
+## v407 - I broke two gates and Claude caught it: the pack commit left the built-in copy stale
+
+**Claude's R55 reports gates at 47 PASS / 2 FAIL, and both FAILs come from MY commits `e1fd04b` and `7fb43c6`.**
+
+**"keyword packs built in" failed because I pushed `lang/sanskrit.lang` and never pushed the regenerated
+`src/r22_lang_builtin.inc`.** **The pack is compiled into the compiler through that file, and I updated the source without
+updating the copy.** **"doc counts" failed as a consequence.**
+
+**And Claude did the right thing with the number: it did NOT lower PROJECT-MASTER's 48 to 47.** **Its words: *"that would make a
+broken gate look like the normal count."*** **So the count stayed at 48 and the failure was reported.** **That is exactly how a
+gate should be treated.**
+
+**Fixed now: `src/r22_lang_builtin.inc` regenerated from the current pack and pushed.** **`tools/lang_builtin.py --check` passes.**
+
+**The lesson is the same one this session keeps teaching: I regenerated the file locally, tested against it, and never pushed
+it.** **Testing against a local artefact and believing the repo matches is how a stale tree produced two false findings
+earlier.**
+
+## v406 - every document synced to v405, with a banner that says which page is authoritative
+
+**Four documents carried stale state and now carry a banner: compiler v258, `nivartanam` decided, and the seven items that
+closed since they were written.**
+
+### `docs/OPEN-ISSUES.md` (written 27 October, still listing closed work)
+**Banner plus a "Closed since this page was written" table:** `likha` one value per statement · the 135 triples · the `lkhb`
+float bug · no Sanskrit range form · `prati` as a prefix · **`chay` believed to be a coinage** · eight wrong Devanagari words.
+
+**The `chay` line is the one I want on the record: `चय` is real Sanskrit for heap.** **My audit was wrong, not the code.** **Third
+time this session I called a real word a coinage.**
+
+### `docs/MEMORY-MODEL.md`
+**Banner stating it is accurate and that memory is the NEXT block.** **And the three facts: no `free`, `kosh` leaks ~15.3 bytes
+per item, a GC is refused.** **Plus the point that matters for the decision - region allocation is FASTER than `malloc`, because
+allocating is a pointer bump and freeing is a pointer reset.** **And the honest gap: the measurement is not done, and it has to
+be written in assembly here because there is no C compiler.**
+
+### `docs/vocabulary/VOCABULARY-TABLE.md`
+**Banner: `nivartanam` decided, `prati` the alias, 162 files, zero goldens changed.** **Plus the two corrections - `chay` is real,
+and `kosh_enqueue` must not be `kosh_purva_yuj` because enqueue appends at the rear.** **Plus the finding that the pack's
+Devanagari column already held the Sanskrit for ten builtins.**
+
+### And the rule now in every banner
+**`docs/WHATS-LEFT.md` is authoritative.** **Where another page disagrees with it, that page is right - it is generated from the
+tree, and the others are not.** **That sentence exists because six items on the roadmap were already done and the page did not
+know.**
+
+**`docs/LANGUAGE-REFERENCE.md` was deliberately NOT touched - Claude is editing it in R55.** **Editing the same file in two places
+is how a merge becomes a guess.**
+
+## v405 - the roadmap rewritten, because six of its open items were already done
+
+**`docs/WHATS-LEFT.md` said `likha` with six values, the `lkhb` float bug and `arabhya ... paryantam` were work to do.** **All
+three landed in R52 and I did not know.** **It also said `likha("x = ", x)` was unused, and it is used in
+`examples/43_nested_likha.sm` with a golden.**
+
+**So the page was wrong about the language, wrong about the examples, and wrong about the work remaining.** **It is rewritten,
+with the rule at the top: every claim carries the command that produced it.**
+
+### What the rewrite shows
+**Seven things are DONE and verified:** `likha` arity, the 135 triples, the `lkhb` float bug, `arabhya`, `nivartanam` across 162
+files, seven wrong Devanagari words, and the pack audit.
+
+**Three rounds are in flight:** Claude R55 (the last patches and the reference), Muse R55 (the English variables, table only),
+ChatGPT R129 (**audit all 305 library names against their BODIES**).
+
+**Eight things are still open, and none is a language feature:** `Sutram Error` (blocked on the IDE decision), the 15 surviving
+mutants (including a maths sign error), 818 undecided mutants, `तक्` in the loop parser, `पङ्क्ति` inside `pankti_len`,
+`कोशपोप्`, the ~140 English variables, and the 305-name review the owner has not been through.
+
+**And six decisions only the owner can make**, including the one I have to ask about: **Claude's R54 attributes to the owner a
+decision I cannot see being made.**
+
+### And R129 was replaced
+**I had issued it about memory vocabulary.** **The owner's instruction was to finish the CURRENT work first and leave memory for
+after.** **So R129 is now the library-name audit - the work that found `nishan` meaning "mark" while computing a matrix trace.**
+
+## v404 - R52 already closed three of my roadmap items, and ChatGPT corrected four of my statements
+
+**ChatGPT's R127 opens with a section headed "Findings that supersede stale Round-127 assumptions", and every one of them
+corrects me.** **This is the seventh time a partner has measured something I asserted.**
+
+| I said | The tree says |
+|---|---|
+| **"`likha("x = ", x)` works and NO EXAMPLE USES IT"** | **It is in `examples/43_nested_likha.sm`, with its exact output in `tests/expect/43_nested_likha.out`.** **The assertion was false.** |
+| **"`lkhb(2.5)` prints raw bits - a real bug, to be fixed"** | **Fixed in R52.** **Already closed.** |
+| **"`likha` needs to go from 1 value to 6"** | **Implemented in R52.** **Already closed.** |
+| **"`arabhya ... paryantam` should be added"** | **Already implemented and tested byte-identical to `tak` loops.** **Already closed.** |
+| **"`likha_fmt(fmt, v)` still needs a newline"** | **WRONG.** **The compiler emits LF at the end of its numeric printer.** **`format_demo.out` has TWO LFs because the example adds `likha("\n")` anyway.** **Documenting my version would have taught a beginner to add a newline that is already there.** |
+
+**So three roadmap items - A1, A4 and A6 - are done, and I had them open.** **The remaining work is smaller than the roadmap says.**
+
+### And ChatGPT caught a documentation bug that would have taught the wrong thing
+**The `likha_fmt` double newline is not a compiler bug, it is an example that adds a newline the printer already adds.** **So the
+fix is in the example, not the compiler - and if I had written the reference from my own note, the reference would have been
+wrong in the same way.**
+
+### ROUND-55 issued
+**Apply Muse's `tests.patch` and `docs.patch`** - the last `prati` in `tests/` and `docs/` - **and apply ChatGPT's R127 and R128
+exact insertions to the reference.**
+
+**With the check that matters for the negative tests: a test that FEEDS `prati` as input keeps feeding it, because that is a
+test of the alias.** **The error message did not change, so its golden must not have either.**
+
+## v403 - `nivartanam` is applied across the tree: 162 files, 0 rejected hunks, and the goldens prove it
+
+**Compiler v258 (commit `caed891c`).** **Suite PASS=225, proofs 226/226, corpus 227/0.**
+**Gates: 48 PASS / 0 FAIL / 1 NOT-RUN** - the new gate is "R54 migration", the NOT-RUN is Windows.
+
+### The patches, applied
+| Patch | Files |
+|---|---|
+| `ROUND-52.patch` (examples' print triples + lib comments) | **78** |
+| `ROUND-53-lib-part1` | 12 |
+| `ROUND-53-lib-part2` | 12 |
+| `ROUND-53-examples` | 60 |
+
+**Applied with `git apply`, in order, 0 rejected hunks, nothing edited by hand.**
+
+**And a real dependency: without `ROUND-52.patch` FIRST, 12 of the 24 lib files reject** - **exactly the 12 that `ROUND-52.patch`
+adds comments to.** **So the order was not a formality; it was load-bearing.**
+
+### The guard, three ways, each on Linux ELF, Linux PE and Windows-under-Wine (577 programs each)
+- **The compiler change alone: 486 byte-identical, 91 refused, 0 DIFFER.**
+- **The nivartanam patches alone: 486 byte-identical, 91 refused, 0 DIFFER.**
+- **The compiler change on the patched tree: 485 byte-identical, 91 refused, 1 DIFFER.**
+
+**The one DIFFER is `tests/stdlib/r11_sets_lists`: v257 REFUSES it (over a limit) and v258 compiles it.** **That is the R52
+`likha` arity change raising a limit - a program that could not compile now can.** **Explained, not mysterious.**
+
+### And the proof that the rename is inert
+**The nivartanam patches change ZERO goldens.** **`ROUND-52.patch` changes 32, and each of the 32 is its old golden with empty
+lines deleted, nothing else.** **So the rename is provably output-neutral, which is what a keyword change must be.**
+
+### One thing I am flagging rather than accepting
+**Claude's handback says: *"By your rule I stopped there and asked the owner. The answer was to apply all four, and raise the
+limit."*** **I did not give that answer, and I cannot see that exchange.** **If the owner answered Claude directly, fine - but if
+not, a decision has been attributed that was not made.** **That is the same shape as the earlier *"the owner chose laghu"*,
+which the owner had not chosen.** **Asking, not assuming.**
+
+### Also returned
+**Muse R54:** `ROUND-54-NIVARTANAM-TESTS-DOCS.md` plus `tests.patch` and `docs.patch` - **the last `prati` in `tests/` and
+`docs/`.**
+**ChatGPT R127:** `ROUND-127-REFERENCE.md` - **the documentation round that was never picked up.**
+
+## v402 - the pack fix: seven words verified, one blocked, and my "purely additive" claim was wrong
+
+**`lang/sanskrit.lang` now carries the correct Devanagari for seven keywords.** **Built with NASM, tested with real programs.**
+
+### What I proved works
+| Word | Test | Result |
+|---|---|---|
+| **`चक्र`** | `चक्र i = 0 पर्यन्त 3 { likha(i) }` | **prints `0 1 2 3`** |
+| **`माला`** | `माला a[3]` | **compiles** |
+| **`अन्य`** | `yadi (1) { ... } अन्य { ... }` | **compiles** |
+| **`अग्रिम`** | inside a loop, skips one iteration | **prints `0 2 3`** |
+
+**Three more - `सत्य`, `गणना`, `यन्त्र` - are in the pack but UNVERIFIED, because I could not write valid syntax for them in either
+Latin or Devanagari.** **I am not claiming they work.**
+
+### And my "purely additive, nothing breaks" claim was WRONG
+**I said adding a correct word beside the wrong one was safe.** **It is not.** **The pack is LAST-WINS for `tak`: adding `तक्`
+silently broke `पर्यन्त`, and moving `तक्` above it broke `तक्` instead.** **One spelling per keyword, and whichever is last
+wins.**
+
+**So `तक्` is NOT in the pack.** **The loop parser holds a single spelling, and changing it needs a compiler change, not a data
+change.** **`पर्यन्त` still works, so nothing regressed.**
+
+**And `likha`, `vitti` DO accept multiple spellings** - all three `likha` rows work. **So aliases work in the general keyword
+table and not in the loop parser.** **That is a specific, findable defect rather than a general one.**
+
+### And the error I made before the fix
+**I pushed the pack, then tested against my LOCAL tree - which was the old file.** **`चक्र` failed and I nearly reported the fix
+broken.** **The tree was stale, not the pack.** **Same stale-tree trap as before; the fix is to update the local copy before
+testing, not to trust the fetched one.**
+
+## v401 - my own work while the rounds ran: eleven defects in the Sanskrit pack
+
+**`docs/reports/LANG-PACK-AUDIT.md`.** **I read all 58 rows of `lang/sanskrit.lang` instead of waiting, and the file has real
+defects.**
+
+### Eight rows where the Devanagari is the WRONG WORD, not a variant
+| Latin | Pack says | Means | Should be |
+|---|---|---|---|
+| `chakra` | पुनरावर्तन | repetition | **चक्र** |
+| `anya` | अन्यत्र | elsewhere | **अन्य** |
+| `agrim` | उद्देश्य | purpose | **अग्रिम** |
+| **`mala`** | **पङ्क्ति** | **row - and `pankti` is the RETIRED array word** | **माला** |
+| `ganana` | सृजन | creation | **गणना** |
+| `yantra` | निष्क्रिय | inactive | **यन्त्र** |
+| `satya` | परिग्रह | possession | **सत्य** |
+| `tak` | पर्यन्त | limit | **तक्** |
+
+**A Devanagari programmer writing `चक्र` for the loop gets an error, because the pack only accepts `पुनरावर्तन`.** **And `mala`
+is mapped to the retired word `पङ्क्ति`, so the current array keyword has to be typed as the old one.**
+
+### Three rows are ABBREVIATIONS, not words
+**`vitti` -> वि॰, `likha` -> लि॰, `prakriya` -> प्र॰, using U+0970.** **Each of those three ALSO has a full row, so both work and
+nobody noticed.** **The abbreviation rows are clutter.**
+
+### And four Latin names appear more than once
+**`likha` three times - with three different Devanagari spellings - plus `vitti`, `prakriya` and `shabda` twice each.** **Nothing
+in the file says which is canonical.**
+
+### The finding that settles the naming debate for ten builtins
+**The pack ALREADY has proper Sanskrit compounds for them: `kosh_push` -> कोशपुष्, `kosh_cap` -> कोशक्षमता, `kosh_empty` ->
+कोशरिक्त, `kosh_peek` -> कोशशिखर, `kosh_dequeue` -> कोशनिर्गम, `kosh_enqueue` -> कोशप्रवेश.**
+
+**So the Sanskrit for these was chosen deliberately and is already in the tree.** **The Devanagari column is AHEAD of the Latin
+column - the answer to "what should `kosh_push` be called" is sitting in the pack.**
+
+**One caution: `kosh_pop` -> कोशपोप् looks like the English "pop" transliterated, not a Sanskrit word.** **Worth a check before
+it is treated as precedent.**
+
+### All five fixes are edits to one data file
+**No compiler change, and none changes what a Latin program does.** **The pack is data.**
+
+## v400 - the `nivartanam` rename is three-quarters done, and the last quarter has a trap in it
+
+**State: compiler v257 speaks `nivartanam`, guard 0 DIFFER, both spellings byte-identical.** **Muse's `lib/` (677) and
+`examples/` (122) patches are waiting on Claude to apply them (ROUND-54).**
+
+### The last quarter, and the trap
+**Muse counted 389 more `prati` in `tests/` and 146 in `docs/`.** **Those are still `prati`.**
+
+**The trap: `tests/negative/` has 108 files with `prati`, and some of them assert on an ERROR MESSAGE.** **If the message
+contains `prati`, renaming it changes what the test expects.** **So ROUND-54 asks Muse to find every test whose expected
+output contains `prati` and list them separately - a decision, not a blind rename.**
+
+**And the rule that makes it safe: a test that FEEDS `prati` as input should keep feeding it, because that is a test of the
+alias.** **A test that WRITES a program using `prati` as a statement becomes `nivartanam`.** **Different things, and the
+difference matters.**
+
+### And ChatGPT's R128 flagged something I missed
+**Its own opening line: *"issued R127 remains without a ChatGPT handoff."*** **R127 is the documentation round - the one that
+documents `likha("x = ", x)` and gives the honest speakable verdict.** **It was never picked up, so I re-issued it as a
+reminder.**
+
+### And ChatGPT's R128 static check is stale, correctly so
+**It pinned at `b425a9f3` where the compiler had ZERO `nivartanam` occurrences, and said so plainly rather than assuming.**
+**That is the right behaviour: it verified what was there instead of what the brief claimed.** **The docs update is now safe
+because the compiler migration has passed, so I will apply its insertions after Claude's R54 lands.**
+
+## v399 - `nivartanam` is in, both spellings compile identically, and Claude caught a wrong byte string of mine
+
+**Compiler v256 (commit `74edff92`), then v257. Suite PASS=225, proofs 226/226, corpus 227/0.**
+**Gates: 45 PASS / 0 FAIL / 1 NOT-RUN** - the new gate is "R53 nivartanam", and the NOT-RUN is Windows.
+
+### The decisive test passed
+**Guard v255 -> v256: 577 programs, 486 byte-identical, 91 refused identically, 0 DIFFER**, held on all three paths -
+Linux ELF, Linux PE, and the Windows compiler under Wine.
+
+**And the test that mattered: a Latin program using `nivartanam` and one using `prati` compile to BYTE-IDENTICAL binaries
+(76 bytes).** **The same for the Devanagari pair `निवर्तनम्` / `प्रति` under `--lang sanskrit`.** **So the alias is real, not
+just documented.**
+
+**The internal token was renamed too:** `KW_PRATIYATI` -> `KW_NIVARTANAM`. **Four uses, invisible to a user, and now it
+says what it is.**
+
+### And a real catch: my `प्रति` byte string was WRONG
+**I gave `0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF` for `प्रति`.** **Claude decoded it: it is `प्ति` - the
+`र` is missing.** **The real `प्रति` is 15 bytes: `0xE0,0xA4,0xAA,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF`.**
+
+**The compiler has held the correct 15 bytes since R50 and Claude kept them rather than the brief's.** **Had it copied my
+bytes, the alias would not have matched.** **That is the second byte-string error I have made this session, and the second
+one a partner caught by decoding rather than trusting.**
+
+### Muse's migration: 814 code sites, delivered as patches
+| Directory | Files | Occurrences |
+|---|---|---|
+| `lib/` | **24 - all of them** | **677** |
+| `examples/` | 48 | 122 |
+| `examples/lib/` | 13 | 16 |
+| `tests/` | 108 | 389 |
+| `docs/` | 22 | 146 |
+
+**Total code migrated: 814.** **Counted with word boundaries, so `vartani_pratilip`, `khand_pratilip` and `pratiyati` are
+correctly NOT counted.**
+
+**Delivered as three patches - `ROUND-53-lib-part1.patch`, `-lib-part2.patch`, `-examples.patch` - and verified to apply
+cleanly in order on a fresh HEAD and reproduce the tree byte-for-byte.** **NOT yet applied to main, because I cannot apply a
+patch.**
+
+## v398 - `nivartanam` confirmed, gate open, migration running
+
+**Three corrections and the owner landed on the word I believed was right.** **`nivartanam` (निवर्तनम्) - `ni` + `vṛt`,
+"returning, turning back".** **27 bytes, verified.**
+
+### The record of how this went, because it matters
+1. **I issued `nivartan` - wrong.**
+2. **The owner corrected to `nirvatanam` - and I flagged that `vatan` is not a root and it might be a variant of `nivartanam`.**
+3. **The owner confirmed `nivartanam` - the word I believed meant "return".** **So we agree, and the flagging was worth the two extra messages.**
+
+**That is the third time this session that a spelling question was settled by asking rather than by assuming.** **The earlier
+two were `pradarsh` vs `pradarsh` and the Devanagari `prati` triple.**
+
+### The gate is open
+**The owner confirmed the word, so nothing waits on a spelling answer any more.** **Muse migrates `lib/` and `examples/` now.**
+
+### Why the migration is safe
+**`prati` is a statement keyword and never appears in program output.** **Every golden must stay byte-identical, the crash
+corpus behaves identically, and the guard reads 0 DIFFER.** **The only failure mode is a file that does not compile, and
+`prati` stays as an alias to prevent it.**
+
+**And Claude's decisive test: three programs using `prati` and three using `nivartanam` must produce byte-identical
+binaries.** **If they do not, the alias is broken and that is the finding.**
+
+## v397 - the word is `nirvatanam`, not `nivartan`, and the spelling is gated before the migration
+
+**I issued `nivartan`. The owner corrected it: `nirvatanam` (निर्वतनम्).** **All three rounds reissued with the right word.**
+
+### The bytes, verified not guessed
+**`निर्वतनम्` = `0xE0,0xA4,0xA8,0xE0,0xA4,0xBF,0xE0,0xA4,0xB0,0xE0,0xA5,0x8D,0xE0,0xA4,0xB5,0xE0,0xA4,0xA4,0xE0,0xA4,0xA8,0xE0,0xA4,0xAE,0xE0,0xA5,0x8D` - 27 bytes.**
+
+### And the three words are not the same
+| Spelling | Devanagari | Bytes |
+|---|---|---|
+| **`nirvatanam`** | **निर्वतनम्** | **27 - the owner's choice** |
+| **`nirvartanam`** | **निर्वर्तनम्** | **33 - one extra `र्`** |
+| **`nivartanam`** | **निवर्तनम्** | **27 - `ni` not `nir`** |
+
+**`nirvatanam` and `nivartanam` are the same length and differ in one syllable.** **My reading is that `vatan` is not a root
+and the word may be a variant of one of the other two - but the owner has decided and this is their language.**
+
+### So the migration is gated
+**ChatGPT answers the spelling as the FIRST line of ROUND-128.** **Muse does its counts now and waits for that answer before
+touching a single file.** **If the word is right, the migration runs and I will say I was wrong to doubt it. If it is wrong,
+one message catches it instead of a 1,400-site rollback.**
+
+**That is the only part of this that needed slowing down.** **The rest is safe because `prati` never appears in output - every
+golden stays byte-identical and the guard reads 0 DIFFER.**
+
+## v396 - `nivartan` becomes the keyword, `prati` stays as an alias, and the reason it is safe
+
+**The owner decided: `nivartan` instead of `prati`.** **Implemented as the canonical keyword with `prati` kept as a legacy
+alias, so no existing program stops compiling - including the ones the owner has already tested on Windows.**
+
+### Why this is safer than it looks
+**`prati` is a statement keyword and never appears in program output.** **So renaming it changes NOTHING observable: every
+golden stays byte-identical, the crash corpus behaves identically, and the guard should read 0 DIFFER.** **The only failure
+mode is a file that does not COMPILE, and the alias removes it.**
+
+### The three rounds
+- **Claude R53:** the keyword table (`kw_nivartan`), the Devanagari (`निवर्तन` canonical, `प्रति` alias), the pack. **And the decisive test: three programs using `prati` and three using `nivartan` must produce byte-identical binaries.**
+- **Muse R53:** migrate `lib/` and `examples/`. **The test that makes it safe: every golden must stay byte-identical, because `prati` never prints.** **A golden that differs means the rename broke something.**
+- **ChatGPT R128:** the reference entry, every document showing `prati`, and the question I most want answered - **is `nivartan` the right word, or is there a shorter genuine Sanskrit noun?** **`prati` was 5 letters, `nivartan` is 8, and it appears in every function ever written.** **Better to ask now than after 1,400 sites are migrated.**
+
+### And the note on my own earlier recommendation
+**I recommended the alias and the owner said "instead of".** **The design I issued is both: `nivartan` IS the keyword - it is
+what the reference says and what new code writes - and `prati` is accepted so nothing breaks.** **That satisfies "instead of"
+without a migration that could regress a working language.**
+
+## v395 - the consolidated picture, and three rounds issued from it
+
+**`docs/WHATS-LEFT.md` is now the single page that says where the project stands and everything remaining**, grouped by
+whether it is ready to implement, waiting on the owner, a defect, parked, platform, or beyond v1.0.
+
+### The three rounds issued
+- **Claude R52: four small things, three of them bugs.** `likha` with up to six values (Claude's own proposal, its own line numbers) · **`lkhb(2.5)` printing the raw IEEE-754 bit pattern** · **the `yoj` error message** · **`arabhya ... paryantam`** as the Sanskrit range, contextually parsed so `tak` keeps working.
+- **Muse R52: the examples teach the wrong form.** **135 three-statement triples in 48 files - 405 lines that could be 135 - for something the language does in one.** **Plus the 88 library functions with no usage comment** (29% of the library, and the reason three of my renames named the wrong thing).
+- **ChatGPT R127: write down what the language already does.** **The biggest documentation gap is not a missing feature - it is a feature nobody wrote down.** **Plus the honest speakable verdict: if the syntax is a technical compound register rather than prose, the reference should say so.**
+
+### And the honest summary of what is actually missing
+**Not features. Three things:**
+1. **The documentation does not say what the language already does.**
+2. **The examples teach the opposite of the language - 48 English function names, 135 three-statement prints.**
+3. **The vocabulary is 90% Sanskrit in the library and 44% in the examples.**
+
+**All three are fixable without touching the compiler.**
+
+## v394 - three of my six "problems" do not exist, and all three parties proved it independently
+
+**I wrote six writing-style problems and asked Claude, ChatGPT and Muse to solve them.** **Three of the six were not problems.**
+**Each party measured, each caught the same three, and none of them took my word for it.**
+
+| My premise | What the compiler actually does |
+|---|---|
+| **P1: one labelled value takes three statements** | **`likha("x = ", x)` is ONE statement and prints `x = 42` plus a newline.** **The two-argument form has existed all along** (`.ge_lk_two`, line 16142). |
+| **P2: the loop is C-shaped with three clauses** | **The C-shape is a SYNTAX ERROR.** **The loop is already `chakra i = 0 tak 10 { ... }`** (`.ps_for`, line 9315). |
+| **P4: every `mukhya` ends with `prati 0`** | **Zero of 141 examples have `prati` in a `mukhya`.** **It is optional and the program exits 0 at its end.** |
+
+**Muse counted it: 135 three-statement print triples in 48 example files** - **405 lines that could be 135.** **So the language
+is fine and the EXAMPLES are written badly.** **Claude measured it: `likha("x = ", x)` compiled and run, transcript in
+`evidence-r51/today.txt`.** **ChatGPT found the source lines.**
+
+### What is actually real
+
+**1. `likha` with more than two values.** **One value is one statement; TWO values cost five** (`likha`, `lkhb`, `likha`,
+`lkhb`, `likha("\n")`). **Claude's fix: `likha("x = ", x, ", y = ", y)`** - **the parser arity goes from `db 1,3` to `db 1,6`
+(line 264), and the emitter gains about 40 lines beside `.ge_lk_two`.** **The argument count is known at compile time, so it
+costs nothing at runtime.** **All 55 three-argument calls in the tree pass `1` or an fd first, never a string literal, so the
+new form is selectable without touching an existing call.**
+
+**2. A real bug Claude found: `lkhb(2.5)` prints `4612811918334230528`** - **the raw IEEE-754 bit pattern, not the number.**
+**There is no float printer without a newline.**
+
+**3. `tak` is Hindi, not Sanskrit.** **ChatGPT proposes `chakra i = 0 arabhya 10 paryantam`** - **`arabhya` ("beginning from")
+and `paryantam` ("up to") are the genuine Sanskrit range construction.** **As an alternative spelling only, parsed
+contextually after `chakra`, so `tak` keeps working.**
+
+**4. The P5 error message** - **still real and still unaddressed.**
+
+### And the honest count of my own errors this session
+**Six times I concluded something was missing and it was there: the lexer, the concatenation size, the version check, the
+debugger, the reverse conversion, and now three syntax features at once.** **The pattern is always the same: I read the
+NAME and not the BODY.** **This time three independent parties measured before I could ship a fix for a feature that already
+worked.**
+
+## v393 - the writing style: same six problems, three lenses, and every answer must be code
+
+**The owner asked for syntax ideas from the other AIs and a side-by-side comparison.** **Three AIs asked "what syntax should we
+add?" produce three wish lists that all sound reasonable.** **So the brief is the same for all three, and the answer must be
+a runnable `.sm` snippet, not an opinion.**
+
+### The six problems
+1. **Printing a labelled value** - **today it takes three statements for one line of output.**
+2. **A counted loop** - today it is C-shaped with three clauses.
+3. **Declaring a variable** - today every one needs `vitti`.
+4. **Returning from a function** - every `mukhya` ends with `prati 0` and nobody means it.
+5. **An error a beginner can act on** - **the `agyat prakriya` message when the real answer is `yoj brihat`.**
+6. **The speakable test** - **should a Sutram program read aloud as Sanskrit prose?**
+
+### Three lenses, so they do not converge
+- **ChatGPT (R126): the Sanskritist.** *"Your question is not 'is this good syntax' - it is 'does this read as Sanskrit?'"* **And: is there anything in the Ashtadhyayi's own notation a programming syntax could borrow - honestly, if the answer is no.**
+- **Muse (R51): the codebase.** *"Count it. How many lines in examples/ are the three-statement print pattern? Give numbers - that is your argument, not taste."* **And: name a seventh problem if the same pattern appears 50 times and nobody has named it.**
+- **Claude (R51): the compiler.** *"How many lines of NASM, where in the compiler, and which of the six can be added without touching any existing code path - an addition the guard cannot see."*
+
+### The hard rules in all three
+**No feature that breaks an existing program** (225 tests, 577 guard programs, 200 examples). **Nothing that needs a runtime
+or a GC.** **Sanskrit keywords only.** **And: "leave it as it is" is a valid and useful answer.**
+
+### What the comparison will look like
+**Three code blocks for the same problem, side by side.** **Then I take the ones all three agree on, and bring the
+disagreements to the owner with both arguments - the same process that found `likh` and `paadh` were not duplicates.**
+
+## v392 - Muse found four of my proposals wrong, and Claude stopped where it should have
+
+**Muse R50 and Claude R50 both returned. ChatGPT R125 has not.**
+
+### Muse: four rejections, and every one is right
+
+| My proposal | Muse's verdict | Why |
+|---|---|---|
+| **`likh` -> merge into `likha`** | **REJECT** | **They are different functions**: `likh` is raw write (2 args), `likha` is print (1-3). **Not duplicates.** |
+| **`shabda` -> merge into `likha`** | **REJECT** | **`shabda` prints string CONTENT, `likha` prints the ADDRESS.** **Different.** |
+| **`paadh` -> REMOVE as a duplicate** | **REJECT** | **Not a duplicate**: `pad` is 1-arg, `paadh` is 3-arg fd/buf/count read used by `patra`. |
+| **`kosh_enqueue` -> `kosh_purva_yuj`** | **REJECT** | **enqueue appends to the BACK; `purva` means FRONT.** **My direction was backwards.** |
+
+**Four for four wrong, and all four were wrong in the same way: I read the NAME and not the BODY.** **That is the
+`nishan` mistake again, and Muse caught it again.**
+
+### And three convention notes that change the proposal
+- **`pankti_len` -> `mala_maap`, not `mala_aayam`** - **the project uses `maap` for length in 7 library functions, and `aayam` is not the convention.**
+- **`kosh_len` -> `kosh_maap`** - same reason.
+- **`kosh_empty` -> `kosh_rikta`, not `kosh_rikt`** - **existing `rakh_rikta` and `suchi_rikta` use the full form.**
+
+### And the site counts, which are the real cost
+**`kosh_push` -> `kosh_khip`: 343 sites.** **`kosh_len`: 60.** **`ganit` -> `ganan`: 41.** **`kosh_pop`: 31.**
+**Everything else is under 25.** **So three renames carry 84% of the change surface.**
+
+### Claude: WS3 done, WS1 stopped correctly
+**Compiler v255, commit `8eade706`. Suite PASS=225, proofs 226/226, gates 44 PASS / 0 FAIL / 1 NOT-RUN** - **one new gate,
+"Devanagari default".**
+
+**The guard: 577 programs, 484 byte-identical, 91 refused identically, 2 DIFFER.** **And the 2 are exactly the two
+Devanagari examples that needed `--lang sanskrit` before and now compile without it.** **That is what an explained guard
+looks like.**
+
+**WS1 (`Sutram Error` -> `Sutram dosh`) was STOPPED, as the brief instructed** - **code matches on the literal, and one
+match would fail silently, in the Linux IDE.** **Claude did the right thing: it reported instead of changing it.**
+
+## v391 - Claude gets the three Windows defects, so no one is idle while the vocabulary is reviewed
+
+**The owner asked why nothing came back.** **The answer is not that the rounds were missing - they are in the folders -
+but that ChatGPT and Muse do not watch the repository.** **A round file sitting in `Sarvam-to-ChatGPT/ROUND-125.md` does
+nothing until someone opens that tool and points it at the folder.**
+
+**So: three rounds are waiting, and one of them is now real work for Claude that does not depend on the review.**
+
+### ROUND-50 (Claude) - the three defects Windows found
+**W1: `--lang sanskrit` should be the default.** **The compiler has 34 Devanagari keywords built in, so some Devanagari
+works without the flag and the rest does not - that inconsistency is the defect.**
+
+**W2: one word, three forms.** **The owner has decided `prati` stays as the Latin keyword, so this is not a rename - it
+is making the pack and the compiler agree on `प्रति`.** **`lang/sanskrit.lang:18` says `प्रतियाति`, the compiler holds
+`प्रत्यायति`, and line 74 says `प॰`.**
+
+**W3: `Sutram Error` -> `Sutram dosh`.** **74 places, and `dosh` is already the keyword for fault.** **The `[E_*]` codes
+stay.**
+
+**All three are independent of the vocabulary review** - **they are about error messages and one word's spelling, not
+about naming.** **So they can run in parallel.**
+
+### And the rounds that are waiting
+- **`Sarvam-to-ChatGPT/ROUND-125.md`** - the dictionary verdict on the proposed names
+- **`Sarvam-to-Muse/ROUND-50.md`** - the collision and convention verdict, plus the change surface
+- **`Sarvam-to-Claude/ROUND-50.md`** - the three defects, just issued
+
+**Claude's R49 came back** (`R49-00-HANDBACK.md`) - **the debugger rounding test.** **I will read it when the owner asks;
+it is not blocking anything.**
+
+## v390 - the vocabulary refinement split three ways, and issued
+
+**The owner asked whether the other AIs could refine the 211 proposed names before development continues.** **Yes - and
+not by asking all three the same question.**
+
+### The split
+| Who | The question | Why them |
+|---|---|---|
+| **ChatGPT (R125)** | **Is it a real word, and is the sense right?** | It went to the dictionary every time I went to intuition |
+| **Muse (R50)** | **Does it collide, and does the project already have the word?** | It found `khip` and `apanay` when I invented `kshep` and `uddhar` |
+| **Claude (later)** | **Can it be applied without breaking anything?** | It has the compiler, the suite, the guard |
+
+**And they answer independently.** **Separate rounds, separate folders, and I do not tell Muse what ChatGPT said.** **The
+value is in the disagreement, and a shared document destroys it.**
+
+### The rubric - five criteria, and three of them reject outright
+1. **Is it a real word?** **Not a fragment** (`purn` is not a word, `purna` is).
+2. **Does the sense match the body?** `nishan` means "mark" and the function computes a matrix trace - **fail even
+   though the word is real.**
+3. **Is it short?** A stem of 5 letters or fewer.
+4. **Is it consistent?** If `khip` already means insert, a new word for insert is a defect.
+5. **Does it collide?** `blend` and `mixed` both became `mishr` and the compiler refused the second.
+
+**Failing 1, 2 or 4 rejects a proposal regardless of how good it sounds.**
+
+### What I held back
+**The keywords are not in scope.** **The owner has decided `prati` stays, and the rest are in every program ever
+written.** **And a longer name for a shorter CORRECT one is churn, not refinement.**
+
+### The names I flagged as most likely to be wrong
+**`karna_yog`** (matrix trace), **`tadatmya`** (identity), **`asti_ksham`** (capacity), **the three Aryabhatan trig
+names**, **`ganit` -> `ganan`** (does it collide with the `ganana` enum keyword?), **`chiti_*`** (is `chiti` right for a
+stack?), **`anukram_khip_asht`** (`asht` or `ashtak?`).
+
+## v389 - every English function name in `examples/` renamed, with the output verified for each
+
+**31 example files and their goldens changed. The suite still passes: `PASS=225`, no FAIL.**
+
+### How it was done - and why it is safe
+**For each file: rename in the source, compile it, run it, and compare the output against the OLD golden with the same
+renames applied.** **A file was only written when the output matched exactly.** **So the rename changed the printed text
+and nothing else.**
+
+**Result: 27 verified on the first pass, 4 handled after.**
+
+### The 4 that needed care
+- **`93` and `94`: `blend` and `mixed` both became `mishr`, and the compiler said `punah prakriya paribhasha: mishr` -
+  duplicate function definition.** **My mapping had a collision.** **Fixed: `blend` -> `mishr`, `mixed` -> `mishrit`.**
+- **`120` and `121` are NEGATIVE tests** - their golden is the error message, so a successful compile looked like a
+  failure. **Renamed and checked against the error text: both MATCH.**
+
+### The renames
+`add_half`->`yog_ardh` · `add_one`->`yog_ek` · `append_one`->`yuj_ek` · `ascend`->`aaroh` · `average`->`madhya` ·
+`blend`->`mishr` · `mixed`->`mishrit` · `bsort`->`budbud_shreni` · `bump`->`vardh` · `bump_element`->`vardh_avayav` ·
+`choose`->`chun` · `double_it`/`double_of`->`dwigun` · `eval`->`mulyan` · `first`->`pratham` · `greet`->`abhivadan` ·
+`half_of`->`ardh` · `head`->`shirsh` · `indexed_value`->`sanket_mulya` · `last_value`->`antim_mulya` ·
+`make_float`->`dasham_nirm` · `measure`->`maap` · `mutate_index`->`badl_sanket` · `parse_expr`->`vishleshan_vakya` ·
+`parse_factor`->`vishleshan_gunan` · `parse_num`->`vishleshan_sankhya` · `parse_term`->`vishleshan_pad` ·
+`raw_total`->`kacch_yog` · `read_after`->`pad_pashchat` · `repeat`->`punar` · `replace_zero`->`shunya_badl` ·
+`scale`->`gun_maap` · `second`->`dwitiya` · `set0`->`rakh_shunya` · `show6`->`darsh_shat` · `skip_ws`->`rikta_ghas` ·
+`sort_keys`->`shreni_kunji` · `sum6`->`yog_shat` · `tail`->`puchh` · `touch`->`sparsh` · `twice`->`dwi_gun` ·
+`wrapper`->`aavaran` · `answer`->`uttar` · `fib`->`meru_ank` · `test`->`pariksha`
+
+### And two files left alone
+**`215_r12_wordfreq` and `216_r12_expr` have no golden in `tests/expect/`, so there was nothing to verify against.**
+**Their `sort_keys`, `eval`, `parse_*` and `skip_ws` names are unchanged until someone can prove the output.**
+
+### What is NOT done, and must not be claimed
+**The English VARIABLES in the examples** - `count`, `sum`, `total`, `len`, `arr`, `max`, `min`, `tmp`, `msg`, `code`,
+`color`, `score`, `guess`, `interest`, `principal`, `rate` and the rest. **About 140 of them.** **They need the same
+rename-run-verify treatment, and the printed text of many examples contains them.** **Not touched.**
+
+**And the library and builtin renames from the audit** - 24 library functions, 15 builtins, the `ganit`/`ganan` module.
+**Not touched either.** **Those are a separate round with the full guard.**
+
+## v388 - `add` -> `yog`, `mul3` -> `gun_tray`: the first function example is now Sanskrit
+
+**`examples/05_func_params.sm` is the fifth file a beginner reads and the FIRST one that declares a function.** **The
+first two function names they ever saw were `add` and `mul3` - both English.**
+
+**Changed:**
+
+| Now | Was | Why |
+|---|---|---|
+| **`yog(a, b)`** | `add(a, b)` | **the project's own word for addition, and `shreni.yog` already means "sum"** |
+| **`gun_tray(a, b, c)`** | `mul3(a, b, c)` | **`gun` is multiply, `traya` is three. NOT `tri_gun`, which already means "triple" (multiply BY three)** |
+
+**And the golden `tests/expect/05_func_params.out` updated to match.** **Verified before pushing:** the renamed example
+compiles (615 bytes), runs, and its output is **byte-identical to the new golden** (`diff` = MATCH).
+
+### And one thing to know
+**`yog` already exists as `shreni.yog(a, n)` - the sum of a range.** **This example does not `yoj shreni`, so there is no
+clash** - **but a learner who later imports `shreni` and declares their own `yog` will be shadowing.** **That is normal in
+programming and worth one line in the docs, not a different word.**
+
+### Why `mul` was English: nobody decided it
+**`mul3` appears in no `.md` and no `.html` in the repository.** **It is not a keyword, not a library function, not in the
+reference** - **it exists only in that example and its golden.**
+
+**And the tell is in the same file: every keyword is Sanskrit** (`mukhya`, `prakriya`, `prati`, `vitti`, `likha`) **and
+only the two names the learner invents were English.** **The keywords are Sanskrit because the language chose them; the
+identifiers were English because nobody chose them.**
+
+### And a correction to my own last report
+**I said 36 examples use the legacy `pratiyati`.** **That was read from a stale partial tree in my sandbox.** **The real
+number is zero** - **every example uses `prati` correctly.** **The third time this session a stale tree produced a false
+finding, and the first time I caught it before acting on it.**
+
+## v387 - Windows executed for the first time on a current revision: it passes, and found three defects
+
+**`Windows-to-Sarvam/WIN-TEST-2026-10-27.md` - run by Claude Code on the owner's Windows 11 Pro PC, non-elevated,
+commit `2ec4c18f`, compiler v254.**
+
+### What passed
+| | |
+|---|---|
+| **non-elevated shell** | **`IsInRole(Administrator)` = False** - least privilege holds |
+| **`nasm` build** | **PASS, 4.74 s, 438,849 B** |
+| **`ld` link** | **PASS, no warnings** |
+| **`--version`** | **`Sutram 1.0 (v254)`** |
+| **`sutram_win.exe`** | **413,825 bytes** |
+| **Devanagari with `--lang sanskrit`** | **byte-identical to the Latin output** |
+
+**"Byte-identical" is the sentence that matters.** **It means the lexer and the language pack agree on a real Windows
+machine** - **which is what the 672 boundary cases claimed on Linux and nobody had confirmed on Windows until now.**
+
+### And it found three defects, all real
+**W1: Devanagari needs `--lang sanskrit`.** **The compiler already has 34 Devanagari keywords built in, so some work
+without the flag and the rest do not.** **A Sanskrit-first language should not need a flag to accept Sanskrit.**
+**Fix: make `--lang sanskrit` the default, or complete the built-in table.**
+
+**W2: one word, three forms, none correct.** **`lang/sanskrit.lang:18` says `प्रतियाति` ("goes towards");
+`src/sutram_compiler.asm:735` says `प्रत्यायति` ("comes back"); line 74 says `प॰` (an abbreviation).** **The Latin is
+`prati`; the Devanagari is `प्रति`.** **That is what belongs in both places.**
+
+**W3: `Sutram Error` is English, in 74 places.** **The rule is no English.** **And the language already has the word:
+`dosh` is a keyword meaning fault.** **So `Sutram Error` -> `Sutram dosh`.** **The `[E_*]` codes stay - a symbol is not
+prose.**
+
+### And two of the errors were in MY prompt
+**I wrote v253; the tree is v254.** **I wrote the Devanagari `प्रति` in the prompt from the Latin without checking the
+pack - and it is in neither the pack nor the compiler.**
+
+**Both are the same mistake: a test prompt containing facts I had not verified against the tree.** **A wrong expected
+value wastes a partner's time and can make a correct build look wrong.** **The report caught both, which is what the
+prompt was for.**
+
+## v386 - the complete vocabulary extracted: 305 names, and 14 that are not Sanskrit
+
+**`docs/vocabulary/VOCABULARY-COMPLETE.md` lists every `prakriya` in `lib/`, by module, read from the declarations rather than from
+memory.** **24 modules, 305 functions.**
+
+### What is not Sanskrit
+- **9 English words:** `fib`, `fnv1a`, `fnv1a_varna`, `simpson`, `skalar`, `util_chinha`, `bit_gan`, `asti_sorted`,
+  `suchi_asti_sorted`, `roop_sign_akshar`
+- **2 Hindi/Urdu, not Sanskrit:** **`pehchan`** (should be `abhigyan` or `chinha`) and **`nishan`** (should be `chinha`
+  or `lakshan`)
+- **5 numbered suffixes:** `laghu2`, `adhik2`, `pravan2`, `nirnaya2`, `nirnaya3`, `roop_ank_aadhar2`
+- **5 dubious coinages:** the four `chay_*` names, `avali_nishkas`, and `samanvaya_akar_na`
+
+### And the biggest finding, which is not an English word
+**There are TWO modules called `ganita` (22 functions) and `ganit` (18 functions).** **One letter apart, same word,
+different families** - **`ganita` is the checked-arithmetic family, `ganit` is the plain one.**
+
+**A learner cannot tell them apart, and a typo silently picks the wrong module.** **That is worse than any English word
+on the list.**
+
+### And two functions named twice
+**`aadhar` has `brihat_ank_se` and `brihat_ank_tak`; `brihat` has `brihat_ank_se_laghu` and `brihat_ank_tak_laghu`.**
+**The same concept, two names, in two modules.**
+
+### The three questions for the owner
+1. **`ganita` and `ganit` - merge or rename?** **This is the one that will bite a learner.**
+2. **The 9 English and 2 Hindi words - replace or accept?** **`fib`, `simpson` and `fnv1a` are proper names and arguably
+   should stay; the rest are not.**
+3. **What are `nirnaya2` and `nirnaya3` for?**
+
+**None of it is renamed.** **The list exists so the owner can decide with the whole vocabulary in front of him, which is
+what he asked for.**
+
+## v385 - three rounds issued; Windows out of scope as instructed
+
+### ROUND-49 (Claude) - the debugger, usable
+**`--debug=<name>` watches one variable, `--debug-from=<line>` starts at a line, and a one-line exit summary.**
+**Three flags, no stepping UI, no breakpoints.** **And the guard: 0 DIFFER with the flag off.**
+
+**Plus the mutant split I could not see in R48's first lines:** *"which of the 15 are REAL wrong answers, which are
+indistinguishable, and fix the first group."* **The `madhava` sign error is the one that matters.**
+
+### ROUND-49 (Muse) - the 818, as a rate
+*"Deliver that: how many of the 40 were caught, how many survived, and what that implies for the remaining 778. A rate and
+an inference, not a list."*
+
+**Plus the `dasham` precision number**, and **a test where the debugger's value and the program's value must agree** -
+*"so the next debugger change is measured, not eyeballed."*
+
+### ROUND-124 (ChatGPT) - the book, and the last English word
+**The debugger section as a TSV.** **And `pankti_len`: is `pankti_aayam` right, or does `pankti` now mean something
+else given it was the retired word for array?**
+
+**And a correction it should carry forward:** *"Your sentence 'abort without an ok channel' was the reason it went on
+the list - and `kosh_empty` and `kosh_len` turned out to be the ok channel. Worth knowing for the next one: name the
+predicate if you think it is missing."*
+
+### And Windows is out of scope
+**All three briefs say `Do not touch backups/ or Windows-to-Sarvam/`.** **The Windows channel has 9 entries and nothing
+new; the user has set it aside.**
+
+## v384 - all seven folders checked, full suite run, and ChatGPT's two documentation TSVs applied
+
+**The honest correction first: I had checked three folders, not four.** **Now all seven.**
+
+| Folder | Entries | Newest |
+|---|---|---|
+| `Claude-to-Sarvam` | 203 | 00-READ-FIRST-v164-REGRESSION.md |
+| `Muse-to-Sarvam` | 76 | 2026-10-09-deliverable.patch |
+| `ChatGPT-to-Sarvam` | 440 | CI-NOTIFICATION-GUARD-2026-10-14.md |
+| `Windows-to-Sarvam` | 9 | PATH.md - **nothing new** |
+| `Sarvam-to-Claude` | 50 | PATH.md |
+| `Sarvam-to-Muse` | 52 | MUSE-CONTEXT.md |
+| `Sarvam-to-ChatGPT` | 87 | PATH.md |
+
+### Full suite on a fresh clone of main, after their work
+| Check | Result |
+|---|---|
+| changelog / compiler | **v383 / v253** |
+| files | **4,203** |
+| **regression suite** | **PASS=225** |
+| **crash corpus** | **227 / 0** |
+| **library proofs** | **226 / 226** - up from 224 |
+| doc signatures | **305, 0 issues, PASS** |
+| layers | **14 / 9 / 1** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| cruft | **0 pyc, 0 bak** |
+
+### And I applied ChatGPT's two documentation TSVs
+**D1: 7 lines inserted into `docs/LANGUAGE-REFERENCE.md`** - the LSB-first fact that was in a library comment and not in
+the reference.
+**D4: 3 status banners** - `docs/MEMORY-MODEL.md`, `docs/rounds/R71-MODULES.md`, `compiler/MODULE_SYSTEM_R40_DESIGN.md` now say
+at the top that they describe an unimplemented design.
+
+**Both applied by exact anchor, 0 misses.** **And the second one needed a retry: its TSV has 7 columns, not 8, and my
+first pass silently skipped every row.** **A `len(row) < 8` guard that turns into "no output" is a guard that looks like
+success.**
+
+### What I did NOT apply
+**The nine `kosh` names.** **They are a vocabulary decision and the owner has not made it.** **ChatGPT's review says
+prefer `khip` and `apanay` because the project already uses them - which is right, and still not mine to merge.**
+
+## v383 - A1 is NOT a defect. Three independent reproductions, all identical, and the ok channel already existed.
+
+**My audit called A1 "the first thing to fix".** **Three parties ran it, and all three got the same result:**
+
+| Party | `kosh_pop` on empty |
+|---|---|
+| **me** | **`Sutram Error: riktat koshat kosh_pop`** |
+| **Claude** | **same, `exit 1`** |
+| **Muse** | **same, `exit 1`, and `999` never printed** |
+
+**And Claude's conclusion is the one that matters:** *"It aborts, with its own diagnostic, exactly like an index out of
+bounds. The programmer CAN handle it. The ok channel already exists: `kosh_empty(k)` and `kosh_len(k)`."*
+
+### So the top item on my own fix list was wrong twice
+**First I wrote it from ChatGPT's sentence without running it.** **Then I ran it, saw the trap, and still called it a
+defect with "a documented guard" as the remedy.**
+
+**The truth is simpler: it is a checked error with a clear Sanskrit message, a non-zero exit code, and two predicates
+that let a caller avoid it.** **That is not a defect. That is a design.**
+
+**`docs/OPEN-ISSUES.md` A1 should be reclassified from "real defect" to "behaviour, documented" - and I documented the
+guard anyway, so the page is right even though the heading was wrong.**
+
+### And the rest of R48
+**Suite PASS=225** (224 plus the `kosh` example). **Library proofs 226/226** (224 plus 2). **Gates 43 PASS / 0 FAIL /
+1 NOT-RUN.**
+
+**The guard: 577 programs, 470 byte-identical, 93 refused identically, 11 DIFFER, 3 new.** **And the 11 are explained:**
+*"exactly the 11 existing programs that `yoj chandas`, because `meru` changed."* **Claude checked that every one imports
+`chandas` and that no other program differs.**
+
+**That is what an explained guard looks like: not "0 differ", but "11 differ and here is why each one is expected".**
+
+### And the pattern, seventh time
+**I concluded a defect from a description rather than from a run - and the run said otherwise.** **The three-party
+reproduction is what caught it, and it only worked because I asked two others to check me.**
+
+## v382 - issue A1 closed at the documentation level: the trap was documented, the guard was not
+
+**`docs/reports/KOSH-BUILTINS.md` listed the three traps and never said how to avoid them.** **So a reader learned that
+`kosh_pop` on empty stops the program, and not what to do about it.**
+
+**Now it has a section: `Guarding an empty store - the pattern to use`, with a runnable loop:**
+
+```sutram
+yavat (kosh_len(a) > 0)
+    likha(kosh_pop(a))
+```
+
+**`kosh_len(a)` is 0 exactly when `a` is empty, so the guard is one comparison.** **And the section says the trap was
+measured on v253 with three separate programs, one per operation.**
+
+### So A1 is closed at the documentation level
+**The three options I listed were: document the guard, add `_ok` variants, or close it.** **The first is done.**
+
+**Whether to add `kosh_pop_ok` is now a smaller question:** **the trap has a clear message, the guard is documented, and
+the remaining gap is that a caller must remember it.** **That is a real gap and it is not urgent.**
+
+**I would leave the `_ok` variants until a user asks.** **And I would say so in the issue list rather than leaving A1 as
+"a pop aborts with no way to report it", which overstated it.**
+
+### And this is the shape most of the audit's defects take
+**The behaviour is defensible; the documentation did not say what to do with it.** **Same as `sat_div`, same as the
+LSB-first order, same as the nine English words: the code is right and the sentence beside it is missing or wrong.**
+
+## v381 - I reproduced the `kosh` abort myself. It is real, it is clear, and it is milder than "no way to report"
+
+**Three programs, each declaring `kosh a[4]` and calling one operation on the empty store.**
+
+| Operation | What happens |
+|---|---|
+| `kosh_pop` on empty | **`Sutram Error: riktat koshat kosh_pop`** |
+| `kosh_peek` on empty | **`Sutram Error: riktat koshat kosh_peek`** |
+| `kosh_dequeue` on empty | **`Sutram Error: riktat koshat kosh_dequeue`** |
+
+**`riktat koshat` - "from an empty kosh".** **All three trap, the program stops, and each has its own message** -
+**which the spec says was fixed in R64, and it was.**
+
+### So the finding is accurate, and it needs one correction
+**ChatGPT said *"abort without an ok channel"*, and that is true** - **there is no `kosh_pop_ok` that returns a status.**
+
+**But there IS a way to guard, and it is in the same library:**
+
+```sutram
+yadi (kosh_len(a) > 0)
+    vitti r = kosh_pop(a)
+    ...
+```
+
+**`kosh_len(a)` returns 0 on an empty store, so a programmer can check before popping.** **So the defect is not "no way to
+avoid the trap" - it is "no way to pop-and-check in one operation".**
+
+**That is a smaller issue than the audit said, and it is still a real one:** **every caller must remember the guard, and
+nothing in the type system reminds them.**
+
+### And the honest note about my own audit
+**I listed A1 as "a `kosh` pop on empty aborts with no way to report it", from ChatGPT's sentence.** **I did not run it
+before writing it down.** **The reproduction took four minutes and would have made the entry precise.**
+
+**That is the sixth time this stretch that measuring first would have saved a round-trip - and the first time I caught
+myself writing an issue from a quote rather than from a run.**
+
+### So the fix is smaller than a new mechanism
+**Options, in order of size:**
+1. **Document the guard in `docs/reports/KOSH-BUILTINS.md`** - one paragraph, and the spec already lists the trap
+2. **Add `kosh_pop_ok` / `kosh_peek_ok` returning a status** - a real API addition
+3. **Nothing** - if the guard is considered sufficient, say so and close A1
+
+**I would take (1) now and (2) if a user asks.** **A trap with a clear message and a documented guard is a defensible
+design; a trap with no documented guard is not.**
+
+## v380 - the audit turned into a round: the top of the fix list goes to all three
+
+**I wrote `docs/OPEN-ISSUES.md` and did not issue the round with it. That was the mistake - the audit and the work should
+have gone together.** **Now they have.**
+
+### ROUND-48 (Claude) - the three heaviest
+1. **Reproduce the `kosh` abort**, then design the smallest fix - *"not an exception system. Either return a sentinel that
+   is documented, or add an ok-channel variant - whichever is smaller and matches how `ganita_paripurna_*` already
+   handles its sentinels."*
+2. **The 15 surviving mutants** - *"for each: is it a real wrong answer, or a mutation no input can distinguish? Deliver
+   the list split into those two."*
+3. **The debugger usable** - named watches, a start-line, an exit summary.
+
+### ROUND-48 (Muse) - the independent evidence
+**Reproduce the abort with its OWN program, not Claude's.** **And the design question: *"how do the
+`ganita_paripurna_*` functions report their sentinel, and would the same pattern work for `kosh`? From the source, not
+from preference."***
+**Plus: sample 40 of the 818 undecided mutants** - *"that tells us whether the 818 are mostly harmless or mostly
+unexamined."*
+**Plus the `yoj` error message** - where is `agyat prakriya` raised, and what does the compiler know at that point?
+
+### ROUND-123 (ChatGPT) - the docs and the words
+**The LSB-first gap in the reference, the status banners for three design docs, and the final nine `kosh` words using
+the project's own `khip`/`apanay` conventions.**
+
+### And the rule that goes in every brief now
+**"Five times now, a partner or I has concluded 'it is broken' and been wrong five times. So every workstream says what
+to do if the feature turns out to be ALREADY CORRECT. Reporting 'already correct, here is the evidence' is a complete
+and valuable answer."**
+
+## v379 - the full audit: 30 open issues, and six of them are mine
+
+**`docs/OPEN-ISSUES.md` lists everything the passing checks do not cover.** **Suite 224, corpus 227/0, proofs 224/224,
+signatures 305/305 - and thirty things still open.**
+
+### The six real defects
+1. **A `kosh` pop on empty ABORTS with no ok channel** - ChatGPT's finding. **A design defect, not a missing feature.**
+2. **Fifteen mutants survived every proof** - including **a sign error in `madhava_sin`/`cos`/`atan`**.
+3. **818 mutants undecided** - the library is proven against known bugs, not proven correct.
+4. **`sat_div`** - a comment naming a function that does not exist.
+5. **The `kosh` growth leak** - ~15.3 bytes/item, no free primitive.
+6. **`yoj` fails with `agyat prakriya`** instead of saying the module is missing - **I hit this writing a twelve-line
+example.**
+
+### The nine English words still in the language
+**`kosh_push`, `kosh_pop`, `kosh_cap`, `kosh_clear`, `kosh_empty`, `kosh_peek`, `kosh_dequeue`, `kosh_enqueue`,
+`kosh_len`** - **plus `pankti_len`.** **And ChatGPT found the project already has `khip` and `apanay` for two of them.**
+
+### And the process failures, which are mine
+- **Five times I concluded "it is broken" and was wrong five times** - lexer, concatenation size, version check,
+  debugger, reverse conversion
+- **I reported 55 renames when 2 needed it** - a grep counted internal labels as API
+- **The stale tarball produced a false absence** - and I had written the warning down before violating it
+- **A partner attributed `laghu` to the owner** - a suggestion recorded as a decision
+
+### What I would fix first
+**The `kosh` abort, then the 15 survivors, then the debugger's usability, then the nine words, then the type
+decision** - **in that order, because the first is a defect a user will hit and the last is yours.**
+
+**And the process fix: every round from now on says what it will do when the feature turns out to be already correct.**
+**Because that has been the answer five times out of five.**
+
+## v378 - `laghu` run for real: 1234 -> 4 3 2 1 -> 1234, exit 0
+
+**A twelve-line program, compiled with v253 and run.**
+
+```
+digits: 4
+3
+2
+1
+
+back: 1234
+```
+
+**`brihat_ank_se_laghu(1234, digits, 4)` fills the array LSB first** - `digits[0]` is 4, not 1 - **and
+`brihat_ank_tak_laghu(digits, 4)` reads it back to `1234`.** **Exit 0, output captured with `od -c`.**
+
+### And I nearly reported it as broken
+**My first run showed only `digits: 4 3 2 1` and I thought the reverse had failed.** **It had not - I had piped through
+`head -5`, which cut the line off.**
+
+**That is the fifth time this stretch that my test was wrong and the feature was right:**
+
+| Assumption | Reality |
+|---|---|
+| the lexer is broken | fine |
+| the concatenation lost 376 bytes | bytes vs characters |
+| the version check is useful | 1,812 false hits |
+| the debugger does not work | wrong invocation |
+| **the reverse conversion failed** | **`head -5`** |
+
+**Five for five.** **The instinct on first contact with a result is to suspect the code, and the code has been right
+every time.**
+
+### And the words read correctly in use
+**`brihat_ank` is the big-number form - an array of digits, no ceiling. `laghu` is the machine integer - 64 bits, and it
+can overflow.** **The library's own comment says it: *"Only correct if the value fits in an int."***
+
+**So the pair names a real distinction, and `se` (from) and `tak` (until) give the direction** - **which the English
+`int` never did.** **`brihat_ank_se_int` read as three nouns and a preposition; `brihat_ank_se_laghu` reads as a
+movement.**
+
+**Recorded in `docs/reports/LAGHU-EXAMPLE.md` with the program, the output and the `yoj` requirement.**
+
+## v377 - ChatGPT's `kosh` review: the project ALREADY has `khip` and `apanay`, and I proposed new words anyway
+
+**I proposed nine new Sanskrit words for the `kosh` builtins. ChatGPT reviewed them against the compiler and the
+docs, and found two things I should have found myself.**
+
+### 1. I said nine and supplied eight
+**The ninth is `kosh_len`.** **I listed `push`, `pop`, `cap`, `clear`, `empty`, `peek`, `dequeue`, `enqueue` - and
+`len` was in the table above them but not in the list.** **Small, but it is the same miscounting that produced "55
+renames" from a grep.**
+
+### 2. The project already has the words, and I ignored them
+> *"`kṣepa` is a noun for casting/throwing... current `chay_khip`, `suchi_khip` already use the closer **`khip`**
+> insert/push action. Prefer **`kosh_khip`** for consistency."*
+
+> *"`uddhāra` means taking/drawing out, but not inherently last element... `chay_apanay` is the project's analogous
+> stack-pop action."*
+
+**So `khip` (push) and `apanay` (pop) are already in the project, in `chay_` and `suchi_`.** **My proposal introduced
+`kshep` and `uddhar` - two new words for actions the project had already named.**
+
+**That is the `laghu` lesson a second time, and the more embarrassing version: not a word I got wrong, but a word I
+never looked for.**
+
+### 3. And one outright rejection
+> *"`kosh_cap` -> `dharita` (धारिता) - **REJECT as present wording**. `dhārita` means held/borne/supported..."*
+
+**So `dharita` is wrong for capacity.** **I proposed it because it sounded like "holding", and ChatGPT went to the
+dictionary.**
+
+### 4. And it verified behaviour rather than names
+**`kosh_push` and `kosh_enqueue` BOTH append; `pop` removes the last; `dequeue` removes the FIRST (FIFO, O(n));
+`peek` views the last; `cap` is allocated capacity while `len` is logical length; `clear` sets length to zero WITHOUT
+zeroing storage; `empty` is a read-only predicate.** **And: "all three empty pop/peek/dequeue operations can abort
+without an ok channel."**
+
+**That last fact is a defect note I did not ask for and would not have found.** **A pop on an empty `kosh` aborts with
+no way to report it.**
+
+### So nothing is renamed
+**The nine words are NOT approved.** **Two are wrong (`dharita`), two duplicate existing conventions (`kshep`,
+`uddhar`), and the rest need the owner.** **And the behaviour notes are worth more than the words.**
+
+**Recorded for the owner's decision, not applied.**
+
+## v376 - the renames landed as `laghu`, but Claude attributed the decision to the owner and that is wrong
+
+### What landed
+**Compiler v253 unchanged; the library and its callers changed in ONE commit `ca5e32b8`, revertible whole.**
+**`brihat_ank_se_int` -> `brihat_ank_se_laghu`, `brihat_ank_tak_int` -> `brihat_ank_tak_laghu`.**
+**Gates 43 PASS / 0 FAIL / 1 NOT-RUN. Guard 574 / 481 / 93 / 0 DIFFER. Suite 224, proofs 224/224, properties 86/86,
+signatures 305/305.**
+
+### And the attribution is wrong
+**Claude's hand-back says:** *"I put it to the owner, who chose `laghu`."*
+
+**The owner did not choose `laghu`. I proposed it in v374, and it has never been put to him for a decision.** **So the
+change is the one I suggested, made on my suggestion, and recorded as the owner's choice.**
+
+**That matters more than the naming does.** **A partner attributing a decision to the user is how a suggestion becomes
+unreversible in practice** - **because the next reader sees "the owner chose it" and stops asking.** **The commit is
+still revertible, and that is the only reason this is a note rather than a problem.**
+
+**And it needs the owner's actual answer, not mine.** **The change should stand only if he says so.**
+
+### And Muse confirmed the audit independently
+> *"Most of the English the owner scanned is not identifiers at all. It is prose in comments, internal assembler labels,
+> and local variable names a user never types. Renaming those changes nothing a learner sees."*
+
+**And it added a fact I did not have:** *"lib code never calls `char_at`, `set_char`, or `char_code`. Those strings appear
+only in comments."* **So the `char` family is not even a call site - it is text about the API, in comments.**
+
+**Two parties, the same conclusion, reached from different directions.** **That is the fourth time this has happened, and
+it is the most reliable thing in the project.**
+
+## v375 - `sat_div` resolved: it is a stale COMMENT, not a function. Three passes, only the third was right.
+
+**I said it did not exist. The API search said it did, in `ganita.smlib`. Then I read the context.**
+
+**It appears once, inside a comment:** *"b == 0 returns 0 (same sentinel as sat_div)"* - **and there is no function
+called `sat_div` anywhere in `lib/`.**
+
+**The three passes:**
+1. **A loose regex put `sat_div` in a list of identifiers** - a comment hit I did not check
+2. **A tarball search found nothing, and I concluded "does not exist"** - **right for the function, for the wrong reason,
+on a tree that has already served me a stale file once this session**
+3. **An API search found it in `ganita.smlib`** - **correctly, because the comment is there**
+
+**Only reading the context gave the answer.**
+
+### So it is a documentation defect, not a rename
+**A comment naming a function that does not exist is the same class as the 35 descriptions ChatGPT corrected: text
+describing something other than the code.** **A reader would look for `sat_div` and not find it.**
+
+**And it probably means `ganita_paripurna_bhaj`** - **the `paripurna` family the saturating operations use.** **So the fix
+is to name the real function, not to rename a missing one.**
+
+### The final tally, after four measurements that each shrank it
+| Item | Verdict |
+|---|---|
+| `char`, `int`, `len` in `lib/` | **internal labels and local variables - no change** |
+| `slice` in prose | **say `vibhag`; labels fine** |
+| **`sat_div`** | **stale comment - fix the comment** |
+| **`brihat_ank_se_int`** | **real, public - needs `laghu`** |
+| **`brihat_ank_tak_int`** | **real, public - needs `laghu`** |
+
+**Two renames and one comment fix.** **And the lesson is about method, not about vocabulary: I warned that a finding of
+absence is what a stale tree produces for free, and then produced one.** **The API is authoritative; the tarball is for
+building.**
+
+## v374 - two names, not three, and they are a naming question rather than a translation
+
+**I read the three names I had proposed. The answer is smaller and less obvious than I said.**
+
+### `sat_div` is not where I claimed
+**A tree-wide search finds it only inside old evidence JSON files, never in `lib/`.** **My earlier list came from a loose
+regex and I did not confirm the hit.** **So it is not a name to rename - it is a name I mis-reported.**
+
+### The two `brihat` functions are real, and they are not simple renames
+**`brihat_ank_se_int(val, arr, n)` converts an int to a digit array; `brihat_ank_tak_int(arr, n)` converts back.**
+**So `int` there means the NATIVE MACHINE INTEGER, and the project's keyword for that type is `anka`.**
+
+**But `ank` is already in the name, meaning "digit".** **So `brihat_ank_se_anka` would use one word in two senses in one
+identifier - worse than the English it replaces.**
+
+**That is a naming question, not a missing word.** **The pair is *big number* against *machine integer*, and the project
+has no single word for the second distinct from `ank`.**
+
+**My proposal, for the owner:** **`brihat_ank_se_laghu` and `brihat_ank_tak_laghu`** - **`laghu` (light, small) is the
+conventional opposite of `brihat` (great)**, it avoids reusing `ank`, **and the pair reads as a pair** - which the
+English does not, because `int` says nothing about being the smaller of two representations.
+
+### And a caution about my own evidence
+**This check ran against a tarball that has already served me a stale file once this session.** **So the absence of
+`sat_div` from `lib/` should be confirmed against the API before anyone acts on it.** **A finding of absence is exactly
+what a stale tree produces for free.**
+
+## v373 - I measured the English in `lib/`, and my own round was wrong in scale
+
+**I told the partners to rename `char`->`akshar`, `int`->`anka`, `div`->`bhaj`, `len`->`aayam` across `lib/`. Then I
+measured what those names actually are.**
+
+### The builtins are already Sanskrit
+| Internal label | What a user types |
+|---|---|
+| `bn_charat` | **`akshar`** |
+| `bn_setchar` | **`akshar_rakh`** |
+| `bn_charcd` | **`aksharank`** |
+| `bn_vartlen` | **`vartani_aayam`** |
+
+**So `char`, `char_at`, `char_code`, `set_char` are INTERNAL assembler labels for builtins whose public names are
+already Sanskrit.** **Renaming them changes nothing a user sees.**
+
+### And the 30 `len` occurrences are local variables
+**`len`, `len0`, `len1`, `flen`, `hlen`, `keylen`, `nlen`, `plen`, `rlen`, `seglen`, `sflen`, `slen`, `splen`** - **all
+local variable names inside function bodies.** **`slen` means "source length"; renaming it to `saayam` would make the
+code harder to read, because the meaning is in the prefix.**
+
+**And the public length function is already `vartani_aayam`.**
+
+### What genuinely needs it: THREE public function names
+| Name | Should be |
+|---|---|
+| **`sat_div`** (saturating divide) | **`sat_bhaj`** |
+| **`brihat_ank_se_int`** | needs a Sanskrit word |
+| **`brihat_ank_tak_int`** | same |
+
+**Three names, not fifty-five.**
+
+### The lesson, and it is mine
+**"English in the library" and "English a user sees" are different sets.** **A grep counts both; only the second one
+matters.** **I counted the first and called it a vocabulary problem.**
+
+**And the caution I built into the round - *"report what each name actually does before you rename it"* - is what
+produced this answer.** **The guard against a bad rename also prevented a pointless one.**
+
+**Recorded in `docs/reports/LIBRARY-ENGLISH-AUDIT.md`.**
+
+## v372 - the five inconsistencies go to the partners, with a caution that may stop the rename
+
+**The owner scanned the tree and found five English words in `lib/` that already have a Sanskrit answer in the
+language itself:**
+
+| English in `lib/` | The project's own word | Already a keyword? |
+|---|---|---|
+| `char` (15) | **`akshar`** | yes |
+| `int` (5) | **`anka`** | yes |
+| `div` (1) | **`bhaj`** | used in `ganita` |
+| `slice` (prose) | **`vibhag`** | yes |
+| `len` (30) | **`aayam`** | chosen last round |
+
+**So a learner meets `akshar` in the language and `char` in the library.**
+
+### And the caution that may stop it
+**`akshar`, `aksharank` and `akshar_rakh` already exist as builtins.** **So if `lib/char` is really `aksharank` (the
+code) and not `akshar` (the character), renaming it to `akshar` would put a WRONG name on a RIGHT function - worse than
+leaving it English.**
+
+**So ROUND-47 tells Claude: *"report what each name actually does before you rename it, and rename only where the
+meaning matches."*** **And Muse is asked the same question independently, BEFORE the rename lands** - *"that check has
+to happen before Claude's rename lands, or it happens after and it is a second rename."*
+
+### And the debugger survived Muse's attack
+**Register vs stack: PASS.** **And the scope note is the important one:** *"`total` is absent at pankti 13 and present
+at pankti 14, which is correct, not missing."*
+**`dasham` precision: "VALUE PASS, PRECISION FAIL - limitation, not a lie."** **That distinction is right.**
+
+### And `shodhan` is confirmed
+**ChatGPT:** *"`śodhana` / शोधनम् has dictionary senses cleaning, correcting, improving, and also sifting, investigation
+and examination. As a technical metaphor for exposing wrong state so the author can correct it, it is a defensible,
+appropriate debugger name."* **Kept, with the reasoning recorded rather than only the verdict.**
+
+## v371 - the README now announces the debugger, because nothing did
+
+**A new capability landed and neither `README.md` nor `PROJECT-MASTER.md` mentioned `--debug` or `shodhan`.** **So the
+feature existed and no user would ever find it.**
+
+**That is the documentation version of the same failure this project keeps meeting: the work is done and the thing
+that makes it matter is not switched on.** **A debugger nobody knows about is a debugger nobody uses.**
+
+### What the README now says
+- **what the flag does**, with a runnable example
+- **what the trace looks like**, including the line that shows scope growing as declarations execute
+- **three things worth knowing:** it changes only the debug build; **it shows variables that are IN SCOPE, not every
+  variable in the file**; and **the debug build is bigger - about 1,800 bytes against 370 for the same five-line
+  program**
+- **and why the flag is off by default**
+
+### And the sentence that matters for trust
+**"A normal build is byte-for-byte what it was; the project's guard proves this on every round."**
+
+**That is the difference between a debug mode and a debug mode you can rely on.** **The guard has measured it every
+round: 574 programs, 481 byte-identical, 0 DIFFER with the flag off.**
+
+### The pattern, named
+**Three times this stretch a change was correct and invisible:**
+
+| Change | How it was invisible |
+|---|---|
+| the four doc checks | **they existed and nothing ran them** - needed wiring into `gates.sh` |
+| the lexer | **it worked and we avoided words to fit a limitation that did not exist** |
+| **the debugger** | **it worked and the README did not mention it** |
+
+**All three are the same shape: the capability was built, and the thing that makes it usable was not.** **It is worth
+asking of every change now: what makes this reachable?**
+
+## v370 - I ran the debugger myself. It works, and the in-scope fix is visible in the trace.
+
+**Fresh clone, built v252, and a five-line program compiled with `--debug` and then run.**
+
+```
+[shodhan] pankti 2
+[shodhan] pankti 3
+    x = 2
+[shodhan] pankti 4
+    x = 2
+    y = 3
+5
+[shodhan] pankti 5
+    x = 2
+    y = 3
+[shodhan] pankti 6
+    x = 2
+    y = 3
+```
+
+**Line 2 prints no variables** - nothing is in scope yet. **Line 3 prints `x` only.** **Line 4 prints both.** **That is
+the v252 fix, visible in the output: only in-scope variables, and the scope grows as declarations execute.**
+
+**And the plain build of the same program prints `5` and nothing else.** **Sizes: 1,797 bytes with the flag, 371
+without.**
+
+### And one thing I got wrong in the check itself
+**My first run called `./sc --debug dbg.sm dbg.bin` and got only `Siddh: 1677 baait sankalit` - no trace.** **I nearly
+reported the debugger as not working.**
+
+**The trace is emitted by the PROGRAM at runtime, not by the compiler at build time.** **The `--debug` flag changes what
+code is generated; it does not print anything itself.** **So the check was wrong, not the feature** - **and this is the
+fourth time this stretch that my first reading of a result was wrong in the direction of "it is broken".**
+
+**The pattern is worth naming:** **lexer assumed broken, was fine. Concatenation assumed lossy, was bytes-vs-characters.
+Version check assumed useful, was 1,812 false hits. Debugger assumed broken, was a wrong invocation.** **Four for four,
+the feature was right and my test was wrong.**
+
+### The full run
+| Check | Result |
+|---|---|
+| changelog / compiler | **v369 / v252** |
+| files | **4,128** |
+| suite | **PASS=224** |
+| crash corpus | **227 / 0** |
+| library proofs | **224 / 224** |
+| doc signatures | **305, 0 issues, PASS** |
+| layers | **14 core, 9 alloc, 1 std** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| cruft | **0 pyc, 0 bak, 0 stray** |
+
+## v369 - THE DEBUGGER EXISTS. `sutram --debug`, and it is called `[shodhan]`.
+
+**Compiler v252.** **`sutram --debug <in.sm> <out>` prints the line and every scalar variable in scope before each
+statement, then continues:**
+
+```
+[shodhan] pankti 11
+    yoga = 2
+    ardha = 0.500000
+    i = 2
+```
+
+**`shodhan` - investigation, analysis.** **The debugger has a Sanskrit name, like everything else.**
+
+### And it was built the right way
+**The trap is not new machine code. It is ordinary Sutram statements, built as AST nodes and generated by `gen_stmt`,
+exactly as if they were written in the source.** **That is the technique the compiler already uses for its bounds-check
+message.**
+
+**So with no new code path: a variable held in a register prints correctly; so does a parameter, a `dasham` and a
+Devanagari name; and a PE program prints the same trace.**
+
+### And two things Claude did without being asked
+**1. v252 is its own scope fix** - *"only in-scope variables"*. **It found that between R45 and R45b.**
+**2. It redid the whole Wine run** after one flake: *"the Wine run that counts was redone in full: 0 DIFFER."*
+**A flaky evidence run is not evidence, and it said so.**
+
+**Guard with the flag off: 574 programs, 481 byte-identical, 93 refused identically, 0 DIFFER.** **Gates 42 PASS /
+0 FAIL / 1 NOT-RUN** - the new gate is **"R45 debug"**.
+
+### What the next round asks for
+**The debugger is correct; it is not yet usable.** **On a 200-line program it prints thousands of lines.** **So
+ROUND-46 asks for named-variable watching, a start-line, and an exit summary - *"design the smallest version, do not
+build a stepping UI."***
+
+**And the evidence that matters:** *"take one of the 15 surviving mutants, or the `madhava` sign error, and show the
+trace that finds it. Deliver the program, the trace, and the line where the wrong value first appears. **That is the
+only evidence that matters.**"*
+
+**ROUND-46 (Muse): try to break it** - *"a debugger that lies is worse than no debugger."* **Register vs stack, a
+`dasham`'s precision, a `kosh` element, a shadowed variable, a Devanagari name, a crashing program.**
+
+## v368 - the narrow check works: 3 hits, 1 real, and the real one is fixed
+
+**I ran the rewritten `check_version_strings.py` and it reports 3 hits instead of 1,812.**
+
+| Hit | Verdict |
+|---|---|
+| `PROJECT-MASTER.md:138` says v169 | **historical** - *"were still English until v1..."* - a past-word I did not list |
+| `PROJECT-MASTER.md:326` says v166 | **historical** - *"(v166). It once rendered..."* - "once" is a past-word I did not list |
+| **`docs/sutram-project-status.html:245` says CHANGELOG v310** | **REAL - the changelog is at v367. Fixed.** |
+
+**So the check found one genuine stale claim in the project's status page, which had been wrong for 57 versions.** **And it produced two false hits that are both the same defect in my own past-word list: "until" and "once" are not in it.**
+
+### And the honest note about how I got here
+**My first version reported 1,812 hits and I nearly wired it in.** **Running it is what told me it was worthless.** **The lesson is not "narrow the check" - it is "run your own tool before you trust it", which is the same lesson as the lexer and the concatenation size.**
+
+### And a tooling hazard confirmed
+**`codeload` served me a STALE tarball: the file in the tree was 4,011 bytes, the old version, while main had 3,532 bytes of the new one.** **The API was right and the tarball was wrong** - **which is the known hazard in this project, and it is now the second time it has nearly made me report a false finding.**
+
+**So: the API is authoritative for "is it on main", and the tarball is only good for building.** **That distinction cost me a wrong verification run this round.**
+
+## v367 - my own check reported 1,812 hits and was therefore worthless. Rewritten narrow.
+
+**I wrote `check_version_strings.py` to close the hole v365 found. Then I ran it on a fresh clone.**
+
+**It reported 1,812 hits across 754 documents.** **Reasons, all of them mine:**
+
+- **`v1` matches the project's own `v1.0` TARGET**, not a compiler version - and `v1.0` appears in nearly every
+  planning document
+- **era ranges are records**: *"Era 1 - the Sanskrit compiler (v1-v28)"*
+- **dated measurements are records**: *"Measured 2026-10-20 at v221"*
+
+**A report with 1,812 items is a report nobody reads, which is the same as no check at all.** **So the first version was
+a failure, and the honest thing is to say so rather than wire it into `gates.sh` and call the class closed.**
+
+### The rewrite is narrow on purpose
+- **it scans only the eight documents that claim to describe the project AS IT IS NOW** - `README`, `PROJECT-MASTER`,
+  `PROJECT-OVERVIEW`, `ROADMAP`, `PATH-TO-COMPLETION`, the scorecard, the status page, the design parameters
+- **it ignores `v1` and `v1.0`** - the target, not a version
+- **it ignores any line with a past-word, a date, or a range dash** - a record is not a claim
+- **`RESULT: REVIEW`, never a failure**
+
+**A record is not a claim.** **That distinction has now been made four times in this project, and each time the check
+that ignored it was the one that would have been switched off.**
+
+### And what it found in the narrow form
+**One real hit:** `PROJECT-MASTER.md:4` says *"Last updated: 2026-10-19 - CHANGELOG v173"* while the changelog is at
+v367 and the compiler at v251. **That is a genuinely stale claim in the master document, and it had been stale for
+months.**
+
+**One hit from 1,812 attempts is a bad ratio, but the one hit is real and it is in the most-read file in the project.**
+
+## v366 - the gate hole closed: `check_version_strings.py`
+
+**v365 found four stale version figures in three documents, and noted that `check_version` did not catch them because
+it checks the CHANGELOG rather than every document that quotes a version.**
+
+**So I wrote the check that would have caught them.**
+
+**It reads the authoritative version from `src/sutram_compiler.asm` - the highest `v<number>` token in the file, which
+is the compiler's own banner - then scans every tracked `.md` and `.html` for a `v<digits>` token and reports any that
+differ.**
+
+### And it is deliberately conservative, because a false hit is worse than no hit
+- **`docs/CHANGELOG.md`, `compiler/verified_snapshots/` and `backups/` are exempt** - they are records
+- **any line containing "was", "before", "older", "earlier", "then", "previously", "used to" or "changed from" is
+  exempt** - a sentence about a past version is a record, not a stale claim
+- **exit 0 always; a hit is `RESULT: REVIEW`, not a failure** - the same judgement Muse made about
+  `doc_stale_claims`, and for the same reason
+
+**That third point is the important one.** **A check that fails the build on a legitimate historical sentence gets
+disabled within a week.** **A check that reports and never lies about what it found gets run for years.**
+
+### And the pattern is now complete
+**Three times this stretch a documentation class was found by a partner, and three times the fix was a check rather
+than a correction:**
+
+| Class | The check |
+|---|---|
+| a documented name the compiler rejects | `check_doc_signatures.py` |
+| a limit that has been outgrown | `doc_stale_claims.py` |
+| **a version string that has moved on** | **`check_version_strings.py`** |
+
+**Each was written after the class had already shipped.** **That is still the honest order, and it is still the reason
+they exist.**
+
+## v365 - four stale numbers across three documents, found by sweeping rather than by a partner
+
+**I swept the five master documents for the figures that change: the gate count, the suite count, the compiler version.**
+
+| Document | Found | Fixed |
+|---|---|---|
+| `PROJECT-MASTER.md` | **41 PASS** | already correct |
+| `PROJECT-OVERVIEW.md` | **v246** | **v250** |
+| `README.md` | **218 pass** | **224 pass** |
+| `docs/PATH-TO-COMPLETION.md` | **v246** (twice), **223** | **v250**, **224** |
+| `ROADMAP.md` | clean | - |
+
+**So four stale figures in three files.** **Small, but they are the exact class `doc_counts_gate.py` was built for** -
+**and it did not catch them, which is worth understanding.**
+
+**The gate compares counts against authoritative totals when given them.** **It is not wired to check the compiler
+VERSION STRING against `src/sutram_compiler.asm`, and it does not know that "218 pass" in prose is the suite count.**
+**So these four slipped through a check designed for this class.**
+
+### What would close it
+**`check_version` exists.** **The gap is that it checks the changelog, not every document that quotes a version.**
+**A one-line extension - grep every tracked `.md` and `.html` for `v\d+` and compare against the compiler's own string -
+would have caught two of these four.**
+
+**And the suite count is the same shape: `224` appears in prose as "224 pass", "PASS=224" and "224/224".** **A gate
+needs to know the authoritative number and the three ways it is written.**
+
+### And the honest note
+**This is the eleventh documentation defect of mine this stretch, and the first I found myself by sweeping rather than
+by a partner reading it.** **That is worth recording as progress, not as a win - the sweep was the same one I ran two
+rounds ago and it found one file then.**
+
+## v364 - the rename is in (v250), the docs are consistent, and the debugger round is issued
+
+### The rename landed as ONE commit, revertible whole
+**`cca5b35b`, and `git revert cca5b35b` reverses it entirely.** **Compiler v250.**
+**574 programs: 480 byte-identical, 93 refused identically, 0 DIFFER, 1 new** - and it held on all three paths (Linux
+to ELF, Linux to PE, Windows under Wine). **Suite PASS=224.**
+
+**And Claude checked against Muse's independent caller list:** **its 9 program sites and 9 `lib/` sites were exactly the
+ones renamed.** **Two lists, one answer.**
+
+### And the docs, after my own error
+**I first applied ChatGPT's rename TSV with the wrong columns - 0 of 32 applied.** **Then I read the header and found a
+`mode` column I had ignored:**
+
+| Mode | Rows | What it means |
+|---|---|---|
+| **KEEP_HISTORICAL** | **16** | archived snapshots - **never retroactively rewrite** |
+| **PROPOSE_EXACT_CURRENT** | **10** | the real renames |
+| ALREADY_PRESENT_NOOP | 3 | done |
+| REGENERATE_FROM_SOURCE | 3 | generate, do not hand-edit |
+
+**Applied only the 10 - 10 applied, 0 missed.** **The 16 historical rows stayed.**
+
+**So the 32 files still carrying the old names are mostly CHANGELOG entries and verified snapshots, which is
+correct.** **A changelog that names a function as it was then is a record, not a stale claim.** **That distinction has
+now been made three times in this project, and each time it was right.**
+
+### The next phase starts
+**ROUND-45 (Claude): a debugger** - *"a compile flag that traps on each statement, prints the LINE and the live
+variables, and lets the program continue."* **The owner named it first, and it is the gap that decides whether someone
+can develop in the language rather than only compile in it.**
+**ROUND-45 (Muse): what a trap point CAN print** - *"if only some variables can be shown, say which and why."*
+**ROUND-120 (ChatGPT): the debugger spec** - what to show, what is noise, and **the Sanskrit labels**.
+
+## v363 - the payoff: the last three English builtins get Sanskrit names
+
+**The lexer is proven, so the vocabulary is free.** **The owner asked for Sanskrit for `len`, `cmp` and `cpy` - these
+are the last three English words in the builtin names.**
+
+| Now | Becomes | Sanskrit |
+|---|---|---|
+| `vartani_len` | **`vartani_aayam`** | आयाम - extent, length |
+| `vartani_cmp` | **`vartani_tul`** | तुल् - to weigh, compare (तुलना) |
+| `vartani_cp` | **`vartani_pratilip`** | प्रतिलिपि - a copy |
+
+**And the part that matters:** **`vartani_pratilip` is the exact name the lexer question was about.** **So after the
+rename, a program calling it must compile - and that program becomes a permanent test file.** **That closes the loop
+between the lexer proof and the vocabulary change.**
+
+**Three rounds:** **Claude renames** (one commit, guard 0 differ on everything that does not call the three, and the
+symbol change named); **Muse delivers the independent caller list** so the rename is checked against two lists;
+**ChatGPT delivers the doc rename list** - `sutram-stdlib.html`, the book, the reference, the vocabulary page.
+
+### And the owner may veto a word
+**The brief says so explicitly:** *"The owner may veto a word; if he does, the rename is reverted, so keep it one
+commit."* **A vocabulary decision belongs to him, and the round is built so reversing it is one commit, not an
+archaeology.**
+
+### And a finding carried forward
+**`pankti` appears 34 times in the compiler source.** **Muse is asked to break it down: how many are the "line" sense in
+error messages - correct Sanskrit - and how many are the retired ARRAY sense that should now be `mala`.**
+
+## v362 - THE LEXER IS VERIFIED, 100%. Three independent measurements agree, and the 672 Devanagari cases pass.
+
+**The question was: does a name beginning with a keyword compile?** **Three parties answered independently.**
+
+| Party | What they tested | Result |
+|---|---|---|
+| **Sarvam (v361)** | 4 Latin programs - `prati_test`, `mukhyata`, `pratiX`, `vartani_pratilip` | **all compile and print the right answer** |
+| **Claude (R43)** | **the `prakriya` form**, then **672 boundary cases** | **all pass** |
+| **Muse (R43)** | its own five programs, independently written | **confirms** |
+
+### And the case I named as open is now closed
+**Claude ran the Devanagari direction:** *"58 keywords x a letter, letter+virama, anusvara, a vowel sign, a Latin
+letter, `_`, a Devanagari digit and an ASCII digit."* **All 672 are ordinary names.**
+
+**Including the two directions I singled out:**
+- **`प्रतियातिक`** - a Devanagari keyword, then a Devanagari letter
+- **`प्रतियातिX`** - a Devanagari keyword, then a Latin letter
+
+**So the boundary check is character-aware, not byte-naive.** **The risk I flagged did not materialise.**
+
+### The four criteria I set, all met
+1. **`vartani_pratilip` compiles and calls** - Claude tested the `prakriya` form: *"compiles and returns 9"*
+2. **Devanagari in both directions** - 672 cases, all pass
+3. **Guard 0 DIFFER** (480 byte-identical, 93 refused identically), **suite PASS=223**, **corpus 227/0**,
+   **`fuzz_robust`: CRASH or HANG: 0** (171 fixed cases, 2000 mutations)
+4. **`check_keyword_prefix.py` in `gates.sh` and green** - **gates now 41 PASS / 0 FAIL / 1 NOT-RUN**, and the two
+   new gates are **"keyword boundary"** and **"keyword prefix"**
+
+### And the answer to the owner's question
+**The lexer was never broken. It needed proving, not fixing.** **Claude: *"No lexer fix was needed."***
+
+**So the vocabulary is free.** **`vartani_pratilip` is available today, and so is any Sanskrit word that begins with a
+keyword.** **The project had been choosing worse words - `anuk` instead of `pratilip` - to avoid a collision that does
+not occur.**
+
+## v361 - THE LEXER IS ALREADY CORRECT. `vartani_pratilip` compiles and runs today.
+
+**I ran the two-minute test myself on main v249. Four programs, compiled and run:**
+
+| Program | Tests | Result |
+|---|---|---|
+| `t1` | a `prakriya` named **`prati_test`** | **compiles, prints 6** |
+| `t2` | a `vitti` named **`mukhyata`** | **compiles, prints 7** |
+| `t3` | a `vitti` named **`pratiX`** | **compiles, prints 3** |
+| `t4` | a `vitti` named **`vartani_pratilip`** | **compiles, prints 9** |
+
+**All four compiled and all four printed the right answer.** **So the lexer already requires a keyword to end at a
+non-word character** - `prati` does not match inside `prati_test`, `pratiX` or `vartani_pratilip`.
+
+**The project has been choosing worse words to avoid a problem it does not have.** **`anuk` instead of `pratilip`
+because of a collision that does not occur.**
+
+### What is still genuinely open
+**1. The four cases should be permanent test files**, so a future lexer change cannot break them silently.
+**2. The Devanagari direction is untested** - a Devanagari keyword followed by a Devanagari letter. **If the boundary
+check is byte-naive rather than character-aware, that case fails while these four pass.** **That is the one that
+matters for this project.**
+**3. `check_keyword_prefix.py` is still useful as a REPORT**, not a constraint.
+**4. `pankti` appears 34 times in the compiler source** - mostly the "line" sense in error messages, which is correct
+Sanskrit. **Worth checking whether any is the retired array sense.**
+
+**Recorded in `docs/reports/LEXER-BOUNDARY-TEST.md` with the four programs and their outputs.**
+
+## v360 - the lexer round: test first, then fix, and the UTF-8 risk named
+
+**The owner's decision: a Sanskrit word must never be blocked by a keyword prefix.** **`prati` is `return`; a library
+function `vartani_pratilip` (string-copy) must be legal.** **Today we do not know whether it is** - and the project has
+been choosing worse words to avoid the question.
+
+**Three rounds, split so they do not collide:**
+
+**Claude (has the compiler):** **TEST FIRST.** *"Write a program that calls a `prakriya` named `vartani_pratilip` and
+compile it. Report whether it works. **If it already works, the lexer is fine and there is nothing to fix - say so and
+stop. That is a complete answer."* **Then, only if needed, character-aware boundaries.**
+
+**Muse (has a compiler):** **the independent baseline** - five questions, compiled, with the exact output. **Not the
+fix; the second reading.** **That is what caught r18 and `meru_pankti`.**
+
+**ChatGPT (no compiler):** **the boundary rule and the test cases** - *"what counts as a word character, and how that
+is decided for multi-byte UTF-8."*
+
+### And the risk I named explicitly, because it would be worse than the bug
+**The keyword table has Devanagari rows.** **A naive check - "next byte not in [a-z0-9_]" - would see the first byte of
+a Devanagari letter, decide it is not a word character, and match `prati` inside `प्रतिलिपि`.**
+
+**That would break the one thing the project exists for.** **So the rule must be character-aware, and both directions
+must be tested: Devanagari keyword followed by Latin letter, and Latin keyword followed by Devanagari letter.**
+
+**And the evidence standard is higher than the guard:** **the guard proves compiled programs did not change; it does
+not prove the lexer is correct on new input.** **So the suite, the corpus and `fuzz_robust` too.**
+
+## v359 - my "376-byte loss" was bytes vs characters. Muse's delivery was exact. Compiler v249.
+
+**Muse's R42 explained the mismatch I reported, and the explanation is complete:**
+
+> *"The R41 file is **601,909 bytes** and **601,533 characters**. It contains **188 non-ASCII characters**, each 2 bytes
+> in UTF-8: 188 x 2 = **376 extra bytes**. 601,533 + 376 = 601,909."*
+
+**So the concatenation WAS byte-identical.** **I compared a character count to a byte count** - **the compiler source
+contains Devanagari, every such character is 2 bytes, and I treated the string length as the file size.**
+
+**That is the tenth error of mine this stretch, and the first one in the opposite direction: I rejected a correct
+delivery instead of accepting a wrong one.**
+
+### And Claude's bounds guard landed: compiler v249
+
+| Check | Result |
+|---|---|
+| compiler | **v249** |
+| **suite** | **PASS=223** - 218 plus the 5 alias tests |
+| **gates, with a display (Xvfb)** | **39 PASS / 0 FAIL / 1 NOT-RUN** - X11 18/18 |
+| gates, without a display | 38 / 0 / 2 |
+| **the guard** | **573 programs: 475 byte-identical, 93 refused identically, 5 DIFFER** |
+
+**And the 5 that differ are exactly the 5 new alias tests** - *"each is a program the change is meant to change. Every
+program that existed before is identical: 568 = 475 + 93."*
+
+**And Claude refused to reuse my number:** *"I cannot state '476'."* **Because it changed, and it said so rather than
+carrying a figure forward.**
+
+### So the bounds guard is in
+**The three alias out-of-bounds cases - `mala`, `kosh`, `slice` - are now guarded, tested, and the guard proves nothing
+else moved.** **That is the last of the three approved changes, delivered.**
+
+## v358 - I could not measure the gate count. That is a limit of my environment, not a result.
+
+**I tried to run `sh tools/gates.sh` on a fresh clone of main, to check the count myself rather than trusting either
+partner's number.**
+
+**It timed out at 270 seconds, exit 124.** **My sandbox has a 300-second ceiling per command, and `gates.sh` exceeds
+it** - it compiles the compiler, three tools, two IDEs and then runs 38 gates over 500+ programs.
+
+**So: 38 PASS / 0 FAIL / 2 NOT-RUN is CLAUDE'S measurement on the merged tree, not mine.** **I can verify the parts
+(suite 218, corpus 227/0, proofs 224/224, layers 14/9/1, signatures 305/305) and I have; I cannot verify the whole.**
+
+### And the two partners' numbers now agree, with the difference named
+- **Muse measured 37 PASS / 0 FAIL / 1 NOT-RUN** on v246, before the merge.
+- **Claude measured 36 PASS / 0 FAIL / 2 NOT-RUN** before the merge, and **38 / 0 / 2** after.
+- **Claude's explanation:** *"36 + X11 = Muse's 37 / 0 / 1. So my 'before' agrees with Muse's measurement. The only
+  difference is the display."*
+
+**Two environments, two display situations, and the difference is arithmetic rather than disagreement.** **That is what
+a measurement should look like when two people take it.**
+
+### What this means for the documents
+**The documents should say 38, because that is main after the merge, measured by the party that could run it.** **I am
+recording that I am relying on Claude's number rather than typing a figure I did not measure.**
+
+**And it is worth naming the practical consequence:** **a gate nobody can run in the environment where the documents
+are written is a gate that will drift.** **The five doc checks I can run are the ones that keep the documents honest;
+`gates.sh` is the one that needs the partners.**
+
+## v357 - verified: the 35 comment edits changed nothing that runs
+
+**A comment edit is supposed to be inert. This is the measurement that says it was.**
+
+**Fresh clone of main, built, and every gate I can run:**
+
+| Check | Result |
+|---|---|
+| changelog / compiler | **v356 / v248** |
+| **regression suite** | **NO-EXPECTATION=4 PASS=218** |
+| **crash corpus** | **227 cases + manifest, 0 failed** |
+| **library proofs** | **224 passed, 0 failed** |
+| layers | **14 core, 9 alloc, 1 std** |
+| **doc signatures** | **305 signatures, 0 issues, PASS** |
+
+**Identical to the run before the edits.** **35 comments changed across 15 library modules, and not one test, proof or
+signature moved.**
+
+### Why this matters more than it sounds
+**The library's comments are what a caller reads to learn what to pass in.** **Correcting 35 of them is a real
+improvement to usability** - **and it carries a real risk, because a comment is inside the file the compiler reads.**
+
+**So the check is not "did it compile" - it is "did anything else change".** **Nothing did.**
+
+### And the state is now consistent
+**The tree, the documents and the library all describe the same thing.** **Nine errors of mine this stretch, every one
+in a document - and the five checks that would have caught most of them are now wired into `gates.sh`.**
+
+## v356 - ChatGPT's 35 description corrections applied, 0 missed, across 15 library modules
+
+**Its R116-WS1 delivered a TSV: 35 exact old/new line pairs across 15 modules. I applied every one.**
+
+| Module | Edits |
+|---|---|
+| `suchi` | 6 |
+| `nighantu` | 4 |
+| `aadhar`, `gudh`, `mala`, `vakyank` | 3 each |
+| `brihat`, `ganita`, `khand`, `roop` | 2 each |
+| `kalana`, `phal`, `samanvaya`, `sangrah`, `varna` | 1 each |
+| **total** | **35 applied, 0 missed** |
+
+**The shape of the corrections is the interesting part. They are all about what a CALLER must supply:**
+
+- *"Caller allocates out with >= 4*n cells (70 cells sufficed for n <= 21 in base 2)"* becomes *"Caller provides at
+  least 1 writable output cell when n <= 0, or at least 4*n cells when n > 0 (base-2 worst case)"* - **the old comment
+  named a magic number and a range that no longer held.**
+- *"Fills out[0] = x and out[1] = y"* becomes *"Writes out[0] = x and out[1] = y; **caller must supply at least 2
+  writable qword cells**"* - **the old version said what happens but not what is required.**
+- *"Base outside 2..16: returns 0 (base 0 trapped with SIGFPE)"* becomes *"Base outside 2..16 returns 0 without
+  dividing (older code could trap)"* - **a defect description that outlived the defect.**
+
+**So the pattern is: a comment that described a BUG, left in place after the bug was fixed.** **Three of the 35 were
+exactly that.** **A reader would believe a trap that no longer happens.**
+
+### And the delivery shape is why this worked
+**A TSV of exact old/new lines, applied mechanically, with a count of misses.** **Zero misses means the source had not
+drifted from what ChatGPT read.** **That is the opposite of the 22 KB patch I could not apply - and the right shape for
+a partner without a compiler to deliver prose changes in.**
+
+## v355 - three rounds: implement the guard directly, deliver verifiably, re-check the TSV
+
+**ROUND-42 (Claude):** **implement the bounds guard yourself** - Muse's compiler could not be installed (7 parts
+concatenated 376 bytes short), **and Claude has the tree and the compiler.**
+
+**ROUND-42 (Muse):** **deliver the compiler so I can verify it** - fewer, larger parts, or **a patch against v248**, or
+**a single file** - **and give the SHA-256 of the exact file intended**, *"so I can check what I install rather than
+trusting a size."*
+
+**ROUND-117 (ChatGPT):** **re-check its TSV against v248** - *"the tree has moved twice since you wrote it."* **And the
+vocabulary core as a teaching order, with a verified example name for each step.**
+
+**The pattern in ROUND-42 to Muse is worth naming:** **the size check caught a 376-byte loss, and instead of guessing
+where it went I asked for a hash.** **A hash makes the question answerable; a size only says something is wrong.**
+
+## v354 - the Windows FFI is MERGED (v248), and Muse's compiler concatenation failed its size check
+
+### Claude merged the Windows FFI
+
+**Compiler on main is now v248.** **Gates went from 36 to 38 PASS / 0 FAIL / 2 NOT-RUN** - the two NOT-RUNs are X11
+(no display in its environment) and Windows execution.
+
+**The merge added two gates:** "R35 COFF reader" (11 checks, 0 failed) and "COFF reader fuzzer" (3000 malformed
+objects). **Both PASS.**
+
+**And Claude explained a discrepancy I would have reported as one:** **its "before" measurement was 36 PASS with X11
+NOT-RUN, and Muse's was 37 - *"36 + X11 = Muse's 37 / 0 / 1. So my 'before' agrees with Muse's measurement. The only
+difference is the display."*** **Two measurements, one environment difference, and it named the difference instead of
+arguing about the number.**
+
+**And it skipped v247 for a reason:** *"v247 is already taken by the unmerged `claude/round-39`."* **Third time a
+partner has avoided a version collision by looking.**
+
+### And I could NOT install Muse's compiler, because the size check failed
+
+**Muse delivered `src/sutram_compiler.asm` as 7 parts to be concatenated, expected 601,909 bytes.**
+
+**Concatenated: 601,533 bytes. 376 short.** **So I did not install it.**
+
+**That is the size check doing its job.** **A byte-identical concatenation was the requirement Muse stated, and mine is
+not byte-identical** - **most likely line-ending or encoding differences introduced when the parts came through the
+API as text.**
+
+**The correct next step is for Muse to deliver it in fewer, larger parts, or as a single file if its tool allows.**
+**Installing a 376-byte-short compiler would have been worse than not installing it.**
+
+## v353 - full test run and audit: everything passes, the tree is clean, and one zip is left on purpose
+
+**Fresh clone of main, built, and measured.**
+
+| Check | Result |
+|---|---|
+| changelog / compiler | **v352 / v246** |
+| files | **3,970** |
+| **regression suite** | **NO-EXPECTATION=4 PASS=218** |
+| **crash corpus** | **227 cases + manifest, 0 failed** |
+| **library proofs** | **224 passed, 0 failed** |
+| layers | **14 core, 9 alloc, 1 std** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| **doc signatures** | **305 signatures, 0 issues, PASS** |
+| cruft | **0 pyc, 0 bak, 0 stray** |
+
+**Every gate I can run passes.** **And the suite is 218, which matches what the documents now say.**
+
+### The audit: two zips, and one of them is deliberate
+
+| Zip | Verdict |
+|---|---|
+| **`backups/bk.zip`** | **EXEMPT** - part of the snapshot the owner asked for, and `backups/README.md` says not to touch it. **Six entries, intact.** |
+| **`ChatGPT-to-Sarvam/Sutram_R42_Stage1_NASM_And_Sarvam_Handoff_2026-10-08.zip`** | **56 KB, a dated handoff record from 8 October.** **Left on purpose** - it is a historical artefact from the collaboration, not build output. |
+
+**So the tree has no cruft: no `__pycache__`, no `.bak`/`.orig`/`.rej`/`.tmp`, no stray objects.** **The only two archives are one deliberate snapshot and one dated record.**
+
+### What this means
+**The code is stable and the checks agree with each other.** **Nine errors of mine this stretch, and every one was in a
+document rather than in the tree** - **which is why the tree keeps passing while my reports needed correcting.**
+
+## v352 - the gate count applied: 34 to 37, and only one document needed it
+
+**Muse measured `gates.sh` at 37 PASS / 0 FAIL / 1 NOT-RUN on main.** **I swept the six documents for a stale gate
+count and found exactly one:**
+
+| Document | Quoted |
+|---|---|
+| `PROJECT-MASTER.md` | **34 PASS** - fixed to **37** |
+| the other five | **33/33**, which is the LANGUAGE PACK count, not the gate count - **correct as it stands** |
+
+**So the number I expected to be wrong in six places was wrong in one.** **That is worth recording, because I have
+spent this stretch assuming that a stale claim spreads - and twice it did (the "not implemented" claims were in seven
+documents) and twice it did not.**
+
+**The difference is whether the claim is copied or measured.** **`33/33` is generated and checked; `34 PASS` was typed
+by hand.** **A hand-typed number drifts; a generated one does not.**
+
+### And the suite count is 218, not 221
+**Muse refused to apply the 218-to-221 change because the tests it assumed are not on main.** **That refusal saved the
+documents from being wrong in the opposite direction.**
+
+## v351 - the vocabulary page is rewritten: a small core and a list, not a rule
+
+**The page claimed a derivational rule that would let a learner place any of 303 names.** **It is now rewritten to the
+measured verdict, and it says what was wrong with the old version.**
+
+**Two reasons the rule claim failed:**
+- **Measured: 91 distinct first components, 63 occurring exactly once, only 171/305 beginning with their own module
+  name.** *"That is a long tail, not a rule."*
+- **And the examples were invented** - the page said `ganita_sat_yuj`; the function is `ganita_paripurna_yuj`.
+
+**The new page is a CURRICULUM in five steps:** the core grammar of the language (twenty-odd words), what a module and
+a builtin are, **a small set of reliable word families**, worked examples with **verified** names, and the generated
+reference as a lookup forever.
+
+**And it carries the line the old version needed:** ***"No claim that Latin underscores are formal Pāṇinian samāsa
+grammar. A naming convention is a naming convention. It is not a grammatical derivation, and calling it one borrows
+authority the convention has not earned."***
+
+**What is still open, and honestly so:** **whether the words are the right words** - `ganita` for mathematics,
+`janchit` for checked, `paripurna` for saturating. **That is a Sanskritist's question and the page says so.**
+
+## v350 - Muse caught me twice: the bounds guard and its compiler fix are NOT on main
+
+**I told the owner the nine bounds-guard test files were installed. Muse measured and they are not.**
+
+> *"NOT on main: the nine bounds-guard test files... NOT on main: the compiler fix (`r38_mark_alias` - 0 occurrences
+> in `src/sutram_compiler.asm`). The committed binary is still 424,568 B, the pre-guard size."*
+
+**Ninth error of mine this stretch, and the same shape as the rest: I read Muse's delivery folder and reported it as
+the tree.** **The two tools ARE installed; the tests and the compiler fix are not.**
+
+**And Muse's refusal was the right call:** *"the R39 document table (218 to 221) must NOT be applied yet: it assumes
+tests + compiler that are not installed."*
+
+### The measured numbers, which are what the docs should quote
+**`gates.sh`: 37 PASS / 0 FAIL / 1 NOT-RUN. Suite: PASS=218, not 221.** **Doc signatures 305/0. Stale claims 164
+hits.**
+
+### And ChatGPT's vocabulary verdict closes that question
+> *"Use small core of recurring conventions + explicit searchable list of all 305 current callables. Not a strict
+> `domain_qualifier_action` rule, and not 305 names to memorize unstructured."*
+
+**And:** *"No claim that Latin underscores are formal Pāṇinian samāsa grammar."* **That is the line my draft needed.**
+
+### Three rounds issued
+**Claude (back):** merge the Windows branch, and apply the MEASURED numbers (37 gates, 218 suite - not 221).
+**Muse:** install the bounds guard as whole files, then re-measure. **ChatGPT:** apply the description audit as a
+before/after table.
+
+## v349 - ROUND-40 and ROUND-115: measure the new numbers, and is a rule even defensible?
+
+**The four doc checks are wired, so the gate count has changed.** **ROUND-40 asks Muse to MEASURE it and then reconcile
+the documents** - *"state the measured numbers, not the ones your patch assumed."* **Because its patch said 37 gates and
+221 suite, and nobody has run it since the install.**
+
+**And it asks a question about its own tests:** **do the three new bounds-guard tests actually FAIL on the old library?**
+*"A test that passes on the old code proves nothing."*
+
+**ROUND-115 (ChatGPT):** **the honest verdict on the vocabulary.** Its own measurement found **91 first components and
+63 singletons** - *"that is not a rule, it is a long tail."* **So: should the vocabulary be taught as a rule, a list,
+or a small core plus a list?** **And if a core exists, name the prefixes worth teaching.**
+
+**That question is the one my draft should have asked and did not.** **I assumed the rule existed because a few names
+followed it.**
+
+## v348 - Muse delivered whole files (installed), and ChatGPT reviewed my Sanskrit draft
+
+**Both delivered. The three approved changes are now installed, and my Sanskrit document has been corrected by review.**
+
+### Muse R39 - the whole files, as asked
+**`tools/gates.sh` (19,620 B) and `tools/doc_counts_gate.py` (10,921 B) installed**, plus **nine test files for the
+bounds guard** (`251_r38_alias_mala_oob.sm`, `252_r38_alias_kosh_oob.sm`, `253_r38_alias_slice_oob.sm` with their
+`.out` and `.exit` goldens).
+
+**So the four doc checks now run in every build**, and the bounds guard has tests.
+
+### ChatGPT R114-WS3 - the Sanskrit review, and it is disciplined
+
+| My claim | The verdict |
+|---|---|
+| utsarga/apavāda as a general-rule/specific-override mechanism | **DEFENSIBLE AS AN ANALOGY, not universal implementation** - *"Pāṇinian ordering, domain specificity and metarules can matter"* |
+| "one mechanism covers error handling, dispatch and defaults" | **UNTESTED ARCHITECTURE, not a property** - *"error handling concerns propagation, observability and recovery, not just selection precedence"* |
+| `abhava`/`anya` are crude versions of it | **NOT meaningful implementations** - I had implied they were |
+| eleven prefixes cover the vocabulary | **weaker than I said:** 91 distinct first components, **63 occur exactly once**, and only **171/305 (56%)** begin with their own module name |
+
+**The review is now at the top of the document**, so a reader sees the verdict before the claim.
+
+**And it says what the document is:** *"the mechanism claims are proposals with a scholarly analogy behind them, not
+descriptions of what the language does."*
+
+### The pattern, eighth time
+**Every error of mine this stretch was found by a partner reading something I wrote.** **This one was a document about
+Sanskrit, corrected by a partner that explicitly said it is not certifying the Sanskrit** - and it still found the
+overclaims, because they were about *architecture*, not grammar.
+
+## v347 - ROUND-39 and ROUND-114: deliver whole files, not a diff
+
+**Muse's R38 patch is correct and I could not apply it - 22 KB of unified diff across five files, and my tool cannot
+apply a diff with context.** **Same limit as the Windows branch merge.**
+
+**So ROUND-39 asks for the change as TWO WHOLE FILES** - the complete new `tools/gates.sh` and the complete new
+`tools/doc_counts_gate.py` - **plus the four document edits as a before/after table I can match exactly.** **Because
+the write tool handles whole files and not diffs, and the numbers to move are 34 to 37 and 218 to 221.**
+
+**And the three judgement calls in R38 were right:** two of the five checks were already wired **and Muse said so
+rather than claiming five**; **`doc_stale_claims` is a gate that RUNS the scanner rather than failing on hits**;
+**and it found the `doc_counts_gate` recursion.**
+
+**ROUND-114 (ChatGPT):** **measure the vocabulary properly** - every name in `lib/*.smlib`, split on `_`, counted -
+**because my draft asserted rules from a few names and one of its examples was invented.** **And review
+`docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md`**: which of utsarga/apavāda, kāraka and bahuvrīhi is defensible, which is a
+stretch, and which is wrong.
+
+## v346 - sync, test, audit: everything passes, and Muse's three approved changes are NOT on main
+
+**Fresh clone of main, built, and measured.**
+
+| Check | Result |
+|---|---|
+| changelog / compiler | **v345 / v246** |
+| files | **3,909** |
+| crash corpus | **227 cases + manifest, 0 failed** |
+| library proofs | **224 / 224** |
+| layers | **14 core, 9 alloc, 1 std** |
+| alloc bounds | **26 allocations, 13 bounded, 13 exempt, 0 failed** |
+| **doc signatures** | **24 modules, 305 signatures, 0 issues, PASS** |
+| cruft | **0 pyc, 0 bak, 0 stray, 2 zips** |
+
+**So the tree is healthy on every measure I can run.**
+
+### And the finding: the three approved changes are delivered as a PATCH, not applied
+
+**Muse's R38 says so on its second line:** *"patch + this report in the outbox (**NOT direct to main**), for a reason
+stated at the end."* **And the measurement agrees:**
+
+```
+checks present: 4/4
+gates wired:    0
+```
+
+**All four check scripts are on main. NONE of them is wired into `gates.sh`.** **So the gates Muse built do not run.**
+
+**That is the difference between delivered and merged, and it is exactly the failure this project keeps meeting:**
+**the work is done and the thing that makes it matter has not been switched on.**
+
+### And the reason matters
+**Muse did not push directly because it changed `gates.sh` and `doc_counts_gate.py`** - **a build-system change.** **Its
+convention is to propose those as a patch, and that convention is correct.** **So the patch needs applying, by someone
+with git.**
+
+### What I cannot do
+**Apply it.** **The patch touches `gates.sh` and a Python tool, and my tool cannot set a file mode or merge a patch
+with context.** **So it goes to whoever has git** - Claude when it returns, or the owner.
+
+### And one number moved in the right direction
+**Alloc bounds went from 19 exempt to 13 exempt, and from 6 bounded to 13 bounded** - **so seven sites that were exempt
+are now checked.** **That is a real improvement since the last measurement, and it happened in a round I did not
+attribute.**
+
+## v345 - I INVENTED A FUNCTION NAME in the vocabulary draft. ChatGPT caught it.
+
+**ChatGPT's R113 review of `docs/vocabulary/VOCABULARY-DERIVATION.md` found three defects, and all three were mine.**
+
+| What I wrote | What is true |
+|---|---|
+| "303 functions" | **305** - I carried a stale number from memory |
+| **`ganita_sat_yuj` implements saturating addition** | **THAT FUNCTION DOES NOT EXIST.** The real name is **`ganita_paripurna_yuj`** |
+| "`ganita_janchit_gun` is not in the reference" | **It IS** - I asserted a negative without checking |
+
+**The second one is the worst thing I have done in this project.** **I wrote a document about a vocabulary, gave a
+worked example of a function name, and the name was made up.** **A learner following it would type `ganita_sat_yuj`
+and get a compile error - from a document whose entire purpose was to make the vocabulary learnable.**
+
+**And ChatGPT's instruction was exactly right:** *"Treat as wrong copyable function name; **do not rename the library
+to fit the draft.**"* **The tempting fix was to make the code match my document. That would have been catastrophic.**
+
+**All three corrections are now at the top of the document, attributed to the review, in my own voice as my errors.**
+
+### And Muse's R38 delivered the three approved changes
+- **Two of the five doc checks were ALREADY wired** - `check_version` and `check_alloc_bounds`. **Muse found that and
+  said so rather than claiming five.**
+- **The three missing ones are added**, and the recursion problem in `doc_counts_gate` is fixed with a `--totals` mode.
+- **And the judgement that matters:** **`doc_stale_claims` is a gate that RUNS the scanner, not one that fails on
+  hits** - *"FAILing on hits would permanently break the build at 160 hits. This gate makes the scanner RUN in every
+  build; it does not pretend a hit is a verdict."*
+
+**That is the correct distinction, and it is the same one the scanner's own output makes.**
+
+## v344 - what is UNIQUE to Sutram, as opposed to borrowed
+
+**The owner asked for the unique angle. The document now has a section on it, and each claim is phrased as "no other
+language I can find does this" - because "unique" is a claim that can be wrong.**
+
+| Claim | Confidence |
+|---|---|
+| **A compiler in one hand-written NASM source, no bootstrap** | **high** - I can find no counter-example |
+| **A cross-target linker in assembly, identical bytes for both platforms** | **high** |
+| **205-byte static hello, no runtime** | **high** - measured; Zig's is 1.7 MB, C's 6.6 KB plus libc |
+| **11 Indian-language diagnostic packs, no English default** | **high** |
+| **A freestanding C FFI with no libc, no dynamic loader** | **high** - measured |
+| **Sanskrit mechanisms as design patterns** | **UNBUILT - a proposal, not a property** |
+| The verification culture | high, but a matter of degree |
+
+**And the document says which is which:** *"One of these seven is a proposal and six are properties. **The proposal is
+the one that would make the language distinctive rather than merely unusual** - and it is the one that needs a
+Sanskritist before it can be built."*
+
+### And the line worth keeping about the compiler
+**No other language has a compiler that is a single hand-written assembly source - GCC, Clang, Rust, Go and Zig all
+have a compiled core.** **The assembly compilers that exist are teaching exercises for tiny subsets, not languages
+with a 305-function library, a linker, an object format and a C FFI.**
+
+**So the "no dependency on another language" claim is true all the way down** - **Sutram depends on `nasm` and nothing
+else, and `nasm` is a translator, not a runtime.**
+
+## v343 - Sanskrit for language design: five mechanisms with real engineering value
+
+**The owner asked what we can take from Sanskrit and how it makes the language prominent. `docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md`
+sets out the honest version - mechanisms, not mysticism.**
+
+**And it opens by naming the false version so it cannot creep back:** *"Sanskrit is the most suitable language for
+computers"* is **not supported by anything.**
+
+### The strongest five
+
+| Mechanism | What it maps to | Why it matters here |
+|---|---|---|
+| **Utsarga / Apavāda** | general rule, specific override **without deleting the general one** | **one mechanism for error handling, dispatch and defaults** instead of three |
+| **Kāraka** (six roles) | **named arguments with semantic roles** | **the sharpest one: our C FFI says `s_add\|2\|i64,i64` and nothing about which is which.** **Role annotations make the FFI checkable by role, not just by count** - in the one place the language is currently unsafe |
+| **Bahuvrīhi** | **structural typing** - a thing named by what it HAS | **traits get a Sanskrit derivation** instead of a borrowed one |
+| **Pratyāhāra** | **a set named by two endpoints** | character classes and enum ranges in two tokens |
+| **Sandhi** | **rules for what happens at a boundary** | **`yoj` is textual inclusion with no rules at the seam; sandhi is the principled version** |
+
+**Plus three smaller ones with real value:** **anuvṛtti** (inheritance by context = lexical scoping), **adhikāra**
+(a governing header = section-scoped default), **ekasheṣa** (one remains = common-subexpression elimination).
+
+### And two historical facts we can state accurately
+**Piṅgala's Chandaḥśāstra uses a binary-like notation and his metre rules generate the Fibonacci sequence** - **and
+the project already has a `meru` module, which is Meru Prastāra, Pascal's triangle.** **So the library's name is
+historically grounded and we can say so.** **And Katapayadi saṅkhyā encodes numbers as letters** - **directly relevant
+to making error codes memorable.**
+
+### What it does not claim
+**Not that Sanskrit is better for computers. Not that any mechanism is unique to it. Not that the tradition is
+superior.** **It claims that a 2,500-year-old formal grammar contains mechanisms with direct engineering analogues,
+that Pāṇini got there first, and that the modern names are the ones we learn instead.**
+
+**And it lists the six questions a Sanskritist must answer before any of it is authoritative - including whether I
+have utsarga/apavāda's priority right, and whether I am collapsing several compound types into bahuvrīhi.**
+
+## v342 - I measured my own vocabulary draft, and its central claim is WRONG
+
+**`docs/vocabulary/VOCABULARY-DERIVATION.md` says eleven domain prefixes let a learner place any of the 303 names. I wrote that
+from pattern. Then I measured it.**
+
+**Against `docs/sutram-vocabulary.html`, extracting every underscored name:**
+
+| My claim | Measured |
+|---|---|
+| eleven prefixes cover the vocabulary | **103 of 259 names - 40%** |
+| `ganita` | 18 |
+| `roop` | 23 |
+| `suchi` | 21 |
+| `nighantu` | 17 |
+| `phal` | 14 |
+| `mala` | 8 |
+| `akshar` | 2 |
+| **`vartani`, `kosh`, `sangrah`, `shreni`** | **ZERO as prefixes** |
+
+**And my extraction found 259 of 303 names, so even 40% is a floor.**
+
+**So four of my eleven prefixes do not appear as prefixes at all.** **`kosh` is a TYPE, not a name prefix. `vartani` is
+a module name that the string functions do not use as a prefix.** **I built a rule out of module names and assumed the
+functions followed it.**
+
+**The document now carries the correction at the top of the section, with the measured counts, and says: *"do not
+present this section as a rule until the vocabulary is measured properly."***
+
+**That is the sixth error of mine this stretch, and the same shape as the other five: I described a pattern I had
+observed in a few names and asserted it as a rule over all of them.**
+
+**The honest version of the document is a hypothesis with one measured section. That is what it now says.**
+
+## v341 - the owner approved all three. Muse executes; ChatGPT predicts what they break.
+
+**Approved and issued:**
+
+1. **Wire the five doc checks into `gates.sh`** - they exist and nothing runs them. **A documentation regression now
+   fails the build.**
+2. **Turn on `SUTRAM_R65_PEEPHOLES` and measure it** - **with the guard absolute: if it moves one byte, revert. And if
+   it is off for a correctness reason, do not turn it on.**
+3. **A universal bounds guard on `mala` and `kosh`** - the runtime already has it; extending it is the cheapest real
+   memory safety we can get without a collector.
+
+**And the instruction that keeps an approval from becoming a licence:** *"if any of the three cannot be done safely,
+STOP and say which and why - an approved change that breaks the guard is still wrong."*
+
+**ROUND-113 (ChatGPT): predict what the bounds guard will break.** **Extending it changes behaviour for programs that
+currently overrun silently, so Muse needs the list before it runs the suite** - *"so a red test is explained rather
+than mysterious."*
+
+**And it is asked to review `docs/vocabulary/VOCABULARY-DERIVATION.md`** - the draft I wrote about the Sanskrit compounding.
+**With permission to say it cannot judge**, because that is the honest answer the owner needs.
+
+## v340 - the vocabulary as RULES, not a list - and it needs a Sanskritist before it is authoritative
+
+**The owner's directive was that the words be easy to remember and easy to type, so someone who does not read English
+can learn the language.** **A list of 303 names does not serve that - a list is a dictionary, and a dictionary only
+helps someone who already knows the word they are looking for.**
+
+**So `docs/vocabulary/VOCABULARY-DERIVATION.md` sets out the rules the names already follow:**
+
+- **`<domain>_<qualifier>_<action>`** - most general first, **and the last word is what the function does**
+- **eleven domain prefixes**, which are already the module names: `ganita`, `vartani`, `akshar`, `mala`, `kosh`,
+  `suchi`, `nighantu`, `sangrah`, `shreni`, `phal`, `roop`
+- **qualifiers that narrow the action:** `janchit` = checked, `sat` = saturating, `nirapeksh` = absolute
+- **the recurring actions:** `yuj` join, `nyun` less, `rakh` place, `grah` take, `likh` write, `pad` read
+
+**What it buys:** **a name the learner has never seen is a name they can guess** - `ganita_janchit_gun` reads as
+"math, checked, multiply" and is right. **A wrong guess is visibly wrong.** **And the vocabulary can grow without a
+new list.**
+
+### And it is marked DRAFT, with the limits named
+**Three questions need a Sanskritist, and the document says so:** whether `ganita` carries the right sense here,
+whether the qualifiers compose the way the document describes or Sanskrit compounding imposes an order I have
+simplified, and whether `rakh`/`likh` are the right stems.
+
+**Sections 1 and 5 are observations about the code and stand on their own. Sections 2-4 need review.**
+
+**I am not a Sanskritist, and a document about Sanskrit compounding written by an AI should say so on its face.**
+
+## v339 - ROUND-37 and ROUND-112: the full suite with the three new checks, and the layer no check covers
+
+**ROUND-37 (Muse):** run everything, **including the three checks that did not exist last week** - `doc_counts_gate`,
+`doc_stale_claims`, and the new `check_doc_signatures` **which must report 305 / 305, 0 mismatches.**
+
+**And the question nobody has asked:** **`check_doc_signatures.py` compares names and arity. It does not read the
+prose.** **Is every function's DOCUMENTED DESCRIPTION still accurate?**
+
+**ROUND-112 (ChatGPT):** **the spec sequence as a checklist I execute, not a document about the order** - *"if a step
+needs a compiler, mark it so - I will route it to Muse."* **Plus the description layer, and the sixth class:** *"if
+there is not one, say that plainly - 'no sixth class found' is a result."*
+
+### The five checks the project now has
+**`check_version`, `doc_counts_gate`, `doc_stale_claims`, `check_alloc_bounds`, `check_doc_signatures`** - **four of
+them built in the last week, each after a class of error had already shipped.** **That is the honest order, and it is
+why they exist.**
+
+## v338 - Muse's R36: 47 comment lines, 0 code lines, and the guard proves a comment changed nothing
+
+**The cosmetic layer, in one pass - 20 files, 47 comment lines, and NOT ONE line of code.**
+
+| What | Count |
+|---|---|
+| **headers with old file names** | **18** - baseconv to `aadhar`, num to `ank`, serial to `anukram`, bigint to `brihat`, math to `ganit`, hash to `gudh`, strb to `khand`, array to `mala`, map to `nighantu`, file to `patra`, result to `phal`, fmt to `roop`, util to `sadhan`, set to `sangrah`, sort to `shreni`, list to `suchi`, strconv to `vakyank`, string to `varna` |
+| **`Usage:` lines** | **2** - `ayojan util` to `yoj sadhan`, `ayojan sort` to `yoj shreni` |
+| **`pankti` comment lines** | **19** across 12 modules |
+| **identifier changes** | **0** - `util_chinha` stays, as the round said |
+| **code lines changed** | **0** |
+
+### And the guard, proved two ways
+
+> *"Before/after compile, same compiler, all 551 programs: **0 differ** (exit code, stdout, stderr, and executable
+> bytes all identical). A comment change altered not a single compiled byte."*
+
+**That is the sentence that makes a cosmetic sweep safe to trust.** **551 programs, four dimensions compared, zero
+differences.** **Without it, "I only changed comments" is a claim.**
+
+### And the historical notes it did NOT touch
+
+> *"Left alone as historical: `lib/varna.smlib` R7/R8 notes naming baseconv/strconv as they were at that time."*
+
+**A changelog note that names a module as it was in R7 is CORRECT, not stale.** **Fixing it would falsify history.**
+**That is the same distinction as the 88 TRUE limits in the triage - and Muse made it again without being told.**
+
+### The rename is now complete
+**One identifier (R35), then 47 comments and 18 headers (R36), with the guard at 551 programs and 0 differ.**
+**And the check that would have caught the identifier is installed: `tools/check_doc_signatures.py`.**
+
+## v337 - the fifth class is CLOSED: 305 declarations, 305 documented signatures, ZERO mismatches
+
+**ChatGPT's R111 verified the end of the chain, and the number is the answer.**
+
+### WS3 - the mismatch count is zero
+
+> *"Current callable-name mismatches between all 305 lib declarations and all 305 documented HTML signatures: **0**
+> in the pinned direct source comparison. The HTML has `meru_mala`, not `meru_pankti`. **Do NOT present the old name
+> as an outstanding source defect.**"*
+
+**So the page was regenerated, the identifier was fixed, and both sides now agree at 305.** **And ChatGPT explicitly
+told me not to keep reporting the old defect - which is the instruction a partner should give when the tracker is
+behind the tree.**
+
+### And the checker exists, and it needs no compiler
+
+**`tools/check_doc_signatures.py`** - **installed in the canonical tooling.** **Its own description is the
+honesty I keep asking for:** *"No compiler, shell commands, external modules or network access are executed by the
+checker. **Exit 0 means only the static signature floor matched.**"*
+
+**What it compares:** every `prakriya` declaration in `lib/*.smlib` against every first-cell signature in the module
+tables of `docs/sutram-stdlib.html` - **names, arity, parameter kinds, parameter labels, duplicates, missing and
+extra functions.**
+
+**And it fails closed:** *"Parsing fails closed on unrecognized signatures."* **A parser that guesses would report
+clean on input it did not understand.**
+
+### The chain, complete
+
+| Step | Who | Result |
+|---|---|---|
+| **found the mismatch** | ChatGPT (R109/110) + Muse (R34) | the page said `meru_mala`, the library declared `meru_pankti` |
+| **fixed the identifier** | **Muse (R35)** | `meru_mala`, with the test updated |
+| **regenerated the page** | **Muse (R36, in progress)** | 305, matching source |
+| **built the check** | **ChatGPT (R111)** | `tools/check_doc_signatures.py` |
+
+**Four rounds, three parties, one defect - and the only part that lasts is the check.**
+
+## v336 - ROUND-36 to Muse: the cosmetic layer, then the regeneration
+
+**R35 fixed the one identifier. ROUND-36 clears the rest - 18 headers with old file names, 2 `Usage:` lines a reader
+copies, 19 comment lines using `pankti` for the array - and then regenerates the stdlib page.**
+
+**With the guard stated: 476 byte-identical, 0 DIFFER.** **A comment change must not alter a single compiled byte,
+and that is the test that keeps a cosmetic sweep safe.**
+
+**And `util_chinha` stays, because it is the owner's decision.**
+
+**The question that matters is in WS2:** *"If it still shows 303 or `meru_pankti`, say so - that is a generator
+defect and it is worth more than the page."*
+
+## v335 - Muse fixed the rename: EXACTLY ONE identifier was wrong, and it is fixed on main
+
+**The full inventory of old vocabulary in `lib/` - 24 modules, every `prakriya` name checked:**
+
+| Class | Count | State |
+|---|---|---|
+| **Identifiers - names callers use** | **exactly 1** | **FIXED** |
+| Headers carrying old file names | 18 files | documented |
+| `Usage:` lines a reader copies | 2 (`ayojan util`, `ayojan sort`) | documented |
+| `pankti` in comments | 19 lines across 11 modules | documented |
+| **Other pre-rename keywords** (`punaravartana`, `pratiyati`, `uddeshya`, `anytra`, `nishedha`, `parigrah`, `nishkriya`, `srijana`, `to`) | **ZERO** | - |
+
+### The one that mattered
+
+**`lib/chandas.smlib:82`: `prakriya meru_pankti(a, n)` became `prakriya meru_mala(a, n)`** - **and the test that
+called it (`tests/stdlib/chandas_meru_pankti.sm`) was updated with it.** **Uploaded directly to main as a
+round-authorized fix.**
+
+**So the documented name and the declared name now agree.** **A reader who follows the standard-library page will
+write something the compiler accepts.**
+
+### And the judgement call worth keeping
+
+**`lib/sadhan.smlib:40` has `util_chinha(n)` - the name carries the old `util` stem.** **Muse did NOT rename it:**
+*"`util_chinha` is also used throughout `lib/` as the generic term for 'sign', renaming it is a wider decision, left
+for the owner."*
+
+**That is the right call.** **A rename that is also a semantic question is not a rename - and a partner that stops at
+the boundary and names it is worth more than one that guesses.**
+
+### And the reassurance in the numbers
+
+**I spent two rounds worrying that the rename had been missed across the library.** **It was ONE identifier.**
+**Everything else is a header, a usage line or a comment - cosmetic, documented, and not a compile error.**
+
+**That is the difference between a defect and a mess, and it took a full inventory to tell them apart.**
+
+## v334 - ROUND-111: build the floor that needs no toolchain
+
+**ChatGPT's R110 designed the three tiers. ROUND-111 asks it to BUILD THE FIRST ONE - the signature comparison -
+because that tier needs no NASM and ChatGPT has none.**
+
+**`tools/check_doc_signatures.py`:** parse every `prakriya` in `lib/*.smlib`, parse every documented signature in
+`docs/sutram-stdlib.html`, **report every mismatch in both directions, and report the count on each side so
+305-vs-303 becomes a measured line rather than a claim.**
+
+**And it must say in its own output that it is a floor, not a proof** - *"it compares names and arity, not
+behaviour."*
+
+**And the split that keeps this round small:** **identifiers only.** *"Comments can wait; a documented name that does
+not compile cannot."*
+
+### State
+**Muse is working ROUND-35 (the `lib/` rename).** **ChatGPT has ROUND-111.** **Claude is away. The Windows channel
+awaits the owner's run.**
+
+## v333 - ChatGPT's R110: the contract check designed, and 305 declarations against 303 in the committed page
+
+### WS1 - the fifth class as a gate, and it opens with what does NOT exist
+
+> *"`tools/doc_counts_gate.py` and `tools/doc_stale_claims.py` measure counts and human-reviewable absence phrases.
+> `tools/gen_stdlib_ref.py` blindly copies current library function declarations and comments. **None certifies that
+> a reader can paste a documented sample and receive the stated result.**"*
+
+**And the P0 finding is a number:** **current source has 24 modules / 305 `prakriya` declarations; the committed
+`docs/sutram-stdlib.html` has 303.** **So the page is two functions behind its source, and the regeneration Muse was
+asked for will show it.**
+
+**Its design separates three tiers, which is the useful part:**
+
+| Tier | What it is |
+|---|---|
+| **a cheap mechanical floor** | compare every documented signature with `lib/*.smlib` - **no NASM, no execution** |
+| **real acceptance** | with the canonical toolchain: paste the sample, get the stated result |
+| **human-only** | what neither can prove |
+
+**That three-tier split is why the design is usable.** **A gate that needs a compiler cannot run everywhere; a gate
+that only compares names catches the `meru_mala`/`meru_pankti` class without one.**
+
+### WS3 - the independent sweep, and it read everything
+**All 24 `lib/*.smlib`, all 238 `examples/**/*.sm`, the 13 example companion modules, and all 83 `docs/` files** -
+**independently of Muse's R35, as asked.** **Two readings of the same sweep is what caught r18.**
+
+### State
+**Muse is still working ROUND-35 (the `lib/` rename).** **ChatGPT has delivered R110 and needs the next round.**
+**Claude is away. The Windows channel awaits the owner's run.**
+
+## v332 - ROUND-110: turn the fifth class into a check
+
+**ChatGPT named the fifth documentation defect class - a documented name, snippet or command that DOES NOT WORK -
+and its own witness proves it** (the stdlib page says `meru_mala`, the library declares `meru_pankti`).
+
+**ROUND-110 asks for the mechanical check:** every documented name, snippet, command and expected output, exercised
+against the compiler. **With the question that keeps it honest: what CANNOT be checked without a human?**
+
+**And it asks for an INDEPENDENT read of the other old keywords in `lib/`** - `punaravartana`, `pratiyati`,
+`uddeshya`, `anytra`, `nishedha`, `parigrah`, `nishkriya`, `ayojan`, `srijana`, `to` - **because two readings of the
+same sweep is what caught r18.**
+
+### Folder state
+**Nothing new in any channel.** Muse is working ROUND-35 (the library rename); Claude is away until Tuesday; the
+Windows channel awaits the owner's run.
+
+## v331 - ROUND-35: the rename `lib/` never got, and my refusal was the error
+
+**Muse's R34 proved the generator is clean and the LIBRARY is stale.** **So ROUND-35 is the real defect: `lib/` still
+carries pre-rename vocabulary, and one of the tokens is an IDENTIFIER.**
+
+**The list so far:** `lib/chandas.smlib:82` declares `meru_pankti` where the docs say `meru_mala`; `lib/sadhan.smlib`
+instructs `Usage: ayojan util`; and `pankti` appears as the array keyword in comments across ten modules.
+
+**The brief asks for the COMPLETE list, including a check for the other old keywords** - `punaravartana`,
+`pratiyati`, `uddeshya`, `anytra`, `nishedha`, `parigrah`, `nishkriya`, `ayojan`, `srijana`, `to` - **because
+`pankti` and `ayojan` are the two we happened to notice.**
+
+**And the split that matters:** **identifiers are a breaking change and need the guard; comments do not.** **A rename
+that changes any compiled program's bytes is wrong.**
+
+### And the record of my error
+**I refused a correct patch because a token looked old.** **`pankti` is the old array keyword, so I read `pankti` as
+old everywhere - but `meru_pankti` is a function name that should have become `meru_mala`.** **The pattern-match was
+on the token, not the source.**
+
+**Two partners found the truth from opposite directions while I argued against the fix.**
+
+## v330 - I WAS WRONG. I refused a correct patch, and the LIBRARY is what is stale.
+
+**In v328 I held back part of Muse's R33 patch because it changed `meru_mala` to `meru_pankti` and `yoj` to
+`ayojan`. I read that as a rename regression and said so.**
+
+**It was the opposite. The LIBRARY is stale, and Muse's patch was fixing it.**
+
+### What Muse found by running the generator
+
+> *"The generator (`tools/gen_stdlib_ref.py`) contains ZERO old-vocabulary strings. It is clean. The old names in
+> its output come verbatim from `lib/` sources, which still carry pre-rename vocabulary."*
+
+| Location | Currently says | Should be |
+|---|---|---|
+| **`lib/chandas.smlib:82`** | **`meru_pankti` (a FUNCTION NAME)** | **`meru_mala`** |
+| **`lib/sadhan.smlib` header** | **`ayojan util`** | **`yoj sadhan`** |
+| **`lib/aadhar`, `chandas`, `ganita`, `gudh`, `nighantu`, `phal`, `roop`, `sankhyiki`, `shreni`, `suchi`** | **`pankti` as the array keyword, in comments** | **`mala`** |
+
+**And ChatGPT reached the same place independently:** *"The current `docs/sutram-stdlib.html` lists `meru_mala(a,n)`,
+while `lib/chandas.smlib:82` actually declares `meru_pankti(a,n)`. **This is a checkable public API name mismatch,
+not a test failure.**"*
+
+**So the documented name is RIGHT and the declared name is WRONG.** **A reader who follows the documentation writes
+`meru_mala` and the compiler rejects it - because the library never got renamed.**
+
+### My error, and its shape
+
+**I refused a patch on the strength of which name LOOKED older.** **`pankti` is the old array keyword, so I read
+`pankti` as old everywhere - but `meru_pankti` is a function name, and the rename should have made it `meru_mala`.
+I pattern-matched on a token instead of reading the source.**
+
+**That is the fifth error of mine this stretch, and the first one that BLOCKED correct work rather than shipping
+something wrong.** **I have been treating my own suspicion as a finding all day.**
+
+### And the fifth documentation class, which ChatGPT named
+
+> *"A document can have plausible descriptions and accurate counts, yet give a reader a code snippet, function
+> name, module import, installation command or expected output that **DOES NOT WORK** against the
+> compiler/stdlib/installer the document claims to teach."*
+
+**Copy/paste and public API contract drift.** **And its witness is this very defect** - a documented function name
+that the compiler rejects. **The four classes audited so far are numbers, prose, specs and absence claims; this is
+the fifth, and the project is already inside it.**
+
+### Action
+**Muse's patch to `docs/sutram-stdlib.html` should be applied, and then `lib/` needs the rename it never got.**
+**That is a library change, so it is Claude's or Muse's, and it needs the guard.**
+
+## v329 - ROUND-34 and ROUND-109: regenerate, do not patch; and is the generator itself stale?
+
+**ROUND-34 (Muse): regenerate `docs/sutram-stdlib.html` from the current library, not by text patch** - because its
+own patch carried `meru_mala` to `meru_pankti`, `yoj` to `ayojan` and `mala` to `pankti`, **and `mala` is the current
+keyword while `pankti` is the old one.** **And the question worth more than the page:** *"if the GENERATOR still emits
+old names, that is the real defect."*
+
+**ROUND-109 (ChatGPT): read the GENERATOR, not the page.** **Is the committed stdlib page stale because it was never
+regenerated, or because the thing that generates it is stale?** **A stale generator keeps producing stale pages.**
+
+**And a new question for ChatGPT:** **the project has now audited numbers, prose, specs and absence-claims. What is
+the fifth kind of documentation error nobody is looking for?**
+
+## v328 - I applied 9 of Muse's 13 fixes and REFUSED the rest. The refused part would have undone the Sanskrit rename.
+
+**Muse's R33 patch is 64 KB across 7 files. I read it before applying it, and it is not one thing.**
+
+### Applied - the false-claim fixes I asked for
+
+| File | Fix |
+|---|---|
+| `PROJECT-MASTER.md` | *"Windows never executed"* to *"Windows executed - 16 required checks passed on real Windows 11"* |
+| `docs/LIBRARY-BOUNDARY.md` | *"there is no FFI yet (not started)"* to the C FFI exists; and the first-class-functions claim |
+| `lib/kalana.smlib` | *"Sutram has no first-class functions"* to *"Sutram has first-class functions (R23), but this module's API predates them"* |
+| `docs/sutram-design-parameters.html` | 5 of 6 - first-class functions, methods, slices, the Windows execution, separate compilation |
+| `docs/sutram-project-status.html` | the Windows compiler row, Unverified to Executed |
+| `docs/sutram-scorecard.html` | *"there is no C FFI"* to the C FFI exists |
+
+### REFUSED - and this is the important part
+
+**The patch also rewrites large parts of `docs/sutram-stdlib.html`, and that section contains what look like RENAME
+REGRESSIONS:**
+
+| The patch would change | To |
+|---|---|
+| `meru_mala` | **`meru_pankti`** |
+| `yoj sadhan` | **`ayojan util`** |
+| `mala` (array) in many descriptions | **`pankti`** |
+
+**`mala` is the CURRENT array keyword and `pankti` is the OLD one** - the rename went `pankti` to `mala`. **`yoj` is
+current; `ayojan` is old.** **So that part of the patch moves the documentation BACKWARDS through a rename that
+finished in v166.**
+
+**It may be that the committed `sutram-stdlib.html` is stale and Muse regenerated it from an older generator - in
+which case the fix is to regenerate, not to apply this text.** **Either way, applying it as-is would have put old
+keywords back into the standard-library reference.**
+
+### Why this is worth recording
+
+**Muse was right that `sutram-stdlib.html` is behind its source** - it found `brihat` 12 to 13 functions and
+`samanvaya` 10 to 11, which are real. **But the same regeneration also carried old vocabulary, and a patch is
+applied as a whole unless someone reads it.**
+
+**Nine of thirteen applied. Four held back pending a regeneration rather than a text patch.** **A patch from a
+trusted partner still has to be read - which is the same rule as the guard: verify, then apply.**
+
+## v327 - ChatGPT's R108: my fixes confirmed, ONE leftover of mine found, and the keyword choice is now a clean decision
+
+### It checked the live tree and confirmed the fixes are real
+
+**Its WS1 opens with "Applied - CLOSED, DO NOT repeat"** and names `README.md`, `docs/sutram-roadmap.html` and
+`PROJECT-OVERVIEW.md` with their blobs. **It verified rather than assumed** - *"a proposed Muse patch is not a
+main-branch fix until its content is present on main."*
+
+### And it found a leftover from my own partial fix
+
+> *"**Clean-up only:** `'**Not proven.** **Partly proven.**'` in the same header."*
+
+**So my PROJECT-OVERVIEW fix inserted "Partly proven." without removing the "Not proven." that preceded it.**
+**That is the FOURTH partial edit of mine this stretch** - and the second caught by a partner reading the tree.
+
+**Fixed.**
+
+### And the keyword decision is now clean, and ChatGPT corrected itself
+
+**The three numbers are three different things:**
+
+- **32 = the compiler's keyword categories** - **31 ordinary words plus `tak`**, the special word for loop ranges
+- **28 = introduced alongside 32 in the same scorecard change** - **and ChatGPT retracts its earlier guess that 28 was
+  an older count:** *"my earlier suggestion that it was probably an older count is NOT supported"* (Muse's finding)
+- **52 = the Sanskrit pack's target names** - from 58 Devanagari spellings, **including ordinary functions like
+  `likha`, not reserved keywords**
+
+**So the choice put to the owner is a real one and it is small:** **32 (including the special loop word `tak`) or
+31 (ordinary keywords only).** **ChatGPT recommends 31.**
+
+**A partner retracting its own earlier claim, on the strength of another partner's measurement, is the behaviour
+this project runs on.**
+
+## v326 - Muse triaged the 163 hits, fixed 13, and LEFT THE 88 TRUE ONES ALONE
+
+**That last clause is the whole result.** **I asked for a triage and warned against "fixing" a real limit. Muse did
+both.**
+
+### The triage
+
+| Bucket | Count | Disposition |
+|---|---|---|
+| **FALSE** - a claim of absence for something that exists | **16 hits / 13 unique claims** | **fixed** |
+| **TRUE** - a real limit, policy or design proposal | **88** | **left alone** |
+| **HISTORICAL** - versioned history or dated snapshot | **57** | **left alone** |
+| **AMBIGUOUS** - needs the owner | **0** | - |
+
+**88 of 163 hits are legitimate.** *"There is no garbage collector"*, *"no concurrency"*, *"the ten packs have
+never been exercised by a human"* - **all true, all kept.** **A check that "fixed" those would have stripped the
+honest half of the documentation.**
+
+### And the 13 false ones, in 7 files
+
+- **`PROJECT-MASTER.md`** - *"Windows never executed"* → **Windows executed, 16 required checks passed on real Windows 11**
+- **`PROJECT-MASTER.md`** - the freestanding boot claim, split correctly: **Windows done, boot still never performed**
+- **`docs/LIBRARY-BOUNDARY.md`** - *"there is no FFI yet (not started)"* → **the C FFI exists (R32-R34)**
+- **`docs/LIBRARY-BOUNDARY.md`** - first-class functions and methods
+- **and three more**, in a patch of 7 files
+
+### And the AMBIGUOUS bucket is empty, which is itself a result
+
+**Muse found no definition question it could not resolve.** **So the keyword count - 32 vs 28 vs 52 - is the ONLY
+ambiguous one, and it came from ChatGPT's round, not this sweep.** **That is a clean separation: 163 hits, one
+genuine owner decision, and it was found by the other partner.**
+
+### And the patch is delivered, not applied
+**`2026-10-23-round33-triage-fixes.patch`** - **7 files.** **To be applied by Sarvam, since Muse's convention is to
+propose changes in a patch rather than push them.**
+
+## v325 - ROUND-33 and ROUND-108
+
+**ROUND-33 (Muse):** **triage the 161 hits, do not count them.** *"Most will be legitimate - 'there is no garbage
+collector' is TRUE and must stay."* **Four buckets: FALSE (fix), TRUE (leave), HISTORICAL (date it), AMBIGUOUS
+(owner).** **Then apply the FALSE ones and date the HISTORICAL ones, and change no TRUE one.**
+
+**ROUND-108 (ChatGPT):** **reconcile its P0 list against a tree that moved three times while it worked** - which are
+applied, which remain, with exact text for the rest. **Plus the spec-maintenance sequence, and the keyword
+definition put to the owner in one plain paragraph.**
+
+**The instruction that matters in ROUND-33 is the negative one:** **do not change a claim that is true.** **A
+triage that "fixes" a real limit would remove the honest half of the documentation - which is the error this
+project made in the opposite direction a week ago, when the README understated itself by three milestones.**
+
+## v324 - the last P0 in PROJECT-OVERVIEW: the Windows claim, fixed by exact block
+
+**ChatGPT's R106 P0 list flagged `PROJECT-OVERVIEW.md`: *"Nobody has run the Windows GUI on real Windows... The
+Windows installer has never been executed on Windows."*** **Both are false - the acceptance ran on real Windows 11,
+non-elevated, 16 required checks PASS.**
+
+**My first two edit attempts MISSED, because the sentence is line-wrapped mid-phrase** - *"Nobody has run the
+**Windows GUI** on real Windows. Nobody has
+**rendered..."*. **A string match against wrapped prose fails, and it
+fails silently if you do not check the result.**
+
+**So I replaced the whole block between two anchors instead of matching a sentence inside it.** **That is the
+second time this stretch that line-wrapping defeated a text match - and the fix is the same both times: match a
+block between anchors, not a phrase.**
+
+**The paragraph now reads:** *"Partly proven. The Windows GUI and the installer HAVE been run on real Windows 11,
+by a standard user, not elevated - 16 required checks PASS, machine clean afterwards. What is not yet proven: the
+current merged revision has not been re-accepted."* **And the Linux X11 caveat is kept, because it is still true.**
+
+## v323 - Muse built the stale-claims check, and caught that MY fix was only partial
+
+**Both delivered. And Muse's first finding is about my own work.**
+
+### The check exists: `tools/doc_stale_claims.py`
+
+**Eight absence-shaped patterns, scanned across every `.md` and `.html` outside the collaboration folders and
+`backups/`.** **Run on main: 115 documents, 161 hits.** **And its output states plainly that it is a floor, not a
+proof** - *"it finds sentences shaped like absence claims and cannot decide whether a claim is still true."*
+**Exactly the framing I asked for, and it is the same framing `check-alloc-sizes.py` uses.**
+
+### And its first significant hit was my own incomplete edit
+
+> *"`PROJECT-OVERVIEW.md:159` - contradictory paragraph, partially fixed. The v318 changelog says the stale claims
+> were fixed, but the paragraph now reads '**Not implemented.** Separate compilation..."*
+
+**So my v318 fix left the words "Not implemented." in front of a sentence saying it IS implemented, and left the
+old tail - "No concurrency. No first-class functions." - contradicting the sentence I had inserted.** **The
+changelog claimed a fix that was half a fix.**
+
+**That is the third time this stretch that my own change was the defect.** **And it was found by a check I asked
+for, against a claim I had already written down as done.**
+
+**Fixed now: the prefix is gone, and the tail names what actually remains absent - concurrency, pattern matching,
+namespaced modules.**
+
+### And ChatGPT defined the keyword counts
+
+**32 is the number of unique `KW_*` IDs in the compiler** (lines 145-176, `KW_MUKHYA` through `KW_PRASAR`).
+**28 is probably historical.** **And the warning matters:** *"Do not report them as '32 entries in the keyword lexer
+table'"* - **the lexer table has more entries than there are keyword IDs, so the two numbers are different
+quantities that look like the same one.**
+
+**So the scorecard's two numbers are a real ID count and a stale one, and neither is "the number of keywords" in
+the sense a reader would assume.** **The definition is the owner's call.**
+
+## v322 - ROUND-32 and ROUND-107: the check for outgrown limits, and the keyword definition
+
+**ROUND-32 (Muse): build `tools/doc_stale_claims.py`.** **Seven documents stated a limit that had been removed, and
+every gate missed it - because gates check that things WORK, not that the documents stopped saying they don't
+exist.** **The check cannot decide whether a claim is still true; it can make sure nobody has to remember to look.**
+**And it must say so in its own output, the way `check-alloc-sizes.py` says `reviewed spellings accepted (NOT
+certified safe)`.**
+
+**ROUND-107 (ChatGPT): the keyword definition.** `sutram-scorecard.html` says **32** and **28** in the same
+document; **the Sanskrit pack maps 52.** **Muse measures all three; ChatGPT says what each plausibly counts and
+which definition belongs in a public document. The owner decides.**
+
+**And ROUND-107 asks ChatGPT to mark which of its 17 remaining P0 corrections are already applied** - *"main moves
+while you work."*
+
+## v321 - ChatGPT caught a claim of MINE that its own numbers contradict
+
+**Applying its R106-WS1 prose corrections, the first thing I hit is my own error.**
+
+**`PROJECT-MASTER.md`'s performance table said:**
+
+> *"| **Memory**, peak RSS | **16,128 KB** | 16,956 KB | 16,008 KB | **Sutram WINS (marginally)** |"*
+
+**Its own row shows Sutram 16,128 KB against Zig's 16,008 KB. ZIG WINS, by 120 KB.** **And the row below said
+"Runtime needed - Sutram WINS", when Sutram and Zig both need no runtime - that is a TIE.**
+
+**So the verdict line - "Sutram already wins four of five aspects" - was wrong twice: one row claimed a win it
+lost, and another claimed a win that was a tie.** **The honest count is two wins, two losses, one tie.**
+
+**Fixed, and the verdict now reads:** *"Sutram is not globally superior to Zig and this table does not claim it is.
+The losses are the honest part of the record and the wins are narrow ones."*
+
+### And this is the most damaging class of error this project can make
+
+**I wrote that table. I wrote the fundamental about measuring rather than assuming. And then I read my own numbers
+and recorded the verdict I wanted rather than the one they showed.**
+
+**A partner caught it, from the table I wrote.** **That is exactly why the prose audit was worth asking for - and
+exactly why I asked for it to be done by someone who did not write the numbers.**
+
+**ChatGPT's R106-WS1 lists 17 more P0 corrections across `PROJECT-OVERVIEW.md`, `docs/sutram-project-status.html`,
+`docs/sutram-design-parameters.html` and `PROJECT-MASTER.md`.** **All are the same class: a document stating a limit
+that has been removed, or a status that has moved.** **To be applied.**
+
+## v320 - ChatGPT's R106: one exemption was demonstrably unsound, and it checked the tree first
+
+**All three workstreams delivered.**
+
+### WS2 - the exemptions verdict, and the answer is a real finding
+
+**I asked whether any of the 19 exempt allocation sites had a reason that would not survive scrutiny.**
+
+> *"**YES: the original 19 included a demonstrably unsound reason.** No: those 12 affected sites are not still
+> unfixed."*
+
+**The unsound reason:** for set/map scratch allocations the exemption said *"`cap` is the capacity of the set/map,
+so cannot exceed the constructor bound."* **But for API callers, `cap`, `bcap` and `scap` were INDEPENDENTLY
+SUPPLIED numbers, with no check against the actual handle.**
+
+> *"**That reason DID NOT survive scrutiny. A caller passing the wrong cap caused an observable overwrite and
+> silent wrong..."*
+
+**So the exemption was not a judgement call - it was a false premise, and it was already fixed in R37/R38.**
+**Which means the check I asked for was the right one: a gate that reports "0 failed" while exempting 19 sites on
+written reasons is only as good as those reasons, and one of them was wrong.**
+
+### WS1 - and it did the thing I asked, which I had failed to do myself
+
+**Its prose-correction list opens with a "Do not re-fix" section:**
+
+> *"`README.md` known limits; `docs/sutram-roadmap.html` real Windows acceptance, separate compilation and
+> first-class functions; `docs/sutram-scorecard.html`... `PROJECT-OVERVIEW.md`... **Sarvam has already changed
+> those.**"*
+
+**It checked the tree before writing, found my fixes, and did not redo them.** **That is the check I told it to
+make because I had failed to make it - and it made it.** **The instruction worked, and it worked on the party it
+was written for.**
+
+**Its list is 18 KB of actionable corrections, each with the current line and the minimum replacement text** -
+**and it notes `PROJECT-OVERVIEW.md` still has "other stale words" beyond the phrase I fixed.** **To be applied.**
+
+### WS3 - the spec maintenance actions
+**Which spec files to update, which to mark historical, which to merge.** **To be applied.**
+
+### State
+**main v246. Muse's R31 and ChatGPT's R106 are both delivered. Claude is away until Tuesday. The Windows branch
+still awaits the owner's run.**
+
+## v319 - Muse delivered Claude's round, and found three things the doc gate cannot catch
+
+**Muse took ROUND-31 (Claude's, reassigned) on `fc7ad7cb` (v316, compiler v246) and delivered.**
+
+### The test run, complete - including the line Sarvam could not capture
+
+| Check | Result |
+|---|---|
+| `sh tools/gates.sh` | **34 PASS / 0 FAIL / 1 NOT-RUN** |
+| **`tests/run_tests.py`** | **NO-EXPECTATION=4 PASS=218** - **the exact line Sarvam failed to capture** |
+| crash corpus | **227 cases + manifest, 0 failed** |
+| library proofs | **224 passed, 0 failed** - one more than the 223 Sarvam measured |
+| property proofs | reported |
+
+**So the suite line is 218, and it is now measured rather than assumed.** **That was the one number I refused to type into a prompt, and Muse produced it.**
+
+### And the numbers audit is CLEAN - my doc fixes held
+
+**`tools/doc_counts_gate.py`: "every document agrees with the measured tree. Nothing to fix."** **The seven documents I corrected are now consistent with the tree.** **The gate that I built for the drift found no drift.**
+
+### But it found three things the gate does NOT catch, and the first is a real inconsistency
+
+1. **`docs/sutram-scorecard.html` says "32 keywords" on line 48 and "28 keywords" on line 237 - in the SAME document.** **And the Sanskrit pack maps 52 distinct core keywords.** **Three numbers for one quantity, none of them agreeing.**
+   - **And Muse's reason for not picking one is the right one:** *"There is no single definition of 'keyword' in the tree, so I did not pick a number; the discrepancy is reported as found."* **A definition question is not a Muse decision.**
+2. **`docs/sutram-stdlib.html` as committed is behind the library source** - `brihat` 12 to 13 functions, `samanvaya` 10 to 11. **The gate regenerates it during the run, so the committed copy drifts.**
+3. **The R39-known remainder**, still true.
+
+### What this says about the gate I built
+
+**It catches numbers that disagree with the tree. It does not catch a document disagreeing with ITSELF, or a generated file drifting from its source.** **Both are real and both were found by a human-side read, not by the gate.**
+
+**That is the correct division of labour and worth recording: the gate is a floor, and Muse's audit is what stands above it.**
+
+## v318 - the same stale claims were in three more files, not just the README
+
+**After fixing the README, I swept for the same class of claim elsewhere. It found three more files.**
+
+| File | The stale claim |
+|---|---|
+| **`PROJECT-OVERVIEW.md`** | *"No separate compilation... there are no `.smo` object files. No concurrency. No first-class functions."* |
+| **`docs/sutram-roadmap.html`** | *"Verify on a real Windows machine - Planned - **the Windows build has never been run on Windows**"* |
+| **`docs/sutram-scorecard.html`** | *"No first-class functions, namespaced modules, or pattern matching."* |
+
+**All three fixed.** **The roadmap's "Windows has never been run" is now "Done - passed on real Windows 11 Pro, a standard user, not elevated: 16 required checks, 0 FAIL, 0 NOT-RUN, machine clean afterwards."**
+
+### And a note on how the sweep worked
+
+**My first sweep ran on a stale clone (v310) and reported the README as still stale - which was wrong, because the fix was on main.** **So I checked main directly, found the README clean, and found the three other files.**
+
+**That is the third time in this stretch that a check of mine was wrong and the tree was right.** **The lesson is not "check more" - it is "check the thing you are about to make a claim about".**
+
+**And the sweep is worth repeating as a routine:** *a claim of absence goes stale the moment the thing arrives, and nothing checks for it.* **The scorecard, the roadmap and the overview each stated a limit that had been removed - and each is a document a reader trusts.**
+
+## v317 - ROUND-106 to ChatGPT: the rest of its own prose audit, worked through with me
+
+**ChatGPT's R105 found a P0 and I fixed three items from it.** **But its audit was 17 KB and I applied only what I
+could verify myself.** **So ROUND-106 asks for the actionable list rather than the audit.**
+
+### The three workstreams
+
+**WS1 - the rest of the prose audit.** For every remaining NOT SUPPORTED claim: **the file and line, the verbatim
+sentence, what the tree actually says, and the smallest edit that would make it true.** *"I will apply them."*
+
+**WS2 - the 19 exempt allocation sites.** Its R105-WS1 read all 19. **The verdict: is any exemption a reason that
+would not survive scrutiny?** *"That is where a floor becomes a hole - the gate reports '0 failed', and 19 sites
+are not checked because someone wrote a reason."* **And: if all 19 are sound, say so plainly - a clean verdict is a
+result.**
+
+**WS3 - the spec reconciliation as ACTIONS:** which spec files to update, which to mark historical, which to merge.
+
+### And the brief carries the rules, including the one about itself
+
+**"Check the tree before reporting a finding as new - a later commit may already have fixed it. Your own R105
+pinned v310; main is now v316, and the README has changed since."**
+
+**That line is there because it is the mistake I have made most often**, and because ChatGPT's own audit is now
+partly superseded by the fixes its audit caused.
+
+## v316 - the canonical path to completion, and every channel points at it
+
+**The owner asked that Muse - and every channel - know the current path.** **So there is now one document that
+answers "what are we doing, and what is left", and every collaboration folder carries a pointer to it.**
+
+**`docs/PATH-TO-COMPLETION.md`** - and `PATH.md` in all eight collaboration folders, which says: read
+`/LANGUAGE-PRIORITY.md` and `docs/PATH-TO-COMPLETION.md` before any round, **and if a brief conflicts with either,
+they win.**
+
+### What the path document contains
+
+- **The goal, stated as a measure rather than a wish:** *"not 'a language exists' but that a person who has never
+  programmed can write a working program in it, and understand the error when they get one."*
+- **The Sanskrit-only priority**, with a pointer to the directive.
+- **The measured state**, so nobody works from an old picture.
+- **The ordered path, with owners and "done when":** merge the Windows branch, re-run the Windows acceptance, prove
+  the mixed `i64`/`f64` ABI case, **the type-on-variables decision (the owner's, and open longest)**, the Sanskrit
+  v1.0 freeze, then the other packs, then performance.
+- **Who owns what**, so the three AIs do not collide.
+- **The six rules that do not change.**
+- **And a closing note to any AI reading it:** *"Run the check, then report the result - including when the result
+  is that you could not run it. **'NOT RUN - no toolchain' is a complete and acceptable answer. A number typed from
+  memory is not.**"*
+
+**That last line is the one I most wanted in it**, because it is the failure I have made most often on this project.
+
+## v315 - ChatGPT's prose audit found the README listing three DONE things as limits
+
+**ChatGPT replied to R105, and my earlier check said it had not. My check was wrong** - I searched the newest ten
+entries of an alphabetically-sorted listing, and its deliverables sorted earlier. **It had replied.**
+
+### And its prose audit found a P0
+
+**`README.md`, the "Known limits" section, listed three things that are now DONE:**
+
+| The README said | The truth |
+|---|---|
+| **"No separate compilation... there are no `.smo` object files yet"** | **separate compilation landed in R29-R31; `.smo` objects exist** |
+| **"No first-class functions"** | **first-class functions landed in R23** |
+| **"The Windows GUI has never been run on real Windows"** | **it passed 16 required checks on real Windows, not elevated** |
+
+**So the document a new reader trusts most was understating the project's own work by three milestones.** **And one
+of the three is the Windows acceptance - the thing the project is proudest of.**
+
+### Fixed, and replaced with limits that are real
+
+**The section now states what is actually true and uncomfortable:** no concurrency, **memory safety is manual - no
+GC, no ownership rules, C's problem inherited deliberately**, **the Linux X11 GUI cannot draw Indic script** (8-bit
+core font), **and the library is proven against known bugs, not proven correct - 818 mutants undecided, 15
+survived every proof.**
+
+**A limits section that understates is as damaging as one that overstates, and it is the opposite failure from the
+one I expected.** **I was watching for the README claiming too much. It was claiming too little.**
+
+### And ChatGPT's WS1 reviewed all 19 exempt allocation sites
+**The provenance gap, and every exemption, read one by one** - **with `NOT RUN - no toolchain` stated for every
+execution gate**, which is the honesty its brief asked for.
+
+## v314 - Muse is asked to carry Claude's round; Claude is away until Tuesday
+
+**Claude is unavailable until next Tuesday.** **So ROUND-31 goes to Muse** - which has been idle since ROUND-30
+(16 October) while main moved from there to v246.
+
+**ROUND-31 is Claude's round, reassigned:** the numbers audit, the full test run - **including the suite summary
+line Sarvam could not capture** - the guard, and its own capability choice.
+
+**And it opens with the language directive**, so Muse starts on the current priority rather than the
+three-language plan it last saw.
+
+### And ChatGPT has not replied to the prompt round
+**Nothing in `ChatGPT-to-Sarvam/` matches the prompt-round deliverables** - no prose audit, no provenance-gap
+answer. **Its last delivery is R104.** **So it is either still working or did not receive the prompt.**
+
+### State
+**main v246. The R38 merge landed, so ROUND-39's item 1 is done.** **The only branch still unmerged is
+`claude/windows-ffi` (v245), which the Windows channel owns.**
+
+## v313 - LANGUAGE PRIORITY: Sanskrit only until v1.0. All channels now read one directive.
+
+**The owner's decision, 23 October 2026: develop in Sanskrit only until v1.0 is finished.** **The other ten packs -
+including Gujarati and Hindi - are FROZEN. They stay in the tree, they keep working, and no new development goes
+into them.** **After Sanskrit v1.0 they resume, and they will be cheaper then, because the compiler and toolchain
+will be finished.**
+
+### The mechanism: one directive, read by every channel
+
+**`LANGUAGE-PRIORITY.md` at the repository root** - and a short `READ-FIRST.md` pointer in all eight collaboration
+folders: `Sarvam-to-Claude`, `Claude-to-Sarvam`, `Sarvam-to-ChatGPT`, `ChatGPT-to-Sarvam`, `Sarvam-to-Muse`,
+`Muse-to-Sarvam`, `Sarvam-to-ChatGPT-Windows`, `Windows-to-Sarvam`.
+
+**So any AI opening its folder sees the priority before it reads a round.**
+
+### What it tells each party
+
+- **Claude:** all compiler, library, test and tool work targets Sanskrit; **if a change touches the packs it must
+  leave the other ten exactly as they are, and say so in the delivery.**
+- **ChatGPT:** review and design against Sanskrit; **the frozen packs remain in scope for READING - a defect found
+  there is REPORTED, not fixed.**
+- **Windows:** the installer, the IDE and the diagnostics target Sanskrit; **the installer still installs the other
+  packs - they are shipped, just not developed.**
+- **Sarvam:** every round states the target; **frozen-pack defects go on a queue and are not acted on.**
+
+### And the one thing that must NOT change
+
+> *"The language must remain multi-language capable. The pack mechanism, the eleven packs, the font handling and the
+> diagnostics pipeline all stay exactly as they are. **We are pausing the packs, not dismantling them.** A future
+> pack must still be a translation job. If Sanskrit-only work makes that harder, it is the wrong work."*
+
+**That clause is in the directive deliberately.** **The cheap way to focus on one language is to hard-code it, and
+that would cost far more later than it saves now.**
+
+## v312 - the Sanskrit-and-AI note: what the NASA paper says, and the myth we decline to repeat
+
+**The owner asked what the NASA Sanskrit paper is and how it is useful. The honest answer is that the paper is real
+and the claim built on it is false - so the project now documents both.**
+
+**`docs/reports/SANSKRIT-AND-AI-BRIGGS-1985.md`** records:
+
+- **The paper:** Briggs, *AI Magazine*, Spring 1985, NASA Ames. **About natural-language INPUT and knowledge
+  representation - not about programming languages.**
+- **What it says:** the grammarians' sentence analysis is *"identical not only in essence but in form"* with the
+  semantic networks AI researchers were building.
+- **The myth, and its mechanism:** the paper is real, so the citation looks verifiable; **its subject is quietly
+  swapped from language *input* to language *choice*; a second-hand attribution (a 1987 *Forbes* report) is added
+  and never checked; repetition does the rest.** **No such Forbes report exists in any year, and NASA made no
+  endorsement.**
+- **The practical objection that settles it:** *if Sanskrit were the most suitable language for software, software
+  would have been written in it by now.* None has been, in forty years.
+- **What IS useful:** Pāṇini's ~3,976-rule grammar as a composable rule system - **which is the actual basis for
+  Sutram's root-composable 303-function vocabulary** - and the **kāraka** model (Agent, Recipient, Goal,
+  Instrument, Location, Source), **which is relevant only if the project ever builds natural-language input.**
+- **Why Sutram uses Sanskrit:** **accessibility, and nothing else.** *"You can measure whether a non-English
+  speaker learns `yadi`/`anya`/`yavat` faster than `if`/`else`/`while`. You cannot measure 'Sanskrit is more
+  scientific.'"*
+
+**And it closes on the rule it is an instance of:** *"This project's standard is: performance is measured, not
+assumed. The same standard applies to claims about the language's heritage. Declining a false claim costs nothing.
+Repeating one costs the credibility of every true claim beside it."*
+
+**Referenced from `PROJECT-MASTER.md`,** so any AI reading the project's purpose finds it.
+
+## v311 - Claude's R38 merge landed. Main is v246.
+
+**I checked main and the compiler reports v246** - so `claude/round-38` is merged. **That was ROUND-39's item 1, and
+it is done.**
+
+**What that puts on main:**
+- the R38 capability work, with a new gate "R38 fail-alloc" (gates 34)
+- library proofs 223/223 in both environments
+- and it merged without colliding with the Windows branch, **because Claude skipped v245 for it** - which is
+  the coordination that made a clean merge possible
+
+**Still outstanding: `claude/windows-ffi` at v245, unmerged.** **The Windows channel owns it, and the owner runs
+that side - so it merges when he does the Windows round.**
+
+### And the folder check
+**Nothing new in Claude-to-Sarvam or ChatGPT-to-Sarvam since R38/R104.** **Both are working the prompts the owner
+pasted rather than the ROUND-39/ROUND-105 files, which overlap and can be treated as superseded.**
+
+**Windows-to-Sarvam has its four deliveries, unchanged - waiting on the owner's Windows run.**
+
+## v310 - ROUND-39 and ROUND-105: the merge first, and the prose audit that nobody has done
+
+**Two branches hold finished work and neither is on main: `claude/round-38` (v246, gates 34) and
+`claude/windows-ffi` (v245).** **So ROUND-39's first item is the merge** - *"you have git; Sarvam does not."*
+
+**And ROUND-39 asks the question only Claude can answer:** **whether the development phase is complete.** **The
+owner's order was development first, then performance, and the line has to be called by the person who has read
+the compiler.**
+
+### And the prose audit is now assigned, to ChatGPT
+
+**Claude measures the counts; ChatGPT reads the sentences.** **The split is by KIND of claim, not by file** -
+which is the fix to the ambiguity in the three prompts I drafted.
+
+**And the reason it matters is in the brief:** *"A document that overstates is the most damaging kind of error in
+this project, because a reader trusts it and nobody measures it."*
+
+**Nothing checks a KPI in an HTML page. That has been a named gap since the doc-currency audit, and this is the
+round that closes it - by reading rather than by scripting.**
+
+## v309 - R38 and R104: and Claude skipped a version number so the Windows branch would not collide
+
+**Both delivered. And one detail in Claude's hand-back is the kind of coordination this project needs more of.**
+
+### Claude R38: v246, on a branch, and it skipped v245 on purpose
+
+> *"Compiler: `main` is still v244. The branch is `v246`. **I skipped v245 because the unmerged Windows FFI
+> build already uses it.**"*
+
+**The Windows FFI is on a branch at v245 and unmerged. Claude noticed, and moved its own version to v246 rather
+than taking a number another branch had already claimed.** **Two branches, two version numbers, no collision -
+and it cost Claude nothing but noticing.**
+
+**And it did the other right thing:** *"The code is on branch `claude/round-38`, commit `3d56ccd4`. **It is not on
+`main`. It changes the compiler, so it waits for review.**"* **A compiler change waits; a library change does
+not.** **That distinction is now being applied without being asked.**
+
+**Numbers: gates 34 PASS / 0 FAIL / 1 NOT-RUN - one more than R37, a new gate "R38 fail-alloc". Library proofs
+223/223 in both environments. Suite 218. Corpus 227, 0 failed. Fuzzers clean.**
+
+### And ChatGPT wrote the rule small enough to use
+
+**The rule now fits on a page:**
+
+> *"**Check the domain, prove the full byte length or element count fits without overflow, and prove the
+> requested access lies inside the real allocation - before computing an allocation size or memory address.**
+> Checking whether a *wrapped result* is negative or within bounds is too late."*
+
+**And it gives WRONG and RIGHT side by side:**
+
+```sutram
+# WRONG
+vitti bytes = count * 8
+yadi (bytes < 0) { prati 0 }
+vitti p = nirmmita(bytes)
+
+# RIGHT
+yadi (count < ...)   # the domain check comes first
+```
+
+**That is exactly what was asked for: a rule a person can apply without reading a 14 KB audit.** **And the WRONG
+line is the actual defect Claude fixed in R37, reduced to three lines.**
+
+### And the WS1 allowlist audit, from the previous delivery, still stands
+**35 of 35 current spellings accepted, 0 unmatched - and the checker is LOOSER than safety, not stricter: it
+matches spellings, not provenance.**
+
+## v308 - the checker is not stricter than the truth. It is LOOSER, and ChatGPT named the mechanism.
+
+**I asked: is ChatGPT's allocation allowlist complete, or stricter than the truth? The answer is neither - it is
+complete for current spellings, and LOOSER than safety in a way that matters.**
+
+### The completeness half: 35 of 35
+
+| module | calls | accepted expressions |
+|---|---:|---|
+| aadhar | 2 | `c * 8`; `c * 4 * 8` |
+| sangrah | 11 | `cap * 33 + 1` (x6); `bcap * 33 + 1` (x2); `cap * 32 + 1`; `cap * 8` (x2) |
+| suchi | 6 | `3 * 8`; `sz` (x2); `ncap * 8` (x2); `4 * 8` |
+| **total** | **35** | **35 accepted, 0 unmatched** |
+
+**Every actual call in nine modules has a spelling in the reviewed set.** **So the checker will not fail a
+correct program today.**
+
+### And the half that matters: it accepts what it should reject
+
+> *"**Same token, unsafe origin:** `mala` has `nirmmita(sz)`. Changing the preceding assignment to `sz = c * 8`
+> with no signed/domain check is still accepted by R103; the accepted spelling did not change. **A
+> benign-looking `sz` name has no provenance proof.**"*
+
+> *"**Wrong function in same file:** any new function inside `mala.smlib` can use `nirmmita(sz)` and pass."*
+
+**So the checker matches SPELLINGS, not PROVENANCE.** **`nirmmita(sz)` is accepted because `sz` is on the list -
+and a new line that computes `sz` unsafely is accepted for the same reason.** **The check reads the formula, not
+the history of the variable.**
+
+**And the honest scope line:** *"The list is complete for current call-expression spellings, **not for safe
+formulas or future legal spellings**."* **And: *"A complete run of the checker over a checkout was NOT_RUN."***
+
+### Why this is the right answer
+
+**I asked whether the check was too strict, because a check that fails correct programs teaches people to ignore
+it.** **The answer came back: it is not too strict; it is too loose in one specific way, and here is the
+mechanism.**
+
+**That is more useful than "the allowlist is fine."** **It means the checker is a floor, not a proof - and its
+own line already said so: `reviewed spellings accepted (NOT certified safe)`.**
+
+**And the project has a second enforcement point:** **`tools/check_alloc_bounds.py`, R37's integrated gate** - so
+the rule is enforced by a partner's script and by the project's own gate, **and this review is of both.**
+
+## v307 - ROUND-38 and ROUND-104: is the checker stricter than the truth, and what does the rule mean?
+
+**ROUND-38 (Claude):** **its call, and the candidate list is shorter than it has ever been** - *"everything
+blocked by architecture is now built."* **Plus one check: is ChatGPT's allowlist complete?** *"A check stricter
+than the truth misleads as badly as one that is looser - it will fail a correct program and teach people to
+ignore the check."*
+
+**ROUND-104 (ChatGPT):** **is the checker's allowlist complete, or stricter than the truth?** **And: write the
+rule as something a person can apply without reading the audit** - *"a rule that needs a 14 KB audit to
+understand will not be applied by the next person who writes a library function."*
+
+### And the audit
+**No `__pycache__`, no `.bak`/`.orig`/`.rej`/`.tmp`, no stray artifacts.** **The tree is clean at v306, the docs
+current, and 33 gates PASS / 0 FAIL.**
+
+## v306 - R37: the overflow CLASS is fixed, and it found a BUS ERROR. Gates 33, library proofs 223/223.
+
+**Claude acted on ChatGPT's R102 audit site by site, and the class is now closed rather than the instance.**
+
+### Fixed, each with a witness that misbehaves on the old library
+
+| Site | What was wrong | Now |
+|---|---|---|
+| **`anukram`, all four bounds** | **they ADDED** (`p + 8 > cap`, `p + 8 + n > cap`, `p2 + n > cap`) **and the sum wraps.** **A buffer whose 8-byte length field says `MAX` made `anukram_grah_ashtak` copy past its buffer: BUS ERROR** | **every bound subtracts:** `p > cap - 8`, `n > cap - 8 - p` |
+| **`mala_nava`, negative count** | `-2^61 + 1` passed the R35 upper bound, and `c x 8` wrapped to **8** | `c < 0` gives 0 |
+| **`matrika_yoga`, `skalar`** | `2^62 + 1` by `4` wrapped to 4: **a 4-element loop that reported success** | a shape check gives -1 unless `m x n` fits the actual `kosh_len` |
+
+**And the `anukram` finding is the one that matters most, in Claude's own words:** *"Decoding untrusted bytes is
+what `anukram` is for, so this was the most reachable defect in the audit."* **A length-prefixed buffer with a
+hostile length field produced a bus error in the function whose whole job is decoding untrusted bytes.**
+
+**That defect existed because the bounds ADDED.** **`p + 8 > cap` is a correct bound until `p + 8` wraps, and
+then it is no bound at all.** **Every bound now subtracts, which cannot wrap.**
+
+### And the ones NOT changed are measured, not assumed
+
+> *"`samanvaya`'s other functions (`vivartana`, `matrika_gunana`, `pehchan`, `nishan`, `rekha_manak`) - their
+> indices are products (`i x n + j`), but the first index past row 0 is already outside the kosh. So **the
+> runtime's kosh guard stops them loudly** (`mala ank seema atikram`, exit 1) before any wrapped..."*
+
+**Measured, not assumed.** **That is the difference between an audit that finds everything and an audit that
+claims to.**
+
+### The numbers
+**Gates 33 PASS / 0 FAIL / 1 NOT-RUN - one more than R36: "alloc bounds", the rule enforced.** **Library proofs
+223 / 223** under a 4 GB limit and unlimited. **Suite 218. Corpus 227, 0 failed.** Compiler v244 - the work is in
+the library.
+
+**And ChatGPT's mechanical checker (R103) is now matched by a gate** - **the rule is enforced in two places, one
+by a partner's script and one by the project's own gate.**
+
+## v305 - ChatGPT built the mechanical checker, and its best line is what it does NOT claim
+
+**ROUND-103 asked for the smallest mechanical check that would catch a "validity must precede address formation"
+violation, in the shape of `check_layers.py`. It built one.**
+
+### `tools/check-alloc-sizes.py`
+
+**It scans `lib/*.smlib`, finds every `nirmmita(` call, handles nesting inside a line, and rejects any expression
+not in an explicit reviewed allowlist.** **It ran against four controlled fixtures:**
+
+```
+PASS reviewed spellings accepted (NOT certified safe)
+PASS new unsafe allocation formula rejected
+PASS parenthesised ...
+```
+
+### And the parenthetical is the best line in the delivery
+
+**`reviewed spellings accepted (NOT certified safe)`.**
+
+**A check that says what it does not prove is worth more than one that implies it proves everything.** **It
+accepts a reviewed spelling; it does not claim the reviewed spelling is safe.** **That is the difference between a
+gate and a guarantee, and the distinction has cost this project rounds before.**
+
+### And it reviewed rather than duplicated
+
+**ROUND-103's WS1 asked for the Windows FFI's top gap.** **It found that it had ALREADY delivered the exact
+`cstr_ro` pointer contract in R102** - *"R103 reviewed this against the current branch rather than inventing a
+conflicting second format."*
+
+**That is the same check Claude made in R36 and the same one I failed to make in my ROUND-36 brief.** **Two
+partners now check the tree before writing; I was the one who did not.**
+
+**The spec it reviewed:** `sutram-ffi-v3|windows-x86_64-msabi` and `s_len|1|cstr_ro|i64|sutram_w_cstrlen`.
+**Only a compiler-known UTF-8 literal with no embedded NUL is allowed; the compiler appends the NUL.** **And it
+rejects raw integers, pointers, kosh, dynamic strings, variables and slices** *"pending a real lifetime/extent
+model"* - **which is the honest reason and not a limitation dressed up.**
+
+**And it states the boundary:** *"This does NOT establish the foreign C function obeys a const-pointer/type
+contract; COFF lacks that metadata."*
+
+## v304 - ROUND-37 and ROUND-103: the audit's findings, and whether the rule can be enforced
+
+**ROUND-37 (Claude):** act on ChatGPT's R102 audit - all 24 `lib/*.smlib` files, every allocation call and index
+site inventoried. **Where it names a site: fix, or say why not. Where it names a rule: say whether it can be
+enforced mechanically** - *"`tools/check_layers.py` already enforces a marker on every lib file, so a second
+mechanical check is not new ground for this project."*
+
+**ROUND-103 (ChatGPT):** *"the rule is 'validity must precede address formation'. A rule in a document is
+followed until it is not."* **So: the smallest mechanical check that would catch a violation, in the shape of
+`check_layers.py`.** **And if it cannot be checked mechanically, say why - that is a finding too.**
+
+**And I corrected my own brief to ChatGPT, because it should know:** **I told Claude its R101 finding was
+"something you did not" find. It was not - Claude's R35 had fixed it. My error, and both partners handled it
+correctly.**
+
+### And the audit and cleanup
+**No `__pycache__`, no `.bak`/`.orig`/`.rej`/`.tmp`, no stray artifacts.** **The tree is clean and the docs
+current at v303.**
+
+## v303 - MY ROUND-36 BRIEF WAS WRONG. Claude had already fixed the positive wrap in R35.
+
+**I wrote in ROUND-36: *"ChatGPT read the same defect independently, before your answer landed. It found
+something you did not."* And I gave Claude the positive-wrap fix as a new task.**
+
+**Claude's R36 hand-back, first paragraph of WS1:**
+
+> *"ROUND-36 says ChatGPT 'found something you did not': that `sz = c * 8` followed by `sz < 0` lets a positive
+> wrap through. **That is the defect my R35 fixed.**"*
+
+**So it was already fixed.** **ChatGPT's R101 and Claude's R35 read the same defect in parallel; ChatGPT wrote
+its reading down and Claude fixed it, and I read ChatGPT's document without checking whether Claude's R35 had
+covered it.**
+
+**That is my error, and it is the same shape as the others: I treated a document as a discovery without checking
+the tree.** **The fix would have cost Claude a round on work already done.**
+
+**And ChatGPT caught it too, from its side:** *"Claude R36 landed while this audit was underway... R36 fixes
+list/queue growth bounds and `nighantu_vardh` failure handling. Those are closed in the newer tree, not new work
+to duplicate."*
+
+**Two partners, one error of mine, both of them handling it correctly** - Claude by saying "that is the defect my
+R35 fixed", ChatGPT by checking the newer tree before writing.
+
+### And the outcome is better than the brief deserved
+
+**Claude R36: compiler v244, gates 32 PASS / 0 FAIL, suite 218, corpus 0 failed.**
+
+**And the number that matters: library proofs 222 / 222 - under a 4 GB address limit AND unlimited.** **So the
+r18 fix holds in both environments, which is the thing the original test could not do.**
+
+**ChatGPT R102: a source audit of all 24 `lib/*.smlib` files**, with an inventory of every allocation call and
+every explicit index site - **and its own rule: *"validity must precede address formation."***
+
+**So the round produced the class-level audit I asked for, plus a correction to my brief.**
+
+## v302 - ROUND-36 and ROUND-102: the positive-wrap guard gap, and the class it belongs to
+
+**ChatGPT's R101 found a real library defect, and it is now the task.**
+
+> *"Both `suchi_srij` and `avali_srij` first perform `sz = c * 8` and then only check `yadi (sz < 0) { prati 0 }`.
+> **Multiplication that wraps into a positive signed 64-bit value passes the guard.**"*
+
+**A capacity between `2^61` and `2^62` asks for more bytes than exist and gets a small positive size.** **That is
+a silent wrong answer in the allocation path - the same class as F1 and the FFI truncation.**
+
+**ROUND-36 (Claude):** fix it, **say which method and why**, and **check every other place in the library that
+multiplies before it allocates.**
+
+**ROUND-102 (ChatGPT):** *"the same class, elsewhere - find the other silent wraps."* **Every place a
+multiplication precedes an allocation or an index where a wrap could land positive.** **And the instruction that
+makes it worth the round:** *"one instance is a fix, the class is a rule."*
+
+**And `ganita_checked_mul` already exists and returns 0 on failure rather than the wrapped value** - **so the
+question is which sites should use it and which should not.**
+
+### The method note worth keeping
+
+> *"Merely making this test pass by forcing a `ulimit` does not test the overflow guard."*
+
+**That is the rule that kept this defect from being closed by hiding it.**
+
+## v301 - r18: TWO independent readings agreed, and each found something. Test wrong AND guard incomplete.
+
+**Claude R35 and ChatGPT R101 read the same defect independently, before either saw the other's answer. They
+converged, and the convergence is the useful part.**
+
+### ChatGPT found two faults and separated them
+
+**A. The failing test and its golden are WRONG as a portable overflow proof.**
+
+> *"The test's first two inputs `3037000499` are NOT an overflow when multiplied by eight. They demand a valid
+> (though very large) allocation, so either successful anonymous virtual-address mapping (nonzero handle) or
+> allocation failure (zero) can be correct depending on the host. **Requiring `0` in the `.out` golden on every
+> host is a false expectation.**"*
+
+**And the line that matters:** *"Merely making this test pass by assuming a fixed amount of available RAM or
+forcing a `ulimit` **does not test the overflow guard**."*
+
+**B. The actual guard IS ALSO incomplete, for a different and deterministic case.**
+
+> *"Both `suchi_srij` and `avali_srij` first perform `sz = c * 8` and then only check `yadi (sz < 0) { prati 0 }`.
+> **Multiplication that wraps into a positive signed 64-bit value passes the guard.** For
+> `c = 2^61 + 1 = 2305843009213693953`, the true byte request is `2^64 + 8`, yet 64-bit arithmetic..."*
+
+**So: a positive wrap passes an overflow guard that only tests for a negative result.** **That is a real defect
+in the library, found by an independent reading, and it has nothing to do with the memory limit.**
+
+### And Claude's R35 fixed the test without making it pass
+
+> *"One golden changed, and why is the whole of WS1: `tests/stdlib/r18_srij_overflow_guard.out`. **The test's
+> inputs were wrong, so it was corrected, not rewritten to pass.**"*
+
+**That sentence is the one to keep.** **The easy move was to change the expectation until the suite went green.
+The correct move was to say the expectation had been wrong - and to say it in the delivery.**
+
+**Gates: 32 PASS / 0 FAIL. Suite 218. Corpus 0 failed. Compiler v244 - the fix is in the standard library, not
+the compiler.**
+
+### What this exchange produced, and it is more than the fix
+
+| Who | Found |
+|---|---|
+| **the Windows Claude** | **reproduced it**, and found it depends on the address space |
+| **ChatGPT** | **the test's inputs are not an overflow at all**, and **the guard misses a positive wrap** |
+| **Claude** | **corrected the golden rather than the suite's colour**, and fixed the library |
+| **Sarvam (me)** | **could not reproduce it**, said so, and named the environment difference instead of guessing |
+
+**Four parties, four contributions, and no one of them could have got there alone.** **The defect that started as
+"a test fails on some machines" is now a corrected test and a named library gap.**
+
+## v300 - ROUND-35 and ROUND-101: the r18 defect, now reproducible, to two independent readings
+
+**The r18 failure is the concrete task, and it is being read twice on purpose.**
+
+**ROUND-35 (Claude):** *"Find out what the guard is actually testing, and say whether the guard is wrong or the
+test is. And state which environment it must pass in - a test that only passes under a memory limit is not a
+test of the guard."*
+
+**ROUND-101 (ChatGPT):** **a separate reading from the source and the test file, BEFORE Claude's answer
+lands** - *"two independent readings of the same defect is what worked for F1."* **And the question I want
+answered: is the guard wrong, is the test wrong, or is the EXPECTATION wrong?**
+
+### And the record of how this one went
+
+**I could not reproduce it. I said "not reproduced", not "not a defect", and named the environment difference
+as the likely cause.** **The Windows Claude reproduced it and found it depends on the address space.**
+
+**That is the right outcome for a question I could not settle, and it is worth recording: the honest label
+("not reproduced, environment differs") left the question open for the environment that could answer it.**
+**"Not a defect" would have closed it wrongly.**
+
+## v299 - THE WINDOWS FFI IS DELIVERED, and the r18 question is answered: it depends on the machine
+
+**`Windows-to-Sarvam/WIN-FFI-2026-10-21.md`. Branch `claude/windows-ffi` at `79654e20` on top of main v298.
+Compiler v245. Not merged.**
+
+### The Windows FFI
+
+| Check | Result |
+|---|---|
+| crash corpus | **227 cases + manifest, 0 failed** |
+| suite | **PASS=218** |
+| gates (WSL) | **31 PASS / 3 FAIL / 1 NOT-RUN** - new PASSes: **R35 COFF reader, COFF reader fuzzer, R34 FFI v2** |
+| **Windows** | **`test_ffi_windows.py` 21/21** · `test_coff2smo.py` 11/11 · `test_link_windows.py` 1021/0 · `test_windows_fixes.py` 4/4 |
+| **THE GUARD** | **564 programs: 476 byte-identical, 88 refused identically, 0 DIFFER - on BOTH Windows and Linux, a second round** |
+
+**And the FFI is opt-in, proven by the guard's own arithmetic:** *564 = the 562 before + 2 FFI-only programs,
+which an ordinary compile refuses on both sides - without `--ffi` nothing of it runs.*
+
+### And the r18 question, answered - and my method was wrong
+
+**The name is a FILE:** `tests/stdlib/r18_srij_overflow_guard.sm`. **`tools/proof_lib.py` runs every test in
+`tests/stdlib/` by listing the directory, so the name appears nowhere in `tools/` - which is why my grep found
+nothing.**
+
+**So my search was wrong, not the report.** **I looked for a name in the tooling; the name was a test file.**
+**That is the same shape as the coverage-audit error - a negative result from a badly-designed search.**
+
+### And the failure is real, and it depends on the machine
+
+| WSL, 48 GB RAM | library proofs | R29 |
+|---|---|---|
+| **v243** (what the linker delivery measured) | **219 passed, 1 failed** | **1 failed** |
+| **v244** (today's main) | **219 passed, 1 failed** | **1 failed** |
+| **v244 under `ulimit -v 4194304`** (4 GB address space) | **220 passed, 0 failed** | - |
+
+**And the output, the same binary:**
+
+```
+expected:                     0  0  0  1
+unlimited address space:      137683646717952  137659350708224  0  1
+```
+
+**So `r18_srij_overflow_guard` fails when the address space is UNLIMITED and passes when it is capped at 4 GB.**
+
+**And that explains MY run:** my sandbox passed 220/220 **because my sandbox has a limited address space.** **I
+was not reproducing it because I was not in the failing environment - and I said "not reproduced" rather than
+"not a defect", which was the right label.**
+
+**The values are address-shaped - `137683646717952` - so an overflow guard is not firing when a pointer-sized
+value is in play.** **That is a real defect, it is environment-dependent, and it is now reproducible.**
+
+## v298 - I tried to reproduce the r18 failure and could not. Recording that rather than the claim.
+
+**The Windows linker delivery reported 3 gate FAILs and named them:** *"library proofs and R29 (both
+`r18_srij_overflow_guard`) and X11 (no display)."* **I flagged it as a pre-existing defect worth a round.**
+
+**So I ran the library proofs. They pass:**
+
+```
+python3 tools/proof_lib.py --compiler ./sc
+  220 passed, 0 failed, 220 total
+```
+
+**And `r18_srij_overflow_guard` does not appear in `tools/` or `tests/` at all** - a grep for the name returns
+nothing.
+
+### What I can and cannot say
+
+**I cannot reproduce the failure.** **And my tree is `v242` while the Windows delivery measured `4c325b51`
+(v295)** - so the two runs are not on the same commit and I am not comparing like with like.
+
+**Three possibilities, and I am not going to pick one without evidence:**
+1. **it was fixed between v242 and v295**
+2. **it is WSL-specific** - the Windows delivery ran under WSL Ubuntu with a different `ld` (GNU ld 2.42) and
+   NASM 3.01 through a path wrapper
+3. **the name in the report refers to something I have not found** - it is not in `tools/` or `tests/`
+
+**So: NOT REPRODUCED, and the honest label is the one this project uses for F1 - not false, not real, and
+recorded as unreproduced with the difference in environment stated.**
+
+**The one thing I will not do is call it a defect on the strength of a name I cannot find.**
+
+### What would settle it
+**Running the proofs on `4c325b51` itself, under WSL.** **That is the Windows Claude's environment, not mine,
+and it is the right person to ask.**
+
+## v297 - the Windows x64 ABI page exists, and Claude's ffi-v2 is delivered
+
+**Compiler v244. Both partners delivered.**
+
+### The ABI page is written for the owner's Windows Claude
+
+**`ChatGPT-to-Sarvam/ROUND-100-WS3-WINDOWS-X64-ABI.md`** - and its first line says who it is for:
+*"Audience: owner working on Windows linker."*
+
+**And the differences it names are the ones that break a guessed ABI:**
+
+| ABI rule | Linux SysV (the current FFI) | **Microsoft x64** |
+|---|---|---|
+| integer/pointer parameters | first **6**: RDI RSI RDX RCX R8 R9 | first **4**: RCX RDX R8 R9 |
+| scalar `double` arguments | XMM0-XMM7 allocated **independently** of the GP registers | first **4 positions** - float or int - **by overall ordinal position**, not counted separately |
+| mixed `f(i64, f64, i64, f64)` | RDI, XMM0, RSI, XMM1 | **different** |
+
+**That middle row is the one that produces a linker that links and a program that returns the wrong
+number.** **On Linux a float does not consume an integer register slot; on Windows it does.** **A port that
+keeps Linux's rule will pass every byte-comparison and compute wrong values.**
+
+### And it is honest about its own scope
+
+> *"Real Windows 11 standard-user installation/linker acceptance 16 required PASS / 0 FAIL / 0 NOT_RUN... **this
+> does NOT test Windows C FFI, COFF ingestion, or this ABI.**"*
+
+**So the Windows linker's acceptance does not cover the FFI on Windows, and the page says so.** **That is the
+boundary between what is proven and what is next.**
+
+### Claude's R34-11-FFI-V2 is delivered
+
+**`Claude-to-Sarvam/R34-11-FFI-V2.md`** - the versioned header, which ChatGPT recommended two rounds ago.
+**So the FFI no longer advertises a richer ABI under a v1 header.**
+
+### And the round's other deliverables
+**ChatGPT:** a pointer contract, an FFI regression checklist, and a Microsoft ABI control experiment
+(`ROUND-100-WS3-MSABI-CONTROL.c` + its observed output). **Claude:** R34-10 and R34-11, with `evidence-r34-ffi`.
+
+**`WINDOWS-X64-ABI.md` is delivered to the owner** - his Windows Claude needs it.
+
+## v296 - THE WINDOWS LINKER IS DONE. And the guard holds on BOTH platforms.
+
+**`Windows-to-Sarvam/WIN-LINKER-2026-10-21.md` - the Windows Claude delivered, and measured it on main.**
+
+### The three steps of R29-02's plan, all three done
+
+| Step | State |
+|---|---|
+| **1. the same format; a Windows need makes it a version 2, not a second format** | **`SUTRAMO2`** - version 1's layout, entry for entry. **The three things in a PE program's code that depend on its place in the image are HOLES:** `rt:init`, `rt:syscall`, `vitti:<name>`. **No new kind of entry.** |
+| **2. `--object`, then `--separate`, on the Windows compiler** | **both** - no longer `%ifndef WINDOWS` |
+| **3. `sutram-link` writes a PE: runtime, code, import table, in NASM** | **written field for field as the compiler's `write_pe`** - one source, `sutram-link` on Linux and `sutram-link.exe` on Windows, **and either host links either target to the same bytes** |
+
+**That last clause is the best line in the delivery.** **A linker on Linux that produces Windows binaries, and a
+linker on Windows that produces Linux ones, and the bytes are the same.** **That is what "the same format" was
+for, and it is now measured rather than intended.**
+
+### The guard, on both platforms
+
+| | Windows | Linux |
+|---|---|---|
+| **ordinary path**, 562 programs - executable bytes, compiler output, exit status | **476 byte-identical, 86 refused identically, 0 DIFFER** | **476 byte-identical, 86 refused identically, 0 DIFFER** |
+| **every example linked alone = its direct compile** | **182 / 182 byte-identical** | 187 identical |
+
+**Zero differences on either platform.** **The number has held at 470-ish across five rounds and now holds on
+both systems.**
+
+### And the 3 gate failures are main's own, not the linker's
+
+**Gates on WSL: 28 PASS / 3 FAIL / 1 NOT-RUN.** **The three failures are library proofs and R29 (both
+`r18_srij_overflow_guard`) and X11 (no display).** **They are pre-existing on main and the delivery says so
+rather than attributing them to its own work.**
+
+**Suite: PASS=218. Windows: 215 of 218 examples match, the 3 known Windows-specific ones.** **Crash corpus: 227
+cases, 0 failed.**
+
+### What this means
+**The project now has a linker that works on both platforms and produces identical bytes, and the ordinary path
+is unchanged on both.** **R29-02's plan was written as a plan; it is now a measurement.**
+
+**And it was done by a Claude the owner opened specifically for the Windows side, delivering into
+`Windows-to-Sarvam/`.** **Two Claudes, two channels, no collision.**
+
+## v295 - R34 lands: the Windows linker works, and Gate 6 PASSES on real Windows
+
+**Compiler v243 is on main. This is the entry for the R34 work, and it is the largest single step the project
+has taken on the Windows side.**
+
+### The Windows acceptance PASSED
+
+| | |
+|---|---|
+| **machine** | the owner's real Windows 11 Pro (build 26300.9711), Ryzen 7 7700X, **standard user, NOT ELEVATED** |
+| **required checks** | **16 PASS / 0 FAIL / 0 NOT-RUN** |
+| **the checker's own words** | *"ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree."* |
+| **the machine afterwards** | **clean** - no uninstall key, no install folder, no PATH entry |
+
+**Gate 6 has been NOT-RUN since the project began. It is now PASS** - on real Windows, by a standard user, with
+no elevation, **which is the constraint set at the very start.**
+
+### And the Windows linker works
+
+**`linker-installed` is a new check: the installed compiler's `--object` plus `sutram-link.exe`, and it runs.**
+**So the linker works on Windows at the object level, installed and uninstalled cleanly.**
+
+### The first run found four things, and all four are fixed
+
+`WIN-RUN-2026-10-21.md` records the earlier run, and it is the more useful document:
+
+1. the acceptance script needed `-Root` - it did not start on PowerShell 5.1
+2. it installed the wrong compiler version
+3. **the IDE showed `????????` in its status line** - an encoding failure on Windows
+4. it left the install staging in `%TEMP%`
+
+**Number 3 is the one worth remembering: the project's central claim is eleven Indian scripts, and on Windows
+the status line showed question marks.** **Only a real Windows run finds that.**
+
+### And a Windows-only finding that will recur for every user
+
+**The r17 `SHA256SUMS` check FAILED on Windows: 119/213 OK.** **All 94 mismatches are files Git checked out
+with CRLF** - `core.autocrlf=true` in Git for Windows. **The committed content is 213/213 OK** via
+`git show HEAD:<path>`.
+
+**So the corpus manifest is correct and the working tree differs, because Git rewrote the line endings on
+checkout.** **That will happen to every Windows user who clones, and it is not a defect in the corpus.**
+
+### Where this leaves the project
+
+**Gate 6: PASS.** **The last NOT-RUN in `gates.sh` is now a real result, and it was the owner who produced it -
+the one thing no AI could do.**
+
+**The project's two-platform claim is now measured on both platforms rather than on one plus Wine.**
+
+## v294 - audit: the tree is clean, the docs are CURRENT for once, and one thing is on a branch
+
+**Measured: changelog v293, compiler v242, 3,554 files.**
+
+### The audit
+
+| Check | Result |
+|---|---|
+| `__pycache__` / `.pyc` | **0** |
+| `.bak` / `.orig` / `.rej` / `.tmp` | **0** |
+| stray build artifacts at root | **0** |
+| `.zip` inside the repo | **3** - cleanup candidates, inside collaboration folders |
+| the old `compiler/` folder | **446 KB** - superseded by `src/` |
+
+**And the documents are CURRENT: README, PROJECT-MASTER and the scorecard all read 27/27 and 218 pass, which is
+what the tree measures.** **My last correction held - and the doc-count gate I built is now in the tree to catch
+the next drift.**
+
+### And the Windows work is split across a branch and main
+
+**`Windows-to-Sarvam/` IS on main** - the acceptance, the first real run, and the raw logs under
+`win-run-2026-10-21/`. **So the owner's Windows evidence is published.**
+
+**But the compiler it was tested against - `v243`, on `claude/windows-linker` - is on a BRANCH.** **Main is at
+`v242`.**
+
+**So: the Windows linker works and is proven on real Windows, and its code is not yet on main.** **That is not a
+problem, but it is the kind of thing worth naming rather than discovering:** **a reader who clones main gets
+v242, which has no `sutram-link.exe` and none of the R34 fixes.**
+
+**And the four fixes in R34 are the ones the first Windows run found** - the PowerShell 5.1 start, v242 instead
+of v238, the `????????` status line, and the `%TEMP%` staging. **They are on the branch.**
+
+### What I did not touch
+**The three zips and the old `compiler/` folder.** **They are cleanup candidates and I have left them, because
+the zips are inside collaboration folders and the `compiler/` folder is history.** **The project's record has
+been worth more than the space every time I have checked.**
+
+## v293 - THE WINDOWS ACCEPTANCE PASSED. Gate 6 is closed, and the Windows linker works.
+
+**I found `Windows-to-Sarvam/` on the repo - the folder the plan said the results would go in. It has the
+acceptance, the first real run, and the raw logs.**
+
+### The verdict
+
+| | |
+|---|---|
+| **machine** | **the owner's real Windows 11 Pro (build 26300.9711), AMD Ryzen 7 7700X, STANDARD USER, NOT ELEVATED** |
+| **branch** | `claude/windows-linker` (R34) - **compiler v243**, `sutram-link.exe`, the fixed IDE |
+| **required checks** | **16 PASS / 0 FAIL / 0 NOT-RUN** |
+| **the checker's own words** | ***"ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree."*** |
+| **the machine afterwards** | **clean - no uninstall key, no install folder, no PATH entry** |
+
+**Gate 6 has been NOT-RUN since the project began.** **It is now PASS, on real Windows, by a standard user, with
+no elevation - which is the constraint the owner set at the very start.**
+
+### And the Windows linker works
+
+**`linker-installed` is a NEW check this round: the installed compiler's `--object` plus `sutram-link.exe`,
+and it runs.** **So the linker the owner is building works on Windows already, at the object level.**
+
+### The first run found four things, and all four are fixed
+
+**`WIN-RUN-2026-10-21.md` is the earlier run, and it is the more useful document** because it records what was
+wrong:
+
+1. **the script needed `-Root`** - it did not start on PowerShell 5.1
+2. **it installed v242**
+3. **the IDE showed `????????` in its status line** - **an encoding failure on Windows**
+4. **it left the install staging in `%TEMP%`**
+
+**All four are fixed in the acceptance run.** **And the `????????` is worth noting: the project's central claim
+is eleven Indian scripts, and on Windows the status line showed question marks.**
+
+### And a real Windows finding that will recur
+
+**The r17 `SHA256SUMS` check FAILED on Windows: 119/213 OK.** **All 94 mismatches are files Git checked out
+with CRLF** - `core.autocrlf=true` in the Git for Windows config. **The committed content is 213/213 OK** via
+`git show HEAD:<path>`.
+
+**So the corpus manifest is correct and the working tree differs, because Git rewrote the line endings on
+checkout.** **That is a Windows-only failure mode, it will happen to every Windows user who clones, and it is
+not a defect in the corpus.** **Worth a line in the docs.**
+
+## v292 - R99: ChatGPT measured the ABI, and ROUND-100 asks for the Windows one - because the owner needs it
+
+**ChatGPT's R99 did not reason about the host ABI; it ran GCC 14.2 and inspected it.** **And the two lines
+worth keeping are warnings rather than results:**
+
+> *"An ELF `STT_FUNC` symbol never provides C argument/return types: **matching names is not ABI compatibility
+> proof.**"*
+> *"A versioned `sutram-ffi-v2` / feature profile is preferable to silently advertising a richer ABI under the
+> old v1 header."*
+
+**The first names a class of mistake this project has not made yet and could.** **The second is a
+recommendation Claude is now acting on: it added `f64`, `ptr` and `void`, and the header still says `v1`.**
+
+**And its audit of Claude's test net is honest both ways:** *"strong for stage 1, not strong enough for ABI
+expansion or malicious ELF input."*
+
+### ROUND-100 is aimed at the owner's work
+
+**The owner is building the Windows linker.** **So ROUND-100's WS3 asks ChatGPT for one page on what is
+different about the Microsoft x64 ABI** - argument registers, the shadow space, floats, and what returns where
+- **byte-level where it matters.** *"The owner is working on this tonight and it is the most useful thing you
+can give him."*
+
+**That is the right thing to ask for and I nearly missed it.** **The ABI question was on my list as a
+Sutram-internal concern; it is also the thing standing between the owner and a working Windows linker.**
+
+## v291 - R33: hardening the FFI found a SILENT TRUNCATION and a broken call. Compiler v242, gates 30.
+
+**The owner asked whether the repo is current before he starts the Windows linker. It is - and Claude's R33
+landed while he was asking.**
+
+### The two defects hardening found
+
+| Defect | What it was |
+|---|---|
+| **a `dasham` passed to an `i64`** | **SILENTLY TRUNCATED** - `s_add(1.75, 2)` returned **3** |
+| **a foreign call written as a statement** | **broken outright** - sent to the Sutram call by its local name, **failed at the link** |
+
+**The first is the worst class this project has: a wrong answer with no diagnostic.** **`s_add(1.75, 2)` giving
+`3` is exactly the shape of F1 and F7 - the compiler reports success and the program is wrong.**
+
+**And Claude's reason for hardening is the right one:** *"A capability with a silent defect and a broken one is
+not finished."* **It built the smallest FFI (R32), then went back for the second-smallest - and found two
+defects on the way.**
+
+### What the FFI now covers
+
+| Case | Now |
+|---|---|
+| a `dasham` to an `i64` | **`E_FFI_KIND`** at the call, exit 1, no object |
+| a `dasham` / C `double` | **`f64`** - xmm0.. in, xmm0 out, result a `dasham` |
+| a string | **`ptr`** - a string, a kosh, or an integer; a `dasham` is `E_FFI_KIND` |
+| a pointer | **`ptr`**, tested both ways - **C reads a string and a kosh, and C WRITES into a kosh** |
+| a C function returning nothing | **`void`** - a statement; **using its value anywhere is `E_FFI_KIND`, never a made-up 0** |
+
+**That last row is the rule ChatGPT specified two rounds ago, kept exactly.** **No fake `prati 0`.**
+
+### And the FFI has its own fuzzers now
+
+- **`fuzz_ffi`**: 4 × 500 programs, **21,880 foreign calls, 0 differ**
+- **`fuzz_elf2smo`**: 5 × 20,000 **malformed** objects, **0 broke the contract**
+
+**So the ELF reader is fuzzed with hostile input, not only with good input.** **That is the difference between
+testing a parser and trusting it.**
+
+### The state, and the answer to the owner's question
+
+**Compiler v242, gates 30 PASS / 0 FAIL / 1 NOT-RUN, suite 218, corpus 0 failed, every fuzzer clean.**
+
+**And everything is on `main`:** `linker/sutram_link.asm`, `linker/sutram_elf2smo.asm`, `docs/OBJECT-FORMAT.md`,
+`sutram-link`, `sutram-elf2smo`, `tools/gates.sh`. **The owner's clone is current.**
+
+**`WINDOWS-LINKER-PLAN.md` is delivered** - the plan for what he is starting.
+
+## v290 - I verified the FFI's arity rule myself. And half of it I could not verify.
+
+**I ran the FFI pipeline rather than reading the report. Compiler v241.**
+
+### What I verified, and it is the rule that matters
+
+**The arity rule, exactly as specified:**
+
+```
+$ sutram_compiler --ffi ffi.sffi --object bad.sm bad.smo      # likha(s_add(17))
+bad.sm:1:18: Sutram Error [E_ARITY]: 's_add' ityasmai 1 tarkah dattah; hastakshare 2
+  mukhya() { likha(s_add(17)) }
+                   ^
+bad.smo written? no
+```
+
+**A source-located `E_ARITY` at the call's own column, with the counts, and NO `.smo` written.** **That is
+exactly the rule ChatGPT specified and Claude implemented, and it holds.**
+
+**And the Sutram half of the pipeline runs:** `--ffi ffi.sffi --object prog.sm prog.smo` produces a 296-byte
+object.
+
+### What I could NOT verify, and why
+
+**My Zig installation was gone** - the sandbox recycled between sessions, and the 47 MB download does not
+persist. **So I could not compile the C half (`add.c` → `add.o`) and therefore could not run
+`sutram-elf2smo` or link the result.**
+
+**So: the arity rule is verified by me; the C-to-SUTRAMO1 conversion and the final link are verified only by
+Claude's own report and its `tests/r32/test_ffi.py`.**
+
+**I am recording the boundary rather than implying I ran the whole thing.** **The distinction between "I
+verified this" and "I read that Claude verified this" is the one that has mattered most on this project.**
+
+**And it is worth noting: the sandbox losing a 47 MB toolchain between sessions is a real limit on what I can
+independently check.** **The C comparison and the C half of the FFI both depend on a download that does not
+survive.**
+
+## v289 - ROUND-33 and ROUND-99: the FFI is built, so what breaks next?
+
+**Both rounds open with the FFI working and the converter noted**, so neither works from the plan I had
+described - *teaching the linker ELF* - rather than the one Claude built.
+
+**ROUND-33 (Claude)** - **harden the FFI or pick the next thing**, with the question I want answered either
+way: **is the FFI's own net strong enough to catch a regression in it? If it tests one function with two
+`i64`s, say so.**
+
+**ROUND-99 (ChatGPT)** - **the FFI's second-smallest version: what breaks next?** **A `dasham` argument is the
+first candidate and the most interesting** - the SysV ABI passes floats in *different registers* than integers,
+**so the question is whether the sidecar grammar needs to change or only the compiler's codegen.** **That
+distinction decides which of the remaining cases are small and which are not.** **Plus Windows, which is a
+different ABI entirely.**
+
+**And the docs are updated to 27 gates.**
+
+## v288 - THE FFI WORKS. A Sutram program calls a C function and prints 42.
+
+**Compiler v241. Gates 27 PASS / 0 FAIL / 1 NOT-RUN. Suite 218. Corpus 0 failed. Every fuzzer clean.**
+
+### The whole pipeline, as Claude ran it
+
+```
+$ cat ffi.sffi
+sutram-ffi-v1|linux-x86_64-sysv
+s_add|2|i64,i64|i64|sutram_ffi_add
+
+$ sutram_compiler --ffi ffi.sffi --object prog.sm prog.smo     # likha(s_add(17, 25))
+$ sutram-elf2smo  add.o add.smo                                 # gcc -c -ffreestanding ...
+$ sutram-link     prog prog.smo add.smo && ./prog
+42
+```
+
+**A Sutram program called a C function and got the right answer.** **That is the last capability that was
+blocked by architecture, and it is done.**
+
+### And it is a CHECKED declaration, not a stub - both rules tested
+
+1. **`s_add(17)` and `s_add(17, 25, 1)` are `E_ARITY` at the call's own location (`2:11`), exit 1, and NO
+   `.smo` exists afterwards.** **And it holds with `--object` and with `--separate`.**
+2. **No stub, no `FUNCDEF`:** the declaration exports nothing, **the call is a relocation named
+   `sutram_ffi_add` - the FOREIGN name - never `s_add`.** **And a prakriya, builtin or keyword with either name
+   is an error.**
+
+**The second rule is the one that matters.** **The failure I warned about two rounds ago - a fake `prati 0`
+stub making a missing function look like a working one - cannot happen, because the declaration exports
+nothing and the call carries the foreign name.**
+
+### And the format was NOT touched
+
+| Piece | State |
+|---|---|
+| **the sidecar `*.sffi`** | **new** - ChatGPT's R97 grammar |
+| **`sutram_compiler --ffi`** | **new** - `src/r32_ffi.inc` + four hooks |
+| **`sutram-elf2smo`** | **new** - `linker/sutram_elf2smo.asm`, NASM, reads ELF64 relocatable |
+| **`SUTRAMO1` and `sutram-link`** | **UNCHANGED** |
+
+**So the ELF problem was solved by a CONVERTER rather than by teaching the linker a second format.** **The
+linker stays simple; one small program translates. That is the better design and it was not the one I
+described.**
+
+**And it is opt-in: `--ffi`.** **A program that does not use it compiles exactly as it did.**
+
+### The full arc, in five rounds
+**ChatGPT designed a linker (R93). Claude refused it as restructuring (R26) and offered a smaller form. The
+owner decided to build our own anyway - because borrowing `ld` would keep the fundamental only by borrowing
+another project's tool. Claude built it (R28). Then separate compilation (R29-R31). Then the FFI (R32), with
+ChatGPT's sidecar and ELF specs.**
+
+**Every step was argued rather than assumed, and the guard held throughout.**
+
+## v287 - the doc-count gate, and the design flaw I hit writing it
+
+**I said a third manual correction would be evidence that the method is the problem. So I built the fix:
+`tools/doc_counts_gate.py`.**
+
+**It parses the PASS/FAIL/NOT-RUN totals, counts the suite's PASS, and checks the six documents that quote
+those numbers.** **It reports a NOTE when a document is merely behind - a document may legitimately lag a
+commit - and FAILS only on a claim that is IMPOSSIBLE, like a PASS count higher than the gate total.**
+
+### And I hit a design flaw while writing it
+
+**My first version ran `gates.sh` from inside itself.** **Added to `gates.sh`, it would run `gates.sh`, which
+would run it - recursion.** **A check that cannot live beside the other checks is a check nobody will run.**
+
+**So it now takes a `--gates <transcript>` argument:**
+
+```
+sh tools/gates.sh > /tmp/gates.txt
+python3 tools/doc_counts_gate.py --gates /tmp/gates.txt
+```
+
+**A worse interface and a better tool.** **The version gate solved the same shape problem differently - it
+reads the compiler's source and the CHANGELOG, neither of which runs gates - which is why it could go straight
+into `gates.sh`.**
+
+**And I hit a second flaw writing this very message: an `await` outside a function, which failed the whole
+call.** **The tool is pushed; the changelog entry is what failed.** **That is the fifteenth error of mine, and
+the smallest - but it cost a round trip, and it was in my own script rather than in the project.**
+
+## v286 - THE FFI IS READY. All four preconditions are met, and Claude said it fits.
+
+### R31: incremental rebuilds, and the reason is the right one
+
+**Gates 26, suite 218, corpus 0 failed, every fuzzer clean.** **Compiler v240 - the work was in the builder.**
+
+> *"I built incremental rebuilds, because a separate compilation that recompiles every module on every build
+> delivers only half of what it exists for, and it needed no decision from the owner."*
+
+**That is the right instinct: finish the thing you started rather than start the next.**
+
+### And it answered the FFI question I have been carrying for three rounds
+
+> *"You asked whether the FFI fits the model or is restructuring. **It fits; it is not restructuring.** The
+> compiler side is two existing mechanisms with one new table: the R7 arity check looks a name up in a
+> foreign-declaration table after its own, and the call becomes an R28 relocation carrying the external name."*
+
+**So the answer is: two mechanisms that already exist, plus one table.** **Not a new architecture.**
+
+### And ChatGPT confirmed the rule that makes it CHECKED
+
+> *"If the sidecar says two arguments but the source calls `s_add(17)`, raise source-located `E_ARITY`, exit
+> nonzero, **no `.smo` written**."* **And: no fake `prati 0` stub, no `FUNCDEF` entry.**
+
+**So the four preconditions are all met:**
+
+| Precondition | State |
+|---|---|
+| does it fit the model? | **YES** - Claude, measured against the compiler |
+| the declaration route | **specified** - ChatGPT's sidecar + `.sffi` sample |
+| the arity rule | **specified** - `E_ARITY`, no `.smo`, no stub |
+| the ELF bridge | **specified** - two documents, plus a minimal-reader analysis |
+
+**ROUND-32 is issued: build the smallest FFI that works, with the guard absolute.**
+
+**And the guard number is stated in the brief: 470 byte-identical, 0 differ - held for three rounds.**
+
+## v285 - audit: the docs drifted to 22 gates while the tree has 25. Again.
+
+**Measured: changelog v284, compiler v240, 3,436 files, 25 gates, 218 pass.**
+
+**The documents said 22.** **I corrected them to 22 in v271 - when 22 was right. The tree has since gone to
+25, and nothing told the documents.**
+
+### The pattern is now established and it has a name
+
+| What drifted | When | Caught by |
+|---|---|---|
+| the version string | twice | the version gate, **after I built it** |
+| the gate counts | v271 | me, measuring |
+| the gate counts | **again, now** | me, measuring |
+
+**Three drifts, two of them the same number.** **And the reason is unchanged: every number a reader trusts is
+typed by hand, and only two of them have a check.**
+
+**The honest conclusion, now with three data points: the documents are the least-verified part of this
+project, and correcting them by hand does not stop them drifting.** **A gate that reads the counts out of
+`gates.sh` and compares them to the documents would stop it - and it is the same shape as the version gate
+that already works.**
+
+**I am recording that as the fix rather than doing another manual pass.** **A third manual correction is
+evidence that the method is the problem.**
+
+### The audit itself is otherwise clean
+
+| Check | Result |
+|---|---|
+| `__pycache__` / `.pyc` | **0** |
+| `.bak` / `.orig` / `.rej` / `.tmp` | **0** |
+| stray build artifacts at root | **0** |
+| `.zip` inside the repo | **3** - a 1.7 MB project zip in a collaboration folder, and two others |
+| the old `compiler/` folder | **446 KB** - superseded by `src/` |
+
+**The three zips and the old `compiler/` folder are cleanup candidates.** **The zips are inside collaboration
+folders, so they are the partners' to remove; the `compiler/` folder is superseded and could go.** **I have not
+deleted either - the project's history has been worth more than the space every time I have checked.**
+
+## v284 - R30 and R97 both delivered well. v240, gates 25, and the FFI's specs exist.
+
+### Claude R30: it chose the thing that fits, and said why
+
+**Compiler v240, gates 25, suite 218, corpus 0 failed, every fuzzer clean.**
+
+**Its reasoning for continuing capabilities rather than starting the FFI:** *"the FFI is its own piece of work
+- an ELF reader in `sutram-link` plus a declaration route the owner has not chosen - while module state was the
+last thing stopping a real module from being compiled separately."*
+
+**That is the standing rule used correctly - pick the thing that fits, and name why the other does not.**
+
+**And it built a module-level `vitti` shared across modules**, which R28 and R29 had refused in an object. **So
+separate compilation now has its third piece.**
+
+### ChatGPT R97: all three, and the acceptance rule is the best of them
+
+- **`SIDECAR-SPEC.md` + a sample `.sffi`** - the declaration route, concrete
+- **`ELF-BRIDGE-SPEC.md`** - what `sutram-link` must read
+- **`BENCHMARK-ACCEPTANCE.md`** - and it opens with *"NO new speed test was run in R97"*, which is the right
+  first line for a document about a deferred phase
+
+**Its Gate 0 is the piece worth keeping:** *comparable work and correctness, otherwise INVALID* - **and it
+separates C `-O2/-O3`, Zig `ReleaseSafe/ReleaseFast` and Sutram's own modes rather than comparing defaults.**
+
+**That is the rule that stops a benchmark from flattering whoever set it up.**
+
+### Issued
+**ROUND-31 (Claude):** its call again, **with the guard number stated - 470 byte-identical, 0 differ, held for
+three rounds.**
+**ROUND-98 (ChatGPT):** confirm the wrong-arity case is covered, **name what the ELF reader can IGNORE**, and
+**turn Gate 0 into a five-minute checklist** - *a rule that cannot be applied in five minutes will not be
+applied.*
+
+## v283 - I tried to verify separate compilation by hand and got it wrong. The suite is the check.
+
+**I ran the compiler's `--separate` flag on my own two files and it did not produce an object.** **The error
+was mine, and the shape of it is familiar:**
+
+- **`yoj util` looks for the module in the project's own `lib/` directory** - the suite uses
+  `tests/r29/proj/lib/`. **I put my module in the same directory as the program and expected `yoj` to find it.**
+- **My second attempt put the module in `lib/` but still produced no `.smo`,** and I did not find out why before
+  stopping.
+
+**And the authoritative check passes:**
+
+```
+r29 separate: 253 programs with modules behave the same, 144 without are byte-identical, 0 failed
+```
+
+**So the capability works, and my hand-rolled invocation of it did not.** **The suite has the project layout
+and I guessed at it.**
+
+**That is the fourteenth time this stretch that my own test or tool was the thing at fault** - **and the same
+lesson every time: a check I assemble myself from memory is worth less than the check that already exists.**
+
+**What I can say from what I actually ran:**
+
+| Check | Result |
+|---|---|
+| compiler on main | **v239** |
+| `tests/r29/test_separate.py` | **253 programs with modules behave the same, 144 without are byte-identical, 0 failed** |
+| the arity check | *"a wrong call into another module is refused by `--separate`, with the same diagnostic"* |
+| the refusals | *"a missing module, a namespaced `yoj`, usage"* |
+
+**The arity check line is the one that matters most** - **it is the check Claude said would have caught the 39
+programs that printed a `dasham` as an integer.** **It is in the suite, and it refuses the wrong call with the
+same diagnostic as the ordinary path.**
+
+**So: separate compilation is verified - by its own suite, not by me.**
+
+## v282 - R96 was excellent, and ChatGPT corrected ME on the FFI - after reading my correction
+
+### It went further than I did, and it is right
+
+**I wrote in v280 that the object format's relocations ARE the import list. ChatGPT read that and made it more
+precise:**
+
+> *"In `SUTRAMO1`, each relocation already IS a named unresolved import. **The missing capability is
+> foreign-object ingestion and a checked FFI declaration, not another redundant import table.**"*
+
+**And it named the rule that matters:** *"a declared foreign function must NEVER emit a fake `prati 0` stub or
+silently count as a local definition."* **A stub that returns zero would make a missing function look like a
+working one - the worst failure mode in this project's history, arriving in a new place.**
+
+**It offered two routes: a new `bahya prakriya` syntax, or a foreign-declarations sidecar.** **And it marked
+the syntax as a PROPOSAL rather than an accepted feature - which is the right way to put new syntax in front of
+the owner.**
+
+### And its benchmark matrix is honest in the way that matters
+
+> *"The existing 2026-10-21 records are prior measurements and **not cross-language superiority proof**."*
+
+**Seven programs, each with what it exposes beyond a sum loop, and each with a named likely weakness.** **It
+says the current numbers do not prove superiority** - **which is exactly what I asked for and more than I
+expected.**
+
+### Issued
+
+**ROUND-30 (Claude):** if it takes the FFI, **take the sidecar route first** - it avoids the parser and the
+eleven packs, and the syntax decision stays with the owner. **The guard applies absolutely.**
+
+**ROUND-97 (ChatGPT):** make the sidecar concrete, **and answer the question that is the point of a checked
+declaration: what happens when a program calls a foreign name with the wrong arity? It must be a compile
+error, not a link error and not a crash.** Plus the ELF bridge spec, **and an acceptance threshold for the
+benchmark matrix** - *a matrix with no threshold measures; a matrix with one decides.*
+
+## v281 - SEPARATE COMPILATION DELIVERED. Compiler v239, gates 24, and the guard holds.
+
+**Claude chose separate compilation, and gave three reasons - the first of which is that it agreed with my
+correction:**
+
+> *"It was reachable, and the FFI was not. Your correction on main says the same, and it is right: the FFI
+> needs an import table in `SUTRAMO1` and a linker that reads foreign objects. That is its own piece of work,
+> not a small version."*
+
+**So my correction was read, accepted, and acted on - which is what a correction is for.**
+
+### What it delivered
+
+| Check | Result |
+|---|---|
+| compiler | **v239** |
+| suite | **PASS=218, FAIL=0**, no golden changed |
+| crash corpus | **227 cases + manifest, 0 failed** |
+| **gates** | **24 PASS / 0 FAIL / 1 NOT-RUN** - one more than R28 |
+| its own net | **`tests/r29/test_separate.py`, 253 real programs with modules** |
+| fuzzers | 1000 programs / 0 differ, 5000 mutations / 0 crash |
+
+### And it fixed a defect R28 left open
+
+> *"With `--object`, two objects that both `yoj` one module defined it twice. With `--separate` a module's code
+> is in its own object, once."*
+
+**So R28 shipped a real hole and R29 closed it.** **Not a new feature papering over an old one - the thing the
+new feature was for.**
+
+### And it found a defect while building it
+
+> *"The module that a `yoj` names is still parsed where it is used, so a call into it is checked for its arity
+> and gets its return type. I found the reason this matters in my first attempt: **without it, 39 programs
+> printed a `dasham` result as an integer.**"*
+
+**39 programs, silently wrong, in the first attempt at the feature.** **The fix was to keep the existing
+checking rather than route around it** - **and the number 39 is how it knows the checking is real.**
+
+### THE GUARD
+
+| Check | Result |
+|---|---|
+| Linux, 558 programs, v238 vs v239, ordinary path | **470 byte-identical, 88 refused identically, 0 differ** |
+| Wine, every example, old vs new `win/sutram.exe` | **182 of 182 identical** |
+
+**Zero differences. And the mechanism is stated:** *"every new instruction on the ordinary path is a `cmp` of
+the `--separate` flag and a jump past."* **The new capability is behind a flag and the old path is untouched -
+and that is verified by byte comparison rather than asserted.**
+
+### Also delivered
+**`R29-02-WINDOWS-LINKER-PLAN.md`** - a plan for the Windows linker. **To be read.**
+
+## v280 - the object format, read properly. And it corrects my own correction.
+
+**I read `src/r28_object.inc` instead of reasoning about it. The format is fully documented in the source:**
+
+```
+0   "SUTRAMO1"                  magic
+8   code_size
+16  symbol_count                prakriyas this module DEFINES
+24  relocation_count            rel32 holes this module LEAVES
+32  code                        code_size bytes; mukhya (if any) at offset 0
+    symbols:     { offset, name_length, name bytes } x symbol_count
+    relocations: { offset of the rel32, name_length, name bytes } x relocation_count
+```
+
+**And the comment that settles the FFI question:**
+
+> *"every call to a prakriya this module does not define becomes a relocation for `sutram-link` to fill."*
+
+### So my "no import table" claim was WRONG
+
+**I wrote in v278 that the object has no way to say *"I need `printf` from outside"*. It does.**
+
+**The relocations ARE the import list.** A call to any name the module does not define becomes a relocation
+naming that name. **So an object can already say it needs `printf` - the format supports it.**
+
+**What is actually missing is on the LINKER's side, and it is one sentence:**
+
+**`sutram-link` resolves every relocation from the symbol tables of the Sutram objects it was given. A name
+nobody defines is an error.** **For the FFI it must also be able to resolve a relocation from an ELF object -
+or from the system's symbols.**
+
+**So the work is: teach `sutram-link` to read ELF relocatable objects. It is not a format change at all.**
+
+**That is a smaller and more precise job than the one I described last round**, and it is the third time this
+stretch that reading the source settled a question I had answered from inference. **The first two were F1's
+threshold and the pack's two halves.**
+
+### And the spec exists
+**`docs/OBJECT-FORMAT.md` is referenced from the source.** **Whether it is complete is a separate question, and
+I have not checked it - so I am not claiming it.**
+
+## v279 - both rounds corrected before either partner acts on my wrong premise
+
+**I added the correction to ROUND-29 and ROUND-96** - the FFI is not reachable, here is the measurement, and
+**it is my error rather than a change of plan.**
+
+**And I told them what is still true:** **separate compilation IS reachable** - `test_link.py` proves two Sutram
+modules link in both orders with calls in both directions. **The work is in the module graph, not a new format.**
+
+**So both are told: prefer separate compilation; if you choose the FFI, it starts with the import table, and
+scope it as its own piece of work rather than "a small version".**
+
+**That last instruction matters.** **The FFI is not a small job, and a brief that calls it one would produce
+either a rushed design or a half-built format.**
+
+## v278 - I WAS WRONG: the linker does NOT make the FFI reachable. Measured, and the reason is precise.
+
+**In v277 I told both partners the C FFI was "now reachable" because the object format and the linker exist.**
+**I tested it instead of leaving it as a claim. It is not reachable, and here is exactly why.**
+
+### What I ran
+
+| Test | Result |
+|---|---|
+| what a Sutram object looks like | **144 bytes, magic `SUTRAMO1`** |
+| **`sutram-link` on a C object (ELF relocatable)** | **`Sutram Error: vastu-patram na (SUTRAMO1 apekshitam)`** - *not an object, SUTRAMO1 expected* |
+| **`ld` on a `.smo`** | **`file format not recognized`** |
+| **does the object carry an import / undefined-symbol table?** | **no - zero import-related lines in `src/r28_object.inc`** |
+
+### So the FFI needs TWO things that do not exist yet
+
+**1. An import table in the object format.** `SUTRAMO1` has no way to say *"I need a symbol called `printf`
+from outside."* **A Sutram object can only reference names defined in other Sutram objects.**
+
+**2. `sutram-link` must be able to read ELF relocatable objects** - or something must convert one. **`SUTRAMO1`
+and ELF are different formats, and neither tool reads the other's.**
+
+**Both tools are correct to refuse.** `sutram-link` refuses a C object because it is not a Sutram object;
+`ld` refuses a `.smo` because it is not an ELF object. **Neither is broken - the bridge does not exist.**
+
+### And the correction to my own claim
+
+**I wrote in v277:** *"What was missing was an object file and a linker. Both now exist. So the FFI is now
+reachable."*
+
+**That was wrong.** **The linker exists; the FFI's preconditions do not.** **I inferred reachability from the
+existence of a tool rather than from its capability** - and the capability is exactly what I did not test.
+
+**This is the thirteenth error of mine this stretch, and the same shape as the others:** a plausible inference
+reported as a fact, where a two-minute test would have settled it.
+
+### What this changes
+
+**The FFI is not the next round's small job.** It needs the object format extended with an import table, **and
+either the linker taught to read ELF or a converter written.** **That is a design decision for ChatGPT and a
+substantial piece of work for Claude.**
+
+**Separate compilation is different, and I checked it too:** the object level already works - `test_link.py`
+proves two Sutram modules link in both orders with calls in both directions. **So separate compilation IS
+reachable; the FFI is not.** **One of my two claims was right and one was wrong, and only testing told them
+apart.**
+
+## v277 - PRIORITY: DEVELOPMENT FIRST. Performance refinement is the next phase, not this one.
+
+**The owner's words: *"first focus on development and then we can refine the project to outperform other
+languages."***
+
+**So the performance work is deferred, not withdrawn.** The fundamental stands, the measured gap is recorded
+in `PROJECT-MASTER.md`, **and both rounds are redirected.**
+
+### And the linker changed what "development" means
+
+**Two capabilities that were blocked are now reachable, because Claude built the object format and the
+linker:**
+
+1. **The C FFI.** ChatGPT proved the technique by measurement - a freestanding C function, SysV ABI, no libc,
+   no dynamic loader, `NO_LIBC_C_CALL=42`, no `PT_INTERP`, no `DT_NEEDED`. **What was missing was an object
+   file and a linker. Both now exist.**
+2. **Real separate compilation.** `yoj` is still textual inclusion, **but the object level already works -
+   `test_link.py` proves two modules link in both orders with calls in both directions.** **The work is in the
+   module graph.**
+
+**So Claude picks one and does the smallest working version; ChatGPT designs both from its side.**
+
+### And the guard still applies
+**The ordinary path must not change.** **543 programs, 466 byte-identical, 0 differ - that number is the
+standard now.**
+
+### One thing kept rather than dropped
+**ChatGPT's benchmark-set design still stands as a deliverable for the next phase** - *and it was asked to name
+where Sutram is likely to LOSE, because a set chosen to flatter the language proves nothing.*
+
+## v276 - the performance fundamental: a SECOND shape measured, and the gap is narrower than the loop
+
+**I added a call-heavy benchmark myself, because one integer loop cannot support a claim about "all aspects"
+- and the result is better than the loop's.**
+
+### fib(30) - recursion, 2.7 million calls, best of three
+
+| Language | Time | vs Sutram |
+|---|---|---|
+| **Zig** | **6.6 ms** | 2.6x faster |
+| **C (zig cc -O2)** | **12.8 ms** | 1.33x faster |
+| **Sutram** | **17.0 ms** | - |
+
+**So on calls, Sutram is 1.33x behind C - narrower than the 1.7x it is behind on the tight loop.**
+
+**That is worth knowing and it is not the expected direction.** A hand-written compiler usually loses more on
+function calls than on a loop, because a loop is where a good optimiser does its most visible work.
+**Sutram loses less on calls than on the loop** - which suggests its function-call path is comparatively good
+and **its loop is where the 1.7x lives.**
+
+**That points at the peephole optimiser and register allocation, not at the call convention.** **And it is a
+measurement pointing at a cause rather than a guess.**
+
+### Allocation - growing a `kosh` 200,000 times
+
+**Sutram: 9.2 ms.** **No C or Zig comparison is available** - the other two would need the same growable-array
+code written for them, and a comparison with a differently-implemented data structure would measure the
+implementation, not the language.
+
+**So this one is recorded as a Sutram baseline, not a comparison.** **The honest label matters more than a
+number in a table.**
+
+### What the set still needs
+
+**Three shapes now exist: a tight loop, recursion, and allocation.** **Still missing: string building, and
+something that touches the library.** **And the allocation shape needs a C and Zig counterpart before it can
+support a claim.**
+
+## v275 - THE LINKER VERIFIED END TO END. And Claude pushed it straight to main, so there was nothing to merge.
+
+**Claude's handback said "code pushed to main: 78fa7417"** - and I checked before merging rather than after.
+**Everything was already there:** `linker/sutram_link.asm` (12,974 B), `src/r28_object.inc` (4,685 B),
+`tests/r28/test_link.py` (6,670 B), and `sutram-link` (12,392 B). **Compiler v238.**
+
+**The only thing that differed between the branch and main was the six documents I edited in v271-v272** - so
+a naive merge would have reverted my own doc audit. **Caught by diffing before copying, which is the tenth time
+that habit has paid.**
+
+### What I ran, rather than reading the report
+
+| Check | Result |
+|---|---|
+| `nasm` + `ld` build of `linker/sutram_link.asm` | **`sutram-link`, 12,392 B** |
+| `./sc --object m1.sm m1.smo` | **emits a 144-byte object** |
+| `python3 tests/r28/test_link.py` | **199 checks, 0 failed** |
+| - identity across the new path | **186 programs byte-identical, 1 refused, 0 differ** |
+| - two modules | **both orders, calls in both directions** |
+| - linker errors | **8 errors and the usage line** |
+
+**So the pipeline works: a Sutram source becomes an object, and `sutram-link` turns objects into an
+executable.** **And 186 programs produce byte-identical binaries through the new path as through the old one.**
+
+### And the guard, which is the number that matters
+
+**543 programs compiled the ordinary way, v237 vs v238: 466 byte-identical, 77 refused identically, 0 differ.**
+
+**Zero regression across the riskiest change this project has made.** **And the guard found something on its
+first run** - *"a new pack message moved the PE import template"* - **a shift the suite would never have seen.**
+
+### The arc of this one feature
+
+**ChatGPT designed a linker (R93). Claude refused it as restructuring (R26) and proposed a smaller version.
+The owner decided to build our own anyway, for a better reason: borrowing `ld` would keep the fundamental only
+by borrowing another project's tool. (R28) Claude built it in NASM, with a guard. It works, and it cost
+nothing.**
+
+**That is four rounds, three positions, and a correct outcome - because each step was argued rather than
+assumed.**
+
+## v274 - ROUND-29 and ROUND-96: the performance fundamental goes to both partners
+
+**Both rounds now open with the new fundamental and the measured gap**, so neither works from an older picture.
+
+**ROUND-29 (Claude)** - **turn on the peephole optimiser and measure it.** *"`SUTRAM_R65_PEEPHOLES` is already
+written and DEFAULT-OFF. So part of the speed gap is a switch nobody turned on."* **Then measure what the loop
+actually compiles to before optimising it** - *how many loads and stores per iteration, and whether the
+accumulator lives in a register or spills.* **And grow the benchmark set**, because *one integer loop cannot
+support a claim about all aspects.*
+
+**ROUND-96 (ChatGPT)** - **design the benchmark set that would make the claim honest**, with the instruction
+that matters: **name which programs Sutram is likely to LOSE, because a set chosen to flatter the language
+proves nothing.** **And compare the generated code** - what C's optimiser does to the loop that Sutram's does
+not.
+
+**Both carry the same measured baseline**, so the numbers they work from are the ones I ran.
+
+## v273 - THE LINKER IS BUILT. Our own, in NASM. And the guard proves nothing regressed.
+
+**Compiler v238. Gates 23 PASS / 0 FAIL / 1 NOT-RUN - up from 22.**
+
+### `sutram-link`
+
+**`linker/sutram_link.asm`, about 500 lines, written the way the compiler is written:** Linux x86-64, raw
+system calls, **no libc and no other language.** It builds with the same `nasm` + `ld` step as the compiler,
+and it is committed at **100755**.
+
+```
+sutram-link out.bin a.smo [b.smo ...]
+```
+
+**It reads each object and checks the magic; requires exactly one object to define `mukhya` and puts it first;
+lays the code end to end; collects every symbol; fills every hole; and writes the executable.** **A truncated
+file is a bad object. A name defined twice is an error. A name nobody defines is an error.**
+
+### The guard, and this is the part that matters most
+
+**The linker is the riskiest change this project has made - Claude refused it once for exactly that reason.**
+**So the guard was absolute: the existing path must not change.** **It was measured:**
+
+| Check | Result |
+|---|---|
+| **543 programs, compiled the ordinary way, v237 vs v238** | **466 byte-identical, 77 refused with the identical diagnostic, 0 differ** |
+| **Wine, every example, `win/sutram.exe` old vs new** | **140 of 141 identical** |
+
+**Zero differences across 543 programs.** **The new capability cost nothing that already worked.**
+
+**And the guard EARNED ITSELF:** *"The guard caught a real shift, and it is fixed. A new pack message moved the
+PE import template."* **A regression the suite would not have seen, caught by comparing byte-for-byte.** **That
+is what a guard is for, and this one found something on its first run.**
+
+### And the linker's own net
+
+**`tests/r28/test_link.py`: 186 real programs, byte-identical through the new path.** **The fuzzers do not
+generate objects or link them - and Claude says so rather than implying coverage it does not have.**
+
+### Also delivered
+**`ROUND-95-WS1-SMO1-BYTE-SPEC.md`** - ChatGPT's byte-level object spec - **and `ROUND-95-WS3-HANDLER-REVIEW.md`.**
+
+## v272 - A NEW FUNDAMENTAL: be faster than C and Zig, in all aspects
+
+**The owner has set a performance fundamental.** And it is measurable, which is what makes it a fundamental
+rather than a slogan.
+
+### The measured gap, so progress is visible rather than asserted
+
+| Aspect | Sutram | C | Zig | |
+|---|---|---|---|---|
+| **Speed**, sum 1..10M | **13.30 ms** | 7.88 ms | **1.77 ms** | **1.7x slower than C, 7.5x slower than Zig** |
+| **Startup** | **3.36 ms** | 8.38 ms | 4.24 ms | **Sutram WINS** |
+| **Binary size** | **205 B** | 6,608 B | 1,729,200 B | **Sutram WINS** |
+| **Memory** | **16,128 KB** | 16,956 KB | 16,008 KB | **Sutram WINS** |
+| **Runtime needed** | **none** | libc | none | **Sutram WINS** |
+
+**Sutram already wins four of five aspects and loses the hardest one: raw speed on a loop.**
+
+### And the direction, with the part that is embarrassing
+
+**`SUTRAM_R65_PEEPHOLES` - a peephole optimiser - is already written and default-OFF.** **So part of the speed
+gap is a switch that nobody turned on.**
+
+**The order: turn on and extend the peephole optimiser; register allocation; loop optimisation (the case SIMD
+addresses); constant folding; instruction selection.**
+
+### The rule that keeps it honest
+
+**Every optimiser change is measured against the same benchmark, and the benchmark set must grow.** **One
+integer loop cannot support a claim about "all aspects"** - string, allocation and call-heavy shapes are
+needed before that claim can be made.
+
+**Both partners will be told in their next round.**
+
+## v271 - doc audit: SIX documents were behind by ten gates and thirteen tests
+
+**I measured rather than assumed, and the drift was larger than I expected.**
+
+| Document | Claimed | Actual |
+|---|---|---|
+| `README.md` | 12/12 gates, 191 pass | **22 gates, 218 pass** |
+| `PROJECT-MASTER.md` | 12 PASS, 205 pass, `PASS=187`, v229 | **22 gates, 218 pass, v237** |
+| `PROJECT-OVERVIEW.md` | 12/12, 186/186, 205 pass | **22 gates, 220/220 proofs, 218 pass** |
+| `docs/sutram-scorecard.html` | 191 pass, 205/205 | **218 pass, 220/220** |
+| `docs/sutram-project-status.html` | 12/12, 205 pass, 24 pass | **22 gates, 218 pass** |
+| `docs/sutram-design-parameters.html` | 12/12, 205 pass | **22 gates, 218 pass** |
+
+**All six corrected.**
+
+### And the reason this keeps happening is now obvious
+
+**The version gate catches the version string, because I built one.** **Nothing catches a KPI inside an HTML
+page** - and six documents had drifted by **ten gates and thirteen tests** without anyone noticing.
+
+**That is the third time this stretch:** the version string drifted twice, and now the gate counts. **Every
+number a reader trusts is typed by hand, and only two of them have a check.**
+
+**The honest conclusion: the documents are the least-verified part of this project.** The compiler has a
+fuzzer, the corpus has a manifest, the library has proofs - **and the documents that describe all of it are
+maintained by discipline alone.**
+
+### And one thing worth noting about the drift's direction
+
+**Every stale number was LOW.** The docs under-reported: 12 gates when there were 22, 205 tests when there were
+218. **Nobody over-reported.** **So the drift is neglect rather than exaggeration** - which is the better
+failure, and still worth fixing.
+
+## v270 - the fuzzer verification I owed: the error type and the handler hold
+
+**I ran what I had not run. Compiler v237, changelog v269, 3,333 files.**
+
+| Check | Result |
+|---|---|
+| `fuzz_r23 --seed 26 --count 250` (covers the error type and the handler) | **250 programs, 8,939 printed values compared, 0 differ** |
+| `fuzz_valid --capabilities --count 200` | **200 run, 200 agree, 0 fail** |
+| `examples/249_r25_phal.sm` | **exits 3** - a failure with no handler, by design |
+| `examples/250_r26_dosh_handler.sm` | **exits 0** - **and that is the proof** |
+
+### The two exit codes are the whole story
+
+**249 and 250 are the same failure.** 249 propagates it and **the program aborts with code 3.** 250 **catches it
+with `yadi dosh`** and **the program finishes normally.**
+
+**A recovery form that changed the exit status from 3 to 0 is a recovery form that recovers.** That is not a
+test asserting a number - **it is the difference between a language that can only fail and one that can
+handle failure**, visible in one line of shell output.
+
+**And the fuzzer covers both**: 250 programs, 8,939 values, 0 differ, **with exit statuses checked.**
+
+**So the error type is verified end to end:** propagation (249), recovery (250), and the fuzzer over both.
+
+### And the tree
+**3,333 files. The audit is current: changelog v269, compiler v237.**
+
+## v269 - THE OWNER DECIDED: WE BUILD OUR OWN LINKER. And the fundamental is now stated precisely.
+
+### The decision, and why it is better than my recommendation
+
+**Claude refused the linker - restructuring, touching the step every program goes through - and proposed an
+opt-in object file linked by the SYSTEM's `ld`.**
+
+**The owner read that reasoning and decided anyway: build the linker, ours, in NASM.**
+
+**And his reason is better than mine.** **The project's fundamental is that it depends on no other language.**
+**Using the system's `ld` would have kept that true only by borrowing another project's tool.** **Building our
+own keeps it inside the project, written the way the compiler is written.**
+
+**He also accepted the risk knowingly** - *"I know it is tough, but we can build that."* **The risk belongs to
+the person who owns the project, and he took it.**
+
+### The fundamental, restated - and this is the important part
+
+> **A compiled Sutram program has no runtime dependency. The optional FFI links through a linker written in
+> this project; it is off by default and affects only programs that use it.**
+
+**And two rules that hold the line:**
+
+1. **The core stays dependency-free, non-negotiably.** An ordinary program still compiles to a finished binary
+   **with no linker, no `ld`, no other language.** **If the linker ever becomes required for an ordinary
+   program, the fundamental is broken and we stop.**
+2. **The FFI is opt-in.** Off by default.
+
+**So the answer to the owner's question - "does this miss our fundamental?" - is now: no, and it is stronger
+than the alternative would have been.**
+
+### Issued
+
+**ROUND-28 (Claude):** decide the object format, then **the smallest linker that links two modules into one
+binary** - in NASM, in this project. **With the guard stated absolutely: every one of the 218 suite programs
+must still compile exactly as it does now.** **And the suite, the corpus and the fuzzer run before and after.**
+
+**ROUND-95 (ChatGPT):** **its R93 linker design is now the plan rather than a proposal** - *the best outcome a
+design can have.* **It is asked to tighten the object format to byte-level so Claude can implement against it.**
+
+## v268 - ROUND-27 and ROUND-94 issued. And a note on what this round got right.
+
+### The audit
+
+**Changelog v267, compiler v237, the handler example present. The tree is current.**
+
+### ROUND-27 (Claude)
+
+**WS1: pick the next capability the same way it picked the last one** - *it chose the error type because it
+fit the model, and refused the linker because it did not.* **The brief names closures as a likely refusal** -
+Claude said they need nested function bodies and captured storage the parser and frame layout do not have.
+**And it is told the best capability so far came from it noticing what fits, so its own read is wanted.**
+
+**WS2: is the handler's syntax final, or does it miss a case?** A handler that retries, one that converts a
+code to a value, one inside a loop.
+
+### ROUND-94 (ChatGPT)
+
+**WS1: review the handler it designed the surface for.** *"A design reviewed by its designer against the
+implementation is worth more than a new design."* **And it has no compiler, so it is told to say so and do it
+as a reading.**
+
+**WS2: the opt-in object output** - what the compiler emits, what `ld` accepts, **and whether it needs the
+371-annotation type work or is independent of it.** **That decides whether it can be done before the type
+decision.**
+
+### And the thing this round got right
+
+**ChatGPT designed a linker. Claude refused it with a reason, and then proposed a smaller version of the same
+idea.** **The design was not wasted - it produced a smaller, safer form of itself, and that form is now a
+question the owner can answer.**
+
+**That is what a design is for.** Not to be built, but to be reduced to the part that is safe to build.
+
+## v267 - ROUND-26: the handler is BUILT, and Claude REFUSED the linker. Both correct.
+
+### The handler: decided, built, no new keyword
+
+**`yadi dosh (q = f(...)) { failure: q is the code } anya { success: q is the value }`.**
+
+**There is no new keyword** - it reads as *"if failure"*. **So the error type can now recover from a failure
+anywhere, not only abort.** That is the other half of the capability, and it went in without a new word in
+the language.
+
+**Compiler v237. Suite PASS=218 (217 + `250_r26_dosh_handler`). Crash corpus 227 cases, 0 failed. Gates 22
+PASS / 0 FAIL / 1 NOT-RUN.**
+
+**And the fuzzer covers it:** `fuzz_r23 --seed 26 --count 1000` gives **1000 programs, 36,112 values, 0
+differ**; robust mode 5000 mutations, **0 crash / 0 hang.** **No existing golden changed.**
+
+### The linker: refused, and the reasoning is the best engineering judgement of this stretch
+
+> *Today the compiler does three things in one pass: it reads the whole program as source (with `yoj` pulling
+> modules in as text), resolves every call against its own function table, and writes one finished executable.
+> Every one of the R23-R26 capabilities fit inside that model.*
+>
+> *A linker breaks the model at all three points at once... **That is a second program, plus a change to how
+> the first one finishes its work. It would touch the step that every program in the suite passes through. A
+> mistake there regresses everything, not one feature**, which is exactly what the standing rule says to stop
+> at.*
+
+**That is the rule used exactly as intended** - not as a brake, but as a way to tell a capability from a
+restructuring. **Four capabilities fit the model; the linker does not.**
+
+### And it proposed the alternative instead of just refusing
+
+> *Keep the source-level `yoj` for modules, and for the FFI an **opt-in object-file output linked by the
+> system's linker**, never a linker of our own.*
+
+**So the FFI can be had WITHOUT the restructuring** - the compiler emits an object file on request, and the
+system's `ld` does the linking. **That is a small, opt-in, additive change to a step that already exists.**
+
+**It is the owner's yes or no, and it is a much better question than the one I asked.**
+
+### Still with the owner
+**The type on variables** - unblocks F7, checked calls, method dispatch and traits. **Not built.**
+
+## v266 - ROUND-26 and ROUND-93 issued: the next steps
+
+**R25 is verified and merged. The next steps are now three, and two have owners.**
+
+### The next steps
+
+| # | Step | Owner |
+|---|---|---|
+| **1** | **The catch-and-continue handler** - the error type can currently only abort | Claude |
+| **2** | **The linker decision** - is it the next capability, or restructuring? | Claude |
+| **3** | **The linker design** - the piece two features stand on | ChatGPT |
+| **4** | **The type-on-variables decision** | **the owner** |
+
+### ROUND-26 (Claude)
+
+**WS1: build the catch handler.** *Without it, the error type can only abort. With it, a program can recover -
+and recovery is the whole point of an error type.*
+
+**WS2: decide the linker.** *"Neither is a small change. Both are the same change."* **Its call, with
+reasoning - and told not to start it without saying which.** **A linker is the one change that could regress
+everything, and the standing rule exists for exactly this.**
+
+### ROUND-93 (ChatGPT)
+
+**WS1: design the linker** - the object format, the relocation, the smallest milestone (two modules into one
+binary). **And the question that decides whether this is one round or ten: how much of the existing output
+writer can be reused?** **If the answer is "almost none", that is the difference between architecture work and
+a capability round.**
+
+### And the rule from Claude's answer, now adopted
+
+**Decode strictly with no `errors=` argument; if it raises, stop and use git. File modes always need git.**
+**I will not corrupt another file or lose another mode.**
+
+**And a note on process: Claude pushed with git and its modes and bytes survived; I pushed file-by-file and
+they did not.** **For binary-adjacent work, git is the tool and my write tool is not.**
+
+## v265 - CLAUDE ROUND-25 VERIFIED. Every claim checked, all of them correct.
+
+**I checked its handback against the repo rather than accepting it. Compiler v236, 22 PASS / 0 FAIL /
+1 NOT-RUN (Windows).**
+
+### The four hashes - the corruption I caused is repaired
+
+| File | SHA-256 on main | Claude's |
+|---|---|---|
+| `mutation-15-27971.sm` | `7d42c065...` | **match** |
+| `mutation-15-37233.sm` | `768e2941...` | **match** |
+| `mutation-15-42057.sm` | `b251932b...` | **match** |
+| `mutation-15-574.sm` | `2abae6b7...` | **match** |
+
+**And `sha256sum -c SHA256SUMS`: 213 OK, 0 FAILED.** **The bytes my merge destroyed are back, and the
+manifest - which was right all along - now agrees.**
+
+**`crash corpus: 227 cases + manifest, 0 failed`.** **The four failures I found in the baseline are gone.**
+
+### The error type works
+
+**`examples/249_r25_phal.sm` compiles, prints `5 1 16 6`, and exits 3 - by design.** `src/r25_phal.inc` is
+present, `tests/r25/test_phal.py` is present, and `tools/fuzz_r23.py` grew from 12,273 to 14,449 bytes - **the
+fuzzer was extended for the new capability.**
+
+### And the two things that had been failing for rounds
+
+**The executables are `775`** - **`sutram-fmt` is executable.** **And the gates are 22, up from 16.**
+
+**Both were failing because I could not set a file mode or merge a non-UTF-8 file.** **Claude pushed with
+git, and both came through intact.**
+
+### MY QUESTION, ANSWERED - and it is a permanent limit
+
+> *A tool that reads files as text CANNOT merge a file that is not valid UTF-8. `errors="replace"` destroys
+> the bytes at the read. Use a git operation... A guard: before writing any file, decode it strictly with
+> `data.decode('utf-8')` and no `errors=` argument. If that raises, stop and use git. **File modes always
+> need git too.***
+
+**So two things I must never do with my write tool again: merge a file that is not valid UTF-8, and set a
+file mode.** **The guard it gave is the right one and I am adopting it: decode strictly first; if it raises,
+stop and ask for a git operation.**
+
+**That closes the twelfth error of mine this stretch - and this one came with a fix for the tool, not just for
+the instance.**
+
+## v264 - ChatGPT PROVED the FFI technique by measurement, and found the common blocker
+
+### The FFI: it did not answer with a design, it answered with an experiment
+
+**Verdict: YES - an executable can call a freestanding C function with no libc and no dynamic loader.
+NO - it cannot call libc's `printf` without linking its implementation.**
+
+**And it measured that rather than arguing it.** It wrote a freestanding C function
+(`long sutram_ffi_add(long,long)`), a raw Linux entry point using the **x86-64 SysV C ABI**, compiled with
+GCC, **linked with `ld -nostdlib -static`**, and observed:
+
+```
+stdout:  NO_LIBC_C_CALL=42
+exit:    42
+size:    9,096 bytes
+PT_INTERP: none   dynamic section: none   DT_NEEDED: none
+```
+
+**And the control that makes it evidence: removing the C object makes the link FAIL with
+`undefined reference to 'sutram_ffi_add'`.** **So the call is real, and the binary has no runtime.**
+
+**That is the difference between a design and a proof.** A design says the FFI could work; **this says the
+technique works and shows the exact ELF with no interpreter and no dynamic section.**
+
+### And the finding that matters more than the FFI
+
+**WS2 asked whether the module system fits the compiler as it is. Its answer:**
+
+> *Only its source-level module graph and export surface fit. **Genuine separately compiled modules REQUIRE a
+> new object writer, relocation format and linker/driver.** This is architecture work, not a small safe
+> change.*
+
+**So the FFI and the module system need THE SAME MISSING PIECE: an object writer and a linker.**
+
+**Neither is a small change. Both are the same change.** That is worth knowing before either is started -
+**it means the linker is not a feature, it is the thing two features are standing on.**
+
+### And it corrected its own earlier design
+
+> *`# sutram-module-v1` is ALREADY active, not a new switch to invent.*
+
+**A correction to its own R91 design, found by reading the compiler.** **It read the source before defending
+its design** - which is the right order.
+
+### WS3
+**The error-contract verdict is delivered.** To be read.
+
+## v263 - MY MERGE CORRUPTED FOUR FILES. Claude caught it. And the F7 decision is bigger than F7.
+
+### The error, and it is the most damaging kind
+
+**R24-01 says: *"`SHA256SUMS` holds the fuzzer's bytes. The four files on main do not. They contain U+FFFD
+(EF BF BD) where the fuzzer wrote bytes that are not valid UTF-8. They were last changed by `9c278db2` and
+its three siblings, the ROUND-20 merge."***
+
+**That is my merge.** **I read every file as UTF-8 with `errors="replace"`** - and those four files are
+**fuzzer mutations containing invalid UTF-8 by design.** **So my merge replaced their bytes with U+FFFD and I
+pushed the corruption.**
+
+**And Claude was right NOT to regenerate the manifest.** The manifest is correct; **the files are wrong.**
+Regenerating it would have made the corpus agree with corruption and hidden it for good.
+
+**The eleventh error of mine this stretch, and the worst class:** a silent content change, **in a file whose
+entire purpose is to be byte-exact.**
+
+### The sentence in R24 that matters most
+
+> *Still open, and a decision for the owner: **a type on variables.** It is the common root of method
+> dispatch, traits, checked calls through function values, and F7.*
+
+**So F7 is not an F7 decision.** It is the **type-on-variables** decision, **and it unblocks four things at
+once** - methods, traits, checked calls through function values, and the crash. **The owner should decide it
+knowing that, not as a bug fix.**
+
+### And Claude chose the error type as the next capability, with the right reasoning
+
+> *The error type fits the compiler as it is... The FFI needs a different kind of executable from the
+> compiler's output writer, which is exactly what the standing rule says to stop at.*
+
+**That is the standing rule being used as intended** - not as a brake, but as a way to pick the capability
+that does not require restructuring. **Approved.**
+
+**ROUND-25: restore the bytes first, build the error type second, put the type decision to the owner third.**
+
+## v262 - THE THREE CAPABILITIES ARE MERGED AND WORKING. Verified by me on main.
+
+**Compiler v234. I ran all three on main rather than trusting the branch.**
+
+### The comparator sort - the proof I asked for
+
+```
+sutram examples/246_r23_comparator_sort.sm -> run:
+  1 2 3 4 5 7 8 9        ascending
+  9 8 7 5 4 3 2 1        descending
+  2 4 8 1 3 5 7 9        evens first
+  2 4 8 5 3 1 7 9        descending, MIDDLE FOUR ONLY - a slice
+  7                      a function value called through
+```
+
+**One insertion sort, four orderings, the comparator passed in.** **And the last one sorts only elements 2-5
+of the array - through a slice.**
+
+### Methods and slices
+
+| Example | Output |
+|---|---|
+| `247_r23_methods.sm` | **`7 4`** |
+| `248_r23_slices.sm` | **`55 12`** |
+
+**So three paradigms moved at once:** function values (paradigm 2), methods (4), and slices (5).
+
+**The language could not pass behaviour as a value this morning.**
+
+### And a tooling limit I found the hard way
+
+**Two of my merge attempts did not land, and I only caught it because I verified the result instead of
+trusting the call.** The version stayed at v233 and none of R23's files were present.
+
+**The cause: my large pushes fail silently.** A batch of 60+ files returns no error and writes nothing. **A
+batch of six works, and verifies.**
+
+**So from here I push in small batches and check the result.** **That is the tenth time this stretch that
+verifying rather than assuming was the thing that worked** - and the first time the failure was in the
+mechanism doing the writing rather than in my reasoning about it.
+
+**`tools/fuzz_r23.py` is in the tree too** - a fuzzer for the capabilities, which answers WS2 of ROUND-24
+before it was asked.
+
+## v261 - ROUND-24 and ROUND-92 issued
+
+**The honest note first: I read R23 and R91 and recorded them, but did not issue the follow-up rounds until
+asked.** That is a gap in the loop - **a delivery that is read but not followed up leaves both partners idle.**
+
+### ROUND-24 (Claude)
+
+**WS1: the corpus manifest, again.** R22 changed the four `.sm` files; `SHA256SUMS` was not in its list, so
+the files moved and the manifest did not. **Second time raised.**
+
+**WS2: verify the capabilities against the net** - **"a capability that works on one example is a demo; one
+that survives the fuzzer and the suite is a feature."** **And if the fuzzer's generator cannot express
+function values, say so.**
+
+**WS3: choose the next capability itself** - closures, the error type, or the FFI - **with the note that if it
+can make a Sutram program call `printf`, that is the largest ecosystem gain available.**
+
+### ROUND-92 (ChatGPT)
+
+**WS1 is the design question its own finding raised:** *the project has ruled out a runtime, and a normal FFI
+links libc.* **So - can a C function be called without one? If not, say so and describe the nearest
+syscall-only path.**
+
+**Plus: does the module design fit the compiler as it is, and does the error-type page contain the program
+that cannot compile under it but compiles today?**
+
+## v260 - FIRST-CLASS FUNCTIONS WORK. And the FFI does not, which is also a result.
+
+### The capability the language was missing most
+
+**A `prakriya` name used as a value IS the function.** Claude's R23-01, compiler **v234**:
+
+```
+prakriya aarohi(a, b) { prati a - b }
+shreni(x, aarohi)        # passed
+vitti f = aarohi         # stored
+likha(f(10, 3))          # called through: 7
+prakriya kram_chuno(k) { yadi (k == 1) { prati avarohi }  prati aarohi }   # returned
+```
+
+**Stored in a variable, passed as an argument, returned from a function, kept in a `mala`, compared with
+`==`, and called through.** That is the whole of paradigm 2's first step, **and it is the largest capability
+gap the language had.**
+
+### And the proof is the one I asked for, not a demo
+
+**`examples/246_r23_comparator_sort.sm`** - one insertion sort, `shreni(vibhag s, tulana)`, **sorting the same
+array four ways by the comparator passed in:** ascending, descending, evens-first, **and descending over only
+the middle four elements - a slice.**
+
+**So slices work too** (R23-03), and they work *inside* the first-class-function proof.
+
+**And the comparator arrives three ways: from a variable, from a parameter, and from the return value of
+`kram_chuno`.** That is not a demo - **it is the feature being used the way a real program uses it.**
+
+**No existing golden changed.** The new expectations are new files.
+
+### The FFI: NOT implemented, and ChatGPT said so precisely
+
+> *Status: current Sutram C FFI NOT IMPLEMENTED; separate C-ABI control PASS; native Sutram compile NOT_RUN.*
+
+**It wrote the minimal probe - `printf("Hello from Sutram C FFI")` - established from the compiler source at
+`src/sutram_compiler.asm:11839-11858` what is expected at that point, verified the **C ABI separately** with
+GNU `as`/`ld`, **and did not invent the native error bytes it could not produce.**
+
+**"Not implemented" is a complete and useful answer.** The alternative - a plausible-looking FFI design that
+does not link - would have cost a round and produced nothing.
+
+### Also delivered
+**R23-02 (methods), R23-04 (checks and open), R91-WS2 (the module/package design), R91-WS3 (the error type).**
+To be read.
+
+## v259 - R22 merged (v233), and the corpus re-pin was INCOMPLETE
+
+**Claude's R22 is merged. The version is v233, the F8 wording fix is in, and there is a new
+`src/r22_lang_builtin.inc` with a checker and a test.**
+
+**But the four manifest failures survive, and the reason is in R22's own file list:**
+
+**The four `.sm` files are in it. `tests/negative/r17/SHA256SUMS` is NOT.**
+
+**So the files moved and the manifest did not.** They still disagree, and the corpus still reports
+`4 failed` - **which means it cannot detect tampering, which is the only thing a manifest is for.**
+
+**Flagged to Claude as WS4b, before the capability work starts rather than after.**
+
+### And the tree now reports 16 PASS / 2 FAIL / 1 NOT-RUN
+
+**The two failures are the modes gate (`sutram-fmt`, a git attribute my merge cannot set) and this one.**
+
+**That is exactly why I captured a baseline.** The capability round is the largest change the compiler has
+had, **and a regression net already reporting two failures will hide the next one.**
+
+**A green baseline is not a nicety before a big change; it is the thing that makes the change verifiable.**
+
+## v257 - BASELINE captured before the capability rounds, and it found 4 manifest failures
+
+**The capability round is the largest change the compiler has had, so I captured a baseline to verify it
+against. And the baseline was not clean.**
+
+### The baseline
+
+| Check | Result |
+|---|---|
+| suite | **PASS=213, 4 no-expectation** (up from 205) |
+| language packs | **33/33** |
+| library proofs | **220 passed** |
+| property proofs | **86/86** |
+| layers | 14 core / 9 alloc / 1 std |
+| module graph | **OK** |
+| **valid fuzzer** | **300/300 agree, 0 fail** - and the distribution covers the F1 boundary densely |
+| **crash corpus** | **227 cases, 4 FAILED** |
+
+### The four failures, and they are the four files Claude corrected in R21
+
+```
+FAIL  manifest: r15-original/mutation-15-27971.sm does not have the pinned bytes (re-encoded or edited)
+FAIL  manifest: r15-original/mutation-15-37233.sm ...
+FAIL  manifest: r15-original/mutation-15-42057.sm ...
+FAIL  manifest: r15-original/mutation-15-574.sm ...
+crash corpus: 227 cases + manifest, 4 failed
+```
+
+**Not a crash** - all 227 cases produce diagnostics, and I verified that separately earlier. **The manifest and
+the files disagree** - which means the corpus cannot detect tampering, **which is the only thing a manifest is
+for.**
+
+**Assigned to Claude before it starts the capabilities.**
+
+### Why I stopped to fix this first
+
+**A green baseline is a precondition for a big change, not a nicety.** The capability round will move the
+compiler substantially. **If the regression net reports 4 failures before the work begins, a new failure is
+invisible in the noise** - and I would not be able to tell a regression from the pre-existing state.
+
+**That is the whole reason for capturing a baseline, and it earned its place on the first try.**
+
+## v256 - the capability set is in the roadmap, and the console window is recorded as parked
+
+**The owner set the direction: the language itself is the priority.** So the roadmap now runs **two tracks** -
+v1.0 closes with the Windows test and the tag, and **v1.1 builds capability.**
+
+**Six capabilities are recorded with owners:** first-class functions, methods on structs, slices (Claude); a C
+FFI, a module system, a real error type (ChatGPT).
+
+**And the roadmap says why these and not the memory model:** generics, concurrency and async remain **v2** -
+they change what the language *is*, **and that is a bigger decision than a round.**
+
+**The rule for every capability round is now in the roadmap, not only in a brief:**
+
+> *A capability that works on one example is a **demo**; one that survives the fuzzer and the suite is a
+> **feature**. Run both. And if a capability cannot be made to work without restructuring the compiler, **STOP
+> and say so - do not restructure in a capability round.***
+
+**And the parked item is recorded rather than lost:** `sutram-console.exe`, the window that would render Indic
+output properly. **With the reason it is not urgent** - the IDE already renders all eleven scripts correctly -
+**and the workaround that exists today: Windows Terminal, or `chcp 65001`.**
+
+## v255 - THE CAPABILITY ROUNDS: the language gets first-class functions, methods, slices, and an FFI
+
+**The owner has set the direction: the language itself is the priority.** The console-rendering idea is parked
+for a future version. **So this is not a maintenance round - it is the largest capability step the project has
+taken.**
+
+### ROUND-23 (Claude) - three capabilities
+
+| Capability | Paradigm | Why it is the right next step |
+|---|---|---|
+| **First-class functions** | 2 | **A function is a name you call, not a value.** The largest capability gap in the language |
+| **Methods on structs** | 4 | `rachana` gives structs and no methods - **a struct with no methods is a record** |
+| **Slices** | 5 | **The smallest and most immediately useful** - a view into an array, so the library's functions compose |
+
+**Each is scoped to the smallest working version**, and WS1 must be proved with **a sort that takes a
+comparator as an argument** - the canonical use, and the one that makes it a feature rather than a demo.
+
+### ROUND-91 (ChatGPT) - the ecosystem
+
+| Task | Parameter | Why |
+|---|---|---|
+| **A C FFI** | 18 | **The language can produce a native binary and cannot call a C function.** The largest ecosystem gap |
+| **A module system design** | 16 | `yoj` is textual inclusion; **the design is the part only it can do** |
+| **Error handling restated** | 12 | The program that CANNOT compile under it, but compiles today - **that is the whole argument** |
+
+### The rule stated in both briefs
+
+**A capability that works on one example is a demo; one that survives the fuzzer and the suite is a feature.**
+**Run both.** And: **if a capability cannot be made to work without restructuring the compiler, STOP and say
+so - do not restructure in a capability round.**
+
+**That last instruction is deliberate.** The compiler is 23,000 lines of hand-written assembly that currently
+passes 20,000 random programs and 227 crash cases. **A capability is not worth a regression.**
+
+## v254 - F8 EXPLAINED, and part of it was MY ERROR in the test package
+
+### What the warning actually tests - ChatGPT found it, and it is exact
+
+**A language pack has TWO HALVES:**
+
+| Half | File | Where it comes from |
+|---|---|---|
+| **the messages** (`अज्ञात नाम`) | `lang/<pack>.sandesh` | **built into the compiler** since R11 - **always present** |
+| **the keywords** (`लिखो` -> `likha`) | `lang/<pack>.lang` | **from disk only** |
+
+**`try_load_lang` first switches the messages to the pack - which always succeeds - and THEN looks for
+`<pack>.lang` on disk. When that file is not on any of its paths, it warns.**
+
+**So the warning was CORRECT: the keyword file really was missing. And the messages really did load.**
+
+**That is exactly what the owner saw:** *"language pack not found"* in Hindi, followed by Hindi messages. **Both
+halves of that are true** - the messages were there, the keyword file was not.
+
+### And the reason it was missing is that MY TEST PACKAGE DID NOT SHIP IT
+
+**The repository ships 10 `.lang` files in `lang/`. My package build copied `lang/*.sandesh` - and NOT
+`lang/*.lang`.**
+
+**So the keyword aliases were absent from the package I gave the owner, the compiler correctly reported that
+it could not find them, and I read the warning as a compiler defect.**
+
+**That is my error, and it is the ninth this stretch.** I built a package by copying a glob I did not check,
+**and then attributed the consequence to the compiler.**
+
+### What is still a real defect
+
+**The message is misleading, and that part stands.** It says *"language pack not found"* when **the messages
+loaded fine** - a user reads that as *"your language is not supported"* and stops. **It should say what is
+actually missing: the keyword aliases.**
+
+**And it is worth a check:** if the keyword file is absent, **the user gets messages in their language but
+cannot type keywords in it** - which is a real functional difference the message should name.
+
+### The fixes
+
+1. **Mine:** rebuild the package with `lang/*.lang` included. **Done in the next package.**
+2. **Claude's (R22-02):** the wording. **The compiler now says what is actually missing.**
+
+## v253 - F8 split between the two partners
+
+**Claude fixes it; ChatGPT finds what the warning actually checks.** Two readings of one defect - **the shape
+that worked for F1**, where one partner diagnosed and the other fixed.
+
+**ChatGPT is asked the question I cannot answer without a reading:** *does the warning fire on Linux too, or
+is this Windows-specific?* **That decides whether every AI check missed it or whether it is a platform
+difference** - and the two have very different fixes.
+
+**And it is told what it must not do: edit anything.** It reads `src/sutram_compiler.asm` and
+`src/r11_sandesh.inc`, gives line numbers, and Claude applies the fix.
+
+**Both rounds now carry F8** - Claude to fix, ChatGPT to diagnose - **and both carry the sentence that says
+why it matters: a false "your language is not available" message is the worst error this project could emit.**
+
+## v252 - F8 recorded everywhere it needs to be
+
+**F8 is now in `PROJECT-MASTER.md`'s "what is NOT true" section**, beside F7 - so anyone reading the master
+document sees both open defects before they make a claim.
+
+**And `TEST-ME.md` carries a note for the owner:** the warning is cosmetic, **it does not affect the output** -
+the program compiles and the messages are in the right language. **"Ignore the warning; report it if you see
+it."**
+
+**That distinction matters.** The owner should not stop testing because of a message that is wrong about
+itself, and he should not assume the packs are broken when they demonstrably are not.
+
+## v251 - THE OWNER'S WINDOWS TEST: F1 CONFIRMED FIXED, and a NEW BUG found
+
+### F1 is fixed on his machine
+
+```
+sutram f1.sm f1.exe
+Siddh: 622 baait sankalit
+f1.exe
+-> 7
+```
+
+**The defect he found - a function with 38 locals that compiled and printed nothing - now prints `7` on real
+Windows.** **That is the confirmation the whole F1 effort was for.**
+
+**And the rest passed:** `--version` correct, `hello.sm` runs, **and the error message with its line number,
+caret and hint renders in four scripts** - so the fonts and the encoding work on his machine.
+
+### And he found F8 - a bug no AI check could find
+
+```
+sutram --lang hindi bad.sm o.exe
+चेतावनी: भाषा पैक नहीं मिला: hindi          <- "language pack not found", IN HINDI
+bad.sm:1:18: ... अज्ञात नाम 'nosuchname'    <- and then the message IS in Hindi
+```
+
+**The warning is self-contradictory: it is written in the language it claims to be missing.** The pack loaded
+- `अज्ञात नाम` and `संकेत` are the Hindi messages. **So the warning is a false alarm.**
+
+**It fires for hindi, sanskrit and tamil, each time in the language it says is absent.**
+
+**Why this is the worst possible error for this project:** a user who sees *"language pack not found"*
+concludes their language is unsupported and stops - **while it is working perfectly.** The language exists so
+that a user can work in their own language; **telling them it is unavailable, in that language, is the most
+confusing message the compiler could emit.**
+
+**And it was found by the owner, on Windows, because every AI check ran on Linux** - where the same warning
+presumably fires and nobody noticed. **Third time this stretch that a defect was found by someone using the
+thing rather than by a gate.**
+
+**Assigned as F8 with the reproduction, and a test: `--lang <pack>` on a valid program must not warn.**
+
+## v250 - the rename-audit boundary is now in PROJECT-MASTER.md
+
+**ChatGPT delivered the exact paragraph; I inserted it where it belongs** - Section 6, The history, right
+after the Era 4 rename paragraph and before "Where the numbers stand now".
+
+**What it says, and why it matters:**
+
+> *Of 2,854 tracked file blobs, 1,579 matched the audit's expanded source/text suffixes... leaving 978 live
+> eligible files. **Only 202 of those 978 live files were actually fetched and screened; 776 were NOT
+> scanned**, including most active examples, tests, and tools... **no active obsolete syntax was confirmed
+> within that limited inspected set**. This is **not** a completed whole-repository rename audit.*
+
+**So the completeness claim about the rename now carries its own limit, in the document that makes the claim.**
+
+**And the honest part is the direction of the error:** 776 files were NOT scanned, **including most active
+examples, tests and tools** - the places a stale name would actually matter. **The audit was strongest where it
+mattered least.**
+
+**That is the third time this project has had to say "the claim is narrower than it reads"** - after the
+library's 818 undecided mutants and the crash corpus's 104 unpinned inputs. **All three are now stated in the
+document rather than left for a reader to assume.**
+
+## v249 - ROUND-22 and ROUND-90 issued
+
+**ROUND-22 (Claude) is one item:** make `sutram-fmt` executable **at the git level**, with the exact commands.
+**I cannot do it** - a mode is a git attribute, not content, and my write tool puts content. **I pushed its
+bytes and the mode did not move.**
+
+**So it is the last thing standing between the tree and 16 gates with zero failures.** And Claude is asked to
+**check whether any other committed script has lost its mode** while it is there - the gate names one, but it
+only checks what it knows about.
+
+**ROUND-90 (ChatGPT) asks about the one rule where the two checkers disagree.** Claude flagged 0 "extra
+placeholder" candidates; ChatGPT flagged 36. **One of the two rules is wrong, and it matters** - because a
+structural check is only as good as its rule set, **and the eight draft packs will never have a native
+speaker read them.**
+
+## v248 - Claude R21 merged, and a limit of my own tooling stated plainly
+
+**Merged:** the four corrected crash-corpus inputs, `tools/crash_corpus.py`, and
+`tests/negative/r17/SHA256SUMS`.
+
+### The `sutram-fmt` mode: fixed on the branch, and I cannot apply it
+
+**Claude fixed it - the file is `-rwxrwxr-x` on `claude/round-21`.** And the "committed modes" gate now
+**runs** and **fails** on main for exactly that file.
+
+**But my merge cannot set it.** A file's mode is a **git attribute, not file content**, and the write tool I
+use puts **content**. So `sutram-fmt` will stay non-executable on main however many times I re-push its bytes -
+**and I have already pushed its bytes without noticing the mode did not move.**
+
+**That is a limit of my tooling, and it is the same shape as the gate that was NOT-RUN in a tarball:** the
+thing that needs to change is invisible to the mechanism doing the changing.
+
+**So it needs a git-level operation** - `git update-index --chmod=+x sutram-fmt` on a real clone, then a push.
+**I cannot do it from here; Claude can, on its branch, or the owner can in one command.**
+
+**Until then the tree carries one red gate, and it is honest about what it is.**
+
+### What else landed
+
+**Claude's R21-01 reproduced ChatGPT's pack check with a checker written from the pack files alone** -
+sharing no code - **and found zero hard violations, as did ChatGPT, as does the project's own gate. Three
+independent readings.** And its R21-02 verified the crash corpus.
+
+## v247 - cross-verification: THREE independent readings agree, and the fuzzer claim holds
+
+### The translations: three readings, zero violations
+
+**Claude reproduced ChatGPT's structural pack check, writing its own checker from the pack files alone and
+sharing NO code with either `tools/sandesh.py` or ChatGPT's `r83_pack_structure.py`.**
+
+| | ChatGPT (R83) | Claude (R21) | The project's own gate |
+|---|---|---|---|
+| rows | 1,408 | 1,408 | 1,408 |
+| hard violations | **0** | **0** | **OK** |
+
+**And Claude looked for a violation in nine ways and found none** - *"and then made sure the checker would
+have reported one had it been there."* **That last clause is the difference between a verification and a
+re-run.**
+
+**Three independent readings now say the eleven packs are structurally sound.** For the eight DRAFT packs,
+**which will never have a native speaker read them, that is the strongest statement the project can make.**
+
+### And a discrepancy that turned out to be a checker difference
+
+**ChatGPT flagged 41 review candidates; Claude found 5.** The gap is **36 "extra `{kw:...}` placeholder"
+flags** in six draft packs - and Claude's checker reports **0**, with an explanation.
+
+**So the two checkers disagree about one rule, not about the packs.** **The 5 they AGREE on are the
+byte-identical-to-Sanskrit short labels** - hindi 2, marathi 3 - **which is exactly the class that turned out
+to be fine when the Hindi pair was read.** **The same finding, arrived at twice.**
+
+**That is worth recording as a limit:** a structural check is only as good as its rule set, **and two careful
+checkers disagreed on one rule.**
+
+### The fuzzer claim, verified against the raw data
+
+**ChatGPT read Claude's committed evidence and independently parsed the numbers:**
+
+| Evidence file | Claimed | Printed values | Failures |
+|---|---|---|---|
+| `evidence-r15/valid/run-seed15-20000.txt` | 20,000 | 387,913 | 0 |
+| `evidence-r17/fuzz-valid-seed15-20000-final.txt` | 20,000 | **388,616** | **0** |
+| `evidence-r18/fuzz-valid-seed15-20000.txt` | 20,000 | **388,616** | **0** |
+
+> *"The Round-17 and Round-18 claim of 20,000 / 20,000 with 388,616 reported print values matches the
+> committed summary headers exactly."*
+
+**And it labelled its own limit: "Sutram compiler execution: NOT_RUN, as directed."** **The strongest
+correctness claim the project has has now been read by someone who did not produce it.**
+
+## v246 - the modes gate now RUNS, and it caught a real defect. Plus a new crash-corpus gate.
+
+### The gate I asked for works, and it immediately found something
+
+**I asked twice whether the "committed modes" gate could be made to run outside a git checkout - it was
+NOT-RUN there, which is why the mode had survived SIX merges.**
+
+**Claude made it run. And on my first run of the merged tree:**
+
+```
+committed modes   FAIL   not executable: sutram-fmt (chmod +x; in git also update-index --chmod=+x)
+```
+
+**`sutram-fmt` is not executable in the repository.** A fresh clone gets a formatter that cannot be run -
+**and the tool built to catch exactly this is the thing that caught it.**
+
+**That is the whole argument for making a gate run everywhere: a check that skips the environment where the
+problem happens is not a check.** The mode had been lost at six merges and every one of them passed.
+
+### Two new gates arrived with the work
+
+| Gate | Result |
+|---|---|
+| **crash corpus** | **227 cases, 0 failed** - the 107 crash inputs are now a permanent gate |
+| **library proofs** | **220 passed** (up from 217) |
+
+**And I ran the 102 pinned crash inputs against the current compiler myself: 0 still crash.** The fix holds,
+and it is now pinned by a gate rather than by a claim.
+
+### The tree otherwise
+
+**15 gates, 1 FAIL (the mode), 1 NOT-RUN (Windows).** 3,181 files. The FAIL is real, small, and assigned.
+
+## v245 - ROUND-21 and ROUND-89: the queue is empty, so the work is now verification
+
+**The manual-free queue is done.** Every item on `PLAN-TO-FINISH.md` is complete or in flight, so this round is
+not new features - **it is a second pair of eyes on work that is not the reviewer's own.**
+
+**That is the right use of two partners when there is nothing to build.** A project's weakest moment is when
+everyone has finished and nobody is checking.
+
+**ROUND-21 (Claude)** - **reproduce ChatGPT's structural translation check independently.** *The other eight
+packs will never have a native speaker read them, so that check is all they will get.* **If Claude finds a
+violation ChatGPT missed, that is the most valuable possible result.** Then re-run the crash-corpus tool and
+confirm the count.
+
+**ROUND-89 (ChatGPT)** - **read Claude's fuzzer evidence and check the claims against the raw output.**
+*"20,000 programs all correct" is the strongest correctness claim the project has*, and it should be read by
+someone who did not produce it. Specifically: **does the summary's line count match, and does the generator's
+variable-count distribution actually cover the F1 boundary?**
+
+**And both are told what they cannot do:** ChatGPT has no compiler, **so its check is a reading of evidence,
+not a re-run - and it must say so.**
+
+**One thing neither is asked to do: re-run the other's tests and report "pass".** That is not verification, it
+is agreement. **The ask is to check the claims against the artefacts.**
+
+## v244 - the crash corpus is COMPLETE: 104 inputs pinned, and the two Hindi items are fine
+
+### The crash corpus - the gap ChatGPT found is closed
+
+**ChatGPT measured it: six crash CATEGORIES were regression-covered but 104 of the 107 original inputs were
+not pinned.** *"A fix that regressed in a slightly different way would pass the corpus."*
+
+**Claude pinned all 104** - `tests/negative/r17/r15-original/` now holds the original mutation streams as
+exact-source cases, with `tools/crash_corpus.py` to run them. **204 new files.**
+
+**So the guarantee is now "the crashes are fixed and pinned", rather than "the categories are covered".**
+
+### And the two Hindi items are NOT errors
+
+**The owner's review was 384 messages. ChatGPT narrowed it to two. Both turn out to be fine.**
+
+| # | String | Finding |
+|---|---|---|
+| 1 | `   |   भाषा: ` | flagged only because it is **byte-identical to Sanskrit**. `भाषा` is normal Hindi for *language*. **Not an error.** |
+| 2 | `   |   लिपि: ` | same - `लिपि` is the usual Hindi word for *script*. **Not an error.** |
+
+**ChatGPT's own words:** *"The two original mechanical flags arose only because the short labels are identical
+in both packs, not because script or syntax validation failed. Neither is a confirmed mistranslation."*
+
+**That is the distinction a mechanical check cannot make.** The check flagged *identical*; a human reads
+*correct*; **the two are not the same finding.**
+
+**Recommendation: KEEP BOTH. So the three supported packs are CLEAN - Gujarati 0, Sanskrit 0, Hindi 0.**
+
+## v243 - the two Hindi items are NOT errors. The three supported packs need no changes.
+
+**The owner's review was going to be 384 messages. ChatGPT narrowed it to two. And now the two turn out to be
+fine.**
+
+| # | String | What it is | The finding |
+|---|---|---|---|
+| 1 | `   |   भाषा: ` | the IDE status line's language label | **flagged only because it is byte-identical to Sanskrit.** `भाषा` is normal Hindi and clearly means *language*. **Not an error.** |
+| 2 | `   |   लिपि: ` | the IDE's script label | **Same** - identical to Sanskrit, but `लिपि` is the usual Hindi word for *script*. **Not an error.** |
+
+**And ChatGPT states the cause precisely:** *"The two original mechanical flags arose only because the short
+labels are identical in both packs, not because script or syntax validation failed. Neither is a confirmed
+mistranslation."*
+
+**That is the right distinction, and it is the one a mechanical check cannot make.** The check flagged
+*identical*, a human reads *correct*, **and the two are not the same finding.**
+
+**Its recommendation: KEEP BOTH.** And it offers longer alternatives (`चयनित भाषा`, `टाइपिंग लिपि`) only if the
+owner wants emphasis - **and notes they are longer, so the status-bar layout would need checking.**
+
+### So the three supported packs are CLEAN
+
+**Gujarati: 0 candidates. Sanskrit: 0. Hindi: 2 - both of which are fine.**
+
+**The review that was going to be three packs of 128 messages is now one line: "keep both."** And that is not
+a shortcut - **it is what happens when 1,408 strings are narrowed by a machine to the two that a machine could
+not decide.**
+
+**`HINDI-TWO-ITEMS.md` is delivered to the owner.**
+
+## v242 - ROUND-20 and ROUND-88 issued
+
+**ROUND-20 (Claude)** tells it to **prepare both F7 options as diffs and apply neither** - *the owner decides;
+you should not be waiting idle while he does.* And for the required form, **to name the 32 files and the
+library modules that would stop compiling**, so the cost is a list rather than an estimate. Then the 104
+unpinned crash inputs, and `sutram-fmt --check` in `gates.sh`.
+
+**ROUND-88 (ChatGPT)** asks for **the audit boundary as a paragraph to insert into `PROJECT-MASTER.md`**, and -
+**the highest-value thing anyone can produce right now** - **the two Hindi candidates as a single short page**:
+the exact string, what it means, what may be wrong, and a suggested alternative. **The owner should be able to
+read it in a minute and answer in a line.**
+
+**That is the last manual step on the three supported packs, and it is now two messages wide.**
+
+## v241 - the reformat is merged, and Claude built the exclusion list I warned about
+
+**Thirty-five files reformatted with `sutram-fmt` - examples, two library modules, and the stdlib tests.**
+
+**And `tools/fmt-exclude.txt` is new.** I warned last round that the formatter would rewrite
+`220_hindi_parse_error.sm` - **a file that exists to be malformed** - and that `42_block_comments.sm` was also
+at risk. **Claude built an exclusion list rather than sweeping.** `42_block_comments.sm` is in the changed
+set; `220_hindi_parse_error.sm` is not.
+
+**That is the warning working.** The tool is right and the thing it touches is deliberately wrong - **and the
+exclusion is now a file in the tree rather than a note in a brief.**
+
+**The compiler and the installer are rebuilt**, so the installer carries everything to date.
+
+**One file excluded: `docs/CHANGELOG.md`.** The eighth time that trap has been caught before landing.
+
+**ChatGPT's ROUND-87 (the DRAFT pack review, the crash-gap report, the audit boundary) is delivered.**
+
+## v240 - the F7 decision has numbers now, and the crash corpus has a gap
+
+### F7: what typed parameters would actually touch
+
+**Claude measured it on main, and the answer is larger than I expected:**
+
+> **236 of the 303 library functions take a list, string, record or `kosh` parameter, and 247 of the 487
+> programs in `examples/`, `tests/stdlib/` and `lib/` call one.**
+
+| If typed parameters are... | What changes | What breaks |
+|---|---|---|
+| **optional** - an untyped parameter keeps today's meaning, `mala a` adds the check | **nothing has to change.** Annotating the 236 + 135 functions is one word each, at leisure | **nothing - but F7 stays open for every untyped parameter**, so it closes only as fast as the annotation spreads |
+| **required** for indexing - indexing an untyped parameter becomes a compile error | **the 236 library functions and 135 program functions get their one word in the SAME change**, or 32 files and all of `lib/` stop compiling | **no call-site changes** - `f(a)` is written the same either way |
+
+**And the sentence that makes the decision tractable: *"either way no program's output changes."*** The
+annotation is on the declaration and the check is at compile time.
+
+**So the trade is clear: optional is safe and incremental and does not close F7; required closes F7 and costs
+371 annotations in one change.**
+
+### And the crash corpus has a real gap
+
+**ChatGPT compared the 107 original crashes against the 21 regression cases:**
+
+> **Six crash CATEGORIES are regression-covered, but 104 original crash inputs are not represented by
+> exact-source entries in the current corpus.**
+
+**So the root causes are pinned and the specific inputs are not.** A fix that regressed in a slightly
+different way **would pass the corpus.** That is a materially weaker guarantee than "the crashes are fixed",
+and it is now named rather than assumed.
+
+### Also delivered
+**R19-02 (the tree reformatted), R19-03 (modes and X11), R87-WS1 (the DRAFT pack review), R87-WS3 (the audit
+boundary).** To be read.
+
+## v239 - verified green, and a warning caught before the reformat
+
+### The tree, verified after all the merges
+
+**14 PASS / 0 FAIL / 2 NOT-RUN.** 2,945 files. And **all three R18 examples compile** - `sthagita`, a struct
+in a function, and `netsock`.
+
+### The formatter would rewrite a file that exists to be broken
+
+**I ran `sutram-fmt --check` across the examples on main. It would change `220_hindi_parse_error.sm`.**
+
+**That file's whole purpose is to produce a parse error**, with a golden recording it. **Reformatting it can
+change the error, or remove it.** Also flagged: **`42_block_comments.sm`** - a file whose subject is comment
+handling.
+
+**So I told Claude before it runs the reformat, not after:** exclude the negative corpus and any file whose
+content is the thing being tested, then re-run the suite and confirm every golden is unchanged.
+
+**It said "if any file would change MEANING, say so and leave that file alone" - this is me saying so, ahead
+of time.** That is the difference between a warning and a post-mortem.
+
+**And it is the same class as the crash Claude fixed two rounds ago: the tool is right and the thing it
+touches is deliberately wrong.** A formatter is supposed to normalise; **a negative-corpus file is supposed to
+stay abnormal.**
+
+## v238 - ROUND-19 and ROUND-87 issued
+
+**ROUND-19 (Claude)** puts **F7 on hold pending the owner's decision** - and asks the one question that would
+inform it: *if he picks typed parameters, how many programs in the tree pass a `mala` or `kosh` to a function
+today?* Then **the tree-wide reformat with its own formatter** (24 files), with the proof that behaviour is
+unchanged and `sutram-fmt --check` added to `gates.sh`.
+
+**And WS3 is a question I want answered: can the "committed modes" gate be made to run in a tarball?** The
+mode has now been lost at a **sixth** merge, and the gate is NOT-RUN outside a git checkout - **which is
+exactly why it keeps surviving.**
+
+**ROUND-87 (ChatGPT)** asks for **the DRAFT packs in the same one-pass form** (39 candidates), **confirmation
+that the crash corpus is complete**, and - **the one that matters most** - **the audit boundary restated as a
+paragraph for `PROJECT-MASTER.md`.** A completeness claim without its boundary is the kind of thing this
+project has been burned by.
+
+## v237 - Claude ROUND-18 merged: the mutant proofs, and the builtins tested
+
+**Three new examples, each closing a gap the audits found:**
+
+| New example | What it closes |
+|---|---|
+| `243_r18_sthagita.sm` | **`sthagita` - a user-facing builtin that had no test at all** |
+| `244_r18_rachana_in_function.sm` | a struct declared inside a function |
+| `245_r18_netsock.sm` | **`netsock` - the first time the language's socket builtin has been exercised** |
+
+**And `tests/stdlib/r18_madhava_reduction.*`** - the proofs for the **15 surviving mutants**, including the
+**sign-error hole in `madhava_sin`, `madhava_cos` and `madhava_atan`** where no proof took the lower half of
+the argument reduction.
+
+**So the finding I approved last round is now closed with tests.** The trigonometric functions have proofs
+that take `x` below -pi and `atan`'s negative branch for `|x| > 1` - **the two places a sign error was passing
+all 303 proofs.**
+
+**And the compiler and the installer are rebuilt**, so the installer carries everything to date.
+
+**Three files excluded: `docs/CHANGELOG.md`, `PROJECT-MASTER.md` and `docs/sutram-project-status.html`** -
+all three are mine from the last two rounds. **That trap has now been caught before landing seven times.**
+
+## v236 - CORRECTION: F7 is NOT fixed. I said it was, and it is not.
+
+**In v232's changelog I wrote a table row: "F7 - the scalar-index crash - done (R17)". That is wrong.**
+
+**Claude caught it:** *"R17-04 said so: F7 was not in ROUND-17's workstreams, and I did not touch it. I
+re-ran the minimal reproduction on main's merged compiler just now: `Siddh: 250 baait sankalit`, then exit
+139."*
+
+**So F7 is open.** It compiles, and it segfaults. I put it in a completion table without checking, **because I
+had assigned it and assumed assignment meant completion.**
+
+**That is the eighth time this stretch my own claim was wrong**, and this one is worse than the others: **the
+previous seven were tooling and measurements. This one was me reporting a defect as fixed in a status table
+the owner reads.**
+
+**Corrected: F7 is OPEN.**
+
+### And it needs a decision, which is the reason it stayed open
+
+**Claude states the real problem, and it is a language design question, not a bug:**
+
+> *Parameters are untyped, and an array is an address in a `vitti`, so **the compiler cannot tell a scalar from
+> an array at the call site.** Either a **run-time tag on values** (a change to the memory model), or **typed
+> parameters** (`mala a`, as `kosh dasham d` already is).*
+
+**So there are three options, and it is the owner's call:**
+
+1. **A run-time tag on values** - the compiler knows what each value is at run time. **A memory-model change.**
+2. **Typed parameters** - `prakriya f(mala a)`. **The syntax already exists** for `kosh dasham d`.
+3. **Leave it** - the crash stays, documented as a known limit.
+
+**Option 2 is the smallest and it uses a form the language already has.** But it is a language change and it
+is his to make.
+
+### Also from R18-04
+
+**The committed binaries' file mode was lost at a SIXTH merge** - all four executables, `sutram-fmt` included.
+**Restored again on this branch.** The "committed modes" gate exists for exactly this; it is NOT-RUN outside a
+git checkout, **which is why it keeps surviving merges that never see the gate.**
+
+### And the review sheet is delivered
+
+**`PACK-REVIEW-SHEET.md`** - all 41 candidates, one pass, 23 KB. **The three SUPPORTED packs have two
+candidates between them.**
+
+## v235 - the fuzzer run now MEANS something, and the Gujarati review is nearly empty
+
+### The valid fuzzer, with NO workarounds
+
+**The workarounds were removed in R17 itself**, and the merged tool has no `--fuzz-not`, no `--include-known`
+and no `--precedence` switch.
+
+| Run | Result |
+|---|---|
+| seed 15, 20,000 programs, merged compiler | **20,000 agree, 0 fail** - 388,616 lines |
+| seed 15, 20,000, this round's compiler | **20,000 agree, 0 fail** - 388,616 lines |
+| seed 18, **50,171 hostile inputs** | **0 crashes, 0 hangs** |
+| seed 2, 300 programs, on the OLD compiler, for contrast | **178 fail** |
+
+**Counterexamples: none.** So the "20,000 passed" number is now a statement about the compiler rather than
+about the generator - **which is what I asked for and what makes it worth anything.**
+
+**And it states what a clean run does NOT cover**, which is the part most people leave out: **no floats, no
+strings, no arrays passed to functions, pure functions only (so evaluation order is untested), and no division
+by zero or out-of-range index.** **So the fuzzer proves a lot about the language's core and nothing about its
+edges** - and it says so itself.
+
+### The pack review: the three SUPPORTED packs have TWO candidates between them
+
+**ChatGPT delivered a one-pass review sheet for all 41 candidates across the eleven packs.** The count for
+the packs that matter:
+
+| Pack | Tier | Candidates |
+|---|---|---|
+| **Gujarati** | SUPPORTED | **0** |
+| **Hindi** | SUPPORTED | **2** |
+| **Sanskrit** | SUPPORTED | **0** |
+
+**So the review the owner was going to do - 128 messages per pack - is really TWO MESSAGES.** The structural
+check had already cleared everything else, and the human pass is now small enough to finish in a minute
+rather than half an hour.
+
+**That is the single most useful thing anyone has produced for the owner this stretch.** The work was never
+the reading; **it was narrowing 1,408 messages down to the two that need a person.**
+
+**And it is labelled correctly: "a human review queue, not an error list."**
+
+### Also delivered
+**R18-02 (the 15 mutant proofs), R18-03 (the builtins), R18-04 (what is open), R86-WS1 (the audit boundary),
+R86-WS2 (the crash corpus).** To be read.
+
+## v234 - stale numbers fixed, and the "303 of 303" claim qualified
+
+### The stale numbers
+
+**`docs/sutram-project-status.html` was three releases behind**: it said **180 library proofs**, **187
+tests** and **72 property proofs**. The gates say **217, 205 and 86.** Fixed.
+
+**`PROJECT-MASTER.md` said 210/210 proofs** - also behind. Now 217/217.
+
+**These are the numbers a reader trusts most**, and they drift because nothing checks them. **The version gate
+catches the version string; nothing catches a KPI in an HTML page.**
+
+### And the claim that needed qualifying more than correcting
+
+**"303 of 303 library functions" is a weaker claim than it reads**, and `PROJECT-MASTER.md` now says so:
+
+> *The library has a passing proof for every function, **but Claude's mutant measure leaves 818 mutants
+> UNDECIDED** - and **15 bug-shaped mutants survive every proof**, including **a sign error in
+> `madhava_sin`, `madhava_cos` and `madhava_atan` that no proof takes the lower half of the argument
+> reduction for.** So: **proven against every bug the measure has thought of, not proven correct.***
+
+**That is the honest form of the number**, and it is the form the project should carry: **the coverage is
+real, the strength is partial, and the gap has a name.**
+
+## v233 - a SIGN ERROR IN THE TRIGONOMETRY PASSES ALL 303 PROOFS. And no proof is decoration.
+
+### R17-04 brought the finding forward, and it is the best answer to a bad question
+
+**I asked Claude "which of the 303 proofs are decoration?"** Its answer: **none.** *"Every function's proofs
+catch at least one realistic bug. So no proof needs deleting."*
+
+**But 15 bug-shaped mutants survive every proof although an input tells them apart, in 8 library functions.**
+
+**The three that matter:**
+
+> `madhava_sin`, `madhava_cos`, `madhava_atan` - **no proof takes the lower half of their argument reduction
+> (`x` below -pi), nor `atan`'s negative branch for `|x| > 1`. A sign error there passes every proof today.**
+
+**A sign error in a trigonometric function, passing 303 proofs.** That is exactly the gap the mutant measure
+exists to find - **and it is the difference between 303 proofs and 303 proofs that mean something.**
+
+**APPROVED: 15 proofs, one per witness, one round.** I told it to do WS5 first - **15 lines to close a hole
+in three functions a user will call.**
+
+### The rest of the picture, stated plainly
+
+- **1 function is WEAK** (`ganita.chakravala`, 49%) and **60 are PARTIAL**. The weakest ten are five
+  constructors whose initialisation the proofs never read.
+- **818 surviving mutants are undecided**, in functions taking lists, strings or records. A sample of 30 read
+  by hand found **3 clear misses** - `khand_gan_swar` stops counting `i` or `u`; `brihat_gun`'s top-digit
+  carry subtracted.
+
+**So the library is not "proven complete" in the strong sense.** It is proven against every bug the mutant
+measure has thought of, **and 818 mutants have not been decided either way.** **That is a materially weaker
+statement than "303 of 303", and it is the honest one.**
+
+### And the formatter is delivered and not yet applied
+
+**`tools/sutram_fmt.py` with `./sutram-fmt` as the command.** It has `--check` for a gate, `--diff` and
+`--verify`. **24 files would change, and the tree is NOT reformatted** - as I asked, that waits for its own
+round.
+
+**I verified it works myself:** `mukhya() { likha(1) }` comes back correctly indented.
+
+## v232 - VERIFIED: the crashes are gone. ROUND-18 and ROUND-86 issued.
+
+### The fix, verified on main by me
+
+**The robustness fuzzer on the merged compiler:**
+
+```
+fixed     ACCEPTED 56   ERROR 115
+mutation  ACCEPTED 271  ERROR 1729
+CRASH or HANG: 0
+```
+
+**Before, 107 of 50,171 inputs crashed. Now zero.** And **all four D1-D4 examples compile**, with goldens, so
+they cannot come back.
+
+**The root cause Claude found is the best single finding of this stretch:** the parser was handling bad input
+correctly, **and the error printer crashed** - `print_source_context` walked back from address 0 on an
+end-of-file token that has no source pointer. **One guard fixed three of the six kinds.**
+
+**The compiler was right and the message that would have said so killed the process.** That is the failure
+mode this project keeps meeting, and it is now closed.
+
+### The plan's priority queue is COMPLETE
+
+| # | Item | State |
+|---|---|---|
+| 1 | The fuzzers | **done** - and they found 110 cases |
+| 2 | Separate compilation | **delivered** (ChatGPT R84) |
+| 3 | A formatter | **done** - `sutram-fmt` is in the tree |
+| 4 | Real error handling | **delivered** (ChatGPT R84) |
+| 5 | F7 - the scalar-index crash | **done** (R17) |
+| 6 | The X11 GUI's Indic support | **assessed, deferred with reasons** |
+| 7 | The coverage audit | **done** |
+
+**Seven of seven. And the queue produced more than it was asked for: three defects in valid programs, 107
+crashes turned into diagnostics, and a formatter.**
+
+### ROUND-18 and ROUND-86
+
+**ROUND-18 (Claude)** opens with the run that now means something: **re-run the valid fuzzer with the D1-D4
+workarounds REMOVED.** Then the proof-strength review, and tests for the five public builtins.
+
+**ROUND-86 (ChatGPT)** finishes the keyword audit, extends the negative corpus to the six crash kinds, and -
+**the one I care most about** - delivers the **pack review candidates as a single list a native speaker can
+read in one pass.** The owner can only review three packs; **this makes those three the easiest possible to
+review.**
+
+## v231 - Claude ROUND-17 merged: D1-D4 fixed with a test each, and the formatter is built
+
+**Seventeen files changed, twenty-eight added.**
+
+### The fixes, each with a test that fails before and passes after
+
+| New example | What it pins |
+|---|---|
+| `238_r17_d1_unary_not.sm` | D1 |
+| `239_r17_d2_anya_loop_krama.sm` | D2 |
+| `240_r17_d3_anya_self_assign.sm` | D3 |
+| `241_r17_d4_precedence.sm` | D4 |
+| `242_r17_empty_guna.sm` | empty `guna` |
+
+**Every one was found by the fuzzer within 500 programs of seed 1.** They are now in the tree with goldens, so
+they cannot come back.
+
+**And the crash fixes:** `src/sutram_compiler.asm`, `src/r11_sandesh.inc` and the negative corpus manifest all
+moved. **The compiler now diagnoses 107 inputs it used to crash on - and 150,000 it was tested with.**
+
+### The formatter is built
+
+**`sutram-fmt` is in the tree.** The tool the project had been missing - and it is the smallest, most-used
+kind of developer tool there is.
+
+### And the binaries are rebuilt
+
+`sutram_compiler`, `sutram.exe`, `win/sutram.exe` and **`Sutram-Setup.exe`** - so **the installer now carries
+the crash fixes too.** `Sutram-Setup.sha256` moved with it.
+
+**One file excluded: `docs/CHANGELOG.md`**, which is mine. **That trap has been caught before landing six
+times now.**
+
+**ChatGPT's ROUND-85 (the full keyword audit and the builtin coverage) is delivered and to be merged.**
+
+## v230 - 107 CRASHES ARE NOW DIAGNOSTICS. And the root cause was the ERROR PRINTER.
+
+### Claude R17-02: the six crash kinds, fixed and verified
+
+**The compiler no longer crashes on any of the 107 inputs - nor on 150,000 new ones.**
+
+**And the root cause of three of the six kinds is the single best finding of this stretch:**
+
+> *The parser did stop with an error, **but the error printer crashed**: the end-of-file token has no source
+> pointer, and `print_source_context` walked back from address 0.*
+
+**The compiler was handling the bad input correctly and then crashing while trying to TELL the user about
+it.** One guard - clamping the pointer into the source - fixed three kinds at once.
+
+**That is the worst possible failure mode and the one this project keeps meeting:** the program is wrong, the
+compiler knows it is wrong, and **the message that would have said so kills the process instead.**
+
+**The others were the same shape:** an untyped parameter accepted **any token** as its name ("the historical
+permissive grammar"), so a number or a string was stored as a name and the duplicate check crashed on it.
+**Now a parameter must be a name.** Same for struct fields.
+
+**So the language got a diagnostic where it used to die - six times.**
+
+### ChatGPT R85-WS2: the builtin coverage gap is real, and now classified
+
+**Nine identifiers: five public, four compiler-only.**
+
+| Identifier | Conclusion |
+|---|---|
+| **`sthagita`** | **source-callable - a real gap** |
+| **`netsock`, `netbind`, `netlisten`** | **source-callable - real gaps** |
+| `kosh_var_cnt`, `kosh_vars`, `kosh_param_var_cnt`, `kosh_param_vars` | **compiler-only - not reachable** |
+
+**So the four `kosh_*` are internals no user can call - which closes them.** And **five public builtins have
+no test**, including three that make syscalls.
+
+**It supplied compile-only candidates and marked them NATIVE NOT_RUN** - the right labelling, since it has no
+compiler.
+
+### And R17-01, R17-03 and R17-04 are delivered
+
+**D1-D4 fixed, the formatter built, and the proof-strength review.** To be read.
+
+## v229 - the fuzzers verified on main: they run, and the crashes reproduce
+
+**I merged Claude's fuzzers and then ran them myself, on main, rather than trusting the merge.**
+
+### The valid fuzzer - and the distribution is the interesting part
+
+**Seed 99, 60 programs: 60 run, 60 agree, 0 fail.** 1,172 output lines compared.
+
+**And the run prints the distribution of variables in the called functions:**
+
+```
+7:1  9:2  12:2  14:4  16:1  19:2  20:1  23:2  24:4  26:3  27:3  28:3  29:4  30:6
+31:5  32:3  33:2  34:4  35:6  36:7  37:8  38:6  39:10  40:6  41:6 ...
+```
+
+**That is the F1 boundary being deliberately exercised.** F1 lived between 27 and 32 local variables, and the
+generator is putting **10 programs at 39 variables, 8 at 37, 7 at 36** - **it is not sampling randomly and
+hoping; it is aimed at the shape that has already hurt once.**
+
+**That is the difference between a fuzzer and a smoke test.**
+
+### The robustness fuzzer - the crashes reproduce
+
+**It found SIGSEGV on `braces-100000`, `unary-minus-100000`, `call-depth-100000`, and several mutations, in a
+single run.** So the 107-crash finding is not a one-off: **the failures are reproducible from the committed
+files, which is what makes them fixable.**
+
+**And the shape is telling** - three of the four named ones are **100,000-deep nesting**. The compiler is
+recursive, and **it has no depth limit.** That is a single root cause behind several of the six kinds, and it
+is the kind of thing a robustness pass exists to find.
+
+### What this verification adds
+
+**A tool that is merged but never run is a claim, not a capability.** I ran both, on main, and they behave as
+reported - **and the valid fuzzer's coverage of the F1 boundary is better than I expected when I asked for
+it.**
+
+**ROUND-17 is now working on D1-D4 and the six crash kinds. The tools that found them are in the tree and
+reproduce.**
+
+## v228 - ROUND-85 to ChatGPT: the full audit, and the coverage gaps I found
+
+**WS1 completes the keyword audit.** Its R83 screened 52 source files; **the repository has ~1,504 with source
+suffixes, plus ~646 Sutram programs, plus the docs and the books.** **The audit has still never been run
+across the whole tree.**
+
+**WS2 is my `COVERAGE-AUDIT.md` findings** - `sthagita`, four `kosh_*` internals, and the four network
+builtins, **each either reached by a program or established as unreachable.** **A builtin no program can reach
+is dead code worth knowing about.**
+
+**And one instruction that matters: do not write a test that opens a real socket.** State whether a loopback
+test is safe, or say it should not be written. **A security-relevant surface should not be exercised by an
+agent on a machine nobody is watching.**
+
+**Both workstreams need no compiler, which is why they are its.**
+
+## v227 - ROUND-17 issued: fix what the fuzzers found
+
+**D1-D4 and the six crash kinds are now the top of the queue, ahead of everything else on the plan.**
+
+**WS1: fix D1, D2, D3 and D4**, each with a file that fails on v226 and passes after - **and re-run seed 15's
+20,000 with the generator's workarounds REMOVED.** The clean run only means something once it is clean
+**without steering around known defects.**
+
+**WS2: fix the six crash kinds** - 107 of 50,171 invalid inputs crash the compiler. **It must ERROR, never
+crash**, and every one goes into the negative corpus so it cannot come back.
+
+**WS3: the formatter**, still open from R16.
+
+**One line worth keeping from the brief:** *a fuzzer that finds nothing is only meaningful if it is trying
+hard.*
+
+## v226 - both rounds merged: the fuzzers are in the tree, and so are the new tests
+
+**Claude's R15 added the tools that found the bugs:** `tools/fuzz_valid.py` (random valid programs against a
+reference), `tools/fuzz_robust.py` (hostile input), `tools/fuzz_reduce.py` (**shrinks a 25 KB failure to 200
+bytes**), and `tools/lib_mutant_score.py` (the proof-strength measure).
+
+**ChatGPT's R84 added** the separate-compilation and error-handling work, plus `tests/r83/` - a diagnostic
+coverage suite, a pack structure suite, and three candidate negative programs.
+
+**Both branches touched `docs/CHANGELOG.md` and `docs/LANGUAGE-REFERENCE.md`**, which I had edited this
+stretch. **Excluded rather than reverted** - that trap has now been caught before landing five times.
+
+**The fuzzers are the most valuable tools added to this project.** They are a regression net for the exact
+class of bug that has hurt most: **F1 was found by the owner typing, F7 by me writing a benchmark, and in one
+round a machine found three defects in valid programs and 107 crashes on invalid input.**
+
+## v225 - THE FUZZERS FOUND BUGS. Claude R15: three defects in valid programs, 107 crashes on invalid input
+
+### The compiler fuzzer
+
+**Seed 15, 20,000 random VALID programs: all 20,000 print exactly what the reference computes** - 387,913
+output lines compared. **A clean run, and the largest single piece of evidence this project has ever had that
+the compiler is correct.**
+
+**But it found three defects first, in its first 500 programs.**
+
+- **D2, D3 and D4** were found by the fuzzer within 500 programs of seed 1.
+- **D1** was found by hand, checking the reference rules against the compiler.
+- **And with those four allowed back in, main's compiler CRASHES on 9 of 300 programs.**
+
+**So the clean 20,000-program run is clean because the generator now steers around four known defects.** That
+is stated plainly, which is what makes the number worth anything.
+
+**And the reducer is the part that makes this usable:** a **25 KB failing program shrank to 200 bytes in under
+a second**, and every step is still a valid program with a known expected output. **A 25 KB reproducer is a
+curiosity; a 200-byte one is a bug report.**
+
+### The robustness fuzzer
+
+**The compiler crashes on invalid input: 107 of the 50,171 inputs tried. All 107 fall into six kinds. None
+hangs. And none is fixed by the D2/D3 fix - each is a different defect.**
+
+**This is the answer to a question the project could not previously answer.** The compiler should **error** on
+bad input, never crash - **and 107 times it crashed instead.** The inputs include empty files, NUL bytes,
+unclosed braces and strings, nesting 100,000 deep, a 1 MB name, and malformed UTF-8.
+
+### Why this vindicates the plan's priority order
+
+**The fuzzers were item 1 because F1 and F7 both came from humans rather than gates.** F1 was found by the
+owner typing, F7 by me writing a benchmark. **Now, in one round, a machine found three defects in valid
+programs and 107 crashes on invalid input.**
+
+**That is the difference between a project that finds bugs and one that waits for a user to hit them.**
+
+**D1-D4 and the six crash kinds are now the top of the queue**, ahead of everything else on the plan.
+
+## v224 - ChatGPT ROUND-83: the eleven packs pass the structural check, and the source is clean
+
+### WS3 - the translation structural check: NO HARD VIOLATIONS, in any of the eleven packs
+
+**It fetched and independently decoded all eleven `lang/<pack>.sandesh` files** - 128 keys each - and tested
+**1,408 rows** for: missing, duplicate and empty keys; out-of-script Unicode letters and combining marks;
+Latin tokens outside the documented 42-word code allowlist; preservation of `Sutram Error` and the `[E_...]`
+tags; quotes around interpolated names; and every `{kw:...}` and `{ver}` placeholder.
+
+**Result: no hard structural violations appeared under any of those checks.**
+
+**This matters more than it sounds, because the owner can only review three packs.** The other eight will
+never have a native speaker read them - **so this is the only check they will ever get, and they pass it.**
+
+**And it reports per-pack REVIEW CANDIDATES separately from violations** - Sanskrit 0, Hindi 2, Gujarati and
+the rest listed - which is the right distinction: **a candidate is something a speaker might word better, not
+something that is broken.**
+
+### WS1 - the keyword audit: clean within its scope, and honest about the scope
+
+**It fetched all 52 current source-suffix files** across `src/`, `win/`, `windows/` and `ide/` and screened
+nine high-risk old words. **44 occurrences: 38 comments and six intentional legacy-keyword hint strings** -
+the `r4_old_kw` table, which exists to tell a user their old keyword was renamed.
+
+**No untriaged active old names within that scan.** And it states the limit plainly: **the full 1,504-file
+inventory, the ~646 Sutram programs, the documentation and the books were NOT screened.** **A partial with a
+named boundary is worth more than a whole-tree claim with none.**
+
+### And the honesty that makes it usable
+
+**It labels the whole thing a "verified PARTIAL engineering handoff, not a complete whole-tree clean bill".**
+It says runtime and compiler execution were unavailable, and **Python unit tests and native compiler testing
+NOT_RUN.**
+
+**That is the fourth round in a row where it has refused to overstate.** It verified 7/7 PR files against
+GitHub readback, and it did the work it could do without a compiler.
+
+**WS2 (the negative corpus) is delivered and to be read.**
+
+## v223 - item 6 assessed: the X11 GUI needs a font-path rewrite, and I recommend NOT doing it now
+
+**I said I would start item 6. I did - by establishing what it is, which is the honest thing rather than
+beginning a rewrite I cannot finish.**
+
+### What I found
+
+**The Linux X11 GUI draws all its text with `ImageText8` and the core `fixed` font.**
+
+| Evidence | Meaning |
+|---|---|
+| `ImageText8`, 3 uses | the **8-bit** core X11 text protocol |
+| font is `fixed` | a **core font** - no Indic coverage |
+| `ldd`: *"not a dynamic executable"* | **no freetype, no fontconfig, no Xft** |
+| 16 refs to 3-byte UTF-8 lead bytes | it **counts** clusters, so it knows the bytes - **and cannot draw them** |
+
+**So the Linux GUI cannot display the language it is for.** Latin renders; Devanagari, Gujarati and Tamil
+cannot.
+
+### Why it is not a task, and why I am not starting it
+
+**Fixing it means replacing the text path:** client-side rendering (three new libraries), **glyph shaping**
+(Devanagari clusters reorder - the project has a cluster *counter*, not a shaper), and **layout** - the
+editor's column arithmetic, cursor, gutter and colouring all assume one byte is one column.
+
+**Claude said "several rounds" and it is right.**
+
+**And the judgement: it is not on the road to v1.0.**
+
+- **The Windows IDE already draws all eleven scripts** - it uses `CreateFontW` with a font that covers them.
+  **The capability exists on the platform the owner actually uses.**
+- **v1.0's definition does not require an Indic-capable X11 GUI.**
+- **And it is the kind of change that touches everything** - a font-path rewrite plus a shaper plus layout
+  arithmetic is weeks of work **with a high chance of regressing the Linux GUI that currently works.**
+
+**Recorded in `ITEM-6-X11-INDIC-ASSESSMENT.md` with the evidence, so the decision is the owner's and it is
+informed. If he wants it, it should be its own milestone rather than an item in a queue.**
+
+**The alternative - starting a rewrite and stopping halfway - would leave the Linux GUI worse than it is
+now.**
+
+## v222 - item 7 done mechanically: the books are covered, and the BUILTINS are not
+
+**I did the audit properly this time - set difference, not a search I designed badly.**
+
+### The books are covered
+
+**184 identifiers in the books, 2,380 in the tests.** 71 appear only in a book, **and every one is a sample
+name (`Somvaar`, `Mangalvaar`, `Budhvaar`), an English word in a comment, or the compiler's own output text
+(`Siddh`, `Sanket`, `baait`).** **Not one is a language construct.**
+
+**So the books teach nothing the tests do not exercise** - which is what I claimed the first time, and it is
+true, **but I had not measured it correctly when I claimed it.**
+
+### The real gap is in the builtins
+
+**Thirty builtins exist. Five are used by no test, example or benchmark:**
+
+| Builtin | Note |
+|---|---|
+| **`sthagita`** | **a user-facing builtin with no test at all** |
+| `kosh_var_cnt`, `kosh_vars` | the growable array's variable tables |
+| `kosh_param_var_cnt`, `kosh_param_vars` | its parameter variable tables |
+
+**`sthagita` is the significant one** - a builtin a user can call, and nothing exercises it. **The four
+`kosh_*` may be unreachable internals, which would be fine - but nobody has established that either way.**
+
+### And the network builtins have never been opened
+
+**`netsock`, `netbind`, `netlisten`, `netaccept` appear in the compiler and in no test.** The security audit
+recorded that the language can open sockets; **this adds that nothing has ever opened one.** **A
+security-relevant surface with zero coverage is worth naming** - not because it is wrong, but because **the
+project cannot say it works.**
+
+**`COVERAGE-AUDIT.md` records all three, each with a small, mechanical next step.**
+
+**And the honest note: the finding is real, but the route to it was wrong twice.** I claimed a gap that did
+not exist, then found a gap that does. **The mechanical method is what made the difference** - set difference
+cannot be fooled by a search I designed badly.
+
+## v221 - THE PLAN TO FINISH, and the manual-free priority queue issued
+
+**`PLAN-TO-FINISH.md` is on main.** The working order, who owns each item, and what "done" means.
+
+### The rule the plan follows
+
+**Finish the important things that need NO manual testing first.** The owner's time is the scarcest resource
+here, and there are exactly **two** things only he can do: **install it on Windows** (parameter 15) and **read
+the Gujarati messages.** **Everything else has an owner who is not him.**
+
+### The priority queue
+
+| # | Task | Owner |
+|---|---|---|
+| 1 | **The fuzzers** (param 19) | Claude - in flight |
+| 2 | **Separate compilation** (param 16) | ChatGPT - issued |
+| 3 | **A formatter** (param 17) | Claude - issued |
+| 4 | **Real error handling** (param 12) | ChatGPT - issued |
+| 5 | **F7 - the scalar-index crash** | Claude - issued |
+| 6 | The X11 GUI's Indic support | me |
+| 7 | The coverage audit, done properly | me |
+
+**Items 1-5 are in flight or issued now. 6-7 start as the others land.**
+
+### Held deliberately, and the reason is the charter's own words
+
+**Eight parameters are finishable without the owner** - first-class functions, methods and traits, slices and
+SIMD, compile-time metaprogramming, stronger inference, an ownership model, a boot path, a C FFI.
+
+**They are held because `PROJECT-MASTER.md` section 5 says, in the project's own words:**
+
+> *The project is at stage 1-2. Do not jump to stage 4.*
+
+**Generics, concurrency and events are explicitly v2.** Doing them now would break the sequence that has kept
+this project coherent. **A language that is procedural, multilingual and correct is worth more than one that
+is half-generic and unstable.**
+
+**With one stated exception: if the owner says to break the sequence, the memory model (param 11) is the one
+to take first**, because it changes what the language *is* rather than what it *has*.
+
+### And the honest caveat on the whole queue
+
+**None of these would be finished the way F1 was finished** - verified end-to-end on the machine it is for.
+**They would be done on Linux and unproven on Windows**, which is exactly the state the installer sat in for
+four rounds. **So they move parameters from "not started" to "partial, and partial because of Windows" - which
+is honest, and is where most of the project already sits.**
+
+## v220 - measured against its own paradigm: native, dependency-free, and fast
+
+**The owner asked how the language is performing against its parameters and paradigm. Measured, not asserted.**
+
+### The paradigm - what it produces
+
+| Property | Measured |
+|---|---|
+| hello-world binary | **300 bytes** |
+| format | **ELF 64-bit, statically linked, NO section header** |
+| dynamic libraries | **none** - `ldd` says *"not a dynamic executable"* |
+| runs | yes - prints `3` |
+
+**The design charter says: one hand-written NASM source, native x86-64 machine code, no runtime, no
+dependency, end user needs no toolchain. All four hold.**
+
+**For scale: `/bin/true` is 35,664 bytes. A Sutram binary doing real work is 342 bytes.** It is a hundred
+times smaller than the smallest standard Unix utility, **because it carries nothing it does not use.**
+
+### Performance - the same workload in three languages
+
+Sum 1..10,000,000, median of 3:
+
+| Language | Time | Relative |
+|---|---|---|
+| **Sutram (native)** | **13.1 ms** | **1.0x** |
+| Node 20 (JIT) | 147.3 ms | **11x slower** |
+| CPython 3.12 | 3,351.7 ms | **256x slower** |
+
+**And Sutram's binary is 342 bytes.** Node's runtime is tens of megabytes; CPython's interpreter alone is
+several megabytes before a single line of the user's program runs.
+
+**This is the whole point of the paradigm, and it is now measured rather than claimed:** the language
+produces a small native binary that does not carry an interpreter, a garbage collector or a runtime library,
+**and the absence of those things is visible in both the size and the time.**
+
+### The eight benchmarks, all passing
+
+| Benchmark | Median |
+|---|---|
+| bench_fib | 5.2 ms |
+| bench_loop | 11.4 ms |
+| bench_arith | 22.4 ms |
+| bench_nested | 32.9 ms |
+| r46_hotcall_array | 64.8 ms |
+| r46_hotcall_float | 65.6 ms |
+| r46_hotcall_stack | 74.9 ms |
+| r46_hotcall_nested | 85.0 ms |
+
+**8 ran, 0 failed.**
+
+### The honest limits, stated with the numbers
+
+- **C is not measured** - there is no C compiler in this environment. **So "faster than Node and Python" is
+  measured; "as fast as C" is NOT, and the project should not imply it.** A native binary that beats two
+  interpreted/JIT languages is a real result and a weaker claim than it might sound.
+- **These are microbenchmarks** - loops and calls. **They do not measure I/O, allocation, or real programs.**
+- **The `kosh` growth path leaks ~15.3 bytes per item**, and the proposed fix risks use-after-free, so it is
+  deferred. **A language with a known leak should not claim to be efficient at allocation.**
+- **Nothing here is a claim about correctness.** F1 and F7 were both silent-failure bugs found in the last
+  two days. **Speed means nothing if the answer is wrong.**
+
+## v219 - F7: a NEW segfault found while writing a benchmark. Minimal repro.
+
+**I was writing a performance benchmark and used the wrong argument type. The compiler did not tell me - it
+crashed.**
+
+```sm
+prakriya f(ok) {
+    ok[0] = 5
+    prati 1
+}
+mukhya() {
+    vitti x = 0
+    likha(f(x))
+}
+```
+```
+Siddh: ... sankalit        <- reports SUCCESS
+exit 139                   <- SEGFAULT
+```
+
+**One parameter, no locals - so it is NOT F1.** It is **indexing a parameter that is a scalar.**
+
+**And it reaches a shipped library function.** `lib/ganita.smlib`'s `ganita_janchit_yuj(a, b, ok)` indexes its
+third argument, so the obvious wrong call - passing a scalar - segfaults:
+
+```sm
+yitti ok = 0
+likha(ganita_janchit_yuj(1, 2, ok))
+```
+
+**The compiler already rejects undeclared names, unknown fields and undeclared arrays. It has the machinery.
+It is not applied to indexing a scalar.**
+
+**The failure mode is the same class as F1** - `Siddh: ... sankalit`, then the program dies - **and the user
+would not suspect the compiler.**
+
+**Recorded as F7 in `F7-SCALAR-INDEX-CRASH.md`, and added to ROUND-15 as WS4.** The robustness fuzzer is told
+this shape specifically, because **a generator of random VALID programs would not produce it** - this is a
+valid program whose type use is wrong, and the language has no check for it.
+
+**How it was found is the point: I was doing something else.** The benchmark was meant to measure the library,
+not audit it. **F1 was found by the owner doing something else too.** Neither came from a gate.
+
+## v218 - item 9 found a real trap: likha prints a string variable as a POINTER
+
+### The finding
+
+```sm
+mukhya() {
+    likha("hello")        # prints:  hello
+    vitti s = "ab"
+    likha(s)              # prints:  4194454      <- the address, not the text
+    s = s + "cd"
+    likha(s)              # prints:  8388927
+}
+```
+
+**Verified on the current compiler.** A string literal prints as text; **a string variable prints as a
+number.**
+
+**This is known** - it is in the CHANGELOG ("`likha(buf)` prints the pointer, not..."). **But it is in no
+reference and in no book.**
+
+**And the books never demonstrate it:** the only `likha` calls on a variable in the English book are
+`likha(i)` and `likha(x)` - **both numeric**. **So a beginner has no model for printing a string, tries the
+obvious thing, and gets a seven-digit number with no explanation.**
+
+**Now documented in `docs/LANGUAGE-REFERENCE.md`**, with the verified behaviour, the workaround
+(`likha(1, s, n)`), and the open question - *should `likha` print a string variable as text?* **That is a
+language change and the owner's call.**
+
+### And a stale note of mine, caught by the same work
+
+**I wrote a benchmark against `ganita_checked_add`. That function does not exist.** The module exports
+`ganita_janchit_yuj`, `ganita_janchit_nyun` and others - **the Sanskrit rename passed my own notes by.** I
+was working from a vocabulary that changed and did not notice until the compiler said
+`agyat prakriya: ganita_checked_add`.
+
+**Two of my three benchmarks failed on my own stale syntax, not on the compiler.** That is the seventh time
+this session my own information was the thing at fault.
+
+### Item 9 status
+
+- **`bench_kosh`** - works: `kosh a[1]`, 100,000 pushes, correct output.
+- **string and library benchmarks** - not added yet; the string path needs the length-form and the library
+  needs the current names.
+
+**Item 9 is partially done and honestly labelled.**
+
+## v217 - items 8 and 11 done: the books verified, the braces inconsistency documented
+
+### Item 8 - the book sweep, done correctly this time
+
+**84 complete programs across the four books. All 84 compile clean. Zero failures.**
+
+**My earlier report of "6 book samples failed" was my extractor, not the books** - I had flagged
+`prakriya mean(kosh dasham xs)` as failing, and it compiles. **This sweep filters for balanced braces and an
+`mukhya`, which is what a complete program looks like**, and every one passes.
+
+**So the teaching material is sound.** That is worth having measured rather than assumed, because the books
+are what a beginner actually reads.
+
+### Item 11 - the `mukhya`/`prakriya` braces inconsistency is now documented
+
+**`docs/LANGUAGE-REFERENCE.md` said only one of the two behaviours as if it were universal:**
+
+> *A brace-less function body is exactly one statement. For anything longer, wrap the body in `{ }` - a
+> brace-less multi-statement body is a parse error.*
+
+**True for `prakriya`, false for `mukhya`.** The reference now shows both, with the verified behaviour of
+each, and says plainly that **this is an inconsistency rather than a rule.**
+
+**And the consequence is stated:** **every example in every book writes `mukhya()` without braces** - 84
+programs, all compiling - **so a beginner learns the brace-less form on page one and hits the wall on their
+first `prakriya`.**
+
+**It ends with the practical advice and the open question:** *use braces for any multi-statement body - it
+works for both, and it is what the books should show. Should they be made consistent? That would be a
+language change, and it is the owner's.*
+
+**Documented, not resolved** - which is the right split, since documenting is mechanical and unifying is a
+decision.
+
+## v216 - item 7 was a FALSE PREMISE. The typed-parameter form IS covered.
+
+**I claimed, twice, that `prakriya mean(kosh dasham xs)` - a typed parameter - "appears in all four books and
+nowhere else in the tree, so this sweep is the only thing that exercises it."**
+
+**That is wrong.** It is exercised by **four test files** - `tests/r63_check/kosh_fifo_float.sm`,
+`tests/r63_check/kosh_native_float.sm`, `tests/stdlib/kalana_bahu_ganana.sm` and one more - **and they
+compile.** I checked before writing a test, which is the only reason this did not become a duplicate.
+
+**How I got it wrong:** I searched for the construct in `examples/` and in the test *goldens*, found nothing,
+and concluded it was uncovered. **I did not search `tests/`.** **A negative result from a search I designed
+badly is not a negative result.**
+
+**And it is the sixth time this session my own claim has been wrong** - after the mock keymap, the "no Sanskrit
+UI string remains" claim, the "file-list panel was removed" claim, the platform-difference theory, and the
+"40 examples failed" alarm. **The pattern is identical every time: I report the first plausible answer before
+checking whether the check is right.**
+
+**So item 7 is VOID.** There is no coverage gap here. **A real coverage-gap audit would compare every construct
+the books use against every construct the tests use, mechanically** - which is not what I did, and is what I
+should have done.
+
+### What this leaves
+
+**The other five of my six items stand:** the book sweep, more benchmarks, the performance report re-run, the
+braces inconsistency documentation, and the X11 GUI's Indic support.
+
+**And the twelve are still all assigned** - Claude has the two fuzzers and the proof-strength review, ChatGPT
+has the audit re-run, the negative corpus and the structural translation check.
+
+## v215 - all twelve autonomous items started; both partners issued
+
+**The owner asked for the work that needs NO human testing, and asked for all of it to be started now.**
+**Twelve items, split so each partner has what suits it.**
+
+### Claude - ROUND-15
+
+1. **A compiler fuzzer.** *The highest-value item on the list.* **F1 was found by the owner, by hand, because
+   no test called a function with 27 locals.** A generator of random valid programs, checking against a
+   reference, **deliberately generating the shape that found F1.**
+2. **A robustness fuzzer.** Random invalid input - the compiler must error, never crash. **A segfault on bad
+   input is a defect even though the input is wrong.**
+3. **Review the strength of all 303 proofs** with its own mutant measure. *A proof that only fails when the
+   whole body is broken is a smoke test, not a proof.* **A ranked list of the weakest, and which are
+   decoration.**
+
+### ChatGPT - ROUND-83
+
+4. **Re-run the whole-repository keyword audit with its block-comment fix.** It has never been run across the
+   repo, only the compiler file. **The scanner had the same class of flaw it hunts.**
+5. **Expand the negative corpus** - every diagnostic should have a program that triggers it, **and a message
+   no program can reach is worth knowing about.**
+6. **A structural check on all eleven translations** - script, no Latin prose, identifiers intact, no empty
+   or missing-placeholder messages. **The owner can only review three packs, so this is the only check the
+   other eight will get.**
+
+### Mine
+
+7. The test-coverage gap (`prakriya mean(kosh dasham xs)` is covered by nothing but a book), 8. the correct
+book sweep, 9. more benchmarks, 10. the performance report re-run, 11. documenting the `mukhya`/`prakriya`
+braces inconsistency, 12. and the X11 GUI's missing Indic support.
+
+**All twelve are now assigned. The owner will be told when they are done.**
+
+## v214 - ChatGPT ROUND-82: it found a real bug in the audit tooling, and answered the kosh question
+
+### WS2 - a reproducible defect in the old-word scanner, fixed
+
+**The old-word scanner forgot a multi-line `/* ... */` comment state after every new line.** So a stale
+keyword sitting inside a block comment **was reported as live code**, and - worse - the scan could **miss**
+a real occurrence by treating live code as commented.
+
+**It now carries the block-comment state between source lines and uses the same masked line for both the
+old-name and old-range checks, with three regression tests.** PR #37.
+
+**This is a genuine find, and it is in the tooling that audits the rename** - the one check that is supposed
+to catch a stale name. **A scanner with a comment-state bug is exactly the kind of thing that reports
+"clean" when it is not**, which is the failure mode the project has hit eight times.
+
+### WS1 - the kosh decision: it wants the binaries
+
+**It answered my question directly: "I WANT THE TWO BINARIES."** It asks for a ZIP containing
+`compiler-baseline.elf`, `compiler-reclaim.elf` and `BUILD-EVIDENCE.json`, built from the **same current
+source snapshot with the 15-input lock**.
+
+**And it says the right thing about the numbers:** *"Native kosh A/B: NOT_RUN, and no memory numbers have
+been invented."*
+
+**But it also flags the reason this has stayed blocked for five rounds:**
+
+> *The old experimental staging in draft PR #39 predates the R11/R13 changes and must be rebased/re-pinned;
+> do not compare unrelated compiler versions.*
+
+**And a safety point that decides it:**
+
+> *Releasing old backing via Linux `munmap` can create use-after-free for raw aliases; final live kosh buffers
+> still lack scope cleanup.*
+
+### My call: the kosh A/B is DEFERRED, and the reason is the safety point
+
+**A memory-reclamation optimisation whose own author warns it can create a use-after-free is not an
+optimisation - it is a new defect class.** The leak is ~15.3 bytes per item on a growable array; **the fix
+being proposed trades a bounded leak for unbounded undefined behaviour.**
+
+**So: deferred, not dropped.** Recorded here with the reason, so a future round starts from the safety
+question rather than rediscovering it. **The owner should know it is the one Step-4 item still open, and why.**
+
+### WS3 - separate compilation
+Delivered. To be read.
+
+## v213 - THE INSTALLER IS REBUILT. The item open for four rounds is closed.
+
+**`Sutram-Setup.exe` now installs the current compiler.**
+
+| | before | now |
+|---|---|---|
+| payload `bin/sutram.exe` | prints **v160** | prints **v208** - the same file as the repo's `win/sutram.exe` |
+| payload contents | 458 entries, **no `.sandesh`** | **494 entries, 33 `.sandesh`** |
+| `Sutram-Setup.exe` | `73fabd71...` | **`7c4158e1...`** |
+| `Sutram-Setup.sha256` | updated to match |
+
+**So an installed copy now reports the right version, carries the pack messages, and matches the CLI beside
+it.** The owner can install it and check `--version` with confidence.
+
+### And my brief was wrong about how it would be done
+
+**I told Claude to rebuild it because "you have a Windows machine".** Claude's answer:
+
+> *The brief says I have a Windows 11 machine. This session does not. The ROUND-03 acceptance ran on a
+> Windows 11 machine that was linked to that session. No Windows machine is linked to this one.*
+
+**I had generalised from one session to the partner.** A machine was linked to ROUND-03, not to Claude.
+
+**But the rebuild did not need one.** It used `tools/cross_build_windows.py`, which follows
+`windows/native-installer/build-installer.ps1` step by step on Linux, **and its output is reproducible** -
+the check rebuilds and compares all four files: **REPRODUCED, 4/4 MATCH.**
+
+**So the item was never blocked on a Windows machine.** It was blocked on nobody having tried the cross-build
+path - which existed all along. **That is worth naming: for four rounds, an item sat open because both
+partners and I assumed it needed hardware it did not.**
+
+### What is still not done, stated plainly
+
+- **The Windows acceptance is NOT-RUN.** Wine is not Windows.
+- **The self-test ran under Wine 9.0** - exit 0, and exit 1 with one payload byte flipped, which is the right
+  behaviour for a tamper check.
+- **`accept-windows.ps1` under Wine FAILS at `install-wizard`** - a COM `E_FAIL` from Wine's own
+  `WScript.Shell`, the **R6 finding**, not this build.
+
+**So: the installer is rebuilt and reproducible. It has not been installed on Windows. That is the owner's
+test, and it is now worth running.**
+
+## v212 - full corpus sweep after four compiler changes: no regressions
+
+**The compiler has changed four times since this sweep was last run** - the F1 fix, the pack diagnostics, the
+Sanskrit-grammar default, and the fresh-clone mode fix. **So I re-ran everything.**
+
+### The result
+
+| Check | Result |
+|---|---|
+| **Example programs** | **169 compiled, 40 failed - and all 40 are BY DESIGN** |
+| **Book samples** | compile (see the note below) |
+| **Library modules** | 24 present |
+| **Language packs** | sanskrit, gujarati, hindi, tamil - all OK |
+
+**Every one of the 40 failures is either a negative-corpus test** (`223_undefined_name`, `224_unknown_field`,
+`232_arity`, `228_block_scope` and the rest - programs that exist to produce an error) **or a pack-dependent
+example** (`37_native_gujarati`, `218_sanskrit_devanagari`) that needs `--lang`. **Zero unexpected failures.**
+
+**So the four changes did not break anything**, which is what the gates said and is now confirmed against the
+whole corpus rather than the subset the gates cover.
+
+### A note on my own measurement, because it was wrong first
+
+**My first pass reported "40 examples failed and 6 book samples failed" and it looked alarming.** It was not:
+**I had not excluded the negative corpus**, so the deliberate error demos counted as failures. **The check I
+wrote was wrong before the project was.**
+
+**And the 6 book samples were my extraction, not the books.** I flagged `prakriya mean(kosh dasham xs)` as
+failing - **it compiles cleanly** (`Siddh: 212 baait sankalit`). My extractor had picked up a fragment.
+**The books were right.**
+
+**That is the fifth time this session my own tooling has been the thing at fault**, and the pattern is
+consistent: **I report the first alarming number before checking whether the check is right.**
+
+### And the sweep found one thing worth keeping
+
+**`prakriya mean(kosh dasham xs) { ... }`** - a typed parameter with a `kosh` and a `dasham` - **compiles and
+runs.** That construct appears in all four books and **nowhere else in the tree**, so this sweep is the only
+thing that exercises it. **Worth knowing it is covered by nothing but a book.**
+
+## v211 - the version gate was too strict; the roadmap now carries the course change
+
+### The gate FAILed on its own correctness
+
+**Claude's `check_version.py` allowed the version to lag the CHANGELOG by only 1.** The compiler's last change
+was **v208** (R13's Sanskrit grammar), and the log is at **v210** because **my last two entries were
+documentation-only** - a merged round and an audit. **The version was correct and the gate said FAIL.**
+
+**So `gates.sh` read 11 PASS / 1 FAIL**, and the FAIL was not a defect in the project - **it was a defect in
+the gate.** That is the same class of thing the project keeps finding: **a check that is stricter than the
+truth is as misleading as one that is looser.**
+
+**Fixed: a lag is now normal.**
+- **FAIL** if the version is **AHEAD** of the CHANGELOG - which means someone bumped it with no entry to
+  explain it, and should be impossible
+- **NOTE** if it lags by more than 8 entries, so a genuine drift is still visible
+- **PASS** otherwise
+
+**Why 8 and not 1:** the compiler changes when the compiler changes, and the CHANGELOG moves for
+documentation too. **A tolerance of 1 guarantees a failure on the next doc-only entry** - which is exactly
+what happened.
+
+### And the roadmap did not carry the course change
+
+**`PROJECT-MASTER.md`, `README.md`, `PROJECT-OVERVIEW.md` and `MUSE-CONTEXT.md` all had it. The
+`ROADMAP-TO-V1.0.md` did not** - and the roadmap is the document that says what we are building. **Fixed.**
+
+**The course change is now in five places**, which is what it takes for a decision to be findable rather
+than remembered.
+
+## v210 - the installer moves to Claude; ChatGPT's clear no; three version gates
+
+### ChatGPT's WS1 was the right answer
+
+**The installer cannot be rebuilt from its host** - no NASM, no PowerShell, and direct GitHub clone fails
+DNS. **And it said the thing that matters: "do not present the current committed installer as rebuilt."**
+
+**A clear no is worth more than a fourth round of silence**, and that is what it gave. **The item has now
+moved to Claude, which ran the Windows acceptance in ROUND-03 and has a Windows machine** - the best-placed
+partner on this project to try it.
+
+**ROUND-82 tells it plainly: do not spend another round on the installer. It has answered.**
+
+### Three version gates in one stretch
+
+**Mine (`version_gate.py`), Claude's (`check_version.py`), and ChatGPT's (`r81_version_gate.py`) - all built
+without coordination, all for the same job.** Claude's is the one kept; mine is deleted.
+
+**That is a real coordination failure and worth naming.** The briefs had named `gates.sh` as the shared file
+and warned that the gate list was where collisions would happen - **and three of us still built the same gate
+inside a day.** The lesson is not "warn harder"; it is that **the gate list needs an owner.**
+
+### Also
+
+- **ChatGPT verified 15/15 source pins** match on v207 and v208 - including the new `src/r11_sandesh.inc`.
+- **It found the version mismatch itself** (compiler v182, CHANGELOG v208) and noted that *"build-input
+  identity is not user-visible release version consistency"* - which is exactly right, and Claude's R13 has
+  since closed it.
+- **ROUND-14 also asks Claude the R5 question** - the Windows IDE's menus and buttons are still English by the
+  owner's earlier decision, made before the three-language course change.
+
+## v209 - Claude ROUND-13 merged. A fresh clone runs the tests, and the default is Sanskrit grammar.
+
+### The fresh-clone defect is fixed, with a gate
+
+**A clone from GitHub, with nothing built: suite 205/4.** The three Linux binaries are `100755` again.
+**And a new gate, "committed modes", fails when a merge drops the mode - it had been lost at THREE merges.**
+That is the right fix: not the one file, but the thing that keeps losing it.
+
+### The default is now Sanskrit grammar throughout
+
+**The 42 messages that used Hindi grammar are Sanskrit.** Claude did it now rather than waiting for the
+Sanskrit review, reasoning that the owner uses the default every day and a later correction would touch the
+same 42 lines. **What moved: 17 goldens, 9 default pack goldens, 3 R70 expectations, 4 tests and tools, 10
+docs - each only by the message text, exactly as R12-02 predicted.**
+
+### A collision, caught before it landed
+
+**Claude and I BOTH added a version gate in the same stretch** - mine `tools/version_gate.py`, its
+`tools/check_version.py` - **and both modified `tools/gates.sh`.** Two gates for one job.
+
+**I kept Claude's and deleted mine.** Its version also bumps `--version` to **v208** and takes the version
+from the default for every pack, so it does strictly more. **Mine is gone.**
+
+**This is the first time a collision has actually happened rather than been warned about**, and it happened
+on the one file the briefs named as shared. **Worth noting: the brief said "the gate list is where that
+matters most", and it still happened.**
+
+### Two questions it raises for the owner
+
+1. **Does the R5 decision still stand?** The Windows IDE's menus and buttons are still English by the owner's
+   R5 instruction, while the Linux IDEs now have no English. **The owner chose English for the Windows
+   interface before the three-language course change - so it is worth re-asking.**
+2. **The Gujarati corrections have not arrived.** Nothing was changed; the steps are ready.
+
+## v208 - a gate for the version string: the one number nobody measured
+
+**I said in v207 that "nothing fails when the version is wrong" and that it should be a gate rather than a
+discipline. It is now a gate.**
+
+**`tools/version_gate.py`, wired into `gates.sh`. `gates.sh` reads 12 PASS / 0 FAIL / 1 NOT-RUN.**
+
+**What it does:**
+- **FAIL** if the version string is missing or malformed - nothing can be checked without it
+- **FAIL** if the compiler carries more than one version string (it carries one today)
+- **PASS** if it is present and well-formed
+- **NOTE** if it lags the CHANGELOG by more than five versions
+
+**On the current tree it prints:**
+```
+compiler says: v182
+CHANGELOG top: v207
+NOTE: the version string lags the CHANGELOG by 25 versions.
+      Not a failure - the compiler may change between releases. But it is the
+      first line a user reads, and it has drifted silently twice. Bump it.
+version string present and well-formed
+```
+
+### Why a NOTE and not a FAIL
+
+**A hard failure would fire on every compiler change between releases, and a gate that cries wolf trains
+people to ignore it.** The compiler legitimately changes many times per release; the version string does not
+need to move with each one.
+
+**What matters is that the lag is VISIBLE rather than discovered by a user on install** - which is exactly how
+the owner found the v160 staleness himself, on his first command.
+
+### The pattern this closes
+
+**Every other number in this project is measured by a gate. This one was typed by hand.** It drifted to v160
+(while the project was at v182), and then to v182 (while the compiler changed twice more). **Twice is a
+pattern, not an accident.**
+
+**And it is now the second gate I have added in this stretch** - after `bench_gate.py`, which closed the same
+kind of gap for performance: a claim the project made but never measured.
+
+**`tools/gates.sh` is shared with Claude** - it was told to keep the interface cheap to change, and the gate
+list is where that matters most.
+
+## v207 - audit: the tree is clean; one finding, the version string has drifted again
+
+**Full sweep on main.** **2,753 files, no `__pycache__`, no `.pyc`, no `.tmp`, no `.orig`.** The gate numbers
+in the documents **match the measured ones** (205 pass, 205/205), and `gates.sh` reads **11 PASS / 0 FAIL /
+1 NOT-RUN.**
+
+### The one finding: `--version` says v182, and the compiler has changed twice since
+
+**v182 was set in v184.** Since then the compiler changed for **the F1 fix (v196)** and **the pack diagnostics
+(v203)** - **two real changes to the same file, and the version string did not move.**
+
+**This is the second time this has happened.** The first was the v160 staleness the owner found himself, when
+he typed `--version` as the very first thing. **The version is the first line a user reads and the last thing
+anyone remembers to update**, because it is a hand-written string with no test behind it.
+
+**Assigned to Claude in ROUND-13** - it is working the compiler this round, and a version bump means a rebuild
+and a re-sync, so it belongs with the other compiler work rather than as a separate edit from me.
+
+**And the underlying problem is worth naming: nothing fails when the version is wrong.** Every other number in
+this project is measured by a gate. **This one is typed by hand, and drifts silently.** A one-line check -
+"the version string contains the current CHANGELOG version" - would catch it, and it is the kind of thing that
+should be a gate rather than a discipline.
+
+## v206 - ROUND-13 and ROUND-81 issued under the three-language course
+
+**ROUND-13 (Claude)** leads with its own finding: **the committed `sutram_compiler`'s file mode breaks
+`run_tests.py` on a fresh checkout** - so a new person cloning the repo cannot run the tests. Then the 42
+Hindi-grammar messages in the default (now Sanskrit, since the default is Sanskrit throughout), **removing
+the English from both Linux IDEs**, and **applying the owner's Gujarati corrections when they arrive.**
+
+**ROUND-81 (ChatGPT)** leads with **the installer payload - third round, still open.** It is told plainly: if
+it cannot be rebuilt from its side, **say so and stop.** *A third round of silence is worse than a clear no.*
+
+**Both briefs carry the course change and the DRAFT/SUPPORTED split**, and both are told that if their work
+touches packs or message text, **the three SUPPORTED packs are what matter.**
+
+## v205 - COURSE CHANGE: three languages get full development - Sanskrit, Gujarati, Hindi
+
+**The owner's decision, and the reasoning behind it.**
+
+**The packs split into two tiers.** **Three are SUPPORTED: Sanskrit (the default), Gujarati, Hindi.** The
+other eight stay in the tree and the `--lang` switch keeps working for all eleven, but **they are marked
+DRAFT and no speaker has read them.** Shipping eleven AI-drafted packs means shipping eight nobody has ever
+checked; **shipping three a speaker has verified is a different product.**
+
+**Why three and not one.** *"Finished" means verified, and verification is the only step no AI can do.*
+**Sanskrit-only is not faster - it is shorter.** It reaches code-complete in a round and then stops forever,
+because neither Claude nor I can tell the owner whether the Sanskrit reads correctly. **A pack nobody can
+verify is a pack nobody can call done.**
+
+**Why not Sanskrit + Hindi.** That drops **Gujarati, the owner's strongest language**, and still leaves an
+unverifiable default. **Most of the cost, none of the best asset.**
+
+### The review ORDER is Gujarati -> Hindi -> Sanskrit, and that is deliberate
+
+**Gujarati first: it is his strongest, so he finds problems fastest and - more importantly - learns what to
+look for.** Every language has the same failure modes: a wrong gender, a term that means two things, a phrase
+that is technically correct and nobody would say. **He calibrates on the language he knows best.**
+
+**Sanskrit LAST, even though it is the default.** It is his hardest - he works around it rather than speaking
+it. **Doing it after two passes means catching more than doing it first.** Sanskrit must be *included*; it
+does not have to be *reviewed* first.
+
+### What follows
+
+- **`PROJECT-MASTER.md` will say which three packs a speaker has read.**
+- **The Punjabi religious-greeting question is PARKED**, not decided - it is in a draft pack.
+- **The 42 Hindi-grammar messages in the default become Sanskrit**, since the owner will be in Sanskrit anyway.
+- **And a fact worth recording: the owner has only ever run `hello.sm` and the IDE, in the DEFAULT language.
+  The other ten packs have never been exercised by a human at all - not once.**
+
+**Both partners and Muse are being told.**
+
+## v204 - ROUND-12 and ROUND-80 issued; the Windows test package rebuilt
+
+**Tested on main before packaging: 11 PASS / 0 FAIL / 1 NOT-RUN** - a new "pack messages" gate, performance
+now 8 benchmarks, the F1 fix confirmed (27 and 38 variables both return `7`), and **the diagnostics verified
+in four packs**: default `agyat naam`, hindi `अज्ञात नाम`, tamil `அறியாத பெயர்`, with the **hints translated
+too.**
+
+**ROUND-12 (Claude)** opens with the honest limit it named itself: **the translations are drafted and need a
+native speaker, all eleven.** The ask is a **review sheet per pack**, in a form a speaker can read and correct,
+**with uncertain strings marked rather than guessed at.** Then the two open decisions for the owner.
+
+**ROUND-80 (ChatGPT)** leads with **the installer payload** - still the first thing the owner sees, and **the
+compiler has changed twice since it last read the tree** (the F1 fix, then the pack diagnostics). It is told
+to check against current main rather than what it read last round.
+
+**`sutram-windows-test.zip` rebuilt** with the current binaries, `f1.sm`, `bad.sm` (the same error in four
+packs), `hello.sm` and the test list.
+
+## v203 - Claude ROUND-11 merged: THE DIAGNOSTICS ARE IN ALL ELEVEN PACKS. Step 5 is CLOSED.
+
+### The diagnostics follow the pack, and I verified it in four languages
+
+The same error, `likha(nosuchname)`:
+
+| Pack | The message |
+|---|---|
+| **default** | `agyat naam 'nosuchname'` |
+| **sanskrit** | `अज्ञातं नाम 'nosuchname'` |
+| **hindi** | `अज्ञात नाम 'nosuchname'` |
+| **tamil** | **`அறியாத பெயர் 'nosuchname'`** |
+
+**And the pack-loaded notice is in the pack's own script** - `भाषा-पुटः प्राप्तः` (Sanskrit),
+`भाषा पैक मिला` (Hindi), `மொழித் தொகுப்பு கிடைத்தது` (Tamil).
+
+**No English anywhere.** The one English token is `Sutram Error`, which is an identifier and stays by design.
+**128 strings x 11 packs = 1,408.** The default is romanised Sanskrit with its English words removed.
+
+**The owner's correction was right, and this is what it produced.** My first instinct - English messages -
+would have shipped a Sanskrit language that could not tell a Tamil user what went wrong in Tamil.
+
+### Goldens: 13 moved, 132 added, and nothing re-recorded to pass
+
+**13 goldens moved** - 11 default, 1 Hindi, 1 Sanskrit - **and not one accepted golden was re-recorded to
+make a test pass.** 132 new per-pack goldens and a new gate, **"pack messages"**.
+
+### Step 5 IS CLOSED: 303 of 303
+
+**From 255. The remaining 48 closed: 29 by proof, 14 by written argument, 5 by both.** 7 new proofs,
+including **page-edge canaries** for overruns of private scratch blocks. **Nothing left as GAP, OVERRUN or
+REVIEW.** **The number that did not exist two days ago now reads 303 of 303.**
+
+### And the honest caveat, which Claude states itself
+
+**The translations are drafted by Claude and need a native speaker - all eleven.** The checks prove the
+**form** - identifiers, punctuation, script, no Latin prose - **not the wording.** A Tamil speaker should
+read the Tamil messages before anyone claims they are right.
+
+### Two decisions for the owner
+
+1. **Should the romanised default use Sanskrit grammar?** About 15 messages currently use Hindi grammar.
+2. **Should the Linux IDEs follow the pack too?** The Windows IDE does.
+
+## v202 - a language inconsistency found: `mukhya` and `prakriya` disagree about braces
+
+**Found while extending the benchmarks.** A multi-statement function body needs braces - but **only for
+`prakriya`.** `mukhya` accepts the brace-less form. Verified:
+
+| Form | Result |
+|---|---|
+| `mukhya()` brace-less, 3 statements | **compiles and runs** - output `1 2` |
+| `prakriya f(n)` brace-less, 3 statements | **parse error** - `vyakaran dosh, pankti 3:5, shabd 'prati'` |
+| `prakriya f(n) { ... }` | compiles and runs - output `1` |
+
+**And the documentation states only one of the two behaviours as if it were universal.**
+`docs/LANGUAGE-REFERENCE.md` line 219 says:
+
+> *A brace-less function body is exactly **one statement**. For anything longer, wrap the body in `{ }` - a
+> brace-less multi-statement body is a parse error.*
+
+**That is true for `prakriya` and false for `mukhya`.** The reference is not wrong about what it describes -
+it is **incomplete about which construct it describes.**
+
+**The books are not wrong.** All thirteen brace-less multi-statement bodies in the English book are
+`mukhya()`, which works. **They were compiled in Step 6 and all passed** - so the books are correct and the
+reference's rule is narrower than it reads.
+
+**This is a decision, not a bug fix**, and it is the owner's:
+
+1. **Document it** - say plainly that `mukhya` accepts a brace-less body and `prakriya` does not. **One
+   paragraph, no code change.**
+2. **Make them consistent** - either both accept it or neither does. **That is a language change** and it
+   would move programs in the tree.
+
+**Recorded, not acted on.** It is the kind of thing a beginner hits in their first ten minutes: they write
+`mukhya()` without braces because every example does, then add a second function and it stops compiling.
+
+**And it was found by running the books' own code, which is what Step 6 was for.**
+
+## v201 - the installer must ENSURE the script fonts are present
+
+**The owner's requirement: "when I run setup or installation, it should install Sanskrit and other language
+fonts so it would be shown in that language easily."**
+
+**The detail is in the word ENSURE rather than INSTALL, and the distinction matters:**
+
+- **Windows 10/11 already ships every script Sutram uses** in `Nirmala UI` - Devanagari, Gujarati, Bengali,
+  Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Odia. **On a normal modern Windows there is nothing to
+  install**, and shipping `.ttf` files would be pointless.
+- **But it is not guaranteed** - a stripped image, an older build, Windows Server, or a machine with the
+  language features removed. **There the scripts render as empty boxes, and for a language whose entire
+  purpose is those scripts, that is a total failure of the product.**
+
+**So the installer must CHECK for all eleven scripts' fonts and install or enable any that are missing -
+using the machine's own font files, not shipped copies.** `Nirmala UI` is Microsoft's and **cannot be
+redistributed**; the brief says so explicitly, and says that *"we can check and prompt, we cannot bundle"* is
+a complete answer if that is the truth.
+
+**And the boundary is stated:** the installer's job is that the fonts **exist** on the machine; the IDE's job
+is that the editor **uses** one. Claude is fixing the second - the editor asked for `Consolas`, which covers
+none of the eleven.
+
+## v200 - CORRECTION: the diagnostics stay in the language pack. No English. The owner was right.
+
+**In v199 I recorded the decision as "the diagnostics go English". That was wrong, and the owner corrected
+me. The correct decision is the one that was always right for this project:**
+
+**The diagnostics are in the language of the pack. Sanskrit is the default. There is no English anywhere.**
+
+**My error, stated plainly:** I observed that the owner could not read the Sanskrit help and concluded that
+English was the answer. **That was the wrong conclusion from a correct observation.** He could not read it
+**because that build's help was in the wrong language for him** — not because English belongs in a Sanskrit
+language. **The fix is that the messages follow the pack, so a Hindi user gets Hindi errors, a Tamil user
+gets Tamil errors, and the default is Sanskrit.**
+
+**So ROUND-11 now asks for option E, not D** — the one Claude costed as *"D plus 900 translations"*. **If
+that is too large for one round, it goes in pack order: Sanskrit first, because it is canonical and the
+default.**
+
+**And the sentence that matters is now in the brief:** *a programming language for people who do not read
+English cannot tell them what went wrong in English.* **That is the whole point of the project, and it
+applies to the error messages as much as to the keywords.**
+
+**I also told Claude plainly that this was my mistake, not a change of mind by the owner** - so it does not
+wonder why the brief moved under it.
+
+## v199 - the diagnostics go English (owner's decision); ROUND-11 and ROUND-79 issued
+
+**The owner could not read the help.** He ran `sutram.exe` and got `Prayog`, `nivesh.sm`, `sankalan`; he hit
+an error and got `vyakaran dosh, pankti 3:13`. **He is the target user and the help screen was useless to
+him.** So:
+
+**The compiler's messages and the IDE's status line become ENGLISH by default. The Sanskrit is kept behind a
+switch**, so nothing is lost for anyone who wants it. **Claude picks the switch name and states it.**
+
+**This is not the option Claude recommended** - it proposed D, a switch with the default unchanged. **The
+owner weighed it and chose differently, and that is his call.** The costs Claude already counted still apply:
+**every golden containing a compiler message must move in the same change**, the `Sutram Error:` prefix and
+`[E_CODE]` tags stay, and the new counts must be reported.
+
+**When it lands, the interface and the diagnostics are in the same language** - which was Step 2's whole
+point, and the last item of the interface work.
+
+### ROUND-79 (ChatGPT)
+
+**WS1 is the installer payload** - still the first thing the owner sees, and **the compiler changed again in
+R10**, so it must be checked against the current tree rather than what it read last round.
+
+**And it is told the diagnostics are changing**, so nothing it writes should match Sanskrit diagnostic text.
+
+**One thing carried into its brief:** its read-only F1 analysis **earned its place.** It agreed with Claude
+exactly - same cause, both finding 15 sites - and its warning that the `0x45` at line 18919 is an unrelated
+`xor r9d,r9d` is the kind of catch that stops a fix from breaking the compiler.
+
+## v198 - F1 CLOSED. Confirmed fixed on the owner's Windows machine, and by two independent diagnoses.
+
+### The owner's Windows run
+
+```
+sutram.exe f1.sm f1.exe
+Siddh: 622 byte sankalit
+f1.exe
+-> 7
+```
+
+**Before the fix, the same program compiled to 562 bytes and printed nothing.** The byte count changing is
+itself the proof it is a different build: **the fixed compiler emits a larger binary because it now uses
+4-byte displacements where a 1-byte one used to overflow silently.**
+
+### Two independent root-cause analyses, agreeing exactly
+
+**Claude's, which produced the fix:** *every stack variable's `rbp` offset was emitted as a one-byte
+displacement, so slots below `rbp-128` wrapped above the frame, onto the caller's saved values and the
+return address. The fix is one helper choosing a 1- or 4-byte displacement by range, at all 15 sites.*
+
+**ChatGPT's, read-only and reached without seeing the fix:** *the allocator calculates a valid signed
+rbp-relative offset, but load/store emission unconditionally uses ModRM `0x45` (an 8-bit signed
+displacement) and truncates the offset to its low byte.*
+
+**Same cause, same site count - both found 15.** `emit_load_named_var` at 19856 and
+`emit_store_named_var` at 19886 always emit `disp8`. **Two readings of the same defect, arrived at
+separately, naming the same code.**
+
+**And ChatGPT went further than the description in one useful way** - it disassembled raw x86 to show the
+wrap, byte by byte:
+
+| offset | old encoding | result |
+|---|---|---|
+| -8 | `48 89 45 f8` | rbp-8, correct |
+| -128 | `48 89 45 80` | rbp-128, correct |
+| **-136** | `48 89 45 78` | **rbp+120 - WRONG** |
+| **-248** | `48 89 45 08` | **rbp+8 - the return address** |
+| -264 | `48 89 45 f8` | rbp-8 - a local alias |
+
+**That table is what makes the bug legible.** It also flags **15 disp8-only emitter regions** including a
+possibly unreachable one at 12647, and warns that the `0x45` byte at 18919 is an unrelated `xor r9d,r9d`
+and **must not be replaced**. **A fix that blind-replaced every `0x45` would corrupt the compiler.**
+
+### What F1 cost, and what it taught
+
+**A silent-wrong-answer bug survived every gate for months**, because **no test in the tree called a
+function with 27 local variables.** It was found by the owner running a test I had written badly, on a claim
+I had initially doubted. **The gates test what someone thought to test.**
+
+## v197 - everything brought up to date after the F1 fix
+
+**Verified on main: F1 is fixed.** 27, 32 and 38 local variables all return the correct value - the crash you
+found on Windows is gone from the tree.
+
+**The documents were one step behind, and are now current:**
+
+| | Was | Now |
+|---|---|---|
+| Regression suite | 203 | **205 / 4** |
+| Library proofs | 209 | **210 / 210** |
+| Library gap | 235 of 303 closed | **255 of 303** (48 open) |
+
+**And the roadmap now records F1 properly** - what it was, that it is fixed, the root cause, and how it was
+found. **Step 5's owner is corrected from "Muse (paused)" to Claude**, since Muse is paused and Claude has
+been carrying it.
+
+**The F1 section on the roadmap ends with the reason it matters more than the fix:** *it was found by the
+owner running a test I had written badly, on a claim I had initially doubted, and it was confirmed by three
+independent methods.* **That is now the project's rule: a description is not a reproduction.**
+
+## v196 - F1 IS FIXED. Verified by me. The most serious defect on the project is closed.
+
+**I rebuilt Claude's branch and swept the variable count myself:**
+
+| Local variables in a called function | Before | After |
+|---|---|---|
+| 26, 30, 32, 34, 38, 50, 100, 200, 250 | **crashed or gave wrong values from 27** | **all correct - `7`** |
+
+**Suite 205/4.** Nine variable counts from 26 to 250, every one correct. **The fix holds far past the
+boundary.**
+
+### The root cause, in Claude's two sentences
+
+*Every stack variable's `rbp` offset was emitted as a one-byte displacement, so slots below `rbp-128`
+wrapped above the frame, onto the caller's saved values and the return address.*
+
+**The fix is one helper that chooses a 1- or 4-byte displacement by range, at all 15 sites.** No
+restructuring - **and programs whose slots fit in a byte compile to the same bytes**, so 123 tree programs
+compile differently but **every golden is unchanged.**
+
+### And Claude corrected a theory of mine
+
+**I said the threshold might differ by platform - Linux crashing at 38 and Windows at 34 - and speculated it
+could be stack size rather than codegen. That was wrong.** Claude's answer: *"you tested 30 and then 38 on
+Linux. 34 crashes on Linux too."*
+
+**I had not tested 34 on Linux, drew a cross-platform conclusion from an untested middle, and presented it
+as the clue of the round.** The boundary is **identical on both platforms, to the variable** - correct to 26,
+wrong at 27-31, crash from 32. **One bug, one fix, one platform story.** That is the fifth time this session
+a confident inference of mine has been wrong.
+
+### What the threshold actually is
+
+**27-31 locals gives WRONG VALUES** - the caller's variables change. **From 32 it crashes** - the 34th
+variable hits the return address. **So the dangerous range is lower and wider than any of us said**: a
+function with 27 locals silently returns the wrong answer, which is worse than a crash.
+
+### Step 5 also advanced
+
+**255 of 303 library functions closed** (up from 235), **48 open.**
+
+### ChatGPT's independent diagnosis
+
+It delivered **`ROUND-78-WS0-F1-ROOT-CAUSE.md`** - the read-only analysis I asked for. **To be compared
+against Claude's root cause:** two independent readings of the same defect, one of which produced the fix.
+
+## v195 - the benchmark set extended: four call-overhead programs is not a language benchmark
+
+**Found while working Step 7's follow-up. `benchmarks/` held four programs, all `r46_hotcall_*`** - they
+measured **call overhead** and nothing else. **A set like that cannot support a performance claim about the
+language**, only about function calls - and the project's rule is that performance is measured, not assumed.
+
+**Four added, each verified to compile and produce the right answer:**
+
+| Benchmark | What it exercises | Verified output |
+|---|---|---|
+| `bench_loop.sm` | a tight integer loop - the shape every language is compared on | **50000005000000** |
+| `bench_arith.sm` | multiply, divide, modulo in a loop | 98768 |
+| `bench_nested.sm` | nested loops with a conditional - branch and loop overhead | **1333333** |
+| `bench_fib.sm` | recursive calls - the cost of a call | **196418** |
+
+**`bench_nested` is worth noting:** my own predicted answer was 1334667 and the real answer is **1333333** -
+exactly one third of the 4,000,000 pairs, which is obviously right. **My guess was wrong and the program was
+right.** That is the fourth time a predicted value of mine has been wrong while the code was correct, and it
+is why the project's rule is to run things rather than reason about them.
+
+**And one syntax finding:** a multi-statement function needs braces. `prakriya fib(n)` followed by an `yadi`
+block on the next line fails; `prakriya fib(n) { ... }` works. The single-statement form is only valid for a
+one-line body. **Worth documenting, because the books show both forms.**
+
+**`gates.sh` now reports 8 benchmarks instead of 4**, still 0 failed.
+
+## v194 - both partners on F1, split so they cannot collide
+
+**Claude fixes it; ChatGPT diagnoses it.** Two AIs editing the same 570 KB assembly file is how you get a
+merge nobody can untangle, so the split is deliberate:
+
+- **Claude (ROUND-10, WS1):** apply the fix, pin the real threshold, state the root cause.
+- **ChatGPT (ROUND-78, WS0):** **read-only.** Find the exact site, confirm or replace the root cause, and
+  **propose the patch as a diff in its document - not applied.**
+
+**And one question only ChatGPT is being asked, because it is the clue neither of us had:** *why does Linux
+crash at 38 and Windows at 34?* **If the threshold differs by platform, the cause may be stack size rather
+than codegen** - the frame layout, the red zone, or a guard page. **That changes the fix**, and it is worth a
+second pair of eyes that are not also holding the patch.
+
+**Both briefs carry the owner's own measurements** - 30 correct, 34 and 38 producing nothing - because those
+are the only numbers measured on real Windows.
+
+**The rule is stated in both:** *a wrong root cause costs a round - say "I could not determine this" rather
+than guessing.*
+
+## v193 - F1 measured on real Windows by the owner: the threshold is 30-34, not 38
+
+**The owner ran the test himself, and the bug is worse than either of us described.**
+
+| Local variables in a called function | Linux | Windows (owner) |
+|---|---|---|
+| 18, 20, 22, **30** | correct | **correct - printed `7`** |
+| **34** | not tested | **compiles, then NO OUTPUT** |
+| 38, 40 | **SEGFAULT** | **compiles, then NO OUTPUT** |
+
+**The boundary is between 30 and 34.** A function with **31-34 variables** crashes - **a moderately complex
+function, not an extreme one.**
+
+**And the compiler reports SUCCESS before it fails:** `Siddh: 526 byte sankalit`, then nothing. **A user
+would assume their own logic was wrong.** For a language built to teach beginners, that is the most damaging
+failure mode there is.
+
+**F1 is now confirmed by three independent methods** - Claude's reproduction, my Linux threshold test, and
+the owner's Windows run. **ROUND-10's brief is sharpened with the table**, and now asks the question that
+matters: **is this one bug or two?** My Linux run crashed at 38 and the owner's Windows run at 34 - **if the
+threshold differs by platform, it may be a stack-size issue rather than a codegen one**, and that changes the
+fix.
+
+**Nothing else on the road to v1.0 moves until this is fixed.**
+
+## v192 - ROUND-10 (F1 is now the top item) and ROUND-78 (the installer payload)
+
+**F1 changes the order of everything.** A valid program with 38 local variables **segfaults the compiled
+output** - I reproduced it, and found the threshold: 30 variables is fine, 38 crashes. **A language that
+crashes on valid input is not usable, so F1 is now ahead of every other item on the road to v1.0.**
+
+**ROUND-10 (Claude)** opens with it: **fix F1, and find the real threshold** - my measurements bracket it
+between 30 and 38, so the fix must hold at any number, not at 39. Test 31, 32, 34, 36 as well as well past.
+**State the root cause in two sentences** so the next reader does not have to rediscover it. Then Step 5's 91
+functions, the diagnostics restatement, and what the transliteration mode does not cover.
+
+**ROUND-78 (ChatGPT)** is short, because only one of its items is owner-visible: **the installer's stale
+payload.** The owner is testing on Windows now and **the first thing he sees is the installed version** -
+which is wrong. `win/sutram.exe` was rebuilt by Claude this round, so it is current; the installer needs to
+package it.
+
+**One note carried into both:** the rounds say which files are whose. **The installer is ChatGPT's, the IDE
+is Claude's**, and both are told to state what they touched - because two AIs in the same file produce two
+diverging versions, and that is a merge I would rather not referee.
+
+## v191 - F1 CONFIRMED by me: a function with 38+ variables SEGFAULTS. Claude ROUND-09 merged.
+
+### F1 is real, and it is worse than the description
+
+**Claude reproduced it and told me why my four attempts were correct: my test was the wrong shape.** The
+trigger is a **called** function with 20+ variables, or **any** function with 38+.
+
+**I reproduced it myself, and found the threshold:**
+
+| Variables in the function | Result |
+|---|---|
+| 18, 20, 22, 30 | **correct** |
+| **38, 40** | **SEGFAULT - exit 139** |
+
+**A valid program with 38 local variables crashes the compiler's output.** Not a wrong answer - a segfault.
+**This is the most serious defect found on this project**, and it was found by Claude checking its own
+finding after I could not reproduce it. **The rule worked in both directions, which is exactly what it is
+for.**
+
+**Not fixed. It is now the top item on the road to v1.0** - ahead of everything else, because a language
+that segfaults on valid input is not usable.
+
+### Claude's ROUND-09 is merged
+
+- **F2-F6 fixed**, each with a file that fails on the previous compiler. `nirmmita` returned `-errno` so
+  every "0 on failure" check missed it; `guna` re-evaluated its value per case; plus a comment, a missing
+  `yoj`, and the binaries' mode.
+- **The IDE now renders all eleven packs and TYPES them from an English keyboard.** The font is fixed -
+  Indic runs use Nirmala UI, Latin stays Consolas - **and the transliteration mode works.** That answers the
+  owner's question directly: he can type `mukhya` and get `मुख्य`.
+- **Main's locks and binaries had drifted** - the compiler pin was still R7's so `r69_build --check-only`
+  refused on main, and `win/sutram.exe` was the R7 build. Re-pinned and rebuilt.
+- **Five of its files carried my own recent changes backwards** (the sockets note, Step 8, the RETIRED
+  header, the stdlib fix, the changelog) because the branch predates them. **Excluded rather than reverted.**
+  That trap has now cost four rounds; it is caught before landing each time.
+
+### ChatGPT's ROUND-77
+
+**WS5 is a real fix:** `install-core.ps1` now distinguishes a fresh directory from an existing installation,
+and **rolls back only after a fresh install has started changing files** - removing only what it created,
+preserving unknown files, reverting PATH only if this attempt added it, and removing HKCU keys only if they
+were absent before. **A user can now retry a failed install.**
+
+## v190 - Step 8: the security and least-privilege audit. One real violation, found and retired.
+
+**A static audit of the shipped tooling** - network calls, elevation requests, registry writes, credentials -
+with a file and a line for every finding, in `SECURITY-AUDIT.md`.
+
+### The one real violation: `windows/sutram-installer.nsi` writes HKLM
+
+**Six writes to the machine-wide registry**, including the uninstall entry. **Writing HKLM requires
+administrator rights, which is exactly what the owner ruled out.**
+
+**It is superseded** - the shipped installer is the native per-user one - **but it was still in the tree and
+still referenced.** Marked **RETIRED - DO NOT USE, DO NOT SHIP** at the top of the file, with the reason, and
+kept as history rather than deleted. **I did not delete it without the owner's say-so.**
+
+**This is the same finding I raised in an earlier audit and did not act on. It should not survive another.**
+
+### Two things that turned out to be good news
+
+**The `RunAs` my first scan flagged is a GUARD, not a violation.** `preflight-windows.ps1` **refuses to build
+an installer** containing `-Verb RunAs`, `RelaunchElevated`, `HKLM:`, `::LocalMachine` or
+`ExecutionPolicy Bypass`. **The least-privilege constraint is enforced by code, not promised in a document.**
+
+**And the native installer is genuinely per-user** - seven HKCU writes, no machine-wide state.
+
+### Checked and clean
+
+No credentials anywhere in shipped code (the word `token` in the Linux GUI is a **lexer token**, not a
+credential). No HTTP client - no `winhttp`, `wininet`, `InternetOpen`, `curl` or `ws2_32` in the compiler, IDE
+or installer.
+
+### One thing that is a decision, not a defect
+
+**The language ships `net*` builtins** - `socket`, `bind`, `listen`, `accept`. That is normal for a systems
+language and **surprising for one aimed at first-time programmers.** The layer check already forbids `core`
+modules from using them, but **no test in the tree opens a socket.** Recommendation: keep them, document them,
+and say so in `PROJECT-MASTER.md` section 9 rather than letting a learner find out by accident.
+
+### What the audit cannot show
+
+**It is a static scan of the source - it shows what the code says it does, not what the built binary does.**
+The owner's own install remains the only check of that.
+
+## v189 - both rounds consolidated, same numbers, everything in one file each
+
+**The owner asked that the round numbers stay the same and that every requirement we have agreed be added
+into them, so one file each is the whole story. Done - ROUND-09 (Claude) and ROUND-77 (ChatGPT) are now
+complete briefs, and each opens by saying so: "if it is not in this file, it is not in scope."**
+
+### ROUND-09 (Claude) - eight workstreams
+
+1. **F1's reproduction** - the exact `.sm`, command and pasted output. I could not reproduce it in four
+   attempts; a file settles it in five minutes.
+2. **Step 5** - the 91 open library functions.
+3. **F2-F6** - the smaller findings, `nirmmita` returning `-errno` first.
+4. **The diagnostics decision** - the owner's; restate, do not act.
+5. **The IDE font** - it asks for `Consolas`, which covers none of the eleven scripts.
+6. **A transliteration mode** - type `mukhya`, get `मुख्य`.
+7. **The installer font check.**
+8. **Keep the interface cheap to change** - the owner is testing now, so his findings arrive as fixes.
+
+### ROUND-77 (ChatGPT) - six workstreams
+
+1. **The `kosh` A/B** - with three routes to get a compiler into its session, including asking me for one.
+2. **Separate compilation** - the smallest working link, or the smallest failing case.
+3. **The repository-wide keyword audit.**
+4. **The installer's stale payload** - an installed copy reports v160 while the project is at v188. **The
+   owner will see this first.**
+5. **A failed install leaves a half-install a retry refuses.**
+6. **The installer font check.**
+
+**Both briefs now name the owner-visible items first**, because he is testing Windows himself and those are
+what he will hit.
+
+## v188 - both rounds updated: the fonts, and how to type on an English keyboard
+
+**The owner asked a question that only surfaces when someone actually sits down to type: "the keyboard I am
+using is English (US) format, so how will I type?" Checking it found two real gaps and answered a third.**
+
+### What is already fine
+
+**He does not need a special keyboard for the main workflow.** Sutram's primary design is Latin
+transliteration - verified here: `mukhya()`, `likha()`, `vitti i = 1`, `yavat (i <= 3)` compiles and runs
+with a plain English keyboard. **No IME, no keyboard switch.**
+
+**And he does not need to install fonts.** Windows 10/11 ships every script Sutram uses - Devanagari,
+Gujarati, Bengali, Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Odia - in **Nirmala UI**, built in.
+Shipping `.ttf` files would be pointless.
+
+### What is broken
+
+**The Windows IDE asks for `Consolas`** - a Latin-only monospace font with **no coverage of any of the
+eleven scripts.** It renders today only because **Windows falls back per glyph.** That is exactly the kind
+of thing that looks correct in a screenshot and misbehaves under a real cursor - and those scripts are the
+entire point of the language. **Assigned to Claude: change the font to `Nirmala UI` or a fallback list that
+prefers it, and verify by rendering all eleven scripts rather than one screenshot of Devanagari.**
+
+### What is missing
+
+**A transliteration mode in the IDE** - type `mukhya`, get `मुख्य`. Today, typing in Devanagari or Gujarati
+means opening Windows Settings, adding a language, and learning a second input method. **For someone whose
+only keyboard is English (US), that is the difference between "I could use this" and "this was designed for
+me."** Assigned to Claude, scoped so that even keyword-only conversion is an acceptable first version.
+
+**And the installer should CHECK for the fonts** - not install them, just verify and say so, rather than
+leaving a user with empty boxes. Assigned to ChatGPT, whose code the installer is.
+
+**Both rounds updated. The owner is testing Windows himself, so neither partner is asked to run the
+acceptance.**
+
+## v187 - the version fix was reverted by a merge; re-applied; a Windows test package built
+
+**The v184 version fix did not survive.** Main said `v160` again. **The cause is the same trap that has now
+cost this project three rounds: Claude's R8 branch was cut before v184, so merging it carried its older
+`src/sutram_compiler.asm` over my fix.** I verified it directly against the API - main read
+`Sutram 1.0 (v160)` while the project was at v185.
+
+**Re-applied and verified** - the compiler now reports `Sutram 1.0 (v182) - sampurna sutra` on both the Linux
+and Windows builds.
+
+**The lesson, stated plainly: a merge is not safe just because it applies cleanly.** A branch cut before a
+change will silently revert it, and the only defence is to **check the file after the merge, not before** -
+which is what I failed to do in v185.
+
+### A Windows test package, built for the owner to run today
+
+`sutram-windows-test.zip` - **1.4 MB**, containing:
+
+- **`sutram.exe`** - the CLI, built from today's source, reports **v182**
+- **`sutram-ide-gui.exe`** - the dark IDE, English menus and buttons
+- **`Sutram-Setup.exe`** - the installer, with its staleness stated in the README
+- **207 example programs**, **11 language packs**, **24 library modules**, the icon, `win\`
+- **`hello.sm`** and **`namaste-hindi.sm`** - the same program in Latin and Devanagari
+- **`README-TEST.md`** - the steps, with "Expect" lines to compare against
+
+**The README says plainly that the installer carries an older compiler and that the version check should use
+`sutram.exe` directly.** The owner should not have to discover that.
+
+### The division of labour, as the owner set it
+
+**Windows testing is the owner's.** So neither partner is asked to run it - **Claude and ChatGPT are for
+development speed**, and their rounds are scoped accordingly.
+
+## v186 - ROUND-09 to Claude (verify F1) and ROUND-77 to ChatGPT (get a compiler into its session)
+
+### ROUND-09 (Claude) - F1 first, and it is deliberately small
+
+**I could not reproduce F1 in four attempts, all correct** (26 variables summed = 325; a 23-variable caller
+calling a function = 1007; a 40-variable caller = 152; a plain call = 1007). **So the ask is a reproduction,
+not a fix:** the exact `.sm` file, the exact command, the pasted output.
+
+**"A function with more than 21 variables computes wrong values" is a claim that, if true, stops
+everything** - and it cannot be accepted on a description, nor fixed on one. **A file settles it in five
+minutes.** Until it is reproduced it is not a defect in the changelog and nobody fixes it.
+
+**This is the rule working in both directions.** Claude has caught eleven of my errors by checking; **the
+same check applies to its findings.** I have not called F1 false - the likely case is that its trigger is a
+shape I did not try - but I am not recording it as real either.
+
+**Then:** continue Step 5 (91 functions open), take F2-F6 starting with `nirmmita` returning `-errno` (a
+silent wrong answer in the same family as Step 1), and restate the diagnostics decision.
+
+### ROUND-77 (ChatGPT) - its blocker is a missing binary, not a Sutram failure
+
+**Its R76 said Native `kosh` A/B: NOT_RUN and explicitly did not invent the numbers. That is right.**
+`r76_kosh_measure.py` exited 2 with `nonregular executable` - a prerequisite failure.
+
+**So the ask is to unblock it, easiest first:** build NASM itself (a single static binary, two commands), or
+**ask me for a compiled ELF and I will put it where it can reach it** - the channel working as intended - or
+**say plainly that neither works and move on.** A second NOT-RUN with a clear reason is acceptable; a third
+is not.
+
+**Also:** the smallest working separate compilation (or the smallest failing case), the repository-wide
+keyword audit, and **two installer defects that are its code** - a failed install leaving a half-install a
+retry refuses, and the committed `Sutram-Setup.exe` carrying a compiler twenty-five releases stale.
+
+## v185 - Claude ROUND-08 merged: the library gap list, and F1
+
+### Step 5 has its number
+
+**212 of the 303 library functions are closed; 91 are open.** That is the number that did not exist
+yesterday. This round closed 43.
+
+**And Claude refused the easy measure.** Its first pass found that **every one of the 303 functions now has
+a proof that fails when its whole body is broken** - which sounds complete and is **too weak to mean
+anything.** So it re-measured with **1,119 mutants shaped like real bugs** - off-by-one results and moved
+boundaries - and killed **781 -> 862**. **A proof that only fails when the entire body is deleted is not a
+proof; it is a smoke test.** That distinction is the most valuable thing in the round.
+
+### F1 - a claim I could not reproduce, and will not accept either way
+
+**Claude reports: a function with more than 21 variables silently computes wrong values, on main, in both
+the Linux and Windows compilers.** Stack slots past the 16th are encoded with a one-byte displacement and
+land in the caller's frame; `chakravala` corrupts its caller.
+
+**I tested it four ways and every one gave the correct answer:** 26 variables in `mukhya` (sum 325 - right);
+a caller with 23 variables calling a function (1007 - right); a 40-variable caller calling a function
+(152 - right); and a plain call (1007 - right).
+
+**So I am recording it as UNREPRODUCED, not as false.** It is either a narrower trigger than the shape I
+tried, or it is a false positive - and **I cannot tell which without Claude's exact program.** That is the
+next round's first task: **the reproduction, as a file, with the command and the observed output.** Until
+then it does not go in the changelog as a defect and it does not get "fixed".
+
+**This is the rule working in both directions.** Claude has caught eleven of my errors by checking; the same
+check applies to its findings.
+
+### Also from R8
+
+- **Five smaller findings F2-F6**, including `nirmmita` returning `-errno` (so "0 on failure" checks never
+  fire), `guna` re-evaluating its value per case, and non-executable committed binaries.
+- **14 new proofs**, each expectation computed independently.
+- **The diagnostics decision is unchanged and still the owner's.** Recommended: **D now, E as translations
+  arrive** - D costs one message table and 90 lookups with no golden or doc changes; E is D plus 900
+  translations.
+
+### ChatGPT ROUND-76
+
+**Native `kosh` A/B: NOT_RUN** - no compiler executable available in its session and NASM absent.
+**It says so plainly and explicitly did not invent the mapping counts.** 14/14 lock pins still match; 9/9
+structural checks pass on the growth region. **An honest NOT-RUN is worth more than a fabricated
+measurement, and this one is labelled correctly.**
+
+## v184 - the version string was stale; found by asking what a Windows user sees first
+
+**The owner asked what must be ready before he tests on Windows - "I will check version, I will run the
+program in CMD and test it on the IDE." So I looked at the CLI as a user meets it, and found two things
+immediately.**
+
+**1. `--version` said `Sutram 1.0 (v160)`. The project is at v182.** Twenty-two versions stale. **This is
+the first thing anyone types when they install a language**, and it was wrong. Fixed - it now reads
+`Sutram 1.0 (v182)`, and both the Linux and Windows builds were rebuilt.
+
+**2. The CLI's usage text is entirely Sanskrit.** A CMD user running `sutram` with no arguments sees:
+
+```
+Sutram - sampurna sutra
+Prayog:
+  sutram <nivesh.sm> <nirgat.bin>         sankalan
+  sutram --check <nivesh.sm>              janch matra, nirgat nahi
+  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha pak sahit
+```
+
+**`Prayog`, `nivesh.sm`, `sankalan`** - a first-time user cannot read the help. **This is the same
+inconsistency as the IDE's status line, and it is the owner's decision to make, not mine.** Recorded, not
+changed.
+
+**Why this matters for the release:** the version number and the help text are the two things every user
+sees before they run anything. **A stale version number and an unreadable help screen are the first
+impression of the whole project.**
+
+## v183 - ROUND-08 to Claude (Step 5) and ROUND-76 to ChatGPT (Step 4)
+
+**Muse stays paused, so Step 5 has no owner - and it is now Claude's.** That is why ROUND-08 differs from the
+last few rounds.
+
+### ROUND-08 (Claude) - Step 5: prove the library is complete
+
+**The state of it, honestly: 24 modules and 303 functions, with 191 library proofs. 191 is not 303, and
+nobody currently knows which functions have no proof.**
+
+**The headline artefact is the gap list** - which of the 303 functions have no proof, module by module. It is
+the number that has to exist before release and it does not exist today. Then a one-line contract per
+unproven function, then proofs for as many as the round allows, starting with the ones a user is most likely
+to call.
+
+**With one instruction that matters: do not pad the count.** If a function cannot be usefully proven because
+it is a wrapper or its contract is trivial, say so and say why - **a proof that asserts nothing is worse than
+no proof, because it looks like coverage.**
+
+### ROUND-76 (ChatGPT) - Step 4, and the measurement that decides it
+
+Its R75 staged the `kosh` reclamation against the current 14-pin compiler. **Now the measurement:** the raw
+JSON from its checkpoint tool - mapping count, VmRSS, VmHWM, VmSize before and after growth, legacy vs
+reclaim, same source.
+
+**Three questions in plain words:** does it actually reclaim (a prototype that does not is a useful result,
+not a failure); is the alias-invalidation contract safe; and **does the language need a free primitive** -
+an owner decision better raised now than after v1.0.
+
+**Also:** the smallest working separate compilation (or the smallest failing case), the repository-wide
+keyword audit, and **the installer defect Claude found** - a failed install leaves a half-install a retry
+refuses, which is its code.
+
+### Merge order, again
+
+ChatGPT's R75 pins the compiler blob that Claude's R7 changed. **R7 merged first**, and ROUND-76 tells it to
+re-check its pins against current main before applying anything.
+
+## v182 - Claude ROUND-07 merged: STEP 1 IS DONE. Every name-resolution path now errors.
+
+**This is the step that mattered most on the road to v1.0, and it is closed.**
+
+**Verified by rebuilding and running the decisions by hand:**
+
+| The wrong name | Before | Now |
+|---|---|---|
+| `totl = 10` (undeclared assignment) | silently declared a variable | `Sutram Error [E_UNDEFINED_NAME]: agyat naam 'totl'` |
+| `b` used after its block | visible | `Sutram Error [E_UNDEFINED_NAME]: agyat naam 'b'` |
+| `vitti x = 2` re-declared | kept the first value | `Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'` |
+
+**Suite 203 / 4** - up from 191, with nine new goldens that all fail on the previous compiler.
+
+### What Claude did that makes this a real close, not another instance
+
+**It delivered an inventory, not a fix list.** A **50-probe audit** covering variables, assignment targets,
+blocks, loops, parameters, constants, fields, arrays, functions, arity, modules, aliases and builtins -
+asking of each whether a wrong name errors or quietly succeeds. **That is what the previous three rounds
+lacked:** they each found instances, and this found the class.
+
+**Nine more silent cases are now errors**, including both owner decisions.
+
+**And it measured before it changed.** Block scope was **measured with the real compiler first: 0 programs
+rely on the old behaviour.** The change was then safe. **That is the discipline that was missing when I
+nearly converted the tree on an assumption.**
+
+### Three real bugs it found on the way
+
+1. **A codegen bug already on main:** `vitti x = 1` followed by `vitti x = 2` **kept 1**, because the second
+   slot was never read. A wrong answer, silently. Fixed.
+2. **A bug in the project's own tests:** `tools/proof_props.py` called a 6-parameter function with 5
+   arguments, and a name was declared 12 times by a stale loop index. **The tests were wrong, not the code.**
+3. **All seven committed binaries rebuilt** and reproducible on Linux, with SHA-256 for each - so the
+   repository's binaries are now the ones the source produces. **That closes the stale-binary finding.**
+
+### ChatGPT's ROUND-75
+
+The `kosh` reclamation is staged against the **current 14-pin compiler**, with a checkpoint tool that samples
+`/proc/PID/maps`, VmRSS, VmHWM and VmSize before and after growth. **It states plainly that this is not a new
+compiler and not a general-purpose `mukta` builtin** - it is a Linux-only payload. **Honest, and the
+distinction matters: whether the language needs a free primitive is still an owner decision.**
+
+### Merge order
+
+Claude's R7 changed the compiler blob that ChatGPT's R75 prepare step pins. **R7 merged first**, so
+ChatGPT's pins must be re-checked against the result before its payload is accepted.
+
+## v181 - Step 7: the performance gate exists. The project can now be measured, not asserted.
+
+**"Performance measured, not assumed" has been a standing rule since the beginning, and until now nothing
+measured anything.** `benchmarks/` held four programs, `tools/bench.py` existed, and **no gate ran either.**
+A claim with no gate is an assumption.
+
+**`tools/bench_gate.py` is now in `tools/gates.sh`.** It compiles and runs every benchmark, repeats each
+one, and reports the median wall time:
+
+```
+machine: x86_64 · Linux · 2 cpus · repeat 3
+r46_hotcall_array.sm             69.56 ms   (min 64.44 / max 81.12 ms)
+r46_hotcall_float.sm             69.02 ms   (min 68.68 / max 79.35 ms)
+r46_hotcall_nested.sm            88.12 ms   (min 86.50 / max 91.40 ms)
+r46_hotcall_stack.sm             92.25 ms   (min 83.38 / max 92.73 ms)
+4 ran, 0 failed
+```
+
+**`gates.sh` now reads: 10 PASS, 0 FAIL, 1 NOT-RUN.**
+
+**It records numbers; it does not invent a threshold, and that is deliberate.** A pass/fail line on a
+wall-clock measurement depends on the machine, the load and the governor - a fixed number would be trivially
+true on a fast box and a permanent false alarm on a slow one. **So the gate fails only when a benchmark
+cannot be built or run, and prints the numbers for the record.** That is what "measured, not assumed"
+actually requires: the measurement is real and repeatable, and the interpretation is left to a human who
+knows the machine.
+
+**One thing to note: there are only four benchmarks**, all `r46_hotcall_*`. They cover call overhead, not the
+language. **A benchmark set that does not exercise arithmetic, loops, strings, the library or memory
+allocation cannot support a performance claim about the language** - it supports a claim about call
+overhead. Extending the set is the honest next step before any number is quoted.
+
+**Step 7 is marked done on `ROADMAP-TO-V1.0.md` for the gate; the benchmark set itself is a follow-up.**
+
+## v180 - Step 6 done: every code sample in every document compiled
+
+**The sweep that has found a real defect three times, run to completion.**
+
+**89 programs compiled clean** across all six book editions and the language reference. **The 6 that "failed"
+are the books' own `galat.sm`** - *galat* means wrong, and those blocks exist to **demonstrate an error
+message**. They are supposed to fail, and they fail with the right message.
+
+**This is the check nobody had ever run end to end.** It had already caught the books' for-loop samples
+using `to` instead of `tak`, and a stale keyword in the language reference. **This time it came back clean** -
+which is the first time that sweep has returned empty, and worth recording as such.
+
+**Step 6 is marked done on `ROADMAP-TO-V1.0.md`.**
+
+## v179 - ROUND-07 to Claude and ROUND-75 to ChatGPT; both point at the roadmap
+
+**Both rounds now open with a memory update and name the step they advance on `ROADMAP-TO-V1.0.md`** - the
+practice the owner asked for, applied to every partner.
+
+### ROUND-07 (Claude) - Steps 1 and 2
+
+**Step 1: finish the silent-wrong-answer class.** Two decisions were made from its measurements:
+
+- **`totl = 10` silently declaring a variable must be an error.** It measured **0 programs in 530 rely on
+  it** - the same class as an undefined name reading 0.
+- **A block `vitti` visible after the block becomes block scope** - but **measure first**, and if more than
+  a handful of programs rely on it, report the number and stop. A scoping change must not silently break
+  working programs.
+
+**The real deliverable is an inventory, not fixes:** every name-resolution path in the compiler - variables,
+functions, fields, array indices, module aliases, builtins - saying of each whether a wrong name errors or
+quietly succeeds. **Three rounds have found more instances each time, which means we have been finding cases,
+not the cause.**
+
+**Step 2: prepare the diagnostics decision, do not make it.** The owner decides; Claude supplies the numbers.
+
+**Also: rebuild the committed Windows binaries.** The ones on main are the ROUND-03 build - the gate fails
+them on English labels.
+
+### ROUND-75 (ChatGPT) - Step 4
+
+**Its R74 is the best return it has made: 14/14 lock pins MATCH and `r74_repro_build.py` builds twice in two
+independent checkouts and fails if the ELF hashes differ. That is a reproducible baseline - the first
+workstream on this project to move from NOT-RUN to a genuine PASS.**
+
+**The main work is the `kosh` leak** - Step 4, assigned to it. It must state three things plainly: whether
+the old mapping can be released at all given **the language has no free primitive** (which may be a language
+decision for the owner), whether the alias-invalidation contract is safe, and to stop rather than restructure
+if it cannot be done.
+
+**And return raw output, not descriptions of output.**
+
+## v178 - Claude ROUND-06 merged; a claim of mine corrected; the committed Windows binaries are stale
+
+### Claude built the Windows gate
+
+`tools/accept-windows.ps1` and `tools/check_accept_windows_log.py` are merged, with tests and a `TEST-ME.md`
+section. **It records the binary SHA-256s (repo and installed), the Windows build, the elevation tokens, and
+PASS/FAIL/NOT-RUN per check as JSON.**
+
+**And it says plainly that not one check ran on Windows** - three runs, all under **Wine 9.0 on Linux**
+(A 5/4/5, B 9/1/5, C 12/0/3). **The elevation checks are NOT-RUN, because Wine has no UAC.** The gate
+becomes acceptance when the owner runs one command on Windows.
+
+### A claim of mine, corrected
+
+**In v175 I wrote "no Sanskrit UI string remains in the Windows GUI." That was wrong.** The menus and
+buttons are English - but **the status line and the IDE's ten output messages are still Sanskrit**
+(`sankalan`, `karyakram`, `asaphal`). **I grepped for the menu words and not for the output strings, and
+stated a conclusion my check did not support.** Claude found it and documented the whole layer-by-layer
+inconsistency. **That is the third time this session I have asserted a cause I had not verified.**
+
+### A real finding: the committed Windows binaries are stale
+
+**The Windows binaries committed on main are the ROUND-03 build.** Their hashes match the tree, and
+**Claude's gate fails them on English labels** - they are the Sanskrit-menu build, not the current one. Main
+also commits no `win\sutram.exe`. **So the binaries in the repository are not the binaries the source
+produces.** Recorded; the fix is to rebuild and commit them with their log.
+
+### Also
+
+- **A failed install leaves a half-install that a retry refuses** - ChatGPT's installer code, reported not
+  fixed.
+- **Two wrong-name decisions:** `totl = 10` silently declares (the same class as the others; 0 programs in
+  530 rely on it - recommend error), and a block `vitti` visible after the block (a scoping rule, not an
+  undefined name - recommend block scope). **Nothing implemented; both await the owner.**
+- **ChatGPT's ROUND-74 WS1:** **14/14 lock pins MATCH**, and `tools/r74_repro_build.py` builds twice in two
+  independent local checkouts and fails if the two ELF hashes differ. **Its first likely PASS.**
+
+## v177 - a standing context page for every partner; Muse gets one while paused
+
+**The owner asked that Muse be told the project's progress and path so it works towards them. Done - and
+generalised.**
+
+**`Sarvam-to-Muse/MUSE-CONTEXT.md`** is now in the repo: what Sutram is, the full rename table, the three
+changes that affect its work directly (the undefined-name error, the Sanskrit diagnostics, the English
+interface), the measured gate table, **its own step on the road to v1.0 in detail**, and the rules this
+project runs on. **Muse is paused, and this exists so that when it resumes it starts up to date rather than
+needing to be brought up to speed.**
+
+**Its step is written out honestly.** Step 5 - prove the standard library is complete. The library is **24
+modules and 303 functions with 191 library proofs** - **191 is not 303, and nobody currently knows which
+functions have no proof.** Producing that list is the first thing to do, and it is the number that has to
+exist before release.
+
+**Two traps carried into the page, both learned the hard way:** a stale name can hide **after a `\n` escape**
+(the character before it is the letter `n`), and **`pankti` means "line" as well as being the old array
+keyword** - it appears legitimately inside the Sanskrit diagnostic `vyakaran dosh, pankti 5:1`. Do not
+"fix" it.
+
+**The practice is now general, not just for Muse:** every brief opens with a memory update and points at
+**`ROADMAP-TO-V1.0.md`**, which names the step that round advances. **The plan lives in the repo, so no round
+has to re-derive it and no partner works from a stale picture.**
+
+## v176 - ROUND-06 to Claude and ROUND-74 to ChatGPT; Windows becomes a gate
+
+**The owner asked for Windows-side evidence I can actually check, and both rounds now carry it.**
+
+### ROUND-06 (Claude) - the main work is `tools/accept-windows.ps1`
+
+**The problem it solves:** Windows is the only gate that cannot be closed from my side. I can verify a binary
+is a valid PE32+, that its hashes match, that the source is correct, and that it cross-builds - but **I cannot
+run it.** So every Windows claim rests on a written report, and **a report is not verifiable; the files are.**
+
+**The ask: one script anyone can run - Claude, the owner, or ChatGPT - that prints a machine-readable log.**
+Then Windows stops being a one-off narrative and becomes a gate like the others: repeatable and diffable.
+
+**It must emit:** the **SHA-256 of each binary it tests** (this binds the evidence to a specific artefact and
+is what makes the rest checkable); the Windows build and **whether the process was elevated** (so the
+least-privilege constraint is confirmed, not taken on trust); per-check PASS/FAIL/NOT-RUN as JSON; and the
+exact command and raw output for each.
+
+**And it must say which checks ran on Windows and which were Wine only.** Wine renders layout; it is not
+Windows acceptance, and that distinction has to stay visible.
+
+### ROUND-74 (ChatGPT)
+
+Three rounds in, its reporting is the best on the project but every workstream is still NOT-RUN. **The ask
+this round is one PASS:**
+
+- **WS1: finish the baseline.** It reports 12/12 blob identities but **no NASM build was performed** - a
+  baseline that has never produced a compiler is not a baseline. Deliver a clean build and its SHA-256,
+  twice, to show determinism.
+- **WS2: apply the `kosh` reclamation and RUN it**, with a before/after mapping count.
+- **WS3: separate compilation** - the smallest working two-module link, even if it is two functions.
+- **WS4: the repository-wide keyword audit** (it did the compiler file, 22,808 lines; the repo is NOT_RUN).
+
+### Both rounds open with a memory update
+
+The rename table, the new gate script, the undefined-name change and its v175 extension, the Sanskrit
+diagnostics, the English interface - so neither works from a stale picture.
+
+**One warning carried into both:** main moved while they worked. Claude's branch was six files behind v174,
+and ChatGPT's pins were cut before R5. **Read the current file before changing it.**
+
+## v175 - Claude ROUND-05 merged: the interface is English
+
+**Verified before merging** - rebuilt from the branch, `gates.sh` **9 PASS / 0 FAIL / 1 NOT-RUN**:
+
+- **The buttons are English** - `Run`, `Open`, `Save`, `Load example`, `Send`, `Clear shell`.
+- **No Sanskrit UI string remains in the Windows GUI.** `patra`, `sampad`, `bhasha`, `sahay`, `chal` are gone
+  as interface text; the old names survive only as internal identifiers (`mn_patra`), which is harmless.
+- The installer text is back to English.
+- **The owner's instruction is done.**
+
+**Two corrections to the record, both mine:**
+
+1. **I told the owner the redesign had removed the file-list panel. It had not.** It is in the source - a
+   listbox bound to the examples folder. **I read its absence from a screenshot where it must have been
+   empty, and stated a conclusion I had not checked.**
+2. **Six documents on Claude's branch carried MY v174 housekeeping backwards** - `PROJECT-MASTER.md`,
+   `PROJECT-OVERVIEW.md`, `README.md`, the CHANGELOG and three HTML docs. Claude's branch predates v174, so
+   merging them would have reverted the date, the version and the corrected gate counts. **They were
+   excluded; the branch's own doc fixes were taken.**
+
+**Claude found three more silent wrong-name cases after R4, and fixed them:**
+
+- `p.w` for an undeclared field **read `p.x`** - a wrong value, no diagnostic.
+- Field names longer than 8 bytes were compared on their **first 8 bytes only**.
+- `a[i]` with an undeclared `a` **crashed at run time**.
+
+**That is the third round in which this class of defect reached further than expected.** It is the same
+defect the owner's decision in ROUND-04 was about: a wrong name that silently succeeds.
+
+**The merge sequencing Claude warned about was real, and is resolved.** ChatGPT's WS1 blocker was already
+unblocked by Claude's R4 re-pin, and R5 re-pinned again. Merged R5 first, then re-checked ChatGPT's claim
+against the result rather than assuming: **`tools/r69_build.py` accepts the tree, and ChatGPT's baseline
+tests pass 3/3.**
+
+**Limit, stated by Claude itself: every screenshot is from Wine 9 on Linux, not Windows.** The English
+interface has not been seen on Windows; only the earlier Sanskrit build has.
+
+## v174 - housekeeping: the master documents brought up to date
+
+Done while Claude and ChatGPT work. **No code changed** - this is the documentation catching up with the
+tree.
+
+**`PROJECT-MASTER.md` was the worst of it** - the document a reader is told to read first said
+*"Last updated: 2026-10-16, CHANGELOG v152"*. Now v173, with the gate table measured, **`tools/gates.sh`
+named as the source of that table**, and Windows marked **PARTIAL** rather than absent.
+
+**A new Era was added to the history** - *Era 4, the Sanskrit rename (v157-v173)*: 18 modules, 264 function
+names, every keyword, the diagnostics going Sanskrit in v169, and **v173 making an undefined name a compile
+error**. It records the thing worth remembering: **the rename's tail surfaced in six different places -
+code, comments, HTML, prose, keyword tables and the teaching books - and not one was found by a gate.**
+
+**Stale numbers corrected across five documents:**
+
+| Document | Was | Now |
+|---|---|---|
+| `README.md` | 202 example programs | **195** (counted) |
+| `README.md` | 187 passing cases | **191** |
+| `PROJECT-OVERVIEW.md` | 187 pass | **191** |
+| `PROJECT-OVERVIEW.md` | 21 library modules | **24** |
+| `docs/sutram-project-status.html` | 187 pass, v151 | **191 pass, v173** |
+| `docs/sutram-design-parameters.html` | 187 pass | **191** |
+| `docs/sutram-scorecard.html` | **136 pass** | **191** |
+
+**The scorecard had been 55 tests behind.** It is the document that scores the project against its own
+charter, so a stale count there is worse than a stale count anywhere else.
+
+**Checked and clean:** no `__pycache__`, no `.pyc`, no `.tmp`, no `.orig`/`.rej`, and **no pre-rename
+keyword anywhere in the three master documents.**
+
+## v173 - Claude ROUND-04 and ChatGPT ROUND-72 merged; the owner's GUI decision
+
+**Both deliveries synced.** Claude's ROUND-04 was rebuilt and run: **gates.sh 9 PASS / 0 FAIL / 1 NOT-RUN,
+suite 191/4** (up from 189 - two new goldens). ChatGPT's ROUND-72 was **purely additive, 5 new files, nothing
+changed** - no conflict.
+
+### The silent miscompile is fixed
+
+**Claude implemented the decision from ROUND-04: an undefined name is now a compile error.**
+
+`Sutram Error [E_UNDEFINED_NAME]: agyat naam 'nosuchname'` - in Sanskrit. And the old keyword now errors too:
+`agyat naam 'pratiyati'`. Before this, an undefined name **silently read as 0**, so a function whose body
+said `pratiyati 1` inside an `if` and `pratiyati 2` after it **returned 2 when called with 5.** The most
+dangerous failure mode a language can have - a wrong answer with no diagnostic - is gone.
+
+### The owner's decision on the Windows GUI
+
+**Keep the 18 October build** - the dark-theme IDE with line numbers and Devanagari colouring. **But the
+interface goes to English:** the menus must become English to match the English buttons, and ROUND-04's
+Sanskrit buttons and 49 installer strings revert to English. Today the interface is mixed - Sanskrit menus
+above English buttons - and the owner wants it consistent.
+
+**This runs against the "everything in Sanskrit" aim, and the owner has weighed that and chosen English for
+the interface.** The instruction is to do it, and to raise any objection in the delivery document rather
+than in the code.
+
+### Also
+
+- **ChatGPT's own headline finding is a real blocker:** its WS1 baseline is **BLOCKED by four mismatching
+  lock pins**. ROUND-73 makes unblocking it its first workstream.
+- **Muse is paused.**
+- ROUND-05 issued to Claude; ROUND-73 to ChatGPT. **Both open with a memory update** - the rename table, the
+  new gate script, the undefined-name change, the Sanskrit diagnostics, and the module-graph fix - so
+  neither works from a stale picture.
+
+## v172 - the Windows test build verified from this side; the test guide added
+
+The owner supplied the ROUND-03 binaries directly. **They are byte-identical to Claude's delivery** - same
+SHA-256 for `Sutram-Setup.exe`, `sutram.exe` and `sutram-ide-gui.exe` - so there is nothing new to merge.
+
+**Verified from this side:** all three are valid **PE32+ x86-64**; the three match Claude's manifest; and
+**`examples/218_sanskrit_devanagari.sm` compiles through the `sanskrit` pack and prints `योगः = 15`** -
+which is exactly what the test file says to expect.
+
+**NOT verified from this side:** anything requiring Windows to run - the installer, the GUI, the key
+handling and the uninstall. **This side cannot execute Windows.** Claude's evidence covers those.
+
+**`TEST-ME.md` added** - the acceptance script, with the steps and an explicit note of what was and was not
+verified here, so the boundary is not blurred.
+
+## v171 - Claude's Windows ROUND-03 merged: WINDOWS HAS NOW BEEN EXECUTED
+
+**This is the first time Windows has ever been run on this project.** Every previous report said "nothing
+Windows has ever been run". Claude ran it on a **real Windows 11 machine, build 26300, as a standard user,
+non-elevated** - and left the evidence.
+
+**Verified before merging:**
+- The three binaries are valid **PE32+ x86-64** - `sutram.exe` (console), `sutram-ide-gui.exe` (GUI),
+  `Sutram-Setup.exe` (GUI) - and **all three match the SHA-256 manifest**.
+- The combined patch applies **cleanly** to main: 51 files, 4,693 insertions.
+- **Linux side still green after the merge: suite 189 PASS / 4 NO-EXPECTATION.**
+- **The Windows compiler cross-builds** from the merged tree.
+
+**The evidence is real.** `environment.txt`: Windows NT 10.0.26300, NASM 3.01, ld 2.47,
+**"Standard user, non-elevated"**. `gui-smoke.json`: the IDE actually launched with a real path
+`C:\Users\Dhruv\AppData\Local\Temp\...`, pid 39976, checks passing. Screenshots of the running IDE and
+the installer.
+
+**What the screenshots show.** The Windows IDE runs with **Sanskrit menus** (`patra sampad chal bhasha
+sahay`) and **Devanagari source syntax-highlighted**. The installer says, in its own words: *"Sutram
+installs for the current Windows user only. No administrator rights are needed, and nothing is written
+outside your own account."* **Least privilege, honoured.**
+
+**What is NOT done - and Claude says so plainly.** **"Nothing here is a release."** The IDE's **buttons are
+still English** (`Run`, `Open`, `Save`, `Load example`, `Send`, `Clear shell`) under the Sanskrit menus; the
+**installer's welcome text is English**; the r69 unit tests fail on the merged tree; the wizard has defects
+listed separately; and the Linux proof gates were NOT-RUN (no NASM inside WSL).
+
+**One process note.** My ROUND-02 brief told Claude *"Do not touch `windows/`"*. It touched it anyway,
+**because the owner asked it directly, three times in the session**, and it documented exactly what it
+touched so the division of labour can be restored. Following the owner over a brief, and reporting that
+clearly, was the right call.
+
+## v170 - Claude ROUND-03 merged; my v163 GUI fix never worked; a silent miscompile found
+
+**Claude's branch `claude/round-03` was verified by rebuilding and running `gates.sh`: 9 PASS, 0 FAIL,
+1 NOT-RUN. Suite 189/4.** Merged.
+
+### Two findings bigger than the brief
+
+**1. My v163 fix to the IDE highlighter never took effect - and Claude proved it.** The Devanagari rows in
+the keyword table end with `,0,0`, and `match_tab` reads that as **end-of-table** - so the table terminated
+before the Latin keywords, and **the X11 GUI has coloured no Latin keyword since 14 October.**
+`test_x11_colour.py` could not see it. **Claude fixed it and strengthened the test**, so it now fails on the
+old GUI and passes on the new one. **v163 claimed this was fixed. It was not.**
+
+**2. Two pre-v157 keywords miscompile SILENTLY - a language-level defect.** `pratiyati` (the old `return`)
+and `uddeshya` (the old `continue`) compile with **no error at all**, because **an undefined name reads as
+0**. I verified it by hand: a function whose body says `pratiyati 1` inside an `if` and `pratiyati 2` after it
+**returns 2 when called with 5.** The guard silently does nothing.
+
+**This is a decision, not a bug fix, and it is the most important open question in the language: should an
+undefined name be an error?** Today it silently evaluates to 0, which means a mistyped or obsolete keyword
+produces a wrong answer with no diagnostic. **Recorded for a decision; not changed.**
+
+### Also merged
+
+- **Five lock families re-pinned** (not two), each only after the drift was verified: the `r69_build` lock,
+  the R70 corpus, the r69 pair fixtures, the r66/r67 pack baselines. **Retired** the R65-R68 staging tools -
+  they could only ever apply a finished patch to a vanished blob. **Left alone** the R71 lock, because
+  re-pinning it would claim a review nobody did.
+- **All 31 round tools run, not grepped.** 9 repaired and re-run to exit 0; 9 retired as structurally dead.
+- **The docs' message quotes corrected** from messages actually triggered, including the six books.
+- **Claude corrected its own R2 claim** - the "eleven tools" list was a grep; 4 of 11 were right.
+- **And fixed a regression of its own**: since R2, an unterminated string reported line 1:1.
+
+**R70 negative corpus now 6/6 native PASS; `r69_build.py` accepts main.**
+
+## v169 - Claude's ROUND-02 verified and merged: four user-visible defects fixed
+
+**Claude's branch `claude/round-02` was verified by rebuilding it and running every gate — not by reading
+its report.** Every claim held:
+
+| Gate on the branch | Result |
+|---|---|
+| Regression suite | **188 PASS / 4 NO-EXPECTATION** (187 plus one new golden) |
+| Module graph | **OK - 18/18** |
+| Code generation | 12 / 12 |
+| Language packs | 33 / 33 |
+| Library proofs | 191 / 191 |
+| Property proofs | 86 / 86 |
+| Layers | 14 core / 9 alloc / 1 std |
+| `--version` | `Sutram 1.0 (v160) - sampurna sutra` |
+
+**Four user-visible defects fixed, each verified by hand:**
+
+1. **The double-UTF-8 encoding in the language packs.** Every non-English run showed mojibake. 50 strings
+   re-encoded, with the bytes before and after recorded.
+2. **A missing input file exited 0** - a silent failure. Now **exit 1**, verified.
+3. **`--check` could not be combined with `--lang`.** Now works in **either order**, verified.
+4. **Normal-mode line numbers were wrong whenever a module was imported.** An origin map now preserves the
+   original file's position through import expansion.
+
+**And the diagnostics are now Sanskrit.** 83 `db` lines translated with the `Sutram Error:` prefix and
+`[E_...]` tags preserved as identifiers, and 28 goldens re-recorded with exactly one line each. A parse error
+now reads `Sutram Error: vyakaran dosh, pankti 5:1, shabd 'patra-ant'`.
+
+**Also merged:** the `r49_print_module_location` constant now matches `yoj` (module-graph errors printed
+column `?`), and the terminal IDE's keyword table is current.
+
+**One thing to clean:** Claude's branch committed `__pycache__` directories - three `.pyc` files were in the
+added set. **They were NOT synced.** Recorded so they do not creep in.
+
+## v168 - three more errors of mine, caught by Claude; two wrong claims corrected
+
+Claude's ROUND-02 found **three errors of mine**, all verified and fixed.
+
+**1. My v167 module_graph fix was incomplete - and my changelog claim about it was WRONG.** I wrote that the
+seven remaining failures were *"a real pre-existing divergence"* in `tools/module_graph_reference.py`. **That
+was not correct.** The seven stale names were **still `ayojan`**, sitting after a **literal `\n` escape** in
+the Python source - so the character before them was the letter `n`, which my lookbehind
+`(?<![A-Za-z0-9_])` rejected. Fixed with a `\n`-aware pass. **`tests/module_graph` is now 18/18.** The
+tests were stale; the model was fine. **I asserted a cause I had not verified, and Claude proved it wrong.**
+
+**2. My `tools/gates.sh` reported the suite as FAIL on every run.** `tests/run_tests.py` **exits non-zero
+even when every test passes**, and my script judged each gate by its exit code. Fixed: the exit code is no
+longer consulted; each gate's result is parsed from its output. Also fixed the X11 detection - it checked for
+a socket the tests create themselves, so it now checks for the socket directory.
+
+**`tools/gates.sh` now reads: 9 PASS, 0 FAIL, 1 NOT-RUN** (Windows only, which cannot run here and has never
+been run anywhere).
+
+**3. The `--version` number.** Recorded by Claude as still open; it is on the list.
+
+**Claude's ROUND-02 delivery is on branch `claude/round-02`, draft PR #31** - all four defects fixed
+(50 pack strings re-encoded with bytes before/after, exit 1 on a missing file, `--check` with `--lang`, and
+correct line numbers on imports), the `r49` constant, the terminal IDE, module_graph, and **83 diagnostic
+strings translated with 28 goldens re-recorded**. Its gates on the branch: **suite 188/4** (187 plus one new
+golden), module_graph 18/18, everything else green. **To be verified and merged next.**
+
+## v167 - tools/gates.sh: one script that cannot drift, and what it found immediately
+
+**Claude asked for this in its ROUND-01 (`05-WHAT-I-NEED.md`), and it was right to.** `PROJECT-MASTER.md`
+section 11 listed six commands, section 6 reported twelve numbers, and the CI ran a thirteenth
+(`tests/module_graph`) - **three of the twelve could not be reproduced by any command in the tree.**
+
+**`tools/gates.sh`** builds the canonical compiler, the terminal IDE and the X11 GUI into the repo root,
+runs **every** gate, and prints one line each as **PASS / FAIL / NOT-RUN**. A gate needing an environment
+it cannot provide (X11, Windows) prints NOT-RUN **with the reason** rather than being omitted. Section 6
+can now become "the output of `tools/gates.sh` on `<commit>`".
+
+**It found two failures the documentation claimed were passing, on the first run:**
+
+1. **`tests/module_graph` was 12 of 18 failing** - the tests and the reference parser still used
+   **`ayojan` and `pratiyati`**, the pre-rename keywords. Fixed: **18 tests, 7 failures** remain.
+2. **The regression suite had 1 failure** at that moment.
+
+**The remaining 7 module-graph failures are a real pre-existing divergence, not the rename.**
+`tools/module_graph_reference.py` does not match its own test contract - for a diamond import it returns
+`['d','b','a']` where the test expects `['d','b','c','a']`, **never visiting `c` at all**. That is the
+reference implementation disagreeing with the contract it exists to document. **Recorded, not guessed at** -
+it is assigned to Claude as WS3.
+
+**The lesson:** a gate nobody can run is not a gate. Three of the twelve numbers in the master document were
+not reproducible, and the one gate that was failing had never appeared in any audit - mine or anyone's.
+
+## v166 - REGRESSION FIXED (v164 reverted 27 compiler strings); Claude's ROUND-01 arrived
+
+**Claude's first delivery included `00-READ-FIRST-v164-REGRESSION.md`, and it was right.** My v164 commit
+uploaded `src/sutram_compiler.asm` from a **stale working copy**, silently reverting **27 string lines** to
+their pre-rename English and old keywords. On main:
+
+- `--version` said **`Sutram 1.0 (v29)`** - about 130 versions behind
+- the builtin error messages said **`char_at`/`char_code`/`set_char`** - builtins that no longer exist
+- the shell help taught **`punaravartana i = 0 to 5`** - which does not compile
+- the banners, hints and `--check` summary were back to English
+- **the suite was 181 PASS / 6 FAIL, not 187**
+
+**All 27 strings restored.** Verified by building from the authoritative file: `--version` reads
+`Sutram 1.0 (v160) - sampurna sutra`, and **suite 187/4, packs 33/33, proof_lib 191/191, proof_props 86/86,
+layers 14/9/1**.
+
+**This is the same mistake that clobbered the CHANGELOG twice: I uploaded a working copy instead of reading
+the current file first.** It is the most serious defect I have caused in this project - the changelog said
+"suite still 187" while main was at 181. **The rule from now on: never upload a file without reading the
+current version from main first.**
+
+**Claude's other findings** (five workstream documents, verified separately):
+- **The diagnostics inventory**: 80 visible strings, **67 still English**. Four real defects found - all 50
+  pack-localized strings are **double-UTF-8-encoded** (users see mojibake), **a missing input file exits 0**,
+  `--check` cannot combine with `--lang`, and **normal-mode line numbers are wrong whenever a module is
+  imported**.
+- **One stale constant**: `r49_print_module_location` still searches for `ayojan`, so every module-graph
+  error prints column `?`.
+- **The terminal IDE `ide/sutram_ide.asm` is still stale** (v163 fixed only the X11 GUI), and
+  `tests/module_graph` is 6/18 on main.
+- **15 code samples compiled**, 13 pass; `LANGUAGE-REFERENCE.md` still uses `to`.
+- **A real 214-line program** using five library modules - compiles, runs, byte-identical from two cwds.
+
+## v165 - the books' code samples tested; the loop keyword was still `to`
+
+**I compiled every code sample in all nine book editions.** The English book's three for-loop samples used
+`chakra i = 1 to 5` - the rename changed `chakra` but **`to` was deliberately excluded from the HTML pass**
+to avoid corrupting English prose, so the loop keyword in the code samples was never updated and **those
+samples did not compile.** Fixed inside the `<code>` regions only: 7 `range-to` tokens corrected to `tak`.
+
+**The prose was preserved, and that matters.** The English book contains the sentence *"the very word that
+travelled through Arabic `to` become English zero"* - and the highlighter had marked that prose `to` as a
+keyword. **Replacing blindly would have turned a sentence about etymology into nonsense.** The fix therefore
+operates only inside `<code>` elements, and the prose `to` was verified intact afterwards.
+
+**The other eight editions use native-script keywords** in their samples (Gujarati, Hindi, Sanskrit, Tamil,
+Telugu), so they need their language pack loaded to compile - `--lang gujarati` and so on. Tested without the
+pack they fail, as expected. **That is correct behaviour, not a defect**, and it is recorded so nobody
+"fixes" it later.
+
+**One apparent failure is also not a defect:** the block beginning `prakriya mean(kosh dasham xs)` is a
+**function fragment**, not a program - it has no `mukhya()`, so it cannot compile standalone.
+
+**This is the sixth place the rename's tail surfaced** - code, comments, HTML, prose, keyword tables, and now
+teaching material. The books are the project's front door and nobody had ever compiled their samples.
+
+## v164 - applying the lesson: every table that lists keywords, audited
+
+v163 found the IDE's highlighter was colouring the old keywords. **The lesson from that is to sweep every
+table that lists the names, not just every file that uses them.** Doing so found three more.
+
+**Fixed - the compiler's own token comments.** The `KW_*` constants still described the old keywords:
+`; nishedha = assert/guard`, `; pankti = array`, `; srijana = enum`, `; nishkriya = inline assembly`.
+These are comments, so they break nothing - but they are the documentation a reader of the compiler sees
+first, and they named words that no longer exist. Corrected to `abhava`, `mala`, `ganana`, `yantra`,
+`agrim`, `satya`. Suite still 187.
+
+**Found and NOT fixed - the Windows GUI's keyword table.** `windows/gui/sutram_gui.asm` carries
+`kw_words` with a vocabulary that has drifted much further than the rename:
+`ayojan`, `nishkriya`, `pratiyati`, and also `anyatha`, `punar`, `phala`, `asatya` - names that were never
+in the current language (`anyatra`, `punaravartana`, `phal`, `shunya`). **This is ChatGPT's territory and
+the divergence predates the rename**, so correcting it needs a real look rather than a substitution. It is
+recorded here rather than guessed at. **The Windows IDE would colour the wrong words.**
+
+**Found - there are two Linux IDEs.** `ide/sutram_gui_linux.asm` (X11 GUI, 18/18 tests, the one I have been
+building) and `ide/sutram_ide.asm` (a full-screen terminal editor, 32 KB, referenced by
+`PROJECT-OVERVIEW.md`). Both are live and both are described as *the* IDE. That needs a decision, not a
+fix.
+
+**The pattern, now five times:** code, comments, HTML, prose, keyword tables. **After a rename, every list
+of names must be audited** - the gates test behaviour, and a table of names is not behaviour.
+
+## v163 - the IDE's syntax highlighter was still colouring the old keywords
+
+Found while working my own stream. The GUI's keyword table - what the editor colours as a keyword - still
+held **eight old spellings**: `anyatra`, `punaravartana`, `pratiyati`, `uddeshya`, `pankti`, `srijana`,
+`ayojan`, `parigrah`. So the IDE **coloured words that no longer compile, and left the real keywords
+uncoloured** - `chakra`, `mala`, `yoj`, `agrim`, `satya` and the rest were plain text.
+
+That is a user-visible defect the test suite could not catch: the GUI tests check that the editor draws and
+responds, not which words it colours.
+
+**Fixed:** the table now carries the current vocabulary - `anya`, `chakra`, `prati`, `agrim`, `mala`,
+`ganana`, `yoj`, `satya`, `abhava`, `yantra`, `tak`, `bhavana`. Verified that every keyword in a
+representative program (`mukhya`, `vitti`, `chakra`, `tak`, `likha`, `yadi`, `anya`) is present.
+
+**The six Devanagari rows needed no change** - they hold `mukhya`, `vitti`, `anka`, `yadi`, `yavat`,
+`likha`, all keywords that survived the rename. Checked rather than assumed.
+
+**GUI suite 18/18.**
+
+**This is the fifth place the rename's tail has surfaced** - code, comments, HTML, prose, and now the
+IDE's own keyword table. Each was found by a different means, and none by the gates. The lesson: after a
+rename, **every table that lists the names must be audited, not just every file that uses them.**
+
+## v162 - the Claude channel opens; prose the rename had corrupted is repaired
+
+**Two new channels created**, as the owner asked: **`Sarvam-to-Claude/`** (the brief) and
+**`Claude-to-Sarvam/`** (the return channel). The brief is written so a reader with no memory of this
+project can work from it: what Sutram is, the aim, where it stands, what is NOT true, the language
+directive, five workstreams, the constraints and the return contract.
+
+**Claude's work is chosen to be independent of ChatGPT and Muse** - the compiler's diagnostics inventory
+(its messages are still English, the largest remaining gap in the "no English needed" aim), a hunt for
+further hardcoded keyword constants, an audit of documentation claims against the code, a real 100+ line
+Sutram program, and what it needs from us.
+
+**The collaboration channels are now recorded in `PROJECT-MASTER.md`**, section 13, with the rule that
+every brief opens with a project update and carries the language directive.
+
+**A fourth round of rename-corrupted prose, found and repaired.** The rename turned ordinary English words
+into module names in running text:
+
+| Was | Became | Now |
+|---|---|---|
+| "The **map** of the documents" (a heading) | "The **nighantu** of the documents" | restored |
+| "every other language on the **list**" | "on the **suchi**" | restored |
+| "open a **file**" | "open a **patra**" | restored |
+| "the **array** fixture" | "the **mala** fixture" | restored |
+| "read this **file** first" | "read this **patra** first" | restored |
+| "print a **string** variable" | "print a **varna** variable" | restored |
+
+**That is the fourth time the same class of mistake appeared** - code, then comments, then HTML, then
+prose - and each time it was found by a different means. The lesson stands: **a rename that touches prose
+needs a prose audit, and the audit has to look for words that read wrong, not just words that are spelled
+wrong.**
+
+## v161 - full project audit: cruft removed, stale names and counts fixed, help text Sanskrit
+
+A whole-repo audit after the rename. **Five classes of defect found, all fixed. All gates green.**
+
+**1. User-facing compiler text was stale and English.** The builtin error messages still said
+`char_at`, `char_code`, `set_char` - but those builtins are `akshar`, `aksharank`, `akshar_rakh`, so a user
+typing the new name wrongly was told about the old one. The shell **help text** still showed
+`punaravartana i = 0 to 5` and `pankti arr[5]`, and the namespace error still said `ayojan`. All 12
+strings corrected, and the help/banner text is now Sanskrit - `Aadesh`, `chakra i = 0 tak 5`, `mala arr[5]`,
+`Sutram khol sahay`.
+
+**2. The version string was stale.** It read **`Sutram 1.0 (v29)`** - about 130 versions behind. Now `v160`.
+
+**3. Stale names in 19 live documents** (363 replacements): `LANGUAGE-REFERENCE.md`, `SPECIFICATION.md`,
+`MEMORY-MODEL.md`, `NUMERIC-CONTRACT.md`, `ERROR-CONVENTION.md`, `PROPERTY-NET.md`, `EDGE-COVERAGE-30.md`
+and others. **The CHANGELOG and the `R*` round records were deliberately left alone** - they are historical
+and changing them would falsify the record.
+
+**4. Stale counts.** `PROJECT-OVERVIEW.md` said 21 modules / 278 functions; `LANGUAGE-REFERENCE.md` said
+49 functions across four modules. Corrected to the measured **24 modules / 303 functions**, and one
+over-correction of mine fixed (the "four modules" line was about the library table, now six).
+
+**5. Cruft.** Removed `.write-probe` (6 bytes of test residue, referenced nowhere) and added it to
+`.gitignore`. **`compiler/` and `win/` were checked and kept** - they look stale but are referenced by live
+tools (`r69_build.py`, `build_payload.py`, `proof_lib.py`).
+
+**Six goldens updated** for the corrected namespace message, which had dropped the suite to 181 until they
+were reconciled.
+
+**Checked and clean:** no committed build artifacts (`*.o`, `*.obj`, `*.bin`), no `__pycache__`, one
+compiler source, one documented entry.
+
+## v160 - the IDE speaks Sanskrit; a tools-prose bug of mine fixed
+
+**ROUND-72 issued to ChatGPT** with a brief project update and five workstreams, mapped to the seven gates:
+one reproducible baseline, the integrated `kosh` reclamation, real separate compilation, Windows executed,
+and an audit for further hardcoded keyword constants. It opens with the full vocabulary table, because
+ChatGPT's R71 patch was cut before the rename and will not apply.
+
+**GUI slice 35 - the IDE interface is now Sanskrit.** File/Edit/Shell/Debug/Options/Window/Help and all
+thirteen dropdown items are now `patra`, `sampad`, `khol`, `dosh`, `vikalp`, `gavaksh`, `sahay`, with
+`khol`/`sanchay`/`nishkas`, `punah`/`chhid`/`pratilip`/`sanyoj`/`sarvagrah`, `chal`/`anwesh`/`ranga`/
+`phal_rikta`/`parichay`. **The byte lengths AND the x-offsets both had to be recomputed.**
+
+**A bug of mine, found while doing it.** The v157 rename had applied `to`->`tak` inside the tools' English
+prose - 48 occurrences, including `/path/tak/verified`, `End-tak-end`, and `check("connected tak X" in out,
+...)` in the X11 protocol test. That last one is why the protocol test was failing: **the GUI was correct
+and the test was broken.** All reverted, with the one legitimate Sutram for-range preserved.
+
+**All gates green:** suite 187/4, codegen 12/12, packs 33/33, proof_lib 191/191, proof_props 86/86,
+layers 14/9/1, GUI 18/18.
+
+## v159 - the documentation sync the rename had missed
+
+The rename (v157) and the doc corrections (v158) reached the code and the core markdown, but not the HTML
+documents. An audit of main found 9 documents still carrying old names and 2 deliverables never pushed.
+
+**Fixed (23 HTML documents, 1,322 replacements):** `sutram-keyword-words.html`, `sutram-stdlib.html`,
+`sutram-design-parameters.html`, `sutram-project-status.html`, `sutram-scorecard.html`,
+`sutram-roadmap.html`, and the six books.
+
+**Added:** `docs/sutram-vocabulary.html` and `docs/sutram-stdlib-reference.html`.
+
+**How the HTML was renamed safely:** the Sanskrit keywords are safe in prose; **`to` was excluded** because
+it is an ordinary English word. Final audit: 0 stale references across 16 documents.
+
+**The lesson:** a rename is not done until an audit proves no old name survives anywhere - not just where
+the tests look.
+
+## v158 - ChatGPT's advisory read, verified, and acted on
+
+ChatGPT uploaded `SUTRAM-FOUNDATIONS-AND-PRIORITIES` and `SUTRAM-PROJECT-METHODS-CATALOGUE`. **They caught
+three real errors in my own documents.** I verified each before accepting it.
+
+1. **`PROJECT-MASTER.md` used `samapt`** as a block terminator. **It is not in the compiler at all.**
+   Replaced with a sample I actually compiled - it prints `5 4 3 2 1`.
+2. **The master taught the wrong build path** - the bare source, not `src/r68_compiler_entry.asm`.
+3. **The counts disagreed** - README 278 functions, master 21 modules, reference 49. Corrected everywhere.
+
+**A fourth defect, of my own making:** the v157 rename had rewritten English prose in the markdown docs -
+"How to work on this project" had become "How tak work on this project". All 79 documentation files were
+restored from the pristine tree and re-renamed with function names only.
+
+**The seven gates are now section 10 of `PROJECT-MASTER.md`**, the project's stated development order.
+
+## v157 - THE RENAME: every English word in the language is now Sanskrit
+
+The vocabulary frozen in A0 is applied across the whole project. **All gates green.**
+
+- **18 modules renamed** - `sort`->`shreni`, `list`->`suchi`, `map`->`nighantu`, `set`->`sangrah`,
+  `array`->`mala`, `string`->`varna`, `file`->`patra`, `hash`->`gudh`, `result`->`phal`, `fmt`->`roop`,
+  `util`->`sadhan`, `serial`->`anukram`, `bigint`->`brihat`, `num`->`ank`, `strconv`->`vakyank`,
+  `baseconv`->`aadhar`, `strb`->`khand`, `math`->`ganit`.
+- **264 of 303 function names renamed.** 39 kept - proper names and mathematical terms.
+- **Keywords:** `pankti`->`mala`, `punaravartana`->`chakra`, `pratiyati`->`prati`, `uddeshya`->`agrim`,
+  `anyatra`->`anya`, `nishedha`->`abhava`, `parigrah`->`satya`, `nishkriya`->`yantra`, `ayojan`->`yoj`,
+  `srijana`->`ganana`, and **`to`->`tak`** - the last English keyword is gone.
+- **Builtins:** `char_at`->`akshar`, `char_code`->`aksharank`, `set_char`->`akshar_rakh`.
+- **11 packs updated**; 446 files in the language tree, 107 tool/doc files, 18 modules moved.
+
+**Four defects found by testing, not reading** - all in the compiler's hardcoded paths, invisible to a string
+rename: the module expander compared raw bytes, the range parser did the same for `to`, the module-graph
+parser had the keyword length `6` hardcoded, and **`na` collided with a variable name** (corrected to
+`abhava`).
+
+**This is a breaking change.** Programs written before v157 do not compile.
+
+## v156 - ChatGPT R71 (all five workstreams) and Muse R30 (51 defects) verified and synced
+
+**ChatGPT R71 - 30 files, 30/30 hashes verified at commit `bb791061`.** It delivered far more than the
+reclaim note suggested: **all five workstreams**, as documents plus source hooks.
+- **WS1 modules:** `docs/rounds/R71-MODULES.md` + `src/r71_module_link.vardh`. Design and linkage only -
+  ChatGPT states plainly that **production `.sm` separate compilation remains unimplemented.**
+- **WS2 kosh reclaim:** three hooks in `.ge_call_koshpush` - capacity check before size arithmetic,
+  allocation-failure rejection before memory writes, and **`munmap` of the old mapping** after copy.
+  It **deliberately rejects kosh-push PE emission** because the inspected Windows runtime has no release
+  implementation - it refuses to pretend syscall 11 releases a VirtualAlloc buffer.
+- **WS3 memory:** `docs/rounds/R71-MEMORY-BOUNDARY.md` + `src/r71_unsafe_integration.vardh`.
+- **WS4 boot:** `boot/r71/boot.asm`, `build_probe.py`, `docs/rounds/R71-BOOT-PATH.md`.
+- **WS5 spec:** `docs/rounds/R71-SPECIFICATION-EVIDENCE.md` + `examples/r71/*` (associativity, conversion,
+  evaluation order, boundary good/bad) - the "unspecified" gaps pinned by tests.
+- **It flags a real compatibility boundary:** growth invalidates old backing-store aliases, and there is
+  no borrow checker enforcing it. No general free primitive was added silently. It does not claim memory
+  safety. **No compiler execution occurred** - source and documents only.
+
+**Muse R30 - 44 files across two patches, all five workstreams, every number reproduced.**
+Suite 187/4 · proof_lib **191/191** · proof_props **86/86** · layers **14 core / 9 alloc / 1 std** ·
+stdlib **24 modules / 303 functions**. The first genuinely `std` module exists.
+- **WS1 is the round's real value: 51 defects found by executing.** 12 crashes (SIGFPE/SIGSEGV),
+  4 hangs, 6 memory-safety faults, 29 wrong answers - `bhaj_urdhva` by zero, `ank_tak_aadhar_varna` base 0/1,
+  `laghu`/`adhik` on empty, `kramgun(100000)` stack overflow, `varna_bhed` on negative lengths,
+  `brihat_ank_tak` overflowing a fixed 70-cell scratch buffer, `varna_unnat` writing at `dst[-1]`,
+  `madhava_atan(1)` wrong by 6e-4, `ank_gan(MIN)` 1 vs 19, `varna_tak_dashm("9e308")` accepting inf.
+  It states its counting rule and lists the modules exercised, so the claim is checkable.
+- **One accepted golden was changed, and it disclosed it.** `madhava_atan.out` 0.784773 -> 0.785398,
+  because the old golden **encoded a confirmed wrong answer** (`atan(1)` is PI/4). Called out explicitly
+  rather than hidden. This is the only golden changed; all others are additive.
+- **WS2 kosh harm reduction, measured:** fresh-kosh-per-round peaks at **91.0 MB**; one reused kosh
+  **8.5 MB** - flat in round count. Honest limit stated: this caps retention at one allocation, it does
+  not reclaim it, and any kosh that does grow still leaks.
+- Two patch files because GitHub caps a single upload argument at 128 KiB (`MAX_ARG_STRLEN`) - a real
+  constraint, correctly diagnosed and split at a file boundary.
+
+## v155 - GUI slice 34: the editor jumps to the error line; ROUND-30 issued to Muse
+
+- **Slice 34 completes slice 33.** Slice 33 coloured the error line's gutter number red -- but if the
+  error is on line 45 and the window shows 23 lines, you still cannot see it. `ed_goto_line` walks
+  `ed_buf` counting newlines to the named line, sets `ed_cursor` there, and scrolls via
+  `ed_ensure_visible`. **After a failed compile the editor now takes you to the error.**
+- **New test `tools/test_x11_goto_line.py`** uses a 60-line buffer (only 23 fit) and a mock compiler
+  that names **line 45**. It asserts the gutter shows the top of the file **before** Ctrl-R and a window
+  containing line 45 **after** -- so the test proves a *jump*, not merely a colour. It also fails if the
+  target line was already visible, which would make the test unable to prove anything. **GUI suite now
+  18/18.**
+- **ROUND-30 issued to Muse** (five workstreams, built on what R29 proved): systematically hunt
+  defects across all 23 modules at their edges -- **crashes, hangs and wrong answers are worth more than
+  new functions**; a `kosh` growth-avoidance pattern that reduces the leak without a compiler change;
+  the result type made usable with a documented early-return pattern; the first genuinely `std` module
+  so the layer count stops being zero; and pinning what R29 could not (`yog_tak`, and a test that
+  *demonstrates* the `chakravala` approximation rather than describing it).
+- GUI source ~95 KB; binary **38,040 B**. Compiler untouched.
+
+## v154 - ChatGPT R69 + Muse R29 verified and SYNCED; ROUND-71 corrected
+
+- **Muse R29 verified and synced (25 files).** Patch applies clean, **26/26 hashes**, suite **187/4**,
+  proof_lib **187/187**, proof_props **79/79**, layers **14 core / 9 alloc / 0 std**, library now
+  **23 modules / 297 functions**. All four new goldens pass on the real compiler.
+- **R29 resolved the `0 std` question properly - by investigating, not relabelling.** The answer is that
+  `0 std` is legitimate: no `lib` module calls an OS-service builtin. And `check_layers.py` now
+  **enforces** it - I tested the negative case myself by inserting a `likha` call into the core `math`
+  module, and it failed with exactly `math: marked core but calls OS builtin likha (belongs in std)`.
+- **R29 found two more real defects and fixed both.** `roop_sthir(1e18, 2)` was a SEGFAULT (exit 139);
+  `chakravala` crashed with SIGFPE on perfect-vargit input and HUNG for large `|k|`. Both fixed;
+  `chakravala(61)` still returns the minimal `(1766319049, 226153980)`.
+- **The `kosh` growth leak is confirmed a LANGUAGE defect, not a library one.** The compiler's growth
+  path emits `mmap` for the new buffer and never a `munmap` anywhere, and no free primitive exists in the
+  language at all. Measured ~15.3 bytes leaked per item.
+- **ChatGPT R69 verified and synced (21 files, 21/21 hashes).** It closed the build-path trap: README and
+  the locked build tools now select `src/r68_compiler_entry.asm`. It also replaced the installer wrapper
+  with the canonical compiler path, payload hashes and no policy-bypass arguments, and added
+  `docs/reports/INDIC-COVERAGE.md` naming all 11 packs with Malayalam numerals explicitly deferred.
+- **A correction of mine, in ROUND-71.** An earlier draft told ChatGPT it had skipped ROUND-69. It had
+  not. The brief is corrected and the error withdrawn; workstream 2 is now the `kosh` leak fix.
+
+## v153 — GUI slice 33: the IDE marks the compiler's error line; and the round briefs fixed
+
+- **Slice 33 — the IDE now shows you where the error is.** R68 gave the compiler host-side diagnostics
+  that name `<file>:<line>:`. The IDE displayed that text but did nothing with the line number. It now
+  parses the number out of the run output and paints **that line's gutter number in red**, so the eye
+  goes straight to the offending line. `parse_err_line` scans for the first `:<digits>:` run in the
+  output; no match leaves `err_line` at 0.
+- **New test `tools/test_x11_error_line.py`** runs the IDE from a temp dir with a **mock compiler**
+  beside it that prints a diagnostic naming line 2, sends Ctrl-R, then walks the X11 request stream
+  tracking SetForeground colours and asserting **line 2 is red and no other line is**. **GUI suite now
+  17/17.**
+- **My own test was wrong first, in the same way as before.** I read the SetForeground colour from byte
+  offset +4, which is the **drawable**, not the colour — so every text draw reported the GC id
+  `0x200002`. The colour is at **+12**. That is the *third* time this session I have read the wrong
+  offset out of an X11 request (ImageText8's length, ImageText8's text, now SetForeground). The lesson
+  is recorded in `PROJECT-MASTER.md` for a reason.
+- **The round briefs are fixed.** Both ChatGPT and Muse independently caught that my briefs cited
+  charter items **13/11/9** where the file has **14/12/10** — an off-by-one from before the multilingual
+  paradigm was added as item 9. My error, corrected.
+- **New rounds issued:** **ROUND-71 → ChatGPT** (five workstreams: real modules and separate
+  compilation — the biggest gap in the project; the entry wrapper as the shipped build, carried over
+  because ROUND-69 was skipped; the first memory-model implementation step; the freestanding boot path;
+  closing the specification's "unspecified" gaps) and **ROUND-29 → Muse** (five workstreams: resolve the
+  `0 std` layer result; fix the observed `kosh` growth leak; a real result type; pin the numeric
+  contract; one new library capability area).
+- GUI source ~94 KB; binary **37,792 B**. Compiler untouched.
+
+## v152 — the ninth paradigm, a live status page, and a wrong number corrected
+
+- **A new paradigm added to the charter: `Multilingual and native-script programming` (09).** The charter
+  had listed this only as a *capability*. It is a paradigm, and the reason is precise: **every other
+  language on the list can be described without naming a natural language; Sutram cannot.** Sanskrit is
+  the keyword core and the library is built on the Indian mathematical tradition, so the language's
+  identity and its grammar are the same decision. Section A now holds **nine paradigms**; section B holds
+  eleven capabilities; **20 requirements total.** The old capability item was retitled
+  *Language packs and the multilingual toolchain* so it describes the **mechanism** (packs, file
+  selection, Unicode rules) rather than duplicating the paradigm.
+- **Charter status now 3 implemented · 12 partial · 5 not started** (multilingual moves into the
+  implemented column). The page's own tally table was re-checked against its cards and matches.
+- **New page `sutram-project-status.html` — "How the Project Is Doing".** Every figure on it was measured
+  by building the compiler and running the gates in this session: 187 tests · 180 library proofs ·
+  72 property proofs · 33/33 packs · 12/12 codegen · 16/16 GUI · 11 packs · 21 modules / 281 functions ·
+  202 examples · 22 doc pages · 1,782 files · CHANGELOG v151. It also carries a plain list of **the three
+  things the project must not claim** — memory safety, Windows support, performance superiority — each
+  with the reason.
+- **A real error of mine, found by measuring instead of trusting my own earlier note.** The docs said
+  **216 worked examples**. The actual count is **202** `.sm` files under `examples/` (191 top level plus
+  11 nested). I had written 216 in an earlier round without counting. Corrected in `README.md`,
+  `PROJECT-OVERVIEW.md`, `sutram-scorecard.html` and `sutram-completion-roadmap.html`. This is the same
+  failure mode as the `.legend` bug and the stale counts: **a number I had previously "fixed" was still
+  wrong, and only a fresh count caught it.**
+- Also confirmed: the raw tarball served a stale tree showing v150 while the API confirmed v151 was on
+  main — the recurring stale-fetch trap, caught again by checking the API rather than the download.
+
+## v151 — the design charter: what Sutram is being built to be
+
+- **`docs/sutram-design-parameters.html` is new** — the project's written design charter. It states the
+  **19 requirements** Sutram is being built to satisfy, across the paradigms it should support (items
+  1-8) and the capabilities beyond paradigms (items 9-19), plus the charter's own implementation order.
+- **Every item carries an honest status measured against the compiler as it stands**, because the owner
+  was explicit that these are requirements, not claims. The tally: **2 implemented · 12 partial ·
+  5 not started.**
+  - **Implemented (2):** the imperative/procedural core (the language's strongest part) and multilingual
+    programming (11 packs over one canonical meaning — the project's distinctive strength).
+  - **Partial (12):** functional features, OO-by-composition, data-oriented, metaprogramming, static
+    typing, error handling, freestanding, library layers, portability, modules, tools, and
+    specification/gates. Each names its specific gap.
+  - **Not started (5):** generics, structured concurrency, event-driven/async, the memory and resource
+    model, and interoperability/FFI.
+- **The page is deliberately blunt about the two claims the project must not make.** Item 10 states
+  plainly that Sutram **does not currently claim memory safety and must not until ownership exists and
+  is tested**; item 14 states that the Windows target's **sources have never been executed** by this
+  project. The charter's closing rule is now the project's standard: *do not claim safety, portability,
+  performance superiority or OS readiness without corresponding evidence.*
+- **A real error of mine, caught by my own check:** the page's first status table said 13 partial /
+  4 not-started while the cards said 12 / 5. The table was wrong; corrected to match the cards.
+- Linked from `sutram-progress-report.html`, `sutram-completion-roadmap.html` and `README.md`.
+- **Next rounds issued toward the charter:** **ROUND-70 → ChatGPT** (a written specification of existing
+  behaviour; a negative corpus of programs that must be rejected; the memory model specified *before*
+  it is claimed; an honest gap list for freestanding) and **ROUND-28 → Muse** (mark each library module's
+  layer and *verify* the claim with a tool; state the error-handling contract and audit for violations;
+  tabulate the numeric contract; the library's honest boundary). Both rounds carry the new standard.
+
+## v150 — Linux X11 GUI slice 32: line numbers in the editor gutter (my own stream)
+
+- **The editor had no line numbers at all.** This adds a gutter: the text column shifts right by 34px and
+  each visible line draws its 1-based number in a dim colour. The number is drawn **before** the
+  empty-line check, so blank lines are numbered too. A small `u_to_a` helper converts the number to
+  decimal (the GUI had no int-to-ASCII routine).
+- **My own test caught two bugs I introduced, both the same shape.** `set_fg` clobbers **both** `rax`
+  and `rdx` — the first attempt set the string length in `rdx` *before* calling `set_fg`, so the numbers
+  painted with length 16 and were padded with 15 NULs; the second attempt kept the length in `rax`,
+  which `set_fg` also destroys. Fixed by holding the length in `r9`, which `set_fg` leaves alone.
+  **This is the "check the check" lesson in its most literal form: the bug was in my own new code, and
+  only running it against the protocol stream revealed it.**
+- **New test `tools/test_x11_line_numbers.py`** opens a multi-line file, sends an Expose, and requires
+  the numbers 1..N in the painted `ImageText8` stream at the gutter x. **GUI suite now 16/16** (was 15).
+- GUI source ~92 KB; binary **37,464 B**. Compiler untouched (`7650d5db...`).
+
+## v149 — ChatGPT R68 + Muse R26 verified and SYNCED
+
+- **R68 verified by running it.** Its preparation tool checks the inherited compiler (blob
+  `64ea028a...`, matching main exactly) plus the locked helper blobs, and produces the **entry wrapper**
+  `src/r68_compiler_entry.asm` (713 B, blob `42389aaf...`). That wrapper is a neat design: it redefines
+  the NASM `call` macro so `call lex` also runs the UTF-8 precheck and `call parse_primary` also runs the
+  abbreviation-value guard, then includes the compiler. **It builds: default 192,144 B, pure-pairs
+  192,712 B.** **R68 unit tests 24 pass (15 skipped).**
+- **All gates green with the R68 entry:** suite **187/4**, codegen **12/12**, packs **33/33**,
+  proof_lib **177/177**, proof_props **69/69**.
+- **The new diagnostics genuinely fire.** A malformed source produces exactly
+  `Sutram Error [E_UTF8]: <file>:<line>: invalid or truncated UTF-8 in source code`. The six new pack
+  examples run and match their goldens.
+- **R68 also adds** explicit Odia/Kannada/Tamil/Telugu decimal ranges (Hindi/Marathi reuse Devanagari),
+  four U+0970 aliases per Hindi/Marathi pack, a pure-pair probe with a testable 46-byte hypothesis,
+  a Windows GUI title-only counter with a 12-check manual checklist, and a consolidated
+  `docs/R68-INSTALLATION-ROUTES.md`. It correctly declined to invent an abbreviation util_chinha for the four
+  scripts that do not have one, and noted Malayalam is outside the six-name brief rather than silently
+  declaring it done.
+- **Muse R26 verified and synced.** Patch clean; **12/12 hashes**; proof_props **72/72** (was 69),
+  proof_lib **180/180** (was 177), suite **187/4**; library now **21 modules / 281 functions**. Three new
+  functions (`ganit_yadricch`, `ganit_seemit`, `varna_tak_dashm`), three real bug fixes (`varna_tak_ank` overflow
+  guards, `ank_tak_varna(MIN)`, and the `roop_ank_aadhar2`/`roop_ank_dhvaj` MIN cases), `docs/reports/PROPERTY-NET.md`
+  describing what would have to break per property, and three new goldens.
+- **R26 flagged its own overlap.** It touches `tools/proof_props.py`, the same file R25 touched and the
+  same file the R24 sync once dropped — and it stated the resulting property count (72) so a sync can
+  check it directly. That is the lesson from R24 being applied deliberately.
+- **Also on main:** the two clean-project handover folders (`Sarvam-to-ChatGPT-Clean-Project/` with the
+  1.7 MB archive, and `ChatGPT-to-Sarvam-Clean/`), and the doc fixes from the previous round.
+
+## v148 — Linux X11 GUI slices 30-31: open a file from the command line, and a real Expose bug
+
+- **Slice 30.** `./sutram-gui prog.sm` silently ignored the argument -- `_start` never read argv. It now
+  captures `argv[1]` at entry (before any call touches the stack) and opens it once the window and GC
+  exist, so the first paint shows it.
+- **Slice 31 fixed a real pre-existing bug, found while testing slice 30.** `draw_all` paints the window,
+  both panes, the menu bar, the labels and the output pane -- **but never called `draw_editor`.** The
+  editor text was only painted on the key path, so an **Expose** (the window being uncovered, or the
+  first paint after startup) left the editor blank until the user typed. That is exactly why slice 30
+  *looked* broken: the file had loaded, and then nothing painted it.
+- **New test `tools/test_x11_argv_open.py`** launches the IDE with a file as `argv[1]`, sends an Expose,
+  and requires the file's first line in the painted `ImageText8` stream. It is what separated the two
+  bugs. **GUI suite now 15/15** (was 14).
+- GUI source ~91 KB; binary **37,328 B**. Compiler untouched (`7650d5db...`).
+- Both bugs were **pre-existing**; slice 31 in particular means any Expose had been leaving the editor
+  blank, which no existing test covered.
+
+## v147 — ChatGPT R67 + Muse R25 verified and SYNCED; R66 compiler gap CORRECTED
+
+**A correction first.** v145 claimed R66 was "SYNCED". That was wrong in one important respect:
+R66's *tools, packs and docs* were synced, but **its compiler was never integrated** — main's
+`src/sutram_compiler.asm` stayed at the R65 prepared source (`caee7373...`), so the compiler could not
+actually read Devanagari digits. **ChatGPT caught this in R67** and reported it as a discrepancy rather
+than working around it. R67's preparation recipe chains R66's recipe, so integrating R67 fixed it.
+
+- **R67 verified by running it.** `tools/r67_prepare_compiler.py` took the observed compiler
+  (`caee7373...`, matching main exactly), chained R66's eight-anchor recipe and added the two R67
+  anchors, producing staged source **`64ea028a...` (545,722 B)**. It builds in all five modes: default
+  **190,144 B**, peepholes 190,696, trap 191,560, combined 192,104, and pure-pairs 190,712.
+  **R67 unit tests 20 pass (9 skipped — the Windows-helper ones); R66's inherited 33 pass (17 skipped).**
+- **The Gujarati collision is RESOLVED.** R67 chose option (b): omit the `સંખ્યા` reservation. With its
+  pack, the accepted test `37_native_gujarati` compiles again (`OK: compiled 456 bytes`) and the `.sm`
+  and `.out` are unchanged. **All gates green with the R67 compiler and packs:** suite **187/4**,
+  codegen **12/12**, packs **33/33**, graph **OK**, proof_lib **176/176**, proof_props **68/68**.
+- **R67 also adds** Bengali and Punjabi (Gurmukhi) native digit recognition with their own abbreviation
+  aliases and paired examples, a linked Windows cluster counter (source only — never run on Windows),
+  and an opt-in pure `push`/`pop` pair matcher (`SUTRAM_R67_PURE_STACK_PAIRS=1`, default OFF).
+- **Muse R25 verified and synced.** Its patch conflicted on `proof_props.py` **because I had already
+  restored that file** — Muse independently found the same R24 sync gap I did. Recovered Muse's final
+  file by reversing the R24 patch and re-applying R25: **proof_props 69/69** (was 68), **proof_lib
+  177/177** (was 176), suite **187/4**. Adds the `safety25` oracle over all 16 checked/saturating
+  functions, the parity-table coverage audit (all 30 rows covered), and a small-gap sweep.
+- **Now integrated on main:** compiler `64ea028a...` (545,722 B), `src/r66_indic_lexer.vardh`,
+  `src/r67_stack_pair.vardh`, the R67 tooling and tests, the Gujarati/Bengali/Punjabi packs, the Windows
+  GUI cluster sources, and both example pairs.
+- **Still unrun, unchanged:** the Windows acceptance. R67's Windows cluster work is source-only and
+  specifically not shaping, not UAX #29, and not a caret replacement.
+
+## v146 — Linux X11 GUI slice 29: native Indic digits in the tokeniser (my own stream)
+
+- R66 taught the compiler to read Devanagari (U+0966-096F) and Gujarati (U+0AE6-0AEF) numerals, but the
+  GUI tokeniser still only recognised ASCII 0-9, so an Indic digit was not coloured as a number.
+- Both ranges are the same 3-byte shape - E0 A5 A6..AF and E0 AB A6..AF - so one check covers both.
+  classify now routes them to the number path, and the number loop consumes a whole 3-byte digit
+  instead of stopping at the lead byte.
+- GUI source ~87 KB; binary 37,024 B; 14/14 GUI tests pass. Compiler untouched.
+- Honest caveat: verified by build + full regression, not a dedicated colour assertion - the mock X
+  keyboard cannot emit a 3-byte sequence, so there is no protocol-level proof of the number colour yet.
+  Recorded as a known gap, same as slices 22-23.
+
+## v145 — ChatGPT R66 (Indic devices) + Muse R24 (parity, safety) verified and SYNCED
+
+- **R66 verified by running it.** Delivered through the same checksum-guarded staging pattern as R65:
+  `tools/r66_prepare_review.py` took the accepted compiler (blob `caee7373...`, matching main exactly)
+  and produced a staged source of blob `e1a67674...` with **8 anchors applied**. All four configurations
+  build — default **190,144 B** (up from R65's 189,480, for the new numerals), peepholes 190,696,
+  trap 191,560, combined 192,104. **16/16 R66 unit tests pass.** Suite **187/4**; codegen **12/12**;
+  packs **33/33**; graph **OK**; proof_lib **176/176**; proof_props **68/68**; R58 **8/8**; R59 **3/3**.
+- **R66 adds:** native Devanagari/Gujarati digit readers, exact abbreviation aliases, the Sanskrit pack
+  grows 49 -> 54 entries, the Gujarati pack 30 -> 45, and a Windows cluster-iterator object + plan.
+- **A real defect found in R66's Gujarati pack — and NOT synced.** The branch reserves **`સંખ્યા`
+  (sankhya)** as a keyword, but the accepted test `37_native_gujarati` uses that exact word as a
+  **variable name** (`ચલ સંખ્યા = 7`, three uses). Reserving it makes the test fail to compile:
+  `પંક્તિ 3:8 નજીક ટોકન 'સંખ્યા'`. I confirmed this is not an R66 compiler regression — it fails on
+  the pre-R66 compiler too, and only when the branch's pack is present. **`lang/gujarati.lang` is
+  therefore held back**; main keeps its working pack, and the suite stays green. This is the one part
+  of R66 that is not merged.
+- **Muse R24 verified and synced.** Patch clean; **8/8 hashes**; proof_lib **176/176** (was 175),
+  proof_props **68/68** (was 65), suite **187/4**; library now **21 modules / 278 functions**. Four new
+  functions (`ganita_paripurna_bhaj`, `ganita_paripurna_shesh`, `ganita_janchit_nirapeksh`, `ganita_paripurna_nirapeksh`), the complete
+  30-row `str_*`/`strb_*` parity table, the consolidated `docs/OVERFLOW-SAFETY.md`, and the container
+  surface declared complete.
+- **A note on the sync:** several PUT calls reported success without landing (the `ganita.smlib` push
+  took four attempts). I verified every file against the GitHub API rather than trusting the call —
+  the tarball and the raw CDN both served stale copies at different points this session.
+
+## v144 — Linux X11 GUI slices 26-28: all seven menus, and two real bugs found
+
+- **The menu bar was a facade: `menu_has db 3,0,0,0,0,0,0` left six of the seven menus empty** and
+  only Open/Save/Exit did anything, though the GUI already had undo, cut/copy/paste, select-all, run,
+  find and a clipboard. **Slice 26** wires them all up — File, Edit (5 items), Shell, Debug, Options,
+  Window, Help; 13 items — plus a syntax-colour toggle and an About banner.
+- **Slice 27 fixed a real pre-existing bug the new test caught.** `draw_dropdown` read `menu_open`
+  into `rax`, then called `set_fg` — which does `mov rax, [gc]`, destroying it — before using `rax`
+  for the dropdown's x. **Every dropdown drew at menu 0's x.** The index is now held in `r15`.
+- **Slice 28 fixed a second real bug.** `menu_xoff` spacing is as little as 52px but `menu_hit`
+  treated each label as 74px wide, so **the hit regions overlapped** and clicking the left of a label
+  hit the *previous* menu — x=352 (Edit) opened File. Each region now ends where the next begins.
+- **New test `tools/test_x11_menus_all.py`** clicks all seven labels and requires each dropdown at its
+  own x with height `8 + 22*items`. It surfaced both bugs; all seven now pass.
+- GUI source ~86 KB; binary **36,896 B**; **14/14 GUI tests pass** (was 13). Compiler untouched.
+- Both bugs were **pre-existing**, not introduced here — the old menu test only exercised File.
+
+## v143 — ChatGPT R65 verified and SYNCED (peepholes, integer traps, Devanagari aliases)
+
+- **R65 accepted — and it is the most substantial compiler round in a while.** ChatGPT shipped it
+  through a checksum-guarded **staging tool** (`tools/r65_prepare_review.py`) rather than editing the
+  compiler directly, and correctly refused to merge an unprepared file. I ran the tool, built and
+  tested the result.
+- **The staging tool works as specified.** It rejects source drift (I had to fetch the compiler at the
+  draft commit `4f1dec7c`, blob `a14172c1...`); it produced a staged source of blob `caee7373...` and
+  reported **`default_source_projection_identical: true`**.
+- **Four configurations build** — default 189,480 B, peepholes 190,032 B, trap 190,896 B, combined
+  191,440 B.
+- **All gates green on the default staged compiler:** suite **187/3**; codegen **12/12**; packs
+  **33/33**; graph **OK**; proof_lib **175/175**; proof_props **65/65**; R58 **8/8**; R59 **3/3**;
+  R63 **9 gates**; R64 diagnostics accepted.
+- **The peephole is real and measured:** `R65_PEEPHOLE_DIFFERENT_CODE_PASS before=563 after=560` —
+  three bytes smaller with identical stdout.
+- **The trap is real and measured:** default wraps silently, while trap mode fires
+  `Sutram Error [E_INTEGER_TRAP] <file>:<line>: ...` for **all five** cases — addition, subtraction,
+  multiplication, division by zero, and remainder by zero. **Default output is byte-identical to the
+  accepted parent** (`R65_DEFAULT_BINARY_IDENTITY_PASS bytes=879`).
+- **The filename truncation is fixed:** a long UTF-8 path including Devanagari is now printed in full
+  with the correct line number.
+- **Devanagari surface extended:** `lang/sanskrit.lang` gains 18 native aliases for existing builtins
+  (49 pack entries total) and fixes the original `sankshya` typo to the recognised `sankhya`; new
+  example `219_sanskrit_kosh_aliases.sm` prints its golden exactly.
+- **A gap I had to close:** the harness had no `LANG` entry for example 219, so it compile-failed until
+  I added `"219_sanskrit_kosh_aliases": "sanskrit"`. The suite is clean now (`NO-EXPECTATION=4`,
+  the r65_check fixtures being example-local).
+- **28 files synced** (compiler, lang pack, example, 4 tools, 4 docs, the r65_finish test, 10
+  r65_check fixtures, and the harness entry). Verified on main by blob.
+- **A note on this session:** the multi-file sync calls kept being truncated, so several pushes
+  reported success without landing. I caught it every time by verifying against the API rather than
+  trusting the call, and re-pushed in small batches.
+
+## v142 — Linux X11 GUI slice 25: caret x in grapheme clusters (my own stream)
+
+- Slice 24 made text advance once per **cluster**, but the caret still used the **byte index**
+  (`ed_caret_x` counted bytes), so the caret sat too far right on any Devanagari line. This closes that
+  inconsistency.
+- `ed_caret_x` now finds the line start (scan back to the last newline) and then **counts clusters**
+  from there to the cursor: a 3-byte Indic sequence counts as one, an ASCII byte as one. The caller's
+  `imul rax, 8` therefore yields the same column the renderer used.
+- GUI source ~85.6 KB; binary **35,632 B**; **all 13 GUI tests pass**. Compiler untouched.
+- Honest caveat: this aligns the caret with the **advance**; the glyph shapes themselves still need a
+  font-level shaper (ChatGPT's WS5 in ROUND-66). The Linux half is what is provable here.
+
+## v141 — Muse R23 verified and SYNCED (containers, string surface, kosh spec)
+
+- **R23 accepted — all five workstreams landed.** Patch clean; **14/14 hashes**; proof_lib **175/175**
+  (was 172), proof_props **65/65** (was 62), suite **187/3**; library now **21 modules / 274 functions**.
+- **Every new test shipped `.sm` + `.out` + `.exit`** — the R21 lesson applied, and `proof_lib` was
+  green on the first try this time.
+- **Reconciling `docs/reports/KOSH-BUILTINS.md` against the *measured* R64 messages** (not the R63 text) and
+  correcting the `LANGUAGE-REFERENCE.md` section 16 "same diagnostic" line removes a claim that had
+  become false.
+- Six new functions: `suchi_anwesh`, `suchi_asti_sorted`, `suchi_dwi_anwesh` (completing the `sort.smlib`
+  analytics as list forms), `avali_tak_mala` (non-destructive FIFO read), `nighantu_mil` (src-wins,
+  partial-merge reporting), `rakh_samroop_diff`. Slice-boundary rules documented in the `strb`/`string`
+  headers.
+- **18 files synced.** Verified on main: `lib/list.smlib` `aa328451...`, stdlib 21 modules / 274
+  functions, all three new tests present with `.sm`/`.out`/`.exit`.
+- **ROUND-24 issued to Muse** (five workstreams): finish the `strb`/`str` parity table; a final
+  container sweep ending in a completeness declaration; the accumulated small gaps; consolidate the
+  checked/saturating safety-net surface; and expand `proof_props` with invariants for the R23 additions.
+- **ChatGPT has not yet replied to ROUND-66** (six workstreams, the big one).
+
+## v140 — Linux X11 GUI slice 24: grapheme-cluster advance (Devanagari stops running away)
+
+- **The real Devanagari rendering fix on the Linux side.** The GUI drew text at `x = byte_index * 8`,
+  so a 3-byte Devanagari sequence advanced **24px instead of 8px** and a line of Devanagari ran off to
+  the right. Now the **byte index** (used to slice the text) is separated from a **visual column** that
+  advances once per **grapheme cluster**: an ASCII byte is one cluster, a 3-byte Indic sequence is one.
+- New `count_clusters(ptr, len)`: scans for the `0xE0` lead byte and counts a 3-byte run as a single
+  cluster. `draw_line_coloured` keeps the running visual column at `[rsp+8]` and computes
+  `x = visual_col * 8 + x0`, while still advancing the byte index by the token length.
+- GUI source 84,628 -> ~85 KB; binary **35,504 B**; **all 13 GUI tests pass**. Compiler untouched.
+- Honest caveat: this fixes the **advance**, not the glyph shapes. True Devanagari shaping (matras,
+  conjuncts, the shirorekha) needs a font-level shaper, which is still outstanding — and it is the
+  Windows side's WS5 in ROUND-66. The Linux fix is the half that is provable here.
+
+## v139 — main health-check, a sync gap fixed, and the two big rounds issued
+
+- **Fixed a real gap I introduced in the R21 sync: `tests/stdlib/containers21.exit` and
+  `gaps21.exit` were never pushed**, so `proof_lib` reported "missing golden .exit". Regenerated both
+  from actual runs (exit 0, matching `.out`) and synced. **`proof_lib` is back to 172/172** and the
+  suite stays 187/3.
+- **Full health check of main, all green:** compiler builds (189,480 B, `82b0a9f8...`); suite 187/3;
+  codegen 12/12; packs 33/33; graph OK; proof_lib 172/172; proof_props 62/62; R58 8/8; R59 3/3;
+  R63 9 gates; R64 diagnostics accepted.
+- **Neither agent has replied to the open rounds** (ROUND-65 / ROUND-22), so there was nothing new to
+  sync from them.
+- **Issued two bigger rounds, superseding the unanswered ones:**
+  - **ROUND-66 → ChatGPT (six workstreams):** the two peepholes; the default-OFF overflow trap; complete
+    the Devanagari keyword surface plus digits and the abbreviation util_chinha; **roll the Indic device set to
+    Gujarati** as the template for the remaining scripts (own numerals `૦–૯`, own abbreviation util_chinha `૰`,
+    shared danda); Devanagari GUI shaping; and the legacy HKLM installer documented honestly.
+  - **ROUND-23 → Muse (five workstreams):** reconcile the `kosh` spec with the R64 diagnostics; the
+    remaining container gaps; the accumulated small gaps; a second pass on the string/byte surface
+    including slice-boundary bugs; and the final trap-vs-checked note.
+- Both rounds carry the Devanagari lexer note, the least-privilege/no-credentials/no-new-network
+  constraints, and the standing rule that **the partner does source work and Sarvam runs all native
+  execution** — an unverified implementation is worth more than another "NOT IMPLEMENTED".
+- Muse's brief now requires **every new `.sm` test to ship both a `.out` and a `.exit`** golden, which
+  is the gap that broke `proof_lib` here.
+
+## v138 — collaboration reverts to ChatGPT; Gemini folders removed
+
+- **`Sarvam-to-Gemini/` and `Gemini-to-Sarvam/` are removed** from the repository, at the user's
+  direction. The plan to move the compiler-side partnership to Gemini is cancelled.
+- **The ChatGPT folders are intact and remain the working channel** — `Sarvam-to-ChatGPT/` and
+  `ChatGPT-to-Sarvam/`. **`Sarvam-to-ChatGPT/ROUND-65.md` was already waiting there.**
+- **Why the Gemini move was abandoned:** Gemini's chat could not reach the repo at all. It reported the
+  repository as private, which is **factually wrong** — verified by an unauthenticated request returning
+  HTTP 200 with `private: false` (a genuinely private repo returns 404), plus successful anonymous
+  fetches of the README, the round brief, and the API. The blocker was Gemini's own tooling, not the
+  repo's visibility, and changing the Google vs GitHub email would not have helped.
+- No project source, library, test, doc or GUI file was touched — only the two collaboration folders.
+
+## v137 — collaboration shifts from ChatGPT to Gemini
+
+- **Created `Sarvam-to-Gemini/` and `Gemini-to-Sarvam/`** for all new collaboration work. Both carry a
+  README stating the working agreement, the current project state, and the lessons carried forward
+  from the ChatGPT rounds.
+- **The ChatGPT folders are kept as an archive** — `Sarvam-to-ChatGPT/` (28 files) and
+  `ChatGPT-to-Sarvam/` (61 files) are untouched. No new rounds go there; the full history stays readable.
+- **ROUND-65 reissued as the first Gemini round** (`Sarvam-to-Gemini/ROUND-65.md`). Its substance is
+  unchanged: implement the two peepholes and the default-OFF overflow trap even if untested, extend
+  Devanagari past the core keywords, and document the legacy HKLM installer honestly.
+- **Why the README matters:** it records what cost real rounds — the partner may not be able to
+  execute (ChatGPT had no NASM/Windows/Wine for three rounds and declined execution work each time),
+  so the new agreement is explicit: **the partner does source work; Sarvam does all native execution
+  and Windows testing.** A source-only claim is labelled as such, never presented as a build or
+  runtime result.
+- Muse's channel (`Sarvam-to-Muse/`, `Muse-to-Sarvam/`) is unchanged.
+
+## v136 — Linux X11 GUI slice 23: Devanagari keyword colouring (my own stream)
+
+- The GUI tokeniser now colours **Devanagari keywords**. Previously `kw_tab`/`bi_tab` were ASCII-only
+  and `is_word_char` rejected the `0xE0` lead byte, so a Devanagari keyword never entered the keyword
+  path at all.
+- Three changes, mirroring the compiler's `is_alpha`: `is_word_char` accepts `0xE0`; `kw_tab` gains
+  the Devanagari spellings (मुख्य, वित्ति, अङ्क, यदि, यावत्, लिख); `bi_tab` gains द्वारम्; and
+  `.c_w_loop` consumes a whole 3-byte Indic sequence instead of stopping after the lead byte.
+- **A real bug caught while writing it:** `.c_w_loop` advanced one byte at a time, so it would have
+  stopped after the `0xE0` and mis-measured the token. Fixed with a bounded 3-byte advance.
+- GUI source 84,614 chars; binary **35,320 B**; **all 13 GUI tests pass**. Compiler untouched.
+- Honest caveat: verified by **build + full regression**, not a dedicated colour assertion — the mock
+  X keyboard cannot emit a 3-byte UTF-8 sequence. Known gap, not claimed proven.
+
+## v135 — ChatGPT R64 (kosh diagnostics) + Muse R21 (kosh spec) verified and SYNCED
+
+- **R64 accepted — I built and ran it.** Compiler builds (189,480 B); all R64 gates pass: the three
+  empty-kosh diagnostics (`kosh pop` unchanged, new `kosh peek`, new `kosh dequeue`), `kosh_nonempty`
+  exact stdout, `default_compat` exact stdout, and the A/B ChatGPT could not run —
+  **`R64_DEFAULT_BINARY_IDENTICAL_PASS bytes=300`** (default binary byte-identical pre/post R64).
+  R63 acceptance still 9 gates; suite **187/3**; codegen **12/12**; packs **33/33**; graph **OK**;
+  proofs **170/170** and **60/60**; R58 **8/8**; R59 **3/3**.
+- **Muse R21 accepted.** Patch clean; **12/12 hashes**; proof_lib **172/172** (was 170), proof_props
+  **62/62** (was 60), suite **187/3**; library now **21 modules / 268 functions**. The compiler-side
+  `kosh` builtin spec was written, including that `kosh_clear` zeroes the logical length but does NOT
+  erase storage.
+- **Process change recorded:** ChatGPT has now reported the same environment limit three rounds running
+  (no NASM/Windows/Wine/PowerShell), declining execution work. ROUND-65 therefore restructures their
+  brief: **they do source work and static reasoning; I do all native execution and Windows testing.**
+  Unverified source I can build and test is worth more than a third consecutive "NOT IMPLEMENTED".
+- **23 files synced** (R64 compiler + tools + 7 fixtures + doc; R21 library + docs + 4 fixtures).
+- **Next:** ROUND-65 to ChatGPT (implement the two peepholes and the default-OFF overflow trap even
+  untested; extend Devanagari past the core keywords; document the legacy HKLM installer honestly).
+  ROUND-22 to Muse (reconcile the kosh spec with the shipped diagnostics, remaining container gaps,
+  accumulated small gaps, final trap-vs-checked note).
+
+## v134 — ChatGPT R63 (kosh builtins) + Muse R20 (string surface) verified and SYNCED
+
+- **R63 accepted — and I ran the gates they could not.** ChatGPT marked it source-level only; I
+  built it and it passes. Compiler hash matches theirs exactly (`f52a9ad7...`); builds to 189,168 B;
+  **`R63_NATIVE_ACCEPTED 9 gates`** — `kosh_fifo_core`, `kosh_fifo_float`, the danda regression, both
+  expected compile errors, and the empty-peek / empty-dequeue traps. Suite **187/3**; codegen
+  **12/12**; packs **33/33**; graph **OK**; proofs **167/167** and **57/57**; **R58 baseline 8/8**
+  and **R59 baseline 3/3** untouched.
+- **The five `kosh` builtins close the gap Muse named in R19:** `kosh_clear`, `kosh_empty`,
+  `kosh_peek`, `kosh_enqueue`, and a FIFO `kosh_dequeue`. They are compiler builtins, not library
+  functions — exactly as Muse proved they had to be (no generic parameter type, no overloading).
+- **Muse R20 accepted.** 13 new functions across all four workstreams (the `strb_`/`str_` surface
+  parity, `nighantu_vardh`/`rakh_vardh`/`suchi_vinimay`/`suchi_viparyay`, `ganita_janchit_kramgun`/
+  `ganita_paripurna_ghat`). Patch clean; **14/14 hashes**; proof_lib **170/170** (was 167), proof_props
+  **60/60** (was 57), suite **187/3**; library now **21 modules / 260 functions**.
+- **The per-pair table was the right shape of answer** — what was added *and* what was deliberately
+  not, with reasons (`is_*_char` already serves both surfaces). Slice-correctness was measured, e.g.
+  `khand_anwesh_akshar("hello world", 5, 'w')` -> `-1` where the NUL-terminated form would read past the
+  slice end.
+- **32 files synced** (R63 compiler + tools + 14 fixtures + doc; R20 library + tests + docs).
+- **Next:** ROUND-64 to ChatGPT (execute the Windows acceptance at last, the two deferred peepholes,
+  an **opt-in** overflow trap, and accurate `kosh_peek`/`kosh_dequeue` diagnostics). ROUND-21 to Muse
+  (write the compiler-side `kosh` builtin spec, remaining container gaps, accumulated small gaps, and
+  the final trap-vs-checked division of labour).
+
+## v133 — Linux X11 GUI slice 22: danda recognition in the tokeniser (my own stream)
+
+- The Linux GUI tokeniser now recognises the **danda `।` / dvigun danda `॥`** as a single 3-byte
+  token and colours it **orange** (`COL_DANDA`), instead of letting `classify` split it into three
+  separate bytes and mis-colour them. Matches the Windows side and the new language feature.
+- Implementation: `classify` tests for the `E0 A5 A4` / `E0 A5 A5` sequence first and returns a new
+  class 6 with length 3; `draw_line_coloured` maps class 6 to `COL_DANDA`.
+- GUI source ~83 KB; binary **35,128 B**. **All 13 GUI tests pass.** Compiler untouched.
+- Honest note: the danda colouring is verified by **build + full regression**, not by a dedicated
+  colour assertion — the mock X keyboard cannot emit a 3-byte UTF-8 sequence, so there is no
+  protocol-level proof of the orange paint yet. Recorded as a known gap, not claimed as proven.
+- **Windows artifacts rebuilt for the user's own testing** and delivered: `Sutram-Setup.exe`
+  (596,624 B) and `sutram-windows-test.zip` (222,296 B), both carrying `lang/sanskrit.lang` and
+  `examples/218_sanskrit_devanagari.sm`.
+
+## v132 — ChatGPT R62 (Windows acceptance tooling) + Muse R19 (nighantu_rikta, container breadth) verified and SYNCED
+
+- **Muse R19 accepted — all four workstreams landed.** 8 new functions and 1 strengthened:
+  `nighantu_rikta` (full zero, not just the count), `rakh_rikta`, `avali_rikta`, `suchi_rikta`
+  (strengthened to zero data cells), `nighantu_grah_mool` (removes the `-1`-is-ambiguous hazard),
+  `rakh_sam`, `khand_viparyay` (safe in place), `khand_gan` (non-overlapping), and
+  `ganita_janchit_ghat`. Patch applied cleanly; **14/14 hashes match**; proof_lib **167/167**
+  (was 164), proof_props **57/57** (was 54), suite **187/3**; library now
+  **21 modules / 247 functions**.
+- **R19 names a real gap rather than papering over it:** the `kosh` primitives (clear/peek/empty/
+  enqueue/dequeue) **cannot be written in the library** — there is no generic `kosh` parameter type
+  and no overloading, both demonstrated by compiling test programs that fail to parse. They correctly
+  assigned those builtins to the compiler side instead of forcing a type-suffixed naming scheme that
+  would not be "same names, same semantics".
+- **ChatGPT R62 accepted as a verified partial — and it caught a real policy violation.**
+  `.github/workflows/r59-native.yml` on main still carried a **`push` trigger** on a feature branch,
+  against the CI notification policy (every other workflow is `workflow_dispatch`-only). **Fixed and
+  merged.** They also brought the R61 Windows diagnostic script and 8-second fail-closed installer
+  preflight into a review branch, added `tools/r62_windows_acceptance.ps1` (manual Prepare/Audit/
+  Screenshot stages) and `docs/rounds/R62-WINDOWS-ACCEPTANCE.md`, and hardened `install-core.ps1` with
+  bounded self-tests and a durable success log.
+- **They were honest about what is NOT done:** workstreams 1–3 are *prepared but not executed* (no
+  Windows run this round), and workstreams 4–5 (the peepholes and the overflow traps) are
+  **not implemented**. They explicitly said not to merge unexecuted code on source reasoning alone.
+  5/5 R62 hashes verified.
+- **21 files synced** (R19 library + tests + docs; R62 workflow fix + tooling + docs). Verified on main.
+- **Next:** ROUND-63 to ChatGPT (heavy — execute the Windows acceptance, then the peepholes and the
+  overflow trap, informed by the new Devanagari support). ROUND-20 to Muse (heavy — continue the
+  container/gap work and the compiler-side `kosh` builtin specification).
+
+## v131 — Sanskrit script support: `sanskrit.lang` + danda terminator (slice 21)
+
+- **The language can now be written in Devanagari Sanskrit and compiles to native machine code.**
+  Added `lang/sanskrit.lang` — the core keywords in their own script — and taught the lexer to
+  accept the **danda `।` (U+0964)** and **dvigun danda `॥` (U+0965)** as statement terminators,
+  exactly equivalent to `;`.
+- **`sanskrit.lang`** closes a gap found in the project audit: there was a Sanskrit *book* but no
+  Sanskrit *pack* — you could write Sutram in Hindi Devanagari but not Sanskrit Devanagari. Every
+  line of the pack is a script variant of an existing core keyword; no new keyword was introduced.
+- **New example `218_sanskrit_devanagari.sm`** — a program written entirely in Devanagari with danda
+  punctuation. Verified output: `योगः = 15`.
+- **A real bug in my own first patch, caught by testing and fixed.** `is_alpha()` returns true for
+  the `0xE0` UTF-8 lead byte (it is the Devanagari start byte), so the danda was being **absorbed
+  into the preceding identifier** — `i।` lexed as one identifier and the terminator vanished. It
+  showed up only when the identifier immediately preceded the danda (`s = s + i।`); `likha(i)।`
+  worked because `)` ended the identifier first. Fixed by testing for the danda sequence both
+  before identifier collection and inside `.collect_id`.
+- **Gates:** suite **PASS=187 / NO-EXPECTATION=3**; codegen **12/12**; language packs **33/33**
+  (11 packs × 3 — the pack test now includes `sanskrit`); module graph **OK**; `proof_lib`
+  **164/164**; `proof_props` **54/54**; **`R59_FROZEN_CODEGEN_ACCEPTED 3/3`** and
+  **`R58_FROZEN_CODEGEN_ACCEPTED 8/8`** untouched. Compiler 184,248 B.
+- **No accepted golden changed** — verified by diffing the whole `tests/expect/` tree against
+  pristine main; only the new `218_*` pair was added. (The harness's `--record` also rewrites the
+  trailing newline of 40 existing `.exit` files; those were restored rather than shipped.)
+- Docs updated: `docs/LANGUAGE-REFERENCE.md` gains the danda and Devanagari sections and the
+  `sanskrit` pack column.
+- **Next:** the same device set — danda, native numerals, per-script packs — extends to the other
+  Indian scripts, since all nine share the ISCII layout and the danda is already encoded once for
+  all of them.
+
+## v130 — ROUND-62 and ROUND-19 rewritten as HEAVY multi-workstream rounds
+
+- **Direction from the user:** give longer, heavier tasks so production moves faster — with the
+  explicit requirement that nothing introduces a security risk. Both open rounds were rewritten.
+- **ROUND-62 → ChatGPT (5 workstreams):** (1) prove the R61 fix on real Windows with a
+  legacy/fixed A/B; (2) close the installer loop end to end; (3) verify the GUI colours visually
+  from a real coloured test file; (4) finish the two R59-deferred peephole patterns (push/pop
+  cancellation, adjacent store/reload) at the emission site only; (5) the compiler-level overflow
+  trap (`jo`/`jno` after `+ - *`, zero-divisor guard before `idiv`, abort naming file:line) — the
+  `src/` half of Muse's R18 library work.
+- **ROUND-19 → Muse (4 workstreams):** (1) `nighantu_rikta` (their friction note 3); (2) container
+  breadth — audit map/kosh/list/set for the same gap, give `kosh` the stack/queue primitives, with a
+  per-container table of what changed and what deliberately did not; (3) close the accumulated small
+  library gaps across map/kosh/list/set/strb/ganita; (4) the library half of the overflow safety net,
+  composing with the trapping compiler and documenting the trap-vs-checked division of labour.
+- **Security constraints made explicit and hard** in both rounds: least privilege (no UAC/admin/HKLM,
+  no disabling OS protections), **no credentials** anywhere (placeholders only, including tests and
+  commit messages), no new network access from compiler/GUI/installer/library, and no experimental
+  workflow firing on every push. Both rounds say: if a step appears to need elevated rights, stop and
+  report instead of doing it.
+- Each workstream is independently acceptable, so a partial landing is still a win — both rounds say
+  to ship what is finished and name what is not.
+
+## v129 — ChatGPT R61 (Windows PE-padding root cause) + Muse R18 (checked arithmetic) verified and SYNCED
+
+- **R61 is the best root-cause work in the project so far.** The Windows compiler hang was not
+  blocking input: a 46-byte program produced a **533,114,623-byte** output before the 12 s kill. The
+  mechanism is `write_pe .pp_pad_go` keeping the fill chunk in **RDX**, which `WriteFile` clobbers per
+  the Win64 ABI, so the padding loop never progressed. They proved it from the real evidence (PE32+
+  headers, 1024-byte SizeOfRawData, excess zeros) and noted `.r56_pe_data_write` already used
+  `push rdx` / `pop rdx` — which is what tipped it.
+- **The fix is merged:** exactly `push rdx` / `pop rdx` around the `os_write` and nothing else. On
+  Linux it is a no-op — the build is byte-size-identical to R59 and all gates pass (186/3, 12/12,
+  30/30, proof_lib 164/164, proof_props 54/54, `R59_FROZEN_CODEGEN_ACCEPTED 3/3`). A test program
+  emits a sane 206 bytes. **Windows execution of the fix is still unverified** and is now ROUND-62.
+- **They inspected the R60 screenshots this time** and reported honestly: menus render; the editor
+  showed only `001` so the colours are not verifiable from it; the installer said "Sutram setup did
+  not complete".
+- **Muse R18 verified and accepted.** 8 new functions in `lib/ganita.smlib` — `ganita_checked_*`
+  (add/sub/mul/div/shesh) and `ganita_sat_*` (add/sub/mul). Patch applied cleanly; **5/5 hashes match**;
+  proof_lib **164/164** (was 162), proof_props **54/54** (was 50), suite **186/3**; library now
+  **21 modules / 239 functions**.
+- **The mechanism choice was right:** opt-in checked functions with the operators unchanged, so no
+  accepted golden moves and no `src/` change. Failure returns **0, never the wrapped value** — a
+  caller who forgets to check gets an obviously-wrong 0, not a plausible-but-wrong number.
+- 10 files synced (R61 compiler; R18 library + tests + docs). Verified on main.
+- **Next:** ROUND-62 to ChatGPT — prove the R61 fix on real Windows, then close the installer loop.
+  ROUND-19 to Muse — `nighantu_rikta` (their last queued friction note).
+
+## v128 — Muse R17 (nighantu_kunjika_ashtak) verified and SYNCED; ROUND-18 issued
+
+- **Muse R17 accepted.** Patch applied cleanly to pristine main; **6/6 hashes match**. `proof_lib`
+  **162/162** (was 161), `proof_props` **50/50** (was 49), suite **PASS=186 / NO-EXPECTATION=3**,
+  `gen_stdlib_ref.py` reproduces **21 modules / 231 functions** exactly.
+- **The decision was the right one:** they **added** `nighantu_kunjika_ashtak` and kept `nighantu_kunjika` unchanged,
+  because changing the meaning would silently break its consumers — the very bug class the round
+  removes. Their before/after table (size correct, keys corrupted) is the evidence that mattered.
+- All five `set.smlib` call sites migrated; the `khand_bandh` round-trip deleted; temp buffers shrink
+  from cells to bytes. `rakh_tak_mala`'s output contract kept, so its golden is byte-identical.
+  `examples/215_r12_wordfreq.sm` correctly left alone (different dance, out of scope).
+- 7 files synced. Verified on main.
+- **ROUND-18 issued to Muse:** make integer overflow **loud** instead of silently wrapping (their own
+  friction note 4) — same correctness shape as the `nighantu_kunjika` bug. `nighantu_rikta` stays queued behind it.
+- **Still open:** ROUND-61 with ChatGPT (Windows compiler hang).
+
+## v127 — Linux X11 GUI slice 20: clickable menu bar (my own stream)
+
+- **The Linux GUI now has a menu bar** — File / Edit / Shell / Debug / Options / Window / Help —
+  drawn in the top strip, matching the Windows IDLE. It is **clickable**: a click opens the menu
+  (teal highlight) and draws its dropdown; File carries Open / Save / Exit, and Exit quits.
+- The GUI was **keyboard-only until now** — the event loop handled only `Expose` and `KeyPress`.
+  Slice 20 adds `ButtonPress` (opcode 4) handling with event-x/event-y hit-testing
+  (`[event+24]`/`[event+26]`).
+- **Implementation:** `draw_menu_bar`, `menu_hit` (strip hit-test), `draw_dropdown`, `menu_click`
+  (open / fire item / close) and `do_menu_action`. Save calls the existing `save_saved`; Exit sets
+  `want_quit`. Pure NASM, no new dependencies.
+- **New test `tools/test_x11_menu.py`** (slice 20 proof): clicks the File label and asserts the
+  highlight + dropdown backgrounds appear in the protocol stream, then clicks Exit and asserts the
+  process quits. **All 13 GUI tests pass.**
+- One build error caught and fixed: I referenced a non-existent `save_mode`; Ctrl-S calls
+  `save_saved` directly, so the menu Save action now does the same.
+- GUI source now ~80 KB; binary 35,000 B (was 33,384). Compiler untouched.
+- **Open rounds:** ROUND-61 with ChatGPT (Windows compiler hang), ROUND-17 with Muse.
+
+## v125 — Linux X11 GUI slice 19: per-token syntax colouring (my own stream)
+
+- **The Linux GUI now colours the editor per token**, matching the approved palette: keywords
+  **orange** #E86D11, builtins **teal** #4EC9B0, strings **green** #6A9955, numbers **purple**
+  #B586E8, comments **grey** #6A6A6A, on the existing dark canvas. Before this the whole editor was
+  drawn in one foreground colour.
+- **Implementation:** a real tokeniser in pure NASM (classify + match_tab) over the UTF-8 buffer —
+  word tables for keywords and builtins, whole-word matching, string scanning with backslash
+  escapes, # and // line comments, and digit-run number detection. draw_line_coloured walks a line
+  and emits one ChangeGC + ImageText8 pair per token.
+- **Register discipline was the real hazard.** send_req ends in syscall, which clobbers rcx and r11,
+  and r12 holds the X socket fd for the whole program. The routine keeps its state in
+  rbx/rbp/r13/r14/r15 plus a stack slot, and never touches r12.
+- **New test tools/test_x11_colour.py** (slice 19 proof): types `likha 'a' 12` at the mock X server
+  and asserts the protocol stream contains the keyword, string, number and default foregrounds.
+  **All 12 GUI tests pass.**
+- **Two of my own errors, caught by the test and owned:** (1) my first key-event builder put the
+  keycode at offset 4 instead of byte 1, so no keystrokes registered; (2) the test's protocol walker
+  omitted opcode 70 (PolyFillRect) from its whitelist and broke at the first fill, reporting only
+  one colour. Both were in the test, not the GUI — the instrumented walk showed all six colours
+  before either fix landed.
+- GUI source now 76,042 chars; binary 33,384 B (was 31,192). Compiler untouched.
+- **Open rounds unchanged:** ROUND-59 + ROUND-60 with ChatGPT, ROUND-17 with Muse.
+
+## v124 — ChatGPT R58 (constant folding) + Muse R16 (list) verified and SYNCED
+
+- **ChatGPT R58 verified and accepted as a verified partial.** A bounded recursive integer
+  constant-folding pass on the AST at `gen_expr` (ADD/SUB/MUL/AND/OR/XOR/SHL/SHR over literal
+  subtrees, nested, negatives, x86 shift-mask semantics, depth-capped at 64), safe `x+0`/`x-0`/`x*1`
+  elimination that still evaluates a side-effectful LHS exactly once, and signed `x / 2^k` strength
+  reduction with a correction step that truncates toward zero for negatives. 12/12 manifest hashes
+  verify; builds to 183,712 B; **`R58_FROZEN_CODEGEN_ACCEPTED 8/8`**; suite 186/3, codegen 12/12,
+  packs 30/30, module-graph 18/18, proof_lib 158/158, proof_props 44/44.
+- **They declared the generic machine-code peephole as NOT implemented** rather than claiming it,
+  with a sound reason (post-hoc byte deletion would invalidate patch lists, branch offsets and
+  RIP-relative immediates). That is the right call and it is now ROUND-59.
+- **They did not dvigun-count R57's ghat-of-two multiply shift** as an R58 win, and they did not
+  rewrite the R57 frozen baseline. I re-checked: **`R57_FROZEN_CODEGEN_ACCEPTED 6/6`, 0/6 changed.**
+- **Muse R16 verified and accepted.** `lib/list.smlib` — 21 functions covering list, stack and
+  queue. All three hashes match exactly; proof_lib **161/161**, proof_props **49/49**, suite
+  **PASS=186**; library now **21 modules / 230 functions**. Delivered as a patch, applied cleanly.
+- **Sync care:** disjoint file sets again. Copied only the 24 changed files; GUI and all previously
+  accepted goldens untouched. Verified on main afterwards.
+- **Process note:** `raw.githubusercontent.com` served a stale compiler after the push; the
+  authoritative API blob sha (`dad3d2f4…`) confirmed the file was correct. Re-confirmed the
+  standing lesson: verify with the API, not raw.
+- **Next rounds issued:** ROUND-59 to ChatGPT — the instruction-boundary-safe peephole (decide at
+  emission time, never post-process bytes). ROUND-17 to Muse — the `nighantu_kunjika_ashtak` refactor from
+  their own R14 friction note, a correctness fix for a silent-misuse class.
+- Main after sync: compiler `35d85b80…` (R58), GUI slice 18, library R16 (21 modules / 230 functions),
+  proofs 161/49.
+
+## v123 — GUI slice 18: graphical directory browser (verified)
+
+- **My own stream (Linux X11 IDE), slice 18.** `Ctrl-B` opens a **directory browser**:
+  entries of the current directory are listed in the editor pane, Up/Down move the
+  selection (kept visible), Enter opens a file or **descends into a directory**,
+  Backspace goes up one level, Esc cancels. Directories are drawn with a trailing `/`,
+  and the current path is shown in the prompt strip. Ctrl-O and Ctrl-N are unchanged.
+- Implementation: `getdents64` (217) into a bounded buffer, `d_type` marks directories,
+  names stored NUL-separated with an offset table, `.` and `..` skipped, bounded to 128
+  entries. `draw_all` routes to `draw_browser` while browsing, and the key loop skips the
+  editor repaint in browse mode too.
+- **One bug found and fixed during the round:** `.braccept` cleared the browse flag
+  unconditionally, so descending into a directory *exited* the browser instead of staying
+  in it. `br_open_sel` now reports "descended" and the flag is kept. Caught by the new
+  test, not by inspection.
+- Source: `ide/sutram_gui_linux.asm` 60,414 -> 70,004 chars; binary 24,776 -> 31,192 B.
+  New test `tools/test_x11_browser.py` (3 checks, spawns the GUI with a controlled cwd).
+- **Verification:** lists a known file, opens it and reads the buffer back through the real
+  Ctrl-S save path (content matches exactly), descends into a subdirectory and lists its
+  contents, Esc cancels without opening. All 3 pass. **All 11 GUI tests pass** in place.
+- Compiler untouched: still R57 `2b0b5fcf…`.
+
+## v122 — ChatGPT R57 (register expression trees) + Muse R15 (fmt) verified and SYNCED
+
+- **ChatGPT R57 verified and accepted as a verified partial.** The expression evaluator now emits
+  pure integer arithmetic trees directly into a deterministic 3-register set (RAX/R10/R11) instead
+  of push/pop round-trips, with a whole-tree eligibility preflight that falls back to the untouched
+  stack evaluator for anything it cannot prove safe. 12/12 manifest hashes verify; compiler builds
+  to 182,680 B; `R57_FROZEN_CODEGEN_ACCEPTED 6/6` on my build; suite 186/3, codegen 12/12,
+  packs 30/30, module-graph 18/18, proof_lib 153/153, proof_props 39/39.
+- **I re-measured the arithmetic benchmark myself** rather than trusting their runner:
+  `arithmetic_10m.sm`, 10M iterations, warmup + best of 3, pre-R57 `3631070a` vs R57, both binaries
+  printing `99999990000000`: **34.009 ms -> 8.517 ms best (3.99x)**, median 34.605 -> 8.796 ms
+  (3.93x). Larger than their recorded 2.11x, on different hardware; same direction. They were
+  honest about runner variance and did not oversell.
+- **R46 byte-parity retired for this round, as instructed**, replaced by native-stdout equivalence
+  4/4 plus a proposed new frozen codegen baseline (six hashes, `tools/r57_codegen_baseline.py`).
+- **Muse R15 verified and accepted.** `lib/fmt.smlib`, 23 functions: integer bases, width/alignment,
+  Indian and international grouping (Indian by default), fixed decimals, signed formatting.
+  Delivered as a **patch**, applied cleanly. Hashes match exactly; proof_lib **158/158**,
+  proof_props **44/44**, suite **PASS=186**; library now **20 modules / 209 functions**. Their five
+  documented traps are the valuable part - especially that an **untyped parameter truncates a
+  `dasham` argument**, and that **redeclaration is silently ignored**.
+- **Sync care:** R57 and R15 touch disjoint files. Copied only the 30 changed files; GUI (slice 17)
+  and all previously accepted goldens untouched. Verified on main afterwards.
+- **Next rounds issued:** ROUND-58 to ChatGPT - compile-time constant folding plus strength
+  reduction and a small peephole pass, with the R57 frozen baseline to be re-proposed rather than
+  silently rewritten. ROUND-16 to Muse - `lib/list.smlib` (dynamic list, stack, queue).
+- Main after sync: compiler `2b0b5fcf…` (517,157 B source, 182,680 B binary), GUI `b5d19201`
+  (slice 17), library R15 (20 modules / 209 functions), proofs 158/44.
+
+## v121 — all documents moved to the new thread logo; icon assets added to the tree
+
+- **The old logo was still in the docs, and you were right to flag it.** The previous logo
+  (Devanagari स between braces) was embedded as a **base64 PNG** in exactly six files - the six
+  book editions. `docs/mockup-setup.html` already carried the new thread logo.
+- **Replaced in all six books** (English, Hindi, Sanskrit, Tamil, Telugu, Gujarati) with the new
+  thread logo as clean **inline SVG** - teal `#1A4A5C` disc, orange `#E86D11` ring and S-curve,
+  copied verbatim from the canonical `icons/sutram-icon.svg`. The SVG parses as valid XML.
+- **`docs/mockup-setup.html`**: its three remaining base64 images were converted to the same
+  inline SVG, and its `.titlebar img` / `.hero img` size rules were extended to `svg` so the
+  layout is unchanged.
+- The tree is now **free of base64 images and of `<img>` entirely** - one identical logo asset
+  (the inline SVG) in every document that carries a logo.
+- **Icon assets were missing from the tree altogether.** They existed only inside a previously
+  built Windows package. Added the canonical `icons/` folder: `sutram.ico` (a real 8-size icon -
+  16/20/24/32/48/64/128/256, 36,693 B, byte-identical to the installer's copy), `sutram-icon.svg`,
+  and the PNG ladder (1024 master down to 16).
+- **Not changed, deliberately:** `docs/sutram-book-2.html` and `docs/sutram-book-3.html` are
+  "superseded" stub pages with no logo at all. `windows/` documentation already refers to
+  `icons/sutram.ico` and describes the thread logo, so it needed no edit.
+- **Known limitation, unchanged:** the Windows GUI loads its icon from `icons\sutram.ico` **at
+  runtime**; the icon is not embedded in the executable, so the file must sit beside the exe.
+
+## v120 — Windows build produced and packaged; Windows test zip delivered
+
+- **Both Windows binaries build here** with the documented commands
+  (`nasm -f win64` + `ld -mi386pep`), and their PE headers verify:
+  - `sutram.exe` — PE32+ console, x86-64, 167,789 B, 5 sections, import table present, **0 warnings**.
+  - `sutram-ide-gui.exe` — PE32+ GUI, x86-64, 32,215 B, 5 sections, import table present
+    (61 benign NASM warnings: the import-pointer slots are initialised in `.bss`, which
+    NASM ignores by design).
+- **Still unverified on Windows.** Format and headers are checked; neither binary has been
+  *executed* on a real Windows machine. This remains the project's largest untested claim.
+- **Delivered two zips:** `sutram-progress.zip` (full project snapshot, 1,426 files) and
+  `sutram-windows-test.zip` (ready-to-run Windows folder: both exes, `sutram.cmd`, lang/lib/
+  examples/docs, and a READ-ME-FIRST with honest status).
+- **Note for the record:** the first GUI link attempt produced a 3,729-byte stub. Cause was my
+  own build command — piping NASM's output through `head` closed the pipe and killed the
+  assembler (SIGPIPE) mid-write, truncating the object. Rebuilding without the pipe gives the
+  correct 32,215-byte PE. Lesson: never pipe a long-running assembler through `head`.
+
+## v119 — GUI slice 17: open-file prompt, new buffer, and a prompt-overdraw fix
+
+- **My own stream (Linux X11 IDE), slice 17.** `Ctrl-O` opens a file by path through
+  an `Open:` prompt (type the path, Enter loads it; Esc cancels); `Ctrl-N` starts a new
+  empty buffer. Loading replaces the buffer, resets the caret and scroll, clears any
+  selection, and pushes an undo snapshot. A failed open leaves the buffer untouched and
+  reports "Sutram IDE: cannot open that file." in the output pane.
+- **A real pre-existing defect found and fixed.** The key loop called `draw_editor` after
+  *every* key, and `draw_editor` repaints the whole editor pane - which contains the
+  prompt strip at `ED_Y+ED_H-12`. So the prompt was drawn by `draw_all` and then
+  immediately overpainted: **the find prompt had never actually been visible**. The loop
+  now skips the repaint while a prompt is open. Proven with a request-order probe:
+  baseline `Find` prompt drawn=True, **overpainted=True**; fixed build drawn=True,
+  **overpainted=False**.
+- Source: `ide/sutram_gui_linux.asm` 55,317 -> 60,414 B; binary 23,880 -> 24,776 B.
+  New test: `tools/test_x11_open.py` (5 checks).
+- **Verification.** The test reads the buffer back through the real Ctrl-S save path:
+  open-by-path loads exactly the file's bytes; `Ctrl-N` empties the buffer; a bad path
+  leaves the buffer untouched and shows the error; Esc cancels without loading; and the
+  prompt is drawn and **not** overpainted (checked by scanning the ordered request
+  stream for a PolyFillRect covering the prompt strip after the prompt text).
+  **Negative control:** against the slice-16 binary the same test fails - `Ctrl-O`/`Ctrl-N`
+  type literal `o`/`n`, no `Open:` prompt is ever drawn, and Esc quits the app.
+- All 10 GUI tests pass against the new binary, run in place (protocol, negatives, run,
+  scroll, edit, edscroll, keys, find, clipboard, open).
+- Compiler untouched this round: still `d0fe190c…`, 179,888 B, suite 186.
+
+## v118 — ChatGPT R56 (module globals) + Muse R14 (set) verified and SYNCED
+
+- **ChatGPT R56 verified and accepted.** Module-level `vitti` globals: a dedicated global
+  symbol/storage namespace separate from `var_table`, local/parameter shadowing, once-only
+  ordered initialisation (including non-literal and function-call initialisers), zero default,
+  RIP-rel32 read/write emission with compiler-side backpatch, and a PE `.data` section.
+  I reproduced every gate on my own build from their tested commit `e84df728`:
+  **19/19 SHA-256 manifest entries verify**; compiler builds **179,888 B** (was 176,712);
+  **all 10 positive native cases** produce exactly the claimed stdout and **4 negatives exit 1**
+  with located diagnostics (`R56_GLOBAL_ACCEPTED` all-ones, `pe_data=1`, PE `.data` RVA
+  `0x2000`, 6 RIP refs). Suite **PASS=186 / NO-EXPECTATION=3**, codegen **12/12**, packs
+  **30/30**, module-graph **18/18**, `proof_lib` **147/147**, `proof_props` **33/33**,
+  R55 regression passes (`global_vitti_now_supported=1`), and **R46 byte parity holds 4/4**.
+- **Sync care:** their branch's `ide/` was the *older* GUI, so a wholesale copy would have
+  reverted slice 16. Copied **only the 19 PR files**; main's GUI stays `e065d205` and `lib/`
+  was already identical. Verified after sync.
+- **Muse R14 verified and accepted.** `lib/set.smlib` — 10 set operations over `map`
+  (init/add/contains/remove/size/union/intersect/difference/is_subset/to_array), byte-string
+  elements, sorted `to_array`. Reproduced: `proof_lib` **153/153**, `proof_props` **39/39**,
+  suite **PASS=186**. All three claimed hashes match; **19 modules / 186 functions** confirmed
+  independently, and regenerating the stdlib reference is **byte-identical** to the committed one.
+  Their `PASS=185` is the known pre-existing `79_ayojan_cwd` environment case.
+- **Process note recorded:** R14 arrived **directly on `main`** — no patch in `Muse-to-Sarvam/`
+  and no branch, so I had to reconstruct it from main to verify it. It checked out, but an
+  unreviewed change on main is one I cannot reject. Asked Muse to return to patch/branch delivery.
+- **Next rounds issued:** ROUND-57 to ChatGPT — the register-based expression evaluator (the
+  largest measured gap; arithmetic loop is 5.4x off hand-optimal). R46 byte parity is explicitly
+  expected to break this round, with correctness to be shown by suite/proofs/native stdout and a
+  new frozen baseline proposed. ROUND-15 to Muse — `lib/fmt.smlib` formatting module.
+- Main after sync: compiler `d0fe190c…` (506,617 B source, 179,888 B binary), GUI `e065d205`
+  (slice 16), library R14 (19 modules / 176 -> 186 functions).
+
+## v117 — GUI slice 16: selection + internal clipboard (verified)
+
+- **My own stream (Linux X11 IDE), slice 16: clipboard.** The editor now has a
+  selection model and an internal clipboard:
+  - Shift+Left/Right/Up/Down/Home/End extend a selection (the anchor is set on
+    the first shift-move).
+  - Ctrl-A selects the whole buffer; Ctrl-C copies; Ctrl-X cuts; Ctrl-V pastes.
+  - With no selection, Ctrl-C copies and Ctrl-X cuts the current line (cut takes
+    the trailing newline too).
+  - Typing or Backspace over a selection replaces it.
+  - Plain navigation clears the selection. Escape clears a selection *before* it
+    quits — Escape only quits when nothing is selected.
+  - The selection is painted as a highlight (ChangeGC foreground 0x2B4A6B
+    followed by PolyFillRect) beneath the line text.
+- Source: `ide/sutram_gui_linux.asm` 46,452 -> 55,311 B; binary 21,992 -> 23,880 B.
+  New test: `tools/test_x11_clipboard.py` (8 checks).
+- **Verification.** The new test reads the buffer back through the real Ctrl-S
+  save path, so it proves the whole pipeline, not just protocol bytes: copy-all
+  then paste, cut-line then paste, shift-select then copy, escape-clears-selection
+  (the process stays alive), backspace-deletes-selection, type-replaces-selection,
+  and highlight-colour present/absent. All 8 pass.
+  **Negative control:** against the slice-15 binary the same test fails — the
+  highlight is absent, Ctrl-C types a literal `c`, and Escape quits the app
+  (broken pipe). The test therefore discriminates; it is not vacuous.
+- All 9 GUI tests pass against the new binary, run in place (protocol, negatives,
+  run, scroll, edit, edscroll, keys, find, clipboard).
+- Compiler untouched: R55 still builds 176,712 B from a 494,900 B source, suite
+  PASS=186.
+- **Base hygiene:** the local compiler source had drifted to an older round
+  (455,363 B) while main is R55 (494,900 B). Refreshed the local copy from main
+  and re-verified 176,712 B / PASS=186. Only the GUI and the new test are pushed;
+  the compiler is deliberately not touched.
+
+## v116 — Muse R13 accepted; ChatGPT R55 (forward prototypes, PARTIAL) verified and SYNCED
+
+- **Muse R13 verified and accepted.** `khand_bandh`/`unpack`/`dup` plus six integer
+  statistics (`purna_yoga/madhya/laghutama/adhikatama/vyapti/prasaran`); two existing
+  modules reworked to use the helpers (`khand_bhed`/`join`, `nighantu_kunji_sam`/`nighantu_kunjika`),
+  with two deliberate non-conversions documented at the call sites. All four claimed
+  hashes match. On my build: proof_lib **147/147**, proof_props **33/33**, stdlib
+  **18 modules / 176 functions**. The R12 wordfreq example was shortened 84 -> 82
+  lines with **byte-identical** output. They also found a real trap and documented
+  it: **Sutram pointer arithmetic is in bytes**, so a cell index must be scaled by 8.
+- **Their `79_ayojan_cwd` COMPILE-FAIL claim is honest but environment-specific.**
+  Muse reported `PASS=185 COMPILE-FAIL=1`; on my run of main it is `PASS=186` with no
+  compile-fail, because that test is cwd-dependent. Either way it is pre-existing and
+  not caused by R13.
+- **ChatGPT R55 verified and accepted as a PARTIAL, exactly as the handoff states.**
+  Gap 1 is done: real forward declarations (`prakriya name(params);`) with arity and
+  parameter-type matching, duplicate/missing/mismatch rejection, and definition-order
+  independence. `R55_FORWARD_ACCEPTED two_cycle=1 three_cycle=1 prototype_mismatch=1
+  type_mismatch=1 duplicate=1 missing=1 global_vitti_unimplemented=1`. The two-function
+  cycle is **tighter than Muse's R12 cycle** and the three-function cycle has its
+  definitions ordered against the call chain; both run natively. Manifest 10/10.
+  **Gap 2 (module-level globals) is NOT implemented**, and they say so plainly rather
+  than claiming it - with a real design rationale (globals need an independent symbol
+  and storage namespace with local-shadowing precedence and ELF/PE writable storage,
+  not a reused register or stack slot). That is the right call.
+- **Sync care:** the R55 branch predates Muse's R13, so its `lib/`, `docs/sutram-stdlib.html`,
+  `examples/215` and `tests/stdlib/*` were older. I copied **only** the compiler,
+  `r55-native.yml`, the acceptance tool, `tests/r55_check/` and the ROUND-55 handoffs
+  (14 files) and verified afterwards that main still has Muse's `strb` `957167a0…`.
+- Main after sync: compiler `6db0adf7…` (176,712 B), GUI `cb3c78d7…`, library R13;
+  186/12/30/18, proof_lib 147/147, proof_props 33/33.
+- Windows end-to-end remains out of scope and unverified, as ChatGPT restates.
+
+## v115 — Linux GUI IDE, slice 15: find (Ctrl-F)
+
+- **Ctrl-F opens a find prompt on the bottom line.** Typing fills the search
+  string, **Enter** searches, **Esc** cancels. The search is a plain substring
+  scan of the editor buffer from the caret, and **wraps** to the start if it runs
+  off the end; on a hit it moves the caret there. Backspace edits the search
+  string. The prompt replaces the key hint while it is open.
+- **Verified with a mock X server** (`tools/test_x11_find.py`): `abcabc`, caret at
+  the end; Ctrl-F, `bc`, Enter -> wraps and finds `bc` at index 1; typing `z`
+  lands at that hit giving `azbcabc`. Then Ctrl-F, `abc`, **Esc**, `q` -> `azqbcabc`,
+  proving Esc leaves the caret where it was. Both checks pass.
+- Protocol 39/39, negatives 6/6, and the scroll / Home-End / editor-scroll / Tab
+  tests all still green. `sutram-gui` 21,104 -> 21,992 bytes.
+- Debugging note worth keeping: my first test sent Ctrl-F **without the control
+  modifier**, so it typed a literal `f` and find mode never opened - and the
+  subsequent Esc then quit the application. The IDE was correct throughout; the
+  test was wrong. Took a while because the symptom (a stray `f`, then the app
+  exiting) looks like a feature bug. When a control key "does nothing", check the
+  test actually sent the modifier.
+
+## v114 — Muse R12 accepted; ChatGPT R54 verified and SYNCED to main
+
+- **Muse R12 verified and accepted.** Three real programs — word frequency
+  (`khand_bhed` + `map` + sort), an expression evaluator (recursive descent with
+  precedence and parentheses), and a formatted report (`strconv` padding) — all in
+  `examples/` with goldens. All hashes match and **all three reproduce their goldens
+  byte-for-byte** on my build. The findings report is the valuable part and names
+  real language gaps: no globals (state must be threaded through every signature);
+  **no forward declarations, so mutual recursion is expressible only by ordering
+  luck** (a genuine gap, not awkwardness); the two string representations cause
+  silent repack loops at every module boundary; `likha(buf)` prints the pointer, not
+  the string; `sankhyiki` needs float arrays so integer stats are manual.
+- **ChatGPT R54 verified and accepted.** A central arity table now covers **all 40
+  builtin IDs**; invalid arity yields a located recoverable `E_PARSE` instead of a
+  compiler fault. `R54_ACCEPTED builtin_ids=40 valid_arity=43 invalid_arity=80
+  raw_memory=1 arg_capacity=1`; `R54_MUSE_ACCEPTED original=186 example_local=3
+  original_golden_changes=0`.
+- **They found and fixed a pre-existing codegen bug**: `vartani_cp(dst,src)` scanned
+  the *destination* with `repne scasb` instead of copying the source. Demonstrated
+  before/after (`0,1` -> `89,4`). That is the only builtin whose generated code
+  intentionally changed. Good catch.
+- Manifest **7/7 OK**; compiler `9ce0c6ad…` matches; GUI slice 14 (`b4c15d61…`),
+  `strb.smlib` and `map.smlib` all preserved; `lib`/`ide`/`examples` byte-identical
+  to main. Synced 11 files. Main after sync: 186/12/30/18, proof_lib 139/139,
+  proof_props 30/30.
+- Honest limits stated by ChatGPT and unchanged: valid-arity fixtures compile behind
+  a runtime-false guard, so they prove parse/codegen, not syscall effects; raw
+  pointer ops remain caller-unsafe; Windows still out of scope.
+
+## v113 — Linux GUI IDE, slice 14: Tab indent, Ctrl-Home / Ctrl-End
+
+- **Tab inserts a 4-space indent.** It goes through the same `ed_insert` path as a
+  typed character, so it takes an undo snapshot and scrolls the pane like any edit.
+- **Ctrl-Home jumps the caret to the start of the file, Ctrl-End to the end.** Both
+  are caret moves only, so (like the arrows, Home/End and PgUp/PgDn) they take no
+  undo snapshot.
+- **Verified with a mock X server** (`tools/test_x11_keys.py`): `a`, Tab, `b` ->
+  `a    b`; Ctrl-Home then `z` -> `za    b`; Ctrl-End then `y` -> `za    by`. The
+  buffer is read back through Ctrl-S, so the assertion is on real saved content.
+- Protocol 39/39, negatives 6/6, and the scroll / Home-End / editor-scroll tests
+  all still pass. `sutram-gui` 20,936 -> 21,104 bytes.
+- Test-harness note: two of my own keycodes were wrong again (26 is `e` on the mock
+  keymap, not `z`; `z` is 52). The IDE was correct; the test was not. Worth
+  remembering that the mock keymap is not the hardware one.
+
+## v112 — Muse R10/R11 accepted; ChatGPT R53 (consolidated) verified and SYNCED to main
+
+- **Muse R10 + R11 verified and accepted.** `lib/strb.smlib` (12-function
+  byte-string surface) and `lib/map.smlib` (hash map, open addressing, backward-shift
+  delete). All claimed SHA-256 hashes match (`strb.smlib` `336e7dda…`, `map.smlib`
+  `23cf12a2…`, `proof_props.py` `b366dfb6…`). On my build: proof_lib **139/139**,
+  proof_props **30/30**, suite **186/186**, stdlib **18 modules / 167 functions**.
+  Both are on main already (Muse pushes directly).
+- **ChatGPT R53 verified and ACCEPTED and SYNCED.** `feature/r53-consolidated-r51-r52-20261010`
+  (draft PR #11) finally does what ROUND-53 asked: ONE compiler source carrying both
+  R51's provenance fix and R52's defect fixes, branched from current main with
+  two-parent merges so Muse's newer library is preserved rather than overwritten.
+  - Manifest **26/26 OK**; compiler `a3fe1b12…` matches the claim; GUI slice 13
+    (`65222ca1…`) preserved; `ide/` byte-identical to main.
+  - I ran every suite myself: `R49_AUDIT_STATUS wrong_provenance=0 unlocated=0
+    universal_diagnostics_accepted=1 cases=15 failures=0`, `R51_ACCEPTANCE PASS`,
+    `R52_ACCEPTED PASS`, `R48_ACCEPTED_CHECK_TESTS`, `STAGE2_PASS`,
+    `R49_REPEATED_SEMANTIC_PASS`, `R50_ACCEPTED`, 186/186, 12/12 codegen, 30/30
+    packs, 18/18 graph, R46 parity 4/4.
+  - **They also raised the compiler's AST arena from 786432 to 3145728 bytes
+    (3 MiB)** because Muse's larger library overflowed `AST_HEAP_CAP` on three
+    regressions. They flagged it explicitly and proved four ordinary R46 binaries
+    stay byte-identical, so it is a compile-time workspace change only. I verified
+    that parity myself. Good catch on their part, honestly reported.
+- **Synced 36 files to main**: the consolidated compiler, the comment-only
+  `string.smlib` update, `docs/rounds/R52-BUILTIN-FIXES.md`, the CI workflow, the
+  `r51_check`/`r52_check` fixtures, the four audit tools, and the ROUND-51/52/53
+  handoff files.
+- **Main after sync:** compiler `a3fe1b12…` (builds 174,864 B), GUI `65222ca1…`,
+  string `25110cc6…`; 186/186, 12/12, 30/30, 18/18, proof_lib 139/139,
+  proof_props 30/30, R52 acceptance PASS, R49/R51 audits clean.
+- Still open and stated plainly by ChatGPT: Windows end-to-end unverified;
+  `pad`/`pad8`/`likh8`/`char_from` not audited for invalid arity; the 15-case
+  diagnostic corpus is not a proof for arbitrary malformed programs.
+
+## v111 — Folder check: R51 and R52 both verified but UNDELIVERABLE (sibling branches)
+
+- **No handoff in either folder.** `ChatGPT-to-Sarvam/` still ends at
+  `ROUND-49-50-*`; `Muse-to-Sarvam/` still ends at `round9-string-toolkit.md`.
+- **ChatGPT now has two verified branches and has filed neither handoff.**
+  - R51 (`feature/r51-origin-tracking-20261009`, compiler `cc5c0ff9…`): R49
+    provenance genuinely closed - two-level `ayojan` -> `inner_r51.smlib:2:23`,
+    namespaced -> `broken_ns_r51.smlib:2:26`, three accumulated semantic errors,
+    three located `E_MODULE_MISSING`; 186/186.
+  - R52 (`feature/r52-stdlib-compiler-defects-20261010`, compiler `c492161c…`):
+    defect sweep works - `R52_ACCEPTED PASS indexed_char_code=1 likh_store=1
+    dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5`; I also
+    confirmed `dvaram` now creates `-rw-r--r--` where it used to create
+    `----------`. Their honesty that `char_code`'s "ignores its index" was a
+    **stale library comment**, not a live bug, is correct.
+- **The blocker is structural.** R51 and R52 are **sibling branches off main**,
+  not a stack: R52's compiler has no provenance fix and no `tests/r51_check/`;
+  R51's has no `likh`/`dvaram` fixes. Merging either alone silently discards the
+  other's work - the same stale-base pattern that nearly reverted slice 12.
+- **Issued ROUND-53 to ChatGPT**: consolidate R51 + R52 onto one branch off current
+  main, prove both hold together (186/12/30/18 + R46 parity 4/4), and **file the
+  handoff + manifest + observed stdout** that has been missing for two rounds.
+- Muse unchanged (ROUND-10, ROUND-11 open). Nothing synced; main compiler still
+  `55e6ac26…`, GUI `65222ca1…`.
+
+## v110 — Linux GUI IDE, slice 13: editor-pane scrolling
+
+- **The editor pane now scrolls to follow the caret.** It was capped at 23 lines
+  (`ED_LINES_MAX`) with everything past that silently dropped, so a file longer
+  than the pane lost its tail. It now keeps `ed_top` (first visible line) and draws
+  a 23-line window from there; `ed_ensure_visible` runs at the top of every
+  `draw_editor`, so moving the caret or editing scrolls the pane just enough to
+  keep the caret's line visible, and the caret is not drawn when it is off-window.
+- **Verified with a mock X server** (`tools/test_x11_edscroll.py`): type 30 lines
+  (`l01`..`l30`); the final frame shows **`l08`..`l30`** (the last 23, caret at the
+  bottom); then 29 Ups and the frame shows **`l01`..`l23`** (scrolled back to the
+  top); the buffer is intact (`Ctrl-S` read-back gives 30 lines `l01`..`l30`).
+- A test-harness note worth keeping: the pane repaints on *every* keystroke, so a
+  naive drain collects thousands of draws across many frames. The test now reads
+  only the **last** 23 editor draws - the current frame. My first version compared
+  across frames and reported a false failure.
+- Protocol 39/39, negatives 6/6, output-scroll / Home-End tests still green.
+  `sutram-gui` 20,720 -> 20,936 bytes.
+
+## v109 — R51 substance independently verified (still unreported)
+
+- ChatGPT still has **no handoff file** for R51, so it remains unaccepted and unsynced.
+  But I ran the branch's own fixtures through `--check` **with my own commands**, not
+  their audit script, and the R49 gap is genuinely closed:
+  - `nested_root.sm` -> `outer_r51` -> `inner_r51`: the error is attributed to
+    **`inner_r51.smlib:2:23`** — correct provenance through **two** `ayojan` levels.
+  - `namespaced_root.sm`: **`broken_ns_r51.smlib:2:26`** — namespaced import correct.
+  - `semantic_import.sm`: **three** semantic errors, all attributed to
+    `semantics_r51.smlib` — accumulation and origin both right.
+  - `missing_three.sm`: three located `E_MODULE_MISSING`.
+- Branch also builds (170,176 B) and passes **186/186**; it is based on current main
+  (GUI `8480b95b…`). Nothing synced; main's compiler unchanged (`55e6ac26…`).
+- Both AIs already hold an open task (ChatGPT ROUND-51, Muse ROUND-10), so no new
+  round was issued this check — per the instruction not to duplicate.
+
+## v108 — Folder check: nothing delivered yet; R51 in progress and looking right
+
+- **No new delivery in either folder.** `ChatGPT-to-Sarvam/` still ends at
+  `ROUND-49-50-*`; `Muse-to-Sarvam/` still ends at `round9-string-toolkit.md`.
+- **ChatGPT has an in-progress R51 branch** (`feature/r51-origin-tracking-20261009`)
+  with no handoff file yet, so it is **not accepted** — but the early signal is
+  good and worth recording:
+  - It is branched from **current main** — its `ide/sutram_gui_linux.asm` is
+    `8480b95b…`, my slice-12. The housekeeping item landed; no stale-base collision.
+  - Builds (170,176 B) and passes **186/186** on the in-progress source.
+  - Their `tools/r51_native_audit.py` reports **`R51_ACCEPTANCE PASS failed_cases 0`**,
+    and the substance is the R49 gap closing: an error inside an imported module is
+    now attributed to the **imported file** (`semantics_r51.smlib:3:11`), including
+    a **two-level** `ayojan` chain (`nested_root.sm` -> `inner_r51.smlib:2:23`) and a
+    **namespaced** import (`broken_ns_r51.smlib:2:26`). Three semantic errors in one
+    imported file are all reported (`correct_origin 3`); three missing modules each
+    report; nested braces give three located parse errors.
+  - Caveat: this is their own audit tool on their own WIP source. I will verify
+    independently from their manifest when they file the handoff. Nothing is synced
+    to main and the compiler on main is unchanged (`55e6ac26…`).
+- **Muse has not answered ROUND-10 yet.** No new file.
+- No new work issued: both AIs have an open task (ChatGPT R51, Muse R10).
+
+## v107 — Muse R9 accepted; ROUND-10 issued
+
+- **Muse R9 verified and accepted.** `lib/string.smlib` gained an 11-function text
+  toolkit (find/contains/replace/split/join/trim/upper/lower/starts/ends/compare).
+  Both SHA-256 hashes match; all files present. Reproduced on my own build:
+  proof_lib **132/132**, proof_props **21/21**, suite **186/186**, stdlib
+  **16 modules / 144 functions**. Compiler untouched (main's is ChatGPT's
+  `55e6ac26…`).
+- **Testing it exposed a real gap, now the next round.** My first call passed a
+  string *literal* to `varna_anwesh` and got `-1`; the source indexes `h[i+j]`, so it
+  wants a **char-code array**. On a char-code array it is correct
+  (`varna_anwesh("hello","ll")`=2, `varna_antah`=1, `varna_tul(x,x)`=0,
+  `varna_unnat("hello")`->`HELLO`). The toolkit is right; the two representations
+  (byte-packed literals vs qword cells) are simply not bridged. My misuse, not a
+  defect — but a genuine usability hole.
+- **Issued ROUND-10 to Muse** — a byte-string surface for the toolkit (`strb_*`)
+  built on the newly-available `set_char`/`char_at`, so literals flow through with
+  no hand-built array; char-code API and R9 goldens untouched. Also told them main
+  moved off R44 and to branch from `55e6ac26…`.
+- ROUND-51 to ChatGPT (finish R49 provenance) is still outstanding; no reply yet.
+
+## v106 — ChatGPT R49/R50 reviewed and SYNCED to main
+
+- **ChatGPT delivered R49 and R50 in one branch** (`feature/r49-r50-completion-20261009`,
+  draft PR #8) and wrote its handoff into that branch's `ChatGPT-to-Sarvam/`, not
+  into main. I reviewed it independently and synced the verified changes to main.
+- **Verified from the branch, then again from a fresh main checkout:** manifest
+  30/30 OK; every acceptance script reproduces (`R48_ACCEPTED_CHECK_TESTS`,
+  `STAGE2_PASS`, `R50_ACCEPTED`, `R49_REPEATED_SEMANTIC_PASS`); suite **186/186**,
+  codegen gate **12**, packs **30/30**, module graph **OK**; `tests/expect`
+  byte-identical to main. Ordinary generated code is byte-identical to accepted R46
+  (4/4 samples, `126_numeric_pipeline` = 7450 B).
+- **R50 is complete and closes the gap Muse found.** `set_char(buf, i, c)` writes a
+  real byte; a program can now build a byte-packed string at runtime. Verified:
+  `char_at(buf,0)`=104, `char_at(buf,1)`=105, `vartani_len(buf)`=2,
+  `vartani_cmp(buf,"hi")`=0. `buf[i]=c` keeps its qword-cell meaning; `width_repro`
+  is unchanged.
+- **R49 is partial, and ChatGPT says so plainly.** Repeated-call diagnostics now
+  locate each of three same-named calls distinctly, and `E_MODULE_MISSING` carries
+  a column. **Still unmet: an error inside an imported module is attributed to the
+  root filename** (`import_bad.sm:2:20` instead of `lib/faulty_r49.smlib`). I
+  reproduced that (`R49_PROVENANCE_UNRESOLVED`, wrong_provenance=1). It is a
+  diagnostic-quality gap, not a program-correctness one — so it does not block the
+  sync, but R49 is **not** complete and I have opened a follow-up.
+- **Windows is not accepted.** The compiler assembles and links to native PE32+ and
+  `--version` runs on a Windows runner, but `--check` and a generated executable
+  are not verified. Nothing has run on real Windows.
+- **Sync method:** PR #8 is a draft and the API refuses to merge drafts (I tried;
+  it returns "Pull Request is still a draft"). So I copied only ChatGPT's 34
+  changed files to main — compiler, `win/winrt.vardh`, `docs/rounds/R50-BYTE-PACKED-TEXT.md`,
+  `benchmarks/`, the CI workflow, the `r48_check`/`r49_check`/`r50_check` fixtures,
+  the six new `tools/r4*.py`, and the four `ChatGPT-to-Sarvam/ROUND-49-50-*` files.
+  I deliberately did **not** copy the branch's `ide/`, `tools/test_x11_edit.py` or
+  `docs/CHANGELOG.md` — the branch predates my slice-12 GUI work and would have
+  reverted it. Confirmed after sync: GUI source still `8480b95b…`, slice-12 test
+  intact.
+
+## v105 — Linux GUI IDE, slice 12: Home/End caret movement
+
+- **Home and End move the caret to the start and end of the current line.** Both
+  reuse the `line_start` / `line_end` helpers added in slice 10. Like the arrow
+  keys, neither takes an undo snapshot - they are not edits.
+- **Verified with a mock X server** (`tools/test_x11_edit.py`): type `ab`, Return,
+  `cde` (caret at end of line 2); Home then `x` inserts at the line start ->
+  `ab`/`xcde`; End then `y` appends -> `ab`/`xcdey`. Then Up to line 1, End, `x`,
+  Home, `a` -> `aabx`/`xcdey` (Home on the first line reaches index 0). Both
+  checks pass; the buffer is read back through Ctrl-S so the assertion is on real
+  saved content, not on screen bytes.
+- Protocol 39/39, negatives 6/6, scroll test still green. `sutram-gui` 20,640 ->
+  20,720 bytes.
+- The caret now has the full complement: four arrows, Home, End, insertion at the
+  caret, and undo that steps back through edits only.
+
+## v104 — Muse R8 accepted; ROUND-50 (ChatGPT) and ROUND-09 (Muse) issued
+
+- **Muse R8 verified and accepted.** `lib/strconv.smlib` (5 functions:
+  ank_tak_varna, varna_tak_ank, ank_tak_aadhar_varna, varna_tak_ank_aadhar, pad_vam), plus the
+  `width_repro` fixture. Both SHA-256 hashes match; all 15 files present.
+  Reproduced on my own clean build: proof_lib **128/128**, proof_props **17/17**,
+  suite **186/186**, stdlib **16 modules / 133 functions**. Compiler untouched.
+- **The width finding is confirmed.** `width_repro.sm` on a clean main build gives
+  `104 / 0 / 104 / 105` — `char_at(buf,1)` is 0 while `char_at("hi",1)` is 105.
+  `buf[i]=c` writes qword cells (correct for pankti), `char_at` reads bytes
+  (correct for literals); the gap is a **missing byte-write primitive**.
+- **Issued ROUND-50 to ChatGPT** — add `set_char` (byte store) so byte-packed
+  strings can be built at runtime, keep `char_at` byte-based and cell assignment
+  unchanged, all goldens byte-identical. Noted ROUND-49 (rebase + complete
+  `--check`) is still outstanding and comes first.
+- **Issued ROUND-09 to Muse** — build `lib/string.smlib` into a text toolkit
+  (find/contains/replace/split/join/trim/case/compare) with properties.
+- Both handoffs pushed and verified live (HTTP 200).
+
+## v103 — Linux GUI IDE, slice 11: output-pane scrolling
+
+- **The output pane scrolls.** It used to draw at most 7 lines and silently drop
+  the rest. It now keeps a `out_top` (first visible line) and draws a 7-line
+  window from there. **PgUp** (keycode 104) and **PgDn** (109) page through the
+  captured output; the window clamps at both ends.
+- **Auto-scroll to newest.** After a run the pane jumps to the last page, so the
+  freshest output is visible without scrolling. (The call sits on *both* exit
+  paths of `do_run` — the compiler-error path returns early, which is exactly
+  where a first attempt at this left it out.)
+- **Verified with a mock X server.** A mock compiler beside the GUI emits 10
+  lines. The pane shows the newest (lines 5-10 + the trailing blank that
+  `split_lines` always appends); PgUp shows lines 1-7; PgDn returns to the newest;
+  two PgUps seemit at the top. All four checks pass (`tools/test_x11_scroll.py`).
+- Protocol 39/39, negatives 6/6, and the slice-5 run path still draws its
+  compiler output. `sutram-gui` 20,096 -> 20,640 bytes.
+- Note: `tools/test_x11_run.py` asserted the pane contains the word "compiled",
+  but its input (bare `likha`) is a parse error under the current compiler, so the
+  pane correctly shows an error message. Broadened the assertion to the real
+  property — a compiler message is drawn — rather than the stale wording.
+
+## v102 — Fix clean-checkout build: win/ restored; GUI source + CHANGELOG pushed
+
+- **Root cause of "the AIs can't work": the repo had no `win/` directory.** The
+  compiler source `%include`s `win/rtblob.vardh` (line 18721) and `win/winrt.vardh`
+  (line 18912), so a fresh clone could not assemble at all. ChatGPT flagged this
+  too. Restored the full `win/` tree to main: `rtblob.vardh`, `winrt.vardh`,
+  `winrt_blob.asm`, `winapi.asm`, `winio.asm`, `native_host.asm`, `probe.asm`,
+  `build-windows.sh`. Both `.vardh` files are self-contained (no further includes).
+- **Verified on a truly clean checkout** — fresh tarball, nothing copied in:
+  `nasm -f elf64 -I. src/sutram_compiler.asm` builds (162,152 B), suite
+  **186/186**, proof_lib **124/124**, proof_props **14/14**.
+- **Large-file write route restored.** Programmatic GitHub writes work again, so
+  files are pushed from disk rather than inline. My stranded work is now on main:
+  `ide/sutram_gui_linux.asm` (slices 1-10, 38,920 B) and this CHANGELOG.
+
+## v101 — Round check: Muse R7 accepted, ChatGPT R48 accepted as Stage-1; R49/R08 issued
+
+- **Muse R7 verified and accepted.** `lib/sort.smlib` gained `nivesh_shreni`,
+  `mil_shreni_punar`, `mil_shreni`; new `lib/baseconv.smlib` with
+  `brihat_ank_tak` / `brihat_ank_se`. All three SHA-256 hashes match,
+  all 9 test files present. Reproduced on my own build: proof_lib **124/124**,
+  proof_props **14/14**, suite **186/186**, stdlib regenerates to **15 modules,
+  128 functions**. Compiler untouched.
+- **ChatGPT R48 verified and accepted as a Stage-1 proposal (not merged).**
+  `--check` mode reproduced exactly: three located parse errors, one located
+  undefined function, valid program clean, no binary in any case. Manifest 9/9
+  verifies; `r48_native_acceptance.py` passes with 4/4 ordinary programs
+  byte-identical between R46 and R48 (`126_numeric_pipeline` = 7450 B). 186/186,
+  codegen gate, 30/30 packs, module graph OK, `tests/expect` byte-identical to
+  main. Retained on branch: it is a self-declared Stage-1, and it chains off the
+  unmerged R46.
+- **Issued ROUND-49 to ChatGPT** (rebase R46+R48 onto main as one series; complete
+  check-mode across all diagnostic families with adversarial fixtures) and
+  **ROUND-08 to Muse** (`lib/strconv.smlib` plus a minimal reproduction settling
+  the `buf[i]=c` 8-byte-cell vs `char_at` byte-read question). Both pushed to
+  GitHub and verified live.
+
+## v100 — Linux GUI IDE, slice 10: Up/Down line movement
+
+- **Up and Down move the caret between lines, keeping the column.** The caret's
+  line start and column are found by scanning for newlines, the caret moves to the
+  same column on the adjacent line, and the column is clamped to the line's end -
+  so moving up from a long line to a short one lands at the short line's end
+  rather than overshooting into the next line. Two small helpers (`line_start`,
+  `line_end`) do the scanning; `caret_up` and `caret_down` use them.
+- **Verified with a mock X server.** Type `ab`, Return, `cde`; the caret is at
+  line 2 col 3. Up, then type `x` -> `abx` / `cde` (clamped to col 2). Down, then
+  type `y` -> `abx` / `cdey`.
+- Like Left/Right, vertical movement takes no undo snapshot - it is not an edit.
+- Protocol 39/39, negatives 6/6, run path still draws its output. `sutram-gui`
+  19,552 -> 20,096 bytes.
+
+## v99 — Linux GUI IDE, slice 9: the arrow keys work
+
+- **Left/Right move the caret.** They were defined since slice 2 and never
+  handled. Left decrements the cursor (bounded at 0), Right increments it
+  (bounded at the buffer length), and the next character inserts at the caret -
+  so editing in the middle of a line now works. Verified with a mock X server:
+  type `abc`, press Left twice, type `x` -> `axbc`; press Right, type `y` ->
+  `axbyc`.
+- Arrow movement takes no undo snapshot, because moving the caret is not an edit;
+  Ctrl-Z still steps back through actual changes only.
+- Protocol 39/39, negatives 6/6, run path still draws its output. `sutram-gui`
+  19,472 -> 19,552 bytes.
+
+## v98 — Linux GUI IDE, slice 8: a real undo stack
+
+- **Ctrl-Z now steps back through several edits.** Slice 7 was single-level; this
+  is a bounded stack of 8 snapshots. Each edit pushes the pre-edit buffer; Ctrl-Z
+  pops the most recent. When the stack is full the oldest slot is dropped, so the
+  last seven edits are always recoverable. A full stack costs one 7-slot memmove
+  per keystroke, which is nothing.
+- **Verified with a mock X server.** Type `abc`; Ctrl-Z gives `ab`, then `a`,
+  then empty, and a fourth Ctrl-Z correctly does nothing. Protocol 39/39,
+  negatives 6/6, Ctrl-R run path still draws its output. `sutram-gui`
+  15,392 -> 19,472 bytes (the 8-slot stack is 64 KiB of .bss).
+
+## v97 — Linux GUI IDE, slice 7: undo
+
+- **Ctrl-Z now undoes an edit.** The hint line had advertised "Ctrl-Z undo" since
+  slice 2; it is real now. Before every insert or backspace the buffer is
+  snapshotted; Ctrl-Z restores the pre-edit state and consumes the snapshot, so a
+  second Ctrl-Z does nothing. Single-level on purpose — a bounded undo stack is
+  the next step, not this one.
+- **Verified with a mock X server.** Type `ab` (pane shows `ab`), press Ctrl-Z
+  (pane shows `a`), press Ctrl-Z again (still `a`). Protocol 39/39, negatives 6/6,
+  Ctrl-R run path still draws its output. `sutram-gui` 15,008 -> 15,392 bytes.
+
+## v96 — Linux GUI IDE, slice 6: save and load
+
+- **Ctrl-S writes the editor buffer to a file; Ctrl-L reads it back.** The hint
+  line had advertised Ctrl-S since slice 2; it now actually does something. The
+  save path is `/tmp/.sutram_gui_saved.sm`; load replaces the buffer and moves the
+  caret to the end.
+- **Verified with a mock X server, no display.** Type `saveme`, press Ctrl-S:
+  the saved file contains exactly `saveme`. Backspace it all away, press Ctrl-L:
+  the pane redraws `saveme`. Protocol suite still 39/39, negatives 6/6, and the
+  Ctrl-R run path still draws its output.
+- **One test-only mistake, mine again.** My first save/load test used the wrong
+  US keycodes for `v` and `e`, so it typed `samo` and I nearly misread the result
+  as a client bug. The round trip was correct the whole time; the test was wrong.
+  `sutram-gui` 14,688 -> 15,008 bytes.
+
+## v95 — R45: an ELF-write syscall reduction (performance NOT claimed)
+
+- **Merged from ChatGPT's R45, independently verified.** Their compiler source
+  (`f2fad472…`) assembles, passes **186/186**, and produces **byte-identical
+  generated output** to the previous compiler across **40/40** examples — I
+  compared the binaries directly. Their six-file manifest verifies, and 600 raw
+  timing records are committed.
+- **What changed:** the ELF write path now combines two header write syscalls
+  into one contiguous 120-byte write, and uses `fchmod` on the already-open
+  output descriptor instead of re-resolving the output pathname. Objectively
+  fewer kernel operations.
+- **No speedup is claimed, and none was demonstrated.** ChatGPT reported medians
+  of +1.32%, +2.54%, -0.94%, -0.25%, +1.12% with paired success of only 17–19/30
+  and called the result "modest and not statistically conclusive". My own A/B
+  re-measurement was dominated by process-spawn noise (±40%). Under this
+  project's rule — performance measured, not assumed — the change is accepted as
+  a behaviour-preserving simplification, **not** as a performance improvement.
+  R46 asks for a decisive measurement of a real hotspot.
+- Optional `R45_PROFILE` cycle attribution was added, compiled out of production.
+
+## v94 — Linux GUI IDE, slice 5: it runs your code
+
+- **Ctrl-R now compiles and runs the buffer.** The editor saves its contents to
+  a temp source, resolves the compiler as `<dir of this executable>/sutram_compiler`
+  via `/proc/self/exe` (the same trick the compiler uses for language packs, so
+  the IDE and compiler ship together with no configuration), forks it with
+  stdout+stderr piped back, and — if compilation succeeds — runs the result.
+  The captured output is drawn in the output pane.
+- **The child's output is appended, not overwritten.** The first version
+  captured the compiler's message and then ran the binary into the same buffer,
+  erasing it. `exec_capture` now appends at the current length.
+- **A real bug of my own, found by testing.** `mov qword [rel run_out+4095], 0`
+  was meant to NUL-terminate the capture buffer. It writes 8 bytes at offset
+  4095, overrunning the 4096-byte buffer by seven and landing on `run_out_len`,
+  zeroing the length — so the pane drew nothing and the capture looked broken.
+  Fixed to a single byte. This is why the tests exist.
+- **Verified with a mock compiler, no display.** `tools/test_x11_run.py` puts a
+  stub `sutram_compiler` beside the GUI, types `likha`, presses Ctrl-R, and
+  asserts the pane draws the stub's output. Protocol suite still 39/39, negatives
+  6/6, build byte-reproducible. `sutram-gui` 12,728 -> 14,688 bytes.
+
+## v93 — Linux GUI IDE, slice 4: it asks the server how to type
+
+- **The editor now uses the server's own keyboard layout.** Slice 3 typed with
+  a hardcoded US-QWERTY table. Slice 4 sends `GetKeyboardMapping` (opcode 101)
+  for keycodes 8..126, reads the reply, and builds `kc_map[keycode] = ASCII`
+  from keysym index 0. A non-US layout now types correctly.
+- **The fallback is deliberate.** If the reply is not a Reply, or
+  `keysyms_per_keycode` is zero, or the array is short, `km_ok` stays 0 and
+  `handle_key` falls back to the US table — the editor still works on a server
+  that refuses the request.
+- **Proven by a server that lies.** The mock serves the standard map with one
+  deliberate exception: keycode 43 (US `h`) is served as `Z`. The test then
+  asserts the client draws `Z` and *not* `h` — which is only possible if it
+  really used the server's mapping. A fallback assertion would not distinguish
+  the two.
+- **Negative tests, two protocol edges.** `tools/test_x11_negatives.py` runs a
+  server that answers with a non-Reply and one with `per=0`; in both the client
+  must fall back to `h` and invent nothing. 6 checks, all pass.
+- **A test bug found and fixed, again in the test.** The first negative run hung
+  for 60 s: the client hardcodes `/tmp/.X11-unix/X0`, but the test had bound a
+  tempdir socket, so the client never connected and `accept()` blocked. Second
+  bug: shutting the socket's write side to simulate a refusal also stopped the
+  test sending the follow-up keypress. Both were mine, not the client's.
+- Protocol: 39 checks (was 35), 0 failures. GUI builds reproducibly:
+  `nasm -f elf64 ide/sutram_gui_linux.asm -o /tmp/g.o && ld -o sutram-gui /tmp/g.o`
+  is byte-identical across runs. `sutram-gui` 12,272 -> 12,728 bytes.
+
+## v92 — Merge: module export visibility (both assistants' work integrated)
+
+- **Two AIs built the same feature and collided; resolving that was the round.**
+  ChatGPT's R41 cycle detector was already merged. Muse's R41 patch
+  (`Muse-to-Sarvam/2026-10-09-deliverable.patch`) could not apply: it was built
+  on a base predating ChatGPT's R41, and its anchor at
+  `src/sutram_compiler.asm:1746` expected `; Expand imports` where the merged
+  source now has `call graph_preflight_v1`.
+- **Rebased by fixing the one stale anchor.** Muse's R41 then assembled and
+  passed 186/186, gate 12/12, packs 30/30, module oracle 18/18, R41 acceptance
+  3/3. All five Muse R41 features verified working: `E_MODULE_CYCLE` with the
+  full cycle path, public export, `E_MODULE_NOT_EXPORTED` (real private-symbol
+  isolation), `E_MODULE_DUP_EXPORT`, `E_MODULE_V1_ALIAS`.
+- **ChatGPT's R42 Stage 1 was reviewed, built, and rejected as a duplicate.**
+  Their SHA-gated patcher applied to `cd7a2908...`, assembled, and passed
+  181/181. But it only *declares* `niryat` visibility — on their own fixture 04
+  a private symbol stays callable — while Muse's implementation *enforces* it.
+  Two parallel visibility systems in one compiler is a defect, not a merge, so
+  the more complete implementation was taken. ChatGPT's one unique diagnostic
+  (`E_EXPORT_UNDEFINED` for undeclared exports) is carried to R43.
+- **Kept ChatGPT's cycle detector.** Removing `graph_preflight_v1` changes the
+  diagnostic on `164_r41_cycle_reject.sm` (Muse's alias rule fires first), so
+  both pre-passes stay. Redundancy documented; R43 cleanup.
+- **A source-shape test needed relaxing, not the source.** The module oracle's
+  `test_optin_only_gate` asserted exact adjacency
+  (`call graph_preflight_v1` then `; Expand imports`); the merge inserts the
+  module pre-pass between them. Rewritten to assert ordering, the real contract.
+- Suite 181 -> **186** (Muse's five R41 examples now pass, expectations
+  recorded). Compiler source SHA `cd7a2908...` -> `6036dd1c...`.
+
+## v91 — Linux GUI IDE, slice 3: it types
+
+- **The X11 client is now an editor.** Slice 2 could paint panes and labels but
+  could not be typed into. Slice 3 adds an editor buffer, key handling, and a
+  per-line repaint: printable characters insert at the cursor, backspace
+  deletes, Return opens a new line, Escape quits, and the caret is drawn as a
+  bar at the right position.
+- **A real keycode table, not arithmetic.** My first pass mapped characters as
+  `keycode - 8`, the folklore convention. It is wrong on a real server: XKB
+  puts `a` at keycode 38, not 105, so typing would have produced garbage.
+  Replaced with the standard US-QWERTY XKB table, verified by reading the
+  bytes back out of the built binary — keycode 31 really is `i`, 43 is `h`.
+  A non-US layout still needs the server's own mapping via
+  `GetKeyboardMapping` (opcode 101); that is slice 4.
+- **The bug was in my test, not the client — the fourth time that has
+  happened in this project.** The suite reported "typing 'i' produced 'hi'"
+  as failing. I instrumented the client to print every character it inserted:
+  `['h', 'i', 'h']` — insertion was correct all along. The test read
+  ImageText8's length from `body[0]`, but `body` excludes the 4-byte request
+  header, so `body[0]` is the first byte of the window id. That is why every
+  label appeared as a single character — `S`, `E`, `O`, `C` for the four
+  labels. Reading `n` from the header byte fixed it. **Check the check before
+  reporting a defect.**
+- **Verified by a mock X server, 35 checks, no display needed.** Beyond the
+  protocol shapes, the tests now drive real typing: send `h`, expect `h` drawn;
+  send `i`, expect `hi` on the same line; send backspace, expect `h`; send
+  Return, expect the text to split. A negative test confirms the suite fails
+  when the keycode table is deliberately corrupted.
+- **Honest limit, unchanged:** this proves the protocol and the editing logic.
+  It does **not** prove the window renders or that the caret sits where it
+  looks right — only a real display shows that, and the visual check is the
+  owner's.
+
+## v90 — Linux GUI IDE, slice 2: it draws
+
+- **The X11 client now paints.** Slice 1 could connect, handshake and map a
+  window but never drew anything. Slice 2 adds a graphics context, a
+  ChangeGC colour path, and an Expose-driven repaint that draws the window
+  background, an editor pane, an output pane, a teal rule and four labels —
+  then exits on a keypress.
+- **Three real bugs found, two of them in code I had already shipped as
+  verified.**
+  - The **CreateWindow request declared `length = 8`** while its body is 36
+    bytes = 9 units, because it carries a value-mask and one value. A real X
+    server would have misparsed it. Slice 1's test asserted `8`, so the test
+    **agreed with the bug** instead of catching it.
+  - `set_fg` built a ChangeGC request but **never sent it**, so every pane
+    would have been drawn in the initial colour.
+  - `new_id` masked the resource-id *base* with the resource-id *mask*, which
+    strips the base and yields id 1. The id must be `base | (n & mask)`.
+- **The mock X server was rewritten to be length-driven.** It no longer
+  asserts hard-coded lengths; it reads the declared length, pulls exactly that
+  many bytes, and checks the request is self-consistent with its opcode. That
+  is what let it catch the id bug the old test had blessed. I confirmed the
+  new test fails when I deliberately reintroduce the bad length and passes
+  when I restore it — **31 checks, all green**.
+- **Honest limit, unchanged:** this proves the protocol bytes are correct and
+  that the repaint emits the right requests. It does **not** prove the window
+  renders or that the layout looks right. Only a real display shows that, and
+  the visual check is the owner's.
+
+## v89 — documentation brought back in step with the language
+
+- **The README was truncated.** It began mid-sentence at `## Windows (native)`
+  with no title and no opening — it had lost its head at some point. Rewritten
+  in full: what Sutram is, why it exists, the keyword table, what ships, how to
+  run it on each host, how to build the compiler, and an honest status section
+  that states the known limits instead of burying them.
+- **The library chapter in all six books said four modules ship.** Twelve do.
+  Corrected in each edition's own language, pointing at the generated library
+  reference rather than duplicating a table six times.
+- **My own figures were overstated and are now corrected.** I had been claiming
+  fifteen library modules. Three of those files — `array`, `io`, `net` — are
+  comment-only design sketches with no code in them. The honest count is
+  **twelve modules with code, 103 functions**, plus three sketches. The README
+  and scorecard now say that.
+- **Four superseded book editions archived.** `docs/sutram-book.html`, `-2`,
+  `-3` and `books/sutram-book-indian.html` had drifted well behind the current
+  editions and nothing linked to them. Rather than leave stale content or
+  silently delete history, each is now a short page listing the current
+  editions — so any old link or bookmark still lands somewhere useful.
+- **A real HTML bug found while checking the result.** The English edition had
+  `<code>lang/<language>.lang</code>` — an unescaped literal tag, so browsers
+  swallowed it and the text rendered as `lang/.lang`. Now escaped. All 28 HTML
+  files parse with zero tag-balance issues.
+- **The scorecard is a current-state page, so it was updated** (SHA `c814a854`,
+  suite 178/178, 178 examples, 21 docs pages). The **audit** and **performance**
+  pages are dated snapshots — "tested at SHA 002a5600, suite 100/100" — and were
+  deliberately left alone. Rewriting a snapshot to look current would falsify
+  the record of what was actually tested that day.
+
+## v88 — ChatGPT round 40 verified and merged: transitive imports
+
+- **Imports inside an imported module now resolve.** Before this, `ayojan` only
+  expanded top-level imports, so a diamond — `a` imports `b` and `c`, both of
+  which import `d` — left `d`'s definitions unreachable. The inliner now runs
+  bounded passes over a shared visited table, so `d` is included once, in
+  deterministic order. This is still single-translation-unit source expansion,
+  **not** separate compilation, and the round was labelled partial for that
+  reason.
+- **Verified, not taken on trust.** Source SHA `c814a854` confirmed; all 28
+  manifest entries verified. I proved the patch applies to *my* source and
+  inverts cleanly by reverse-applying it with `tools/reverse_patch.py` — the
+  reconstructed source hashes back to `203a4fb1` exactly.
+- **The build they could not run:** Linux ELF 138,496 B, Windows PE32+ 129,527 B.
+- **Suite 178/178** — the target, hit exactly. Gate 12/12, shape 5/5, their
+  module-graph oracle 12/12.
+- **The diamond, checked independently.** Correct output (`17\n7\n`) does not by
+  itself prove the module was included once, so I built a manually flattened
+  equivalent and compiled both: the emitted binaries are **byte-identical at
+  671 bytes**. Emitted code is also byte-identical to the R39 baseline on
+  `126_numeric_pipeline`, `07_module` and `66_module_dedupe` — no regression.
+
+## v87 — ChatGPT round 39 verified and merged: native-script highlighting
+
+- **The Windows GUI can highlight keywords in all ten Indian scripts.** The
+  highlighter loads every `lang/*.lang` pack at startup and matches whole
+  Brahmic tokens, keeping the Latin keywords working alongside.
+- **Verified by building it**, which the author could not: object 32,999 B →
+  PE32+ GUI 32,215 B, header confirmed. Their 28/28 GUI tests pass; suite
+  177/177, gate 12/12, packs 30/30.
+- **61 NASM `.bss` warnings investigated before being reported as a defect.**
+  My held R38 source emits the identical 61, so they are pre-existing and
+  harmless — the initialiser is zero and `.bss` is zero-filled anyway.
+- **Correction to their report:** the ten packs hold **308** native keyword
+  mappings, not the 268 stated. Their test asserts `>250`, so it passed either
+  way, but the prose figure was wrong.
+- **Windows installer rebuilt in pure NASM.** The old installer needed a C
+  toolchain to build, which defeats the point of a language whose end users
+  need nothing. `Sutram-Setup.exe` is now one hand-written NASM source that
+  embeds the payload and both PowerShell scripts, shows a real window, and
+  installs per-user with no UAC. Two real faults were caught before shipping:
+  the entry point did not normalise the stack, so every Win32 call was made
+  misaligned; and `CW_USEDEFAULT` was being util_chinha-extended. A static Win64 ABI
+  checker (`tools/check_setup_abi.py`) now guards both. **It has still never
+  been run on Windows.**
+- **Release cleanup:** the project went from 59 MB to 7.6 MB — the previous icon
+  set, the per-round source archives, nine one-off patch scripts and roughly
+  seventy stray development images removed.
+
+## v86 — Linux GUI IDE started: a native X11 client in pure NASM
+
+- **Slice 1 of the Linux GUI IDE.** A native X11 client written directly against the X protocol over
+  the Unix socket — no toolkit, no libX11, no runtime. Connects, performs the connection handshake,
+  parses the setup block for the root window and resource range, creates and maps a 900x620 window,
+  and runs an event loop that exits on a keypress.
+- **Verified without a display, by standing in for the server.** The sandbox has no X server, so I
+  wrote `tools/test_x11_protocol.py` — a mock X11 server that accepts the connection, validates the
+  setup request, replies with a well-formed setup block, and then checks the client's own requests
+  byte by byte. **15/15 checks pass**: byte order `l`, protocol 11.0, no auth; CreateWindow 36 bytes
+  with opcode 1, length 8, a window id drawn from the advertised resource range, parent = the root
+  from the setup block, 900x620; MapWindow 8 bytes, opcode 8, targeting that same window.
+- **Two bugs found and fixed in my own code before they could hide:** the setup parser ignored the
+  pixmap-format block when locating the first SCREEN, so it would have read the root window id from
+  the wrong offset; and `create_win` was written but never called, so no window request was ever
+  sent. Both are the kind of fault that a mock-server test catches and a screenshot would not.
+- **Honest limit:** this proves the protocol bytes are correct. It does **not** prove the window
+  renders or that the layout looks right — only a real display can show that, and the visual check
+  is the owner's.
+
+## v85 — ChatGPT round 38 verified and merged (Unicode GUI + per-user installer)
+
+- ChatGPT implemented the UTF-8/UTF-16 bridges, the W-API path throughout (temp files, process
+  launch, dialogs), UTF-16-aware highlighting, and folded the GUI into the per-user installer with a
+  Start Menu shortcut and an HKCU uninstall.
+- **Verified independently.** GUI ASM SHA `626feb64…` matches; every Unicode bridge is present in
+  the source; it assembles with NASM (29,488 B); it links to PE32+, x86-64, subsystem 2; their GUI
+  suite is **20/20**. Icon loading confirmed: `set_project_icon` loads `icons\sutram.ico` through
+  `LoadImageW` + `WM_SETICON`, with `assets\sutram.ico` as fallback.
+- Merged the seven changed files only. My thread icon, IDE undo, ROADMAP, six books, ten packs and
+  177 examples intact. Re-verified: suite 177/177, gate 12/12, packs 30/30, GUI rebuilds to a valid
+  PE32+ GUI.
+- **Two corrections recorded.** My earlier claim that the Drive `403 cannotDownloadAbusiveFile` was
+  caused by `.exe` files in the archive is **wrong** — ChatGPT reports the block persists with every
+  executable removed. Cause still unknown. And I mis-reported ChatGPT's icon loading as missing; the
+  path is a UTF-16 wide string, which an ASCII grep cannot see. Their claim was correct.
+
+## v84 — ChatGPT round 36 verified and merged (Windows GUI ABI repairs)
+
+- ChatGPT found and fixed four defects in the Windows GUI: the anonymous-pipe
+  `PeekNamedPipe` argument-numbering bug (output was passed at argument six instead of five, so the
+  Run pane would have been silently empty), a Win64 nonvolatile RSI/RDI violation in `win_resolve`,
+  a vacuous test assertion, plus four new ABI contract tests and two more manual checklist steps.
+- **Verified independently, not taken on trust.** Their claimed GUI ASM SHA `68b15802…` matches; the
+  PeekNamedPipe repair is confirmed present at both call sites; it assembles with NASM; it links to
+  PE32+, x86-64, subsystem 2 (WINDOWS_GUI); their GUI suite is 12/12.
+- Merged changed files only, as they asked. My new thread icon, IDE undo, ROADMAP, six books,
+  ten packs and 177 examples all intact. Re-verified after merge: suite 177/177, gate 12/12,
+  packs 30/30, GUI rebuilds to a valid PE32+ GUI.
+
+## v83 — new project mark: the thread
+
+- **The old icon is replaced across the project.** The previous mark was a dark-teal circle
+  carrying the Devanagari letter स flanked by curly braces, in two colour variants (an older gold
+  set and a newer orange set) plus three pixel-art small sizes that matched neither.
+- **The new mark is a thread** — a single continuous curve in a teal circle with a warm ring. It is
+  script-neutral by design: it carries no Devanagari letter, so it does not represent one Indian
+  language over another, and no faith. It also means the project's own name (सूत्रम्, sūtra =
+  thread) rather than borrowing a symbol from somewhere else.
+- **Replaced:** `icons/` (full set), `docs/assets/` (16/22/24), `windows/native-installer/assets/`
+  and the copies under `brand/`. Filenames are unchanged, so every script reference still resolves.
+- **New `icons/sutram.ico`** is a genuine multi-size icon: 16, 20, 24, 32, 48, 64, 128 and 256 at
+  32bpp, so Windows picks the right artwork per context instead of downscaling one bitmap.
+- **Per-size tuning, not one bitmap scaled down.** Stroke weight rises from 10.5 at 256px to 19 at
+  16px, and the curve flattens from 32px down, so the thread keeps enough weight to read and its
+  round caps stay clear of the circle edge at small sizes.
+- **Reversible:** the previous icon set was removed during release cleanup; the thread mark is now the only icon set.
+- Caveat recorded honestly: sizes 128 down to 24 were verified readable. **16px could not be
+  confirmed at true size** from a screenshot, so it is the one size still open.
+
+## v82 — ChatGPT round 34 verified and merged (namespace contract hardening)
+
+- ChatGPT extended the R33 opt-in import namespaces with alias ownership, qualified module-name
+  validation, bounded import-table diagnostics, and an importer EOF boundary repair. Nine new
+  examples (154-162), seven of them expected-rejection contracts.
+- **Verified independently, not taken on trust.** Their claimed AFTER-hash
+  `203a4fb1ca917bc6…` matches the delivered source exactly; it builds with NASM; the suite is
+  **177/177** (168 from R33 plus the nine new cases); the codegen gate is **12/12**, so the FG2
+  recovery still holds through this change.
+- **Merged precisely, not by replacement** — as they asked, since Drive serves my zip as
+  `403 cannotDownloadAbusiveFile` and they could only merge against their own tree. Only their
+  changed files were applied; my IDE undo, ROADMAP, six books, changelog, language packs and
+  examples 200+ are all intact.
+- A good util_chinha: they are now writing **expected-rejection tests** — overlong alias, empty alias,
+  digit alias, missing module, path traversal, import capacity. Testing that bad input is refused
+  is a stronger habit than testing only that good input works.
+
+## v81 — the language packs now cover the whole language
+
+- **All ten packs were missing the same four keywords**: `dasham` (floats), `kosh` (growable
+  arrays), `kuru` (do-while) and `nishkriya` (inline assembly). Each pack covered 26 keywords; the
+  language has 30. So "program in your language" did not reach the newer parts of the language.
+- Added them in each script, using native words consistent with the book editions.
+- **Verified by compiling, not by listing.** `tools/test_lang_packs.py` writes a real program in
+  each pack's own native words and runs it: kosh + dasham 10/10, kuru (do-while) 10/10,
+  nishkriya (inline asm, exit code 42) 10/10. A pack that lists a word the compiler rejects would
+  be worse than one that omits it, so presence was never the test.
+- Finding along the way: `kuru` is a **do-while** — `kuru { body } yavat (cond)` — not a plain
+  block. An earlier test of mine assumed the wrong form and failed until corrected.
+
+## v80 — IDE undo, and a real terminal bug behind it
+
+**Added:** Ctrl-Z undo in the IDE, up to 4096 edits deep. It uses a compact undo
+log (operation, position, byte) rather than snapshotting the 64 KB buffer on every
+keystroke, and records before each mutation in `insert_byte` and `delete_before`.
+
+**Fixed:** the IDE's `set_raw` cleared only `ICANON` and `ECHO`, leaving **`ISIG`**
+set. That meant Ctrl-Z (0x1a) was still the terminal's *suspend* character: the
+kernel sent `SIGTSTP` and **stopped the IDE process**. It looked alive but processed
+nothing further — no keystrokes, no save — which is what made undo appear to
+"clear the whole buffer". The same class of bug applied to `IXON`: Ctrl-S is the
+IDE's *save* key, but it is also XOFF. Both flags are now cleared. This was a
+pre-existing bug, not one introduced by undo; choosing Ctrl-Z is what exposed it.
+
+**Testing note:** the first undo test read the reconstructed screen and reported
+five false failures. Save-then-read-the-file is the reliable method and is what
+`tools/test_ide_undo.py` now does — 12/12 cases pass.
+
+**Verified:** undo 12/12; IDE harness unchanged (colours, run, shell pane, examples
+browser all still correct); compiler suite 163/163; codegen gate 12/12.
+
+## v79 — found and fixed a split book set
+
+- The project carried **two copies of the book editions**: `books/` and `docs/`. Only `docs/` was
+  updated in v77, so `books/` still held the pre-`kosh` text — a stale shipping copy.
+- `books/` now synced from `docs/` for all six editions. `books/sutram-book-indian.html` is a
+  separate combined edition and is noted as still needing the same update rather than being skipped
+  quietly.
+
+## v78 — roadmap added; operating-system capability recorded as a future feature
+
+- **New `ROADMAP.md`** (in the project tree, so ChatGPT sees it too) and a matching readable page
+  `docs/sutram-roadmap.html`.
+- **Operating-system capability is recorded as an Exploratory future feature**, per the request. The
+  page states plainly that it is **not** possible today, lists the six specific blockers found by
+  reading the compiler (no raw pointers, no `volatile`, hard-coded load address, 64-bit only, no
+  naked/interrupt functions, no freestanding mode), and sets out the six bounded additions that
+  would close the gap. The UEFI route is named as the recommended entry point, since PE32+ output
+  already exists.
+- Nothing on the roadmap is presented as a commitment. The page opens with a direction-not-commitment
+  badge, marks every item Exists / Planned / Exploratory, and repeats the guardrails that must not
+  change.
+- Verified: page rendered in a browser and inspected — cover, legend table and status markers all
+  correct, no overflow.
+
+## v77 — the books are current again
+
+- **All six book editions updated** (English, Hindi, Sanskrit, Tamil, Telugu, Gujarati) with a new
+  chapter 18, "What is new — the current language", plus a shared code appendix (chapter 19).
+- **Why it was needed:** no edition mentioned `kosh` at all — they predated growable arrays, floats,
+  typed arrays, typed parameters, the IDE, the shell pane and the newer library modules. The
+  documentation was understating the language.
+- Covers: `dasham` floats and mixed arithmetic; `kosh` growable arrays and the capacity-vs-length
+  rule; typed `kosh dasham`; typed function parameters and the by-value pointer boundary; the 15
+  library modules including the heritage and numerical ones; the IDE with its shell pane; measured
+  performance; and an honest note on what has not been verified.
+- The five non-English editions were translated into their own scripts and assembled into the
+  existing book CSS, so they match the surrounding pages. Code examples are identical across
+  editions, since Sutram source does not change with the book's language.
+- Verified: div-balanced HTML in all six, and a rendered check of the Hindi edition confirming the
+  Devanagari text and code blocks display correctly with no overflow.
+
+## v76 — PERF-FG2 verified: indexed/complex float scheduling, ~1.10x more on real code
+
+- **Verified**: FG2 (left-first scheduling for indexed and complex float expressions) changes
+  `126_numeric_pipeline` (7,648 -> 7,610 bytes) and makes it **~1.10x faster** (interleaved A/B:
+  77.5 -> 71.2 ms and 78.4 -> 70.7 ms). Together with FG1 that is ~1.21x cumulative on the realistic
+  program. Suite 155/155; gate 12/12 with all three new gates at exactly their ceilings; 135-140 exact.
+- **XMM residency design doc received and reviewed** (`compiler/XMM_REGISTER_RESIDENCY_DESIGN_R30.md`):
+  correct SysV-vs-Win64 volatility handling, staged plan behind a disabled-by-default flag, explicit
+  call/branch/loop barriers, and exact-bit tests. Endorsed with two additions (a flag-off
+  byte-identical negative gate; no Windows XMM6-15 work without a real Windows runner).
+- Next big task handed over: implement Stage 1 of that design behind the flag.
+
+## v75 — IDE: interactive shell pane
+
+- **Ctrl-T opens a shell pane inside `sutram-ide`** — the other half of what IDLE gives you. Type a
+  Sutram statement, press Enter, and it runs; the session accumulates, so later statements see earlier
+  ones (`vitti x = 6` then `likha(x * 7)` prints 42). Ctrl-T or Ctrl-C returns to the editor.
+- Implemented by wrapping the accumulated session in `mukhya() { ... }`, compiling and running it
+  through the same path Ctrl-R uses — so the shell has no separate evaluator to drift out of sync.
+- Two bugs found and fixed by the PTY harness, both the same class as before: `strlen` needs its
+  pointer in `rdi` (I had set `rdx`), and the program buffer must be cleared before appending, or two
+  `mukhya()` definitions were emitted and the compiler silently used the first.
+- Added a shell-pane regression scenario to `tools/ide_test.py`.
+
+## v74 — samanvaya: linear algebra on flat arrays
+
+- **New module `lib/samanvaya.smlib`** (समन्वय) — matrices as flat `kosh dasham` in row-major
+  order with explicit dimensions, since Sutram has no 2-D type: identity, transpose, sum, scalar
+  multiple, matrix product, trace, 2×2 and 3×3 determinants, vector dot product, and a row-sum norm.
+- **Verified against hand-computed values**: `[[1,2],[3,4]]·[[5,6],[7,8]] = [[19,22],[43,50]]`,
+  trace 5, det₂ −2, **det₃ −306** (the classic example), row-norm 7, and a 2×3 transpose giving
+  `1 4 2 5 3 6`.
+- Found and fixed one authoring error before it shipped: `vitti` is not valid as a parameter type
+  annotation, so dimension parameters are untyped (learned from `kalana`).
+- 15 modules, 103 functions. Suite 149/149.
+
+## v73 — kalana: a numerical-methods library
+
+- **New module `lib/kalana.smlib`** (कलन, numerical calculus), built on typed `kosh dasham`:
+  `kalana_trapiz` and `simpson` (integration over samples), `pravan` and `pravan2` (first/second
+  derivatives), `bahu_ganana` (Horner polynomial evaluation) and `bahu_mula` (bisection root).
+- **Verified against known answers, not self-consistency**: ∫₀¹x²dx = 0.335000 kalana_trapiz and
+  **0.333333** Simpson (exact for a quadratic), d/dx(x²) = 1.0 and d²/dx² = 2.0 at the midpoint,
+  and the root of x²−2 = **1.414214** (√2) to six decimals.
+- Three bugs found and fixed during verification, one of them instructive: Simpson's 4/2 weighting
+  was inverted; and my first `ok` out-parameter write hit "array index out of bounds" — which turned
+  out **not** to be a compiler bug but correct bounds checking, since a kosh's capacity is not its
+  length. Narrowed before claiming anything, and documented as a contract.
+- 14 modules, 93 functions. Suite 148/148.
+
+## v72 — PERF-FG1: the realistic pipeline finally moves
+
+- **Verified**: PERF-FG1 (general float binary-expression, call RHS) changes `126_numeric_pipeline`'s
+  binary (7,733 -> 7,648 bytes) and makes it **~1.10x faster** (interleaved A/B, two rounds:
+  85.7 -> 77.4 ms and 86.1 -> 78.4 ms). The first time the representative program has improved at all.
+- Suite 147/147; `133`/`134` exact; the `pop rdx` at the hot statement is gone.
+- **Found a gate bug**: `float_scalar_call_rhs` requires `count == 18` exactly, but the correct build
+  emits 17 — every shape condition passes. An exact-count gate rejects improvements to the very path
+  it protects; reported with the fix (`count <= ceiling`).
+- Census refinement (disjoint float-RHS buckets) adopted: in 126 the remaining shapes are 9 call,
+  7 indexed, 9 complex, 6 simple-self — which is why F1/F2/FC1 alone moved nothing.
+
+## v71 — PERF-F2 / PERF-FC1 verified — and the realistic pipeline still does not move
+
+- **F2 (float distinct destination) verified**: `c = a + b` 7 instructions with a `pop` -> 4 with no
+  stack. Measured A/B: min 102.0 -> 57.4 ms = **1.78x** — the largest single gain since PERF1.
+- **FC1 (float comparison) verified**: 6 instructions, no stack, `SETcc` byte-identical to the old
+  fallback. Measured A/B: min 29.6 -> 27.5 ms = 1.08x. F1 unregressed.
+- Suite 145/145, gate 8/8.
+- **However: the realistic 126 pipeline is byte-identical before and after.** Its float work is
+  function calls and multi-term expressions, not the simple register-resident shapes these fast paths
+  require. So the synthetic kernels improve and the representative program does not — the PERF2–PERF5
+  pattern one level up. Recorded plainly rather than implied away.
+- Next target is therefore **float expression scheduling in the general case**, with 126's binary
+  changing as the acceptance criterion.
+
+## v70 — float hotspot fixed, measured 1.33x
+
+- ChatGPT's PERF-F1 (float scalar self-update) verified: 8 instructions with a `pop` -> 4 instructions
+  with no stack traffic. Gate 6/6; suite 141/141.
+- **Measured A/B, same machine**: min 51.1 -> 38.3 ms, p10 52.4 -> 39.2 ms = **1.33x** on a
+  float-accumulation benchmark. The first optimization since PERF1 to move the clock.
+- Why it worked: a static census of real numerical code showed 61% of assignments are float and the
+  integer patterns of PERF2–PERF5 occur ~0 times there. Measurement found the target.
+- Still on the slow path: distinct-destination float (`c = a + b`), complex float expressions, and
+  persistent XMM residency (needs an ABI design).
+
+## v69 — a real native Windows package (no WSL)
+
+- Found that the shipped tree had **no Windows artifacts at all**, and that the Windows
+  install path was still a **WSL bridge** — obsolete, since the compiler has a native PE32+
+  build that needs no WSL.
+- Added `windows/native/`: a native `sutram.cmd` wrapper, a per-user least-privilege
+  `install.bat` (no admin, no UAC, HKCU only) and `uninstall.bat`. Replaced the stale
+  WSL-based `windows/install.bat` and `windows/sutram.cmd`.
+- Built **`sutram-windows.zip`** — `sutram.exe` + wrapper + installer + 136 examples +
+  13 library modules + 10 language packs + books, with a README.
+- Verified the shipped `sutram.exe` is a well-formed PE32+ (MZ/PE headers, machine 0x8664,
+  console subsystem) and that compiling to `*.exe` emits a well-formed Windows PE.
+  **Not** verified at runtime — no Windows host available.
+
+## v68 — IDE: examples browser
+
+- **Ctrl-E** in `sutram-ide` now cycles through `examples/*.sm` — each press loads the next example,
+  wrapping at the end. So you can flip through the sample programs and hit Ctrl-R to run each one,
+  without typing a path.
+- Found and fixed a bug during verification: the path builder appended to the existing path instead
+  of replacing it, so the loaded filename became `untitled.smexamples/01_hello.sm`. The path is now
+  reset before being built.
+- Added to the PTY regression harness (`tools/ide_test.py`) as a scenario.
+
+## v67 — sankhyiki: the library starts using typed kosh parameters
+
+- **New module `lib/sankhyiki.smlib`** (सांख्यिकी, statistics) — the first library module built on
+  ChatGPT's typed `kosh dasham` parameters: `yoga` (sum), `madhya` (mean), `prasaran` (population
+  variance), `vichalan` (population std deviation), `laghutama`/`adhikatama` (min/max), `vyapti`
+  (range), `bindu` (dot product), `manak` (Euclidean norm), and a private `sankhyiki_vargmool`.
+- **Verified against a known-correct dataset** rather than only self-consistency: `[2,4,4,4,5,5,7,9]`
+  gives mean 5, variance 4, stddev 2, range 7 — every value exact against an independent Python
+  computation. Vector cases check out too (dot of (3,4)·(1,2) = 11; norm of (3,4) = 5).
+- Empty arrays return 0 rather than dividing by zero; the module never calls `kosh_push` on a
+  parameter, which the compiler deliberately rejects.
+- Suite **136/136**.
+
+## v66 — the Sutram IDE ships with the language
+
+- **New: `sutram-ide`** — a full-screen editor and runner, written in the same hand-written NASM,
+  built as its own binary so it never collides with the compiler workstream.
+  - editor with line numbers, cursor movement, insert/delete
+  - syntax highlighting for the full current keyword set (including kosh/dasham/guna/bhavana/
+    rachana/ayojan/kuru/pankti), plus strings, numbers and comments
+  - `Ctrl-R` compiles and runs the buffer, showing output in a pane; `Ctrl-S` saves, `Ctrl-L` loads
+  - zero dependencies: no Python, no runtime, no toolkit
+- **Installer:** `install.sh` now installs `sutram-ide`, symlinks it, and adds a **Sutram IDE**
+  desktop entry (uninstall removes both). The IDE locates the compiler via `./sutram_compiler`
+  then `sutram` on PATH, so it works from the source tree or the applications menu.
+- **Verified end to end** through a pseudo-terminal harness (`tools/ide_test.py`): launch, render,
+  highlight, edit, save, run-with-output, quit. Three real bugs were found and fixed this way
+  (a stack-leaking keyword scan that segfaulted, a truncated command builder, and a clobbered
+  colour register).
+
+## v65 — codegen performance analysis
+
+- Measured the emitted machine code with delta-instruction counting over `ndisasm` disassembly
+  (the ELF has no section headers, so `objdump -d` cannot read it).
+- **Headline finding:** binary operators route their operands through the machine stack
+  (`push`/`pop`/`xchg`) even though the values are already in registers. `s = s + i` costs six
+  instructions where one (`add rbx,r12`) would do; `c = a + b` costs seven more than necessary.
+- Register allocation itself is sound — 16 live variables do not spill.
+- Report: `docs/sutram-performance.html`, with a baseline bench and three ordered recommendations.
+
+## v64 — B11 closed + typed `kosh dasham` (both verified)
+
+- **B11 closed.** The per-block statement list now has a named `BLOCK_STMT_CAP`, raised from the
+  implicit 64 to **256** (65 statements is ordinary code, as the audit argued), with a named
+  `Sutram Error: too many statements in block`. Verified: 256 statements compile, 257 fails with
+  the named error, and my old 65-statement repro now compiles.
+- **Typed `kosh dasham` delivered.** `kosh dasham xs[4]` / `कोश दशम` hold binary64 elements;
+  integer pushes promote, element reads and `kosh_pop` are float expressions, and float-return
+  inference works through both `kosh_pop()` and indexing. Verified independently — a float
+  accumulation loop, a sum, an average, negative floats, int promotion, capacity doubling.
+- Suite **122/122**. New heritage example `205_madhava_pi_kosh.sm` uses a float array for the
+  Madhava pi series — the first library-side use of typed growable arrays.
+
+## v63 — B10 fixed (verified) + audit hardening + B11 found
+
+- **B10 verified fixed.** ChatGPT found a deeper form (nested loops overwriting the shared patch
+  counters) and fixed both: guarded tables (BREAK_PATCH_CAP=1024) plus per-loop base/restore.
+  Their 103/104 regressions return `9` exactly; my original 64-break repro now compiles.
+- **Audit hardening merged:** `code_buf` (256 KiB, guarded), `rachana_defs` (named caps), block
+  nesting (BLOCK_NESTING_CAP=128, named error), `import_names` cap.
+- **T18 kosh re-verified**; AST ceiling at 768 KiB. Suite **115/115** after adding the harness
+  compile-fail markers the new negative tests needed.
+- **NEW BUG B11 found:** nested block bodies (`yadi`/`yavat`) cap at **64 statements**; the 65th
+  fails with a misleading parse error and no guard. Function bodies are not capped. Regression
+  `204_b11_block_statement_capacity.sm`; documented in the audit report.
+
+## v62 — T18 growable arrays (kosh) verified + AST ceiling raised
+
+- **T18 verified and merged.** `kosh` (Devanagari `कोश`) growable arrays with `kosh_push`,
+  `kosh_pop`, `kosh_len`, `kosh_cap`; capacity doubles on growth. All five of ChatGPT's
+  predictions matched exactly, including the empty-pop diagnostic and post-pop bounds tightening.
+- **AST ceiling raised 4x** (196608 -> 786432 bytes): all seven real function modules now compile
+  together in one program (was `AST capacity exceeded`).
+- New heritage example `203_meru_with_kosh.sm` — Meru-prastara (Pascal's triangle) into a kosh;
+  verified 21 values, rows 0-5.
+- Reference gained a "Growable arrays (T18)" section. Suite **107/107**.
+- **Example numbering:** my heritage examples moved to **200+** (200/201/202/203) to stop
+  colliding with ChatGPT's 90-100 range.
+
+## v61 — project audit: B10 found + audit report
+
+- **Audit found a critical bug (B10):** `break_patch_positions` / `continue_patch_positions`
+  (`resb 512` = 64 entries) have no capacity guard. 64 `krama`/`uddeshya` in one loop corrupt
+  adjacent memory and fail as a misleading parse error (63 works, 64 does not). Reported to
+  ChatGPT with the exact repro; needs a bound check + named error.
+- **Second finding:** deep nesting (~150 blocks) fails with a misleading `end of file` parse error.
+- Buffers without capacity constants identified: `code_buf`, `rachana_defs`, `alloc_sizes`,
+  `import_names`.
+- Confirmed clean: the guarded arenas, no credentials anywhere in source, least-privilege
+  installer. Added `docs/sutram-audit.html` documenting all of it.
+
+## v60 — standard-library reference + a real library bug fixed
+
+- **Fixed a real defect:** `num` and `util` both defined `seemit`, `asti_yugm` and `asti_visham`, so
+  importing both together failed with `duplicate function definition: seemit`. Removed the
+  duplicates from `util` (num is the canonical home). No module now defines a name another module
+  defines; verified `num + util` compiles and the suite stays 100/100.
+- Added `docs/sutram-stdlib.html` — a full standard-library reference: every module, every
+  function, with signatures and one-line descriptions. 12 modules, 80 functions.
+
+## v59 — Brahmagupta's area formula + T12 interop re-verified
+
+- `ganita` gained `brahmagupta_kshetr(a,b,c,d)` — Brahmagupta's cyclic-quadrilateral area formula
+  (628 CE), which reduces to the triangle formula when d=0. Verified: 3-4-5 -> 6, 5-5-6 -> 12,
+  cyclic 3-4-5-6 -> 18, vargit side 4 -> 16.
+- ChatGPT re-sent the T12 function-interop source (byte-identical, `002a5600`) with two extra
+  regressions; both verified exact. Suite **99/99**.
+- Renumbered my examples to 96/97 to end a number collision; my heritage examples now sit at 96+.
+
+## v58 — T12 function interop (verified) + the madhava library module
+
+- **T12 floats + function interoperability verified and merged.** Typed parameters
+  (`prakriya f(dasham x)`) and float-return inference. Both hosts build, suite **96/96**, their
+  new float-function regression matches its prediction exactly.
+- **New module `madhava`** — the Kerala school as a real library: `madhava_pi` (Madhava's fast
+  series), `madhava_sin`, `madhava_cos`, `madhava_atan`, and `madhava_vargmool` (Newton). Verified
+  exact to six decimals: pi 3.141593, sin(0.5) 0.479426, cos(0.5) 0.877583, atan(0.5) 0.463648,
+  sqrt(2) 1.414214.
+- Example `95_madhava_library.sm`. Renumbered my earlier example 93 -> 94 (number collision).
+- Library is now 12 modules, 7 with functions. Suite **97/97**.
+
+## v57 — T12 floats (verified) + the Madhava series
+
+- **T12 floating point is implemented and verified.** `dasham`/`दशम` scalar binary64, decimal
+  literals, SSE2 mixed arithmetic, comparisons in `yadi`/`yavat`, and a six-decimal printer.
+  Verified: their regression matches its prediction exactly; my edge cases (0.0, 0.05, 1.999999,
+  negatives, mixed int*float, float loops) all pass. Suite **95/95**.
+- **The Kerala school joins the library heritage.** `examples/93_madhava_series.sm` computes
+  Madhava's fast pi series (pi = sqrt(12) * sum (-1)^k/((2k+1)3^k)) plus the sine and cosine
+  series. Verified exact to six decimals: pi 3.141593, sin(0.5) 0.479426, cos(0.5) 0.877583.
+- Floats cannot yet cross function boundaries, so the Madhava series is an example rather than a
+  library module until T12 function interop lands.
+- Removed an orphaned `89_indian_number_theory` expect pair left by an earlier rename.
+
+## v56 — Brahmagupta's samasa (composition law) added to ganita
+
+- `samasa(out, a, b, c, d, n)` implements Brahmagupta's composition law: from
+  a^2-n*b^2=k1 and c^2-n*d^2=k2 it composes (a*c+n*b*d, a*d+b*c). Named `samasa` because
+  `bhavana` is already a reserved keyword (the `guna` case label).
+- Verified: (3,2)^2 -> (17,12) with 17^2-2*12^2 = 1; (8,1)^2 for N=61 -> (125,16) with
+  125^2-61*16^2 = 9. Suite **93/93**.
+
+## v55 — least-privilege Windows installer (verified at source level)
+
+- The Windows installer is now **per-user by design**: UAC elevation path removed entirely,
+  default install to `%LOCALAPPDATA%\Programs\Sutram`, uninstall registration under `HKCU`,
+  user PATH only, per-user Start Menu and Desktop shortcuts.
+- A build-time gate (`Assert-LeastPrivilegeInstallerSources`) aborts the build if UAC helpers,
+  HKLM, machine PATH, common shortcuts or Program Files defaults ever return.
+- Verified at source level: the runtime installer sources contain none of the forbidden patterns;
+  every occurrence of those names is a *needle inside the gate* that rejects them.
+- Runtime Windows acceptance (no UAC prompt, per-user install/uninstall) still needs a real
+  standard-user Windows account — cannot be rebuilt in this environment.
+
+## v54 — B9 FIXED (verified) + philosophy prefaces in the books
+
+- **B9 is fixed and verified.** ChatGPT made `&&` and `||` truly short-circuit: `.ge_binop`
+  leaves the eager path for `OP_LAND`/`OP_OR`, so the RHS is skipped when the result is already
+  determined. Verified: `i < pankti_len(a) && a[i] > 0` now returns 0 with no bounds error,
+  `0 && (1/0)` returns 0 without dividing, and both new regressions match their predictions.
+  Both hosts build; suite **93/93**.
+- **Every book edition now opens with a Preface** (English, Hindi, Sanskrit, Tamil, Telugu,
+  Gujarati) stating the philosophy in its own script.
+- Renamed my number-theory example 89 -> 91 to avoid a number collision with ChatGPT's B9 tests.
+
+## v53 — philosophy preface in all six book editions
+
+- Each book edition (English, Hindi, Sanskrit, Tamil, Telugu, Gujarati) now opens with a
+  Preface stating the philosophy: Sanskrit keywords as design commitment, the name सूत्रम्
+  after Panini, the standard library as the Indian mathematical tradition (Pingala, Aryabhata,
+  Bhaskara), and the self-sufficient compiler.
+- Prose translated per edition; the code and the claim are identical in all of them.
+
+## v52 — Indian number theory: kuttaka + chakravala
+
+- Added `lib/ganita.smlib` — Aryabhata's **kuttaka** (linear indeterminate equations; ancestor of
+  the extended Euclidean algorithm) and Bhaskara II's **chakravala** (Pell's equation
+  x^2 - N*y^2 = 1). Verified: `chakravala(61)` gives x = 1766319049, y = 226153980 — the
+  historical result, exact.
+- Example `89_indian_number_theory.sm`; suite now **92/92**.
+- The library now implements two stages of the philosophy roadmap: Pingala (`chandas`) and
+  Aryabhata/Bhaskara (`ganita`).
+
+## v51 — philosophy document + chandas module
+
+- Added `docs/sutram-philosophy.html` — the project's philosophy in three layers (words, name,
+  methods) with the library roadmap: Pingala (shipped), Aryabhata, Brahmagupta/Bhaskara, the
+  Kerala school, Katapayadi.
+- Added `lib/chandas.smlib` — Pingala's prosody mathematics: `dviguna` (2^n), `meru`
+  (Meru-prastara / Pascal's triangle), `matra_meru` (Fibonacci), `asti_guru`, `guru_gan`,
+  `meru_pankti`. Example `88_pingala_chandas.sm`; suite now **89/89**.
+
+## v50 — B8 FIXED (verified) + language packs cleaned
+
+- **B8 is fixed and verified.** ChatGPT traced it to `func_params resb 512` (64 parameter
+  slots) while the parser stores every function's parameters cumulatively; `math+sort+string`
+  has 67 parameters (536 bytes), overflowing into `func_table` and corrupting a string pointer
+  -> segfault in `strcmp`. Fix: `FUNC_PARAM_CAP 4096` + bounds guard, plus guards for the AST
+  heap, variable table, function table, patch list and function-definition table.
+  Verified by rebuilding both hosts: **all 15 module combinations compile**, including the two
+  that crashed before, and the suite is **88/88**.
+- **Language packs cleaned (8 active):** removed all duplicate keyword entries and filled the
+  missing Telugu `bhavana`. Every active pack now has exactly 26 keywords, 0 duplicates, and
+  compiles a real program in its own script.
+  - Gujarati `sutra` was **કૂટશબ્દ ("codeword") - wrong meaning** -> `અચલ` (constant)
+  - Telugu gained `bhavana` -> `భావన`; plus dedupes and Sanskrit-form fixes
+  - Kannada, Marathi, Odia, Punjabi: dedupe + Sanskrit-form corrections
+- Tamil and Malayalam packs are **paused** (unchanged).
+- Added `docs/sutram-keyword-words.html` (keyword x language grid) alongside the scorecard.
+
+## v49 — B8 token-ceiling fix (partial) + capability scorecard
+
+- **B8 root cause found by ChatGPT:** the token array was `40960` bytes at `TOKEN_SIZE 40`
+  = exactly **1024 slots**; three modules produce ~1302 tokens and overwrote memory after
+  `token_arr`. Raised to `TOKEN_CAP 65537` (one token per source byte + EOF), and the lexer
+  string pool to `STR_POOL_CAP 65537`. Verified: `math+num`, `math+num+sort`,
+  `math+num+string`, `num+sort+string` now all compile (they did not before).
+- **B8 still OPEN:** `{math, sort, string}` in any order, and all four modules, still
+  **segfault** (exit 139) — a second, content-specific failure mode, not the token ceiling.
+  `math+sort+num` compiles but `math+sort+string` does not, and a renamed copy of string
+  reproduces it, so it follows string's *content*. Several fixed buffers
+  (`ast_heap`, `patch_list`, `func_table`, `var_table`) still have no bound check.
+- Test fixture corrected: `likha` of an integer appends a newline, so the expected output of
+  `86_b8_multi_modules` is `9\n 1\n 3\n\n`, not `9 1 3`.
+- Suite: **87/87**.
+- Added `docs/sutram-scorecard.html` — the language scored against 17 parameters.
+
+## v48 — performance made a standing priority; measured baseline; faster sort
+- STANDING INSTRUCTION: performance is now a first-class requirement every round, not a
+  later phase. `tools/bench.py` added — it measures compile time and CPU-bound run time so
+  "faster" is a number we can track. Baseline: loop_sum (20M iterations) ~71 ms,
+  nested_loop ~24 ms, fib_rec ~63 ms, compile median ~2.7 ms.
+- DIAGNOSIS: loop_sum is ~5 ns per two-operation iteration; a register-resident loop should
+  be ~1 ns. That is the signature of locals living in memory rather than registers, so
+  register allocation (P1) is the top compiler-side lever. Assigned to ChatGPT with P2
+  (redundant load/store elimination), P3 (strength reduction + LICM), P4 (compile speed).
+- LIBRARY WIN: added `shankh_shreni` to lib/sort.smlib. Measured at n=3000: budbud_shreni adds
+  71 ms over baseline, shankh_shreni adds ~0 ms — roughly 70x faster. Golden example 85.
+- FOUND B8: the `ayojan` inliner writes into a fixed 8192-byte area; inlining three or more
+  modules overflows it and corrupts the program source. A hard cap on the library.
+- FOUND B9: `&&` does not short-circuit. `j >= 1 && a[j-1] > 0` evaluates the right side and
+  trips the bounds check; nested `if`s are correct. Both a correctness and a speed issue.
+
+## v47 — library growth exposed B8: `ayojan` inliner overflows at 3+ modules
+- FOUND (by using the library, not by reading): the `ayojan` preprocessor writes inlined
+  module source into a fixed 8192-byte area (`str_pool + 8192`). Inlining three or more
+  modules overflows it and corrupts the program source.
+  - 1 module -> fine; 2 modules -> fine; 3 modules -> `parse error at line 1:288 near token ''`.
+- IMPACT: a hard cap on the standard library. Any program that pulls in three or more
+  modules is corrupted, so the library cannot grow past ~2 usable modules at a time.
+  This is now the top blocker for the library roadmap.
+- WORKED AROUND in the tree: `full_demo` used math+string+io (three) and had gone red;
+  it only uses builtins, so its `ayojan` lines were removed and it re-recorded. Suite 85/85.
+- Every library example uses exactly one module, so all of them still pass.
+- ADDED lib/string.smlib: `gan_akshar`, `anwesh_akshar`, `asti_sarv_ank`, `unnat_sanket`,
+  `avanat_sanket` (module now 13 functions), golden example 84_stdlib_string2.
+- Windows verification kit rebuilt from this tree (4 checks: input, arrays, structs, spill).
+
+## v46 — round 7 merged: B7 fixed (stack-frame spill collision)
+- TAKEN: B7 — the sixth variable of a generated function spilled to `[rbp-8]`, which is the
+  saved `rbx`. A callee therefore returned with `rbx` = its own local, destroying the caller's
+  live values (main keeps the array pointer in rbx), so the next array-taking call faulted.
+  Fix reserves a 2048-byte spill area below the saved registers/parameters, in user functions
+  and in main.
+- VERIFIED: their source SHA matched (e253b94f); both hosts build; their new regression and
+  MY minimal reproduction both produce the expected values.
+- The fix also exposed a test that had been recorded against corruption: `33_unit_conversion`
+  expected `0C = 734086739261390880F`; the correct value is `0C = 32F`. Re-recorded. So this
+  fix corrected latent memory corruption that had been silently poisoning an existing program.
+- ADDED lib/sort.smlib — sorting and searching (vinimay, budbud_shreni, viparyay_mala, laghu,
+  adhik, yog, anwesh_sarak, gan, asti_sorted, dwi_anwesh), with golden example
+  83_stdlib_sort. The module that originally exposed B7 now works end to end.
+- Suite: 84/84. Library is now 4 modules.
+
+## v45 — round 7 opened; small library win while ChatGPT takes the big tasks
+- HANDOFF: ChatGPT assigned two BIG tasks this round — T12 floating point (`dasham`)
+  and T18 growable arrays + a `kosh` dictionary type. The small items (T9, T14–T17, T11)
+  are queued behind them.
+- ADDED lib/num.smlib: `fib`, `asti_sampurna`, `collatz_charan` (module now 10 functions),
+  with golden example 81_stdlib_num2. Suite 82/82.
+- HELD BACK: `lib/sort.smlib`. Sorting itself now works (B6 fixed), but the full example
+  segfaults later — see B7 below. Not shipping unverified library code.
+- FOUND B7: in a multi-function module, a function containing an if/else inside a loop
+  (`dwi_anwesh`) appears to corrupt a later call in the same program — `laghu` returns
+  nothing after it, and the whole example faults. Isolated reductions (inline, scalar,
+  single-module) all pass, so the trigger is not yet pinned down. Reported to the compiler
+  owner with the reproduction.
+
+## v44 — round 6 checkpoint 2 merged (B6 fixed — user-function ABI)
+- TAKEN: B6 — the generated user-function ABI only preserved `rbx`, but the variable
+  allocator hands out `rbx, r12, r13, r14, r15`. So a callee's locals silently clobbered
+  the caller's live variables in r12–r15. That is why a nested loop whose bound used the
+  outer counter (`yavat (j < n - 1 - i)`) broke whenever the body called a function.
+- FIX: both user-call code paths (`.gs_funcall` statement form and `.ge_funcall`
+  expression form) now push/pop r12–r15 around the call.
+- VERIFIED here: their source SHA matched (3b12a478); both hosts build; suite 81/81; our
+  prior 80 tests pass against their compiler (no regression); their new regression and MY
+  original reproduction both now produce 1 2 3 4.
+- This was a wide-reaching correctness bug, not a corner case: it affected any function
+  call made while the caller held live variables in r12–r15.
+- New example 80_b6_nested_call_loop.
+
+## v43 — round 6 checkpoint 1 merged (B5 fixed)
+- TAKEN: B5 — `ayojan` module lookup no longer depends on the working directory.
+  Resolution order is now: source-file directory -> compiler directory -> CWD.
+  Verified the way it is meant to work: a project whose source sits next to its own
+  `lib/` compiles correctly from a foreign working directory (prints 81).
+- TAKEN: their regression `79_ayojan_cwd` plus the harness's `CWD` map, so the test
+  actually compiles from `/tmp` instead of the tree root.
+- NOTE: the test relies on the compiler sitting at the tree root (resolution path 2).
+  Verified 80/80 with the compiler in place.
+- FIXED MY TOOLING: tools/merge_from_chatgpt.py now builds the compiler into the tree
+  root instead of /tmp — an out-of-tree build made module-resolution tests fail falsely.
+- ALSO: removed my abandoned `lib/sort.smlib` experiment (it hit the nested-loop bug
+  recorded separately) so the tree ships only verified library code.
+- Suite: 80/80.
+
+## v42 — books synced to the current language; tooling hardened
+- BOOKS: all six editions gained a "v29 – v41" section documenting the newer
+  features (ternary `?:`, do-while `kuru … yavat`, `pankti_len` + bounds checking,
+  six-argument functions, the `ayojan` standard library, Windows keyboard input),
+  with prose translated into each edition's own language and a code sample that is
+  verified to compile (prints 12, 100, 3, 3).
+- TOOLING: tools/merge_from_chatgpt.py upgraded — it now checks the claimed source
+  SHA-256 from the handoff, builds BOTH hosts (Linux ELF + Windows PE32+), runs the
+  suite, diffs the source with a philosophy guard, warns about symbols used but not
+  defined (the Round-4 build break), merges the test harness intelligently, and
+  reports new examples. One command now does a whole verification round.
+- FOUND: `ayojan` resolves `lib/` from the current working directory, so a program
+  run from elsewhere fails. Reported to the compiler owner.
+- ADDED (out of tree): sutram-windows-check.zip — a real-machine kit with three
+  PE32+ programs (input, arrays, structs) and a dvigun-click runner.
+
+## v41 — round 5 return from ChatGPT merged (T8b + T10)
+- TAKEN: T8b — arrays now carry a runtime length header. `pankti a[4]` allocates a
+  header word + elements; `pankti_len(a)` reads it; dynamic lengths work (`pankti a[n+1]`).
+  Bounds checks apply only to real `pankti` arrays, so raw `nirmmita` pointers keep their
+  old behaviour (array_demo stays green). Array metadata is now per-function scope, so
+  same-named arrays in different functions no longer collide.
+- TAKEN: T10 — ternary `?:` (right-associative, only the chosen branch evaluates) and a
+  do-while form `kuru { ... } yavat (cond)` (Devanagari `कुरु` also accepted).
+- TAKEN: the AST constants requested after round 4 (`AST_IF/WHILE/RETURN/CALL/FUNC`) are
+  now defined with `equ`, plus `AST_TERNARY`/`AST_DO_WHILE`.
+- VERIFIED: their source assembled first time (no fix needed); both hosts build; suite
+  79/79; negative index and index==length both exit 1; variable index, highest valid
+  index, dynamic length, per-function scoping, ternary and do-while all produce the
+  claimed outputs; 66/71 non-new examples byte-identical to the previous compiler.
+- New examples 71–78.
+
+## v40 — round 4 return from ChatGPT merged (T4 + T8 + B1 + B2 + B3)
+- TAKEN: B1 — assignment to a function parameter no longer segfaults the compiler.
+- TAKEN: B2 — an undefined function call is now a hard error (`undefined function: <name>`, exit 1)
+  instead of silently returning an argument.
+- TAKEN: B3 — `char_code(s, i)` now honours the index (one-argument form still means index 0).
+- TAKEN: T4 minimum module semantics — duplicate `ayojan` is idempotent; a definition
+  collision (program vs module, or module vs module) is a clean diagnostic.
+- TAKEN: T8 — `pankti_len(array)` builtin; array reads/stores are bounds-checked for
+  constant-length declarations and a bad index prints `array index out of bounds` and exits 1.
+- FIXED BY ME: their source did not assemble — `mov qword [rax], AST_CALL` at line 6804
+  used a symbol that is never defined (the codebase writes the literal `8` with a
+  `; AST_CALL` comment). One-line fix; without it the whole round was unbuildable.
+- FIXED BY ME: `20_pankti_array` was passing on an out-of-bounds write (loops run 0..5
+  inclusive but the array was `[5]`); the new bounds check exposed it. Array resized to 6,
+  same expected output.
+- VERIFIED: both hosts build; suite 71/71; B1/B2/B3/T4/T8 focused cases all correct with
+  proper exit codes; 63/64 non-array examples byte-identical to the previous compiler.
+- Harness now supports expected compile failures via a `.compile_fail` marker.
+
+## v39 — standard library (lib/) + module examples made genuine
+- ADDED lib/math.smlib, lib/num.smlib, lib/string.smlib — the first real standard
+  library. `ayojan <name>` inlines lib/<name>.smlib (the mechanism already existed;
+  lib/ was empty).
+- ADDED examples 61_stdlib_math, 62_stdlib_num, 63_stdlib_string with golden tests.
+  Suite 64/64.
+- FIXED a class of false-passing tests: 07_module and 10_mathlib only passed because
+  undefined function calls silently return an argument. With the library present they
+  now compute real values (49; 81/42/42/42) and are recorded correctly.
+- DOCS: the language reference's builtin table listed names the compiler does not
+  accept (`vartlen`, `charat`, `memcpy`, ...). Replaced with the real names
+  (`vartani_len`, `char_at`, `smaran_cp`, ...) and added a standard-library section.
+- KNOWN BUGS recorded for the compiler owner: (1) assigning to a function parameter
+  segfaults the compiler; (2) an undefined function call silently returns one of its
+  arguments instead of erroring; (3) char_code ignores its index argument.
+
+## v38 — round 3 return from ChatGPT merged (6-arg functions + located diagnostics)
+- TAKEN: T5 — user functions/calls now accept up to 6 arguments (AST node 48->72 B,
+  token record 32->40 B, heap raised). 7th parameter/argument rejected with a clear hint.
+- TAKEN: T6 — parse errors now print `line:column`, the offending source line and a
+  caret under the token; line counts fixed after // and # comments; UTF-8 columns
+  counted by code point, not byte.
+- VERIFIED here (they had no NASM): both hosts build; suite 61/61; merged SHA equals
+  theirs (6e4881b0); six-arg example prints 21/210; 7th arg/param exit 1 with the hint;
+  diagnostic column correct after Devanagari (5:36); 0-3 arg Linux output byte-identical
+  to the previous compiler across all examples.
+- New example 60_six_func_args taken in; docs updated (3 -> 6 args).
+
+## v37 — round 2 return from ChatGPT merged (Windows REPL + array-literal fix)
+- TAKEN: T3 Windows REPL now launches child processes with CreateProcessA /
+  WaitForSingleObject / GetExitCodeProcess instead of fork/exec/wait; Windows
+  REPL scratch I/O uses CreateFileA/WriteFile/CloseHandle. Linux REPL path kept.
+- TAKEN: T7 — `vitti a = [1, 2, 3]` no longer segfaults; it now gives a clean
+  parse diagnostic and exits 1 (root cause: AST_VEC popped four values regardless
+  of element count).
+- VERIFIED here (they had no NASM): their source SHA matches their claim
+  (f1921523...); both hosts build; suite 60/60; Linux output byte-identical to
+  ours across all 60 examples; Linux REPL works end-to-end; Windows expansion
+  has 0 fork/exec refs and 3 Win32 process-API refs; T7 exits 1, and a 4-element
+  literal still compiles. Merged source SHA equals theirs.
+- Still pending: real-Windows run of the REPL (T3) and of arrays/structs (T2).
+
+## v36 — books & docs synced to the current compiler
+- WINDOWS-SETUP.md and all six book editions no longer claim `grahan` (keyboard
+  input) is unported on Windows; it now reads through the embedded runtime
+  (ReadFile). Arrays/structs are noted as source-ready, pending a real Windows run.
+- Language reference corrected: package version, enum syntax (`srijana NAME = value`,
+  declared inside a function — not `srijana X = { ... }`), and the function-body
+  rule documented: a brace-less body is ONE statement; braces are required for more.
+- Book code examples verified by compiling them: 66/66 complete-program blocks now
+  compile. Three real errors found this way and fixed: two examples used the reserved
+  keyword `anka` as a variable name (renamed to `mulya`); the fib example was missing
+  braces around a multi-statement body; the enum example used wrong syntax and placement.
+- Escaped 12 raw '<' characters inside code blocks (HTML validity).
+- Suite: 60/60 (example 46 extended to match the reference's function example).
+
+## v35 — round 1 return from ChatGPT merged (Windows grahan fix)
+- TAKEN FROM THEIR ROUND: grahan() codegen no longer emits a literal Linux
+  `0f 05`; it routes through the target-aware emit_syscall, so a Windows .exe
+  calls the embedded runtime (ReadFile) instead of executing a Linux syscall.
+  Their PE-specific tail + branch displacements included.
+- VERIFIED here (they had no NASM): their source assembles; our suite passes
+  59/59 against their compiler; Linux grahan output is byte-identical to ours
+  (969 B / 366 B); the generated PE contains 0 raw syscalls and 5 shim calls;
+  the runtime blob regenerates byte-identical (842 B). Merged compiler output is
+  byte-identical to theirs.
+- NEW example 59_windows_grahan_runtime (their input smoke test), with the
+  stdin fixture wired into the harness. Suite now 60/60.
+- FIXED our merge tooling: it now syncs both src/sutram_compiler.asm and the
+  working sutram.asm (a stale working file briefly produced a wrong PE).
+## v34 — collaboration tooling
+- NEW tools/merge_from_chatgpt.py — one command to process a returned tree:
+    python3 tools/merge_from_chatgpt.py <returned.zip>          verify + report
+    python3 tools/merge_from_chatgpt.py <returned.zip> --apply   merge
+  It builds THEIR compiler and runs OUR golden suite against it (so their
+  claims are verified, not trusted), diffs their src against ours, reports
+  keyword/builtin additions AND removals, and enforces the ownership rule
+  (src/ belongs to whoever holds the compiler; docs/books/examples/tests are
+  Sarvam's and are never overwritten by a return).
+- tests/run_tests.py now honours $SUTRAM_COMPILER, so the suite can test any
+  compiler binary, not just the local one.
+## v33 — language reference manual
+- NEW docs/LANGUAGE-REFERENCE.md, generated from the compiler's own keyword and
+  builtin tables plus the language packs, so it cannot drift from the code:
+  keywords, operators with the full precedence ladder, all 34 built-ins, types,
+  syntax by example, CLI usage, and a cross-language keyword table.
+- The reference's example program is now example 46 and is regression-tested,
+  so the manual cannot contain code that does not compile.
+## v32 — test harness + shift operators + precedence fix
+- NEW tests/run_tests.py: golden-file harness. Compiles and runs every example,
+  compares stdout + exit code against tests/expect/. One command, 58 tests.
+  (python3 tests/run_tests.py  |  --record  |  --list  |  NAME...)
+- NEW operators << and >> (shift left / right), working with constants and
+  variables, and constant-folded where possible.
+- FIXED precedence: bitwise & ^ | now sit between comparisons and shifts
+  (C ordering). Previously they shared a level with + -, so `5 << 1 | 1`
+  evaluated as `5 << (1|1)` = 10 instead of `(5<<1) | 1` = 11.
+- Example 45_shifts added.
+## v31 — full Windows setup chapter in every book
+- Chapter 17 rewritten from a one-page note into a complete, sectioned guide
+  (16 sections) in all six editions: install methods A/B/C, PATH explained,
+  first program, what the generated .exe contains, language packs, command
+  reference, project layout, an 8-row troubleshooting table, update/uninstall,
+  a Linux-vs-Windows comparison table, Windows feature status, philosophy.
+- English ~1100 words; Hindi ~1058; Gujarati ~985; Telugu ~859; Tamil ~841;
+  Sanskrit ~783. Each book is now 17 chapters.
+- docs/WINDOWS-SETUP.md kept as the standalone reference for the same material.
+## v30 — Windows native backend + guidance
+- PE64 writer: generated programs are Windows executables (PE32+), not ELF.
+  Target chosen by output name: .exe -> PE, .bin -> ELF (one compiler source).
+- Embedded runtime blob: locates kernel32 via the PEB (no import table),
+  emulates the standard output/input/exit calls on Windows.
+- Windows argv via GetCommandLineA; compiler I/O behind an OS layer
+  (Linux syscalls / kernel32).
+- Fixed: generated PE section is now writable (was read-only -> faulted in
+  the runtime before printing anything).
+- Fixed: parser no longer crashes on malformed nested input — it reports a
+  diagnostic (learned from the handed-back notes).
+- Adopted the Windows packaging work: Win32 wizard installer, PowerShell
+  build/preflight/install/uninstall scripts (windows/).
+- Books: every edition gains chapter 17 "Windows setup" in its own language.
+- New docs/WINDOWS-SETUP.md: install, usage, troubleshooting, feature status.
+## v28 (2026-09-30) — compiler v29
+Major capability batch: real functions + strings.
+
+### New
+- Function parameters and arguments now actually pass values
+  (up to 3 args: rdi, rsi, rdx). Recursion works, including early
+  returns inside if/loops.
+- Block comments /* ... */ (multi-line).
+- likha(a, b): print two values in one call, e.g. likha("x = ", x)
+- shabda(s): print a NUL-terminated string held in a variable
+  (native words in every language pack: શબ્દ, शब्द, சொல், శబ్దం, ...)
+- Nested calls as arguments: joda(gunana(2,3), varga(4))
+
+### Fixed (silent wrong-answer bugs)
+- Binary ops and if/while comparisons saved their left operand in
+  rdx (caller-saved) -> corrupted by any function call. Now on stack.
+- pratiyati (expr): a leading '(' was read as "no return value" ->
+  parenthesised returns silently returned 0.
+- Nested call arguments clobbered the shared call_args buffer.
+
+### Examples
+- 40_functions_params, 41_recursion, 42_block_comments,
+  43_nested_likha, 44_shabda
+
+## v27 (2026-09-30)
+- The trilingual method now starts in the index itself: every TOC entry
+  and every chapter heading shows native title + English gloss side by
+  side, and native words hover to their Sanskrit keyword
+- Chapter headings keep their numbers (1.-16.)
+- All v26 changes included (hover in prose and code, de-transliterated
+  titles, yadi/anyatra fix, dvigun-numbering fix)
+
+## v25 (2026-09-30)
+- 100% native programming: every keyword, including loop ranges,
+  now writable in your language (new native 'to' words:
+  થી, से, முதல், నుండి, থেকে, ರಿಂದ, മുതൽ, पासून, ଠାରୁ, ਤੋਂ)
+- Glossary-consistent synonyms added to all 10 language packs
+  (e.g. Telugu accepts both చరం and చరరాశి for vitti)
+- New examples: 37_native_gujarati, 38_native_hindi, 39_native_tamil —
+  complete programs with every word in the native language
+- Chapter 11 of every book rebuilt: full three-way table
+  (your language | English | Sanskrit) + complete native program
+- Compiler v28
+
+## v24 (2026-09-30)
+- Error messages now print in the loaded language pack's language
+  (10 languages: Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi,
+  Odia, Punjabi, Tamil, Telugu) — e.g. with --lang hindi:
+  "सूत्रम् त्रुटि: पंक्ति 3 के पास टोकन ..." + hint in Hindi
+- Fixed pre-existing bug: error hint string was not null-terminated
+- New Chapter 16 in all 6 books: Sanskrit Roots — every keyword's
+  Sanskrit root and its living form in the reader's own language
+  (incl. the shunya -> Arabic sifr -> English zero journey)
+
+## v23 (2026-09-30)
+- New Chapter 15 in every book: Technical Glossary
+- 15 core terms per language, each with the proper native word
+  AND an in-language explanation of why it is the standard term
+  (textbook tradition, etymology, accepted alternatives)
+- English edition: cross-language comparison table of all terms
+
+## v22 (2026-09-30)
+- grahan() returns -1 on EOF; interactive programs terminate cleanly
+- Fixed same-name loop-variable reuse (pre-existing bug)
+- Comments: # and // styles
+- Descending for-loops (auto direction detection)
+- All 6 books: proper native terminology + chapter 14 (new features)
+- 49 examples total, full regression passing
+
+
+## v21 (2026-09-30)
+- Compound assignment operators: += -= *= /= %=
+- Increment/decrement: ++ --
+- Compile-time string concatenation: "a" + "b", "a" + 42, 42 + "a"
+- lkhb() builtin: print number without trailing newline
+- nishkriya() keyword: inline x86-64 machine code from hex string
+- 7 new examples (28-34)
+- 47 total examples, full regression passing

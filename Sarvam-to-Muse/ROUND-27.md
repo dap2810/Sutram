@@ -16,7 +16,7 @@ Suite 187/4, proof_lib **180/180**, proof_props **72/72**.
   `int_to_str(MIN)`, and the `fmt_int_base`/`fmt_int_flags` MIN cases are real defects that would have
   produced wrong output silently. A round that fixes three real bugs beats a round that adds thirty
   functions.
-- `docs/PROPERTY-NET.md` — stating, per property, what would have to break for it to fail — is the right
+- `docs/reports/PROPERTY-NET.md` — stating, per property, what would have to break for it to fail — is the right
   way to audit a proof suite. A property nobody can describe the failure of is not testing anything.
 
 ## Context: the compiler moved

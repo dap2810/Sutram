@@ -1,10 +1,10 @@
 # Sutram ROUND-113 WS3 — DRAFT vocabulary derivation, second review
 
-**Input:** `docs/VOCABULARY-DERIVATION.md` blob `9d21095a23b28687ff2278dc8f0ae1c54dfc774e`; pinned main `1ccec720dccc53ae8ed344e4f58f87fba727682a`. This is a *review of source consistency*, **not a Sanskrit grammatical certification**.
+**Input:** `docs/vocabulary/VOCABULARY-DERIVATION.md` blob `9d21095a23b28687ff2278dc8f0ae1c54dfc774e`; pinned main `1ccec720dccc53ae8ed344e4f58f87fba727682a`. This is a *review of source consistency*, **not a Sanskrit grammatical certification**.
 
 ## Source-checkable defects before any linguistic judgment
 
-1. **Count drift** `docs/VOCABULARY-DERIVATION.md:5,10,33,110`: says "303" function names, whereas current `docs/sutram-stdlib.html` generated footer has **24 modules / 305 functions**, matching `lib/*.smlib`. If 303 is a separate selected-vocabulary count, define exact scope and inventory rather than conflating it with all callable functions.
+1. **Count drift** `docs/vocabulary/VOCABULARY-DERIVATION.md:5,10,33,110`: says "303" function names, whereas current `docs/sutram-stdlib.html` generated footer has **24 modules / 305 functions**, matching `lib/*.smlib`. If 303 is a separate selected-vocabulary count, define exact scope and inventory rather than conflating it with all callable functions.
 2. **Invented example callable** `:23` claims `ganita_sat_yuj` implements saturating addition. Current `lib/ganita.smlib:348` and HTML row name the real function `ganita_paripurna_yuj`. Treat as **wrong copyable function name**; do not rename the library to fit the draft.
 3. **Inverted reference fact** `:88`: claims `ganita_janchit_gun` is NOT in reference. It **IS** in `lib/ganita.smlib:269` and `docs/sutram-stdlib.html:145`. Rewrite the demonstration using a truly absent but clearly hypothetical expression, not a current valid call.
 4. **Module taxonomy false** `:38-49`: states all eleven prefixes are "already the module names" and every function in `ganita` starts with `ganita`. Current `lib/` has 24 modules; no `lib/vartani.smlib`, `lib/akshar.smlib`, or `lib/kosh.smlib`. `ganita` includes `kuttaka`, `chakravala`, `samasa` and `brahmagupta_kshetr` without that prefix. `lib/sangrah.smlib` has `rakh_*` callable functions. Fix by labeling these as **observed naming families and builtins**, not a complete module namespace grammar.

@@ -48,7 +48,7 @@ These files are on `claude/round-23` and not on main:
 - **the two generated includes,** `src/r11_sandesh.inc` and `src/r22_lang_builtin.inc`;
 - **`docs/LANGUAGE-REFERENCE.md` §17,** the only documentation of the three capabilities;
 - **the pins:** `tools/r69_build.py`, `tools/r69_build.lock.json`, `tests/negative/r70/manifest.json`,
-  `docs/BUILDING.md`, `docs/NEGATIVE-CORPUS.md`;
+  `docs/BUILDING.md`, `docs/reports/NEGATIVE-CORPUS.md`;
 - **`tools/gates.sh`:** the R23 test and fuzzer gates. Both tools are on main, but nothing runs them;
 - **`tools/sandesh.py`, `tools/sutram_fmt.py`,** the three IDE keyword tables, and four count tests
   (`tests/r66`, `tests/r67`, `tests/r83` ×2).

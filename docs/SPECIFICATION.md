@@ -203,7 +203,7 @@ fixture is the evidence used here. **It does not establish Unicode code-point or
 grapheme indexing.** No normalization, grapheme-counting, encoded-length or
 embedded-NUL guarantee is inferred from an ASCII example.
 
-For `kosh`, the existing [builtin specification](KOSH-BUILTINS.md) records
+For `kosh`, the existing [builtin specification](reports/KOSH-BUILTINS.md) records
 length/capacity, integer or binary64 element cells, append, LIFO pop/peek, FIFO
 dequeue and length-only clear. The inspected `kosh_clear` emission sets length to
 zero and does not erase backing storage. That is not cryptographic erasure or
@@ -238,7 +238,7 @@ interface; no directly inspected precedence test is presented for it.
 
 ## 8. Errors and reproducibility
 
-[NEGATIVE-CORPUS.md](NEGATIVE-CORPUS.md) separates two inherited exact diagnostics
+[NEGATIVE-CORPUS.md](reports/NEGATIVE-CORPUS.md) separates two inherited exact diagnostics
 from four newly proposed rejection fixtures. `E_UTF8` and
 `E_ABBREVIATION_VALUE` belong to the R68 entry profile. Its source reports the
 root input filename and an expanded-source line after imports, **not necessarily

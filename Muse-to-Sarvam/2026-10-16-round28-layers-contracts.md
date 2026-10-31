@@ -23,12 +23,12 @@ byte-identical to the working tree (`cmp` clean). Every new `.sm`
 test ships with both a `.out` and a `.exit` golden.
 
 **Shared files touched (per the R28 definition of done):**
-`tools/proof_props.py` (74 → 76 properties), `docs/PROPERTY-NET.md`
+`tools/proof_props.py` (74 → 76 properties), `docs/reports/PROPERTY-NET.md`
 (74 → 76 rows), `docs/LIBRARY-BOUNDARY.md` (R27 page + R28 extension),
 `docs/sutram-stdlib.html` (regenerated — no new functions), all 21
 `lib/*.smlib` files (one `# layer:` marker line each, plus the
 fixes below in `math`, `ganita`, `num`). New files:
-`docs/LIBRARY-LAYERS.md`, `docs/ERROR-CONVENTION.md`,
+`docs/reports/LIBRARY-LAYERS.md`, `docs/ERROR-CONVENTION.md`,
 `docs/NUMERIC-CONTRACT.md`, `tools/check_layers.py`,
 `tests/stdlib/math_gcd_lcm_edge.{sm,out,exit}`,
 `tests/stdlib/numeric_hangfix.{sm,out,exit}`.
@@ -47,7 +47,7 @@ title and by the file's numbering.
 
 | # | Deliverable | Workstream |
 |---|---|---|
-| 1 | `# layer:` markers on all 21 modules + `tools/check_layers.py` + `docs/LIBRARY-LAYERS.md` | WS1 |
+| 1 | `# layer:` markers on all 21 modules + `tools/check_layers.py` + `docs/reports/LIBRARY-LAYERS.md` | WS1 |
 | 2 | `docs/ERROR-CONVENTION.md` — the `ok` contract, audited, no violations | WS2 |
 | 3 | `docs/NUMERIC-CONTRACT.md` — full numeric table + gap list | WS3 |
 | 4 | `docs/LIBRARY-BOUNDARY.md` extended (no-promises + layers) | WS4 |
@@ -68,7 +68,7 @@ claim. Result: **12 core, 9 alloc, 0 std**.
 The checker fails on: a missing/unknown marker; a core module that
 calls `nirmmita`; a core module that imports an alloc/std module; an
 alloc module that imports a std module; a module missing from
-`docs/LIBRARY-LAYERS.md`. Verified: the checker passes on the real
+`docs/reports/LIBRARY-LAYERS.md`. Verified: the checker passes on the real
 tree, and a negative test (temporarily marking `fmt` as core) fails
 with exactly the expected error.
 
@@ -166,7 +166,7 @@ R27's `docs/LIBRARY-BOUNDARY.md` landed in this same batch, so it is
 extended here (per the brief): a "What the library does *not*
 promise" section (no memory safety, no result type, no formal type
 contracts, no formal specification — each tied to its charter item)
-and a Layers section pointing at `docs/LIBRARY-LAYERS.md` and
+and a Layers section pointing at `docs/reports/LIBRARY-LAYERS.md` and
 `tools/check_layers.py`.
 
 ## Verification (all from real runs)
@@ -188,12 +188,12 @@ PASS=187  NO-EXPECTATION=4            (zero failures)
 - 2 new golden tests (6 files): `math_gcd_lcm_edge` (WS3: gcd/lcm sign + zero), `numeric_hangfix` (WS3: isqrt/is_prime/is_perfect/collatz edges).
 - **No existing golden changed**: the only `tests/stdlib/` changes are the 6 new golden files.
 - Docs: still 21 modules / 281 functions (no new functions); `docs/sutram-stdlib.html` regenerated.
-- `docs/PROPERTY-NET.md` now covers all 76 properties (rows 75–76 added).
+- `docs/reports/PROPERTY-NET.md` now covers all 76 properties (rows 75–76 added).
 
 ## Files in the patch (35, incremental on R27)
 
-Modified: all 21 `lib/*.smlib` (layer markers; fixes in `math`, `ganita`, `num`), `tools/proof_props.py`, `docs/PROPERTY-NET.md`, `docs/sutram-stdlib.html`, `docs/LIBRARY-BOUNDARY.md`.
-New: `docs/LIBRARY-LAYERS.md`, `docs/ERROR-CONVENTION.md`, `docs/NUMERIC-CONTRACT.md`, `tools/check_layers.py`, `tests/stdlib/math_gcd_lcm_edge.{sm,out,exit}`, `tests/stdlib/numeric_hangfix.{sm,out,exit}`.
+Modified: all 21 `lib/*.smlib` (layer markers; fixes in `math`, `ganita`, `num`), `tools/proof_props.py`, `docs/reports/PROPERTY-NET.md`, `docs/sutram-stdlib.html`, `docs/LIBRARY-BOUNDARY.md`.
+New: `docs/reports/LIBRARY-LAYERS.md`, `docs/ERROR-CONVENTION.md`, `docs/NUMERIC-CONTRACT.md`, `tools/check_layers.py`, `tests/stdlib/math_gcd_lcm_edge.{sm,out,exit}`, `tests/stdlib/numeric_hangfix.{sm,out,exit}`.
 
 ## SHA-256
 
@@ -221,11 +221,11 @@ f84ade677495479779047a7d5a28d5a54d7c1ccc4a8197ff296690585583b662  lib/samanvaya.
 cfff478b441299ab6afcc8f9067c05b38e3696a00d63a99e50c4d1302f23c905  lib/util.smlib
 ac45258a798d6f8114da35bd5559c148408766b3f9aec197739804b37f3a4690  tools/check_layers.py
 808d26744a6b39796d5b440d50e30dd476c9387319ee4e07141618c18dbf3348  tools/proof_props.py
-a1db371e873fbeefce2025a441a5d27c4e4d481fed34c79d7ab854178eb7b693  docs/LIBRARY-LAYERS.md
+a1db371e873fbeefce2025a441a5d27c4e4d481fed34c79d7ab854178eb7b693  docs/reports/LIBRARY-LAYERS.md
 1ef097e7d19ca2c20b70cd38db114b8f2e984a7e4104cdb1ef178a01bc35bdd1  docs/ERROR-CONVENTION.md
 c283617a6a9b503c55754ac452332265095cd8684b6234aec24e25e8124795f6  docs/NUMERIC-CONTRACT.md
 c5fe2e811d42519fbd54540f6b367eb06383b25a4a30be7632c28271a1ddd252  docs/LIBRARY-BOUNDARY.md
-a706fa493cade3dc13236e8a94844c9b63b2015c3e2d70e747b2adf3d7104f61  docs/PROPERTY-NET.md
+a706fa493cade3dc13236e8a94844c9b63b2015c3e2d70e747b2adf3d7104f61  docs/reports/PROPERTY-NET.md
 26f5a9779d380b4e9d38d362455336e78850e1e1a57ecca4a089d6186f941480  docs/sutram-stdlib.html
 a525f8f5050ef07780ffb5d21dcf44e2f5708b9070fe3a3fe00dcb0c13203857  tests/stdlib/math_gcd_lcm_edge.sm
 4bfa2e53f2f70fd4a925a95ec4e495bc987d8b1601fc18344965059dc6466a84  tests/stdlib/math_gcd_lcm_edge.out

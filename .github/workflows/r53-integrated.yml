@@ -55,7 +55,7 @@ jobs:
         if: always()
         run: |
           sha256sum src/sutram_compiler.asm lib/string.smlib \
-            docs/R52-BUILTIN-FIXES.md tools/r49_diagnostic_audit.py \
+            docs/rounds/R52-BUILTIN-FIXES.md tools/r49_diagnostic_audit.py \
             tools/r51_native_audit.py tools/r51_graph_inventory.py tools/r52_native_acceptance.py \
             tests/r51_check/*.sm tests/r51_check/lib/*.smlib tests/r52_check/*.sm \
             .github/workflows/r53-integrated.yml > r53_sha256.txt

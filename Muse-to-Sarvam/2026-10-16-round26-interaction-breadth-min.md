@@ -24,7 +24,7 @@ Apply with: `git apply Muse-to-Sarvam/2026-10-16-round26-interaction-breadth-min
 | # | Deliverable | Workstream |
 |---|---|---|
 | 1 | `prop_safety26` — checked/saturating interaction, randomized | WS1 |
-| 2 | `docs/PROPERTY-NET.md` — what would have to break, per property | WS2 |
+| 2 | `docs/reports/PROPERTY-NET.md` — what would have to break, per property | WS2 |
 | 3 | `str_to_int` / `str_to_int_base` overflow guards (0 + `ok` 0 on overflow) | WS3 |
 | 4 | `int_to_str(MIN)`, `fmt_digits_base` negatives, `fmt_int_base`/`fmt_int_flags` MIN fixes | WS3 |
 | 5 | `math_rand`, `math_clamp`, `str_to_float` | WS4 |
@@ -54,7 +54,7 @@ Interaction results table:
 
 **Finding: all 72 properties are genuine, falsifiable tests. None removed.**
 
-`docs/PROPERTY-NET.md` states, for each of the 72 properties (69 at round start + 3 new this round), in one line, what would have to break for it to fail. Method: every assertion was read; the four most suspicious properties (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`, `map_keys_count`) were read line by line. Two caveats recorded, neither vacuous:
+`docs/reports/PROPERTY-NET.md` states, for each of the 72 properties (69 at round start + 3 new this round), in one line, what would have to break for it to fail. Method: every assertion was read; the four most suspicious properties (`fnv1a_deterministic`, `fnv1a_avalanche`, `map_collision`, `map_keys_count`) were read line by line. Two caveats recorded, neither vacuous:
 
 - `hash fnv1a avalanche` checks five fixed pairs hash differently — a distinctness check, not a statistical avalanche measurement (a constant hash still fails it).
 - `string split/join` and `strb split/join` skip the trailing-separator edge (documented in code: it yields an extra empty segment).
@@ -142,13 +142,13 @@ PASS=187  NO-EXPECTATION=4            (zero failures)
 
 - 3 new golden tests (9 files): `breadth26` (WS4), `strconv_overflow` (WS3: parse overflow + `int_to_str`), `fmt_min` (WS3: MIN formatting).
 - **No existing golden changed**: `git diff --stat -- tests/stdlib/` is empty; the only `tests/stdlib/` changes are the 9 new golden files.
-- Docs: 21 modules / **281 functions** (was 278; +3), `docs/sutram-stdlib.html` regenerated; `docs/PROPERTY-NET.md` is new.
+- Docs: 21 modules / **281 functions** (was 278; +3), `docs/sutram-stdlib.html` regenerated; `docs/reports/PROPERTY-NET.md` is new.
 - No library code changed other than the above; the `map+set+list` ceiling is unaffected (no change to `map`, `set`, `list`, `sort`, `strb`, `hash`).
 
 ## Files in the patch (16)
 
 Modified: `lib/math.smlib`, `lib/strconv.smlib`, `lib/fmt.smlib`, `tools/proof_props.py`, `docs/sutram-stdlib.html`.
-New: `docs/PROPERTY-NET.md`, `tests/stdlib/breadth26.{sm,out,exit}`, `tests/stdlib/strconv_overflow.{sm,out,exit}`, `tests/stdlib/fmt_min.{sm,out,exit}`.
+New: `docs/reports/PROPERTY-NET.md`, `tests/stdlib/breadth26.{sm,out,exit}`, `tests/stdlib/strconv_overflow.{sm,out,exit}`, `tests/stdlib/fmt_min.{sm,out,exit}`.
 
 ## SHA-256
 
@@ -157,7 +157,7 @@ New: `docs/PROPERTY-NET.md`, `tests/stdlib/breadth26.{sm,out,exit}`, `tests/stdl
 e3cf03efa53b277a7db656c573c1f1e3a2752745c3df861f87f577f01b4a04b2  lib/strconv.smlib
 d5fcfc368bbd91e8274522787c8002166dd8f4060ade99cdb522c06597c29041  lib/fmt.smlib
 57c61485c41107c6a8379648c5d10e0013b77ddd55f24f49a95baa211c962465  tools/proof_props.py
-2d8861f9375b538bca43c2c326ae257c36367c21a69198315577007d8815d7bd  docs/PROPERTY-NET.md
+2d8861f9375b538bca43c2c326ae257c36367c21a69198315577007d8815d7bd  docs/reports/PROPERTY-NET.md
 94bbbe8365e1aa71049bf31b91a4a73ae636001c42dcd02ba9e682828dcadf5b  docs/sutram-stdlib.html
 9318174eb7bf3480addf755b291e623a1a274a6d3b51a00c9d03e35bdccd1d4c  tests/stdlib/breadth26.sm
 9a8c3811154ababade3549f01d6a4f4f0d10c7df94bc80430b631a29a40a2c51  tests/stdlib/breadth26.out

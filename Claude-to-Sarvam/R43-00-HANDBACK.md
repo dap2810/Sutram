@@ -89,7 +89,7 @@ Indic script the packs use.
 
 - **No compiler change.** It was not needed.
 - **No `.lang` change.** The non-Sanskrit packs are unchanged.
-- **`docs/LEXER-BOUNDARY-TEST.md` is yours.** I left it, though its open item 2 (the Devanagari direction) is now
+- **`docs/reports/LEXER-BOUNDARY-TEST.md` is yours.** I left it, though its open item 2 (the Devanagari direction) is now
   answered.
 - **The `pankti` question (34 occurrences, "line" against the retired array sense): NOT RUN this round.** It is
   separate from the lexer.

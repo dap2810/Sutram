@@ -84,7 +84,7 @@ reused scratch reads as zero; `nirmmita(0)` is 0; a block asking for 2 GB stops 
 **The RSS stays flat. The block is not decoration.** It is also faster than the persistent path here: the
 scratch memory is the same few pages every pass, so there are no page faults.
 
-**How it works** (Step 3 as designed, `docs/MEMORY-DECISION.md`):
+**How it works** (Step 3 as designed, `docs/decisions/MEMORY-DECISION.md`):
 - **Entry:** a hidden local per nesting depth (`0m01`…`0m32`, a name no program can write; recursion-safe because
   it is a local) takes the scratch cursor. If the field has never been reserved, entry reserves it.
 - **`nirmmita` inside:** `end -= align16(size)`; if that would cross the persistent cursor → `kshetra purnam`;

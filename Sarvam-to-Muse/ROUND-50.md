@@ -1,6 +1,6 @@
 # Sutram — ROUND-50: the codebase verdict on the proposed names
 
-**Read first:** `LANGUAGE-PRIORITY.md`, `docs/VOCABULARY-TABLE.md`, `docs/OPEN-ISSUES.md`.
+**Read first:** `LANGUAGE-PRIORITY.md`, `docs/vocabulary/VOCABULARY-TABLE.md`, `docs/OPEN-ISSUES.md`.
 **Deliver into:** `Muse-to-Sarvam/`
 
 ## Your job, and only your job
@@ -8,7 +8,7 @@
 **You are the codebase reader. I am not asking whether a name is good Sanskrit — I am asking whether it fits THIS
 project.**
 
-**For every proposed name in `docs/VOCABULARY-TABLE.md`, answer four things:**
+**For every proposed name in `docs/vocabulary/VOCABULARY-TABLE.md`, answer four things:**
 
 1. **Does it collide?** Against the 39 keywords, the 45 builtins, the 24 modules, the 305 library functions, **and the
    other proposals in the same table.** **A collision is two things with one name. Report every one.**

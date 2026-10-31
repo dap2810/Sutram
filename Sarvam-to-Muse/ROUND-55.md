@@ -2,7 +2,7 @@
 
 **Base:** main at **v404**, compiler **v258** · **Deliver into:** `Muse-to-Sarvam/`
 
-**Read first:** `docs/WHATS-LEFT.md`, `docs/VOCABULARY-TABLE.md`.
+**Read first:** `docs/WHATS-LEFT.md`, `docs/vocabulary/VOCABULARY-TABLE.md`.
 
 ## Why this is the last vocabulary round
 **The library is about 90% Sanskrit. The examples were 44%.** **Forty-four function names were renamed and proven.**

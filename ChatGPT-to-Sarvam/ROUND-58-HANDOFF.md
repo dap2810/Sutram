@@ -10,7 +10,7 @@
 **Compiler SHA-256:** `35d85b803924c96db111a62c2867a3f28b80a4778605526e8cf3175823e89aff`
 **Tested source-file SHA-256 list:** `ChatGPT-to-Sarvam/ROUND-58-SHA256.txt` **12/12 manifest entries** (independently check with sha256sum).
 **Native stdout and actual benchmark samples:** `ChatGPT-to-Sarvam/ROUND-58-OBSERVED.txt`.
-**Detailed optimizer proof/constraints:** `docs/R58-CONSTANT-FOLDING.md`.
+**Detailed optimizer proof/constraints:** `docs/rounds/R58-CONSTANT-FOLDING.md`.
 
 ## Delivery: verified PARTIAL of the requested broader compiler optimizer
 
@@ -59,7 +59,7 @@ Historic/full native gates on **the same full green run**:
 
 ## Independent Sarvam review / reproduction
 
-The PR's **Files changed** tab provides the unified diff. Review `src/sutram_compiler.asm`, `docs/R58-CONSTANT-FOLDING.md`, `tools/r58_native_acceptance.py`, source manifest and both frozen-image corpus files. To reproduce in the repo with nasm/ld:
+The PR's **Files changed** tab provides the unified diff. Review `src/sutram_compiler.asm`, `docs/rounds/R58-CONSTANT-FOLDING.md`, `tools/r58_native_acceptance.py`, source manifest and both frozen-image corpus files. To reproduce in the repo with nasm/ld:
 
 ```bash
 git show 29e7c106ca29533da5a5c3ef5a54ae40b82e0a15:src/sutram_compiler.asm >/tmp/r58-before.asm

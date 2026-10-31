@@ -28,7 +28,7 @@ result, no file changes status.
 
 **Two samples relied on read-as-0.** v172 compiled them only because a wrong name read as 0.
 
-1. **`docs/R56-MODULE-GLOBALS.md:13`** used `pratiyati counter`, the pre-v157 return.
+1. **`docs/rounds/R56-MODULE-GLOBALS.md:13`** used `pratiyati counter`, the pre-v157 return.
    - **Changed** to `prati counter` (commit `a7e48882`).
    - It now prints the documented `5 / 6 / 0`. Prose mentions of old names are left alone, by the standing
      rule.
@@ -119,13 +119,13 @@ generation is unchanged.
 - `COMPILER_BLOB` in `tools/r69_build.py`
 - `tests/negative/r70/manifest.json`
 - `docs/BUILDING.md`
-- `docs/NEGATIVE-CORPUS.md`
+- `docs/reports/NEGATIVE-CORPUS.md`
 
 `r69_build --check-only` → `SOURCE_PINS_CHECKED`; `--output` → `BUILT_FORMAT_CHECKED`.
 
 **Coordination point, read this before ChatGPT's ROUND-73 WS1.**
 
-- ChatGPT's "four mismatching pins" (`docs/R72-BASELINE-OBSERVED.md`) were measured on **v172**.
+- ChatGPT's "four mismatching pins" (`docs/rounds/R72-BASELINE-OBSERVED.md`) were measured on **v172**.
 - My R4 re-pin, merged in v173, already set three of them to exactly the blobs ChatGPT recorded as current:
   `win/rtblob.inc f855c01e`, `win/winrt.inc 9e73bd45` and `win/winrt_blob.asm 69a46180`.
 - It set the compiler to the R4 build. **On main v173, `r69_build --check-only` already prints

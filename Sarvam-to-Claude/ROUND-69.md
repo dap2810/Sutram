@@ -37,4 +37,4 @@
 
 **So a `mandapa` block holds scalar scratch, not vectors.** **That is a smaller feature than I have been describing, and I want it written down where a programmer will read it — not discovered later.**
 
-**Add that to `docs/MEMORY-DECISION.md`: what a `mandapa` block can hold in v1.0, and what it cannot.** **And if that makes the block less useful than the round-3 claims suggested, say so in the doc rather than in a handback.**
+**Add that to `docs/decisions/MEMORY-DECISION.md`: what a `mandapa` block can hold in v1.0, and what it cannot.** **And if that makes the block less useful than the round-3 claims suggested, say so in the doc rather than in a handback.**

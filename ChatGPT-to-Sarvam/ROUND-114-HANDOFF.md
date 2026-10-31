@@ -35,7 +35,7 @@
 
 ## WS3 — Sanskrit design mechanisms (review, not implementation)
 
-[WS3 analysis](ROUND-114-WS3-SANSKRIT-MECHANISMS-REVIEW.md) checked Sarvam's DRAFT `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md` (blob `76fa06d09438f8a3eb33b300d85a417efe62d3b6`).
+[WS3 analysis](ROUND-114-WS3-SANSKRIT-MECHANISMS-REVIEW.md) checked Sarvam's DRAFT `docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md` (blob `76fa06d09438f8a3eb33b300d85a417efe62d3b6`).
 
 | Claim | Verdict |
 |---|---|

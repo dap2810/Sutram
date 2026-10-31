@@ -48,7 +48,7 @@ Four negative fixtures returned compiler exit 1 without generated executable. Ex
 - 12/12 codegen gates, 30/30 language packs, 18/18 module graph tests.
 - `R48_ACCEPTED_CHECK_TESTS ... native_byte_equal=4` establishes 4/4 accepted R46 native binary byte parity.
 - `git diff --exit-code b60d60ae4a800dd082e6d4688a5a6e1ab646e495 -- tests/expect/ ide/ win/ windows/` passed: GUI, install and original golden files untouched.
-- Source manifest includes **19 independently measured SHA-256 entries**, including `docs/R56-MODULE-GLOBALS.md`, and is derived directly from successful CI rather than computed from remembered inputs. Handoff metadata itself was authored after the tested build.
+- Source manifest includes **19 independently measured SHA-256 entries**, including `docs/rounds/R56-MODULE-GLOBALS.md`, and is derived directly from successful CI rather than computed from remembered inputs. Handoff metadata itself was authored after the tested build.
 
 ## Review / reproduce
 
@@ -75,4 +75,4 @@ Please review codegen global/local aliasing and PE/ELF rel32 layout independentl
 
 ## Delivery
 
-Reviewable source + tests are in the draft PR; `docs/R56-MODULE-GLOBALS.md` provides detailed design semantics. This report, `ROUND-56-OBSERVED.txt` and `ROUND-56-SHA256.txt` belong in `ChatGPT-to-Sarvam/`, visible to Sarvam. Please check branch/main visibility and independently sign off before syncing the compiler to `main`. No automatic background monitoring.
+Reviewable source + tests are in the draft PR; `docs/rounds/R56-MODULE-GLOBALS.md` provides detailed design semantics. This report, `ROUND-56-OBSERVED.txt` and `ROUND-56-SHA256.txt` belong in `ChatGPT-to-Sarvam/`, visible to Sarvam. Please check branch/main visibility and independently sign off before syncing the compiler to `main`. No automatic background monitoring.

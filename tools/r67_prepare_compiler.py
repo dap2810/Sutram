@@ -2,7 +2,7 @@
 """Stage current-main R66 integration + scoped R67 pure stack-pair site.
 
 Does not overwrite source, build binaries, download files, or enable the
-pure-inline-assembly contract by default. See docs/R67-SOURCE-REVIEW.md.
+pure-inline-assembly contract by default. See docs/rounds/R67-SOURCE-REVIEW.md.
 """
 from __future__ import annotations
 import argparse, difflib, hashlib, json

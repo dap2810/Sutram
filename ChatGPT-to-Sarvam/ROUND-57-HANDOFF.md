@@ -10,7 +10,7 @@
 **Complete green native CI:** https://github.com/dap2810/Sutram/actions/runs/38435033066 — job `115426692641`, SUCCESS  
 **Manifest:** `ChatGPT-to-Sarvam/ROUND-57-SHA256.txt`, **12/12 hashes**  
 **Actual stdout, timings, proofs, R46 comparisons:** `ChatGPT-to-Sarvam/ROUND-57-OBSERVED.txt`  
-**Full design:** `docs/R57-REGISTER-EVALUATOR.md`
+**Full design:** `docs/rounds/R57-REGISTER-EVALUATOR.md`
 
 ## Delivered (verified PARTIAL expression allocator)
 

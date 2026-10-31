@@ -8,7 +8,7 @@ compiler passes until the native runner has actually succeeded.
 
 Snapshot: `dde0613ca16f3e41345b1b1055733151780ef9d7`.
 The machine-readable contract is
-[`tests/negative/r70/manifest.json`](../tests/negative/r70/manifest.json).
+[`tests/negative/r70/manifest.json`](../../tests/negative/r70/manifest.json).
 No existing `tests/expect/` patra or example was changed.
 
 ## 1. Category table and exact diagnostic contract

@@ -15,7 +15,7 @@ As with R15–R26, delivered as a **patch in `Muse-to-Sarvam/`**. Only two files
 
 Apply with: `git apply Muse-to-Sarvam/2026-10-16-round27-cross-module-boundary.patch` from a clean `main` checkout. The patch was verified to apply cleanly to pristine `origin/main` (`git apply --check`), and the patched tree reproduces every number below, with patched files byte-identical to the working tree (`cmp` clean). Every new `.sm` test ships with both a `.out` and a `.exit` golden.
 
-**Shared files touched (per the R27 definition of done):** `tools/proof_props.py` (72 → 74 properties), `docs/PROPERTY-NET.md` (72 → 74 rows + the never-could-fail verdict), `lib/bigint.smlib` (divmod/mod_2n zero fixes + comment updates), `docs/sutram-stdlib.html` (regenerated, unchanged content — no new functions). New files: `docs/LIBRARY-BOUNDARY.md`, `tests/stdlib/bigint_divzero.{sm,out,exit}`.
+**Shared files touched (per the R27 definition of done):** `tools/proof_props.py` (72 → 74 properties), `docs/reports/PROPERTY-NET.md` (72 → 74 rows + the never-could-fail verdict), `lib/bigint.smlib` (divmod/mod_2n zero fixes + comment updates), `docs/sutram-stdlib.html` (regenerated, unchanged content — no new functions). New files: `docs/LIBRARY-BOUNDARY.md`, `tests/stdlib/bigint_divzero.{sm,out,exit}`.
 
 ## What was built — all four workstreams landed
 
@@ -24,7 +24,7 @@ Apply with: `git apply Muse-to-Sarvam/2026-10-16-round27-cross-module-boundary.p
 | # | Deliverable | Workstream |
 |---|---|---|
 | 1 | `prop_safety27` — `ganita` checked vs `strconv` guards agreement | WS1 |
-| 2 | `docs/PROPERTY-NET.md` — 2 new rows + never-could-fail verdict | WS2 |
+| 2 | `docs/reports/PROPERTY-NET.md` — 2 new rows + never-could-fail verdict | WS2 |
 | 3 | `bigint_divmod` / `bigint_mod_2n` by zero: defined instead of hanging | WS3 |
 | 4 | `docs/LIBRARY-BOUNDARY.md` — one page, what the library deliberately does not do | WS4 |
 
@@ -51,7 +51,7 @@ The "neither wraps" check is the pair (return `0`, `ok` 0) jointly: the old `str
 
 **Finding: no property has never failed and never could. None removed.**
 
-`docs/PROPERTY-NET.md` now covers all 74 properties (rows 73–74 added for `safety27 cross-module` and `bigint divzero`) and records the R27 verdict: every property compares its subject against an independent oracle, so every one has a concrete failure mode. "Never failed in CI" is not "could never fail" — a property guards against a *plausible* regression, and the plausible regression is the failure mode. Evidence the net can actually fail: four properties failed during their own development (`safety26` — the re-declaration compiler bug; `breadth26` — statement limit, then a literal format; `min26` — a wrong expected value in the property; `safety27` — a wrong hex expectation in the property). The closest call, `fnv1a_deterministic`, compares `fnv1a(s)` against itself, but it tests determinism and would fail against a plausible broken implementation (uninitialized state, random seed). Kept deliberately.
+`docs/reports/PROPERTY-NET.md` now covers all 74 properties (rows 73–74 added for `safety27 cross-module` and `bigint divzero`) and records the R27 verdict: every property compares its subject against an independent oracle, so every one has a concrete failure mode. "Never failed in CI" is not "could never fail" — a property guards against a *plausible* regression, and the plausible regression is the failure mode. Evidence the net can actually fail: four properties failed during their own development (`safety26` — the re-declaration compiler bug; `breadth26` — statement limit, then a literal format; `min26` — a wrong expected value in the property; `safety27` — a wrong hex expectation in the property). The closest call, `fnv1a_deterministic`, compares `fnv1a(s)` against itself, but it tests determinism and would fail against a plausible broken implementation (uninitialized state, random seed). Kept deliberately.
 
 ### Workstream 3 — accumulated small gaps: one real bug (a hang)
 
@@ -91,7 +91,7 @@ PASS=187  NO-EXPECTATION=4            (zero failures)
 
 ## Files in the patch (6)
 
-Modified: `lib/bigint.smlib`, `tools/proof_props.py`, `docs/PROPERTY-NET.md`, `docs/sutram-stdlib.html`.
+Modified: `lib/bigint.smlib`, `tools/proof_props.py`, `docs/reports/PROPERTY-NET.md`, `docs/sutram-stdlib.html`.
 New: `docs/LIBRARY-BOUNDARY.md`, `tests/stdlib/bigint_divzero.{sm,out,exit}`.
 
 ## SHA-256
@@ -99,7 +99,7 @@ New: `docs/LIBRARY-BOUNDARY.md`, `tests/stdlib/bigint_divzero.{sm,out,exit}`.
 ```
 afc27996cf9b6a0a5ac7d4afb47949dbb0d0f33c5a09359d2b1465765cda2c42  lib/bigint.smlib
 a9c765034fd8669108b6e2753d1a8e4650a2be93b0c920a3643faf900a9f3d1a  tools/proof_props.py
-1cb3ef67679797ef4257b8080df1a3b2897ae3464f12d0df53750f5734bf3dd3  docs/PROPERTY-NET.md
+1cb3ef67679797ef4257b8080df1a3b2897ae3464f12d0df53750f5734bf3dd3  docs/reports/PROPERTY-NET.md
 dc4bb1c9c9544b32453cbfd2b90afc1698897148e0f0fb5bf856c21dc1875860  docs/sutram-stdlib.html
 d0c60370167559f80682043f3d91641b26e3f16c2ea7a5621eea119831de1b76  docs/LIBRARY-BOUNDARY.md
 af86b534835745d0746308c53657cd09dffe1a0233106a0cee3ae30e4b8036d0  tests/stdlib/bigint_divzero.sm

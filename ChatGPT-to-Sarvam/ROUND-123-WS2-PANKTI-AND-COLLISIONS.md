@@ -1,6 +1,6 @@
 # Round 123 WS2 — final nine-word review and `pankti_len`
 
-**Recommendation, NOT owner approval:** use the nine proposed targets in `ROUND-123-WS2-NINE-KOSH-NAMES.tsv`. The nine currently callable names are verified in the compiler builtin table at `src/sutram_compiler.asm:561-570` and its text definitions at `:765-773`. The operational distinctions and empty-abort behavior are in `docs/KOSH-BUILTINS.md:36-48,68-115`.
+**Recommendation, NOT owner approval:** use the nine proposed targets in `ROUND-123-WS2-NINE-KOSH-NAMES.tsv`. The nine currently callable names are verified in the compiler builtin table at `src/sutram_compiler.asm:561-570` and its text definitions at `:765-773`. The operational distinctions and empty-abort behavior are in `docs/reports/KOSH-BUILTINS.md:36-48,68-115`.
 
 **`pankti_len` verdict:** **prefer `pankti_aayam`** as a proposed public replacement, over `mala_aayam` or a new word. The `pankti_` prefix retains the existing builtin naming lineage and `aayam` follows already-callable `vartani_aayam`. The existing builtin is `pankti_len` (`src/sutram_compiler.asm:561,764`) and the Sanskrit mapping is `पङ्क्तिदैर्घ्य pankti_len` (`lang/sanskrit.lang:59`). `docs/LANGUAGE-REFERENCE.md:94,469,487` contains calls/descriptions; an approved rename requires updating those and compiler, aliases, acceptance tests and examples together. **Not implemented.**
 

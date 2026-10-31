@@ -47,7 +47,7 @@ the entry rather than a bare build of `src/sutram_compiler.asm`.
 
 ## Mandatory reviewer entry point
 
-Read `docs/R68-SOURCE-REVIEW.md`, then in a complete verified checkout:
+Read `docs/rounds/R68-SOURCE-REVIEW.md`, then in a complete verified checkout:
 
 ```sh
 python3 -m unittest discover -s tests/r66 -p 'test_*.py' -v

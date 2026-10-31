@@ -48,7 +48,7 @@ suite is PASS=187.
 
 Every one of the 23 pre-existing modules was exercised (probe
 classes: normal, zero, negative, `MIN`/`MAX`, empty, huge, invalid).
-Full per-module ledger: `docs/EDGE-COVERAGE-30.md`.
+Full per-module ledger: `docs/reports/EDGE-COVERAGE-30.md`.
 
 Counting rule, stated plainly: the hunt's working count was 31,
 grouping the `string`/`strb` mirrors and paired functions. The
@@ -126,7 +126,7 @@ fill-helper function is **impossible**: the compiler rejects
 `kosh_push` on a kosh parameter at compile time (`examples/120_…`
 covers it), because growth replaces the callee's pointer and would
 leave the caller with a stale kosh. So the deliverable is the
-pattern, documented in `docs/KOSH-REUSE.md`:
+pattern, documented in `docs/reports/KOSH-REUSE.md`:
 
 1. Reserve the maximum capacity at declaration (`kosh v[N]`).
 2. Reuse one kosh across rounds; declare it outside the loop.
@@ -185,7 +185,7 @@ No Windows-host equivalence is claimed. Goldens:
 (plus fixture `tests/fixtures/file_hello.txt`, exactly
 `hello sutram\n`, 13 bytes; goldens assume CWD = repo root, as
 `proof_lib` already does). `tools/check_layers.py` now treats OS
-builtins as errors only in non-`std` modules; `docs/LIBRARY-LAYERS.md`
+builtins as errors only in non-`std` modules; `docs/reports/LIBRARY-LAYERS.md`
 and `docs/LIBRARY-BOUNDARY.md` updated (the boundary doc's "library
 is pure" phrasing now says "core library is pure", since `std`
 exists).
@@ -232,11 +232,11 @@ exists).
 
 All hashes are of the post-patch file contents.
 
-- `dd8dc49e69230108462177c3e159c0ed2607bfdd914fb6073db956102369bdfd` docs/EDGE-COVERAGE-30.md
+- `dd8dc49e69230108462177c3e159c0ed2607bfdd914fb6073db956102369bdfd` docs/reports/EDGE-COVERAGE-30.md
 - `e3b98988f700a8d2542941265d52f0f5b72db43520b73e6d41fe944b94ffe325` docs/ERROR-CONVENTION.md
-- `fa968c250ae0d093fd7cd46579dd15ed9ef8f6a17ff8dd4bf011e31115751235` docs/KOSH-REUSE.md
+- `fa968c250ae0d093fd7cd46579dd15ed9ef8f6a17ff8dd4bf011e31115751235` docs/reports/KOSH-REUSE.md
 - `043b156a57e52ea7bd74ef419eb2375b68728f764749d7ff3c05e614dcd30e6a` docs/LIBRARY-BOUNDARY.md
-- `66ae553ffe813eea9a3ad1a9a0173a048f05353d9746c93495b303040b14432b` docs/LIBRARY-LAYERS.md
+- `66ae553ffe813eea9a3ad1a9a0173a048f05353d9746c93495b303040b14432b` docs/reports/LIBRARY-LAYERS.md
 - `9a37dcfd7be194b408a7cbabffd0eb11e9958b26b5c64552458dd30763532517` docs/sutram-stdlib.html
 - `64476f76e3542568230a78072d5339c2372288ad23230b4c569fa51f07ea1278` lib/array.smlib
 - `489a927c087d0be7287d543bd05e06b096c7671a9f5b6ffc10802b280c28c57d` lib/baseconv.smlib
@@ -281,7 +281,7 @@ All hashes are of the post-patch file contents.
 
 - Shared (multi-workstream) files: `tools/proof_props.py` (7 new
   properties: 5 edge30 + chakravala + result), `tools/check_layers.py` (std
-  rule), `docs/sutram-stdlib.html` (regenerated), `docs/LIBRARY-LAYERS.md`,
+  rule), `docs/sutram-stdlib.html` (regenerated), `docs/reports/LIBRARY-LAYERS.md`,
   `docs/LIBRARY-BOUNDARY.md`, `docs/ERROR-CONVENTION.md`.
 - Library: **24 modules / 303 functions** (was 23 / 297): +`file`
   (3), +`result_checked_pow/fact/abs` (3). Header-essay trims in

@@ -26,7 +26,7 @@ reader tries first (`ganita`, `vartani`, `mala`, `kosh`) and report any descript
 parameter meanings, stale return contracts, examples that would not compile.
 
 ### WS3 — the vocabulary derivation draft needs a second read
-**`docs/VOCABULARY-DERIVATION.md` is a DRAFT by Sarvam setting out the rules behind the 303 names.** **It is marked as
+**`docs/vocabulary/VOCABULARY-DERIVATION.md` is a DRAFT by Sarvam setting out the rules behind the 303 names.** **It is marked as
 needing a Sanskritist.** **Read it as a reviewer: is the compounding description right, and are `rakh`/`likh` the
 right stems?** **If you cannot judge, say so plainly - that is the honest answer and it is the one the owner needs.**
 

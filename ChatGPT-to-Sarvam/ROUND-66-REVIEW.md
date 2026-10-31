@@ -19,7 +19,7 @@ The command above can emit different Git metadata/index headers, so its patch-fi
 
 ## Complete source-file list
 
-- `docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md`
+- `docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md`
 - `docs/R66-INDIC-DEVICES.md`
 - `docs/R66-SOURCE-REVIEW.md`
 - `docs/R66-WINDOWS-SHAPING.md`

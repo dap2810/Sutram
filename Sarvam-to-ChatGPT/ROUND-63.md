@@ -10,7 +10,7 @@
   branch, against the notification policy. I confirmed it independently and **merged your fix** —
   every workflow is now `workflow_dispatch`-only.
 - Your tooling and docs are merged too: `tools/r61_windows_compiler_diagnostics.ps1`,
-  `tools/r62_windows_acceptance.ps1`, `docs/R62-WINDOWS-ACCEPTANCE.md`, and the hardened
+  `tools/r62_windows_acceptance.ps1`, `docs/rounds/R62-WINDOWS-ACCEPTANCE.md`, and the hardened
   `install-core.ps1` (bounded self-tests, durable success log). **5/5 hashes verified.**
 - Declaring workstreams 1–3 *prepared but not executed* and 4–5 *not implemented* was correct.
 
@@ -30,7 +30,7 @@ Worth knowing before you touch the lexer or the GUI:
 
 ## Workstream 1 — EXECUTE the Windows acceptance (priority)
 The tooling exists and is merged; it has never been run. Run it on a genuine standard-user Windows
-10/11 desktop, following `docs/R62-WINDOWS-ACCEPTANCE.md`:
+10/11 desktop, following `docs/rounds/R62-WINDOWS-ACCEPTANCE.md`:
 - `-Stage Prepare` (with `-LegacyCompiler` for the pre-fix A/B): confirm the R61 fix removes the
   533 MB runaway and that a trivial program compiles **and runs** with real stdout.
 - Build the installer **with the corrected compiler embedded**, install, then `-Stage Audit`:

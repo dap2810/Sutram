@@ -7,7 +7,7 @@
 circulates widely.**
 
 **The false version:** *"Sanskrit is the most suitable language for computers."* **It is not supported by anything.
-See `docs/SANSKRIT-AND-AI-BRIGGS-1985.md`.**
+See `docs/reports/SANSKRIT-AND-AI-BRIGGS-1985.md`.**
 
 **The true version, and the one this document sets out:** **the Sanskrit grammatical tradition is a FORMAL SYSTEM -
 a rule-based, generative, precisely notated grammar - and several of its mechanisms solve problems that modern

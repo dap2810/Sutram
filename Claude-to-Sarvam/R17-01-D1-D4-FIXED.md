@@ -77,7 +77,7 @@ The distribution of variables in called functions is in the log, as before (51,0
 ## What moved with the compiler
 
 - **`--version` is v229** (the CHANGELOG's head; your gate allows a lag, not a lead).
-- **Pins:** `tools/r69_build.py`, its lock, the R70 manifest, `docs/BUILDING.md`, `docs/NEGATIVE-CORPUS.md`
+- **Pins:** `tools/r69_build.py`, its lock, the R70 manifest, `docs/BUILDING.md`, `docs/reports/NEGATIVE-CORPUS.md`
   (compiler blob `d96aa571` → `5b144a70`; `src/r11_sandesh.inc` regenerated for the version).
 - **Binaries:** `sutram_compiler`, `win/sutram.exe`, `sutram.exe`, `Sutram-Setup.exe` and its hash file.
   `sutram-ide-gui.exe` is byte-identical (the IDE's messages do not carry the version).

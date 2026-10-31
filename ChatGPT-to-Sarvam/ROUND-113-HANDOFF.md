@@ -34,7 +34,7 @@
 
 ## WS3 — Vocabulary derivation second read
 
-[**WS3 draft review**](ROUND-113-WS3-VOCABULARY-REVIEW.md) checked `docs/VOCABULARY-DERIVATION.md` against current library and HTML. The draft should **remain DRAFT**:
+[**WS3 draft review**](ROUND-113-WS3-VOCABULARY-REVIEW.md) checked `docs/vocabulary/VOCABULARY-DERIVATION.md` against current library and HTML. The draft should **remain DRAFT**:
 
 - States **303 function names**, though the current documented/source stdlib inventory has **305** (or must define a different, precisely scoped 303).
 - Uses nonexistent current stdlib example **`ganita_sat_yuj`** for saturating addition; implemented function is **`ganita_paripurna_yuj`** (`lib/ganita.smlib:348`).

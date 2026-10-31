@@ -4,7 +4,7 @@
 
 ## Current key finding — Latin prefixes work, native boundaries need their own acceptance
 
-Sarvam's [recorded v249 native experiment](../docs/LEXER-BOUNDARY-TEST.md) reports **four compiled and run Latin-script success cases**: `prati_test` (6), `mukhyata` (7), `pratiX` (3), and a **variable** `vartani_pratilip` (9). These are **partner-reported**, **not executed by ChatGPT**. Critically, the recorded `vartani_pratilip` was a variable: it does **not** fulfill Muse's separate question whether **`prakriya vartani_pratilip(x)` and an actual `vartani_pratilip(5)` CALL** both compile and run.
+Sarvam's [recorded v249 native experiment](../docs/reports/LEXER-BOUNDARY-TEST.md) reports **four compiled and run Latin-script success cases**: `prati_test` (6), `mukhyata` (7), `pratiX` (3), and a **variable** `vartani_pratilip` (9). These are **partner-reported**, **not executed by ChatGPT**. Critically, the recorded `vartani_pratilip` was a variable: it does **not** fulfill Muse's separate question whether **`prakriya vartani_pratilip(x)` and an actual `vartani_pratilip(5)` CALL** both compile and run.
 
 The compiled source explains why the Latin cases pass: `src/sutram_compiler.asm:6210-6318` **collects a complete identifier before looking up keywords**, and `:24058-24176` uses **whole-name `strcmp`** for keyword and builtin matching. However `is_alpha` at `:23969-23990` accepts **byte `0xE0` as Indic start**, while `src/r66_indic_lexer.inc` validates selected three-byte ranges, not arbitrary Unicode identifier categories. The mixed-script and combining-mark cases remain **unexecuted in this collaboration round**. An ASCII-only boundary filter must not be added on speculation.
 

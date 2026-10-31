@@ -18,7 +18,7 @@ three parties measured against.**
 **`docs/sutram-stdlib.html`, the book, the reference, the vocabulary page - all of them.**
 
 ### WS2 — the vocabulary page needs the three new words
-**`docs/VOCABULARY-DERIVATION.md` is now a curriculum, not a rule.** **Add the three new words to it, with their
+**`docs/vocabulary/VOCABULARY-DERIVATION.md` is now a curriculum, not a rule.** **Add the three new words to it, with their
 Devanagari forms and a one-line gloss each.** **As a TSV I can apply.**
 
 ### WS3 — the sixth class: your R118-WS3 verdict, one paragraph

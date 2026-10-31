@@ -12,7 +12,7 @@
 
 **The five original Muse baseline questions are `M01`–`M05`.** `M04` preserves its given `प्रतिलिपि` example but is explicitly annotated: the real native Sanskrit return keyword is `प्रतियाति`, so `प्रतिलिपि` does **not** test prefix collision with that keyword. Genuine native prefix collisions are `D02`–`D11` and `X01`–`X10`.
 
-**Previously measured cases:** Sarvam's `docs/LEXER-BOUNDARY-TEST.md` reports successful native execution of a **variable** `pratiX` and `mukhyata`; those map to M03 and M05, and a **variable** `vartani_pratilip` maps to P02. The reported standalone `prati_test` callable is similar but not identical to new P01. **No function-definition-plus-call trial for `vartani_pratilip(x)` is claimed.** All other TSV rows remain *NOT RUN by ChatGPT*.
+**Previously measured cases:** Sarvam's `docs/reports/LEXER-BOUNDARY-TEST.md` reports successful native execution of a **variable** `pratiX` and `mukhyata`; those map to M03 and M05, and a **variable** `vartani_pratilip` maps to P02. The reported standalone `prati_test` callable is similar but not identical to new P01. **No function-definition-plus-call trial for `vartani_pratilip(x)` is claimed.** All other TSV rows remain *NOT RUN by ChatGPT*.
 
 ## Exact character and keyword anchors
 

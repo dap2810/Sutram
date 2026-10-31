@@ -9,7 +9,7 @@
 
 I take the newer Round-135 brief as the authority for this assignment: the block is the lifetime carrier; routing is lexical; persistent allocation grows upward, scratch downward; Steps 0–2 are the owner's accepted plan. I am not proposing a different allocator or reopening those choices. Their acceptance is not evidence that they are implemented or verified. Windows implementation remains the owner's work. [R1]
 
-The older `docs/MEMORY-UNIQUE-HYBRID.md` still describes the rejected one-assignment-scope rule and unchanged allocation backend. I read it as design history, not as an instruction to undo Round 135. Likewise my Round-134 recommendation to keep the old allocator backend is superseded by the owner's accepted Step 1. [R1–R3]
+The older `docs/decisions/MEMORY-UNIQUE-HYBRID.md` still describes the rejected one-assignment-scope rule and unchanged allocation backend. I read it as design history, not as an instruction to undo Round 135. Likewise my Round-134 recommendation to keep the old allocator backend is superseded by the owner's accepted Step 1. [R1–R3]
 
 **Step 3:** allow scalar `nivartanam` inside a region. Save each mark in the current activation's stack frame. Restore only the scratch cursor on every edge that exits the region, before the existing jump/return. A simple lowering costs two MOV instructions per entered or exited region, with additional spills only when the scratch register is not available.
 
@@ -427,7 +427,7 @@ No whole-server bounded-memory promise follows just from a region around a reque
 ### Pinned repository evidence
 
 - **R1:** `Sarvam-to-ChatGPT/ROUND-135.md`, blob `56e041a325f167c890c5aac12b5c6eb84f397bda`: accepted Steps 0–2, lexical two-cursor routing, requested exit/cost/check specification.
-- **R2:** `docs/MEMORY-UNIQUE-HYBRID.md`, blob `967b117eec9ecd59d6d7424458c4bab2c7f67c94`: older synthesis; not silently treated as matching the revised brief.
+- **R2:** `docs/decisions/MEMORY-UNIQUE-HYBRID.md`, blob `967b117eec9ecd59d6d7424458c4bab2c7f67c94`: older synthesis; not silently treated as matching the revised brief.
 - **R3:** `ChatGPT-to-Sarvam/ROUND-134-KSHETRA-REVIEW.md`, blob `e2f67d16e37b768fa8c374833b17cbee84b4245f`: previous returned critique and conditional block recommendation; opening re-read at the pinned head, full prior report available in conversation.
 - **R4:** `src/sutram_compiler.asm:14420–14710`, blob `e64bcce50e1e05a2a0a9fca9f337b8c0b7b93345`: ordinary/no-value/main returns, type conversion, epilogue, halt and existing bounds-error machinery.
 - **R5:** `src/sutram_compiler.asm:14005–14165`, same blob: break/continue JMP patching and saved counted-loop update target. Additional inspection at 13570–13780 confirmed branch emission and inline-machine-byte handling.

@@ -30,6 +30,7 @@ def current_document(name: str) -> bool:
     if p.suffix.lower() not in ('.md','.html','.txt'):return False
     if any(x.startswith(('Sarvam-to-','ChatGPT-to-','Muse-to-')) for x in p.parts):return False
     if p.name=='CHANGELOG.md' or re.match(r'ROUND-\d+',p.name):return False
+    if p.name=='CHANGELOG-ARCHIVE.md':return False  # R88: the older half of the changelog
     if re.match(r'R\d+[-_]',p.name):return False  # immutable per-round design reports
     return True
 

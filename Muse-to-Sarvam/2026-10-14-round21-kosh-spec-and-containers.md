@@ -21,7 +21,7 @@ Apply with: `git apply Muse-to-Sarvam/2026-10-14-round21-kosh-spec-and-container
 
 | # | Function / file | Workstream |
 |---|---|---|
-| 1 | `docs/KOSH-BUILTINS.md` — canonical spec for the 5 new R63 `kosh` builtins, verified by execution | WS1 |
+| 1 | `docs/reports/KOSH-BUILTINS.md` — canonical spec for the 5 new R63 `kosh` builtins, verified by execution | WS1 |
 | 2 | `docs/LANGUAGE-REFERENCE.md` §16 — table extended with the 5 builtins, stale "no `kosh dasham` yet" line fixed, pointer to the spec | WS1 |
 | 3 | `list_sort(l)` — in-place merge sort | WS2 |
 | 4 | `list_min(l, ok)` / `list_max(l, ok)` — min/max with empty → `ok[0] = 0` | WS2 |
@@ -34,7 +34,7 @@ Apply with: `git apply Muse-to-Sarvam/2026-10-14-round21-kosh-spec-and-container
 
 ### Workstream 1 — the `kosh` builtin spec, written down (documentation only)
 
-`docs/KOSH-BUILTINS.md` is the canonical spec. It is **not** a restatement of the R63 handoff: the R63 doc (`docs/R63-KOSH-BUILTINS.md`) is a source-level implementation handoff whose own text says it was "not yet compiled or executed". Every claim in the new spec was measured from real compiled programs against the merged compiler, plus the R63 acceptance gates (`tools/r63_kosh_acceptance.py`: 9/9 — 5 exact-output programs, 2 compile errors, 2 runtime traps).
+`docs/reports/KOSH-BUILTINS.md` is the canonical spec. It is **not** a restatement of the R63 handoff: the R63 doc (`docs/rounds/R63-KOSH-BUILTINS.md`) is a source-level implementation handoff whose own text says it was "not yet compiled or executed". Every claim in the new spec was measured from real compiled programs against the merged compiler, plus the R63 acceptance gates (`tools/r63_kosh_acceptance.py`: 9/9 — 5 exact-output programs, 2 compile errors, 2 runtime traps).
 
 Measured behaviour stated in the spec:
 
@@ -96,11 +96,11 @@ PASS=187  NO-EXPECTATION=3            (zero failures)
 - 2 new golden tests (6 files): `containers21` (WS2: sort/min/max/sum/count, queue_contains with a moved ring head, map_values), `gaps21` (WS3: saturating factorial edges incl. `100!` → MAX).
 - 2 new properties: `containers21` (all WS2 functions vs Python, incl. empty-list min/max ok, queue_contains after a dequeue, map_values count + order-independent sum), `gaps21` (`ganita_sat_fact` vs clamped Python factorials for n in -2..25 plus 100 and 100000 — the huge-n cases exercise the early-exit path).
 - **No existing golden changed**: `git diff --stat -- tests/stdlib/` is empty; the only `tests/stdlib/` changes are the 6 new golden files.
-- `docs/sutram-stdlib.html` regenerated: **21 modules, 268 functions** (was 21 / 260; +8 new functions). `docs/KOSH-BUILTINS.md` and the `LANGUAGE-REFERENCE.md` §16 update are documentation, not library functions, and do not change the count.
+- `docs/sutram-stdlib.html` regenerated: **21 modules, 268 functions** (was 21 / 260; +8 new functions). `docs/reports/KOSH-BUILTINS.md` and the `LANGUAGE-REFERENCE.md` §16 update are documentation, not library functions, and do not change the count.
 
 ## Files in the patch (14)
 
-New: `docs/KOSH-BUILTINS.md`, `tests/stdlib/containers21.{sm,out,exit}`, `tests/stdlib/gaps21.{sm,out,exit}`.
+New: `docs/reports/KOSH-BUILTINS.md`, `tests/stdlib/containers21.{sm,out,exit}`, `tests/stdlib/gaps21.{sm,out,exit}`.
 Modified: `lib/map.smlib`, `lib/list.smlib`, `lib/ganita.smlib`, `tools/proof_props.py`, `docs/sutram-stdlib.html`, `docs/LANGUAGE-REFERENCE.md`.
 
 ## SHA-256
@@ -111,7 +111,7 @@ Modified: `lib/map.smlib`, `lib/list.smlib`, `lib/ganita.smlib`, `tools/proof_pr
 301e0584c42fc3f40985b4dc72e2a1464520ab6e0f3068c4b428b2cc51725f02  lib/ganita.smlib
 9dce03213f48eae9ba633e968729f88196886cb228912dbab72b7995bd8c7503  tools/proof_props.py
 00cf92fa392d4391430260adc95f74628027b59fdf558af38aba86915852cf1a  docs/sutram-stdlib.html
-6c25e2a90a49297f23eb2b902bb07ddcc754f7498eccb57ef06e897dcb39ef6b  docs/KOSH-BUILTINS.md
+6c25e2a90a49297f23eb2b902bb07ddcc754f7498eccb57ef06e897dcb39ef6b  docs/reports/KOSH-BUILTINS.md
 3ff205d86b70b0a782f4b49740cfd564a5150a22c269d7f2106816ba592cd5d9  docs/LANGUAGE-REFERENCE.md
 40ef72ee81bde9bb349903740bce56c090c5f66ce3778254357006c7982febbc  tests/stdlib/containers21.sm
 86998cb19d1eff97b059c8c5f6b9fe041661a1e2acaded71bc22dd36d85f3a16  tests/stdlib/containers21.out

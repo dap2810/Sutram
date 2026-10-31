@@ -14,10 +14,10 @@ I fetched the current Git tree recursively (**4,079 tracked blobs**, untruncated
 
 | Kind | Source files and lines | Count | Recommended action |
 |---|---|---:|---|
-| **Current caller documentation** | `docs/LANGUAGE-REFERENCE.md:107,108,110`; `docs/R54-BUILTIN-BOUNDS.md:27,29,30,32,38,43`; `docs/STRING-BYTE-PARITY.md:64` | **10** | Apply exact OLD→NEW full-line replacements **only after compiler rename is merged and retested** |
+| **Current caller documentation** | `docs/LANGUAGE-REFERENCE.md:107,108,110`; `docs/rounds/R54-BUILTIN-BOUNDS.md:27,29,30,32,38,43`; `docs/reports/STRING-BYTE-PARITY.md:64` | **10** | Apply exact OLD→NEW full-line replacements **only after compiler rename is merged and retested** |
 | **Generated reference** | `docs/sutram-stdlib.html:165,179,443` | **3** | Update owning source comments through Claude/authorized library owner and **regenerate HTML**, do not hand-edit |
-| **Already documented prospective mappings** | `docs/VOCABULARY-DERIVATION.md:75–77` | **3** | **NO-OP**, all three names/Devanagari words/glosses already present |
-| **Historical/snapshot** | `compiler/verified_snapshots/FG2_R30_verified.asm.txt` (6); `docs/CHANGELOG.md` (7); `docs/R50-BYTE-PACKED-TEXT.md:5` (1); `docs/R54-BUILTIN-BOUNDS.md:47,63` (2) | **16** | **PRESERVE old recorded names.** Optionally add a separately dated migration note, never retroactively rewrite measured history |
+| **Already documented prospective mappings** | `docs/vocabulary/VOCABULARY-DERIVATION.md:75–77` | **3** | **NO-OP**, all three names/Devanagari words/glosses already present |
+| **Historical/snapshot** | `compiler/verified_snapshots/FG2_R30_verified.asm.txt` (6); `docs/CHANGELOG.md` (7); `docs/rounds/R50-BYTE-PACKED-TEXT.md:5` (1); `docs/rounds/R54-BUILTIN-BOUNDS.md:47,63` (2) | **16** | **PRESERVE old recorded names.** Optionally add a separately dated migration note, never retroactively rewrite measured history |
 | **Total** | **8 files** | **32** | Every old text and proposed new text precisely in TSV |
 
 **No old-name occurrences were found in** `docs/sutram-book*.html` (including Sanskrit, English and other frozen translations), `docs/sutram-stdlib-reference.html`, `docs/sutram-vocabulary.html`, root `README.md` and other negative-match files listed in the manifest. Avoid invented edits for those.
@@ -32,11 +32,11 @@ I fetched the current Git tree recursively (**4,079 tracked blobs**, untruncated
 
 | Current old builtin | New Sanskrit builtin | Native form | Current curriculum line |
 |---|---|---|---|
-| `vartani_len` | `vartani_aayam` | **आयाम** — extent/span/sequence length | `docs/VOCABULARY-DERIVATION.md:75` |
+| `vartani_len` | `vartani_aayam` | **आयाम** — extent/span/sequence length | `docs/vocabulary/VOCABULARY-DERIVATION.md:75` |
 | `vartani_cmp` | `vartani_tul` | **तुल् (तुलना)** — weigh/compare | `:76` |
 | `vartani_cp` | `vartani_pratilip` | **प्रतिलिपि** — copy/duplicate | `:77` |
 
-These three rows already appear in the live rewritten curriculum (`docs/VOCABULARY-DERIVATION.md`, blob `a0cfb673f8588a99f49afb86a523fa2c0d033c85`). **Do not append them again.** Their presence does NOT mean the compiler API rename has landed. Exact Sanskrit word/derivation certification was not conducted here.
+These three rows already appear in the live rewritten curriculum (`docs/vocabulary/VOCABULARY-DERIVATION.md`, blob `a0cfb673f8588a99f49afb86a523fa2c0d033c85`). **Do not append them again.** Their presence does NOT mean the compiler API rename has landed. Exact Sanskrit word/derivation certification was not conducted here.
 
 ## WS3 — sixth documentation error class
 

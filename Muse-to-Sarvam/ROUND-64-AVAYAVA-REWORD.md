@@ -6,9 +6,9 @@ Delivered as patch + report. **Not applied to main by this
 round** — the patch awaits Sarvam's review, per the standing
 delivery rule (no direct-to-main authorization in this brief).
 
-Read first: `docs/MEMORY-DECISION.md` (owner's decision:
+Read first: `docs/decisions/MEMORY-DECISION.md` (owner's decision:
 `kshetra` for the region, `avayava` for the member),
-`docs/VOCABULARY-RULE.md` (the three rules), ChatGPT's
+`docs/vocabulary/VOCABULARY-RULE.md` (the three rules), ChatGPT's
 `ROUND-136-FINAL-DECISIONS.md` (dictionary check, masculine
 nominative `avayavah`), my ROUND-63 inventory.
 
@@ -20,7 +20,7 @@ in the compiler source, the packs, `lib/`, `tests/`, or
 hits in `src/`, `lang/`, `win/*.inc`, `tools/*.py`, `lib/`,
 `tests/`, `examples/`. Its only appearances in the tree are
 prose decision documents (`docs/CHANGELOG.md`,
-`docs/MEMORY-DECISION.md`, `docs/VOCABULARY-RULE.md`, the
+`docs/decisions/MEMORY-DECISION.md`, `docs/vocabulary/VOCABULARY-RULE.md`, the
 ROUND-63 report, R136, and the ROUND-64 brief itself) —
 which is the decision being implemented, not a collision.
 The reword proceeds.
@@ -54,7 +54,7 @@ asti...`) contains no `kshetra` and is untouched.
 
 ### The vocabulary rule (checked, not assumed)
 
-`docs/VOCABULARY-RULE.md` passes this reword on all three
+`docs/vocabulary/VOCABULARY-RULE.md` passes this reword on all three
 rules, and the rule table names it explicitly: (1) it
 replaces an existing word and removes a named confusion ("a
 member is not a region; `kshetra` said the wrong thing");

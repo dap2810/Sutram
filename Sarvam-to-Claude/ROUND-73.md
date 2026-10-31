@@ -19,7 +19,7 @@
 - **`outer = buf + 64`** — arithmetic on a scratch pointer, stored in a variable that outlives the block
 - **`outer_mala[i] = buf`** — a scratch pointer stored into a container declared outside
 
-**Build the three-field symbol table: `var_depth`, `val_taint`, `box_depth`.** **The rule, from `docs/MEMORY-DECISION.md`: a value derived from a scratch address, stored into a variable at lower depth or into a container at lower depth, is refused at compile time.**
+**Build the three-field symbol table: `var_depth`, `val_taint`, `box_depth`.** **The rule, from `docs/decisions/MEMORY-DECISION.md`: a value derived from a scratch address, stored into a variable at lower depth or into a container at lower depth, is refused at compile time.**
 
 **And the honest limit, which must be stated in the error path: a scratch pointer that escapes through a `kosh` of pointers, or through a function return of a container, may not be visible. Say so where a programmer would hit it, not only in the design doc.**
 

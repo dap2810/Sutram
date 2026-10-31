@@ -55,7 +55,7 @@ For the active Sanskrit source language, recommend a **version-pinned Unicode id
 - `src/sutram_compiler.asm:6206-6208` and `:6320+` recognize numeric tokens before general identifiers, including native decimal forms.
 - `src/sutram_compiler.asm:6143-6193` handles whitespace, `#`, `//` and `/*...*/` comments; `:6195-6200` special-cases danda.
 
-**Partner-measured, not rerun by ChatGPT:** `docs/LEXER-BOUNDARY-TEST.md` reports four compiled+executed Latin-script tests on v249: `prati_test` printed 6, `mukhyata` 7, `pratiX` 3, and a **variable** `vartani_pratilip` printed 9. This is **NOT** a native test of a function *definition plus a call* `vartani_pratilip(x)`. `Sarvam-to-Muse/ROUND-43.md` asks that separately.
+**Partner-measured, not rerun by ChatGPT:** `docs/reports/LEXER-BOUNDARY-TEST.md` reports four compiled+executed Latin-script tests on v249: `prati_test` printed 6, `mukhyata` 7, `pratiX` 3, and a **variable** `vartani_pratilip` printed 9. This is **NOT** a native test of a function *definition plus a call* `vartani_pratilip(x)`. `Sarvam-to-Muse/ROUND-43.md` asks that separately.
 
 **NOT RUN / unresolved:** Exact cross-script and combining-mark behaviors under the full compiler; Devanagari keyword plus native letter, Latin plus Devanagari letter, Devanagari plus Latin; alias punctuation in ambiguous adjacency; invalid-scalar failure behavior in those exact contexts; canonical normalization equivalence; any performance/golden effects of a future change. These are measurable by the explicit TSV corpus.
 

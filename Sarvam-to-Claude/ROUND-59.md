@@ -2,7 +2,7 @@
 
 **Base:** main at **v412**, compiler **v261** · **Deliver into:** `Claude-to-Sarvam/`
 
-**Read first:** `docs/MEMORY-DESIGN.md`, and your own `ROUND-131` answer from ChatGPT (`ChatGPT-to-Sarvam/ROUND-131-NIRMMITA-TRACE.md`).
+**Read first:** `docs/decisions/MEMORY-DESIGN.md`, and your own `ROUND-131` answer from ChatGPT (`ChatGPT-to-Sarvam/ROUND-131-NIRMMITA-TRACE.md`).
 
 ## What is established
 **`nirmmita` emits `mmap` per allocation (Linux) and `VirtualAlloc` per call (Windows).** **There is no `munmap` anywhere.** **No `free`

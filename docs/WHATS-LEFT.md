@@ -31,7 +31,7 @@
 | **`arabhya ... paryantam`** | **R52** | tested byte-identical to `tak` loops |
 | **`nivartanam` as the keyword, `prati` as alias** | **R53/R54, 162 files** | **guard 0 DIFFER; zero goldens changed** |
 | **Seven wrong Devanagari words in the pack** | **v402** | `चक्र`, `माला`, `अन्य`, `अग्रिम` tested compiling |
-| **The Sanskrit pack audit** | **`docs/LANG-PACK-AUDIT.md`** | 11 defects found, 7 fixed |
+| **The Sanskrit pack audit** | **`docs/reports/LANG-PACK-AUDIT.md`** | 11 defects found, 7 fixed |
 
 ---
 

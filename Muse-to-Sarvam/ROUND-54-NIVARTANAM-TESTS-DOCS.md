@@ -113,10 +113,10 @@ and not a miss:**
 | File | Occ. | Why historical |
 |---|---|---|
 | `docs/CHANGELOG.md` | 47 | Dated record, including old decisions ("`prati` stays", v396 `nivartan`, v399/v400 migration notes). Rewriting it would falsify the record of how the rename happened. |
-| `docs/LEXER-BOUNDARY-TEST.md` | 4 | Document's subject is `prati`'s prefix behaviour (`prati_test`, `pratiX`, `vartani_pratilip`). Migrating to `nivartanam` would break its argument, since `vartani_pratilip` does not begin with `nivartanam`. |
-| `docs/VOCABULARY-TABLE.md` | 5 | Vocabulary review table with KEEP/CHANGE decisions for the old word, including the "Fix: `prati` in both" row. A proposal record, not a live reference. |
-| `docs/VOCABULARY-DERIVATION.md` | 2 | Derivation note: "`prati` is `return`, so `vartani_pratilip` looked like it might not lex" — the reasoning depends on `prati` being the prefix. |
-| `docs/VOCABULARY-SHORT.md` | 2 | Short-word proposal table: `prati` listed as "already short" (5 letters). `nivartanam` (9 letters) is not short, so the table needs separate review, not a blind rename. |
+| `docs/reports/LEXER-BOUNDARY-TEST.md` | 4 | Document's subject is `prati`'s prefix behaviour (`prati_test`, `pratiX`, `vartani_pratilip`). Migrating to `nivartanam` would break its argument, since `vartani_pratilip` does not begin with `nivartanam`. |
+| `docs/vocabulary/VOCABULARY-TABLE.md` | 5 | Vocabulary review table with KEEP/CHANGE decisions for the old word, including the "Fix: `prati` in both" row. A proposal record, not a live reference. |
+| `docs/vocabulary/VOCABULARY-DERIVATION.md` | 2 | Derivation note: "`prati` is `return`, so `vartani_pratilip` looked like it might not lex" — the reasoning depends on `prati` being the prefix. |
+| `docs/vocabulary/VOCABULARY-SHORT.md` | 2 | Short-word proposal table: `prati` listed as "already short" (5 letters). `nivartanam` (9 letters) is not short, so the table needs separate review, not a blind rename. |
 | `docs/WHATS-LEFT.md` | 1 | Old decision record F4: "`prati` stays — decided". Now superseded by R53/R54, but the supersession belongs in a new changelog entry, not by editing the old decision line. |
 | `docs/SPECIFICATION.md:227` | 1 | Pack alias record, see above. |
 

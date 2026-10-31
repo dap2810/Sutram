@@ -1,0 +1,15 @@
+# Every test file that mentions docs, run on origin/main and on this tree
+## origin/main
+tests/clean_project/test_current_guides.py :: FAILED (failures=1)
+tests/gui/test_win_native_langpacks.py :: OK
+tests/r34/test_link_windows.py :: r34 link (Windows): NOT-RUN - this gate runs on Windows
+tests/r66/test_native_helpers.py :: OK
+tests/r69/test_build_and_probe.py :: FAILED (failures=2)
+tests/r71/test_delivery_tools.py :: FAILED (errors=1)
+## this tree
+tests/clean_project/test_current_guides.py :: FAILED (failures=1)
+tests/gui/test_win_native_langpacks.py :: OK
+tests/r34/test_link_windows.py :: r34 link (Windows): NOT-RUN - this gate runs on Windows
+tests/r66/test_native_helpers.py :: OK
+tests/r69/test_build_and_probe.py :: FAILED (failures=2)
+tests/r71/test_delivery_tools.py :: FAILED (errors=1)

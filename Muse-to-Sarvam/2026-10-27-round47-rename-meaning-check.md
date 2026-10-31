@@ -3,7 +3,7 @@
 **Base:** `origin/main` at `61d5f7b7` (v374; round written against
 v372), compiler **v253**. Measured independently from the compiler
 source and `lib/` on this base, not from Sarvam's audit doc — where
-my measurements agree with `docs/LIBRARY-ENGLISH-AUDIT.md` I say so,
+my measurements agree with `docs/reports/LIBRARY-ENGLISH-AUDIT.md` I say so,
 where they add to it I say that too. PASS / FAIL / NOT-RUN
 separately. **No code changes made. No files added or modified in
 the tree.**

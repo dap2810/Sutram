@@ -17,7 +17,7 @@ Of the nine ROUND-01 items, Sarvam took two (`gates.sh`, the build location). Of
 ## New this round
 
 1. **Re-pin or release the source locks.** `tools/r68_review.lock.json`, `tools/r69_build.lock.json` and
-   `docs/NEGATIVE-CORPUS.md` pin Git blobs of the compiler and its `.inc` files. The compiler's pin has
+   `docs/reports/NEGATIVE-CORPUS.md` pin Git blobs of the compiler and its `.inc` files. The compiler's pin has
    been stale since v157; my `r66_indic_lexer.inc` change adds one more. Either the locks are re-pinned
    after each accepted change (and `tests/r68` becomes meaningful again), or they are declared
    historical. As it stands, a test fails on main for a reason nobody acts on.

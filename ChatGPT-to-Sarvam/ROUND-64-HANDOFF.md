@@ -38,7 +38,7 @@ src/sutram_compiler.asm
 tools/r63_kosh_acceptance.py
 tools/r64_kosh_diagnostic_acceptance.py
 tools/r64_source_gate.py
-docs/R64-KOSH-DIAGNOSTICS.md
+docs/rounds/R64-KOSH-DIAGNOSTICS.md
 tests/r64_check/default_compat.sm
 tests/r64_check/default_compat.out
 tests/r64_check/kosh_pop_empty.sm
@@ -84,6 +84,6 @@ python3 -m unittest discover -s tests/ci -p 'test_*.py' -v
 
 For the compatibility test, build a second compiler from the **accepted main commit before PR #22** (source parent above), then supply `--before /path/to/pre-r64-compiler` to `tools/r64_kosh_diagnostic_acceptance.py`. The generated `default_compat` native binary should be byte-for-byte identical between compilers; this **remains an expectation** pending actual A/B execution. For the updated diagnostic strings, verify all three empty traps exit nonzero, emit exactly the intended message family, and never mix names.
 
-On real standard-user Windows, follow `docs/R62-WINDOWS-ACCEPTANCE.md` with `-Stage Prepare`, `-Stage Audit`, and `-Stage Screenshot -CaptureGui`, including honest legacy/fixed measurements and screenshot visual inspection. Avoid elevation/HKLM and do not disable safeguards.
+On real standard-user Windows, follow `docs/rounds/R62-WINDOWS-ACCEPTANCE.md` with `-Stage Prepare`, `-Stage Audit`, and `-Stage Screenshot -CaptureGui`, including honest legacy/fixed measurements and screenshot visual inspection. Avoid elevation/HKLM and do not disable safeguards.
 
 **Safety:** No `lib/*.smlib`, accepted goldens, GUI colours, Devanagari/danda parsing, workflow YAML, credentials, installer security options, or new network functionality were altered. No automated CI or monitoring was set up. PR #22 remains DRAFT for Sarvam's independent acceptance. Do not merge merely because the static audit passes.

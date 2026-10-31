@@ -15,9 +15,9 @@ Read [`ROUND-125-REJECT-CHANGE-KEEP.md`](ROUND-125-REJECT-CHANGE-KEEP.md) **firs
 
 `name | english | real_word(Y/N) | dictionary_form | meaning | sense_fits(PASS/FAIL) | better_word | reason`
 
-**Coverage:** all **156 expanded source entries** across sections 1–6 of `docs/VOCABULARY-TABLE.md`, plus **72 individually reviewed alternative/focus rows**. This is **228 judgments**, not 228 independently dictionary-attested headwords: duplicate proposed/current entries intentionally retain contextual classifications. Dictionary-form fields explicitly provide noun/root/compound members. **173 Y / 55 N**, **147 PASS / 81 FAIL** after final reconciliation. These are per-row counts **including alternative names**, not counts of compiler bugs, accepted changes, or the number of Sanskrit dictionary headwords.
+**Coverage:** all **156 expanded source entries** across sections 1–6 of `docs/vocabulary/VOCABULARY-TABLE.md`, plus **72 individually reviewed alternative/focus rows**. This is **228 judgments**, not 228 independently dictionary-attested headwords: duplicate proposed/current entries intentionally retain contextual classifications. Dictionary-form fields explicitly provide noun/root/compound members. **173 Y / 55 N**, **147 PASS / 81 FAIL** after final reconciliation. These are per-row counts **including alternative names**, not counts of compiler bugs, accepted changes, or the number of Sanskrit dictionary headwords.
 
-`docs/VOCABULARY-TABLE.md` has **42 rows under a heading claiming 38 keywords**, **10 rows under a heading claiming eight Devanagari mismatches**, 25 builtin rows, 24 modules, 31 stems, and 22 source rows of English leftovers (24 when two two-name rows are split). Section 7 is an aggregate scorecard and has no additional names to classify; its counts should not be repeated without reconciliation. The table mixes compiler keywords with ordinary builtins; do not equate the source heading with a parser keyword-ID count.
+`docs/vocabulary/VOCABULARY-TABLE.md` has **42 rows under a heading claiming 38 keywords**, **10 rows under a heading claiming eight Devanagari mismatches**, 25 builtin rows, 24 modules, 31 stems, and 22 source rows of English leftovers (24 when two two-name rows are split). Section 7 is an aggregate scorecard and has no additional names to classify; its counts should not be repeated without reconciliation. The table mixes compiler keywords with ordinary builtins; do not equate the source heading with a parser keyword-ID count.
 
 ## Requested hard cases — definitive sense verdicts
 
@@ -41,7 +41,7 @@ Read [`ROUND-125-REJECT-CHANGE-KEEP.md`](ROUND-125-REJECT-CHANGE-KEEP.md) **firs
 1. [`ROUND-125-DICTIONARY-EVIDENCE.md`](ROUND-125-DICTIONARY-EVIDENCE.md) contains **12 explicit linked dictionary/historical references**, raw lexical senses, method and scope limits. These establish the high-risk disputes (`chay`, `chiti`, `karna`, `tadatmya`, `kshamata`, `nivartan`, `jya`, `kotijya`, `samalamb`, `ashtak`, `ganita`, `ganan`). **Do not claim all 228 rows were individually searched in a dictionary; they were not.**
 2. [`ROUND-125-SOURCE-RAW-READ.md`](ROUND-125-SOURCE-RAW-READ.md) contains **12 raw source-range receipts** with pinned Git blob IDs and original line numbers; actual code body decides the named behavior.
 3. [`ROUND-125-OBSERVED.json`](ROUND-125-OBSERVED.json) contains counts and explicit status separation.
-4. The shorter proposal file `docs/VOCABULARY-SHORT.md` was read but is overridden for the submitted review by the full `docs/VOCABULARY-TABLE.md` and by source bodies. Bad truncation rules in the short proposal (`purn`, `vip`, `nay` etc.) are **not accepted**.
+4. The shorter proposal file `docs/vocabulary/VOCABULARY-SHORT.md` was read but is overridden for the submitted review by the full `docs/vocabulary/VOCABULARY-TABLE.md` and by source bodies. Bad truncation rules in the short proposal (`purn`, `vip`, `nay` etc.) are **not accepted**.
 
 **PASS:** pinned GitHub reads, TSV structural and coverage check, dictionary spot-checks for high-risk names, source-body semantics read and identified.
 

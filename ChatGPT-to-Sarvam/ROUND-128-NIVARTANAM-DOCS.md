@@ -55,8 +55,8 @@ For a presently supported equivalent, use `prati a + b`; the alias is not schedu
 path	mode	anchor_exact	insert_exact_line
 docs/ERROR-CONVENTION.md	PROPOSE_AFTER_CANONICAL_MERGE	        prati 0	        nivartanam 0
 docs/ERROR-CONVENTION.md	PROPOSE_AFTER_CANONICAL_MERGE	    prati phal_asti_siddhi(out)	    nivartanam phal_asti_siddhi(out)
-docs/KOSH-BUILTINS.md	PROPOSE_AFTER_CANONICAL_MERGE	    prati 0	    nivartanam 0
-docs/LAGHU-EXAMPLE.md	PROPOSE_AFTER_CANONICAL_MERGE	    prati 0	    nivartanam 0
+docs/reports/KOSH-BUILTINS.md	PROPOSE_AFTER_CANONICAL_MERGE	    prati 0	    nivartanam 0
+docs/reports/LAGHU-EXAMPLE.md	PROPOSE_AFTER_CANONICAL_MERGE	    prati 0	    nivartanam 0
 docs/LANGUAGE-REFERENCE.md	PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE	## 3. Operators and precedence	### Return keyword — `nivartanam` (निवर्तनम्)
 docs/LANGUAGE-REFERENCE.md	PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE	## 3. Operators and precedence	<BLANK>
 docs/LANGUAGE-REFERENCE.md	PROPOSE_INSERT_BEFORE_AFTER_CANONICAL_MERGE	## 3. Operators and precedence	**Approved canonical spelling (implementation pending exact-head verification):** `nivartanam` (निवर्तनम्). The neuter noun `nivartanam` means **returning / turning back**, derived from prefix `ni-` plus root `√vṛt` (to turn).
@@ -118,12 +118,12 @@ README.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prakriya` | function | `prati` | retu
 ### Historical and frozen documentation register
 
 - **docs/CHANGELOG.md — KEEP_HISTORICAL.** All historical v396/v397/v398 narrative, earlier spellings and test claims remain dated evidence; do NOT replace every prati.
-- **docs/LEXER-BOUNDARY-TEST.md — KEEP_HISTORICAL.** Recorded original lexer tests on prati, pratiX and prati_test retain meaning: prati remains accepted legacy alias.
-- **docs/R56-MODULE-GLOBALS.md — KEEP_HISTORICAL.** Round-56 historical fixture example contains prati counter.
+- **docs/reports/LEXER-BOUNDARY-TEST.md — KEEP_HISTORICAL.** Recorded original lexer tests on prati, pratiX and prati_test retain meaning: prati remains accepted legacy alias.
+- **docs/rounds/R56-MODULE-GLOBALS.md — KEEP_HISTORICAL.** Round-56 historical fixture example contains prati counter.
 - **F7-SCALAR-INDEX-CRASH.md — KEEP_HISTORICAL.** Historical input example prati 1; preserve reproducer.
-- **docs/VOCABULARY-TABLE.md — KEEP_HISTORICAL.** Older vocabulary proposal considered prati KEEP and wrong native प्रतियाति; preserve review as provenance, may append dated supersession later.
-- **docs/VOCABULARY-SHORT.md — KEEP_HISTORICAL.** Earlier shortening proposal keeps prati; historical proposal rather than current syntax authority.
-- **docs/VOCABULARY-DERIVATION.md — KEEP_HISTORICAL.** Historical keyword boundary and vocabulary reports; legacy alias remains accepted.
+- **docs/vocabulary/VOCABULARY-TABLE.md — KEEP_HISTORICAL.** Older vocabulary proposal considered prati KEEP and wrong native प्रतियाति; preserve review as provenance, may append dated supersession later.
+- **docs/vocabulary/VOCABULARY-SHORT.md — KEEP_HISTORICAL.** Earlier shortening proposal keeps prati; historical proposal rather than current syntax authority.
+- **docs/vocabulary/VOCABULARY-DERIVATION.md — KEEP_HISTORICAL.** Historical keyword boundary and vocabulary reports; legacy alias remains accepted.
 - **docs/LIBRARY-BOUNDARY.md — KEEP_COMPATIBILITY.** Mentions existing prati syntax in technical description; remains true after alias retained.
 - **docs/_newchapter_en.html — DEFER_NON_SANSKRIT_DRAFT.** English-language appendix; don't alter frozen/non-active translation surfaces.
 - **docs/sutram-book-english.html — DEFER_NON_SANSKRIT_BOOK.** English edition, do not change during Sanskrit-only development.
@@ -145,8 +145,8 @@ README.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prakriya` | function | `prati` | retu
 - GitHub READ: `docs/sutram-book-sanskrit.html b181c74f87543df7244624eae592d269d3b62862 6 lexical-hit line(s)`
 - GitHub READ: `docs/SPECIFICATION.md 100e7b8e4b6ef919481b223c56f322806a210c98 3 lexical-hit line(s)`
 - GitHub READ: `docs/ERROR-CONVENTION.md 06d1b7f73bfb3636cd4104fa5001563ce8556d97 2 lexical-hit line(s)`
-- GitHub READ: `docs/KOSH-BUILTINS.md 8062b5bae846c8314113c44f695ec44c18b0aa56 1 lexical-hit line(s)`
-- GitHub READ: `docs/LAGHU-EXAMPLE.md 271d7519c0f54675f1be807621f17463f9afd976 1 lexical-hit line(s)`
+- GitHub READ: `docs/reports/KOSH-BUILTINS.md 8062b5bae846c8314113c44f695ec44c18b0aa56 1 lexical-hit line(s)`
+- GitHub READ: `docs/reports/LAGHU-EXAMPLE.md 271d7519c0f54675f1be807621f17463f9afd976 1 lexical-hit line(s)`
 - GitHub READ: `README.md d711d81fe9cd8fa7aab592546e61302367a67442 1 lexical-hit line(s)`
 - GitHub READ: `PROJECT-OVERVIEW.md d84993a3d84adb7c34986f9ed1bdb32843cfacfd 1 lexical-hit line(s)`
 - GitHub READ: `docs/sutram-vocabulary.html 94c5d5221e7a6fcaf18502949bba824f62f59f65 1 lexical-hit line(s)`

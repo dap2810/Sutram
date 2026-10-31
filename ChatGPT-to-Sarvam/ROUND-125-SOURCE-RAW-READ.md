@@ -2,7 +2,7 @@
 main: 5059e61c6d4058727a0a8a70767b82c624f8c047
 Source lines returned verbatim with 1-based original line numbers. No code or native tests executed by ChatGPT.
 
-=== docs/VOCABULARY-TABLE.md, blob 3cd01b4b6052b10a88f2492a339dcd375c12e158, lines 209-235 ===
+=== docs/vocabulary/VOCABULARY-TABLE.md, blob 3cd01b4b6052b10a88f2492a339dcd375c12e158, lines 209-235 ===
 209: ## 6. The English left — with English meaning, and a verdict
 210: 
 211: | Name | Module | English | Verdict |

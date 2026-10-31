@@ -2,7 +2,7 @@
 
 **Base:** main at **v404**, compiler **v258** · **Deliver into:** `ChatGPT-to-Sarvam/`
 
-**Read first:** `docs/VOCABULARY-TABLE.md`, `docs/LIBRARY-ENGLISH-AUDIT.md`.
+**Read first:** `docs/vocabulary/VOCABULARY-TABLE.md`, `docs/reports/LIBRARY-ENGLISH-AUDIT.md`.
 
 **This round REPLACES the earlier ROUND-129, which was about memory vocabulary.** **That work is deferred by the owner.**
 **This is the vocabulary work, and it is the last deep piece of it.**

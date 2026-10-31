@@ -343,7 +343,7 @@ Repository evidence is pinned to the reviewed snapshot, except the explicitly id
 [spec]: https://github.com/dap2810/Sutram/blob/ca53eab710059eb574f1f19c64018b5eaedec1a8/docs/SPECIFICATION.md
 [memory]: https://github.com/dap2810/Sutram/blob/ca53eab710059eb574f1f19c64018b5eaedec1a8/docs/MEMORY-MODEL.md
 [free]: https://github.com/dap2810/Sutram/blob/ca53eab710059eb574f1f19c64018b5eaedec1a8/docs/FREESTANDING.md
-[modules]: https://github.com/dap2810/Sutram/blob/ca53eab710059eb574f1f19c64018b5eaedec1a8/docs/R71-MODULES.md
+[modules]: https://github.com/dap2810/Sutram/blob/ca53eab710059eb574f1f19c64018b5eaedec1a8/docs/rounds/R71-MODULES.md
 [reclaimhandoff]: https://github.com/dap2810/Sutram/blob/ca53eab710059eb574f1f19c64018b5eaedec1a8/ChatGPT-to-Sarvam/ROUND-71-RECLAIM-HANDOFF.md
 [reclaim]: https://github.com/dap2810/Sutram/blob/b08c74630d3f7aa460acceb5eb6864a9a4fd822a/docs/R71-KOSH-RECLAMATION.md
 [combined]: https://github.com/dap2810/Sutram/blob/ca53eab710059eb574f1f19c64018b5eaedec1a8/ChatGPT-to-Sarvam/ROUND-69-71-COMBINED-HANDOFF.md

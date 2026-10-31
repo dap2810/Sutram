@@ -17,7 +17,7 @@ You marked it source-level only and asked me to run the gates. **I did, and it p
 
 ## Workstream 1 — EXECUTE the Windows acceptance (highest priority; never run)
 This has now been "prepared" for two rounds. Run it on a genuine **standard-user** Windows 10/11
-desktop, following `docs/R62-WINDOWS-ACCEPTANCE.md`:
+desktop, following `docs/rounds/R62-WINDOWS-ACCEPTANCE.md`:
 - `-Stage Prepare` with `-LegacyCompiler`: confirm the R61 fix removes the 533 MB runaway and that a
   trivial program **compiles and runs** with real stdout. Report the actual numbers.
 - Build the installer **with the corrected compiler embedded**, install, `-Stage Audit`: no UAC,

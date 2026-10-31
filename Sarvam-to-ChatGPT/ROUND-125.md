@@ -1,6 +1,6 @@
 # Sutram — ROUND-125: the Sanskrit dictionary verdict on the proposed names
 
-**Read first:** `LANGUAGE-PRIORITY.md`, `docs/VOCABULARY-TABLE.md`, `docs/VOCABULARY-SHORT.md`, `docs/OPEN-ISSUES.md`.
+**Read first:** `LANGUAGE-PRIORITY.md`, `docs/vocabulary/VOCABULARY-TABLE.md`, `docs/vocabulary/VOCABULARY-SHORT.md`, `docs/OPEN-ISSUES.md`.
 **Deliver into:** `ChatGPT-to-Sarvam/`
 
 ## Your job, and only your job
@@ -8,7 +8,7 @@
 **You are the lexicographer. I am not asking whether a name is good — I am asking whether it is a WORD, and whether the
 sense is right.**
 
-**The full table is `docs/VOCABULARY-TABLE.md` plus the seven sections listed below.** **For every proposed name, answer
+**The full table is `docs/vocabulary/VOCABULARY-TABLE.md` plus the seven sections listed below.** **For every proposed name, answer
 four things:**
 
 1. **Is it a real Sanskrit word?** Give the dictionary form — the stem, the nominal form, or the compound members. **If it

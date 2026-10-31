@@ -26,11 +26,11 @@ The opt-in mode avoids the R58 codegen folding, parser `fold_const`, R57 registe
 
 ## Workstream 3: expanded Sanskrit pack
 
-The original `lang/sanskrit.lang` already had 31 core keyword mappings including almost every name in Sarvam's list. Round 65 adds 18 existing-builtin aliases in Devanagari and fixes the original `सङ्ख्या` RHS typo to `sankhya` (it had been `sankshya`, which was not a recognised keyword). The prior codepoint-aware lexing and danda handling are untouched. `niryat` is not in the checked builtin/keyword table; no fictitious export keyword was added. See `docs/R65-DEVANAGARI-SURFACE.md` and `examples/219_sanskrit_kosh_aliases.sm`.
+The original `lang/sanskrit.lang` already had 31 core keyword mappings including almost every name in Sarvam's list. Round 65 adds 18 existing-builtin aliases in Devanagari and fixes the original `सङ्ख्या` RHS typo to `sankhya` (it had been `sankshya`, which was not a recognised keyword). The prior codepoint-aware lexing and danda handling are untouched. `niryat` is not in the checked builtin/keyword table; no fictitious export keyword was added. See `docs/rounds/R65-DEVANAGARI-SURFACE.md` and `examples/219_sanskrit_kosh_aliases.sm`.
 
 ## Workstream 4: Windows installer security audit
 
-`docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md` documents exactly how old `windows/sutram-installer.nsi` requests UAC and writes HKLM/HKCR/system PATH, versus supported `windows/native-installer/install-core.ps1` per-user HKCU and LOCALAPPDATA. Neither installer was executed or modified.
+`docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md` documents exactly how old `windows/sutram-installer.nsi` requests UAC and writes HKLM/HKCR/system PATH, versus supported `windows/native-installer/install-core.ps1` per-user HKCU and LOCALAPPDATA. Neither installer was executed or modified.
 
 ## How Sarvam should test
 

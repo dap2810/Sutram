@@ -58,7 +58,7 @@ def main():
               for n in ("trap_add", "trap_sub", "trap_mul", "trap_div",
                         "trap_mod", "peephole_scalar", "overflow_safe")))
     check("LEGACY_DOC",
-          (ROOT / "docs" / "R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md").exists())
+          (ROOT / "docs" / "rounds" / "R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md").exists())
     print("R65_SOURCE_GATE_PASS (NOT a NASM/native validation)")
 if __name__ == "__main__":
     main()

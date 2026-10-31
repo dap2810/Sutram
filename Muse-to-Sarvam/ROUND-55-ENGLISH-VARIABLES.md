@@ -3,7 +3,7 @@
 **Base worked on:** `origin/main` at `06a0d6f8` (changelog v406, compiler v258 — the brief said
 v404, main has moved on by two doc-sync commits since; the compiler is still v258, so the
 measurement base is the same language). **Read first, as instructed:** `docs/WHATS-LEFT.md`
-(C7: "~140 English variables", R55 is "table only, no changes") and `docs/VOCABULARY-TABLE.md`
+(C7: "~140 English variables", R55 is "table only, no changes") and `docs/vocabulary/VOCABULARY-TABLE.md`
 (used for existing-word proposals, e.g. `suchi` for list, `aayam` for length).
 
 **No file in the tree was changed in this round.** The deliverables are this report and the TSV

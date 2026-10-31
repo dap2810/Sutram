@@ -23,7 +23,7 @@ IMPLEMENTATION
 1. All 40 registered builtin IDs now use the central r54_builtin_arity_table and r54_builtin_arity_ok in src/sutram_compiler.asm. The parser validates the inclusive min/max count before building any builtin-specific AST or dereferencing a missing parameter. This covers pad, pad8, likh8, char_from, set_char, dvaram, shabda, paadh, network wrappers, string operations, vectors and typed kosh functions. Special sthagita and likh AST paths are covered too. Invalid calls yield a located recoverable E_PARSE under --check, rather than compiler memory faults.
 2. More than six supplied arguments are rejected before storing beyond the AST_CALL node: a seven-argument fixture reports E_PARSE and creates no binary.
 3. The active raw-memory test revealed a PRE-EXISTING generated-code failure in vartani_cp(dst,src): it scanned the destination with repne scasb instead of copying the source. Replaced that one emitter with a NUL-inclusive byte-copy loop and a return of the original destination pointer. This is the only builtin whose generated instructions intentionally changed. Existing raw pointer bounds checks were not silently expanded.
-4. docs/R54-BUILTIN-BOUNDS.md records bounds preconditions per builtin: pad reads one byte; pad8 and likh8 operate on eight-byte qwords; char_at/char_code/set_char do not check indexes; pad8c and likh8c check only addr < upper bound, NOT the lower bound or entire eight-byte span; memory/string/vector routines require caller-managed capacity and valid termination; char_from returns a temporary stack pointer with no long-term ownership guarantee.
+4. docs/rounds/R54-BUILTIN-BOUNDS.md records bounds preconditions per builtin: pad reads one byte; pad8 and likh8 operate on eight-byte qwords; char_at/char_code/set_char do not check indexes; pad8c and likh8c check only addr < upper bound, NOT the lower bound or entire eight-byte span; memory/string/vector routines require caller-managed capacity and valid termination; char_from returns a temporary stack pointer with no long-term ownership guarantee.
 
 ACTUAL VERIFIED RESULTS (not expected or simulated)
 
@@ -44,7 +44,7 @@ ROUND-54-HANDOFF.md — this report, reproducibility and instructions.
 ROUND-54-OBSERVED.txt — captured actual compiler stdout for 43 valid and 80 invalid arity variants, raw before/after runtime, error cases and full acceptance summaries.
 ROUND-54-SHA256.txt — six per-file SHA256s emitted by successful CI: compiler, docs, harness, two native source fixtures, workflow.
 ROUND-54-NASM-REVIEW.patch — unified pure-NASM source diff against main.
-docs/R54-BUILTIN-BOUNDS.md — full pointer bounds contract and shortcomings.
+docs/rounds/R54-BUILTIN-BOUNDS.md — full pointer bounds contract and shortcomings.
 tools/r54_native_acceptance.py — deterministic declarative fixture generator/tester.
 tools/r54_muse_acceptance.py — independently tests 186 original expected files and 3 Muse example-local goldens.
 tests/r54_check/raw_valid.sm and raw_invalid.sm — actual source fixtures.

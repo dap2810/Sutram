@@ -81,8 +81,8 @@ begins with the keyword `prati`.**
 
     Each addition moves `src/r22_lang_builtin.inc` and its pin, and is then tested by `tests/r43` automatically.
 - **No prose documents were renamed.** That is ChatGPT's R119 list.
-  - Still naming the old builtins: `docs/LANGUAGE-REFERENCE.md` (3), `docs/R54-BUILTIN-BOUNDS.md` (8),
-    `docs/R50-BYTE-PACKED-TEXT.md`, `docs/STRING-BYTE-PARITY.md`, and the historical round records.
+  - Still naming the old builtins: `docs/LANGUAGE-REFERENCE.md` (3), `docs/rounds/R54-BUILTIN-BOUNDS.md` (8),
+    `docs/rounds/R50-BYTE-PACKED-TEXT.md`, `docs/reports/STRING-BYTE-PARITY.md`, and the historical round records.
   - `docs/sutram-stdlib.html` is generated, so `gates.sh` regenerated it.
 - **The Windows IDE (`windows/gui/sutram_gui.asm`, `sutram-ide-gui.exe`) still highlights the old names.** It
   belongs to the Windows channel, and its binary does not rebuild reproducibly here.

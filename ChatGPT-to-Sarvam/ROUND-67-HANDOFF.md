@@ -37,7 +37,7 @@ closed. Reconcile the discrepancy before accepting/integrating the new source.
 
 ## Reviewer entry point
 
-Read `docs/R67-SOURCE-REVIEW.md` on this branch first.
+Read `docs/rounds/R67-SOURCE-REVIEW.md` on this branch first.
 
 ```sh
 python3 -m unittest discover -s tests/r66 -p 'test_*.py' -v

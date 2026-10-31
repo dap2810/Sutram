@@ -19,7 +19,7 @@ Newer main changes must be reconciled at review, not discarded.
 | Workstream | Delivered | Exact remaining limit |
 |---|---|---|
 | WS1 specification | `docs/SPECIFICATION.md`: source/golden-grounded semantics, precedence inventory, order, integers/floats, strings, keywords and packs. Evidence-backed, source-observed, documented and unspecified rules are distinct. | Not a complete formal language specification. Untested associativity, ordinary side-effect order, conversion and pack-resolution cases remain unspecified. |
-| WS2 negatives | Six categories in `tests/negative/r70/`, a pinned manifest, `tools/r70_negative_corpus.py`, unit tests and `docs/NEGATIVE-CORPUS.md`. Two cases copy existing source/golden identities; four expectations are new. | The actual six-case native run has NOT occurred here. Thirty-six Python harness tests are not thirty-six compiled Sutram tests. Full native acceptance is still required. |
+| WS2 negatives | Six categories in `tests/negative/r70/`, a pinned manifest, `tools/r70_negative_corpus.py`, unit tests and `docs/reports/NEGATIVE-CORPUS.md`. Two cases copy existing source/golden identities; four expectations are new. | The actual six-case native run has NOT occurred here. Thirty-six Python harness tests are not thirty-six compiled Sutram tests. Full native acceptance is still required. |
 | WS3 memory | `docs/MEMORY-MODEL.md`: current allocation/alias/reclamation observations, then an explicitly PROPOSED ownership design. | No ownership/borrow checker or runtime memory-safety feature implemented. No leak measurement or full allocator audit claimed. |
 | WS4 freestanding | `docs/FREESTANDING.md`: concrete entry/startup/sections/relocation/volatile/atomic/interrupt/OS-dependency/output/repeatability gaps. | No boot image, kernel, emulator run or freestanding-readiness claim. |
 
@@ -55,7 +55,7 @@ hash are not themselves proof that a binary was built from those sources.
 
 ## Native reviewer entry point
 
-Read all four documents, especially `docs/NEGATIVE-CORPUS.md`. In a complete
+Read all four documents, especially `docs/reports/NEGATIVE-CORPUS.md`. In a complete
 checkout matching the pinned source profile, using an existing Linux toolchain:
 
 ```sh

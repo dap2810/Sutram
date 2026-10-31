@@ -2,7 +2,7 @@
 
 **Base:** main at v416, compiler v261 · **Deliver into:** `Claude-to-Sarvam/`
 
-**Read `docs/MEMORY-DESIGN.md`'s CORRECTION section first, then this round's brief.**
+**Read `docs/decisions/MEMORY-DESIGN.md`'s CORRECTION section first, then this round's brief.**
 
 ## Improvement 2 goes into Step 1 unchanged — no fixed ceiling
 

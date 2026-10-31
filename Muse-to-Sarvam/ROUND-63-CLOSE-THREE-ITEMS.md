@@ -1,7 +1,7 @@
 # ROUND-63 — close the last three items, then development starts
 
 Base: origin/main `4c556029`, CHANGELOG v414, compiler v261.
-Read first: `docs/MEMORY-UNIQUE-HYBRID.md`, my ROUND-61 critique
+Read first: `docs/decisions/MEMORY-UNIQUE-HYBRID.md`, my ROUND-61 critique
 and ROUND-62 finish, `ChatGPT-to-Sarvam/ROUND-134-KSHETRA-REVIEW.md`
 and `ROUND-135-KSHETRA-CHECK.md`, `Claude-to-Sarvam/R62-00-
 KSHETRA-STEPS-3-4.md`.
@@ -53,7 +53,7 @@ documents quoting them).
 **Library and docs (lens 3): no quotes.** No `lib/` function
 and no user-facing doc quotes any of the three strings.
 `docs/` prose uses `kshetra` only in
-`docs/MEMORY-UNIQUE-HYBRID.md`, in the *region* sense — which
+`docs/decisions/MEMORY-UNIQUE-HYBRID.md`, in the *region* sense — which
 is the sense being kept, so no doc change is needed there.
 (The ROUND-62 handoff quotes the old strings; handoff
 documents are history, not user docs, and are not updated.)

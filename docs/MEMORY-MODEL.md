@@ -45,7 +45,7 @@ Evidence: [example 89](../examples/89_b9_short_circuit.sm) and its
 [golden](../tests/expect/120_t18_kosh_param_mismatch.out),
 [compiler](../src/sutram_compiler.asm) symbols `.ge_call_koshpush`,
 `.ge_call_koshclear`, `.ge_koshdequeue`, and the existing
-[kosh document](KOSH-BUILTINS.md). The source-level and test-level claims above
+[kosh document](reports/KOSH-BUILTINS.md). The source-level and test-level claims above
 are deliberately not interchangeable.
 
 ## 2. Allocation and reclamation
@@ -183,7 +183,7 @@ measurement, and the fix was determined to be compiler-side:
   buffer's mapping is never released.
 - **No free primitive exists in the language.** The `kosh` API
   (`kosh_push/pop/len/cap/clear/empty/peek/enqueue/dequeue`,
-  `docs/KOSH-BUILTINS.md`) has no free, and there is no general
+  `docs/reports/KOSH-BUILTINS.md`) has no free, and there is no general
   `munmap` builtin. So the library cannot reclaim the buffer even
   if it wanted to: there is no primitive to call.
 - **Measurement:** `tools/test_kosh_growth_leak.py` compiles a

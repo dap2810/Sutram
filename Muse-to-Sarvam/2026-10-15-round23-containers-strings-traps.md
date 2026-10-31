@@ -21,7 +21,7 @@ Apply with: `git apply Muse-to-Sarvam/2026-10-15-round23-containers-strings-trap
 
 | # | Function / file | Workstream |
 |---|---|---|
-| 1 | `docs/KOSH-BUILTINS.md` — R64 diagnostics reconciled (three distinct messages named) | WS1 |
+| 1 | `docs/reports/KOSH-BUILTINS.md` — R64 diagnostics reconciled (three distinct messages named) | WS1 |
 | 2 | `docs/LANGUAGE-REFERENCE.md` §16 — "same diagnostic" line corrected | WS1 |
 | 3 | `list_find(l, v)` — first index, or -1 | WS2 |
 | 4 | `list_is_sorted(l)` — 1 if non-decreasing | WS2 |
@@ -42,7 +42,7 @@ empty kosh_peek(k):    Sutram Error: kosh peek from empty array
 empty kosh_dequeue(k): Sutram Error: kosh dequeue from empty array
 ```
 
-`docs/KOSH-BUILTINS.md` now names all three accurately, states the R63→R64 change (R63 shared pop's message), and keeps the no-ok-channel rule. The `LANGUAGE-REFERENCE.md` §16 line that said peek/dequeue "abort with the same diagnostic" is corrected. All other spec claims were re-measured on the new compiler and still hold (push returns length, peek does not remove, enqueue is a push alias, dequeue is FIFO, clear is length-only with capacity kept, binary64 preserved).
+`docs/reports/KOSH-BUILTINS.md` now names all three accurately, states the R63→R64 change (R63 shared pop's message), and keeps the no-ok-channel rule. The `LANGUAGE-REFERENCE.md` §16 line that said peek/dequeue "abort with the same diagnostic" is corrected. All other spec claims were re-measured on the new compiler and still hold (push returns length, peek does not remove, enqueue is a push alias, dequeue is FIFO, clear is length-only with capacity kept, binary64 preserved).
 
 ### Workstream 2 — container gaps
 
@@ -111,7 +111,7 @@ The first full run showed **64/65 properties**: the older `containers resize/swa
 ## Files in the patch (18)
 
 New: `tests/stdlib/containers23.{sm,out,exit}`, `tests/stdlib/gaps23.{sm,out,exit}`, `tests/stdlib/slices23.{sm,out,exit}`.
-Modified: `lib/list.smlib`, `lib/map.smlib`, `lib/set.smlib`, `lib/strb.smlib`, `lib/string.smlib`, `tools/proof_props.py`, `docs/sutram-stdlib.html`, `docs/KOSH-BUILTINS.md`, `docs/LANGUAGE-REFERENCE.md`.
+Modified: `lib/list.smlib`, `lib/map.smlib`, `lib/set.smlib`, `lib/strb.smlib`, `lib/string.smlib`, `tools/proof_props.py`, `docs/sutram-stdlib.html`, `docs/reports/KOSH-BUILTINS.md`, `docs/LANGUAGE-REFERENCE.md`.
 
 ## SHA-256
 
@@ -123,7 +123,7 @@ dc0580837ba3f8ae63b5f847dd8dce545850cf08279b47fb0ba8c8932f44a910  lib/strb.smlib
 e7d8f9a215164b486d625c978f33211dbcb097cc63cf39bc716d3957dc9633e1  lib/string.smlib
 c9de1040d016ce7a51f3d702e3bda49f492b45d52716c12f34868cbe9f4bb793  tools/proof_props.py
 2a34516b9e05eaf5287f9b0609bb7053f847c0a5cb6e365e1e85c403484dd833  docs/sutram-stdlib.html
-8e5a7d64521cb28dbbe55567cdb5b98c17564fc9b31c4b4c2ee049bdb787d801  docs/KOSH-BUILTINS.md
+8e5a7d64521cb28dbbe55567cdb5b98c17564fc9b31c4b4c2ee049bdb787d801  docs/reports/KOSH-BUILTINS.md
 52c0ebd9cb98ed5fb2ef3f6930e606891db1596bdea77074851efac3e10f0ab3  docs/LANGUAGE-REFERENCE.md
 3dfd38ede56fdd45e0e4fd79f8f318dd577175d23cee4d01f2b01aabc99b069a  tests/stdlib/containers23.sm
 d08ef5adf95699972c4a15e42f6a48a3c92945c93071a35ad7a7ce278b45e890  tests/stdlib/containers23.out

@@ -2,7 +2,7 @@
 >
 > **Two corrections to the table below, both from measuring rather than reading:** **`chay` IS real Sanskrit (चय, heap)** — the `chiti_*` rename I proposed is churn and should not happen. **`kosh_enqueue` must not become `kosh_purva_yuj`** — enqueue appends at the REAR, and `purva` means front.
 >
-> **And the Devanagari column was ahead of the Latin column:** the pack already held proper Sanskrit compounds for ten builtins (`kosh_push` -> कोशपुष्, `kosh_cap` -> कोशक्षमता, `kosh_empty` -> कोशरिक्त). **The answer to "what should these be called" was already in the tree.** See `docs/LANG-PACK-AUDIT.md`.
+> **And the Devanagari column was ahead of the Latin column:** the pack already held proper Sanskrit compounds for ten builtins (`kosh_push` -> कोशपुष्, `kosh_cap` -> कोशक्षमता, `kosh_empty` -> कोशरिक्त). **The answer to "what should these be called" was already in the tree.** See `docs/reports/LANG-PACK-AUDIT.md`.
 
 # The complete word table — with the English meaning, and what I would change
 

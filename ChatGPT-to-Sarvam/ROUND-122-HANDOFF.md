@@ -4,7 +4,7 @@
 
 ## First: R122 task premise has already been narrowed by the CURRENT tree
 
-The R122 instruction asked about `char`, `int`, `div`, `len`, `slice` "in lib" as though each were a missing public Sanskrit rename. The later v373/v374 changelog and revised `docs/LIBRARY-ENGLISH-AUDIT.md` explain why that is false for most uses. I **verified with connected GitHub API reads of all 24 `lib/*.smlib` files, 305 real `prakriya` names**, rather than trusting a tarball or word grep:
+The R122 instruction asked about `char`, `int`, `div`, `len`, `slice` "in lib" as though each were a missing public Sanskrit rename. The later v373/v374 changelog and revised `docs/reports/LIBRARY-ENGLISH-AUDIT.md` explain why that is false for most uses. I **verified with connected GitHub API reads of all 24 `lib/*.smlib` files, 305 real `prakriya` names**, rather than trusting a tarball or word grep:
 
 - Compiler's **public builtins already** use `akshar`, `akshar_rakh`, `aksharank`, `vartani_aayam`. `char` labels inside compiler internals are not automatically exported API spellings.
 - Many `len` strings are local variable names or explanatory prose; `slice` is often the **English gloss** of the existing Sanskrit `vibhag` keyword and should stay understandable in English references.
@@ -27,7 +27,7 @@ Git tree at the pinned commit is untruncated (4,373 entries). All **92 current r
 | **PROPOSE_EXACT_CURRENT** | **8** | Current static reference/vocabulary/property entries may require names updated **ONLY IF owner first approves a real `laghu` rename**, except the existing false `sat_div` current-reference line, which merits a separate reviewed correction |
 | **REGENERATE_FROM_SOURCE** | **3** | Generated `docs/sutram-stdlib.html` rows 86–87 for both actual declarations and line 155's nonexistent `sat_div` cross-reference; **never hand-edit HTML** |
 
-**Specific conditional impact if owner approves names:** `docs/sutram-stdlib-reference.html:317-318,334-335` (callable signatures and worked examples), `docs/sutram-vocabulary.html:139,145` (callable index), `docs/PROPERTY-NET.md:35` (actual property names), `docs/sutram-stdlib.html:86-87` via `tools/gen_stdlib_ref.py`, plus corresponding source declarations, calls and tests handled only by authorized Claude/Muse. Do not copy proposed names into current docs before those changes compile.
+**Specific conditional impact if owner approves names:** `docs/sutram-stdlib-reference.html:317-318,334-335` (callable signatures and worked examples), `docs/sutram-vocabulary.html:139,145` (callable index), `docs/reports/PROPERTY-NET.md:35` (actual property names), `docs/sutram-stdlib.html:86-87` via `tools/gen_stdlib_ref.py`, plus corresponding source declarations, calls and tests handled only by authorized Claude/Muse. Do not copy proposed names into current docs before those changes compile.
 
 **Unrelated confirmed live-doc error:** `docs/OVERFLOW-SAFETY.md:57` and generated `docs/sutram-stdlib.html:155` refer to phantom `sat_div`, repeated from `lib/ganita.smlib:516` comment. The actual analogous call is `ganita_paripurna_bhaj`. Suggest a separately approved exact comment/current-doc correction and regeneration. Do not globally rewrite old dated `sat_*` property experiment names, since historical oracle labels and public API names are different.
 

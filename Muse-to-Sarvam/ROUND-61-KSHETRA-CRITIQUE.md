@@ -1,7 +1,7 @@
 # ROUND-61 — the `kshetra` block, critiqued
 
 Base: origin/main `2553ee43`, CHANGELOG v414, compiler v261.
-Read first: `docs/MEMORY-UNIQUE-HYBRID.md` (the synthesis),
+Read first: `docs/decisions/MEMORY-UNIQUE-HYBRID.md` (the synthesis),
 `ChatGPT-to-Sarvam/ROUND-133-MEMORY-DESIGN.md` (ChatGPT's alias
 argument and Track A/B), `Claude-to-Sarvam/evidence-r60/` (page
 costs, `.bss` limits, library escapes, unzeroed-memory proofs).

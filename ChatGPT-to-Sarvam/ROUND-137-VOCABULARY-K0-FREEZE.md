@@ -7,7 +7,7 @@
 
 ## Status and decisions
 
-The amendment governs: **`mandapa` / मण्डप is the proposed block keyword; `kshetra` / क्षेत्र names the arena in diagnostics/docs only; `avayava` / अवयव names a structure member.** Older reports calling the source construct `kshetra` are superseded on that spelling, not on their lifetime requirements. `docs/VOCABULARY-RULE.md` was read; its three vocabulary tests and separation of programmer-facing syntax from explanatory terminology are retained. No additional memory keywords or programmer-selectable size-tier syntax are proposed here. [R1, R2]
+The amendment governs: **`mandapa` / मण्डप is the proposed block keyword; `kshetra` / क्षेत्र names the arena in diagnostics/docs only; `avayava` / अवयव names a structure member.** Older reports calling the source construct `kshetra` are superseded on that spelling, not on their lifetime requirements. `docs/vocabulary/VOCABULARY-RULE.md` was read; its three vocabulary tests and separation of programmer-facing syntax from explanatory terminology are retained. No additional memory keywords or programmer-selectable size-tier syntax are proposed here. [R1, R2]
 
 **WS1 is a scoped verification, not a completed repository-wide census.** Primary dictionary pages were checked; compiler text, the complete Sanskrit keyword pack, selected message packs and the generated library reference were inspected. The broad assertion that every `lib/`, `examples/`, `tests/` file and every message pack has been independently scanned is **NOT** made. Sarvam's totals of 44 pack entries and eight expected-output files remain **partner-reported, not independently reproduced in full**. A zero-result GitHub search returned `incomplete_results:true`, including for a term known to exist, so it cannot establish absence. This limitation is a remaining verification gate, not a reason to invent a new name.
 
@@ -256,7 +256,7 @@ All cases below are **proposed, NOT RUN**.
 ### Repository sources
 
 - **R1:** `Sarvam-to-ChatGPT/ROUND-137.md`, blob `9c8533335f467e0123943f810e91454892301ab9`: four workstreams and owner vocabulary amendment.
-- **R2:** `docs/VOCABULARY-RULE.md`, blob `71e2d0cbcc72b42d5c921f47878fac5556254ec5`: three standing tests and final role table.
+- **R2:** `docs/vocabulary/VOCABULARY-RULE.md`, blob `71e2d0cbcc72b42d5c921f47878fac5556254ec5`: three standing tests and final role table.
 - **R3:** `src/sutram_compiler.asm`, blob `e64bcce50e1e05a2a0a9fca9f337b8c0b7b93345`: pinned retrieval; raw-text search with compiler-header positive control; four field strings. Keyword/builtin definitions at this unchanged blob were also inspected in R136.
 - **R4:** complete `lang/sanskrit.lang`, blob `27eda2b6a9be2cca76e375cfec9d73b865c7b4e8`.
 - **R5:** complete `lang/` directory listing at tree `e711e1b8f4e5e2d1d6fe9512d933912a0eb02296`; direct reads of selected packs. Sanskrit blob `de50e1f02e0075a7e4c37c6fe7821144eaeec866`, Bengali `f77d821485745ddcd129727fdb1be3ec1e32bcb5`, Gujarati `8578168fa75a953efc41e9f01969b2ddfd024069`, Hindi `7b8e931e8147551d037fb261031971ff60ab71dc`, Kannada `f7389f068bd6d6c4d5683cd0b79c9459680c5921`. Listing a blob does not mean its contents were exhaustively searched; the scope distinctions in WS1 apply.

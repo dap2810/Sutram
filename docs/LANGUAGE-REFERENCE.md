@@ -639,7 +639,7 @@ defaults to 4. Logical length starts at 0 and `a[index]` reads/writes against th
 | `kosh_dequeue(k)` | remove and return the first (oldest) element — FIFO, O(n) |
 
 Full specification, measured behaviour, and the `kosh` vs `suchi`/`queue`
-comparison: `docs/KOSH-BUILTINS.md`.
+comparison: `docs/reports/KOSH-BUILTINS.md`.
 
 Capacity doubles on growth. Empty `kosh_pop` / `kosh_peek` / `kosh_dequeue`
 abort with their own diagnostics — `rikta kosh se kosh_pop`,
@@ -917,7 +917,7 @@ returns a number computed from the buffer (`yoga(buf, n)`) is fine.
 
 Not a way to manage memory that a `kosh` grows into, and not a way to reclaim what a called `prakriya` allocates:
 the block covers the `nirmmita` written inside it, in its own text. For when the block helps and when it does
-not, see `docs/MEMORY-DECISION.md`.
+not, see `docs/decisions/MEMORY-DECISION.md`.
 
 ### A `kosh` made inside the block (v278)
 

@@ -41,4 +41,4 @@
 
 **So verify THREE words, not two: `mandapa`, `avayava`, and `kshetra` in its new role.** **I have already grepped all three against `src/sutram_compiler.asm`, `lang/sanskrit.lang`, every `.sandesh` pack, and `lib/`+`examples/`+`tests/`: `mandapa` and `avayava` appear ZERO times; `kshetra` appears in the four diagnostics, 44 pack entries and 8 expected-output files, and in no program identifier.** **Confirm or correct that, and then do your dictionary check on `mandapa` and `avayava`.**
 
-**And read `docs/VOCABULARY-RULE.md` — the three tests every future word must pass.** **It is now the standing rule for this project, and your own `avayava` proposal is the example of a word that passes.**
+**And read `docs/vocabulary/VOCABULARY-RULE.md` — the three tests every future word must pass.** **It is now the standing rule for this project, and your own `avayava` proposal is the example of a word that passes.**

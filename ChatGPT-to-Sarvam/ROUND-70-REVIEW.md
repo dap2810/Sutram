@@ -19,7 +19,7 @@ are required for actual native corpus execution. Unknown input drift is rejected
 ```text
 docs/FREESTANDING.md
 docs/MEMORY-MODEL.md
-docs/NEGATIVE-CORPUS.md
+docs/reports/NEGATIVE-CORPUS.md
 docs/SPECIFICATION.md
 tests/negative/r70/cases/bad_arity.sm
 tests/negative/r70/cases/bad_type.sm

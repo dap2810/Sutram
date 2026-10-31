@@ -17,7 +17,7 @@ The check fails on:
   - a core module that calls nirmmita( (allocator use);
   - a core module that imports an alloc/std module;
   - an alloc module that imports a std module;
-  - a module missing from docs/LIBRARY-LAYERS.md.
+  - a module missing from docs/reports/LIBRARY-LAYERS.md.
   - a core/alloc module that calls an OS-service builtin (see
     OS_BUILTINS): such a module belongs in std. A std module
     calling one is correct, not an error.
@@ -40,7 +40,7 @@ OS_BUILTINS = ("likha", "likha_fmt", "likh", "paadh", "band",
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LIB = os.path.join(REPO, "lib")
-DOC = os.path.join(REPO, "docs", "LIBRARY-LAYERS.md")
+DOC = os.path.join(REPO, "docs", "reports", "LIBRARY-LAYERS.md")
 
 LAYER_RE = re.compile(r"^\s*#\s*layer:\s*(core|alloc|std)\s*$", re.M)
 AYOJAN_RE = re.compile(r"^\s*yoj\s+([a-z_][a-z0-9_]*)\s*$", re.M)
@@ -100,11 +100,11 @@ def main():
     try:
         doc = open(DOC, encoding="utf-8").read()
     except FileNotFoundError:
-        errors.append("docs/LIBRARY-LAYERS.md missing")
+        errors.append("docs/reports/LIBRARY-LAYERS.md missing")
         doc = ""
     for shesh in layers:
         if shesh not in doc:
-            errors.append(f"{shesh}: missing from docs/LIBRARY-LAYERS.md")
+            errors.append(f"{shesh}: missing from docs/reports/LIBRARY-LAYERS.md")
     if errors:
         print("LAYER CHECK FAILED:")
         print("\n".join(f"  - {e}" for e in errors))

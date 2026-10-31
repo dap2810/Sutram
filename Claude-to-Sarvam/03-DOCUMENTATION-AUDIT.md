@@ -55,16 +55,16 @@ printf 'yoj ganit\nyoj ank\nyoj shreni\nyoj madhava\nmukhya() {\n    likha(varg(
 | 001 | `PROJECT-MASTER.md:26` | PASS | |
 | 002 | `PROJECT-OVERVIEW.md:19` | PASS | |
 | 003 | `docs/ERROR-CONVENTION.md:142` | PASS (fragment, wrapped with `yoj phal`) | prints `1` then `20` |
-| 004 | `docs/KOSH-REUSE.md:13` | PASS (fragment, wrapped; `... use v ...` line removed) | `kosh_cap` stays 100000 as the doc says |
+| 004 | `docs/reports/KOSH-REUSE.md:13` | PASS (fragment, wrapped; `... use v ...` line removed) | `kosh_cap` stays 100000 as the doc says |
 | 005 | `docs/LANGUAGE-REFERENCE.md:10` | PASS | |
 | 006 | `docs/LANGUAGE-REFERENCE.md:140` | PASS | |
 | 007 | `docs/LANGUAGE-REFERENCE.md:167` | **FAIL** — `parse error at line 15:18 near token 'to'` | **lines 182 and 188 use `to`; the keyword is `tak`.** With `to`→`tak` the sample compiles and prints the documented output. *This is the language reference's main syntax tour — the rename missed it.* |
 | 008 | `docs/LANGUAGE-REFERENCE.md:212` | PASS (fragment, wrapped) | ternary and `kuru…yavat` behave as described |
 | 009 | `docs/LANGUAGE-REFERENCE.md:239` | PASS | |
 | 010 | `docs/LANGUAGE-REFERENCE.md:254` | PASS with `--lang sanskrit` (as the doc says); FAIL without | prints `15` |
-| 011 | `docs/R52-BUILTIN-FIXES.md:17` | PASS (fragment, wrapped) | creates `example.txt`, `private.txt` |
-| 012 | `docs/R56-MODULE-GLOBALS.md:7` | PASS | |
-| 013 | `docs/R71-MEMORY-BOUNDARY.md:12` | PASS only with the R71 entry **and** `-DSUTRAM_R71_UNSAFE_BOUNDARY=1` (the doc says so at line 22); FAIL on the canonical build and FAIL on the R71 entry without the flag | prints `42` |
+| 011 | `docs/rounds/R52-BUILTIN-FIXES.md:17` | PASS (fragment, wrapped) | creates `example.txt`, `private.txt` |
+| 012 | `docs/rounds/R56-MODULE-GLOBALS.md:7` | PASS | |
+| 013 | `docs/rounds/R71-MEMORY-BOUNDARY.md:12` | PASS only with the R71 entry **and** `-DSUTRAM_R71_UNSAFE_BOUNDARY=1` (the doc says so at line 22); FAIL on the canonical build and FAIL on the R71 entry without the flag | prints `42` |
 | 014 | `docs/SPECIFICATION.md:48` | PASS | |
 
 Summary: **13 PASS · 1 FAIL (007) · 0 NOT-RUN.** (010 and 013 pass under the conditions their own text
@@ -122,7 +122,7 @@ broke (reads wrong or misquotes the compiler) · **I** = the document contradict
 
 | Line | Claim | What the code does | Sev |
 |---|---|---|---|
-| 13 | "Required core Git blob: `64ea028a…`" | `git hash-object src/sutram_compiler.asm` = **`f3a837a5…`**. Consequently the documented tool refuses: `python3 tools/r69_build.py --check-only` → `R69_BUILD_REFUSED: input drift: src/sutram_compiler.asm: expected 64ea028a…, got f3a837a5…`. **The "only supported" build *tool* cannot build main**; only the manual `nasm`/`ld` pair on lines 44–45 works. `tools/r69_build.lock.json:6` pins the same stale blob, and `docs/MEMORY-MODEL.md:8`, `docs/FREESTANDING.md:5`, `docs/INDIC-COVERAGE.md:36`, `docs/R68-SOURCE-REVIEW.md:4` cite `64ea028a…` as *the* compiler blob (those four read as snapshot references, so S rather than E). | E |
+| 13 | "Required core Git blob: `64ea028a…`" | `git hash-object src/sutram_compiler.asm` = **`f3a837a5…`**. Consequently the documented tool refuses: `python3 tools/r69_build.py --check-only` → `R69_BUILD_REFUSED: input drift: src/sutram_compiler.asm: expected 64ea028a…, got f3a837a5…`. **The "only supported" build *tool* cannot build main**; only the manual `nasm`/`ld` pair on lines 44–45 works. `tools/r69_build.lock.json:6` pins the same stale blob, and `docs/MEMORY-MODEL.md:8`, `docs/FREESTANDING.md:5`, `docs/reports/INDIC-COVERAGE.md:36`, `docs/rounds/R68-SOURCE-REVIEW.md:4` cite `64ea028a…` as *the* compiler blob (those four read as snapshot references, so S rather than E). | E |
 | 54 | "verifies … the GUI by gudh" | reads "by hash" | P |
 | 29 | "never an input patra" | reads "input file" | P |
 
@@ -147,7 +147,7 @@ broke (reads wrong or misquotes the compiler) · **I** = the document contradict
 |---|---|---|---|
 | "Error codes and CLI flags" | E_PARSE→**E_VYAKARAN**, E_UTF8→**E_LIPI**, E_UNDEFINED_FUNCTION→**E_AGYAT**, E_MODULE_CYCLE→**E_CHAKRA**, E_UNSAFE_BOUNDARY→**E_SEEMA**, E_INTEGER_TRAP→**E_ANK_DOSH**; `--check`→**`--janch`**, `--lang`→**`--bhasha`**, `--version`→**`--sanskaran`** | the compiler emits `E_PARSE`, `E_UTF8`, `E_UNDEFINED_FUNCTION`, `E_MODULE_CYCLE`, `E_INTEGER_TRAP` and accepts only `--check`, `--lang`, `--version` (`src/sutram_compiler.asm:217, 405–409`; `r68_diagnostics.inc:8–12`). The table sits beside the keyword renames that *were* applied, with the same "Was/Becomes" heading, so it reads as done. | E (or a plan mislabelled as done) |
 
-### 4.7 `docs/NEGATIVE-CORPUS.md`
+### 4.7 `docs/reports/NEGATIVE-CORPUS.md`
 
 | Line | Claim | What the code does | Sev |
 |---|---|---|---|
@@ -168,16 +168,16 @@ broke (reads wrong or misquotes the compiler) · **I** = the document contradict
 | `docs/ERROR-CONVENTION.md:6, 59` | "no phal type", "phal is `dasham`" | result |
 | `docs/ERROR-CONVENTION.md:13, 58` | "a 1-cell `mala` (integer mala)", "(float mala)" | array |
 | `docs/FREESTANDING.md:42` | "a reproducible memory nighantu" | map |
-| `docs/KOSH-BUILTINS.md:76` | "zeroes the nighantu's storage" | map's |
-| `docs/KOSH-BUILTINS.md:107–109` | "`kosh pop from empty mala`" ×3 (quoted compiler output) | `… empty array` — misquote, as 4.5 |
+| `docs/reports/KOSH-BUILTINS.md:76` | "zeroes the nighantu's storage" | map's |
+| `docs/reports/KOSH-BUILTINS.md:107–109` | "`kosh pop from empty mala`" ×3 (quoted compiler output) | `… empty array` — misquote, as 4.5 |
 | `docs/LIBRARY-BOUNDARY.md:8, 19, 26, 94` | "the patra-I/O entry", "a patra API", "A sangrah of socket builtins", "the patra builtins" | file / set |
-| `docs/LIBRARY-LAYERS.md:61, 87` | "The `0 std` phal", "builtin for mala length" | result / array |
+| `docs/reports/LIBRARY-LAYERS.md:61, 87` | "The `0 std` phal", "builtin for mala length" | result / array |
 | `docs/MEMORY-MODEL.md:203` | "is not the phal" | result |
 | `docs/NUMERIC-CONTRACT.md:72, 78` | "the dasham→int conversion", "module suchi" | (72 is fine — `dasham` is the type) / list |
-| `docs/PROPERTY-NET.md:7, 40, 44, 69` | "this patra states", "the empty varna", "a shreni disturbing", "equalling the sangrah" | file / string / sort / set |
-| `docs/R71-MEMORY-BOUNDARY.md:56–57` | "`src/r71_unsafe_tokens.vardh`", "`src/r71_unsafe_integration.vardh`" | `.inc` |
+| `docs/reports/PROPERTY-NET.md:7, 40, 44, 69` | "this patra states", "the empty varna", "a shreni disturbing", "equalling the sangrah" | file / string / sort / set |
+| `docs/rounds/R71-MEMORY-BOUNDARY.md:56–57` | "`src/r71_unsafe_tokens.vardh`", "`src/r71_unsafe_integration.vardh`" | `.inc` |
 | `docs/SPECIFICATION.md:6, 95` | "a separate source patra", "The `3 & 4` phal is pinned" | file / result |
-| `docs/STRING-BYTE-PARITY.md:16–17, 81` | "a byte varna", "a cell mala", "a varna literal" | string / array / string |
+| `docs/reports/STRING-BYTE-PARITY.md:16–17, 81` | "a byte varna", "a cell mala", "a varna literal" | string / array / string |
 | `docs/WINDOWS-SETUP.md:112` | "The patra is an ELF binary" | file |
 | `docs/INSTALLATION-ROUTES.md:20` | "a root-level patra" | file |
 

@@ -2,7 +2,7 @@
 
 **Base:** main at **v412**, compiler **v261** · **Deliver into:** `Muse-to-Sarvam/`
 
-**Read first:** `docs/MEMORY-DESIGN.md`.
+**Read first:** `docs/decisions/MEMORY-DESIGN.md`.
 
 ## Why you
 **Before anything is designed, I need to know how big the change is.** **That is counting, and counting is what you do better than anyone

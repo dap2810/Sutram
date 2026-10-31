@@ -309,7 +309,7 @@ learn to program. **That is an argument from testability, not from heritage.**
 **A widely-repeated claim says "NASA declared Sanskrit the most suitable language for computer software." It is
 false.** The real source is Briggs, *AI Magazine*, Spring 1985 - a paper about natural-language *input* and
 knowledge representation, not about programming languages. **What it actually says, what is genuinely useful in it,
-and why we do not repeat the myth: see `docs/SANSKRIT-AND-AI-BRIGGS-1985.md`.**
+and why we do not repeat the myth: see `docs/reports/SANSKRIT-AND-AI-BRIGGS-1985.md`.**
 
 ## 9. What is NOT true — read before claiming anything
 
@@ -415,14 +415,14 @@ the observation that makes it true. Two of them — Windows execution and the fr
 | What the language is being built to be | `docs/sutram-design-parameters.html` |
 | How the project is actually doing | `docs/sutram-project-status.html` |
 | The language reference | `docs/LANGUAGE-REFERENCE.md` |
-| The standard library | `docs/sutram-stdlib.html`, `docs/LIBRARY-LAYERS.md`, `docs/LIBRARY-BOUNDARY.md` |
+| The standard library | `docs/sutram-stdlib.html`, `docs/reports/LIBRARY-LAYERS.md`, `docs/LIBRARY-BOUNDARY.md` |
 | What is specified and what is not | `docs/SPECIFICATION.md` |
 | The memory model (proposed) | `docs/MEMORY-MODEL.md` |
-| What must be rejected | `docs/NEGATIVE-CORPUS.md` |
+| What must be rejected | `docs/reports/NEGATIVE-CORPUS.md` |
 | The freestanding gap list | `docs/FREESTANDING.md` |
 | Numeric behaviour | `docs/NUMERIC-CONTRACT.md`, `docs/OVERFLOW-SAFETY.md` |
 | The error convention | `docs/ERROR-CONVENTION.md` |
-| Property proofs, and what would break them | `docs/PROPERTY-NET.md` |
+| Property proofs, and what would break them | `docs/reports/PROPERTY-NET.md` |
 | Every version | `docs/CHANGELOG.md` |
 | The books (6 editions) | `docs/sutram-book-*.html` |
 | Installing on Windows | `docs/INSTALLATION-ROUTES.md`, `docs/WINDOWS-SETUP.md` |

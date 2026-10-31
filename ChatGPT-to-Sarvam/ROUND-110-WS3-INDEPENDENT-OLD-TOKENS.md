@@ -59,12 +59,12 @@ All **83** `docs/` Markdown and HTML pages were inspected. The following non-CHA
 | Document:line | Match | Context / classification |
 |---|---|---|
 | `docs/LANGUAGE-REFERENCE.md:242` | `pankti` | Example error message “`vyakaran dosh, pankti 3:5`”: **line number**, not an obsolete array keyword |
-| `docs/NEGATIVE-CORPUS.md:24,27` | `pankti` | Error diagnostics: **line number**, preserve |
-| `docs/R56-MODULE-GLOBALS.md:28` | `ayojan` | Older R56 technical snapshot: textual inclusion named by pre-rename spelling. **Historical**, not current CLI instruction |
-| `docs/R65-DEVANAGARI-SURFACE.md:3` | `pankti`, `srijana`, `nishkriya`, `parigrah` | Historical R65 language-pack statement. **Do not silently rewrite dated evidence** or touch frozen pack; flag for as-of label if cited as current. |
-| `docs/R67-SOURCE-REVIEW.md:109` | `nishkriya` | Historical inline-assembly wording; do not edit as current grammar |
-| `docs/R71-MEMORY-BOUNDARY.md:29` | `nishkriya` | Bounded R71 experiment description; historical |
-| `docs/R71-MODULES.md:9` | `ayojan` | Older R71 supplement scope, explicitly not a full module compiler. Historical |
+| `docs/reports/NEGATIVE-CORPUS.md:24,27` | `pankti` | Error diagnostics: **line number**, preserve |
+| `docs/rounds/R56-MODULE-GLOBALS.md:28` | `ayojan` | Older R56 technical snapshot: textual inclusion named by pre-rename spelling. **Historical**, not current CLI instruction |
+| `docs/rounds/R65-DEVANAGARI-SURFACE.md:3` | `pankti`, `srijana`, `nishkriya`, `parigrah` | Historical R65 language-pack statement. **Do not silently rewrite dated evidence** or touch frozen pack; flag for as-of label if cited as current. |
+| `docs/rounds/R67-SOURCE-REVIEW.md:109` | `nishkriya` | Historical inline-assembly wording; do not edit as current grammar |
+| `docs/rounds/R71-MEMORY-BOUNDARY.md:29` | `nishkriya` | Bounded R71 experiment description; historical |
+| `docs/rounds/R71-MODULES.md:9` | `ayojan` | Older R71 supplement scope, explicitly not a full module compiler. Historical |
 | `docs/sutram-book-english.html:218` | `Pankti` | Etymological exposition (“a row”), juxtaposed with **current `mala` declaration**; **not an executable obsolete keyword usage** |
 | `docs/sutram-book-english.html:308` | `pankti` | Diagnostic line-number example |
 | `docs/sutram-book-gujarati.html:286`, `...hindi.html:316`, `...sanskrit.html:276`, `...tamil.html:292`, `...telugu.html:315` | `pankti` | Diagnostic line-number examples. Frozen non-Sanskrit books not in active development; read only. |

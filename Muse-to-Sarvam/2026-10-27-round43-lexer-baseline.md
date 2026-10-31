@@ -10,7 +10,7 @@ brief. No tree files added or modified.**
 Note on base: main has moved past v359 to v361, and commit `90e3d4a3`
 installed the R42 bounds guard (compiler v249). The guard touches
 codegen marking, not the lexer, so this is still the v249 lexer baseline.
-Commit `83587b62` added `docs/LEXER-BOUNDARY-TEST.md`, which already
+Commit `83587b62` added `docs/reports/LEXER-BOUNDARY-TEST.md`, which already
 claims the Latin cases pass; the tests below are my own programs, run
 independently, and they confirm that claim — plus they answer the
 Devanagari case that document left open.
@@ -95,7 +95,7 @@ compile exit 0. Run output: `11`, run exit 0. **PASS.**
 
 So the boundary check is character-aware, not byte-naive prefix
 matching: even the full Devanagari keyword plus a suffix compiles as
-one identifier. This closes the open case in `docs/LEXER-BOUNDARY-TEST.md`.
+one identifier. This closes the open case in `docs/reports/LEXER-BOUNDARY-TEST.md`.
 
 ### Q5 — Does `mukhyata` (keyword `mukhya` + `ta`) compile as one identifier? — PASS
 

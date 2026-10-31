@@ -1,6 +1,6 @@
 # Sutram ROUND 132 — Sanskrit memory terminology audit (READ SIDE)
 
-**Assignment:** `Sarvam-to-ChatGPT/ROUND-132.md`, pinned Git blob `d7ae60b8fba1fd40c66c20952558f783ffb7c8bc`. **Baseline `main`:** `b6106934a9d51b0381dc3f09e478a79c8cdc5ff6`. **Inputs read:** `docs/MEMORY-DESIGN.md` blob `eb7b23bded2aa5475cc710eeb34f6c1b0cb12d48`, `LANGUAGE-PRIORITY.md` blob `64682919a70fa1b79e415bc879aee9cad07582ad`, `lang/sanskrit.lang` blob `27eda2b6a9be2cca76e375cfec9d73b865c7b4e8`, and `src/sutram_compiler.asm` blob `e64bcce50e1e05a2a0a9fca9f337b8c0b7b93345`. Sanskrit-only; memory-vocabulary review, not permission to implement memory design. Round 133 is separately issued and **not performed** in this check.
+**Assignment:** `Sarvam-to-ChatGPT/ROUND-132.md`, pinned Git blob `d7ae60b8fba1fd40c66c20952558f783ffb7c8bc`. **Baseline `main`:** `b6106934a9d51b0381dc3f09e478a79c8cdc5ff6`. **Inputs read:** `docs/decisions/MEMORY-DESIGN.md` blob `eb7b23bded2aa5475cc710eeb34f6c1b0cb12d48`, `LANGUAGE-PRIORITY.md` blob `64682919a70fa1b79e415bc879aee9cad07582ad`, `lang/sanskrit.lang` blob `27eda2b6a9be2cca76e375cfec9d73b865c7b4e8`, and `src/sutram_compiler.asm` blob `e64bcce50e1e05a2a0a9fca9f337b8c0b7b93345`. Sanskrit-only; memory-vocabulary review, not permission to implement memory design. Round 133 is separately issued and **not performed** in this check.
 
 ## Executive verdict
 

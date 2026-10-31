@@ -95,7 +95,7 @@ module: `patra`, genuinely using the patra builtins; the layer checker
 enforces that no core/alloc module calls any OS-service builtin).
 Each module's header carries a machine-readable `# layer:` marker, and
 `tools/check_layers.py` verifies that no core module depends
-upward. See `docs/LIBRARY-LAYERS.md` for the per-module table.
+upward. See `docs/reports/LIBRARY-LAYERS.md` for the per-module table.
 
 Pure computation over values the caller provides: containers (`nighantu`,
 `sangrah`, `suchi`, `queue`, `stack`), text and bytes (`varna`, `khand`,
@@ -105,7 +105,7 @@ serialisation (`anukram`, R29), the `Result` type (`phal`, R29),
 and the safety net (`ganita_checked_*`, `ganita_sat_*`). Everything
 in `lib/` runs on plain arithmetic and explicit caller-provided
 storage; the layer split (core vs alloc) is marked per module in
-`docs/LIBRARY-LAYERS.md` (R28).
+`docs/reports/LIBRARY-LAYERS.md` (R28).
 
 ## The rule
 

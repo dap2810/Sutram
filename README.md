@@ -185,6 +185,10 @@ Three known gaps, in plain words:
 
 The details are in `docs/LANGUAGE-REFERENCE.md`, §19.
 
+**`vitti a = k` gives a `kosh` a second name; it does not copy it.** If `k` then grows and has to move (always on
+Windows), `a` still points at the old storage, so give each `kosh` one name — see
+[`docs/LANGUAGE-REFERENCE.md`, §16, "Two names for one `kosh`"](docs/LANGUAGE-REFERENCE.md#two-names-for-one-kosh-vitti-a--k-is-not-a-copy-v278).
+
 ## Honest status
 
 The clean-project handoff reports a Linux baseline of **225 passing cases,

@@ -21,7 +21,7 @@ Apply with: `git apply Muse-to-Sarvam/2026-10-15-round24-parity-safety-invariant
 
 | # | Function / file | Workstream |
 |---|---|---|
-| 1 | `docs/STRING-BYTE-PARITY.md` — the complete 30-row `str_*` / `strb_*` parity table | WS1 |
+| 1 | `docs/reports/STRING-BYTE-PARITY.md` — the complete 30-row `str_*` / `strb_*` parity table | WS1 |
 | 2 | Container surface declared **complete** (library side); `kosh` remainder named compiler-side | WS2 |
 | 3 | No further standalone small gaps — the only genuine ones were WS4's companions | WS3 |
 | 4 | `ganita_sat_div(a, b)` — saturating division | WS4 |
@@ -33,7 +33,7 @@ Apply with: `git apply Muse-to-Sarvam/2026-10-15-round24-parity-safety-invariant
 
 ### Workstream 1 — `strb` / `str` parity, third pass: the complete table
 
-`docs/STRING-BYTE-PARITY.md` gives the full 30-row table — every `str_*` beside its `strb_*` counterpart, each marked `added` / `deliberately not` / `cannot (compiler-side)`. No new string functions were needed: the remaining opens are all accounted for:
+`docs/reports/STRING-BYTE-PARITY.md` gives the full 30-row table — every `str_*` beside its `strb_*` counterpart, each marked `added` / `deliberately not` / `cannot (compiler-side)`. No new string functions were needed: the remaining opens are all accounted for:
 
 - **`cannot (compiler-side)` — one row:** both `*_replace` forms take `repl` as a 0-terminated string, so `repl` cannot be a slice. An explicit-length `repl` form would need 7 arguments, over the compiler's 6-argument cap. Workaround (proven by the R23 `slices23` golden): `strb_dup` the slice into a terminated buffer first.
 - **`deliberately not`:** the `(s, i)` char predicates and `upper_code`/`lower_code` (representation-independent — `char_at` reads bytes either way); `strb_pack`/`strb_unpack`/`strb_dup` (no cell-array analogue).
@@ -105,7 +105,7 @@ PASS=187  NO-EXPECTATION=4            (zero failures; NO-EXPECTATION 4 is the ne
 
 ## Files in the patch (9)
 
-New: `docs/OVERFLOW-SAFETY.md`, `docs/STRING-BYTE-PARITY.md`, `tests/stdlib/safety24.{sm,out,exit}`.
+New: `docs/OVERFLOW-SAFETY.md`, `docs/reports/STRING-BYTE-PARITY.md`, `tests/stdlib/safety24.{sm,out,exit}`.
 Modified: `lib/ganita.smlib`, `tools/proof_props.py`, `docs/sutram-stdlib.html`.
 
 ## SHA-256
@@ -115,7 +115,7 @@ faf60c084172e76dc90525f98c5312a48c27e59a766aca6dc43cbed3c1efd7c0  lib/ganita.sml
 1fac6d6cf87c0dff694e93501cec9877326bb1de93e47c68d3e1f9e294187c91  tools/proof_props.py
 d43206da3d9d10f92ed2b2617e990370202fb60550da527283a9dad2b6f1c02e  docs/sutram-stdlib.html
 aeafe49b835327a61aac69ca5a5426071b4d06f3b7dbd3812220c4ed562f7b83  docs/OVERFLOW-SAFETY.md
-6334369e6bb1204a073f7ae8feade222fe16dba9c9d4b1c8f21ced2a6d6588d8  docs/STRING-BYTE-PARITY.md
+6334369e6bb1204a073f7ae8feade222fe16dba9c9d4b1c8f21ced2a6d6588d8  docs/reports/STRING-BYTE-PARITY.md
 72757c05a2c7ee822732060472206788b46305bbc3ecd0ca7a3d0924a724bf9c  tests/stdlib/safety24.sm
 e51d92a6d927b010570016154fa99718a00481d49f57b1d4adbf9fe0491f0e60  tests/stdlib/safety24.out
 9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa  tests/stdlib/safety24.exit (content: "0")

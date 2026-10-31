@@ -1,6 +1,6 @@
 # Sutram ROUND-114 WS3 — Sanskrit-language-design draft: disciplined analogies
 
-**Pinned input:** `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md`, Git blob `76fa06d09438f8a3eb33b300d85a417efe62d3b6`, pinned main `df4b5237b8962adda7f0693f1fc5bb1408567798`. **Scope:** source-grounded software-design reasoning; limited independent linguistic cross-check against public scholarly/reference material, **not** specialist certification of Sanskrit. Keep document DRAFT.
+**Pinned input:** `docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md`, Git blob `76fa06d09438f8a3eb33b300d85a417efe62d3b6`, pinned main `df4b5237b8962adda7f0693f1fc5bb1408567798`. **Scope:** source-grounded software-design reasoning; limited independent linguistic cross-check against public scholarly/reference material, **not** specialist certification of Sanskrit. Keep document DRAFT.
 
 ## The three requested verdicts
 

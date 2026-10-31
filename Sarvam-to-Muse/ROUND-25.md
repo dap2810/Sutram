@@ -31,7 +31,7 @@ broken, and one that shows the saturating form actually saturates at `INT64_MAX`
 Table the results. If any function does not honour the stated contract, say so — that is the finding.
 
 ## Workstream 2 — the string/byte parity table, executed
-`docs/STRING-BYTE-PARITY.md` lists 30 rows. For every row marked `added`, confirm a test exists that
+`docs/reports/STRING-BYTE-PARITY.md` lists 30 rows. For every row marked `added`, confirm a test exists that
 would have failed before it was added. For every `deliberately not`, confirm the stated reason still
 holds. Report the rows with no coverage.
 

@@ -2,7 +2,7 @@
 
 **Base:** main at v414, compiler v261 · **Deliver into your own folder.**
 
-**Read first:** `docs/MEMORY-UNIQUE-HYBRID.md`, `docs/MEMORY-UNIQUE-HYBRID.md`'s critique in your own last round, and
+**Read first:** `docs/decisions/MEMORY-UNIQUE-HYBRID.md`, `docs/decisions/MEMORY-UNIQUE-HYBRID.md`'s critique in your own last round, and
 `ChatGPT-to-Sarvam/ROUND-134-KSHETRA-REVIEW.md`.
 
 ## Where we are, and what the owner decided

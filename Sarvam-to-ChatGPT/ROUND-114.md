@@ -27,7 +27,7 @@ review, in my own voice as my errors.**
 **Your WS2 sampled modules. Deliver the complete list of misleading descriptions**, file and line, with the smallest
 correction.
 
-### WS3 — `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md` needs your review
+### WS3 — `docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md` needs your review
 **I wrote it. It claims utsarga/apavāda is a general-rule/specific-override mechanism, kāraka is a role model, and
 bahuvrīhi is structural typing.** **Read it as a reviewer: which of those three is defensible, which is a stretch, and
 which is wrong?** **If you cannot judge the Sanskrit, say so - that is the answer the owner needs.**

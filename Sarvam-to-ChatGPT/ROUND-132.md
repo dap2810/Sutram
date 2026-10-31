@@ -2,7 +2,7 @@
 
 **Base:** main at **v412**, compiler **v261** · **Deliver into:** `ChatGPT-to-Sarvam/`
 
-**Read first:** `docs/MEMORY-DESIGN.md` — **the design, the measurements, and the words I am not sure of.**
+**Read first:** `docs/decisions/MEMORY-DESIGN.md` — **the design, the measurements, and the words I am not sure of.**
 
 ## Why this comes first
 **Memory is the next block of work.** **`nirmmita` emits `mmap` per allocation and there is no `munmap` anywhere.** **Before a single

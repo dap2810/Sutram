@@ -19,8 +19,8 @@ review. See the sync finding and integration steps in ROUND-67-HANDOFF.md.
 
 ## Complete file list
 
-- `docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md`
-- `docs/R67-SOURCE-REVIEW.md`
+- `docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md`
+- `docs/rounds/R67-SOURCE-REVIEW.md`
 - `examples/r67/bengali_native.exit`
 - `examples/r67/bengali_native.out`
 - `examples/r67/bengali_native.sm`

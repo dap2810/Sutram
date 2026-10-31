@@ -29,7 +29,7 @@
 **And a negative test: `nivartanam` inside a block returning a scratch address must be refused.** **That check is two lines and it belongs in this round, because it is the one thing about `nivartanam` the design settled.**
 
 ## WS3 — and the scope, in the reference
-**ChatGPT has said three times that K0 is scalar-scratch only and a checked function cannot contain `kosh`.** **That is already in `docs/MEMORY-DECISION.md`.**
+**ChatGPT has said three times that K0 is scalar-scratch only and a checked function cannot contain `kosh`.** **That is already in `docs/decisions/MEMORY-DECISION.md`.**
 **It now also needs to be in `docs/LANGUAGE-REFERENCE.md`, where a programmer looks up the keyword — not only in the design document, where a programmer does not.**
 
 **Write the sentence a beginner reads about what a `mandapa` block is for, and what it cannot hold in v1.0.** **If the honest sentence is "small fixed-size scratch, and no vectors", write that.**

@@ -43,11 +43,11 @@ Buckets: **FALSE** (doc says absent/never, but it exists/was done) · **TRUE** (
 | docs/ERROR-CONVENTION.md:161 | TRUE | "later steps never run" | Describes chain semantics |
 | docs/ERROR-CONVENTION.md:162 | TRUE | "No error value to inspect" | Real limit |
 | docs/ERROR-CONVENTION.md:166 | TRUE | "no exhaustiveness check" | Real limit |
-| docs/FAIL-ALLOC.md:14 | TRUE | "before this switch… never run" | Historical statement about the feature's motivation |
-| docs/INDIC-COVERAGE.md:17 | TRUE | Malayalam digits "Not implemented in locked R68 helper" | Specific verified gap |
-| docs/KOSH-BUILTINS.md:83 | TRUE | No "peek front" builtin | API design decision |
-| docs/KOSH-REUSE.md:38 | TRUE | "no fill-helper function" | True — compiler rejects kosh_push on params |
-| docs/KOSH-REUSE.md:74 | TRUE | "there is no free" | True — no free primitive |
+| docs/reports/FAIL-ALLOC.md:14 | TRUE | "before this switch… never run" | Historical statement about the feature's motivation |
+| docs/reports/INDIC-COVERAGE.md:17 | TRUE | Malayalam digits "Not implemented in locked R68 helper" | Specific verified gap |
+| docs/reports/KOSH-BUILTINS.md:83 | TRUE | No "peek front" builtin | API design decision |
+| docs/reports/KOSH-REUSE.md:38 | TRUE | "no fill-helper function" | True — compiler rejects kosh_push on params |
+| docs/reports/KOSH-REUSE.md:74 | TRUE | "there is no free" | True — no free primitive |
 | docs/LANGUAGE-REFERENCE.md:360 | TRUE | "no background services unless…" | Requirements spec, not an absence claim |
 | docs/LIBRARY-BOUNDARY.md:18 | TRUE | FS ops "deliberately absent" | Deliberate boundary |
 | docs/LIBRARY-BOUNDARY.md:34 | TRUE | "no concurrency model yet" | Real limit |
@@ -65,25 +65,25 @@ Buckets: **FALSE** (doc says absent/never, but it exists/was done) · **TRUE** (
 | docs/MEMORY-MODEL.md:89 | TRUE | "never been designed" (optimizer assumptions) | True |
 | docs/MEMORY-MODEL.md:100 | TRUE | "DESIGN ONLY, NOT IMPLEMENTED" | Explicit proposal |
 | docs/MEMORY-MODEL.md:180 | TRUE | "no primitive to call" (no free) | True |
-| docs/NEGATIVE-CORPUS.md:120 | TRUE | "never executed" (negative outputs) | Harness policy |
-| docs/R58-CONSTANT-FOLDING.md:28 | TRUE | "Not implemented in this partial" | About that partial implementation |
-| docs/R62-WINDOWS-ACCEPTANCE.md:3 | TRUE | "Workstreams 4–5 remain not implemented" | About that doc's own scope |
-| docs/R63-KOSH-BUILTINS.md:54 | TRUE | Peepholes "NOT IMPLEMENTED" | True |
-| docs/R63-KOSH-BUILTINS.md:56 | TRUE | Overflow traps "NOT IMPLEMENTED" | True |
-| docs/R64-KOSH-DIAGNOSTICS.md:58 | TRUE | Deferred peepholes "NOT IMPLEMENTED" | True |
-| docs/R64-KOSH-DIAGNOSTICS.md:61 | TRUE | Overflow trapping "NOT IMPLEMENTED" | True |
-| docs/R68-INDIC-DEVICES.md:35 | TRUE | "no global text replacement" | Design statement |
-| docs/R68-WINDOWS-GUI-CHECKLIST.md:24 | TRUE | "There is no timer" | GUI implementation detail |
-| docs/R69-PURE-PAIR-MEASUREMENT.md:21 | TRUE | Control "never executed" | Intentional control |
-| docs/R71-BOOT-PATH.md:24 | TRUE | "no second stage, relocation loader…" | About that boot experiment |
-| docs/R71-CANONICAL-BUILD.md:68 | TRUE | "no new expanded-core or binary hash" | About that build |
-| docs/R71-MEMORY-BOUNDARY.md:25 | TRUE | "no new pack spellings… yet" | About that experimental marker |
-| docs/R71-MEMORY-BOUNDARY.md:77 | TRUE | Provenance "not implemented by this extension" | About that extension |
-| docs/R71-MODULES.md:6 | TRUE | "no second parser or Python compiler" | About the R71 supplement's scope |
-| docs/R71-MODULES.md:9 | TRUE | ".sm to object emitter… NOT implemented by this supplement" | Supplement scope (main compiler HAS it via R28/R29) |
-| docs/R71-MODULES.md:44 | TRUE | "Proposed minimum… not implemented" | Proposal |
-| docs/R71-SPECIFICATION-EVIDENCE.md:45 | TRUE | "never executed" (rejected programs) | Harness policy |
-| docs/R72-BASELINE-OBSERVED.md:21 | TRUE | "remain NOT IMPLEMENTED" | R71 workstream tracking (supplement scope) |
+| docs/reports/NEGATIVE-CORPUS.md:120 | TRUE | "never executed" (negative outputs) | Harness policy |
+| docs/rounds/R58-CONSTANT-FOLDING.md:28 | TRUE | "Not implemented in this partial" | About that partial implementation |
+| docs/rounds/R62-WINDOWS-ACCEPTANCE.md:3 | TRUE | "Workstreams 4–5 remain not implemented" | About that doc's own scope |
+| docs/rounds/R63-KOSH-BUILTINS.md:54 | TRUE | Peepholes "NOT IMPLEMENTED" | True |
+| docs/rounds/R63-KOSH-BUILTINS.md:56 | TRUE | Overflow traps "NOT IMPLEMENTED" | True |
+| docs/rounds/R64-KOSH-DIAGNOSTICS.md:58 | TRUE | Deferred peepholes "NOT IMPLEMENTED" | True |
+| docs/rounds/R64-KOSH-DIAGNOSTICS.md:61 | TRUE | Overflow trapping "NOT IMPLEMENTED" | True |
+| docs/rounds/R68-INDIC-DEVICES.md:35 | TRUE | "no global text replacement" | Design statement |
+| docs/rounds/R68-WINDOWS-GUI-CHECKLIST.md:24 | TRUE | "There is no timer" | GUI implementation detail |
+| docs/rounds/R69-PURE-PAIR-MEASUREMENT.md:21 | TRUE | Control "never executed" | Intentional control |
+| docs/rounds/R71-BOOT-PATH.md:24 | TRUE | "no second stage, relocation loader…" | About that boot experiment |
+| docs/rounds/R71-CANONICAL-BUILD.md:68 | TRUE | "no new expanded-core or binary hash" | About that build |
+| docs/rounds/R71-MEMORY-BOUNDARY.md:25 | TRUE | "no new pack spellings… yet" | About that experimental marker |
+| docs/rounds/R71-MEMORY-BOUNDARY.md:77 | TRUE | Provenance "not implemented by this extension" | About that extension |
+| docs/rounds/R71-MODULES.md:6 | TRUE | "no second parser or Python compiler" | About the R71 supplement's scope |
+| docs/rounds/R71-MODULES.md:9 | TRUE | ".sm to object emitter… NOT implemented by this supplement" | Supplement scope (main compiler HAS it via R28/R29) |
+| docs/rounds/R71-MODULES.md:44 | TRUE | "Proposed minimum… not implemented" | Proposal |
+| docs/rounds/R71-SPECIFICATION-EVIDENCE.md:45 | TRUE | "never executed" (rejected programs) | Harness policy |
+| docs/rounds/R72-BASELINE-OBSERVED.md:21 | TRUE | "remain NOT IMPLEMENTED" | R71 workstream tracking (supplement scope) |
 | docs/SANDESH.md:4 | TRUE | "There is no English" | Sanskrit-only policy |
 | docs/SPECIFICATION.md:69 | TRUE | "no claim here of first-class functions…" | Scope statement — what the SPEC covers, not what exists |
 | docs/_newchapter_en.html:53 | TRUE | "not a missing feature" | Policy statement |

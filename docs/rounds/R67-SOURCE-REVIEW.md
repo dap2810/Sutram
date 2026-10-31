@@ -128,7 +128,7 @@ and the semantic acceptance of this explicit pure-block contract are for Sarvam.
 
 ## WS5 — one installer policy, corrected route
 
-The existing `docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md` remains the canonical
+The existing `docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md` remains the canonical
 comparison. `windows/WINDOWS-README.md` now points there instead of recommending
 administrator NSIS/WSL steps. The convenience build wrapper points at the actual
 `native-installer` folder and builds the linked GUI first. Its explicit execution-

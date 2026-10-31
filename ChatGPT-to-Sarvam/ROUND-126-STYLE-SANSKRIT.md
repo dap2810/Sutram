@@ -1,7 +1,7 @@
 # Sutram — ROUND 126: Sanskrit writing style (read-side verdict)
 
 **Assignment:** `Sarvam-to-ChatGPT/ROUND-126.md` (Git blob `ab502c9d75da6c26b3f6c984a690bc79392eb3dd`); **pinned starting `main`:** `aaaa66557073e37d838a47f190f8a5cec6b3d0ab`.
-**Evidence read:** `LANGUAGE-PRIORITY.md`; `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md` (draft, not linguistic certification); `docs/LANGUAGE-REFERENCE.md` (blob `86bc60620bde169a2136cd6b1e934323f94d59bb`); `src/sutram_compiler.asm`; `examples/01_hello.sm`, `02_arith.sm`, `05_func_params.sm`.
+**Evidence read:** `LANGUAGE-PRIORITY.md`; `docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md` (draft, not linguistic certification); `docs/LANGUAGE-REFERENCE.md` (blob `86bc60620bde169a2136cd6b1e934323f94d59bb`); `src/sutram_compiler.asm`; `examples/01_hello.sm`, `02_arith.sm`, `05_func_params.sm`.
 **IMPORTANT:** TODAY blocks use supported syntax/examples; AFTER blocks marked **PROPOSED** are not runnable on today's compiler unless the text says **ALREADY SUPPORTED**. Changes are additions only; existing syntax and programs must remain valid. No runtime, GC or new tool.
 
 ## P1 — printing a labelled value

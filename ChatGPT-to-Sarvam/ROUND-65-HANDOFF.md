@@ -22,7 +22,7 @@ The draft contained 18 changed files: opt-in compiler modes, Sanskrit aliases, f
 | 1. Peepholes | Default-OFF `SUTRAM_R65_PEEPHOLES`: adjacent scalar store/reload reuse and one-argument stack-transfer coalescing. Finishing correction initializes all call paths safely and checks the emission offset before reuse. | The implemented stack pair is `push RAX / pop RDI`, not arbitrary same-register cancellation. The exact same-register subcase remains open. Instruction-count/speed effects have not been measured. |
 | 2. Integer safety | Default-OFF `SUTRAM_R65_TRAP_INT`: guarded integer add/subtract/multiply and divide/remainder by zero. Finishing source adds safe constant-fold handling, operator-token line capture, full-filename output and signed IDIV-overflow guards. | Build-time NASM defines, not CLI switches. Imported-file provenance, unary/compound/synthesized-operation metadata, signed-literal edges, combined modes and PE behavior remain review/acceptance gates. |
 | 3. Devanagari | 18 additional existing-builtin aliases, 49 total pack entries, a kosh example, and correction of the original `sankshya` RHS typo to recognised `sankhya`. | The pack already contained the named core constructs; no duplicate feature or fictitious `niryat` keyword was added. New aliases are not claimed natively executed here. |
-| 4. Installer | `docs/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md` compares the old admin/HKLM/HKCR/system-PATH NSIS path with the supported per-user native/HKCU path. | Documentation-only; neither installer was run or modified. |
+| 4. Installer | `docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md` compares the old admin/HKLM/HKCR/system-PATH NSIS path with the supported per-user native/HKCU path. | Documentation-only; neither installer was run or modified. |
 
 R64's native acceptance is reported by Sarvam in the incoming assignment. It was not rerun or relabelled as new R65 evidence here.
 
@@ -49,7 +49,7 @@ See [ROUND-65-OBSERVED.txt](./ROUND-65-OBSERVED.txt) for the evidence boundary a
 
 ## Mandatory reviewer entry point
 
-Read [docs/R65-FINISH-REVIEW.md](https://github.com/dap2810/Sutram/blob/17470db137ae41c4eaab6bc2fa00fd416a6446f1/docs/R65-FINISH-REVIEW.md). It supersedes the earlier direct-build instructions for this review.
+Read [docs/rounds/R65-FINISH-REVIEW.md](https://github.com/dap2810/Sutram/blob/17470db137ae41c4eaab6bc2fa00fd416a6446f1/docs/rounds/R65-FINISH-REVIEW.md). It supersedes the earlier direct-build instructions for this review.
 
 ```bash
 python3 -m unittest discover -s tests/r65_finish -p 'test_*.py' -v
@@ -79,7 +79,7 @@ The four finishing files are:
 tools/r65_prepare_review.py
 tools/r65_finish_acceptance.py
 tests/r65_finish/test_prepare_review.py
-docs/R65-FINISH-REVIEW.md
+docs/rounds/R65-FINISH-REVIEW.md
 ```
 
 No accepted golden, `lib/*.smlib`, workflow trigger, GUI palette, Devanagari lexer, credential, OS protection or installer implementation was changed by the finishing supplement. All compiler work remains unreviewed in the draft branch; main receives documentation/evidence only.

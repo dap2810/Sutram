@@ -44,20 +44,20 @@ lines). The books show an interactive session, so I used the PTY numbers.
 
 | File | What changed |
 |---|---|
-| `docs/KOSH-BUILTINS.md:107–109, 119` | `kosh pop/peek/dequeue from empty mala` → `rikta kosh se kosh_pop/peek/dequeue`; `kosh builtin requires a kosh variable` → `kosh prakriya hetu kosh-vitti avashyak` |
-| `docs/KOSH-REUSE.md:42` | → `kosh tark par kosh_push asamarthit` |
+| `docs/reports/KOSH-BUILTINS.md:107–109, 119` | `kosh pop/peek/dequeue from empty mala` → `rikta kosh se kosh_pop/peek/dequeue`; `kosh builtin requires a kosh variable` → `kosh prakriya hetu kosh-vitti avashyak` |
+| `docs/reports/KOSH-REUSE.md:42` | → `kosh tark par kosh_push asamarthit` |
 | `docs/LANGUAGE-REFERENCE.md:374–375` | the three empty-kosh messages |
 | `docs/LANGUAGE-REFERENCE.md:182, 188, 295` | `chakra i = 1 to 5`, `chakra j = 5 to 1`, pack-table row `to` → `tak`. **Sample 007 now compiles** (`Siddh: 1190 byte sankalit`, prints `big 1 2 4 …`). It failed in ROUND-01 and on v169. |
 | `docs/OVERFLOW-SAFETY.md:85`, `docs/SPECIFICATION.md:158` | `<patra>:<line>` → `<file>:<line>` (rename damage inside a placeholder; the real format was observed with a trap build) |
-| `docs/NEGATIVE-CORPUS.md:22–27` | the six expected diagnostics now match the re-pinned `manifest.json` (R3-01 §4.2); "Unterminated varna" / "diagnostic varna" → "string" |
-| `docs/NEGATIVE-CORPUS.md:64–71` | pin table regenerated from the manifest; `.vardh` → `.inc` |
+| `docs/reports/NEGATIVE-CORPUS.md:22–27` | the six expected diagnostics now match the re-pinned `manifest.json` (R3-01 §4.2); "Unterminated varna" / "diagnostic varna" → "string" |
+| `docs/reports/NEGATIVE-CORPUS.md:64–71` | pin table regenerated from the manifest; `.vardh` → `.inc` |
 | `docs/BUILDING.md:11, 13` | core blob → the re-pinned value; "Neither patra" → "Neither file" |
 | `docs/sutram-book-english.html:622` | troubleshooting row `language pack not found` → `Chetavani: bhasha pak nahi mila` |
 | **six books** (en, gu, hi, sa, ta, te) | first-compile line → `Siddh: 97 byte sankalit` (the book's own namaste program, compiled); shell banner → the real three-line banner, then `Siddh: 54` / `Siddh: 201`; pack transcript → `Bhasha pak prapt: <pack>` + `Siddh: N byte sankalit`, with N from **compiling that book's own pack program with that pack** (en 228, gu 456, hi 415, ta 426, te 322; sa has no pack transcript); error transcript → now **shows `$ cat galat.sm`** (it never showed the program, so its output could not be checked) followed by its exact output; the line `Run 'sutram -i' and type 'sahayata' for help.` is **removed — the compiler never prints it** (it is an unlabelled, unreferenced string at `src/sutram_compiler.asm:401`) |
 
 **Flagged and deliberately left as written.** These are historical records of what a round's compiler
 printed:
-- `docs/R63-KOSH-BUILTINS.md:15`, `R64-KOSH-DIAGNOSTICS.md:15–17`, `R65-SOURCE-REVIEW.md:25`,
+- `docs/rounds/R63-KOSH-BUILTINS.md:15`, `R64-KOSH-DIAGNOSTICS.md:15–17`, `R65-SOURCE-REVIEW.md:25`,
   `R68-LEXICAL-DIAGNOSTICS.md:8,26,48`, `sutram-audit.html:110–147`
 - `docs/CHANGELOG.md` (17 lines)
 
@@ -67,7 +67,7 @@ Two notes on that list:
 - `sutram-audit.html` quotes `'end of patra'`. The compiler never printed that; it is rename damage
   inside a historical quote.
 
-**Matches source, no change:** `docs/R71-MEMORY-BOUNDARY.md:66,72`. The R71 boundary messages are still
+**Matches source, no change:** `docs/rounds/R71-MEMORY-BOUNDARY.md:66,72`. The R71 boundary messages are still
 English in `src/r71_unsafe_integration.inc:5–9`. R71 is outside the canonical build, and ROUND-02 did not
 translate it.
 

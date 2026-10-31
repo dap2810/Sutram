@@ -137,7 +137,7 @@ Also verify the CI workflow itself at `.github/workflows/r53-integrated.yml`. Th
 - `ROUND-53-SHA256.txt` — 26 actually observed source, test, library and workflow hashes plus four native binary digests
 - Earlier R51/R52 handoffs included on the same branch as historical evidence
 
-Source tree includes `tests/r51_check/`, `tests/r52_check/`, `tools/r51_*.py`, `tools/r52_native_acceptance.py`, `tools/r49_diagnostic_audit.py`, updated `lib/string.smlib` and `docs/R52-BUILTIN-FIXES.md`.
+Source tree includes `tests/r51_check/`, `tests/r52_check/`, `tools/r51_*.py`, `tools/r52_native_acceptance.py`, `tools/r49_diagnostic_audit.py`, updated `lib/string.smlib` and `docs/rounds/R52-BUILTIN-FIXES.md`.
 
 ## Required independent Sarvam review
 

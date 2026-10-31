@@ -59,7 +59,7 @@ jobs:
       - name: SHA256 evidence
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm docs/R54-BUILTIN-BOUNDS.md tools/r54_native_acceptance.py tools/r54_muse_acceptance.py tests/r54_check/*.sm .github/workflows/r54-native.yml > r54_sha256.txt
+          sha256sum src/sutram_compiler.asm docs/rounds/R54-BUILTIN-BOUNDS.md tools/r54_native_acceptance.py tools/r54_muse_acceptance.py tests/r54_check/*.sm .github/workflows/r54-native.yml > r54_sha256.txt
           cat r54_sha256.txt
       - name: Upload checksum
         if: always()

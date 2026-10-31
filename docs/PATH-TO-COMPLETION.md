@@ -108,7 +108,7 @@ working program in it, and understand the error when they get one.**
    runtime dependency**, and **the end user needs no toolchain**.
 4. **Check the tree before reporting a finding as new** - a later commit may already have fixed it.
 5. **`backups/` is exempt from cleanup.** It is a deliberate snapshot, not build output.
-6. **Declining a false claim costs nothing.** See `docs/SANSKRIT-AND-AI-BRIGGS-1985.md`.
+6. **Declining a false claim costs nothing.** See `docs/reports/SANSKRIT-AND-AI-BRIGGS-1985.md`.
 
 ## 7. If you are an AI reading this
 

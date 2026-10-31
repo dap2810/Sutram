@@ -41,7 +41,7 @@ sutram_compiler --fail-alloc N <in.sm> <out>
 - **What it does.** It is the ordinary compile, except that the program's Nth allocation returns 0 without calling
   `mmap`. That covers every `nirmmita`, the ones inside libraries included, and `kosh` storage.
 - **How it works.** The program keeps a counter inside its own code. Every allocation site decrements it, so only
-  the Nth allocation fails. Source: `src/r38_fail_alloc.inc`. Documentation: `docs/FAIL-ALLOC.md`.
+  the Nth allocation fails. Source: `src/r38_fail_alloc.inc`. Documentation: `docs/reports/FAIL-ALLOC.md`.
 - **Without the flag, nothing changes.** On Linux, 566 programs were compiled by v244 and by v246: 474
   executables are byte-identical, 92 are refused identically, and 0 differ.
 - **Linux only.** A `.exe` output is refused, and the Windows compiler does not have the flag.

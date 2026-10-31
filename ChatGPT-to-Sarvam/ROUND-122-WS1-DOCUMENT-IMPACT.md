@@ -1,6 +1,6 @@
 # Sutram ROUND-122 WS1 — English-word documentation impact: source-verified, **NO blanket rename**
 
-**Input:** `Sarvam-to-ChatGPT/ROUND-122.md`, blob `9c18a3f871c8721e7ef7511d91a314c4bfac1192`. **Pinned GitHub main** `61d5f7b70e30e6711cc2171e57744de2dede70a1` (changelog v374, compiler v253). Only Sanskrit active until v1.0; frozen language packs left unchanged. Newer `docs/CHANGELOG.md` v373/v374 and `docs/LIBRARY-ENGLISH-AUDIT.md` explicitly correct the broad premise of Round 122: `sat_div` never was a current `lib/` function, and `char`, `len`, and much `int` are nonpublic implementation details or explanation.
+**Input:** `Sarvam-to-ChatGPT/ROUND-122.md`, blob `9c18a3f871c8721e7ef7511d91a314c4bfac1192`. **Pinned GitHub main** `61d5f7b70e30e6711cc2171e57744de2dede70a1` (changelog v374, compiler v253). Only Sanskrit active until v1.0; frozen language packs left unchanged. Newer `docs/CHANGELOG.md` v373/v374 and `docs/reports/LIBRARY-ENGLISH-AUDIT.md` explicitly correct the broad premise of Round 122: `sat_div` never was a current `lib/` function, and `char`, `len`, and much `int` are nonpublic implementation details or explanation.
 
 ## Direct source census: two real public candidates, not five unqualified categories
 
@@ -30,9 +30,9 @@ The **untruncated** tree on the pinned commit contained 4,373 entries. We fetche
 | `docs/sutram-stdlib.html:86–87` | Generated function table with the two exported names and contracts | **REGENERATE_FROM_SOURCE** after renaming source declarations/comments and updating callers; generator is `tools/gen_stdlib_ref.py`; never hand-edit |
 | `docs/sutram-stdlib-reference.html:317–318,334–335` | Reader-facing static reference table plus worked example calls | **PROPOSE_EXACT_CURRENT**, pending owner approval and exact-head retest |
 | `docs/sutram-vocabulary.html:139,145` | Searchable vocabulary enumeration | **PROPOSE_EXACT_CURRENT**, pending owner approval and regeneration/review of whichever tool owns that distinct page |
-| `docs/PROPERTY-NET.md:35` | Regression property description referencing both real names | **PROPOSE_EXACT_CURRENT**, conditional on actual property/test caller integration |
-| `docs/EDGE-COVERAGE-30.md:36,240` | Historical R30 tested boundary defect references | **KEEP_HISTORICAL**, do not rewrite a past test's spelling |
-| `docs/CHANGELOG.md`, `docs/LIBRARY-ENGLISH-AUDIT.md` | Dated before/after decisions, including the **retracted** phantom `sat_div` assertion | **KEEP_HISTORICAL**. The later corrective section must be retained, not overwritten |
+| `docs/reports/PROPERTY-NET.md:35` | Regression property description referencing both real names | **PROPOSE_EXACT_CURRENT**, conditional on actual property/test caller integration |
+| `docs/reports/EDGE-COVERAGE-30.md:36,240` | Historical R30 tested boundary defect references | **KEEP_HISTORICAL**, do not rewrite a past test's spelling |
+| `docs/CHANGELOG.md`, `docs/reports/LIBRARY-ENGLISH-AUDIT.md` | Dated before/after decisions, including the **retracted** phantom `sat_div` assertion | **KEEP_HISTORICAL**. The later corrective section must be retained, not overwritten |
 
 Other current English occurrences such as `slice` in `docs/LANGUAGE-REFERENCE.md` are explanatory English glosses of the already-existing `vibhag` construct; **"vibhag (slice)" is helpful**, blindly removing "slice" from an English technical reference is not.
 
@@ -44,7 +44,7 @@ The *published* `docs/OVERFLOW-SAFETY.md:57` says `sat_div` is a companion senti
 - Current-doc NEW: `\`ganita_paripurna_bhaj\`. \`MIN % -1\` is guarded because the hardware operation traps`
 - Source comment `lib/ganita.smlib:516` OLD: `# result. b == 0 returns 0 (same sentinel as sat_div). Guards before`
 - Source comment NEW: `# result. b == 0 returns 0 (same sentinel as ganita_paripurna_bhaj). Guards before`
-- Then **REGENERATE_FROM_SOURCE** `docs/sutram-stdlib.html` and check all public references; other `sat_*` pseudonyms in `docs/PROPERTY-NET.md:100` may be names of Python property/test oracles rather than public function names, so **do not blindly replace** them.
+- Then **REGENERATE_FROM_SOURCE** `docs/sutram-stdlib.html` and check all public references; other `sat_*` pseudonyms in `docs/reports/PROPERTY-NET.md:100` may be names of Python property/test oracles rather than public function names, so **do not blindly replace** them.
 
 The exact source evidence is in the [curated TSV](ROUND-122-WS1-API-IMPACT.tsv); the suggested source comment edit is **NOT APPLIED**. Additional misleading `sat_*` references in historical notes should be handled by an explicitly scoped documentation correction, not confused with today's proposed English naming sweep.
 

@@ -13,13 +13,13 @@ The following proposed **complete-line exact replacements** can be applied by Sa
 | docs/LANGUAGE-REFERENCE.md:107 | \| \`vartani_len\` \| varna length \| | \| \`vartani_aayam\` \| varna length \| |
 | docs/LANGUAGE-REFERENCE.md:108 | \| \`vartani_cmp\` \| varna compare \| | \| \`vartani_tul\` \| varna compare \| |
 | docs/LANGUAGE-REFERENCE.md:110 | \| \`vartani_cp\` \| varna copy \| | \| \`vartani_pratilip\` \| varna copy \| |
-| docs/R54-BUILTIN-BOUNDS.md:27 | \| \`vartani_cp\` \| 2 \| Copies bytes through first NUL from source to destination; destination must fit **strlen(source)+1**; no runtime capacity guard \| | \| \`vartani_pratilip\` \| 2 \| Copies bytes through first NUL from source to destination; destination must fit **strlen(source)+1**; no runtime capacity guard \| |
-| docs/R54-BUILTIN-BOUNDS.md:29 | \| \`vartani_len\` \| 1 \| Scans until NUL: the address must point into a readable, NUL-terminated allocation \| | \| \`vartani_aayam\` \| 1 \| Scans until NUL: the address must point into a readable, NUL-terminated allocation \| |
-| docs/R54-BUILTIN-BOUNDS.md:30 | \| \`vartani_cmp\` \| 2 \| Scans both NUL-terminated operands; neither length nor allocation validated \| | \| \`vartani_tul\` \| 2 \| Scans both NUL-terminated operands; neither length nor allocation validated \| |
-| docs/R54-BUILTIN-BOUNDS.md:32 | \| \`vartani_cp\`, \`vartani_cat\` \| 2 \| Byte-oriented operations, **not** qword-array \`buf[i]\` semantics \| | \| \`vartani_pratilip\`, \`vartani_cat\` \| 2 \| Byte-oriented operations, **not** qword-array \`buf[i]\` semantics \| |
-| docs/R54-BUILTIN-BOUNDS.md:38 | \| \`likha_fmt\`, \`vartani_cmp\` \| 2 \| Formatter/byte string comparison, no buffer capacity checking \| | \| \`likha_fmt\`, \`vartani_tul\` \| 2 \| Formatter/byte string comparison, no buffer capacity checking \| |
-| docs/R54-BUILTIN-BOUNDS.md:43 | Other names: \`char_code\` accepts 1 or 2; \`likha\` accepts 1, 2 or 3; \`dvaram\` accepts 2 or 3; \`vartani_cat\` accepts 2; \`vartani_cmp\` accepts 2; \`vartani_cp\` accepts 2. All other registered builtin IDs have the exact arity shown above. | Other names: \`char_code\` accepts 1 or 2; \`likha\` accepts 1, 2 or 3; \`dvaram\` accepts 2 or 3; \`vartani_cat\` accepts 2; \`vartani_tul\` accepts 2; \`vartani_pratilip\` accepts 2. All other registered builtin IDs have the exact arity shown above. |
-| docs/STRING-BYTE-PARITY.md:64 | **The length-function rule.** \`varna_maap\` / \`khand_maap\` / \`vartani_len\` | **The length-function rule.** \`varna_maap\` / \`khand_maap\` / \`vartani_aayam\` |
+| docs/rounds/R54-BUILTIN-BOUNDS.md:27 | \| \`vartani_cp\` \| 2 \| Copies bytes through first NUL from source to destination; destination must fit **strlen(source)+1**; no runtime capacity guard \| | \| \`vartani_pratilip\` \| 2 \| Copies bytes through first NUL from source to destination; destination must fit **strlen(source)+1**; no runtime capacity guard \| |
+| docs/rounds/R54-BUILTIN-BOUNDS.md:29 | \| \`vartani_len\` \| 1 \| Scans until NUL: the address must point into a readable, NUL-terminated allocation \| | \| \`vartani_aayam\` \| 1 \| Scans until NUL: the address must point into a readable, NUL-terminated allocation \| |
+| docs/rounds/R54-BUILTIN-BOUNDS.md:30 | \| \`vartani_cmp\` \| 2 \| Scans both NUL-terminated operands; neither length nor allocation validated \| | \| \`vartani_tul\` \| 2 \| Scans both NUL-terminated operands; neither length nor allocation validated \| |
+| docs/rounds/R54-BUILTIN-BOUNDS.md:32 | \| \`vartani_cp\`, \`vartani_cat\` \| 2 \| Byte-oriented operations, **not** qword-array \`buf[i]\` semantics \| | \| \`vartani_pratilip\`, \`vartani_cat\` \| 2 \| Byte-oriented operations, **not** qword-array \`buf[i]\` semantics \| |
+| docs/rounds/R54-BUILTIN-BOUNDS.md:38 | \| \`likha_fmt\`, \`vartani_cmp\` \| 2 \| Formatter/byte string comparison, no buffer capacity checking \| | \| \`likha_fmt\`, \`vartani_tul\` \| 2 \| Formatter/byte string comparison, no buffer capacity checking \| |
+| docs/rounds/R54-BUILTIN-BOUNDS.md:43 | Other names: \`char_code\` accepts 1 or 2; \`likha\` accepts 1, 2 or 3; \`dvaram\` accepts 2 or 3; \`vartani_cat\` accepts 2; \`vartani_cmp\` accepts 2; \`vartani_cp\` accepts 2. All other registered builtin IDs have the exact arity shown above. | Other names: \`char_code\` accepts 1 or 2; \`likha\` accepts 1, 2 or 3; \`dvaram\` accepts 2 or 3; \`vartani_cat\` accepts 2; \`vartani_tul\` accepts 2; \`vartani_pratilip\` accepts 2. All other registered builtin IDs have the exact arity shown above. |
+| docs/reports/STRING-BYTE-PARITY.md:64 | **The length-function rule.** \`varna_maap\` / \`khand_maap\` / \`vartani_len\` | **The length-function rule.** \`varna_maap\` / \`khand_maap\` / \`vartani_aayam\` |
 
 ## 2. Regenerate the standard-library HTML (3 physical rows, do NOT manually replace)
 
@@ -35,7 +35,7 @@ The generated `docs/sutram-stdlib.html` still derives these comments from `lib/g
 
 ## 3. Curriculum already contains all three new words — DO NOT DUPLICATE
 
-`docs/VOCABULARY-DERIVATION.md:75-77` already presents `vartani_len → vartani_aayam` (आयाम), `vartani_cmp → vartani_tul` (तुल् / तुलना), `vartani_cp → vartani_pratilip` (प्रतिलिपि), with appropriate short glosses. These **three exact lines should remain**; they are a documented prospective mapping, not proof of actual compiler rename. The WS2 TSV explicitly marks them `ALREADY_PRESENT_NOOP`.
+`docs/vocabulary/VOCABULARY-DERIVATION.md:75-77` already presents `vartani_len → vartani_aayam` (आयाम), `vartani_cmp → vartani_tul` (तुल् / तुलना), `vartani_cp → vartani_pratilip` (प्रतिलिपि), with appropriate short glosses. These **three exact lines should remain**; they are a documented prospective mapping, not proof of actual compiler rename. The WS2 TSV explicitly marks them `ALREADY_PRESENT_NOOP`.
 
 ## 4. Historical/audit records — KEEP original names (16 matches)
 
@@ -56,11 +56,11 @@ The following mentions describe old releases, known prior defects or archived co
 | `docs/CHANGELOG.md:7703` | vartani_len | Preserve old recorded API spelling |
 | `docs/CHANGELOG.md:7704` | vartani_cmp | Preserve old recorded API spelling |
 | `docs/CHANGELOG.md:8775` | vartani_len | Preserve old recorded API spelling |
-| `docs/R50-BYTE-PACKED-TEXT.md:5` | vartani_len, vartani_cmp, vartani_len, vartani_cmp | Preserve old recorded API spelling |
-| `docs/R54-BUILTIN-BOUNDS.md:47` | vartani_cp | Preserve old recorded API spelling |
-| `docs/R54-BUILTIN-BOUNDS.md:63` | vartani_cp | Preserve old recorded API spelling |
+| `docs/rounds/R50-BYTE-PACKED-TEXT.md:5` | vartani_len, vartani_cmp, vartani_len, vartani_cmp | Preserve old recorded API spelling |
+| `docs/rounds/R54-BUILTIN-BOUNDS.md:47` | vartani_cp | Preserve old recorded API spelling |
+| `docs/rounds/R54-BUILTIN-BOUNDS.md:63` | vartani_cp | Preserve old recorded API spelling |
 
-In particular, the top v363 `docs/CHANGELOG.md` mapping already includes the proposed target names and must remain an accurate history of the rename decision; the other changelog mentions document older actual behavior. `docs/R50-BYTE-PACKED-TEXT.md` describes R50-era code, and `docs/R54-BUILTIN-BOUNDS.md:47,63` describe what R54 changed. The verified compiler snapshot is immutable evidence, not living documentation.
+In particular, the top v363 `docs/CHANGELOG.md` mapping already includes the proposed target names and must remain an accurate history of the rename decision; the other changelog mentions document older actual behavior. `docs/rounds/R50-BYTE-PACKED-TEXT.md` describes R50-era code, and `docs/rounds/R54-BUILTIN-BOUNDS.md:47,63` describe what R54 changed. The verified compiler snapshot is immutable evidence, not living documentation.
 
 ## 5. Books and other docs with ZERO exact mentions
 

@@ -23,7 +23,7 @@ calls `likha` / `likha_fmt` / `likh` (console output), `paadh`
 `netbind` / `netlisten` / `netaccept` (sockets). Negative test:
 a probe `likha` call in `math` fails the checker with
 "marked core but calls OS builtin likha (belongs in std)".
-`docs/LIBRARY-LAYERS.md` states the resolution explicitly,
+`docs/reports/LIBRARY-LAYERS.md` states the resolution explicitly,
 including the judgment call that `nirmmita`'s `mmap` underpinning
 is the allocator's implementation detail, not an OS service
 (an `alloc` module needs *a* heap, not the OS).
@@ -152,7 +152,7 @@ corrupt length → `-1`).
 ```
 4734a3cf40b051c48158cecb1ace4bc912a70da743babee4418791b78b2821e6  docs/ERROR-CONVENTION.md
 b6c69b54aa01ce2ad1581645f60662e52db0d56784bf4162891782757861df51  docs/LIBRARY-BOUNDARY.md
-9ee0443a8f7bce14a035182da4610c82d049e2c041aa4fbd1a7fa52ec322d369  docs/LIBRARY-LAYERS.md
+9ee0443a8f7bce14a035182da4610c82d049e2c041aa4fbd1a7fa52ec322d369  docs/reports/LIBRARY-LAYERS.md
 4631f82760cc87295d2ea1c25bdbbcb6a11403c0bbdf60e9e0ea8225f02642da  docs/MEMORY-MODEL.md
 e89759dfcc4f9c18a38718d01261f7c681e31c818511417732ae1f95fb81e648  docs/NUMERIC-CONTRACT.md
 905abfccd09f581f5f8d2260d4bd2b25838905cdf8273884bf8f19bfc7690fd0  docs/sutram-stdlib.html

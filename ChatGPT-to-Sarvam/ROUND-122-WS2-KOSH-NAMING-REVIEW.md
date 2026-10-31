@@ -4,7 +4,7 @@
 
 ## Verified current behavior (not inferred from names)
 
-The canonical [`docs/KOSH-BUILTINS.md`](../docs/KOSH-BUILTINS.md) and active compiler builtin table `src/sutram_compiler.asm:562-570` show the exact nine current names. `kosh_push` and `kosh_enqueue` **both append and return new length**; `kosh_pop` removes the **last** element; `kosh_dequeue` removes the **first** element (FIFO, O(n)); `kosh_peek` views the **last** without removing it. `kosh_cap` reports current allocated capacity, whereas `kosh_len` reports logical length. `kosh_clear` sets logical length to zero **without zeroing old storage**; `kosh_empty` is a read-only predicate returning 1 iff length is zero. All three empty pop/peek/dequeue operations can abort without an ok channel. These distinctions decide naming, not a loose word analogy.
+The canonical [`docs/reports/KOSH-BUILTINS.md`](../docs/reports/KOSH-BUILTINS.md) and active compiler builtin table `src/sutram_compiler.asm:562-570` show the exact nine current names. `kosh_push` and `kosh_enqueue` **both append and return new length**; `kosh_pop` removes the **last** element; `kosh_dequeue` removes the **first** element (FIFO, O(n)); `kosh_peek` views the **last** without removing it. `kosh_cap` reports current allocated capacity, whereas `kosh_len` reports logical length. `kosh_clear` sets logical length to zero **without zeroing old storage**; `kosh_empty` is a read-only predicate returning 1 iff length is zero. All three empty pop/peek/dequeue operations can abort without an ok channel. These distinctions decide naming, not a loose word analogy.
 
 ## Verdict on the eight proposed words, plus missing ninth
 
@@ -30,7 +30,7 @@ The canonical [`docs/KOSH-BUILTINS.md`](../docs/KOSH-BUILTINS.md) and active com
 
 ## Sources and signoff
 
-- Project direct reads: `docs/KOSH-BUILTINS.md` blob `44d6cdaced710e922883e15e2cf9c6c22c9f4f91`, `src/sutram_compiler.asm` blob `89495406b5b77258a9699ed5c8c2d51baead1474`, `lang/sanskrit.lang` blob `b7bbbe1e07d258cc67f05e9dad81bca9379e59a6`, `lib/suchi.smlib` and `lib/sangrah.smlib`.
+- Project direct reads: `docs/reports/KOSH-BUILTINS.md` blob `44d6cdaced710e922883e15e2cf9c6c22c9f4f91`, `src/sutram_compiler.asm` blob `89495406b5b77258a9699ed5c8c2d51baead1474`, `lang/sanskrit.lang` blob `b7bbbe1e07d258cc67f05e9dad81bca9379e59a6`, `lib/suchi.smlib` and `lib/sangrah.smlib`.
 - Dictionary cross-checks: [kṣepa](https://www.wisdomlib.org/definition/kshepa) (throwing, additive quantity); [uddhāra](https://sanskritdictionary.com/?iencoding=&lang=&q=uddh%C4%81ra) (drawing out); [dhārita](https://sanskritdictionary.com/dh%C4%81rita/110452/1) (held); [īkṣ](https://sanskritdictionary.com/?q=%C4%ABk%E1%B9%A3) (seeing); [yuj](https://www.sanskritdictionary.com/?q=yuj) (joining); [kṣamatā capacity](https://kosha.sanskrit.today/word/en/capacity). These sources support basic senses, **not** formal authorization of a newly compounded function identifier.
 - **Linguistic signoff needed:** The Latin spellings are Sutram's own transliterated naming convention. Word formation, inflection and especially the proposed compound labels (`kosh_rikta_kuru`, `kosh_asti_rikta`) require Sanskritist and owner acceptance. **No named user-facing call was compiled here.**
 

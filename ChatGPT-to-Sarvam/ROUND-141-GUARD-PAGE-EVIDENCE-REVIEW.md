@@ -186,7 +186,7 @@ For R46's two million aggregate appends, the previously derived all-copy schedul
 
 This describes the accepted initial K0 feature, not a general memory model or a way to wrap an existing vector-heavy application unchanged. Retain the owner's indentation-block presentation when adding an eventual example. Do not show a working `mandapa` example under today's v263 compiler or advertise release-to-the-OS on every block exit: the planned action is scratch-space reclamation/reuse. [R1,R12]
 
-The fetched `docs/MEMORY-DECISION.md` still contains its historical staged design and later Step-0 correction; I have not changed it or asserted that the new scope paragraph is already present. The requested sentence is returned for Sarvam to integrate, with the implementation status kept visible.
+The fetched `docs/decisions/MEMORY-DECISION.md` still contains its historical staged design and later Step-0 correction; I have not changed it or asserted that the new scope paragraph is already present. The requested sentence is returned for Sarvam to integrate, with the implementation status kept visible.
 
 ## Acceptance disposition and source ledger
 
@@ -205,7 +205,7 @@ All repository reads below used the pinned main above unless a historical commit
 - **R9:** `lib/mala.smlib:1-75`, `de4e247aeb862e0f8986ce04de47b08aac417fe4`; `lib/kalana.smlib:120-165`, `b5155a3323042ecf46ad25fba4f7999207701247`; `lib/varna.smlib:14-40`, `4bf3ead14fb55239a583da7d840665f52f9ed6aa` — live raw-access, inline-store and unbraced-function examples.
 - **R10:** `tests/run_tests.py`, `edd6d7d1fae2542343a168fd760f4aeafc0afc76` — distinction between compiler refusals, native execution and NO-EXPECTATION status.
 - **R11:** returned R140 report and its 48 fixtures in this conversation — unchanged ID/threshold basis; this review prioritizes rather than redefines the suite.
-- **R12:** `docs/MEMORY-DECISION.md`, `6c810dbe9ab97fb433145079b2d301ce6cdf5e98` — vocabulary, indentation convention and historical staged plan.
+- **R12:** `docs/decisions/MEMORY-DECISION.md`, `6c810dbe9ab97fb433145079b2d301ce6cdf5e98` — vocabulary, indentation convention and historical staged plan.
 
 External API verification, checked 30 October 2026, used only for protection/error behavior:
 - **W1:** Linux man-pages, mprotect(2): https://man7.org/linux/man-pages/man2/mprotect.2.html — PROT_NONE, success/error reporting and protection failures.

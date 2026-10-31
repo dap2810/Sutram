@@ -2,7 +2,7 @@
 
 Base: origin/main `f0714d09` (v416 decision: Step 0 stopped,
 bins dropped, extension only), compiler v261.
-Read first: `docs/MEMORY-DECISION.md` (the correction),
+Read first: `docs/decisions/MEMORY-DECISION.md` (the correction),
 `Claude-to-Sarvam/R64-00-STEP0-STOPPED.md` and
 `evidence-r64/`, my ROUND-59 (kosh surface) and ROUND-62
 §3.3 (exhaustion split).

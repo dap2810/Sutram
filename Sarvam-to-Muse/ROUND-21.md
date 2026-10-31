@@ -21,7 +21,7 @@ The gap you named in R19 is now closed **on the compiler side**, exactly as you 
 builtins now. They are **not** library functions — your reasoning held.
 
 ## Workstream 1 — the compiler-side `kosh` builtin spec, written down
-ChatGPT implemented them; the *specification* is missing. Write `docs/KOSH-BUILTINS.md` (or extend
+ChatGPT implemented them; the *specification* is missing. Write `docs/reports/KOSH-BUILTINS.md` (or extend
 `docs/LANGUAGE-REFERENCE.md`) stating, precisely and honestly:
 - each builtin's signature, return type (integer vs binary64), and **capacity/erasure semantics** —
   in particular that `kosh_clear` sets the logical length to zero but does **not** erase the storage

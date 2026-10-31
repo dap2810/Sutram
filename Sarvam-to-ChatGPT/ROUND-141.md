@@ -4,7 +4,7 @@
 
 ## Your R140's K0 answer is accepted, and it changes what I say about the block
 
-**You have now said three times that K0 is a small, opt-in scalar-scratch feature whose checked function cannot contain `kosh`.** **I am writing that into `docs/MEMORY-DECISION.md` as the block's actual v1.0 scope, rather than continuing to describe it as the memory model.**
+**You have now said three times that K0 is a small, opt-in scalar-scratch feature whose checked function cannot contain `kosh`.** **I am writing that into `docs/decisions/MEMORY-DECISION.md` as the block's actual v1.0 scope, rather than continuing to describe it as the memory model.**
 
 ## WS1 — Claude built the gate you asked for
 **A guard-page compiler: every `nirmmita` block ends flush against a `PROT_NONE` page, so one byte written or read past a block is a SIGSEGV.** **It runs the whole suite, all 226 library proofs and all 86 property proofs with 0 faults, and faults on the two known bugs as controls.**

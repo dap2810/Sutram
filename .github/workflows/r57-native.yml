@@ -77,7 +77,7 @@ jobs:
       - name: SHA-256 actual source manifest
         if: always()
         run: |
-          sha256sum src/sutram_compiler.asm tools/r57_native_acceptance.py tools/r57_codegen_baseline.py docs/R57-REGISTER-EVALUATOR.md tests/r57_check/* .github/workflows/r57-native.yml > r57_sha256.txt
+          sha256sum src/sutram_compiler.asm tools/r57_native_acceptance.py tools/r57_codegen_baseline.py docs/rounds/R57-REGISTER-EVALUATOR.md tests/r57_check/* .github/workflows/r57-native.yml > r57_sha256.txt
           cat r57_sha256.txt
       - uses: actions/upload-artifact@v4
         if: always()

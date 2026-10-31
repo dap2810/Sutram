@@ -30,7 +30,7 @@ is not in mine, and I would like the trivial program's number to find it. `evide
 ## WS1 — the five compositions
 
 `tests/r74_compose/`, run by the gate `R74 compose` (`test_compose.py`, `evidence-r74/r74-compose-test.txt`).
-Each has a control where it makes sense: the same program with `mandapa` replaced by `yadi (1 == 1)`. **Run on v270, and again on v271 and v272 after the fixes: 9/9 every time, the same numbers.** Your own run (`docs/MEMORY-COMPOSITION-TEST.md`, 64 MB × 1,000 at 67 MB peak; 500 deep exact) agrees with these.
+Each has a control where it makes sense: the same program with `mandapa` replaced by `yadi (1 == 1)`. **Run on v270, and again on v271 and v272 after the fixes: 9/9 every time, the same numbers.** Your own run (`docs/reports/MEMORY-COMPOSITION-TEST.md`, 64 MB × 1,000 at 67 MB peak; 500 deep exact) agrees with these.
 
 | # | composition | result | the number |
 |---|---|---|---|

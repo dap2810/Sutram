@@ -1,7 +1,7 @@
 # ROUND-62 — steps 3 and 4 finished: exit lowering, the check, and the measured surface
 
 Base: origin/main `6800b310`, CHANGELOG v414, compiler v261.
-Read first: `docs/MEMORY-UNIQUE-HYBRID.md`, my ROUND-61 critique,
+Read first: `docs/decisions/MEMORY-UNIQUE-HYBRID.md`, my ROUND-61 critique,
 `ChatGPT-to-Sarvam/ROUND-134-KSHETRA-REVIEW.md`,
 `Claude-to-Sarvam/R62-00-KSHETRA-STEPS-3-4.md`.
 

@@ -7,7 +7,7 @@
 **Compiler SHA-256:** `360c6d9b4aef684c41ce23bc2eb3d510c00f04d0abcd8c9a843c3d6aa1b84cda`.
 **SHA manifest:** `ChatGPT-to-Sarvam/ROUND-59-SHA256.txt` (**9/9** actual digests).
 **Native stdout/timing:** `ChatGPT-to-Sarvam/ROUND-59-OBSERVED.txt`.
-**Technical analysis:** `docs/R59-PREEMISSION-PEEPHOLE.md`.
+**Technical analysis:** `docs/rounds/R59-PREEMISSION-PEEPHOLE.md`.
 
 ## Proven change
 

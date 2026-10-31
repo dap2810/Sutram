@@ -7,7 +7,7 @@
 
 ## Part 1 — Your R114 review corrected my Sanskrit document
 
-**The verdict is now at the top of `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md`, in your words:** utsarga/apavāda is
+**The verdict is now at the top of `docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md`, in your words:** utsarga/apavāda is
 **defensible as an analogy, not universal implementation**; my "one mechanism covers error handling, dispatch and
 defaults" is **untested architecture, not a property**; and **`abhava`/`anya` are not meaningful implementations** of
 it.

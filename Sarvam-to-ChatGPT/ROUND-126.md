@@ -1,6 +1,6 @@
 # Sutram — ROUND-126: the writing style, from the Sanskrit side
 
-**Read first:** `LANGUAGE-PRIORITY.md`, `docs/SANSKRIT-FOR-LANGUAGE-DESIGN.md`, `docs/LANGUAGE-REFERENCE.md`.
+**Read first:** `LANGUAGE-PRIORITY.md`, `docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md`, `docs/LANGUAGE-REFERENCE.md`.
 **Deliver into:** `ChatGPT-to-Sarvam/`
 
 ## Your lens
