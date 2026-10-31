@@ -1,0 +1,28 @@
+R80: Sutram 1.0 (v276) - sampurna sutra - Linux compiler writing PE (.exe), run under Wine (not real Windows):
+a3: exit=1 out: Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati 
+a4: exit=1 out: Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunyena sheshah na sambhavati 
+b4: exit=0 out: -9223372036854775808 0 
+b5: exit=0 out: -9223372036854775808 
+a2: exit=0 out: -2446744073709551616 
+c1: exit=1 out: Sutram Error [E_SHUNYA_BHAJAN]: pankti 5 - shunye vibhajanam na sambhavati 
+c3: exit=1 out: Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati 
+
+examples/281 (division by zero inside a module), PE under Wine:
+10
+Sutram Error [E_SHUNYA_BHAJAN]: pankti 3 (r80_ausat.smlib) - shunye vibhajanam na sambhavati
+
+kramgun(25): v275 7034535277573963776  (25! = 15511210043330985984000000: a wrong POSITIVE answer, invisible to a search for negative results); v276 -1
+
+Frozen Hindi pack (--lang hindi), v276 - no pack text was added (the packs are frozen), so the new messages print in Sanskrit:
+  | मुख्य()
+  |     चर a = 5
+  |     चर b = 0
+  |     लिखो(a / b)
+  run: Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati (exit 1)
+  | मुख्य()
+  |     लिखो(4000000000 * 4000000000)
+    भाषा पैक मिला: hindi
+    hin2.sm:2:21: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+          लिखो(4000000000 * 4000000000)
+                          ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam

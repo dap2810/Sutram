@@ -1,0 +1,79 @@
+R80 WS3 - every library function whose parameters are all plain numbers (62), called with plausible non-negative inputs;
+flag a NEGATIVE result (a wrapped answer shows as one). Script: libsweep.py, copied below (it uses tools/lib_mutant_witness.py and tools/lib_proof_gaps.py).
+
+=== BEFORE (v275 and the library on origin/main)
+62 number-only library functions swept; 15 return a negative number for some non-negative input:
+  ank.collatz_charan(n): 1/29 calls negative; e.g. collatz_charan(0,) = -1
+  ank.fib(n): 3/29 calls negative; e.g. fib(93,) = -6246583658587674878; fib(10000,) = -2872092127636481573; fib(1000000,) = -4249520595888827205
+  chandas.dwi_ghat(n): 1/29 calls negative; e.g. dwi_ghat(63,) = -9223372036854775808
+  chandas.matra_meru(n): 3/29 calls negative; e.g. matra_meru(93,) = -6246583658587674878; matra_meru(10000,) = -2872092127636481573; matra_meru(1000000,) = -4249520595888827205
+  chandas.meru(n, k): 39/225 calls negative; e.g. meru(100, 20) = -1; meru(100, 63) = -1; meru(100, 64) = -1; meru(1000, 10) = -1
+  ganit.ghan(n): 2/29 calls negative; e.g. ghan(1000000000,) = -6930898827444486144; ghan(1000000000000,) = -5527149226598858752
+  ganit.ghat(base, e): 17/225 calls negative; e.g. ghat(2, 63) = -9223372036854775808; ghat(3, 63) = -3237885987332494933; ghat(3, 100) = -2984622845537545263; ghat(7, 1000) = -5479429532463080511
+  ganit.kramgun(n): 5/29 calls negative; e.g. kramgun(21,) = -4249290049419214848; kramgun(30,) = -8764578968847253504; kramgun(40,) = -70609262346240000; kramgun(50,) = -3258495067890909184
+  ganit.varg(n): 1/29 calls negative; e.g. varg(3037000500,) = -9223372036709301616
+  ganit.vargit(n): 1/29 calls negative; e.g. vargit(3037000500,) = -9223372036709301616
+  ganit.yog_tak(n): 1/29 calls negative; e.g. yog_tak(10000000000,) = -5340232216128654848
+  ganita.ganita_paripurna_nyun(a, b): 105/225 calls negative; e.g. ganita_paripurna_nyun(0, 1) = -1; ganita_paripurna_nyun(0, 2) = -2; ganita_paripurna_nyun(0, 3) = -3; ganita_paripurna_nyun(0, 7) = -7
+  patra.patra_likh_sarv(path, data, n): 343/343 calls negative; e.g. patra_likh_sarv(0, 0, 0) = -1; patra_likh_sarv(0, 0, 1) = -1; patra_likh_sarv(0, 0, 2) = -1; patra_likh_sarv(0, 0, 10) = -1
+  patra.patra_path_sarv(path, out, cap): 343/343 calls negative; e.g. patra_path_sarv(0, 0, 0) = -1; patra_path_sarv(0, 0, 1) = -1; patra_path_sarv(0, 0, 2) = -1; patra_path_sarv(0, 0, 10) = -1
+  sadhan.antarveshan(a, b, t): 42/343 calls negative; e.g. antarveshan(1, 0, 1000000) = -9999; antarveshan(1, 0, 1000000000) = -9999999; antarveshan(2, 0, 1000000) = -19998; antarveshan(2, 0, 1000000000) = -19999998
+
+=== AFTER (v276 and this round's library, final)
+62 number-only library functions swept; 13 return a negative number for some non-negative input:
+  ank.collatz_charan(n): 1/29 calls negative; e.g. collatz_charan(0,) = -1
+  ank.fib(n): 10/29 calls negative; e.g. fib(93,) = -1; fib(100,) = -1; fib(1000,) = -1; fib(10000,) = -1
+  chandas.dwi_ghat(n): 15/29 calls negative; e.g. dwi_ghat(63,) = -1; dwi_ghat(64,) = -1; dwi_ghat(66,) = -1; dwi_ghat(67,) = -1
+  chandas.matra_meru(n): 10/29 calls negative; e.g. matra_meru(93,) = -1; matra_meru(100,) = -1; matra_meru(1000,) = -1; matra_meru(10000,) = -1
+  chandas.meru(n, k): 39/225 calls negative; e.g. meru(100, 20) = -1; meru(100, 63) = -1; meru(100, 64) = -1; meru(1000, 10) = -1
+  ganit.kramgun(n): 20/29 calls negative; e.g. kramgun(21,) = -1; kramgun(25,) = -1; kramgun(30,) = -1; kramgun(40,) = -1
+  ganit.varg(n): 3/29 calls negative; e.g. varg(3037000500,) = -1; varg(10000000000,) = -1; varg(1000000000000,) = -1
+  ganit.vargit(n): 3/29 calls negative; e.g. vargit(3037000500,) = -1; vargit(10000000000,) = -1; vargit(1000000000000,) = -1
+  ganit.yog_tak(n): 2/29 calls negative; e.g. yog_tak(10000000000,) = -1; yog_tak(1000000000000,) = -1
+  ganita.ganita_paripurna_nyun(a, b): 105/225 calls negative; e.g. ganita_paripurna_nyun(0, 1) = -1; ganita_paripurna_nyun(0, 2) = -2; ganita_paripurna_nyun(0, 3) = -3; ganita_paripurna_nyun(0, 7) = -7
+  patra.patra_likh_sarv(path, data, n): 343/343 calls negative; e.g. patra_likh_sarv(0, 0, 0) = -1; patra_likh_sarv(0, 0, 1) = -1; patra_likh_sarv(0, 0, 2) = -1; patra_likh_sarv(0, 0, 10) = -1
+  patra.patra_path_sarv(path, out, cap): 343/343 calls negative; e.g. patra_path_sarv(0, 0, 0) = -1; patra_path_sarv(0, 0, 1) = -1; patra_path_sarv(0, 0, 2) = -1; patra_path_sarv(0, 0, 10) = -1
+  sadhan.antarveshan(a, b, t): 42/343 calls negative; e.g. antarveshan(1, 0, 1000000) = -9999; antarveshan(1, 0, 1000000000) = -9999999; antarveshan(2, 0, 1000000) = -19998; antarveshan(2, 0, 1000000000) = -19999998
+
+Missed by this sweep, found by Muse's R80 audit and fixed (ws3-muse-tier1-fixed.txt): lcm (a wrong POSITIVE), the
+integer variance (needs an array, not swept), yog_seema (its wraps on the values tried, e.g. (0, 10^10), came out positive).
+
+Reading the AFTER list: every remaining negative is a documented sentinel or a correct answer -
+  fib / matra_meru / dwi_ghat / kramgun / varg / vargit / yog_tak / meru: -1 = 'does not fit' (R80; meru since R76)
+  collatz_charan(0) = -1 (no sequence from 0); ganita_paripurna_nyun(0, b) = -b (a true difference);
+  patra_*: -1 = the file call failed (called with null paths); antarveshan(a, 0, t): a true negative interpolation.
+  ghat and ghan saturate (largest/smallest vitti) so they no longer appear.
+
+The sweep sees only NEGATIVE wraps. A wrap can also land positive: kramgun was negative on 5 inputs BEFORE but
+returns -1 (does not fit) on 20 AFTER - the other 15, e.g. kramgun(25) = 7034535277573963776, were wrong positive answers.
+
+--- libsweep.py
+# R80 WS3: every library function whose parameters are all plain numbers, called with plausible
+# non-negative inputs; flag any call that returns a NEGATIVE number (a wrapped result).
+import sys, itertools, tempfile
+from pathlib import Path
+sys.path.insert(0, 'tools')
+import lib_mutant_witness as W, lib_proof_gaps as g
+comp = str(Path(sys.argv[1]).resolve())
+funcs = {(f['module'], f['name']): f for p in sorted(g.LIB.glob('*.smlib')) for f in g.parse_module(p)}
+ptrs = W.pointer_params(funcs)
+V1 = [0, 1, 2, 3, 5, 10, 12, 15, 20, 21, 25, 30, 40, 50, 63, 64, 66, 67, 70, 93, 100, 1000, 10**4, 10**5, 10**6, 10**9, 3037000500, 10**10, 10**12]
+V2 = [0, 1, 2, 3, 7, 10, 12, 20, 63, 64, 100, 1000, 10**6, 10**9, 10**10]
+base = Path(tempfile.mkdtemp()); g.make_tree(base)
+flagged = []; ntried = 0
+for (mod, name), f in sorted(funcs.items()):
+    if ptrs[(mod, name)] or 'dasham' in f['params']: continue
+    ar = len([p for p in f['params'].split(',') if p.strip()])
+    if ar == 0 or ar > 3: continue
+    header, _ = g.probe_header(comp, base, mod)
+    if header is None: continue
+    vals = V1 if ar == 1 else V2 if ar == 2 else [0, 1, 2, 10, 100, 10**6, 10**9]
+    args = list(itertools.product(vals, repeat=ar))
+    out = W.run(comp, base, header, name, args)
+    ntried += 1
+    neg = [(a, o) for a, o in zip(args, out or []) if o is not None and o.lstrip('-').isdigit() and int(o) < 0]
+    if neg:
+        flagged.append((mod, name, f['params'], len(neg), len(args), neg[:4]))
+print(f'{ntried} number-only library functions swept; {len(flagged)} return a negative number for some non-negative input:')
+for m, n, p, k, tot, ex in flagged:
+    print(f'  {m}.{n}({p}): {k}/{tot} calls negative; e.g. ' + '; '.join(f'{n}{a} = {o}' for a, o in ex))

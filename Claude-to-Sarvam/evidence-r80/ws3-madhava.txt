@@ -1,0 +1,30 @@
+R80 WS3 - madhava: the series terms are dasham (floats) and cannot wrap. The one integer step is
+'vitti k = x / pi2' in madhava_sin / madhava_cos (argument reduction). v276:
+
+  | yoj madhava
+  | mukhya()
+  |     likha(madhava_sin(100.0))
+  |     likha(madhava_sin(1000000.0))
+  |     likha(madhava_sin(1000000000000000.0))
+  |     likha(madhava_sin(10000000000000000000.0))
+  |     likha(madhava_sin(100000000000000000000.0))
+  |     likha(madhava_cos(100000000000000000000.0))
+  |     likha(madhava_atan(1000000000000.0))
+  |     likha(madhava_pi())
+
+  madhava_sin(100) =              -0.506366   Python math: -0.506366   ok
+  madhava_sin(1000000.0) =              -0.349994   Python math: -0.349994   ok
+  madhava_sin(1000000000000000.0) =               0.850320   Python math:  0.858273   WRONG
+  madhava_sin(1e+19) =               0.000000   Python math: -0.927063   WRONG
+  madhava_sin(1e+20) =  -9223372036854.775808   Python math: -0.645251   WRONG
+  madhava_cos(1e+20) =  -9223372036854.775808   Python math:  0.763970   WRONG
+  madhava_atan(1000000000000.0) =               1.570796   Python math:  1.570796   ok
+  madhava_pi(None) =               3.141593   Python math:  3.141593   ok
+
+Reading: correct to 6 places through 1e6. At 1e15 (the comment says 'exact for |x| <= ~1e15') it is off by 0.008 -
+float range reduction: one unit in the last place of 1e15 is 0.125. At 1e19 the reduction has no precision left (0.0).
+Past ~5.8e19, x / 2pi passes 2^63, the integer conversion gives the smallest vitti, and sin/cos return
+-9223372036854.775808 as printed (the value is huge, not in [-1, 1]; likha also cannot print a dasham that large).
+Between: madhava_sin(1e11) = 0.928693 (math 0.928694), 1e12 = -0.611199 (-0.611239), 1e13 = -0.288779 (-0.288885),
+1e14 = -0.216065 (-0.209408): 6 places hold to about 1e10, not 1e15 as the comment says.
+None of these is plausible student input; NOT changed. The comment should say "6 decimal places for |x| up to about 1e10".

@@ -1,0 +1,420 @@
+v275 -> v276 (final build and library): every DIFFER of the guard run with both compilers' output, old and new, Linux ELF and Linux PE (run under Wine).
+Programs run without stdin (the R79 report programs read their students from stdin: with none, both versions stop the same way). Under Wine a crash shows as exit 148 (Linux: -8, SIGFPE).
+
+SAME    examples/07_module.sm: rc 0 -> 0
+SAME    examples/102_ast_multimodule_capacity.sm: rc 0 -> 0
+SAME    examples/10_mathlib.sm: rc 0 -> 0
+SAME    examples/126_numeric_pipeline.sm: rc 0 -> 0
+SAME    examples/16_advanced.sm: rc 0 -> 0
+SAME    examples/202_brahmagupta_area.sm: rc 0 -> 0
+SAME    examples/203_meru_with_kosh.sm: rc 0 -> 0
+SAME    examples/206_sankhyiki.sm: rc 0 -> 0
+SAME    examples/207_sankhyiki_vector.sm: rc 0 -> 0
+SAME    examples/209_samanvaya.sm: rc 0 -> 0
+SAME    examples/215_r12_wordfreq.sm: rc 0 -> 0
+SAME    examples/216_r12_expr.sm: rc 0 -> 0
+SAME    examples/217_r12_report.sm: rc 0 -> 0
+SAME    examples/249_r25_phal.sm: rc 3 -> 3
+SAME    examples/26_calculator.sm: rc 0 -> 0
+SAME    examples/61_stdlib_math.sm: rc 0 -> 0
+SAME    examples/62_stdlib_num.sm: rc 0 -> 0
+SAME    examples/66_module_dedupe.sm: rc 0 -> 0
+SAME    examples/79_ayojan_cwd.sm: rc 0 -> 0
+SAME    examples/81_stdlib_num2.sm: rc 0 -> 0
+SAME    examples/86_b8_multi_modules.sm: rc 0 -> 0
+SAME    examples/87_b8_all_modules.sm: rc 0 -> 0
+SAME    examples/87_b8_func_params_capacity.sm: rc 0 -> 0
+SAME    examples/87_b8_math_sort_string.sm: rc 0 -> 0
+SAME    examples/88_pingala_chandas.sm: rc 0 -> 0
+SAME    examples/91_indian_number_theory.sm: rc 0 -> 0
+SAME    examples/99_ast_multimodule_capacity.sm: rc 0 -> 0
+SAME    examples/import_demo.sm: rc 0 -> 0
+SAME    examples/prime.sm: rc 0 -> 0
+SAME    tests/r65_check/overflow_safe.sm: rc 0 -> 0
+SAME    tests/r65_check/peephole_scalar.sm: rc 0 -> 0
+CHANGED tests/r65_check/trap_div.sm: rc -8 -> 1
+        line 1: old ''  new 'Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati'
+        line 2: old '<none>'  new ''
+CHANGED tests/r65_check/trap_mod.sm: rc -8 -> 1
+        line 1: old ''  new 'Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunyena sheshah na sambhavati'
+        line 2: old '<none>'  new ''
+SAME    tests/r79_real/report_blocks.sm: rc 1 -> 1
+SAME    tests/r79_real/report_plain.sm: rc -11 -> -11
+SAME    tests/stdlib/baseconv_roundtrip.sm: rc 0 -> 0
+SAME    tests/stdlib/breadth26.sm: rc 0 -> 0
+SAME    tests/stdlib/chakravala29.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_dviguna.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_guru_count.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_is_guru.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_matra_meru.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_meru.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_meru_pankti.sm: rc 0 -> 0
+SAME    tests/stdlib/containers20.sm: rc 0 -> 0
+SAME    tests/stdlib/containers21.sm: rc 0 -> 0
+SAME    tests/stdlib/containers23.sm: rc 0 -> 0
+SAME    tests/stdlib/containers_clear.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_fixed.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_group.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_int_base.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_min.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_pad.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_signed.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_brahmagupta_area.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_chakravala.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_checked.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_ganita_abs.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_ganita_isqrt.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_kuttaka.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_samasa.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_sat.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps19.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps20.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps21.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps23.sm: rc 0 -> 0
+SAME    tests/stdlib/list_basic.sm: rc 0 -> 0
+SAME    tests/stdlib/list_queue.sm: rc 0 -> 0
+SAME    tests/stdlib/list_stack.sm: rc 0 -> 0
+SAME    tests/stdlib/map_basic.sm: rc 0 -> 0
+SAME    tests/stdlib/map_clear.sm: rc 0 -> 0
+SAME    tests/stdlib/map_keys_bytes.sm: rc 0 -> 0
+SAME    tests/stdlib/map_remove.sm: rc 0 -> 0
+SAME    tests/stdlib/math_abs_val.sm: rc 0 -> 0
+SAME    tests/stdlib/math_bit_count.sm: rc 0 -> 0
+SAME    tests/stdlib/math_cube.sm: rc 0 -> 0
+SAME    tests/stdlib/math_double.sm: rc 0 -> 0
+SAME    tests/stdlib/math_fact.sm: rc 0 -> 0
+SAME    tests/stdlib/math_gcd.sm: rc 0 -> 0
+SAME    tests/stdlib/math_gcd_lcm_edge.sm: rc 0 -> 0
+SAME    tests/stdlib/math_inc.sm: rc 0 -> 0
+SAME    tests/stdlib/math_is_prime.sm: rc 0 -> 0
+SAME    tests/stdlib/math_lcm.sm: rc 0 -> 0
+SAME    tests/stdlib/math_max2.sm: rc 0 -> 0
+SAME    tests/stdlib/math_min2.sm: rc 0 -> 0
+SAME    tests/stdlib/math_power.sm: rc 0 -> 0
+SAME    tests/stdlib/math_sq.sm: rc 0 -> 0
+SAME    tests/stdlib/math_square.sm: rc 0 -> 0
+SAME    tests/stdlib/math_sum_to.sm: rc 0 -> 0
+SAME    tests/stdlib/math_triple.sm: rc 0 -> 0
+SAME    tests/stdlib/num_clamp.sm: rc 0 -> 0
+SAME    tests/stdlib/num_collatz_steps.sm: rc 0 -> 0
+SAME    tests/stdlib/num_digit_count.sm: rc 0 -> 0
+SAME    tests/stdlib/num_digit_sum.sm: rc 0 -> 0
+SAME    tests/stdlib/num_fib.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_even.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_odd.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_palindrome.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_perfect.sm: rc 0 -> 0
+SAME    tests/stdlib/num_reverse_num.sm: rc 0 -> 0
+CHANGED tests/stdlib/numeric29.sm: rc 0 -> 0
+        line 9: old '0'  new '-1'
+        line 11: old '-9223372036709301616'  new '-1'
+        line 13: old '-9223372036854775808'  new '9223372036854775807'
+        line 15: old '-9223358842708951039'  new '9223372036854775807'
+        line 23: old '-9223372036854775808'  new '9223372036854775807'
+        line 25: old '-6289078614652622815'  new '9223372036854775807'
+        line 27: old '-4249290049419214848'  new '-1'
+        line 29: old '-6246583658587674878'  new '-1'
+SAME    tests/stdlib/numeric_hangfix.sm: rc 0 -> 0
+SAME    tests/stdlib/r10_roop_suchi_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_brihat_guards.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_misc_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_nighantu_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_page_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_sets_lists.sm: rc 0 -> 0
+SAME    tests/stdlib/r18_sign_digits_kramgun.sm: rc 0 -> 0
+SAME    tests/stdlib/r18_srij_overflow_guard.sm: rc 0 -> 0
+SAME    tests/stdlib/r35_alloc_wrap_guard.sm: rc 0 -> 0
+SAME    tests/stdlib/r36_growth_guard.sm: rc 0 -> 0
+SAME    tests/stdlib/r37_bounds.sm: rc 0 -> 0
+SAME    tests/stdlib/r39_scratch_from_set.sm: rc 0 -> 0
+SAME    tests/stdlib/r48_meru_bada.sm: rc 0 -> 0
+SAME    tests/stdlib/r48_srij_fill.sm: rc 0 -> 0
+SAME    tests/stdlib/r76_known_values.sm: rc 0 -> 0
+SAME    tests/stdlib/r78_suchi_avali_srij.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_base_digits.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_chakravala_sweep.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_list_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_list_growth.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_list_model.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_map_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_map_model.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_number_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_result_flags.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_split_model.sm: rc 0 -> 0
+SAME    tests/stdlib/r9_aadhar_alone.sm: rc 0 -> 0
+SAME    tests/stdlib/r9_alloc_failure.sm: rc 0 -> 0
+SAME    tests/stdlib/r9_guard_cells2.sm: rc 0 -> 0
+SAME    tests/stdlib/result29.sm: rc 0 -> 0
+SAME    tests/stdlib/result_chain.sm: rc 0 -> 0
+SAME    tests/stdlib/safety24.sm: rc 0 -> 0
+SAME    tests/stdlib/safety25.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_mat_gunana.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_mat_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_nirnaya2.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_nirnaya3.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_nishan.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_pehchan.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_rekha_manak.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_sadish_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_skalar.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_vivartana.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_adhikatama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_bindu.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_laghutama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_madhya.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_manak.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_prasaran.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_adhikatama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_laghutama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_madhya.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_prasaran.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_vyapti.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_sankhyiki_sqrt.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_vichalan.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_vyapti.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/set_basic.sm: rc 0 -> 0
+SAME    tests/stdlib/set_difference.sm: rc 0 -> 0
+SAME    tests/stdlib/set_intersect.sm: rc 0 -> 0
+SAME    tests/stdlib/set_subset.sm: rc 0 -> 0
+SAME    tests/stdlib/set_to_array.sm: rc 0 -> 0
+SAME    tests/stdlib/set_union.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_base.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_int_str.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_overflow.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_pad.sm: rc 0 -> 0
+SAME    tests/stdlib/util_bool_to_int.sm: rc 0 -> 0
+SAME    tests/stdlib/util_div_ceil.sm: rc 0 -> 0
+SAME    tests/stdlib/util_int_max.sm: rc 0 -> 0
+SAME    tests/stdlib/util_lerp.sm: rc 0 -> 0
+SAME    tests/stdlib/util_mod.sm: rc 0 -> 0
+SAME    tests/stdlib/util_sign.sm: rc 0 -> 0
+SAME    tests/stdlib/util_sum_range.sm: rc 0 -> 0
+elf: 178 DIFFER run old and new: 175 same output and exit code, 3 changed
+
+SAME    examples/07_module.sm: rc 0 -> 0
+SAME    examples/102_ast_multimodule_capacity.sm: rc 0 -> 0
+SAME    examples/10_mathlib.sm: rc 0 -> 0
+SAME    examples/126_numeric_pipeline.sm: rc 0 -> 0
+SAME    examples/16_advanced.sm: rc 0 -> 0
+SAME    examples/202_brahmagupta_area.sm: rc 0 -> 0
+SAME    examples/203_meru_with_kosh.sm: rc 0 -> 0
+SAME    examples/206_sankhyiki.sm: rc 0 -> 0
+SAME    examples/207_sankhyiki_vector.sm: rc 0 -> 0
+SAME    examples/209_samanvaya.sm: rc 0 -> 0
+SAME    examples/215_r12_wordfreq.sm: rc 0 -> 0
+SAME    examples/216_r12_expr.sm: rc 0 -> 0
+SAME    examples/217_r12_report.sm: rc 0 -> 0
+SAME    examples/249_r25_phal.sm: rc 3 -> 3
+SAME    examples/26_calculator.sm: rc 0 -> 0
+SAME    examples/61_stdlib_math.sm: rc 0 -> 0
+SAME    examples/62_stdlib_num.sm: rc 0 -> 0
+SAME    examples/66_module_dedupe.sm: rc 0 -> 0
+SAME    examples/79_ayojan_cwd.sm: rc 0 -> 0
+SAME    examples/81_stdlib_num2.sm: rc 0 -> 0
+SAME    examples/86_b8_multi_modules.sm: rc 0 -> 0
+SAME    examples/87_b8_all_modules.sm: rc 0 -> 0
+SAME    examples/87_b8_func_params_capacity.sm: rc 0 -> 0
+SAME    examples/87_b8_math_sort_string.sm: rc 0 -> 0
+SAME    examples/88_pingala_chandas.sm: rc 0 -> 0
+SAME    examples/91_indian_number_theory.sm: rc 0 -> 0
+SAME    examples/99_ast_multimodule_capacity.sm: rc 0 -> 0
+SAME    examples/import_demo.sm: rc 0 -> 0
+SAME    examples/prime.sm: rc 0 -> 0
+SAME    tests/r65_check/overflow_safe.sm: rc 0 -> 0
+SAME    tests/r65_check/peephole_scalar.sm: rc 0 -> 0
+CHANGED tests/r65_check/trap_div.sm: rc 148 -> 1
+        line 1: old ''  new 'Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati'
+        line 2: old '<none>'  new ''
+CHANGED tests/r65_check/trap_mod.sm: rc 148 -> 1
+        line 1: old ''  new 'Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunyena sheshah na sambhavati'
+        line 2: old '<none>'  new ''
+SAME    tests/r79_real/report_blocks.sm: rc 1 -> 1
+SAME    tests/r79_real/report_plain.sm: rc 1 -> 1
+SAME    tests/stdlib/baseconv_roundtrip.sm: rc 0 -> 0
+SAME    tests/stdlib/breadth26.sm: rc 0 -> 0
+SAME    tests/stdlib/chakravala29.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_dviguna.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_guru_count.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_is_guru.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_matra_meru.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_meru.sm: rc 0 -> 0
+SAME    tests/stdlib/chandas_meru_pankti.sm: rc 0 -> 0
+SAME    tests/stdlib/containers20.sm: rc 0 -> 0
+SAME    tests/stdlib/containers21.sm: rc 0 -> 0
+SAME    tests/stdlib/containers23.sm: rc 0 -> 0
+SAME    tests/stdlib/containers_clear.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_fixed.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_group.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_int_base.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_min.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_pad.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_signed.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_brahmagupta_area.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_chakravala.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_checked.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_ganita_abs.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_ganita_isqrt.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_kuttaka.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_samasa.sm: rc 0 -> 0
+SAME    tests/stdlib/ganita_sat.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps19.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps20.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps21.sm: rc 0 -> 0
+SAME    tests/stdlib/gaps23.sm: rc 0 -> 0
+SAME    tests/stdlib/list_basic.sm: rc 0 -> 0
+SAME    tests/stdlib/list_queue.sm: rc 0 -> 0
+SAME    tests/stdlib/list_stack.sm: rc 0 -> 0
+SAME    tests/stdlib/map_basic.sm: rc 0 -> 0
+SAME    tests/stdlib/map_clear.sm: rc 0 -> 0
+SAME    tests/stdlib/map_keys_bytes.sm: rc 0 -> 0
+SAME    tests/stdlib/map_remove.sm: rc 0 -> 0
+SAME    tests/stdlib/math_abs_val.sm: rc 0 -> 0
+SAME    tests/stdlib/math_bit_count.sm: rc 0 -> 0
+SAME    tests/stdlib/math_cube.sm: rc 0 -> 0
+SAME    tests/stdlib/math_double.sm: rc 0 -> 0
+SAME    tests/stdlib/math_fact.sm: rc 0 -> 0
+SAME    tests/stdlib/math_gcd.sm: rc 0 -> 0
+SAME    tests/stdlib/math_gcd_lcm_edge.sm: rc 0 -> 0
+SAME    tests/stdlib/math_inc.sm: rc 0 -> 0
+SAME    tests/stdlib/math_is_prime.sm: rc 0 -> 0
+SAME    tests/stdlib/math_lcm.sm: rc 0 -> 0
+SAME    tests/stdlib/math_max2.sm: rc 0 -> 0
+SAME    tests/stdlib/math_min2.sm: rc 0 -> 0
+SAME    tests/stdlib/math_power.sm: rc 0 -> 0
+SAME    tests/stdlib/math_sq.sm: rc 0 -> 0
+SAME    tests/stdlib/math_square.sm: rc 0 -> 0
+SAME    tests/stdlib/math_sum_to.sm: rc 0 -> 0
+SAME    tests/stdlib/math_triple.sm: rc 0 -> 0
+SAME    tests/stdlib/num_clamp.sm: rc 0 -> 0
+SAME    tests/stdlib/num_collatz_steps.sm: rc 0 -> 0
+SAME    tests/stdlib/num_digit_count.sm: rc 0 -> 0
+SAME    tests/stdlib/num_digit_sum.sm: rc 0 -> 0
+SAME    tests/stdlib/num_fib.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_even.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_odd.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_palindrome.sm: rc 0 -> 0
+SAME    tests/stdlib/num_is_perfect.sm: rc 0 -> 0
+SAME    tests/stdlib/num_reverse_num.sm: rc 0 -> 0
+CHANGED tests/stdlib/numeric29.sm: rc 0 -> 0
+        line 9: old '0'  new '-1'
+        line 11: old '-9223372036709301616'  new '-1'
+        line 13: old '-9223372036854775808'  new '9223372036854775807'
+        line 15: old '-9223358842708951039'  new '9223372036854775807'
+        line 23: old '-9223372036854775808'  new '9223372036854775807'
+        line 25: old '-6289078614652622815'  new '9223372036854775807'
+        line 27: old '-4249290049419214848'  new '-1'
+        line 29: old '-6246583658587674878'  new '-1'
+SAME    tests/stdlib/numeric_hangfix.sm: rc 0 -> 0
+SAME    tests/stdlib/r10_roop_suchi_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_brihat_guards.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_misc_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_nighantu_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_page_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_sets_lists.sm: rc 0 -> 0
+SAME    tests/stdlib/r18_sign_digits_kramgun.sm: rc 0 -> 0
+SAME    tests/stdlib/r18_srij_overflow_guard.sm: rc 0 -> 0
+SAME    tests/stdlib/r35_alloc_wrap_guard.sm: rc 0 -> 0
+SAME    tests/stdlib/r36_growth_guard.sm: rc 0 -> 0
+SAME    tests/stdlib/r37_bounds.sm: rc 0 -> 0
+SAME    tests/stdlib/r39_scratch_from_set.sm: rc 0 -> 0
+SAME    tests/stdlib/r48_meru_bada.sm: rc 0 -> 0
+SAME    tests/stdlib/r48_srij_fill.sm: rc 0 -> 0
+SAME    tests/stdlib/r76_known_values.sm: rc 0 -> 0
+SAME    tests/stdlib/r78_suchi_avali_srij.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_base_digits.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_chakravala_sweep.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_list_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_list_growth.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_list_model.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_map_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_map_model.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_number_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_result_flags.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_split_model.sm: rc 0 -> 0
+SAME    tests/stdlib/r9_aadhar_alone.sm: rc 0 -> 0
+SAME    tests/stdlib/r9_alloc_failure.sm: rc 0 -> 0
+SAME    tests/stdlib/r9_guard_cells2.sm: rc 0 -> 0
+SAME    tests/stdlib/result29.sm: rc 0 -> 0
+SAME    tests/stdlib/result_chain.sm: rc 0 -> 0
+SAME    tests/stdlib/safety24.sm: rc 0 -> 0
+SAME    tests/stdlib/safety25.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_mat_gunana.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_mat_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_nirnaya2.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_nirnaya3.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_nishan.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_pehchan.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_rekha_manak.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_sadish_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_skalar.sm: rc 0 -> 0
+SAME    tests/stdlib/samanvaya_vivartana.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_adhikatama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_bindu.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_laghutama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_madhya.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_manak.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_prasaran.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_adhikatama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_laghutama.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_madhya.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_prasaran.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_vyapti.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_purna_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_sankhyiki_sqrt.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_vichalan.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_vyapti.sm: rc 0 -> 0
+SAME    tests/stdlib/sankhyiki_yoga.sm: rc 0 -> 0
+SAME    tests/stdlib/set_basic.sm: rc 0 -> 0
+SAME    tests/stdlib/set_difference.sm: rc 0 -> 0
+SAME    tests/stdlib/set_intersect.sm: rc 0 -> 0
+SAME    tests/stdlib/set_subset.sm: rc 0 -> 0
+SAME    tests/stdlib/set_to_array.sm: rc 0 -> 0
+SAME    tests/stdlib/set_union.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_base.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_int_str.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_overflow.sm: rc 0 -> 0
+SAME    tests/stdlib/strconv_pad.sm: rc 0 -> 0
+SAME    tests/stdlib/util_bool_to_int.sm: rc 0 -> 0
+SAME    tests/stdlib/util_div_ceil.sm: rc 0 -> 0
+SAME    tests/stdlib/util_int_max.sm: rc 0 -> 0
+SAME    tests/stdlib/util_lerp.sm: rc 0 -> 0
+SAME    tests/stdlib/util_mod.sm: rc 0 -> 0
+SAME    tests/stdlib/util_sign.sm: rc 0 -> 0
+SAME    tests/stdlib/util_sum_range.sm: rc 0 -> 0
+pe: 178 DIFFER run old and new: 175 same output and exit code, 3 changed
+
+--- diffrun.py
+import glob, os, subprocess, sys
+NEW = '/home/claude/sutram'; sys.path.insert(0, NEW + '/tests'); import run_tests as RT
+R = sys.argv[1]; kind = sys.argv[2]           # kind: elf | pe
+PAT = ['examples/*.sm', 'examples/*/*.sm', 'tests/stdlib/*.sm', 'tests/r*/*.sm', 'tests/r*/*/*.sm']
+rels = sorted({os.path.relpath(p, NEW) for pat in PAT for p in glob.glob(os.path.join(NEW, pat))})
+differ = [l.split()[1] for l in open(f'{R}/guard-elf.txt') if l.startswith('DIFFER')]
+env = dict(os.environ, WINEDEBUG='-all', WINEPREFIX=os.path.dirname(R) + '/r41/wineprefix')
+same = notsame = 0
+for rel in differ:
+    i = rels.index(rel); stem = os.path.splitext(os.path.basename(rel))[0]
+    stdin = RT.STDIN.get(stem, '') if rel.startswith('examples/') else ''
+    res = []
+    for side in ('old', 'new'):
+        b = f'{R}/g-{kind}/{i}.{side}' + ('.exe' if kind == 'pe' else '')
+        cmd = ['/usr/lib/wine/wine64', b] if kind == 'pe' else [b]
+        cwd = (R + '/old' if side == 'old' else NEW)
+        try:
+            r = subprocess.run(cmd, input=stdin.encode(), capture_output=True, timeout=30, cwd=cwd, env=env)
+            res.append((r.stdout, r.returncode))
+        except subprocess.TimeoutExpired:
+            res.append(('timeout', None))
+    ok = res[0] == res[1]
+    same += ok; notsame += (not ok)
+    print(('SAME   ' if ok else 'CHANGED') + f' {rel}: rc {res[0][1]} -> {res[1][1]}', flush=True)
+    if not ok:
+        a, b = res[0][0], res[1][0]
+        if isinstance(a, bytes) and isinstance(b, bytes):
+            al, bl = a.decode(errors='replace').split('\n'), b.decode(errors='replace').split('\n')
+            for k in range(max(len(al), len(bl))):
+                x = al[k] if k < len(al) else '<none>'; y = bl[k] if k < len(bl) else '<none>'
+                if x != y: print(f'        line {k+1}: old {x[:100]!r}  new {y[:100]!r}')
+print(f'{kind}: {len(differ)} DIFFER run old and new: {same} same output and exit code, {notsame} changed')

@@ -1,0 +1,28 @@
+R80 WS2 point 3 - the cost of checking run-time + - * (and /, %) for overflow, measured before deciding.
+Builds: v275 (origin/main); v276 (the division guard only, shipped); the SUTRAM_R65_TRAP_INT build of v276 (every + - * checked with jo, and / % checked - not shipped).
+The 8 shipped benchmarks (benchmarks/), the R79 real program (report_plain, 100,000 students), and divloop (a loop that divides by a variable).
+
+9 interleaved runs each, median wall seconds; cost against v275 (no checks)
+program                  v275  div guard  trap (div+overflow)
+bench_arith            0.0193        identical    0.0268  +39.3%
+bench_fib              0.0032        identical    0.0034   +5.6%
+bench_loop             0.0091        identical    0.0347 +281.9%
+bench_nested           0.0138        identical    0.0280 +103.7%
+r46_hotcall_array      0.0402        identical    0.0492  +22.5%
+r46_hotcall_float      0.0386        identical    0.0432  +11.9%
+r46_hotcall_nested     0.0553        identical    0.0651  +17.6%
+r46_hotcall_stack      0.0445        identical    0.0598  +34.5%
+report                 1.2611    1.2228  -3.0%    1.3208   +4.7%
+divloop                0.0697    0.0741  +6.3%    0.0828  +18.7%
+
+'identical': the v276 binary is byte-for-byte the v275 binary (no division by a variable in the benchmark), so its time is v275's - re-checked on the final v276 build: all 8 still identical. The times were taken on the first v276 build; the final one differs from it only in the text of the division error (its line now comes from the origin map), not in the instructions on the path that runs.
+Verdict: the trap build costs +5.6% to +281.9% - over the 10% line on 7 of 8 benchmarks - so run-time overflow is NOT checked; it wraps, as documented (reference s3a).
+  divloop.sm | # R80: the division guard's worst case - every division by a variable (10,000,000 of them)
+  divloop.sm | mukhya()
+  divloop.sm |     vitti s = 0
+  divloop.sm |     vitti d = 3
+  divloop.sm |     vitti i = 1
+  divloop.sm |     yavat (i <= 10000000)
+  divloop.sm |         s = s + i / d + i % d
+  divloop.sm |         i = i + 1
+  divloop.sm |     likha(s, "\n")

@@ -1,0 +1,331 @@
+R80 confirmation runs, Linux ELF. For each program: v275 (origin/main), then Sutram 1.0 (v276) - sampurna sutra.
+
+=== a1.sm
+  | mukhya()
+  |     vitti x = 9223372036854775807
+  |     likha(x + 1)
+ v275:
+  run (exit 0):
+    -9223372036854775808
+ v276:
+  run (exit 0):
+    -9223372036854775808
+
+=== a2.sm
+  | mukhya()
+  |     vitti x = 4000000000
+  |     likha(x * x)
+ v275:
+  run (exit 0):
+    -2446744073709551616
+ v276:
+  run (exit 0):
+    -2446744073709551616
+
+=== a3.sm
+  | mukhya()
+  |     vitti a = 1
+  |     vitti b = 0
+  |     likha(a / b)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  run (exit 1):
+    Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati
+
+=== a4.sm
+  | mukhya()
+  |     vitti a = 7
+  |     vitti b = 0
+  |     likha(a % b)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  run (exit 1):
+    Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunyena sheshah na sambhavati
+
+=== a5.sm
+  | mukhya()
+  |     likha(1 / 0)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  compile: REFUSED (compiler exit 1)
+    a5.sm:2:13: Sutram Error [E_SHUNYA_BHAJAN]: shunye vibhajanam na sambhavati
+          likha(1 / 0)
+                  ^
+    Sanket: bhajakah shunyam na bhavet
+
+=== a6.sm
+  | mukhya()
+  |     likha(9223372036854775807 + 1)
+ v275:
+  run (exit 0):
+    -9223372036854775808
+ v276:
+  compile: REFUSED (compiler exit 1)
+    a6.sm:2:31: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+          likha(9223372036854775807 + 1)
+                                    ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam
+
+=== a7.sm
+  | mukhya()
+  |     likha(4000000000 * 4000000000)
+ v275:
+  run (exit 0):
+    -2446744073709551616
+ v276:
+  compile: REFUSED (compiler exit 1)
+    a7.sm:2:22: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+          likha(4000000000 * 4000000000)
+                           ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam
+
+=== a8.sm
+  | mukhya()
+  |     likha(99999999999999999999)
+ v275:
+  run (exit 0):
+    7766279631452241919
+ v276:
+  compile: REFUSED (compiler exit 1)
+    a8.sm:2:11: Sutram Error [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati
+          likha(99999999999999999999)
+                ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam
+
+=== a9.sm
+  | mukhya()
+  |     likha(9223372036854775808)
+ v275:
+  run (exit 0):
+    -9223372036854775808
+ v276:
+  compile: REFUSED (compiler exit 1)
+    a9.sm:2:11: Sutram Error [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati
+          likha(9223372036854775808)
+                ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam
+
+=== b1.sm
+  | mukhya()
+  |     likha(0 - 9223372036854775808)
+ v275:
+  run (exit 0):
+    -9223372036854775808
+ v276:
+  run (exit 0):
+    -9223372036854775808
+
+=== b2.sm
+  | mukhya()
+  |     likha(-9223372036854775808)
+ v275:
+  run (exit 0):
+    -9223372036854775808
+ v276:
+  run (exit 0):
+    -9223372036854775808
+
+=== b3.sm
+  | mukhya()
+  |     likha(0 - 1 - 9223372036854775808)
+ v275:
+  run (exit 0):
+    9223372036854775807
+ v276:
+  compile: REFUSED (compiler exit 1)
+    b3.sm:2:17: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+          likha(0 - 1 - 9223372036854775808)
+                      ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam
+
+=== b4.sm
+  | mukhya()
+  |     vitti m = 0 - 9223372036854775808
+  |     vitti d = 0 - 1
+  |     likha(m / d)
+  |     likha(m % d)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  run (exit 0):
+    -9223372036854775808
+    0
+
+=== b5.sm
+  | mukhya()
+  |     vitti m = 0 - 9223372036854775808
+  |     likha(m / -1)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  run (exit 0):
+    -9223372036854775808
+
+=== b6.sm
+  | mukhya()
+  |     likha(100000000000000000000.5)
+ v275:
+  run (exit 0):
+    -9223372036854.775808
+ v276:
+  run (exit 0):
+    -9223372036854.775808
+
+=== b7.sm
+  | mukhya()
+  |     vitti a = 10
+  |     likha(a / 3)
+  |     likha(0 - a / 3)
+  |     likha(a % 3)
+ v275:
+  run (exit 0):
+    3
+    -3
+    1
+ v276:
+  run (exit 0):
+    3
+    -3
+    1
+
+=== b8.sm
+  | mukhya()
+  |     likha(0x7fffffffffffffff)
+ v275:
+  run (exit 0):
+    9223372036854775807
+ v276:
+  run (exit 0):
+    9223372036854775807
+
+=== b9.sm
+  | mukhya()
+  |     likha(0x10000000000000000)
+ v275:
+  run (exit 0):
+    0
+ v276:
+  compile: REFUSED (compiler exit 1)
+    b9.sm:2:11: Sutram Error [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati
+          likha(0x10000000000000000)
+                ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam
+
+=== c1.sm
+  | yoj ganit
+  | mukhya()
+  |     vitti a = 5
+  |     vitti b = 0
+  |     likha(a / b)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  run (exit 1):
+    Sutram Error [E_SHUNYA_BHAJAN]: pankti 5 - shunye vibhajanam na sambhavati
+
+=== c2.sm
+  | yoj ganit
+  | mukhya()
+  |     likha(4000000000 * 4000000000)
+ v275:
+  run (exit 0):
+    -2446744073709551616
+ v276:
+  compile: REFUSED (compiler exit 1)
+    c2.sm:3:22: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+          likha(4000000000 * 4000000000)
+                           ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam
+
+=== c3.sm
+  | mukhya()
+  |     vitti x = 7
+  |     vitti z = 0
+  |     x /= z
+  |     likha(x)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  run (exit 1):
+    Sutram Error [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati
+
+=== c4.sm
+  | mukhya()
+  |     vitti x = 7
+  |     x %= 0
+  |     likha(x)
+ v275:
+  run (exit 136 = SIGFPE, no message):
+    
+ v276:
+  compile: REFUSED (compiler exit 1)
+    c4.sm:3:7: Sutram Error [E_SHUNYA_BHAJAN]: shunyena sheshah na sambhavati
+          x %= 0
+            ^
+    Sanket: bhajakah shunyam na bhavet
+
+=== c5.sm
+  | mukhya()
+  |     likha(-(0 - 9223372036854775808))
+ v275:
+  run (exit 0):
+    -9223372036854775808
+ v276:
+  compile: REFUSED (compiler exit 1)
+    c5.sm:2:11: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+          likha(-(0 - 9223372036854775808))
+                ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam
+
+=== c6.sm
+  | mukhya()
+  |     likha((0 - 9223372036854775808) / (0 - 1))
+ v275:
+  compile: REFUSED (compiler exit 136 = SIGFPE: the COMPILER crashed)
+ v276:
+  compile: REFUSED (compiler exit 1)
+    c6.sm:2:37: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati
+          likha((0 - 9223372036854775808) / (0 - 1))
+                                          ^
+    Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam
+
+=== c7.sm
+  | mukhya()
+  |     likha((0 - 9223372036854775808) % (0 - 1))
+ v275:
+  compile: REFUSED (compiler exit 136 = SIGFPE: the COMPILER crashed)
+ v276:
+  run (exit 0):
+    0
+
+=== c8.sm
+  | mukhya()
+  |     dasham x = 100000000000000000000.5
+  |     likha(x / 1000000000000.0)
+ v275:
+  run (exit 0):
+    7766279.631452
+ v276:
+  run (exit 0):
+    100000000.000000
+
+=== c9.sm
+  | mukhya()
+  |     dasham y = 1000000.0 * 1000000.0 * 1000000.0 * 100.0
+  |     likha(y)
+ v275:
+  run (exit 0):
+    -9223372036854.775808
+ v276:
+  run (exit 0):
+    -9223372036854.775808

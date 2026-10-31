@@ -1,0 +1,6 @@
+seed 24 --capabilities (the gate), programs 0..59: 19 programs carry 21 operands rewritten as (1 ? A : 0)
+Each is a + - * (or a negation) of two written numbers whose folded value leaves int64: v276 refuses that
+(E_ATIPRAVAH): unrewritten, all 19 are refused by v276 (checked one by one), so the model of the folder is exact. Written (1 ? A : 0) the operand has the
+same value and is not folded, so the program still wraps at run time as the reference expects.
+After: 60 run, 60 agree, 0 fail; 1376 output lines compared - on v276, and on v275 (the rewrite keeps the meaning).
+Also on v276: seed 7, 300 programs: 300 agree, 5733 lines; seed 8 --capabilities, 200 programs: 200 agree, 4819 lines.

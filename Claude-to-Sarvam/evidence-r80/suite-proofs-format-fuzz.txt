@@ -1,0 +1,6 @@
+NO-EXPECTATION=4  PASS=249
+229 passed, 0 failed, 229 total
+86/86 properties hold
+r77 format: 2231 checks, 0 failed
+r77 stray: 715 checks, 0 failed
+seed 24, programs 0..59: 60 run, 60 agree, 0 fail; 1376 output lines compared
