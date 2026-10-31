@@ -1,0 +1,7 @@
+yoj suchi
+mukhya() {
+    likha(suchi_srij(3037000499))
+    likha("\n")
+    likha(avali_srij(3037000499))
+    likha("\n")
+}
