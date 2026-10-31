@@ -1,0 +1,87 @@
+{
+ "examples/103_b10_nested_break_patches.sm": [
+  "T1-tak"
+ ],
+ "examples/104_b10_nested_continue_patches.sm": [
+  "T1-tak"
+ ],
+ "examples/114_perf_loop_fastpaths.sm": [
+  "T1-tak"
+ ],
+ "examples/115_perf_loop_bottom.sm": [
+  "T1-tak"
+ ],
+ "examples/11_forloop.sm": [
+  "T1-tak"
+ ],
+ "examples/16_advanced.sm": [
+  "T1-tak"
+ ],
+ "examples/20_pankti_array.sm": [
+  "T1-tak"
+ ],
+ "examples/222_old_keyword_name.sm": [
+  "T1-tak"
+ ],
+ "examples/229_loop_var_scope.sm": [
+  "T1-tak"
+ ],
+ "examples/230_redeclare_after_block.sm": [
+  "T1-tak"
+ ],
+ "examples/237_many_variables.sm": [
+  "T1-tak"
+ ],
+ "examples/246_r23_comparator_sort.sm": [
+  "T1-tak"
+ ],
+ "examples/248_r23_slices.sm": [
+  "T1-tak"
+ ],
+ "examples/249_r25_phal.sm": [
+  "T1-tak"
+ ],
+ "examples/250_r26_dosh_handler.sm": [
+  "T1-tak"
+ ],
+ "examples/252_r38_alias_kosh_oob.sm": [
+  "T5-kosh-alias"
+ ],
+ "examples/255_r42_alias_kosh_push.sm": [
+  "T5-kosh-alias"
+ ],
+ "examples/25_patterns.sm": [
+  "T1-tak"
+ ],
+ "examples/260_r71_indented_bodies.sm": [
+  "T1-tak"
+ ],
+ "examples/27_even_odd.sm": [
+  "T1-tak"
+ ],
+ "examples/287_r82_kosh_after_mandapa.sm": [
+  "T5-kosh-alias"
+ ],
+ "examples/28_compound.sm": [
+  "T1-tak"
+ ],
+ "examples/30_lkhb.sm": [
+  "T1-tak"
+ ],
+ "examples/32_bank_interest.sm": [
+  "T1-tak"
+ ],
+ "examples/33_unit_conversion.sm": [
+  "T1-tak"
+ ],
+ "examples/34_incdec.sm": [
+  "T1-tak"
+ ],
+ "examples/36_descending.sm": [
+  "T1-tak",
+  "T10-descending-tak"
+ ],
+ "examples/46_language_reference.sm": [
+  "T1-tak"
+ ]
+}
