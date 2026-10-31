@@ -1,0 +1,43 @@
+diff --git a/examples/291_r160_nan_comparisons.sm b/examples/291_r160_nan_comparisons.sm
+new file mode 100644
+index 00000000..8a7cb1c7
+--- /dev/null
++++ b/examples/291_r160_nan_comparisons.sm
+@@ -0,0 +1,18 @@
++# R160: each comparison of a NaN with a finite number follows IEEE unordered rules.
++# Create infinity by repeated multiplication, then NaN by infinity - infinity.
++# This remains valid when float division by zero is rejected.
++mukhya() {
++    dasham h = 100000000000000000000.0
++    h = h * h
++    h = h * h
++    h = h * h
++    h = h * h
++    dasham n = h - h
++    dasham p = 5.0
++    likha(n == p)
++    likha(n != p)
++    likha(n < p)
++    likha(n <= p)
++    likha(n > p)
++    likha(n >= p)
++}
+diff --git a/tests/expect/291_r160_nan_comparisons.out b/tests/expect/291_r160_nan_comparisons.out
+new file mode 100644
+index 00000000..5b176b53
+--- /dev/null
++++ b/tests/expect/291_r160_nan_comparisons.out
+@@ -0,0 +1,6 @@
++0
++1
++0
++0
++0
++0
+diff --git a/tests/expect/291_r160_nan_comparisons.exit b/tests/expect/291_r160_nan_comparisons.exit
+new file mode 100644
+index 00000000..573541ac
+--- /dev/null
++++ b/tests/expect/291_r160_nan_comparisons.exit
+@@ -0,0 +1 @@
++0
