@@ -398,6 +398,10 @@ likha("done")           # back at the header's indentation: after the loop
 - A body on the header's own line is one statement: `yadi (x == 0) likha("zero")`. A second statement on that
   line (`yadi (c) a = 1; b = 2`) is an error — it would otherwise run outside the `yadi` (v267).
 - Nothing may follow `mukhya`'s closing `}` (v266). A `mukhya()` written without braces runs to the end of the file.
+- **Indent a body with tabs or with spaces, not both** (v275). Indentation is compared only when one line's
+  leading whitespace begins with the other's; a tab-indented body under a space-indented header is refused —
+  `Sutram Error [E_ANTARAL_MISHRA]` at that line — because before v275 a tab counted as one column, and such a body
+  silently ran its second line outside the `yadi` (`examples/276`).
 - `guna` needs `{ }`; its `bhavana` bodies may be indented.
 
 ### 6b. Is Sutram speakable Sanskrit?

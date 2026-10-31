@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v274) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v275) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -410,6 +410,10 @@ r54_builtin_arity_table:
     r78_msg_g db ") avashyakam", 10, 0
     r78_msg_neg db "] - rnatmakah ankah", 10, 0
     r78_s_lb db "[", 0
+    ; R77 (Muse R77): a body's indentation that mixes tabs and spaces cannot be compared
+    r77_msg_mix_a db "Sutram Error [E_ANTARAL_MISHRA]: pankti ", 0
+    r77_msg_mix_b db " - pankti-arambhe tab space cha mishritau: purva-panktya saha tulana na shakyate", 10
+    db "Sanket: ekasmin khande sarvatra tab athava sarvatra space - ekam eva upayujyatam", 10, 0
     r78_rb db "]", 0
     r78_minus db "-", 0
     r73_mark_names:                 ; R73: "0m01".."0m32", the hidden mark of each block depth
@@ -7367,6 +7371,10 @@ r70_indent_body:
     mov rdi, rbx
     call r70_line_indent
     mov r15, rax                   ; body indentation
+    mov rdi, r12                   ; R77: the header's and the body's indentation must be
+    mov rsi, rbx                   ; comparable - one a prefix of the other (Python's rule)
+    call r77_ws_check
+    mov r13, rbx                   ; R77: the body's first token, for every later line
     cmp r15, r14
     jbe .none                      ; not indented deeper: one statement
     mov rax, [rel parse_block_depth]
@@ -7395,6 +7403,11 @@ r70_indent_body:
     lea rdx, [rax - TOKEN_SIZE]
     cmp rcx, [rdx+24]
     je .stmt                       ; continues the previous token's line (e.g. after ';')
+    push rax
+    mov rdi, r13                   ; R77: this line's indentation against the body's
+    mov rsi, rax
+    call r77_ws_check
+    pop rax
     mov rdi, rax
     call r70_line_indent
     cmp rax, r15
@@ -7405,11 +7418,13 @@ r70_indent_body:
 .stmt:
     cmp r12, BLOCK_STMT_CAP
     jae .stmt_overflow
+    push r13                       ; R77: and the body's first token
     push r14                       ; the two indentations survive parse_stmt (nested blocks)
     push r15
     call parse_stmt
     pop r15
     pop r14
+    pop r13
     mov [rbx + 16 + r12*8], rax
     inc r12
     jmp .loop
@@ -8709,6 +8724,87 @@ r73_check_stmt:
 .escape_ret:
     lea rdi, [rel r72_msg_escape]
     jmp capacity_fail
+
+; r77_ws_check(rdi = token A, rsi = token B): R77 (Muse R77). The leading whitespace of A's line
+; and of B's line must be comparable: one a prefix of the other. Counting a tab as one column
+; made a tab-indented body under a space-indented header read as NOT deeper:
+;     yadi (1 == 2)          <- 4 spaces
+;     <tab>c = c + 1         <- the one-statement body
+;     <tab>c = c + 10        <- ran unconditionally: printed 10, not 0
+; Now that is E_ANTARAL_MISHRA at B's line. Preserves rbx, r12-r15.
+r77_ws_check:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov r14, rsi                   ; B, for the message
+    call r77_line_ws
+    mov r12, rax                   ; A's line start
+    mov r13, rcx                   ; A's whitespace length
+    mov rdi, r14
+    call r77_line_ws               ; rax = B's line start, rcx = length
+    cmp rcx, r13
+    cmova rcx, r13                 ; the shorter
+    xor edx, edx
+.cmp:
+    cmp rdx, rcx
+    jae .ok
+    mov bl, [r12 + rdx]
+    cmp bl, [rax + rdx]
+    jne .mixed
+    inc rdx
+    jmp .cmp
+.ok:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.mixed:
+    lea rdi, [rel r77_msg_mix_a]
+    call print_str_z
+    mov rdi, [r14+32]
+    call r51_origin_line_col
+    test rax, rax
+    jz .noloc
+    push rdx
+    call mg_print_uint
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    pop rax
+    call mg_print_uint
+.noloc:
+    lea rdi, [rel r77_msg_mix_b]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+
+; r77_line_ws(rdi = token) -> rax = the start of its source line, rcx = the number of spaces and
+; tabs that begin it. Clobbers rdx.
+r77_line_ws:
+    mov rdx, [rdi+32]
+    lea rcx, [rel source_buf]
+.back:
+    cmp rdx, rcx
+    jbe .fwd
+    cmp byte [rdx-1], 10
+    je .fwd
+    dec rdx
+    jmp .back
+.fwd:
+    mov rax, rdx
+    xor ecx, ecx
+.count:
+    movzx edx, byte [rax + rcx]
+    cmp dl, ' '
+    je .more
+    cmp dl, 9
+    jne .r
+.more:
+    inc rcx
+    jmp .count
+.r:
+    ret
 
 ; r70_line_indent(rdi = token) -> rax = the number of spaces/tabs that begin the
 ; token's source line. Clobbers rcx, rdx.

@@ -13,8 +13,14 @@ For every example with a golden (tests/expect/NAME.out), each mutation below is 
   no_eol        no newline at the end of the file
   extra_eol     three blank lines at the end of the file
   bom           a UTF-8 byte-order mark at the start (Windows Notepad writes one)
+  mixed_alt     every other indented line's 4-space steps written as tabs (Muse R77's mutation)
+  mixed_deep    lines two or more levels deep in tabs, one level deep in spaces - a body in tabs under a
+                header in spaces (before v274 this ran a body's second line unconditionally - silently)
 A program that compiles must still compile and give the golden's output and exit code; a refusal golden
-(NAME.compile_fail) must still be refused. Last line: `r77 format: N checks, M failed`.
+(NAME.compile_fail) must still be refused - except a refusal fixture that itself contains a tab (276, the
+mixed-indentation refusal), which is skipped: re-whitespacing it makes a different program. For the two MIXED mutations, a refusal with E_ANTARAL_MISHRA
+(tabs and spaces cannot be compared) is also right; any other error, or different output, is a failure.
+Last line: `r77 format: N checks, M failed`.
 """
 import os, re, subprocess, sys
 
@@ -41,11 +47,34 @@ def m_tabs(s):
         if l.strip() and (ind % 4 or l[ind:ind + 1] == '\t'):
             return None
     return '\n'.join(('\t' * ((len(l) - len(l.lstrip(' '))) // 4) + l.lstrip(' ')) if l.strip() else l for l in lines)
+def _steps(l):
+    ind = len(l) - len(l.lstrip(' '))
+    return ind, l[ind:]
+def m_mixed_alt(s):
+    out, k = [], 0
+    for l in s.split('\n'):
+        ind, rest = _steps(l)
+        if l.strip() and ind and ind % 4 == 0 and not l[ind:ind + 1] == '\t':
+            k += 1
+            if k % 2 == 0:
+                l = '\t' * (ind // 4) + rest
+        out.append(l)
+    return '\n'.join(out)
+def m_mixed_deep(s):
+    out = []
+    for l in s.split('\n'):
+        ind, rest = _steps(l)
+        if l.strip() and ind >= 8 and ind % 4 == 0:
+            l = '    ' + '\t' * (ind // 4 - 1) + rest
+        out.append(l)
+    return '\n'.join(out)
 def m_no_eol(s): return s.rstrip('\n')
 def m_extra_eol(s): return s.rstrip('\n') + '\n\n\n\n'
 def m_bom(s): return '﻿' + s
 MUTS = [('crlf', m_crlf), ('trailing', m_trailing), ('blank_ws', m_blank_ws), ('tabs', m_tabs),
-        ('no_eol', m_no_eol), ('extra_eol', m_extra_eol), ('bom', m_bom)]
+        ('no_eol', m_no_eol), ('extra_eol', m_extra_eol), ('bom', m_bom),
+        ('mixed_alt', m_mixed_alt), ('mixed_deep', m_mixed_deep)]
+MIXED = ('mixed_alt', 'mixed_deep')
 
 
 def main():
@@ -64,6 +93,8 @@ def main():
         want_out = open(out_p).read()
         want_code = open(os.path.join(RT.EXPECT, name + '.exit')).read().strip()
         src = open(os.path.join(RT.EXAMPLES, name + '.sm'), encoding='utf-8').read()
+        if refusal and '\t' in src:
+            continue                  # a refusal fixture ABOUT whitespace (276): re-whitespacing it changes the test
         for mname, f in MUTS:
             text = f(src)
             if text is None:
@@ -82,12 +113,17 @@ def main():
                     why = 'a refusal golden now compiles'
                 else:
                     if c.returncode != 0 or not os.path.exists(binp):
-                        ok, why = False, 'no longer compiles: ' + (c.stdout + c.stderr).strip().split('\n')[0][:90]
+                        msg = c.stdout + c.stderr
+                        ok = mname in MIXED and 'E_ANTARAL_MISHRA' in msg
+                        why = 'no longer compiles: ' + msg.strip().split('\n')[0][:90]
                     else:
-                        r = subprocess.run([binp], input=RT.STDIN.get(name, ''), capture_output=True, text=True,
-                                           timeout=RT.TIMEOUT, cwd=RT.CWD.get(name, ROOT))
-                        ok = r.stdout == want_out and str(r.returncode) == want_code
-                        why = f'output or exit differs (exit {r.returncode})'
+                        try:
+                            r = subprocess.run([binp], input=RT.STDIN.get(name, ''), capture_output=True, text=True,
+                                               timeout=RT.TIMEOUT, cwd=RT.CWD.get(name, ROOT))
+                            ok = r.stdout == want_out and str(r.returncode) == want_code
+                            why = f'output or exit differs (exit {r.returncode})'
+                        except subprocess.TimeoutExpired:
+                            ok, why = False, 'hangs'
                 if not ok:
                     failed += 1
                     fails.setdefault(mname, []).append(f'{name}: {why}')

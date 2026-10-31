@@ -17,3 +17,4 @@ tests/r51_check/nested_braces.sm
 tests/r56_check/after_main.sm
 tests/r69/pairs/all_registers.sm
 examples/259_r70_indent_ambiguous.sm
+examples/276_r77_mixed_indentation.sm

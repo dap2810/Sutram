@@ -1,0 +1,10 @@
+# R77 (Muse R77): tabs and spaces mixed in indentation. The header is indented with four spaces,
+# the body with tabs. A tab used to count as one column - less than four spaces - so the body was
+# read as one statement and the second line ran unconditionally: v274 printed 10, not 0.
+# v275 refuses it at the line: E_ANTARAL_MISHRA. (Indent with tabs everywhere or spaces everywhere.)
+mukhya()
+    vitti c = 0
+    yadi (1 == 2)
+	c = c + 1
+	c = c + 10
+    likha(c)
