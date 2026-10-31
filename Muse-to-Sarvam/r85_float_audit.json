@@ -1,0 +1,63 @@
+{
+ "dashret": [
+  "adhikatama",
+  "adish_gunan",
+  "bahu_ganana",
+  "bahu_mula",
+  "bindu_gunan",
+  "dvitiya_pravan",
+  "kalana_trapiz",
+  "karna_yog",
+  "laghutama",
+  "madhava_atan",
+  "madhava_cos",
+  "madhava_pi",
+  "madhava_sin",
+  "madhava_vargmool",
+  "madhya",
+  "manak",
+  "prasaran",
+  "pravan",
+  "rekha_manak",
+  "roop_sthir",
+  "roop_sthir_chinhit",
+  "sankhyiki_vargmool",
+  "saranik2",
+  "saranik3",
+  "simpson",
+  "varna_tak_dashm",
+  "vichalan",
+  "vyapti",
+  "yoga"
+ ],
+ "sites": [
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_sin",
+   "var": "k",
+   "form": "decl-init",
+   "why": "dasham-param/var",
+   "line_in_body": 4,
+   "returned": false
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_cos",
+   "var": "k",
+   "form": "decl-init",
+   "why": "dasham-param/var",
+   "line_in_body": 4,
+   "returned": false
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_sthir_mool",
+   "var": "rounded",
+   "form": "assign",
+   "why": "dasham-param/var",
+   "line_in_body": 62,
+   "returned": false
+  }
+ ],
+ "kosh_sites": []
+}
