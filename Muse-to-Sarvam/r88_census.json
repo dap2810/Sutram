@@ -1,0 +1,1623 @@
+{
+ "divisions": [
+  {
+   "file": "lib/aadhar.smlib",
+   "func": "brihat_ank_tak",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "w[k] = cur / b"
+  },
+  {
+   "file": "lib/aadhar.smlib",
+   "func": "brihat_ank_se",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "carry = cur / 10"
+  },
+  {
+   "file": "lib/ank.smlib",
+   "func": "ank_gan",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "x = x / 10"
+  },
+  {
+   "file": "lib/ank.smlib",
+   "func": "ank_yog",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "x = x / 10"
+  },
+  {
+   "file": "lib/ank.smlib",
+   "func": "viparyay_ank",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "x = x / 10"
+  },
+  {
+   "file": "lib/ank.smlib",
+   "func": "asti_sampurna",
+   "divisor": "d",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yavat (d <= x / d) {"
+  },
+  {
+   "file": "lib/ank.smlib",
+   "func": "asti_sampurna",
+   "divisor": "d",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (d != x / d) { s = s + (x / d) }"
+  },
+  {
+   "file": "lib/ank.smlib",
+   "func": "collatz_charan",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "yadi (x % 2 == 0) { x = x / 2 } anya {"
+  },
+  {
+   "file": "lib/anukram.smlib",
+   "func": "anukram_khip_i64",
+   "divisor": "256",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti q = val / 256"
+  },
+  {
+   "file": "lib/brihat.smlib",
+   "func": "brihat_ank_se_laghu",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "v = v / 10"
+  },
+  {
+   "file": "lib/brihat.smlib",
+   "func": "brihat_yuj",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "carry = s / 10"
+  },
+  {
+   "file": "lib/brihat.smlib",
+   "func": "brihat_gun",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "carry = p / 10"
+  },
+  {
+   "file": "lib/brihat.smlib",
+   "func": "brihat_ghatmod",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "e = e / 2"
+  },
+  {
+   "file": "lib/chandas.smlib",
+   "func": "meru",
+   "divisor": "g",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti x = res / g"
+  },
+  {
+   "file": "lib/chandas.smlib",
+   "func": "meru",
+   "divisor": "(i / g)",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti y = m / (i / g)"
+  },
+  {
+   "file": "lib/chandas.smlib",
+   "func": "meru",
+   "divisor": "g",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti y = m / (i / g)"
+  },
+  {
+   "file": "lib/chandas.smlib",
+   "func": "meru",
+   "divisor": "y",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (x > 9223372036854775807 / y) { nivartanam 0 - 1 }"
+  },
+  {
+   "file": "lib/chandas.smlib",
+   "func": "asti_guru",
+   "divisor": "d",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam (p / d) % 2"
+  },
+  {
+   "file": "lib/chandas.smlib",
+   "func": "guru_gan",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "p = p / 2"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "laghuttam_samapavartya",
+   "divisor": "g",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti q = a / g"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "laghuttam_samapavartya",
+   "divisor": "c",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (q > 9223372036854775807 / c) { nivartanam 0 - 1 }"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "ghat",
+   "divisor": "ab",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (ab != 0 && m > 9223372036854775807 / ab) {"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "kramgun",
+   "divisor": "i",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (r > 9223372036854775807 / i) { nivartanam 0 - 1 }"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "asti_abhajya",
+   "divisor": "i",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yavat (i <= x / i) {"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "yog_tak",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "yadi (x % 2 == 0) { nivartanam (x / 2) * (x + 1) }"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "yog_tak",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam x * (x / 2 + 1)"
+  },
+  {
+   "file": "lib/ganit.smlib",
+   "func": "bit_gan",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "x = x / 2"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "kuttaka",
+   "divisor": "r",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti q = old_r / r"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "kuttaka",
+   "divisor": "old_r",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti mult = c / old_r"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "kuttaka_gun_shesh",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "e = e / 2"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "ganita_vargmool",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti hi = x / 2 + 1"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "ganita_vargmool",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti mid = lo + (hi - lo) / 2"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "ganita_vargmool",
+   "divisor": "mid",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (mid <= x / mid) {"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "chakravala",
+   "divisor": "ak",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti t = d / ak"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "chakravala",
+   "divisor": "a",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (a != 0 && mm > 9223372036854775807 / a) { nivartanam 0 }"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "chakravala",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (b != 0 && n > 9223372036854775807 / b) { nivartanam 0 }"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "chakravala",
+   "divisor": "ak",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti na = (amm + nbp) / ak"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "chakravala",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (b != 0 && mm > 9223372036854775807 / b) { nivartanam 0 }"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "chakravala",
+   "divisor": "ak",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti nb = (a + bmm) / ak"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "chakravala",
+   "divisor": "k",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti nk = bn / k"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "brahmagupta_kshetr",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti s = (a + b + c + d) / 2"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "ganita_janchit_gun",
+   "divisor": "x",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (m / x != y) {"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "ganita_janchit_bhaj",
+   "divisor": "y",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam x / y"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "ganita_paripurna_gun",
+   "divisor": "x",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (m / x != y) {"
+  },
+  {
+   "file": "lib/ganita.smlib",
+   "func": "ganita_paripurna_bhaj",
+   "divisor": "y",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam x / y"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "kalana_trapiz",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "total = total + h * (ys[i] + ys[i + 1]) / 2.0"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "simpson",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "yadi ((n - 1) - ((n - 1) / 2) * 2 == 1) { n = n - 1 }"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "simpson",
+   "divisor": "(n - 1)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "dasham h = (xs[n - 1] - xs[0]) / (n - 1)"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "simpson",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "yadi (i - (i / 2) * 2 == 1) {"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "simpson",
+   "divisor": "3.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam total * h / 3.0"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "pravan",
+   "divisor": "dx",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam (ys[hi] - ys[lo]) / dx"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "dvitiya_pravan",
+   "divisor": "hl",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "dasham dl = (ys[i] - ys[i - 1]) / hl"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "dvitiya_pravan",
+   "divisor": "hr",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "dasham dr = (ys[i + 1] - ys[i]) / hr"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "dvitiya_pravan",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "dasham hm = (hl + hr) / 2.0"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "dvitiya_pravan",
+   "divisor": "hm",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam (dr - dl) / hm"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "dvitiya_pravan",
+   "divisor": "(via dr)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "nan_potential": true,
+   "line": "arith dr with dl"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "dvitiya_pravan",
+   "divisor": "(via dl)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "nan_potential": true,
+   "line": "arith dl with dr"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "bahu_mula",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "dasham m = (a + b) / 2.0"
+  },
+  {
+   "file": "lib/kalana.smlib",
+   "func": "bahu_mula",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam (a + b) / 2.0"
+  },
+  {
+   "file": "lib/khand.smlib",
+   "func": "khand_viparyay",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "akshar_rakh(dst, n / 2, akshar(s, n / 2))"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_vargmool",
+   "divisor": "g",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "g = (g + v / g) / 2.0"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_vargmool",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "g = (g + v / g) / 2.0"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_vargmool",
+   "divisor": "(via g)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "compared_op": "<",
+   "line": "compare g"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_sin",
+   "divisor": "pi2",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti k = x / pi2"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_cos",
+   "divisor": "pi2",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti k = x / pi2"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_atan",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "dasham r = madhava_pi() / 2.0 - madhava_atan(1.0 / ax)"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_atan",
+   "divisor": "ax",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "dasham r = madhava_pi() / 2.0 - madhava_atan(1.0 / ax)"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_atan",
+   "divisor": "(2.0 * k + 1.0)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "dasham term = yp / (2.0 * k + 1.0)"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_ank",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "val = val / 10"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_ank_aadhar",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti hi = 0 - (val / b)"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_ank_aadhar",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "val = val / b"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_ank_dhvaj",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "yadi ((fl / 2) % 2 == 1) { up = 1 }"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_pad_madhya",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "left = npad / 2"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_sthir_mool",
+   "divisor": "p10i",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "intpart = rounded / p10i"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_sthir_mool",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "fracpart = fracpart / 10"
+  },
+  {
+   "file": "lib/sadhan.smlib",
+   "func": "antarveshan",
+   "divisor": "100",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam a + (b - a) * t / 100"
+  },
+  {
+   "file": "lib/sadhan.smlib",
+   "func": "yog_seema",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "yadi (x % 2 == 0) { x = x / 2 } anya { y = y / 2 }"
+  },
+  {
+   "file": "lib/sadhan.smlib",
+   "func": "yog_seema",
+   "divisor": "y",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (ax > maxv / y) {"
+  },
+  {
+   "file": "lib/sadhan.smlib",
+   "func": "shesh",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam a - (a / b) * b"
+  },
+  {
+   "file": "lib/sadhan.smlib",
+   "func": "bhaj_urdhva",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti q = a / b"
+  },
+  {
+   "file": "lib/samanvaya.smlib",
+   "func": "samanvaya_akar_ayogya",
+   "divisor": "n",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (m > len / n) { nivartanam 1 }"
+  },
+  {
+   "file": "lib/sankhyiki.smlib",
+   "func": "madhya",
+   "divisor": "n",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam yoga(xs) / n"
+  },
+  {
+   "file": "lib/sankhyiki.smlib",
+   "func": "prasaran",
+   "divisor": "n",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam acc / n"
+  },
+  {
+   "file": "lib/sankhyiki.smlib",
+   "func": "sankhyiki_vargmool",
+   "divisor": "g",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "g = (g + v / g) / 2.0"
+  },
+  {
+   "file": "lib/sankhyiki.smlib",
+   "func": "sankhyiki_vargmool",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "g = (g + v / g) / 2.0"
+  },
+  {
+   "file": "lib/sankhyiki.smlib",
+   "func": "purna_madhya",
+   "divisor": "n",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam purna_yoga(xs, n) / n"
+  },
+  {
+   "file": "lib/sankhyiki.smlib",
+   "func": "purna_prasaran",
+   "divisor": "n",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (q > 9223372036854775807 - dd / n) { nivartanam 0 - 1 }"
+  },
+  {
+   "file": "lib/sankhyiki.smlib",
+   "func": "purna_prasaran",
+   "divisor": "n",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "q = q + dd / n"
+  },
+  {
+   "file": "lib/shreni.smlib",
+   "func": "dwi_anwesh",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti mid = (lo + hi) / 2"
+  },
+  {
+   "file": "lib/shreni.smlib",
+   "func": "shankh_shreni",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti gap = n / 2"
+  },
+  {
+   "file": "lib/shreni.smlib",
+   "func": "shankh_shreni",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "gap = gap / 2"
+  },
+  {
+   "file": "lib/shreni.smlib",
+   "func": "mil_shreni_punar",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti mid = (lo + hi) / 2"
+  },
+  {
+   "file": "lib/vakyank.smlib",
+   "func": "ank_tak_varna",
+   "divisor": "10",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "val = val / 10"
+  },
+  {
+   "file": "lib/vakyank.smlib",
+   "func": "ank_tak_aadhar_varna",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "val = val / b"
+  },
+  {
+   "file": "lib/vakyank.smlib",
+   "func": "varna_tak_ank_aadhar",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (val > 9223372036854775807 / b) {"
+  },
+  {
+   "file": "lib/vakyank.smlib",
+   "func": "varna_tak_ank_aadhar",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (val == 9223372036854775807 / b) {"
+  },
+  {
+   "file": "lib/vakyank.smlib",
+   "func": "varna_tak_dashm",
+   "divisor": "10.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "val = val / 10.0"
+  },
+  {
+   "file": "lib/vakyank.smlib",
+   "func": "varna_tak_dashm",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "yadi (val / 2.0 == val) {"
+  },
+  {
+   "file": "lib/varna.smlib",
+   "func": "varna_viparyay",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "dst[n / 2] = s[n / 2]"
+  },
+  {
+   "file": "examples/118_t18_kosh_param.sm",
+   "func": "madhya",
+   "divisor": "kosh_len(a)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam sarva_yog / kosh_len(a)"
+  },
+  {
+   "file": "examples/127_perf_float_self_register.sm",
+   "func": "<top>",
+   "divisor": "b",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "a = a / b"
+  },
+  {
+   "file": "examples/127_perf_float_self_register.sm",
+   "func": "<top>",
+   "divisor": "(via a)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha a"
+  },
+  {
+   "file": "examples/129_perf_float_destination.sm",
+   "func": "<top>",
+   "divisor": "b",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "c = a / b"
+  },
+  {
+   "file": "examples/129_perf_float_destination.sm",
+   "func": "<top>",
+   "divisor": "(via c)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha c"
+  },
+  {
+   "file": "examples/130_perf_float_destination_alias.sm",
+   "func": "<top>",
+   "divisor": "b",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "b = a / b"
+  },
+  {
+   "file": "examples/130_perf_float_destination_alias.sm",
+   "func": "<top>",
+   "divisor": "e",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "f = (a + c) / e"
+  },
+  {
+   "file": "examples/130_perf_float_destination_alias.sm",
+   "func": "<top>",
+   "divisor": "(via f)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha f"
+  },
+  {
+   "file": "examples/130_perf_float_destination_alias.sm",
+   "func": "<top>",
+   "divisor": "(via b)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha b"
+  },
+  {
+   "file": "examples/133_perf_float_scalar_call_rhs.sm",
+   "func": "ardh",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam x / 2.0"
+  },
+  {
+   "file": "examples/133_perf_float_scalar_call_rhs.sm",
+   "func": "<mukhya>",
+   "divisor": "ardh(x)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "s = s / ardh(x)"
+  },
+  {
+   "file": "examples/133_perf_float_scalar_call_rhs.sm",
+   "func": "<mukhya>",
+   "divisor": "(via s)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "compared_op": ">",
+   "line": "compare s"
+  },
+  {
+   "file": "examples/133_perf_float_scalar_call_rhs.sm",
+   "func": "<mukhya>",
+   "divisor": "(via s)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha s"
+  },
+  {
+   "file": "examples/134_perf_float_complex_fallback.sm",
+   "func": "<mukhya>",
+   "divisor": "dasham_nirm(0.5)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "sarva_yog = sarva_yog / dasham_nirm(0.5)"
+  },
+  {
+   "file": "examples/134_perf_float_complex_fallback.sm",
+   "func": "<mukhya>",
+   "divisor": "(via sarva_yog)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha sarva_yog"
+  },
+  {
+   "file": "examples/135_r30_float_index_scalar.sm",
+   "func": "<mukhya>",
+   "divisor": "weight",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "phal = ank_suchi[1] / weight"
+  },
+  {
+   "file": "examples/135_r30_float_index_scalar.sm",
+   "func": "<mukhya>",
+   "divisor": "(via phal)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha phal"
+  },
+  {
+   "file": "examples/136_r30_float_complex_left.sm",
+   "func": "<mukhya>",
+   "divisor": "gun_maap",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nirgat = yog_ardh(datt[1]) / gun_maap"
+  },
+  {
+   "file": "examples/136_r30_float_complex_left.sm",
+   "func": "<mukhya>",
+   "divisor": "(via nirgat)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha nirgat"
+  },
+  {
+   "file": "examples/137_r30_float_literal_rhs.sm",
+   "func": "<mukhya>",
+   "divisor": "2",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nirgat = dwi_gun(mulya[0]) / 2"
+  },
+  {
+   "file": "examples/139_r30_float_mixed_fallback.sm",
+   "func": "<top>",
+   "divisor": "q",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nirgat = (x + y * z) / q"
+  },
+  {
+   "file": "examples/139_r30_float_mixed_fallback.sm",
+   "func": "<top>",
+   "divisor": "(via nirgat)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha nirgat"
+  },
+  {
+   "file": "examples/141_xmm_cache_basic.sm",
+   "func": "<top>",
+   "divisor": "b",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "d = c / b"
+  },
+  {
+   "file": "examples/141_xmm_cache_basic.sm",
+   "func": "<top>",
+   "divisor": "(via d)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha d"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "b",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "b = a / b"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "a",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "a = a / a"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "c",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "c = b / c"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "(via c)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha c"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "(via a)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha a"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "(via b)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha b"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "(via c)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "nan_potential": true,
+   "line": "arith c with b"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "(via a)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "nan_potential": true,
+   "line": "arith a with a"
+  },
+  {
+   "file": "examples/142_xmm_cache_alias.sm",
+   "func": "<top>",
+   "divisor": "(via b)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "nan_potential": true,
+   "line": "arith b with c"
+  },
+  {
+   "file": "examples/145_xmm_cache_nested_calls.sm",
+   "func": "<mukhya>",
+   "divisor": "d",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "d = a / d"
+  },
+  {
+   "file": "examples/145_xmm_cache_nested_calls.sm",
+   "func": "<mukhya>",
+   "divisor": "(via d)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha d"
+  },
+  {
+   "file": "examples/147_stage2_recursive_float_boundary.sm",
+   "func": "<mukhya>",
+   "divisor": "a",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "d = b / a"
+  },
+  {
+   "file": "examples/147_stage2_recursive_float_boundary.sm",
+   "func": "<mukhya>",
+   "divisor": "(via d)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha d"
+  },
+  {
+   "file": "examples/159_namespaced_path_traversal.sm",
+   "func": "<top>",
+   "divisor": "r33_alpha",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yoj ../r33_alpha@escape"
+  },
+  {
+   "file": "examples/200_madhava_series.sm",
+   "func": "<top>",
+   "divisor": "root12",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "root12 = (root12 + 12.0 / root12) / 2.0"
+  },
+  {
+   "file": "examples/200_madhava_series.sm",
+   "func": "<top>",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "root12 = (root12 + 12.0 / root12) / 2.0"
+  },
+  {
+   "file": "examples/200_madhava_series.sm",
+   "func": "<top>",
+   "divisor": "(via root12)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha root12"
+  },
+  {
+   "file": "examples/205_madhava_pi_kosh.sm",
+   "func": "<top>",
+   "divisor": "denom",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "kosh_push(pada_kosh, chinha / denom)"
+  },
+  {
+   "file": "examples/208_kalana.sm",
+   "func": "<top>",
+   "divisor": "10.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "x = x / 10.0"
+  },
+  {
+   "file": "examples/216_r12_expr.sm",
+   "func": "parse_term",
+   "divisor": "rhs",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "yadi (op == 42) { v = v * rhs } anya { v = v / rhs }"
+  },
+  {
+   "file": "examples/217_r12_report.sm",
+   "func": "<top>",
+   "divisor": "n",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti mean = sankalan / n"
+  },
+  {
+   "file": "examples/248_r23_slices.sm",
+   "func": "yog_vibhajya",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam yog_vibhajya(s[:n / 2]) + yog_vibhajya(s[n / 2:])"
+  },
+  {
+   "file": "examples/249_r25_phal.sm",
+   "func": "bhaj",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "nivartanam siddhi(a / b)"
+  },
+  {
+   "file": "examples/26_calculator.sm",
+   "func": "<top>",
+   "divisor": "b",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "likha(a / b)"
+  },
+  {
+   "file": "examples/277_r80_divide_by_zero.sm",
+   "func": "<top>",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "likha(phal / 2)"
+  },
+  {
+   "file": "examples/277_r80_divide_by_zero.sm",
+   "func": "<top>",
+   "divisor": "bhag",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "likha(phal / bhag)"
+  },
+  {
+   "file": "examples/280_r80_runtime_wraps.sm",
+   "func": "<top>",
+   "divisor": "d",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "likha(m / d)"
+  },
+  {
+   "file": "examples/289_r87_float_print.sm",
+   "func": "<top>",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "likha(\"\", (a + b) / 2.0)"
+  },
+  {
+   "file": "examples/289_r87_float_print.sm",
+   "func": "<top>",
+   "divisor": "4.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "likha(\"\", 0.0 - f / 4.0)"
+  },
+  {
+   "file": "examples/289_r87_float_print.sm",
+   "func": "<top>",
+   "divisor": "z",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "dasham inf = 1.0 / z"
+  },
+  {
+   "file": "examples/289_r87_float_print.sm",
+   "func": "<top>",
+   "divisor": "z",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "likha(\"\", z / z)"
+  },
+  {
+   "file": "examples/289_r87_float_print.sm",
+   "func": "<top>",
+   "divisor": "(via inf)",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "printed": true,
+   "line": "likha inf"
+  },
+  {
+   "file": "examples/32_bank_interest.sm",
+   "func": "<top>",
+   "divisor": "100",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti interest = principal * rate / 100"
+  },
+  {
+   "file": "examples/33_unit_conversion.sm",
+   "func": "<top>",
+   "divisor": "100",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti miles = km * 62 / 100"
+  },
+  {
+   "file": "examples/33_unit_conversion.sm",
+   "func": "<top>",
+   "divisor": "100",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti pounds = kg * 220 / 100"
+  },
+  {
+   "file": "examples/33_unit_conversion.sm",
+   "func": "<top>",
+   "divisor": "5",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti f = c * 9 / 5 + 32"
+  },
+  {
+   "file": "examples/35_comments.sm",
+   "func": "<top>",
+   "divisor": "This",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "mukhya()  // This is a slash comment (like C)"
+  },
+  {
+   "file": "examples/35_comments.sm",
+   "func": "<top>",
+   "divisor": "Use",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "// Use comments tak explain your program"
+  },
+  {
+   "file": "examples/35_comments.sm",
+   "func": "<top>",
+   "divisor": "y",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti y = x * 2   // y = 20"
+  },
+  {
+   "file": "examples/40_functions_params.sm",
+   "func": "madhya",
+   "divisor": "3",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam (a + b + c) / 3"
+  },
+  {
+   "file": "examples/42_block_comments.sm",
+   "func": "<top>",
+   "divisor": "mukhya()",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "*/"
+  },
+  {
+   "file": "examples/42_block_comments.sm",
+   "func": "<top>",
+   "divisor": "likha(42)",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "/* inline */ likha(42)"
+  },
+  {
+   "file": "examples/82_b7_stack_spill.sm",
+   "func": "dwi_anwesh",
+   "divisor": "2",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti mid = (lo + hi) / 2"
+  },
+  {
+   "file": "examples/93_t12_float_functions.sm",
+   "func": "blend",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam (a + b) / 2.0"
+  },
+  {
+   "file": "examples/94_t12_float_functions.sm",
+   "func": "blend",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "nivartanam (a + b) / 2.0"
+  },
+  {
+   "file": "examples/95_t12_madhava_functions.sm",
+   "func": "madhava_pi",
+   "divisor": "root12",
+   "dasham": true,
+   "literal": false,
+   "zero_literal": false,
+   "line": "root12 = (root12 + 12.0 / root12) / 2.0"
+  },
+  {
+   "file": "examples/95_t12_madhava_functions.sm",
+   "func": "madhava_pi",
+   "divisor": "2.0",
+   "dasham": true,
+   "literal": true,
+   "zero_literal": false,
+   "line": "root12 = (root12 + 12.0 / root12) / 2.0"
+  },
+  {
+   "file": "examples/fizzbuzz.sm",
+   "func": "<top>",
+   "divisor": "3",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti mod3 = i - i / 3 * 3"
+  },
+  {
+   "file": "examples/fizzbuzz.sm",
+   "func": "<top>",
+   "divisor": "5",
+   "dasham": false,
+   "literal": true,
+   "zero_literal": false,
+   "line": "vitti mod5 = i - i / 5 * 5"
+  },
+  {
+   "file": "examples/prime.sm",
+   "func": "<top>",
+   "divisor": "d",
+   "dasham": false,
+   "literal": false,
+   "zero_literal": false,
+   "line": "vitti rem = n - n / d * d"
+  }
+ ],
+ "floats": [
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_sin",
+   "var": "k",
+   "value": "x / pi2",
+   "why": "dasham-var"
+  },
+  {
+   "file": "lib/madhava.smlib",
+   "func": "madhava_cos",
+   "var": "k",
+   "value": "x / pi2",
+   "why": "dasham-var"
+  },
+  {
+   "file": "lib/roop.smlib",
+   "func": "roop_sthir_mool",
+   "var": "rounded",
+   "value": "scaled",
+   "why": "dasham-var",
+   "form": "assign"
+  },
+  {
+   "file": "examples/93_t12_float_functions.sm",
+   "func": "<mukhya>",
+   "var": "whole",
+   "value": "blend(1.0, 4.0)",
+   "why": "dasham-literal"
+  },
+  {
+   "file": "examples/94_t12_float_functions.sm",
+   "func": "<mukhya>",
+   "var": "whole",
+   "value": "blend(1.0, 4.0)",
+   "why": "dasham-literal"
+  }
+ ]
+}
