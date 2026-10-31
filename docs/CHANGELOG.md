@@ -1,3 +1,36 @@
+## v435 - the float blocker is closed, and it was my test that was wrong
+
+### The answer: `dasham` is the float declaration, `vitti` is integer
+
+**All three partners found it independently.** ChatGPT: *"Sutram supports float variables: declare them with `dasham`, not `vitti`."* Muse: *"`vitti` is integer storage; `dasham` is float storage."*
+
+**I wrote `vitti f = 3.5` and concluded floats were broken. The language has a float declaration and I did not use it.** That is the seventh false claim of this session and the same shape as the other six: I tested what I assumed the syntax was.
+
+### Verified by me on v279
+
+| Test | Result |
+|---|---|
+| `dasham f = 3.5` | `3.500000` |
+| `vitti f = 3.5` | **REFUSED - `E_DASHAM_VITTI`: dashamah sankhya purnanka-vittau na ...** |
+| `dasham a = 1.5; dasham b = 2.0; likha(a + b * 0.5)` | `2.500000` |
+
+**And Claude's v279 fix is the right one: not "make `vitti` hold floats", but "stop `vitti f = 3.5` from lying".** A written fraction in integer storage is now refused with a named error instead of being silently truncated.
+
+**Suite 258, two new goldens (289, 290). 80 DIFFER programs, every one run: 79 print the same bytes with the same exit code.**
+
+### And the two symptoms were never one bug
+**ChatGPT: *"The earlier negative result used the much larger literal `10000000000000.0`... The two observations exercise different operations and are not evidence of one platform-specific bug."***
+
+**So its negative came from a large float, mine from the wrong keyword. Neither was a platform difference.** I asked it to settle a discrepancy that did not exist.
+
+### The library is fine
+**34 of 260 example files declare `dasham`.** So the library does use floats properly, and Muse's earlier Madhava verification at six decimals stands.
+
+### What this leaves
+**Integers: done. Floats: done, with a refusal where a fraction would be lost. Memory: done and measured. The boundary: done. Arithmetic: division by zero and literal overflow refused.**
+
+**Still open: the `kosh` alias (latent, documented), generics (deferred by design), threads (absent), Windows execution (the maintainer's), and the docs reorganisation.**
+
 ## v434 - a float in a variable loses its fraction, and that is the release blocker
 
 ### What I measured on v278
