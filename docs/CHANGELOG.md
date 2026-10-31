@@ -91,6 +91,23 @@
 
 **Sutram has no overflow story and no divide-by-zero story.** **For a language aimed at school students, a silent negative square is worse than an error: the student concludes they do not understand arithmetic.**
 
+## Compiler v278 (Claude, R82) - a `kosh` made in a `mandapa` lives as long as the block
+
+- **A `kosh` declared inside a `mandapa` is generation-checked** (ChatGPT R148's handle idea, smallest form): the
+  block takes a fresh generation on entry (a stack slot, `rdtsc`), clears it on every exit (its end,
+  `nivartanam`, `krama`/`agrim`); the `kosh` records it; a `prakriya` with a `kosh` parameter checks it on entry.
+  After the block: `E_KOSH_MANDAPA`, naming the block's line, exit 1. Inside: unchanged - growth, recursion,
+  `kosh dasham`. Examples 286 (accepted, computed value), 287 (read after the block - refused).
+- **Only in a program that declares a `kosh` in a block. Every other program: the same bytes** (guard, 665
+  programs, 0 DIFFER; the 8 benchmarks identical). In such a program: 3 more header words per `kosh`; one entry
+  check per `kosh` parameter - +11% on a call whose body is one `kosh` read, +3.5% on `kosh_push`.
+- Gate **`R82 kosh-mandapa`**: 9 cases; with the check off, all 5 refusals fail.
+- **Not yet:** the block does not take the `kosh`'s memory back (kept, so that the header - and the check - stays
+  exact); raw reads of its address are unchecked, as all raw memory.
+- **The `parikshita` count:** `kosh` is still refused in a checked function (unchanged rule). An experimental
+  checker that admits it - sound now, since a `kosh` is bounds- and lifetime-checked - passes **88** of 306
+  library functions (63 today): all of `kalana` and `samanvaya`, 9 of `sankhyiki`. Not shipped; your decision.
+
 ## Compiler v277 (Claude, R81) - `parikshita`: the checked function, transitive
 
 - **`parikshita prakriya` / `parikshita mukhya`** (ChatGPT R149's design): the compiler verifies the whole body

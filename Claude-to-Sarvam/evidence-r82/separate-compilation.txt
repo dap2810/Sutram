@@ -1,0 +1,30 @@
+R82: a stale kosh passed to a module's prakriya and to the program's own, whole-program and --separate.
+--- lib/r82m.smlib
+  | prakriya r82m_padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+--- m.sm
+  | yoj r82m
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     vitti bahar = 0
+  |     mandapa {
+  |         kosh k[4]
+  |         kosh_push(k, 11)
+  |         likha(r82m_padh(k, 0))
+  |         bahar = k
+  |     }
+  |     likha(r82m_padh(bahar, 0))
+  |     likha(padh(bahar, 0))
+  | }
+ whole program (every prakriya checked):
+    11
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'r82m_padh' - kosh 'k' pankti 7 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+ separate (the module, compiled on its own, has no kosh in a block, so it does not check):
+    11
+    11
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 7 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam

@@ -1,0 +1,17 @@
+R82 on PE (the Linux compiler writing .exe), run under Wine - not real Windows:
+--- 286_r82_kosh_in_mandapa
+    385
+    338350
+    (exit 0)
+--- 287_r82_kosh_after_mandapa
+    22
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 10 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+    (exit 1)
+--- l5 (cases.txt)
+    130
+--- l7 (cases.txt)
+    0
+    10
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 13 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam

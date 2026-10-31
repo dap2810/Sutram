@@ -852,6 +852,33 @@ Not a way to manage memory that a `kosh` grows into, and not a way to reclaim wh
 the block covers the `nirmmita` written inside it, in its own text. For when the block helps and when it does
 not, see `docs/MEMORY-DECISION.md`.
 
+### A `kosh` made inside the block (v278)
+
+**A `kosh` declared inside a `mandapa` lives as long as the block.** Inside it, use it as any `kosh` — push,
+grow, index, pass it to a `prakriya` — and give back a value (`examples/286`). After the block, it is gone: a
+`prakriya` that receives it then stops the program with
+
+```
+Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 10 mandape rachitah; sa mandapah samaptah
+Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+```
+
+*(the kosh made in the block on line 10 — that block has ended; use it inside the block and return the value)*,
+exit 1 (`examples/287`). That holds however the block ended — at its end, by `nivartanam`, or by `krama` /
+`agrim` out of a loop — and for an inner block ended inside a running outer one; the same block entered again
+(the next turn of a loop) makes a new `kosh`, and the old one stays dead.
+
+How: each such block takes a fresh generation on entry and clears it on exit; each `kosh` it makes records it;
+a `prakriya` with a `kosh` parameter compares them on entry. **A `kosh` made outside every block is unchanged**,
+and a program with no `kosh` in a block compiles to the same bytes as before. In a program with one, every
+`kosh` carries three more header words and each call with a `kosh` parameter one check (+11% on a call whose
+whole body is one `kosh` read; +3.5% on `kosh_push`).
+
+**Not yet:** the block does not take the `kosh`'s memory back — it is kept, so that the check is exact. Reading
+the `kosh`'s address as raw memory (`x[i]` on a plain `vitti`) is not checked — as all raw memory (§6c). Under
+`--separate`, a module compiled on its own checks its `kosh` parameters only if it has a `kosh` in a block itself:
+the whole-program compile checks every `prakriya`.
+
 ## 20. `parikshita` — a checked function (v277)
 
 **Write `parikshita` before `prakriya` or `mukhya` and the compiler verifies the whole function: if it cannot

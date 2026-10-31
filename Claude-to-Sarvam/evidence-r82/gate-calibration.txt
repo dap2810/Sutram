@@ -1,0 +1,12 @@
+R82: the gate can fail. tests/r82_kosh_mandapa/test_kosh_mandapa.py against a v278 build whose entry check is switched off
+(r82_param_checks returns at once):
+
+FAIL  read after its block ended: refused, naming its block: exit 0, printed '22\n11\n'
+FAIL  left by krama out of a loop, read after: refused: exit 0, printed '0\n'
+FAIL  an inner block ended, the outer still running: refused: exit 0, printed '4\n4\n'
+FAIL  the same block in the next loop iteration (same slot, new generation): refused: exit 0, printed '0\n10\n0\n20\n10\n'
+FAIL  a sibling block (another slot): refused: exit 0, printed '8\n9\n'
+r82 kosh-mandapa: 9 checks, 5 failed
+
+With the check off, every stale read succeeds and prints the old values: the kosh's storage is on the persistent side, so
+the memory is still there - the check is what makes the block's end the kosh's end.

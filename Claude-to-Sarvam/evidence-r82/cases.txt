@@ -1,0 +1,273 @@
+R82 cases on Sutram 1.0 (v278) - sampurna sutra, Linux ELF: the program, the compile, the run.
+
+=== k1.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | prakriya yog_karo(n) {
+  |     vitti s = 0
+  |     mandapa {
+  |         kosh k[2]
+  |         vitti i = 1
+  |         yavat (i <= n) {
+  |             kosh_push(k, i * i)
+  |             i = i + 1
+  |         }
+  |         s = padh(k, 0) + padh(k, n - 1) + kosh_len(k)
+  |     }
+  |     nivartanam s
+  | }
+  | mukhya() {
+  |     likha(yog_karo(10))
+  | }
+  run:
+    111
+  (exit 0)
+
+=== k2.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     vitti bahar = 0
+  |     mandapa {
+  |         kosh k[4]
+  |         kosh_push(k, 11)
+  |         kosh_push(k, 22)
+  |         likha(padh(k, 1))
+  |         bahar = k
+  |     }
+  |     likha(padh(bahar, 0))
+  | }
+  run:
+    22
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 6 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+  (exit 1)
+
+=== k4.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     kosh bahar[2]
+  |     kosh_push(bahar, 7)
+  |     vitti s = 0
+  |     mandapa {
+  |         kosh k[2]
+  |         kosh_push(k, 1)
+  |         s = padh(k, 0) + padh(bahar, 0)
+  |     }
+  |     likha(s + padh(bahar, 0))
+  | }
+  run:
+    15
+  (exit 0)
+
+=== l2.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     vitti bahar = 0
+  |     vitti i = 0
+  |     yavat (i < 3) {
+  |         mandapa {
+  |             kosh k[2]
+  |             kosh_push(k, i)
+  |             bahar = k
+  |             krama
+  |         }
+  |     }
+  |     likha(padh(bahar, 0))
+  | }
+  run:
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 8 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+  (exit 1)
+
+=== l3.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     mandapa {
+  |         vitti bahar = 0
+  |         mandapa {
+  |             kosh k[2]
+  |             kosh_push(k, 4)
+  |             bahar = k
+  |             likha(padh(bahar, 0))
+  |         }
+  |         likha(padh(bahar, 0))
+  |     }
+  | }
+  run:
+    4
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 7 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+  (exit 1)
+
+=== l5.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | prakriya gahra(kosh k, d) {
+  |     yadi (d == 0) { nivartanam padh(k, 0) }
+  |     vitti s = 0
+  |     mandapa {
+  |         kosh m[2]
+  |         kosh_push(m, d)
+  |         s = gahra(k, d - 1) + padh(m, 0) + gahra(m, 0)
+  |     }
+  |     nivartanam s
+  | }
+  | mukhya() {
+  |     vitti s = 0
+  |     mandapa {
+  |         kosh k[2]
+  |         kosh_push(k, 100)
+  |         s = gahra(k, 5)
+  |     }
+  |     likha(s)
+  | }
+  run:
+    130
+  (exit 0)
+
+=== l6.sm
+  | prakriya padh(kosh dasham k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     dasham s = 0.0
+  |     mandapa {
+  |         kosh dasham k[1]
+  |         kosh_push(k, 1.5)
+  |         kosh_push(k, 2.25)
+  |         s = padh(k, 0) + padh(k, 1)
+  |     }
+  |     likha(s)
+  | }
+  run:
+    3.750000
+  (exit 0)
+
+=== l7.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     vitti pichhla = 0
+  |     mandapa {
+  |         kosh z[1]
+  |         kosh_push(z, 9)
+  |         pichhla = z
+  |     }
+  |     vitti i = 0
+  |     yavat (i < 3) {
+  |         mandapa {
+  |             kosh k[2]
+  |             kosh_push(k, i * 10)
+  |             likha(padh(k, 0))
+  |             yadi (i > 0) {
+  |                 likha(padh(pichhla, 0))
+  |             }
+  |             pichhla = k
+  |         }
+  |         i = i + 1
+  |     }
+  | }
+  run:
+    0
+    10
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 13 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+  (exit 1)
+
+=== l8.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     vitti pichhla = 0
+  |     mandapa {
+  |         kosh z[1]
+  |         kosh_push(z, 9)
+  |         pichhla = z
+  |     }
+  |     mandapa {
+  |         kosh y[1]
+  |         kosh_push(y, 8)
+  |         likha(padh(y, 0))
+  |         likha(padh(pichhla, 0))
+  |     }
+  | }
+  run:
+    8
+    Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 6 mandape rachitah; sa mandapah samaptah
+    Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+  (exit 1)
+
+=== k3.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | prakriya bana() {
+  |     vitti x = 0
+  |     mandapa {
+  |         kosh k[4]
+  |         kosh_push(k, 5)
+  |         x = k
+  |     }
+  |     nivartanam x
+  | }
+  | mukhya() {
+  |     vitti b = bana()
+  |     likha(padh(b, 0))
+  | }
+    Sutram Error: kosh tark: tatv prakar bhinn
+  not compiled (exit 1) - the existing kosh-argument type rule
+
+=== l1.sm
+  | vitti g = 0
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | prakriya bana(n) {
+  |     mandapa {
+  |         kosh k[4]
+  |         kosh_push(k, n)
+  |         g = k
+  |         nivartanam padh(k, 0)
+  |     }
+  |     nivartanam 0
+  | }
+  | mukhya() {
+  |     likha(bana(5))
+  |     likha(padh(g, 0))
+  | }
+    Sutram Error: kosh tark: tatv prakar bhinn
+  not compiled (exit 1) - the existing kosh-argument type rule
+
+=== l4.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     vitti pichhla = 0
+  |     vitti i = 0
+  |     yavat (i < 3) {
+  |         mandapa {
+  |             kosh k[2]
+  |             kosh_push(k, i * 10)
+  |             yadi (i > 0) {
+  |                 likha(padh(pichhla, 0))
+  |             }
+  |             pichhla = k
+  |         }
+  |         i = i + 1
+  |     }
+  | }
+    Sutram Error: kosh tark: tatv prakar bhinn
+  not compiled (exit 1) - the existing kosh-argument type rule

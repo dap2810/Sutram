@@ -1,0 +1,12 @@
+v278 checker (kosh refused): 63 of 306.  With kosh admitted (experiment): 88 of 306.  +25; lost 0
+  kalana     + 6  bahu_ganana, bahu_mula, dvitiya_pravan, kalana_trapiz, pravan, simpson
+  samanvaya  +10  adish_gunan, ekaka_matrika, karna_yog, matrika_gunana, matrika_yoga, rekha_manak, saranik2, saranik3, skalar, vivartana
+  sankhyiki  + 9  adhikatama, bindu_gunan, laghutama, madhya, manak, prasaran, vichalan, vyapti, yoga
+still refused, root reason: {'uses': 94, 'index': 124}
+  builtins at the root: akshar 33, akshar_rakh 30, likh8 11, pad8 10, vartani_aayam 7, dvaram 3
+  index roots by module: {'suchi': 34, 'phal': 14, 'shreni': 14, 'varna': 13, 'sangrah': 11, 'ganita': 10, 'nighantu': 10, 'sankhyiki': 6, 'vakyank': 6, 'khand': 3, 'aadhar': 1, 'chandas': 1, 'ganit': 1}
+modules whole: ['ank', 'kalana', 'madhava', 'sadhan', 'samanvaya']  modules with none: 12
+
+Method: as R81 (ws2-size.py in evidence-r81): every prakriya marked in a copy of lib/, refusals unmarked to a fixpoint,
+then every module recompiled with what is left marked (88: all compile). Run twice: with the v278 checker (kosh refused:
+63, as R81) and with an EXPERIMENTAL checker that admits kosh - not shipped, the diff is ws3-experimental-checker.diff.

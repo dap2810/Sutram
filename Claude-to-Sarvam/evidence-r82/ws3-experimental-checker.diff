@@ -1,0 +1,112 @@
+--- /home/claude/sutram/src/sutram_compiler.asm	2026-10-31 10:18:50.435216062 -0400
++++ src/sutram_compiler.asm	2026-10-31 10:22:03.584063664 -0400
+@@ -8769,6 +8769,10 @@
+     mov rdx, [rax+8]
+     mov [rel r81_cur_pos], rdx
+     mov qword [rel r81_nmala], 0
++    push rcx
++    mov rdi, rcx
++    call r82x_params              ; EXPERIMENT R82: kosh parameters are checked index bases
++    pop rcx
+     mov rdi, [rcx+24]
+     call r81_walk
+     inc rbx
+@@ -8917,11 +8921,10 @@
+     jmp .out
+ .decl:
+     mov rax, [rbx+32]
+-    lea r12, [rel r81_k_kosh]
+-    cmp rax, 2
+-    je .refuse
++    cmp rax, 2                     ; EXPERIMENT R82: a kosh is a checked index base
++    je .kdecl
+     cmp rax, 3
+-    je .refuse
++    je .kdecl
+     cmp qword [rbx+24], 0
+     je .decl_init
+     mov rcx, [rel r81_nmala]       ; a mala: its indexes are bounds-checked
+@@ -8934,6 +8937,19 @@
+ .decl_size:
+     mov rdi, [rbx+24]
+     call r81_walk
++    jmp .decl_init
++.kdecl:
++    mov rcx, [rel r81_nmala]
++    cmp rcx, 1024
++    jae .kd2
++    lea rdx, [rel r81_malas]
++    mov rax, [rbx+8]
++    mov [rdx + rcx*8], rax
++    inc qword [rel r81_nmala]
++.kd2:
++    mov rdi, [rbx+24]
++    call r81_walk
++    jmp .out
+ .decl_init:
+     cmp qword [rbx+32], 1          ; [32] is a kind for a decl (0 integer, 1 dasham) - and
+     jbe .decl_val                  ; a mandapa's mark decl has no other field to walk
+@@ -8970,6 +8986,13 @@
+     je .args
+     cmp rax, BN_NIRM_SCRATCH
+     je .args
++    cmp rax, BN_SETCHAR           ; (41 sits inside the kosh range: a raw byte store - refused)
++    je .notk
++    cmp rax, BN_KOSHPUSH          ; EXPERIMENT R82: kosh builtins (bounds- and lifetime-checked)
++    jb .notk
++    cmp rax, BN_KOSHDEQUEUE
++    jbe .args
++.notk:
+     mov rdi, rax
+     call r81_bn_name
+     mov r12, rax
+@@ -9060,6 +9083,49 @@
+     mov rdi, 1
+     call os_exit
+ 
++; r82x_params(rdi = FUNCDEF): its kosh parameters into r81_malas.
++r82x_params:
++    push rbx
++    push r12
++    push r13
++    mov rbx, rdi
++    mov r13, [rbx+16]
++    mov r12, [rbx+32]
++    mov rax, r13
++    shl rax, 3
++    sub r12, rax                   ; byte offset of the first parameter
++    xor ecx, ecx
++.l:
++    cmp rcx, r13
++    jae .o
++    mov rax, r12
++    shr rax, 3
++    add rax, rcx
++    lea rdx, [rel func_param_types]
++    movzx eax, byte [rdx + rax]
++    cmp eax, PARAM_KOSH
++    je .k
++    cmp eax, PARAM_KOSH_DASHAM
++    jne .n
++.k:
++    lea rax, [rel func_params]
++    add rax, r12
++    mov rax, [rax + rcx*8]
++    mov rdx, [rel r81_nmala]
++    cmp rdx, 1024
++    jae .n
++    lea rsi, [rel r81_malas]
++    mov [rsi + rdx*8], rax
++    inc qword [rel r81_nmala]
++.n:
++    inc rcx
++    jmp .l
++.o:
++    pop r13
++    pop r12
++    pop rbx
++    ret
++
+ ; r81_index_ok(rdi = AST_INDEX) -> rax = 1 when the access is bounds-checked: a mala of this
+ ; function, or a name R78 knows the size of (never assigned again; the check's range).
+ r81_index_ok:

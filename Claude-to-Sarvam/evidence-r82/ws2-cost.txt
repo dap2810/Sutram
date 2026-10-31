@@ -1,0 +1,60 @@
+R82 WS2 - the cost.
+
+1. Programs that never put a kosh in a block: the compiler emits exactly the v277 bytes (the guard, 665 programs, 0 DIFFER).
+   The 8 shipped benchmarks, compiled by v277 and v278:
+     bench_arith identical
+     bench_fib identical
+     bench_loop identical
+     bench_nested identical
+     r46_hotcall_array identical
+     r46_hotcall_float identical
+     r46_hotcall_nested identical
+     r46_hotcall_stack identical
+   So their cost is 0% - measured as identical binaries, not as a timing.
+
+2. A program that does put a kosh in a block pays: a 5-qword header on every kosh (3 more qwords), one check on entry
+   to a prakriya per kosh parameter, a stack slot and rdtsc per block entry that holds a kosh. The worst case is a
+   prakriya whose whole body is one kosh read, called in a loop. The same programs, with and without one unrelated
+   'mandapa { kosh z[1] ... }' at the top of mukhya (which turns the feature on for the whole program):
+
+   9 interleaved runs, median wall seconds
+   hot   (20,000,000 calls of padh(kosh k, i)): off 0.1186  on 0.1320  +11.3%
+   push  (200 x 50,000 kosh_push with growth):  off 0.0591  on 0.0612  +3.5%
+
+--- hot_off.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | 
+  | mukhya() {
+  |     kosh k[16]
+  |     vitti i = 0
+  |     yavat (i < 16) {
+  |         kosh_push(k, i)
+  |         i = i + 1
+  |     }
+  |     vitti s = 0
+  |     vitti n = 0
+  |     yavat (n < 20000000) {
+  |         s = s + padh(k, n % 16)
+  |         n = n + 1
+  |     }
+  |     likha(s)
+  | }
+--- push_off.sm
+  | mukhya() {
+  |     vitti r = 0
+  |     vitti s = 0
+  |     yavat (r < 200) {
+  |         kosh k[1]
+  |         vitti i = 0
+  |         yavat (i < 50000) {
+  |             kosh_push(k, i)
+  |             i = i + 1
+  |         }
+  |         s = s + kosh_len(k)
+  |         r = r + 1
+  |     }
+  |     likha(s)
+  | }
+--- *_on.sm: the same, with   mandapa { kosh z[1] ; kosh_push(z, 1) }   first in mukhya
