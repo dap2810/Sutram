@@ -1,0 +1,141 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 2390ffba..96847c8a 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -22791,6 +22791,40 @@ gen_expr:
+     call emit_byte
+     mov dil, 0xC0
+     call emit_byte
++    ; Unordered UCOMISD sets PF, ZF and CF. EQ/LT/LE need !PF;
++    ; NE needs PF OR the ordinary unequal flag. SETcc preserves flags.
++    mov rax, [rbx+8]
++    cmp rax, OP_EQ
++    je .gfb_ordered
++    cmp rax, OP_LT
++    je .gfb_ordered
++    cmp rax, OP_LE
++    je .gfb_ordered
++    cmp rax, OP_NE
++    jne .gfb_parity_done
++    mov dil, 0x0F            ; setp dl
++    call emit_byte
++    mov dil, 0x9A
++    call emit_byte
++    mov dil, 0xC2
++    call emit_byte
++    mov dil, 0x08            ; or al,dl
++    call emit_byte
++    mov dil, 0xD0
++    call emit_byte
++    jmp .gfb_parity_done
++.gfb_ordered:
++    mov dil, 0x0F            ; setnp dl
++    call emit_byte
++    mov dil, 0x9B
++    call emit_byte
++    mov dil, 0xC2
++    call emit_byte
++    mov dil, 0x20            ; and al,dl
++    call emit_byte
++    mov dil, 0xD0
++    call emit_byte
++.gfb_parity_done:
+     mov dil, 0x48            ; movzx rax,al
+     call emit_byte
+     mov dil, 0x0F
+@@ -25723,6 +25757,37 @@ try_emit_float_reg_compare:
+     call emit_byte
+     mov dil, 0xC0              ; al
+     call emit_byte
++    cmp r15, OP_EQ
++    je .tfrc_ordered
++    cmp r15, OP_LT
++    je .tfrc_ordered
++    cmp r15, OP_LE
++    je .tfrc_ordered
++    cmp r15, OP_NE
++    jne .tfrc_parity_done
++    mov dil, 0x0F              ; setp dl; or al,dl
++    call emit_byte
++    mov dil, 0x9A
++    call emit_byte
++    mov dil, 0xC2
++    call emit_byte
++    mov dil, 0x08
++    call emit_byte
++    mov dil, 0xD0
++    call emit_byte
++    jmp .tfrc_parity_done
++.tfrc_ordered:
++    mov dil, 0x0F              ; setnp dl; and al,dl
++    call emit_byte
++    mov dil, 0x9B
++    call emit_byte
++    mov dil, 0xC2
++    call emit_byte
++    mov dil, 0x20
++    call emit_byte
++    mov dil, 0xD0
++    call emit_byte
++.tfrc_parity_done:
+     mov dil, 0x48              ; movzx rax,al
+     call emit_byte
+     mov dil, 0x0F
+diff --git a/tests/r159_float_compare/test_float_compare.py b/tests/r159_float_compare/test_float_compare.py
+new file mode 100644
+index 00000000..cbc1a8ed
+--- /dev/null
++++ b/tests/r159_float_compare/test_float_compare.py
+@@ -0,0 +1,52 @@
++#!/usr/bin/env python3
++"""Exercise NaN and ordered floating comparisons against an independent oracle.
++
++Usage: python tests/r159_float_compare/test_float_compare.py path/to/compiler
++The output suffix selects PE; run this test on native Windows.
++"""
++import pathlib
++import subprocess
++import sys
++import tempfile
++
++ROOT = pathlib.Path(__file__).resolve().parents[2]
++OPS = ('==', '!=', '<', '<=', '>', '>=')
++CASES = (
++    ('less', 'dasham x = 2.0\n dasham y = 3.0', 'x', 'y', (0, 1, 1, 1, 0, 0)),
++    ('greater', 'dasham x = 3.0\n dasham y = 2.0', 'x', 'y', (0, 1, 0, 0, 1, 1)),
++    ('equal', 'dasham x = 2.0\n dasham y = 2.0', 'x', 'y', (1, 0, 0, 1, 0, 1)),
++    ('signed_zero', 'dasham x = 0.0\n dasham y = 0.0 - x', 'x', 'y', (1, 0, 0, 1, 0, 1)),
++    ('nan_left', 'dasham z = 0.0\n dasham x = z / z\n dasham y = 5.0', 'x', 'y', (0, 1, 0, 0, 0, 0)),
++    ('nan_right', 'dasham z = 0.0\n dasham x = 5.0\n dasham y = z / z', 'x', 'y', (0, 1, 0, 0, 0, 0)),
++    ('nan_both', 'dasham z = 0.0\n dasham x = z / z\n dasham y = z / z', 'x', 'y', (0, 1, 0, 0, 0, 0)),
++    ('nan_literal', 'dasham z = 0.0\n dasham x = z / z', 'x', '5.0', (0, 1, 0, 0, 0, 0)),
++    ('nan_mixed', 'dasham z = 0.0\n dasham x = z / z', '5', 'x', (0, 1, 0, 0, 0, 0)),
++    ('infinity', 'dasham z = 0.0\n dasham x = 1.0 / z\n dasham y = 5.0', 'x', 'y', (0, 1, 0, 0, 1, 1)),
++)
++
++def main():
++    compiler = pathlib.Path(sys.argv[1]).resolve()
++    failures = 0
++    with tempfile.TemporaryDirectory(prefix='sutram-r159-', dir=ROOT.parent) as tmp:
++        for name, decl, lhs, rhs, expected in CASES:
++            source = pathlib.Path(tmp) / (name + '.sm')
++            binary = pathlib.Path(tmp) / (name + '.exe')
++            body = '\n'.join(' likha(%s %s %s)' % (lhs, op, rhs) for op in OPS)
++            source.write_text('mukhya() {\n ' + decl + '\n' + body + '\n}\n', encoding='utf-8')
++            c = subprocess.run([str(compiler), str(source), str(binary)], cwd=ROOT,
++                               capture_output=True, text=True, timeout=15)
++            if c.returncode != 0 or not binary.exists():
++                print('FAIL', name, 'compile', c.returncode, c.stdout, c.stderr)
++                failures += 1
++                continue
++            r = subprocess.run([str(binary)], capture_output=True, text=True, timeout=10)
++            want = ''.join(str(x) + '\n' for x in expected)
++            ok = r.returncode == 0 and r.stdout == want and not r.stderr
++            print('PASS' if ok else 'FAIL', name, 'exit', r.returncode,
++                  'stdout', repr(r.stdout), 'stderr', repr(r.stderr))
++            failures += not ok
++    print('r159 float comparison:', len(CASES) - failures, 'pass,', failures, 'fail')
++    return int(bool(failures))
++
++if __name__ == '__main__':
++    sys.exit(main())
