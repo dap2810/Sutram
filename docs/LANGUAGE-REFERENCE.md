@@ -620,6 +620,27 @@ abort with their own diagnostics — `rikta kosh se kosh_pop`,
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
 
+**A second name for a `kosh` is NOT the same `kosh` once it grows (v278, R83).** `vitti a = k` (or `a = k`)
+compiles and makes `a` a bounds-checked view of `k`'s buffer *as it is now*. When `kosh_push` outgrows the
+capacity, the cells usually **move** to a new buffer and only the name pushed through follows them; the other
+name stays on the old buffer, with the old length:
+
+```
+kosh k[2]
+kosh_push(k, 41)
+vitti a = k
+vitti p = nirmmita(64)      # anything allocated in between
+kosh_push(k, 42)
+kosh_push(k, 43)            # k grows: its cells move
+k[0] = 7
+likha(a[0])                 # 41 - a is still on the old buffer
+```
+
+Whether they move depends on what else was allocated: on Linux a `kosh` that is the newest block grows in place
+(the two names stay one), on Windows it always moves — **so the same program can print different results on
+the two systems.** Nothing is ever freed, so the old buffer is valid memory: a stale read or write, not a crash.
+**Rule: keep one name per `kosh`; copy values out (`k[i]`, `kosh_len(k)`), not the `kosh`.**
+
 ## 17. Function values, methods and slices (R23)
 
 The smallest working version of each; what is not done is listed at the end.

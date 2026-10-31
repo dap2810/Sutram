@@ -1,0 +1,101 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 18287ec..27f0c32 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -421,6 +421,10 @@ r54_builtin_arity_table:
+     r82_m4 db " mandape rachitah; sa mandapah samaptah", 10, 0
+     r82_m5 db "Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam", 10, 0
+     r82_lname db "0kl", 0
++    ; R83: a kosh's address copied to a second name
++    r83_hdr db ": Sutram Error [E_KOSH_PRATILIPI]: kosh '", 0
++    r83_txt db "' anyasmin namni na rakshyate - ekah kosh, ekam nama", 10, 0
++    r83_hint db "Sanket: vardhamanah kosh sthanam parivartayati, dvitiyam nama purane sthane tishthati - mulyani pratilipyantam (k[i], kosh_len)", 10, 0
+     ; mov rdx,[r8-40] ; mov [rax],rdx ; mov rdx,[r8-32] ; mov [rax+8],rdx ; mov rdx,[r8-24] ;
+     ; mov [rax+16],rdx ; mov [rax+24],r9 ; mov [rax+32],r11 ; lea r10,[rax+40]
+     r82_grow_bytes db 0x49,0x8B,0x50,0xD8, 0x48,0x89,0x10, 0x49,0x8B,0x50,0xE0, 0x48,0x89,0x50,0x08
+@@ -8151,6 +8155,54 @@ r80_fold_overflow:
+     lea rcx, [rel r80_hint_fold]
+     jmp r80_compile_error
+ 
++; ---------------------------------------------------------------- R83
++; r83_check_copy(rbx = AST_DECL or AST_ASSIGN being generated): the value a bare kosh name is
++; E_KOSH_PRATILIPI. A kosh moves when it grows (unless it is the arena's last block), and the
++; second name stays on the old buffer: `vitti a = k` then pushes made a[0] and k[0] differ on
++; Linux only when something was allocated in between, and always on Windows. Preserves all.
++r83_check_copy:
++    push rax
++    push rcx
++    push rdx
++    push rsi
++    push rdi
++    mov rax, [rbx]
++    cmp rax, AST_DECL
++    jne .val
++    cmp qword [rbx+24], 0          ; a mala / kosh declaration: [16] is not a copy
++    jne .out
++.val:
++    mov rax, [rbx+16]
++    test rax, rax
++    jz .out
++    cmp qword [rax], AST_VAR
++    jne .out
++    push rax
++    mov rdi, [rax+8]
++    call is_kosh_var
++    mov rcx, rax
++    pop rax
++    test rcx, rcx
++    jz .out
++    push rax
++    mov rdi, [rax+56]
++    lea rsi, [rel r83_hdr]
++    call r81_begin
++    pop rax
++    mov rdi, [rax+8]
++    call print_str_z
++    lea rdi, [rel r83_txt]
++    call print_str_z
++    lea rdi, [rel r83_hint]
++    jmp r81_end
++.out:
++    pop rdi
++    pop rsi
++    pop rdx
++    pop rcx
++    pop rax
++    ret
++
+ ; ---------------------------------------------------------------- R82
+ ; A kosh made inside a mandapa lives as long as the block. Only in a program that declares
+ ; a kosh inside a mandapa (r82_on; every other program compiles to the same bytes):
+@@ -14405,6 +14457,14 @@ parse_primary_inner:
+     pop rcx
+     mov qword [rax], AST_VAR
+     mov [rax+8], rbx
++    push rcx                  ; R83: the identifier's position, for a message about it
++    mov rcx, [rel token_idx]
++    dec rcx
++    imul rcx, rcx, TOKEN_SIZE
++    lea rdx, [rel token_arr]
++    mov rcx, [rdx + rcx + 32]
++    mov [rax+56], rcx
++    pop rcx
+     cmp rcx, [rel r4_pend_count]
+     jae .r23_pp_not_pending
+     cmp rcx, R4_PEND_CAP
+@@ -15964,6 +16024,7 @@ gen_stmt:
+ 
+ .gs_decl:
+     ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
++    call r83_check_copy       ; R83: vitti a = k (k a kosh) - two names, one buffer
+     mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice
+     call r23_mark_slice_decl
+     ; R38: vitti b = a (a is a mala/kosh) marks b the same kind, so b[i] is
+@@ -16228,6 +16289,7 @@ gen_stmt:
+     ret
+ 
+ .gs_assign:
++    call r83_check_copy       ; R83: a = k, m[i] = k (k a kosh)
+     ; R59 pre-emission peephole: an existing scalar's x=x has a side-effect-
+     ; free AST_VAR RHS, so evaluating x and writing it back cannot alter
+     ; memory/register state. Skip BOTH load and store before any code bytes

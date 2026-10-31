@@ -1,0 +1,16 @@
+R83 WS3 - tools/guard_page.py, v278 (this tree) and v277 (3b28a58), and the new gates under the v278 guard-page compiler.
+  v278: guard pages: controls 5/5, suite PASS=255 FAIL=0, library proofs 229/229, property proofs 86/86, 0 failed
+  v277: guard pages: controls 5/5, suite PASS=253 FAIL=0, library proofs 229/229, property proofs 86/86, 0 failed
+  R82 kosh-mandapa under the guard-page compiler: r82 kosh-mandapa: 9 checks, 0 failed
+  R81 parikshita under the guard-page compiler:   r81 parikshita: 24 checks, 0 failed
+  R82 cost programs (hot_on, push_on) under the guard-page compiler: exit 0, 0
+
+Nothing faults that did not before; the two more suite programs in v278 are examples 286 and 287.
+
+--- v278 full output
+PASS  clean_last_byte.sm: runs clean
+PASS  control_217_overrun.sm: SIGSEGV, as it must
+PASS  control_one_byte_past.sm: SIGSEGV, as it must
+PASS  control_pack_unpack.sm: SIGSEGV, as it must
+PASS  control_proof_overread.sm: SIGSEGV, as it must
+guard pages: controls 5/5, suite PASS=255 FAIL=0, library proofs 229/229, property proofs 86/86, 0 failed

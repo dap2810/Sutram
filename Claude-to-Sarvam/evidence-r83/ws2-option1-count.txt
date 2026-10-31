@@ -1,0 +1,122 @@
+R83 WS2 - option 1 (refuse the copy), built as a variant (ws2-option1-variant.diff, 61 added lines), NOT shipped.
+The variant refuses an assignment or declaration whose value is a bare kosh name (vitti a = k, a = k, k2 = k, m[i] = k):
+
+  a2.sm:4:15: Sutram Error [E_KOSH_PRATILIPI]: kosh 'k' anyasmin namni na rakshyate - ekah kosh, ekam nama
+        vitti a = k
+                  ^
+  Sanket: vardhamanah kosh sthanam parivartayati, dvitiyam nama purane sthane tishthati - mulyani pratilipyantam (k[i], kosh_len)
+
+The tree under it (tools/guard_pair.py, v278 vs the variant on the same sources): 665 programs: 535 byte-identical, 127 refused identically, 3 DIFFER, 0 new
+  DIFFER       examples/252_r38_alias_kosh_oob.sm old rc=0 new rc=1
+  DIFFER       examples/255_r42_alias_kosh_push.sm old rc=0 new rc=1
+  DIFFER       examples/287_r82_kosh_after_mandapa.sm old rc=0 new rc=1
+  - every one is a program v278 compiles and the variant refuses; no library module is refused (all 24 loaded).
+
+Alias routes the option-1 variant does NOT close (variant compiler, Linux ELF):
+=== r1.sm
+  | prakriya laut(kosh x) {
+  |     nivartanam x
+  | }
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 5)
+  |     vitti b = laut(k)
+  |     vitti p = nirmmita(64)
+  |     kosh_push(k, 6)
+  |     likha(b[0])
+  | }
+  compiles; runs: 5 
+=== r2.sm
+  | prakriya rakh(p) {
+  |     nivartanam p
+  | }
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 5)
+  |     vitti b = rakh(k)
+  |     likha(b[0])
+  | }
+  compiles; runs: 5 
+=== r3.sm
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 5)
+  |     kosh m[2]
+  |     kosh_push(m, k)
+  |     likha(kosh_len(m))
+  | }
+  compiles; runs: 1 
+=== r4.sm
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 5)
+  |     vitti b = k + 0
+  |     likha(b[0])
+  | }
+  compiles; runs: 5 
+
+And none of the four reaches a kosh PARAMETER - the existing type rule refuses each where it would be passed as a kosh (variant compiler):
+=== rt.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | prakriya laut(kosh x) {
+  |     nivartanam x
+  | }
+  | mukhya() {
+  |     vitti bahar = 0
+  |     mandapa {
+  |         kosh k[2]
+  |         kosh_push(k, 11)
+  |         bahar = laut(k)
+  |     }
+  |     likha(padh(bahar, 0))
+  | }
+  Sutram Error: kosh tark: tatv prakar bhinn
+=== q1.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     vitti bahar = 0
+  |     mandapa {
+  |         kosh k[2]
+  |         kosh_push(k, 11)
+  |         bahar = k + 0
+  |     }
+  |     likha(padh(bahar, 0))
+  | }
+  Sutram Error: kosh tark: tatv prakar bhinn
+=== q2.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | mukhya() {
+  |     kosh m[2]
+  |     vitti bahar = 0
+  |     mandapa {
+  |         kosh k[2]
+  |         kosh_push(k, 11)
+  |         kosh_push(m, k)
+  |     }
+  |     bahar = m[0]
+  |     likha(padh(bahar, 0))
+  | }
+  Sutram Error: kosh tark: tatv prakar bhinn
+=== q3.sm
+  | prakriya padh(kosh k, i) {
+  |     nivartanam k[i]
+  | }
+  | prakriya aage(p) {
+  |     nivartanam padh(p, 0)
+  | }
+  | mukhya() {
+  |     vitti s = 0
+  |     mandapa {
+  |         kosh k[2]
+  |         kosh_push(k, 11)
+  |         s = aage(k)
+  |     }
+  |     likha(s)
+  | }
+  Sutram Error: kosh tark: tatv prakar bhinn
