@@ -1,0 +1,133 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 2390ffba..cf615d87 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -425,6 +425,7 @@ r54_builtin_arity_table:
+     r87_hdr db ": Sutram Error [E_DASHAM_VITTI]: ", 0
+     r87_txt db "dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta", 10, 0
+     r87_hint db "Sanket: vitti purnankanam eva; dashamaya 'dasham' likhyatam: dasham f = 3.5", 10, 0
++    r161_narrow_msg db "Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati",10,0
+     ; mov rdx,[r8-40] ; mov [rax],rdx ; mov rdx,[r8-32] ; mov [rax+8],rdx ; mov rdx,[r8-24] ;
+     ; mov [rax+16],rdx ; mov [rax+24],r9 ; mov [rax+32],r11 ; lea r10,[rax+40]
+     r82_grow_bytes db 0x49,0x8B,0x50,0xD8, 0x48,0x89,0x10, 0x49,0x8B,0x50,0xE0, 0x48,0x89,0x50,0x08
+@@ -24115,7 +24116,10 @@ emit_i64_to_f64_rax:
+     ret
+ 
+ emit_f64_to_i64_rax:
+-    ; Raw binary64 bits in runtime RAX -> truncating signed integer in RAX.
++    ; Exact-only conversion: reject non-integral, unordered and out-of-range
++    ; values before publishing the converted integer. Uses XMM0/XMM1 scratch.
++    push r12
++    push r13
+     mov dil, 0x66
+     call emit_byte
+     mov dil, 0x48
+@@ -24136,6 +24140,55 @@ emit_f64_to_i64_rax:
+     call emit_byte
+     mov dil, 0xC0            ; cvttsd2si rax,xmm0
+     call emit_byte
++    mov dil, 0xF2            ; cvtsi2sd xmm1,rax
++    call emit_byte
++    mov dil, 0x48
++    call emit_byte
++    mov dil, 0x0F
++    call emit_byte
++    mov dil, 0x2A
++    call emit_byte
++    mov dil, 0xC8
++    call emit_byte
++    mov dil, 0x66            ; ucomisd xmm0,xmm1
++    call emit_byte
++    mov dil, 0x0F
++    call emit_byte
++    mov dil, 0x2E
++    call emit_byte
++    mov dil, 0xC1
++    call emit_byte
++    mov dil, 0x0F            ; jp failure (NaN)
++    call emit_byte
++    mov dil, 0x8A
++    call emit_byte
++    mov r12, [rel code_sz]
++    xor edi, edi
++    call emit_u32
++    mov dil, 0x0F            ; je success (exact round-trip)
++    call emit_byte
++    mov dil, 0x84
++    call emit_byte
++    mov r13, [rel code_sz]
++    xor edi, edi
++    call emit_u32
++    mov rdi, r12
++    call r73_patch32
++    lea rcx, [rel r161_narrow_msg]
++    call r80_emit_likha_str
++    mov dil, 0xB8            ; exit(1) through target-specific emitter
++    call emit_byte
++    mov edi, 60
++    call emit_u32
++    mov dil, 0xBF
++    call emit_byte
++    mov edi, 1
++    call emit_u32
++    call emit_syscall
++    mov rdi, r13
++    call r73_patch32
++    pop r13
++    pop r12
+     ret
+ 
+ ; ============================================================
+diff --git a/tests/r161_narrow/test_runtime_narrow.py b/tests/r161_narrow/test_runtime_narrow.py
+new file mode 100644
+index 00000000..df983744
+--- /dev/null
++++ b/tests/r161_narrow/test_runtime_narrow.py
+@@ -0,0 +1,47 @@
++#!/usr/bin/env python3
++"""Test proposed exact-only float-to-integer guard; argv[1] is Windows compiler."""
++import pathlib
++import subprocess
++import sys
++import tempfile
++
++ROOT = pathlib.Path(__file__).resolve().parents[2]
++CASES = (
++    ('fraction_decl', '', 'dasham d = 3.7\n vitti i = d\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('fraction_assign', '', 'dasham d = 0.0 - 3.7\n vitti i = 0\n i = d\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('integer_value', '', 'dasham d = 3.0\n vitti i = d\n likha(i)', 0, '3\n'),
++    ('negative_integer', '', 'dasham d = 0.0 - 3.0\n vitti i = d\n likha(i)', 0, '-3\n'),
++    ('push', '', 'dasham d = 2.9\n kosh k[1]\n kosh_push(k, d)\n likha(k[0])', 1, 'E_DASHAM_VITTI'),
++    ('index', '', 'dasham d = 2.9\n kosh k[1]\n kosh_push(k, 1)\n k[0] = d\n likha(k[0])', 1, 'E_DASHAM_VITTI'),
++    ('arg', 'prakriya f(i) { nivartanam i }\n', 'dasham d = 2.9\n likha(f(d))', 1, 'E_DASHAM_VITTI'),
++    ('main_return', '', 'dasham d = 2.9\n nivartanam d', 1, 'E_DASHAM_VITTI'),
++    ('negative_zero', '', 'dasham d = -0.0\n vitti i = d\n likha(i)', 0, '0\n'),
++    ('nan', '', 'dasham z = 0.0\n dasham d = z / z\n vitti i = d\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('infinity', '', 'dasham z = 0.0\n dasham d = 1.0 / z\n vitti i = d\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('plus_limit', '', 'dasham d = 9223372036854775808.0\n vitti i = d\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('min_exact', '', 'vitti m = -9223372036854775808\n dasham d = m\n vitti i = d\n likha(i)', 0, '-9223372036854775808\n'),
++)
++
++def main():
++    compiler = pathlib.Path(sys.argv[1]).resolve()
++    failed = 0
++    with tempfile.TemporaryDirectory(prefix='sutram-r161-', dir=ROOT.parent) as tmp:
++        for name, prefix, body, status, expected in CASES:
++            source = pathlib.Path(tmp) / (name + '.sm')
++            binary = pathlib.Path(tmp) / (name + '.exe')
++            source.write_text(prefix + 'mukhya() {\n ' + body + '\n}\n', encoding='utf-8')
++            c = subprocess.run([str(compiler), str(source), str(binary)], cwd=ROOT,
++                               capture_output=True, text=True, timeout=15)
++            if c.returncode or not binary.exists():
++                ok = False
++                print('FAIL', name, 'compile', c.returncode, repr(c.stdout), repr(c.stderr))
++            else:
++                run = subprocess.run([str(binary)], capture_output=True, text=True, timeout=10)
++                ok = run.returncode == status and (run.stdout == expected if status == 0 else expected in run.stdout) and not run.stderr
++                print('PASS' if ok else 'FAIL', name, 'run', run.returncode, repr(run.stdout))
++            failed += not ok
++    print('r161 runtime narrowing:', len(CASES) - failed, 'pass,', failed, 'fail')
++    return int(bool(failed))
++
++if __name__ == '__main__':
++    sys.exit(main())
