@@ -99,7 +99,7 @@ error.** In detail:
 | `+` `-` `*` past the range, **at run time** | wraps around, silently (checking every operation measured +5% to +282% on the benchmarks, so it is not done) |
 | the same with **numbers written in the program** — `4000000000 * 4000000000`, `9223372036854775807 + 1`, `-(0 - 9223372036854775808)` | **refused when compiled**: `prog.sm:2:22: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati`, with the line and a caret under the operator |
 | a **written whole number** too large — `99999999999999999999`, `9223372036854775808`, `0x10000000000000000` | **refused when compiled**: `... [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati`. (`0 - 9223372036854775808` and `-9223372036854775808` are allowed: they are the smallest `vitti`.) A `dasham` literal may be larger: `100000000000000000000.5` is that number. |
-| `/` or `%` **by zero** | the program **stops**: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 3 - shunye vibhajanam na sambhavati` (for `%`: `shunyena sheshah na sambhavati`), exit 1. The line is in your file; inside a module it is that module's line and name: `pankti 3 (r80_ausat.smlib)`. **Written as `/ 0`, it is refused when compiled.** |
+| `/` or `%` **by zero** (also a `dasham` divided by `0.0`, v280 — §15) | the program **stops**: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 3 - shunye vibhajanam na sambhavati` (for `%`: `shunyena sheshah na sambhavati`), exit 1. The line is in your file; inside a module it is that module's line and name: `pankti 3 (r80_ausat.smlib)`. **Written as `/ 0`, it is refused when compiled.** |
 | `/` and `%` by −1 | the smallest `vitti` divided by −1 wraps to itself; `% -1` is 0 (before v276 this crashed; written as numbers, `(0 - 9223372036854775808) / (0 - 1)` is refused) |
 | when you need to know | the library's checked arithmetic says whether the answer fits: `ganita_janchit_yuj` / `_nyun` / `_gun` (`ok[0]` is 1 or 0); `ganita_paripurna_*` stops at the largest or smallest `vitti` instead of wrapping |
 
@@ -616,9 +616,18 @@ Not covered by the refusal, and still silent: a written fraction pushed into or 
 
 **How `likha` prints a `dasham` (v279).** Six decimal places, rounded, for every value below 2⁶³
 (9.2×10¹⁸) — `10000000000000.0` prints `10000000000000.000000`. From 2⁶³ up it prints
-`d.dddddde+N` (`1.234568e+22`). Infinities print `inf` and `-inf`; NaN prints `nan`. A `nan` is
-printed correctly, but **comparisons with NaN are wrong**: `n == 5.0` is true when `n` is NaN — do
-not test for NaN with `==`. `examples/289_r87_float_print.sm` pins the printer.
+`d.dddddde+N` (`1.234568e+22`). Infinities print `inf` and `-inf`; NaN prints `nan`.
+`examples/289_r87_float_print.sm` pins the printer.
+
+**Dividing a `dasham` by zero stops the program (v280)** — `0.0` or `-0.0`, written or computed — with
+the same message as for `vitti`: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 8 - shunye vibhajanam na
+sambhavati`, exit 1 (`examples/293_r90_float_divide_by_zero.sm`). Up to v279 it gave `inf`, `-inf` or
+`nan` and carried on. A `dasham` can still become `inf` by overflow (`x * 10.0` repeated) and NaN from
+`inf - inf`.
+
+**Comparisons with NaN follow IEEE 754 (v280):** every comparison with NaN is false except `!=`, which is
+true — so `n != n` is true exactly when `n` is NaN. Up to v279, NaN compared equal to every number and below
+it (`n == 5.0` was 1). `examples/291_r90_nan_compare.sm` pins all six operators.
 
 
 ## 16. Growable arrays (T18) — `kosh`

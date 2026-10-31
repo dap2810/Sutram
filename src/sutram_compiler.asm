@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v279) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v280) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -9567,6 +9567,8 @@ r80_emit_div_fatal:
     push r12
     push r13
     push r14
+    push qword [rel lk_no_nl]      ; R90: the message's own likha calls would consume lkhb's
+    mov qword [rel lk_no_nl], 0    ; no-newline flag: likha("y ", a / b, 5) printed "y 3\n5"
     mov r12, rdi
     mov rdi, [rbx+32]
     call r80_line_of
@@ -9628,6 +9630,7 @@ r80_emit_div_fatal:
     mov edi, 1
     call emit_u32
     call emit_syscall
+    pop qword [rel lk_no_nl]
     pop r14
     pop r13
     pop r12
@@ -22791,6 +22794,40 @@ gen_expr:
     call emit_byte
     mov dil, 0xC0
     call emit_byte
+    ; Unordered UCOMISD sets PF, ZF and CF. EQ/LT/LE need !PF;
+    ; NE needs PF OR the ordinary unequal flag. SETcc preserves flags.
+    mov rax, [rbx+8]
+    cmp rax, OP_EQ
+    je .gfb_ordered
+    cmp rax, OP_LT
+    je .gfb_ordered
+    cmp rax, OP_LE
+    je .gfb_ordered
+    cmp rax, OP_NE
+    jne .gfb_parity_done
+    mov dil, 0x0F            ; setp dl
+    call emit_byte
+    mov dil, 0x9A
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x08            ; or al,dl
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    jmp .gfb_parity_done
+.gfb_ordered:
+    mov dil, 0x0F            ; setnp dl
+    call emit_byte
+    mov dil, 0x9B
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x20            ; and al,dl
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+.gfb_parity_done:
     mov dil, 0x48            ; movzx rax,al
     call emit_byte
     mov dil, 0x0F
@@ -22836,6 +22873,48 @@ gen_expr:
     call emit_byte
     jmp .gfb_arith_done
 .gfb_div:
+    ; Float division: reject either signed zero before DIVSD.  Unordered
+    ; (NaN) is not zero: preserve its propagation and let comparisons handle it.
+    push r12
+    push r13
+    mov dil, 0x66                 ; xorpd xmm2,xmm2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x57
+    call emit_byte
+    mov dil, 0xD2
+    call emit_byte
+    mov dil, 0x66                 ; ucomisd xmm1,xmm2
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2E
+    call emit_byte
+    mov dil, 0xCA
+    call emit_byte
+    mov dil, 0x0F                 ; jp .divide (unordered)
+    call emit_byte
+    mov dil, 0x8A
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x0F                 ; jne .divide (nonzero)
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    xor edi, edi
+    call r80_emit_div_fatal        ; zero: diagnostic + exit 1
+    mov rdi, r12
+    call r73_patch32
+    mov rdi, r13
+    call r73_patch32
+    pop r13
+    pop r12
     mov dil, 0xF2
     call emit_byte
     mov dil, 0x0F
@@ -25214,8 +25293,7 @@ try_emit_xmm_cached_assignment:
     je .txca_op_ok
     cmp r15, OP_MUL
     je .txca_op_ok
-    cmp r15, OP_DIV
-    jne .txca_no
+    jmp .txca_no                ; division guard lives in general lowering
 .txca_op_ok:
     mov r14, [r13+16]
     cmp qword [r14], AST_VAR
@@ -25389,8 +25467,7 @@ try_emit_float_reg_self_update:
     je .tfrsu_op_ok
     cmp r14, OP_MUL
     je .tfrsu_op_ok
-    cmp r14, OP_DIV
-    jne .tfrsu_no
+    jmp .tfrsu_no               ; division guard lives in general lowering
 .tfrsu_op_ok:
     mov r15, [r13+16]
     cmp qword [r15], AST_VAR
@@ -25462,8 +25539,7 @@ try_emit_float_reg_destination:
     je .tfrd_op_ok
     cmp r15, OP_MUL
     je .tfrd_op_ok
-    cmp r15, OP_DIV
-    jne .tfrd_no
+    jmp .tfrd_no                ; division guard lives in general lowering
 .tfrd_op_ok:
     mov r14, [r13+16]             ; left
     cmp qword [r14], AST_VAR
@@ -25723,6 +25799,37 @@ try_emit_float_reg_compare:
     call emit_byte
     mov dil, 0xC0              ; al
     call emit_byte
+    cmp r15, OP_EQ
+    je .tfrc_ordered
+    cmp r15, OP_LT
+    je .tfrc_ordered
+    cmp r15, OP_LE
+    je .tfrc_ordered
+    cmp r15, OP_NE
+    jne .tfrc_parity_done
+    mov dil, 0x0F              ; setp dl; or al,dl
+    call emit_byte
+    mov dil, 0x9A
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    jmp .tfrc_parity_done
+.tfrc_ordered:
+    mov dil, 0x0F              ; setnp dl; and al,dl
+    call emit_byte
+    mov dil, 0x9B
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+.tfrc_parity_done:
     mov dil, 0x48              ; movzx rax,al
     call emit_byte
     mov dil, 0x0F

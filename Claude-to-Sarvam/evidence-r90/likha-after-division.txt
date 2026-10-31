@@ -1,0 +1,37 @@
+# R90: likha of several values after a division (a defect of mine since v276, R80)
+# source:
+prakriya f(x) {
+    nivartanam x + 1
+}
+
+mukhya() {
+    vitti a = 7
+    vitti b = 2
+    mala m[3]
+    m[1] = 5
+    kosh k[2]
+    kosh_push(k, 9)
+    vitti p = nirmmita(16)
+    p[1] = 4
+    likha("div ", a / b, a % b, b * a)
+    likha("mala ", m[1], m[a - 6], 1)
+    likha("kosh ", k[0], kosh_len(k), 2)
+    likha("raw ", p[1], f(a), 3)
+    likha("nest ", f(a / b), (a / b) % b, 4)
+}
+## /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r90/guard/old/sutram_compiler
+div 3
+1
+14
+mala 551
+kosh 912
+raw 483
+nest 4
+1
+4
+## ./sutram_compiler
+div 3114
+mala 551
+kosh 912
+raw 483
+nest 414

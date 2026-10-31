@@ -505,23 +505,19 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
         p10i = p10i * 10
         i = i + 1
     }
+    # NaN guard: NaN is the only value not equal to itself (v280: comparisons follow
+    # IEEE 754). Until v279 NaN compared equal to everything and below everything, and
+    # this guard was written as 'v == 0.0 and v < 0.0' - which v280 makes false for NaN.
+    # Without it the conversion below produces garbage like "-9223372036...".
+    yadi (v != v) {
+        akshar_rakh(dst, 0, 0)
+        nivartanam 0
+    }
     yadi (v < 0.0) {
         neg = 1
         mag = 0.0 - v
     } anya {
         mag = v
-    }
-    # NaN guard: NaN is the only value with both v == 0.0 and
-    # v < 0.0 true (this language's dasham comparisons use
-    # ucomisd flags directly, so NaN == NaN is true and
-    # NaN != NaN is false — v != v does NOT detect NaN here).
-    # Without it, NaN took the neg branch (NaN < 0 is true) and
-    # the conversion produced garbage like "-9223372036...".
-    yadi (v == 0.0) {
-        yadi (v < 0.0) {
-            akshar_rakh(dst, 0, 0)
-            nivartanam 0
-        }
     }
     scaled = mag * p10f + 0.5
     # Overflow guard: if scaled >= 2^63 the dasham->int conversion

@@ -1,0 +1,23 @@
+# R90: a comparison with NaN is false - except !=, which is true (IEEE 754). Up to v279,
+# NaN compared equal to every number and below it: n == 5.0 was 1. ChatGPT's R159 patch.
+mukhya() {
+    # infinity by overflow, NaN as inf - inf: dividing by 0.0 is an error (E_SHUNYA_BHAJAN)
+    dasham inf = 10.0
+    vitti i = 0
+    yavat (i < 400) {
+        inf = inf * 10.0
+        i = i + 1
+    }
+    dasham n = inf - inf
+    dasham x = 2.0
+    likha("n op x ", n == x, n != x, n < x, n <= x, n > x)
+    likha("x op n ", x == n, x != n, x < n, x >= n, x > n)
+    likha("n op n ", n == n, n != n, n <= n, n >= n, 0)
+    likha("literal ", n == 5.0, n < 3.0, 5 == n, n != 5.0, 0)
+    yadi (n == n) {
+        likha("n is a number\n")
+    } anya {
+        likha("n is not a number\n")
+    }
+    likha("inf ", inf > x, inf == inf, 0.0 - inf < x, inf != inf, 0)
+}

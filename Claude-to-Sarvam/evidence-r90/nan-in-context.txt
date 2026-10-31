@@ -1,0 +1,67 @@
+# R90: NaN comparisons in every context I could think of; IEEE answer in the last column
+# source: ctx2.sm (below). v279 = origin/main; v280 = this commit. PE output identical to ELF for both.
+PE same as ELF: /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r90/guard/old/sutram_compiler
+PE same as ELF: ./sutram_compiler
+v279           v280           IEEE
+vars 10110     vars 01000     vars 01000
+expr 1010      expr 0100      expr 0100
+self 1010      self 0110      self 0110
+inf 1110       inf 1110       inf 1110
+yadi 11        yadi 100       yadi 100
+yavat 4        yavat 0        yavat 0
+args 110       args 11        args 11
+param 11       param 01       param 01
+kosh 101       kosh 011       kosh 011
+div 3          div 302        div 302
+
+prakriya dvi(a, b, c) {
+    nivartanam a * 100 + b * 10 + c
+}
+
+prakriya ek(dasham p) {
+    nivartanam p == p
+}
+
+mukhya() {
+    dasham inf = 10.0
+    vitti i = 0
+    yavat (i < 400) {
+        inf = inf * 10.0
+        i = i + 1
+    }
+    dasham n = inf - inf
+    dasham x = 2.0
+    dasham y = 3.0
+    likha("vars ", n == x, n != x, n < x, n <= x, n > x)
+    likha("expr ", (n + 1.0) == (x + 1.0), (n * 2.0) != x, (x - 1.0) < n, n >= (y * 1.0))
+    likha("self ", n == n, n != n, x == x, x != x)
+    likha("inf ", inf > x, inf == inf, 0.0 - inf < x, inf != inf)
+    vitti hits = 0
+    yadi (n == 5.0) {
+        hits = hits + 1
+    }
+    yadi (n < 3.0) {
+        hits = hits + 10
+    }
+    yadi (n != 5.0) {
+        hits = hits + 100
+    }
+    likha("yadi ", hits)
+    vitti k = 0
+    yavat (n < x) {
+        k = k + 1
+        yadi (k > 3) {
+            krama
+        }
+    }
+    likha("yavat ", k)
+    likha("args ", dvi(n == x, x < y, n != n))
+    likha("param ", ek(n), ek(x))
+    kosh dasham d[2]
+    kosh_push(d, n)
+    kosh_push(d, x)
+    likha("kosh ", d[0] == d[1], d[0] != d[0], d[1] <= y)
+    vitti a = 7
+    vitti b = 2
+    likha("div ", a / (1 + (x < y)), a % (1 + (n == n)), b * (n != x))
+}

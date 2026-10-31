@@ -1,0 +1,6 @@
+n op x 01000
+x op n 01000
+n op n 01000
+literal 00010
+n is not a number
+inf 11100

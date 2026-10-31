@@ -14,8 +14,13 @@ mukhya() {
     likha("large ", 10000000000000.0)
     likha("near 2^53/10^6 ", 9223372036854.0)
     likha("above 2^63 ", 12345678901234567890123.0)
-    dasham z = 0.0
-    dasham inf = 1.0 / z
+    # R90: infinity by overflow, NaN as inf - inf (dividing by 0.0 is an error since v280)
+    dasham inf = 10.0
+    vitti i = 0
+    yavat (i < 400) {
+        inf = inf * 10.0
+        i = i + 1
+    }
     likha("inf ", inf, " ", 0.0 - inf)
-    likha("nan ", z / z)
+    likha("nan ", inf - inf)
 }

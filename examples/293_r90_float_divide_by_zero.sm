@@ -1,0 +1,10 @@
+# R90: dividing a dasham by zero stops with E_SHUNYA_BHAJAN, the same as for vitti (v276).
+# Up to v279 it gave inf, -inf or nan and carried on. ChatGPT's R159 patch.
+mukhya() {
+    dasham a = 5.0
+    dasham b = 2.0
+    likha("a / b = ", a / b)
+    b = b - 2.0
+    likha("a / b = ", a / b)
+    likha("not reached")
+}

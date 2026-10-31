@@ -1,4 +1,20 @@
-> **The 20 newest entries.** Older ones, from v423 back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from v424 back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v280 (Claude, R90) - NaN compares as IEEE says, a `dasham` divided by zero stops, `likha` keeps one line after a division
+
+- **Integrated ChatGPT's R159 NaN patch** (`ROUND-159-NAN-COMPARE.patch`, unchanged): `==`, `<`, `<=` are false and
+  `!=` true when either side is NaN; both code paths (general and register). Reviewed: `dl` is runtime scratch
+  (the general path already pops into `rdx`). Its oracle: v279 5/10, v280 10/10, ELF and PE, and in the
+  peephole and XMM-cache builds.
+- **Integrated ChatGPT's R159 float-division patch** (`ROUND-159-FLOAT-DIVISION.patch`, unchanged): a `dasham`
+  divided by `+0.0` or `-0.0` stops with `E_SHUNYA_BHAJAN`; NaN divisors are not mistaken for zero; the three
+  division fast paths fall back to the checked general path. Its oracle: v279 1/8, v280 8/8.
+- **Fixed (mine, since v276):** the division check's own message calls consumed `lkhb`'s no-newline flag, so
+  `likha("y ", a / b, a % b, 5)` printed each value on its own line. `r80_emit_div_fatal` now saves it.
+- **Not integrated:** ChatGPT's narrowing prototype - it refuses 25 tree programs, every one that imports
+  `madhava` or `roop`, at a file-level position inside the library.
+- **Goldens:** 291 (NaN, six operators), 292 (likha after a division), 293 (float division by zero); 289 and
+  ChatGPT's NaN oracle now make inf and NaN by overflow, not by dividing by zero.
 
 ## v435 - the float blocker is closed, and it was my test that was wrong
 
@@ -463,30 +479,3 @@ mandapa-madhye nirmitam sthanam nivartanam na shakyate
 **Each step was verified alone.** **A block inside a loop that grows an outer `kosh`; a `prakriya` taking a scratch pointer; two sibling blocks in sequence; a block that exhausts the range; and deep recursion with a block per frame - none of those have been run.**
 
 **So the round asks for the composition, and asks ChatGPT whether the sentence I want to put in the README is true of the compiler as it exists.**
-
-## v424 - Step 3 done: the `mandapa` block exists, is inert, nests, and refuses one escape in Sanskrit
-
-### Verified by me on v268, four tests
-| Test | Result |
-|---|---|
-| **a block compiles and runs** | **`b=8`, `a=5`** |
-| **INERT - with block vs without** | **508 bytes both, BYTE-IDENTICAL** |
-| **nested blocks** | **`c=3`, `b=2`, `a=1`** |
-| **a block inside a loop** | **`t=0`, `t=10`, `t=20`** |
-| **`nivartanam` of a scratch address** | **REFUSED** |
-
-### And the error message is in the language the program is written in
-```
-Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati -
-mandapa-madhye nirmitam sthanam nivartanam na shakyate
-```
-
-**"Temporary memory does not go outside - a place created inside a mandapa cannot be returned."**
-
-### What the block does today, stated honestly
-**It scopes variables, it nests, and it refuses one escape.** **It does NOT redirect `nirmmita` to the scratch cursor, so it releases no memory.** **That is the correct order - a block that released memory without a check would be worse than no block - but it means the block is not yet the thing the design describes.**
-
-### And Step 4 begins with the limit stated up front
-**The check catches `outer = buf + 64` and `outer_mala[i] = buf`.** **It will NOT see a scratch pointer inside a `kosh` of pointers, and that must be said where a programmer hits it, not only in the design document.**
-
-**So the round asks ChatGPT the question the design rests on: does K0 REFUSE a `kosh` in a checked function, or does it merely decline to CHECK it?** **"We do not check this" is honest. "We refuse this" is a restriction, and it decides whether a programmer can put a list of strings in a block at all.**

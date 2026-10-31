@@ -1,0 +1,34 @@
+# R90: ChatGPT's narrowing prototype (ROUND-159-FLOAT-NARROW-PROTOTYPE.patch), applied on top of v280 in a scratch copy
+# Its own probe: r159 float narrowing: 6 pass, 0 fail
+# guard, v280 -> v280+prototype: 671 programs: 518 byte-identical, 128 refused identically, 25 DIFFER, 0 new
+# programs it newly refuses (every one compiled and ran correctly on v280):
+examples/102_ast_multimodule_capacity.sm
+examples/126_numeric_pipeline.sm
+examples/201_madhava_library.sm
+examples/93_t12_float_functions.sm
+examples/94_t12_float_functions.sm
+examples/99_ast_multimodule_capacity.sm
+examples/r71/conversion.sm
+tests/r79_real/report_blocks.sm
+tests/r79_real/report_plain.sm
+tests/stdlib/fmt_fixed.sm
+tests/stdlib/fmt_group.sm
+tests/stdlib/fmt_int_base.sm
+tests/stdlib/fmt_min.sm
+tests/stdlib/fmt_pad.sm
+tests/stdlib/fmt_signed.sm
+tests/stdlib/madhava_madhava_atan.sm
+tests/stdlib/madhava_madhava_cos.sm
+tests/stdlib/madhava_madhava_pi.sm
+tests/stdlib/madhava_madhava_sin.sm
+tests/stdlib/madhava_madhava_sqrt.sm
+tests/stdlib/numeric29.sm
+tests/stdlib/r10_roop_suchi_edges.sm
+tests/stdlib/r11_misc_edges.sm
+tests/stdlib/r18_madhava_reduction.sm
+tests/stdlib/r76_known_values.sm
+
+# library modules that alone trip it when imported by a one-line program: madhava, roop
+# what a user sees (examples/201_madhava_library.sm - the conversion is in lib/madhava.smlib:53, vitti k = x / pi2):
+201_madhava_library.sm: Sutram Error [E_DASHAM_VITTI]: dashamah phalam purnanka-vittau na sthapyate
+Sanket: dashama-phalasya krte dasham vittim upayujyatam

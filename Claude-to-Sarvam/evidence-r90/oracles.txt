@@ -1,0 +1,61 @@
+# R90: the two oracles (ChatGPT's tests, made to run on Linux too; the NaN one makes NaN without dividing by zero)
+## tests/r159_float_compare/test_float_compare.py
+v279 (origin/main) ELF: r159 float comparison: 5 pass, 5 fail
+v280 ELF:               r159 float comparison: 10 pass, 0 fail
+## tests/r159_float_div/test_float_div.py
+v279 (origin/main) ELF: r159 float division: 1 pass, 7 fail
+v280 ELF:               r159 float division: 8 pass, 0 fail
+## v280 built with the optional modes (NaN oracle; the context program below)
+  m2c4258: r159 float comparison: 10 pass, 0 fail
+  m53aca1: r159 float comparison: 10 pass, 0 fail
+  m5d20dc: r159 float comparison: 10 pass, 0 fail
+  (the mode builds are of the NaN-patched source before the division patch; the division patch was run by ChatGPT in the combined mode build)
+
+## every NaN comparison in context - /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r90/t/ctx.sm, v279 then v280 (ELF; PE identical)
+    prakriya dvi(a, b, c) {
+        nivartanam a * 100 + b * 10 + c
+    }
+    
+    prakriya ek(dasham p) {
+        nivartanam p == p
+    }
+    
+    mukhya() {
+        dasham z = 0.0
+        dasham n = z / z
+        dasham x = 2.0
+        dasham y = 3.0
+        dasham inf = 1.0 / z
+        likha("vars ", n == x, n != x, n < x, n <= x, n > x)
+        likha("expr ", (n + 1.0) == (x + 1.0), (n * 2.0) != x, (x - 1.0) < n, n >= (y * 1.0))
+        likha("self ", n == n, n != n, x == x, x != x)
+        likha("inf ", inf > x, inf == inf, 0.0 - inf < x, inf != inf)
+        vitti hits = 0
+        yadi (n == 5.0) {
+            hits = hits + 1
+        }
+        yadi (n < 3.0) {
+            hits = hits + 10
+        }
+        yadi (n != 5.0) {
+            hits = hits + 100
+        }
+        likha("yadi ", hits)
+        vitti k = 0
+        yavat (n < x) {
+            k = k + 1
+            yadi (k > 3) {
+                krama
+            }
+        }
+        likha("yavat ", k)
+        likha("args ", dvi(n == x, x < y, n != n))
+        likha("param ", ek(n), ek(x))
+        kosh dasham d[2]
+        kosh_push(d, n)
+        kosh_push(d, x)
+        likha("kosh ", d[0] == d[1], d[0] != d[0], d[1] <= y)
+        vitti a = 7
+        vitti b = 2
+        likha("div ", a / (1 + (x < y)), a % (1 + (n == n)), b * (n != x))
+    }

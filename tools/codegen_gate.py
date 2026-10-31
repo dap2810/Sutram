@@ -88,7 +88,7 @@ CASES = {
     e = a - 2147483647
     yantra("0F 0B 67 90 0F 0B")
 '''),
-    "float_reg_compare": (36, False, r'''mukhya() {
+    "float_reg_compare": (44, False, r'''mukhya() {
     dasham a = 2.5
     dasham b = 4.5
     vitti yes = 0
@@ -114,7 +114,7 @@ mukhya() {
     likha(s)
 }
 '''),
-    "float_reg_destination": (16, False, r'''mukhya() {
+    "float_reg_destination": (12, False, r'''mukhya() {
     dasham a = 7.5
     dasham b = 2.5
     dasham c = 0.0
@@ -122,7 +122,6 @@ mukhya() {
     c = a + b
     c = a - b
     c = a * b
-    c = a / b
     yantra("0F 0B 67 90 0F 0B")
     likha(c)
 }'''),
@@ -222,21 +221,26 @@ def one(name: str, ceiling: int, require_bottom: bool, source: str, tmp: Path) -
         # Six comparisons: two MOVQ, UCOMISD, SETcc, MOVZX, store in 'yes'.
         # Store is one extra instruction each. Reject legacy runtime stack
         # traffic and enforce every comparison condition and result normalization.
+        # R90: ==, !=, <, <= also test parity (NaN is unordered): setnp/and, or setp/or.
         ops = [op for _, op, _, _ in ins]
         scc = {"sete", "setne", "setb", "seta", "setbe", "setae"}
-        shape_ok = (len(ops) == 36 and ops.count("movq") == 12 and
+        shape_ok = (len(ops) == 44 and ops.count("movq") == 12 and
                     ops.count("ucomisd") == 6 and ops.count("movzbq") == 6 and
                     sum(op in scc for op in ops) == 6 and
+                    ops.count("setnp") == 3 and ops.count("setp") == 1 and
+                    ops.count("and") == 3 and ops.count("or") == 1 and
                     not any(op in ("push", "pop", "xchg") for op in ops))
     if name == "float_reg_destination":
-        # Four independent float binops, four runtime instructions each.
+        # Three independent float binops, four runtime instructions each.
         # Require both operand movq loads, scalar SSE2 op and result movq;
         # prohibit runtime push/pop and legacy GPR/stack operand scheduling.
+        # R90: c = a / b left this shape - a float division is checked for a zero
+        # divisor (E_SHUNYA_BHAJAN) in the general path, as an integer one is.
         mnemonics = [op for _, op, _, _ in ins]
-        shape_ok = (len(mnemonics) == 16 and
-                    mnemonics.count("movq") == 12 and
+        shape_ok = (len(mnemonics) == 12 and
+                    mnemonics.count("movq") == 9 and
                     all(mnemonics.count(op) == 1 for op in
-                        ("addsd", "subsd", "mulsd", "divsd")) and
+                        ("addsd", "subsd", "mulsd")) and
                     not any(op in ("push", "pop", "xchg") for op in mnemonics))
     if name == "float_scalar_call_rhs":
         # The RHS call needs its own argument and register-save stack work,

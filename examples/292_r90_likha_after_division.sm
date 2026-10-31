@@ -1,0 +1,8 @@
+# R90: likha of several values, one of them a division. Since v276 each division's check
+# printed its values on separate lines ("y 3", "1", "14"); they now stay on one line.
+mukhya() {
+    vitti a = 7
+    vitti b = 2
+    likha("y ", a / b, a % b, b * a)
+    likha("z ", (a / b) % b, a, 9)
+}

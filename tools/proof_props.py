@@ -4633,7 +4633,9 @@ def prop_edge30_float(compiler, rng):
     check("a10", 1471127, "atan 10 scaled")
     check("an1", "0 - 785398", "atan -1 scaled")
     # roop_sthir NaN -> 0 (empty)
-    lines.append("    dasham nan = 0.0 / 0.0")
+    # R90: 0.0 / 0.0 stops the program (E_SHUNYA_BHAJAN) since v280; NaN as inf - inf instead
+    lines.append("    dasham huge = e300 * e300")
+    lines.append("    dasham nan = huge - huge")
     check("roop_sthir(nan, 2, buf)", 0, "roop_sthir NaN")
     # varna_tak_dashm overflow: 9e308 and 2e308 exceed max dvigun.
     # NOTE: varna_tak_dashm reads a qword-CELL array (src[p]), not a
