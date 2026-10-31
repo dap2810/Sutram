@@ -1,3 +1,25 @@
+## v431 - `parikshita` is built: opt-in, provably inert, and honest about its reach
+
+### The boundary exists
+**`parikshita prakriya` and `parikshita mukhya` - a checked function that may only call checked functions, verified whole, refused at the first bad edge.**
+
+**And it is CONTEXTUAL, not a keyword:** **`vitti parikshita = 4` still compiles.** **No pack changed and the vocabulary budget is unspent.**
+
+**Suite 253 (four new examples), library proofs 229, gates 56 PASS - with a new gate `R81 parikshita` covering 24 cases.**
+
+### And the guard shows it is inert
+**663 programs on three paths - 535 byte-identical, 124 refused identically, 0 DIFFER, 4 new.** **"Unmarked code is untouched, in bytes: the checker runs only on marked bodies and emits nothing."**
+
+**That is the property that makes an opt-in feature safe to ship.** **It cannot break a program that does not use it.**
+
+### The honest number
+**63 of 306 library functions can be marked as they are.** **The rest need a language fix.** **So the boundary protects new code and about a fifth of the library - not everything, and that is now stated rather than implied.**
+
+**And Muse's independent count disagrees with Claude's for at least one function, so the round asks for one reconciled table.** **A release cannot be held to two different numbers.**
+
+### What is left
+**Vectors in a block - the last memory gap.** **And generics.** **And threads, which I have asked ChatGPT to rank honestly, including which one it would NOT do in v1.0.**
+
 ## v430 - division by zero has a name, literal overflow is refused, and the boundary is being built
 
 ### Claude's R80 settled the arithmetic
