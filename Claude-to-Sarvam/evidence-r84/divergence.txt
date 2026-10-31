@@ -1,0 +1,97 @@
+R84: is there ANY case where two names for one kosh diverge on v278? Each program, then Linux ELF, PE under Wine (the Linux
+compiler writing .exe - not real Windows), and the guard-page build (Sutram 1.0 (v278) - sampurna sutra).
+
+=== s0.sm
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 111)
+  |     vitti a = k
+  |     kosh_push(k, 222)
+  |     kosh_push(k, 333)
+  |     kosh_push(k, 444)
+  |     likha("a[0]=", a[0], " k[0]=", k[0])
+  |     a[0] = 999
+  |     likha("a[0]=", a[0], " k[0]=", k[0])
+  | }
+  Linux ELF:  a[0]=111 k[0]=111 a[0]=999 k[0]=999 
+  PE (Wine):  a[0]=111 k[0]=111 a[0]=999 k[0]=111 
+  guard-page: a[0]=111 k[0]=111 a[0]=999 k[0]=111 
+
+=== s1.sm
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 111)
+  |     vitti a = k
+  |     vitti p = nirmmita(8)
+  |     kosh_push(k, 222)
+  |     kosh_push(k, 333)
+  |     kosh_push(k, 444)
+  |     likha("a[0]=", a[0], " k[0]=", k[0])
+  |     a[0] = 999
+  |     likha("a[0]=", a[0], " k[0]=", k[0])
+  | }
+  Linux ELF:  a[0]=111 k[0]=111 a[0]=999 k[0]=111 
+  PE (Wine):  a[0]=111 k[0]=111 a[0]=999 k[0]=111 
+  guard-page: a[0]=111 k[0]=111 a[0]=999 k[0]=111 
+
+=== s2.sm
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 111)
+  |     vitti a = k
+  |     kosh j[1]
+  |     kosh_push(k, 222)
+  |     kosh_push(k, 333)
+  |     a[0] = 999
+  |     likha("a[0]=", a[0], " k[0]=", k[0])
+  | }
+  Linux ELF:  a[0]=999 k[0]=111 
+  PE (Wine):  a[0]=999 k[0]=111 
+  guard-page: a[0]=999 k[0]=111 
+
+=== c1.sm
+  | mukhya() {
+  |     vitti r = 0
+  |     mandapa {
+  |         kosh k[1]
+  |         kosh_push(k, 111)
+  |         vitti a = k
+  |         vitti b = nirmmita(8)
+  |         kosh_push(k, 222)
+  |         kosh_push(k, 333)
+  |         a[0] = 999
+  |         likha("a[0]=", a[0], " k[0]=", k[0])
+  |     }
+  | }
+  Linux ELF:  a[0]=999 k[0]=999 
+  PE (Wine):  a[0]=999 k[0]=111 
+  guard-page: a[0]=999 k[0]=111 
+
+=== c2.sm
+  | prakriya badha(kosh x) {
+  |     kosh_push(x, 5)
+  |     nivartanam 0
+  | }
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 1)
+  |     likha(badha(k))
+  | }
+  not compiled: Sutram Error: kosh-tarke kosh_push asamarthitam
+
+=== c3.sm
+  | rachana Dabba = { kosh_pata }
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 111)
+  |     vitti d = nirmmita(8)
+  |     d.kosh_pata = k
+  |     kosh_push(k, 222)
+  |     kosh_push(k, 333)
+  |     vitti a = d.kosh_pata
+  |     a[0] = 999
+  |     likha("a[0]=", a[0], " k[0]=", k[0])
+  | }
+  Linux ELF:  a[0]=999 k[0]=111 
+  PE (Wine):  a[0]=999 k[0]=111 
+  guard-page: a[0]=999 k[0]=111 

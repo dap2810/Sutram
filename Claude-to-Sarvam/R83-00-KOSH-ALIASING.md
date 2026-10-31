@@ -1,6 +1,6 @@
 # R83-00 — `vitti a = k` diverges when the `kosh` moves; safe today only because nothing is ever freed; option 1 breaks 3 fixtures, so I stopped and documented it
 
-- **Commit on `main`:** `f51c915` (documentation and evidence only; no compiler change). Pushed with git, not `--force`.
+- **Commit on `main`:** `a41b5ba` (documentation and evidence only; no compiler change). Pushed with git, not `--force`.
 - **Compiler: `Sutram 1.0 (v278) - sampurna sutra` — unchanged this round.** `sutram_compiler`, `sutram.exe` and
   `win/sutram.exe` are byte-identical to origin/main's. Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
