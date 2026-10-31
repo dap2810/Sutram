@@ -110,6 +110,8 @@ run_gate() {                      # name, then the command
       line=$(grep -E "[0-9]+ ran, [0-9]+ failed" /tmp/g_out.$$ | tail -1)
       case "$line" in *", 0 failed"*) ok "$name ($line)";; *) bad "$name" "${line:-no summary}";; esac ;;
     "stdlib inventory") case "$(tail -1 /tmp/g_out.$$)" in *"modules"*) ok "$name ($(tail -1 /tmp/g_out.$$))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
+    "R93 installer gate") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r93 installer gate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "installer version") case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS installer //; s/ (.*//'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-100)";; esac ;;
     "version string")   case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS version //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-90)";; esac ;;
     "formatted tree")   case "$(tail -1 /tmp/g_out.$$)" in FORMATTED) ok "$name";; *) bad "$name" "$(grep -c 'would change' /tmp/g_out.$$) file(s) would change: $(grep -m1 'would change' /tmp/g_out.$$ | cut -c15-70)";; esac ;;
     "operator precedence") line=$(head -1 /tmp/g_out.$$); case "$line" in *"; 0 disagree"*) ok "$name ($(echo "$line" | sed 's/;.*//'))";; *) bad "$name" "${line:-no summary}";; esac ;;
@@ -212,6 +214,8 @@ run_gate "crash corpus"      python3 tools/crash_corpus.py --compiler ./sutram_c
 run_gate "operator precedence" python3 tools/check_precedence.py --compiler ./sutram_compiler   # R17: the documented table, pair by pair
 run_gate "formatted tree"    sh -c 'python3 tools/sutram_fmt.py --check --exclude-from tools/fmt-exclude.txt examples/*.sm examples/*/*.sm examples/lib/*.smlib lib/*.smlib tests/stdlib/*.sm tests/r*/*.sm tests/r*/*/*.sm tests/r*/lib/*.smlib tests/sandesh/cases/*.sm && echo FORMATTED'   # R19: sutram-fmt would change nothing
 run_gate "version string"    python3 tools/check_version.py --binary ./sutram_compiler   # R13: --version is the current version
+run_gate "R93 installer gate" python3 -B tests/r93/test_installer_version.py   # R93: the installer check passes a current installer and fails each stale shape
+run_gate "installer version" python3 tools/check_installer_version.py   # R93: Sutram-Setup.exe must embed the compiler of this version (bin/ and win/sutram.exe), and Sutram-Setup.sha256 must be its hash - the installer fell behind twice with nothing failing
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3
 
 # the GUI needs an X server; say so rather than omitting it

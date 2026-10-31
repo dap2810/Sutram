@@ -629,6 +629,21 @@ part of a `dasham` on purpose, round it yourself first — the library does: `ma
 `d.dddddde+N` (`1.234568e+22`). Infinities print `inf` and `-inf`; NaN prints `nan`.
 `examples/289_r87_float_print.sm` pins the printer.
 
+**Reading `e+N`.** `1.000000e+80` means 1.000000 × 10⁸⁰: a 1 followed by 80 zeros. `1.234568e+22` is
+1.234568 × 10²², about 12 345 680 000 000 000 000 000. The seven digits shown are the number's first seven,
+rounded; the rest are not printed (a `dasham` holds only about 16 significant digits anyway). A negative value
+keeps its sign: `-1.500000e+19`. So squaring `100000000000000000000.0` (10²⁰) twice prints `1.000000e+80`.
+
+| value | prints |
+|---|---|
+| `3.5` | `3.500000` |
+| `10000000000000.0` (10¹³) | `10000000000000.000000` |
+| `9000000000000000000.0` (just below 2⁶³) | `9000000000000000000.000000` |
+| 10²⁰ squared twice (10⁸⁰) | `1.000000e+80` |
+| `0.0 - 15000000000000000000.0` | `-1.500000e+19` |
+| `0.0000001` (below half of the sixth decimal) | `0.000000` |
+| overflow past the largest `dasham` | `inf` |
+
 **Dividing a `dasham` by zero stops the program (v280)** — `0.0` or `-0.0`, written or computed — with
 the same message as for `vitti`: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 8 - shunye vibhajanam na
 sambhavati`, exit 1 (`examples/293_r90_float_divide_by_zero.sm`). Up to v279 it gave `inf`, `-inf` or

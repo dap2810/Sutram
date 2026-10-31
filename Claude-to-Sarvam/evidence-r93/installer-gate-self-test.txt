@@ -1,0 +1,9 @@
+PASS  current, both compilers: exit 0, PASS installer v281 = compiler v281 (bin/sutram.exe v281, win/sutram.exe v281; sha256 440cac6630212f3e...)
+PASS  current, no .sha256 file: exit 0, PASS installer v281 = compiler v281 (bin/sutram.exe v281, win/sutram.exe v281; sha256 869b6e39e5e1cd30...)
+PASS  bin compiler one version behind: exit 1, FAIL installer (bin/sutram.exe v280, win/sutram.exe v281), compiler v281: bin/sutram.exe is v280 - rebuild it 
+PASS  win compiler one version behind: exit 1, FAIL installer (bin/sutram.exe v281, win/sutram.exe v280), compiler v281: win/sutram.exe is v280 - rebuild it 
+PASS  win compiler missing: exit 1, FAIL installer (bin/sutram.exe v281), compiler v281: win/sutram.exe is not in the payload - rebuild it on Wind
+PASS  a compiler with no version: exit 1, FAIL installer (win/sutram.exe v281), compiler v281: bin/sutram.exe has no version string - rebuild it on Wind
+PASS  .sha256 of another file: exit 1, FAIL installer (bin/sutram.exe v281, win/sutram.exe v281), compiler v281: Sutram-Setup.sha256 says 00000000000
+PASS  no installer at all: exit 1, FAIL no installer at /tmp/tmpwbxxoodt/absent.exe (compiler is v281)
+r93 installer gate: 8 checks, 0 failed

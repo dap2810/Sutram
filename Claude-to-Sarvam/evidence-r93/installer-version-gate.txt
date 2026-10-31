@@ -1,0 +1,3 @@
+  bin/sutram.exe is v243
+  win/sutram.exe is v243
+FAIL installer (bin/sutram.exe v243, win/sutram.exe v243), compiler v281: bin/sutram.exe is v243; win/sutram.exe is v243 - rebuild it on Windows: windows/build-windows-setup.ps1

@@ -1,0 +1,4 @@
+# R93 guard: origin/main (7680d4c, v281) -> this tree; compilers byte-identical
+elf: 674 programs: 545 byte-identical, 128 refused identically, 0 DIFFER, 1 new
+pe:  674 programs: 545 byte-identical, 128 refused identically, 0 DIFFER, 1 new
+NEW          examples/296_r93_float_e_notation.sm

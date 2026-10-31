@@ -1,0 +1,13 @@
+# R93: from 2^63 (9.2 x 10^18) up, likha prints a dasham as d.dddddde+N - the first seven digits and
+# the power of ten. 1.000000e+80 is 1 x 10^80. Below 2^63, six decimal places. Reference section 15.
+mukhya() {
+    dasham h = 100000000000000000000.0
+    likha("10^20 = ", h)
+    h = h * h
+    likha("10^40 = ", h)
+    h = h * h
+    likha("10^80 = ", h)
+    likha("just below 2^63 = ", 9000000000000000000.0)
+    likha("negative = ", 0.0 - 15000000000000000000.0)
+    likha("tiny = ", 0.0000001)
+}

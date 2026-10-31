@@ -1,4 +1,12 @@
-> **The 20 newest entries.** Older ones, from v425 back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from v426 back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v281, unchanged (Claude, R93) - the installer is a release gate; `e+N` explained
+
+- **New gate `installer version`** (`tools/check_installer_version.py`): opens `Sutram-Setup.exe`, reads the
+  version of `bin/sutram.exe` and `win/sutram.exe` in its embedded payload, and FAILS unless both equal the
+  compiler's; `Sutram-Setup.sha256` must be the file's hash. **It FAILS today: the installer ships v243.**
+  Gate `R93 installer gate` proves the checker on eight stand-in installers.
+- **Reference §15:** how to read `1.000000e+80`, with a table of what prints; golden **296** pins it.
 
 ## v281 (Claude, R91-R92) - a computed `dasham` stored as a whole number must be whole
 
@@ -431,31 +439,3 @@ yavat (i < 10)
   `prakriya` that returns the address it was given** (`kosh_push(k, adr(buf))`). That program compiles and reads
   another block's data. Pinned by `tests/r73_scratch/blind_kosh_via_call.sm`; stated in `README.md` and
   `docs/LANGUAGE-REFERENCE.md` §19. Closing it needs a summary of what each `prakriya` does with its parameters.
-
-## v426 - I tested the composition myself: all five memory steps hold together
-
-**Every step had been verified alone. The joins had not. I ran the five.**
-
-| # | Composition | Expected | Got | |
-|---|---|---|---|---|
-| **1** | **block in a loop, writing into an outer `kosh`** | `0 1 2` | **`0 1 2`** | **pass** |
-| **2** | **scratch pointer as a parameter, derived value returned** | allowed | **`out=42`** | **pass** |
-| **3** | **two sibling blocks in sequence** | `first=111 second=222` | **`first=111 second=222`** | **pass** |
-| **4** | **a block allocating 64 MB, 1,000 times** | RSS stays at one block | **67,484 KB peak = one 64 MB block** | **pass** |
-| **5** | **recursion 500 deep, a block in every frame** | `125250` | **`sum=125250`** | **pass** |
-
-### The two numbers that matter
-**Test 5: 0+1+2+...+500 = 125,250 exactly.** **So the mark IS per-frame under recursion - which was the specific risk, because a mark that is not per-frame would corrupt the scratch cursor silently and the escape check would not see it.**
-
-**Test 4: 64 MB is 65,536 KB, and peak RSS was 67,484 KB after 1,000 allocations of 64 MB each.** **64 GB of cumulative allocation, 64 MB of actual memory.**
-
-### So the design's last untested claim now holds
-**Persistent and scratch memory coexist; a block writes into an outer `kosh`; siblings do not see each other; a scratch pointer can be used and its value returned; the range is reused; recursion keeps a separate mark per frame.**
-
-### And the limits the tests showed
-**Test 4 took 9.39 s for 1,000 iterations - 9.4 ms each.** **That is not the allocator (still 2-8 ns); it is touching 64 MB of fresh pages per block.** **A hot loop allocating a large block will be slow for the same reason it would be in C.**
-
-**And the `kosh`-of-scratch-pointers hole is untested by all five, because none of them puts a scratch pointer into a container - that is the escape the check cannot see, and a test that passed it would prove only that the hole exists.**
-
-### One process note, stated rather than glossed
-**The sandbox was recycled and I had deleted my NASM copy cleaning up disk, so I could not rebuild the compiler.** **I used the prebuilt `sutram_compiler` from the repo - which is the artefact that ships, so the right thing to test, but it means these five results are on the binary in the tree rather than on a rebuild of the source in the tree.** **Claude's rounds rebuild from source; mine did not.**
