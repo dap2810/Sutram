@@ -1,0 +1,28 @@
+# R82: a kosh made inside a mandapa block. It grows, is read through a prakriya inside the block,
+# and the block gives back a computed VALUE - accepted. (The kosh lives as long as the block.)
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+
+prakriya varg_yog(n) {
+    vitti s = 0
+    mandapa {
+        kosh k[2]
+        vitti i = 1
+        yavat (i <= n) {
+            kosh_push(k, i * i)
+            i = i + 1
+        }
+        i = 0
+        yavat (i < kosh_len(k)) {
+            s = s + padh(k, i)
+            i = i + 1
+        }
+    }
+    nivartanam s
+}
+
+mukhya() {
+    likha(varg_yog(10))
+    likha(varg_yog(100))
+}

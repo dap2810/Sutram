@@ -1,0 +1,19 @@
+# R82: the same kind of kosh, its address kept in a variable outside the block and read after the
+# block has ended. The block is over, so the kosh is too: the program stops with E_KOSH_MANDAPA,
+# naming the block's line - instead of reading memory the block no longer owns.
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+
+mukhya() {
+    vitti bahar = 0
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        kosh_push(k, 22)
+        likha(padh(k, 1))
+        bahar = k
+    }
+    likha(padh(bahar, 0))
+    likha("yah pankti na chalati\n")
+}

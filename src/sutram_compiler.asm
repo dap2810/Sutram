@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v277) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v278) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -414,6 +414,25 @@ r54_builtin_arity_table:
     r81_k_other   db "ayam prayogah", 0
     r81_k_rawlikha db "likha(fd, smriti, sankhya)", 0
     r81_k_nirm    db "nirmmita", 0
+    ; R82: a kosh made in a mandapa lives as long as the block (generation-checked)
+    r82_m1 db "Sutram Error [E_KOSH_MANDAPA]: prakriya '", 0
+    r82_m2 db "' - kosh '", 0
+    r82_m3 db "' pankti ", 0
+    r82_m4 db " mandape rachitah; sa mandapah samaptah", 10, 0
+    r82_m5 db "Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam", 10, 0
+    r82_lname db "0kl", 0
+    ; mov rdx,[r8-40] ; mov [rax],rdx ; mov rdx,[r8-32] ; mov [rax+8],rdx ; mov rdx,[r8-24] ;
+    ; mov [rax+16],rdx ; mov [rax+24],r9 ; mov [rax+32],r11 ; lea r10,[rax+40]
+    r82_grow_bytes db 0x49,0x8B,0x50,0xD8, 0x48,0x89,0x10, 0x49,0x8B,0x50,0xE0, 0x48,0x89,0x50,0x08
+    db 0x49,0x8B,0x50,0xE8, 0x48,0x89,0x50,0x10, 0x4C,0x89,0x48,0x18, 0x4C,0x89,0x58,0x20
+    db 0x4C,0x8D,0x50,0x28
+    r82_grow_end:
+    r82_c1 db 0x48,0x85,0xC0, 0x0F,0x84                       ; test rax,rax ; jz rel32
+    r82_c2 db 0x48,0x8B,0x48,0xE0, 0x48,0x85,0xC9, 0x0F,0x84  ; mov rcx,[rax-32] ; test rcx,rcx ; jz
+    r82_c3 db 0x48,0x39,0xE1, 0x0F,0x82                       ; cmp rcx,rsp ; jb rel32
+    r82_c4 db 0x48,0x8B,0x11, 0x48,0x3B,0x50,0xE8, 0x0F,0x84  ; mov rdx,[rcx] ; cmp rdx,[rax-24] ; je
+    r82_c5 db 0x48,0x8B,0x40,0xD8                             ; mov rax,[rax-40]
+    r82_c_end:
     align 8
     r80_ten dq 10.0
     msg_kosh_required db "Sutram Error: kosh prakriya hetu kosh-vitti avashyak", 10, 0
@@ -1111,6 +1130,14 @@ section .bss
     r81_nmala     resq 1
     r81_malas     resq 1024               ; R81: mala names declared in it
     r81_ctx       resq 1
+    r82_on        resq 1                  ; R82: this program declares a kosh inside a mandapa
+    r82_tmp       resq 1
+    r82_need      resq 64                 ; R82: per parse depth - a kosh is declared in this block
+    r82_pos       resq 64                 ; R82: per parse depth - the block's 'mandapa' token
+    r82_gdepth    resq 1
+    r82_pk        resq 1                  ; R82: codegen - mandapa nesting in the function
+    r82_off       resq 64                 ; R82: codegen - the block's liveness slot (rbp offset), 0 none
+    r82_line      resq 64                 ; R82: codegen - the block's line
     r78_fn        resq 1                  ; the function being parsed (a serial)
     r78_next      resq 1
     r78_fstk      resq 64
@@ -7637,12 +7664,23 @@ r71_after_single:
 ; What it cannot see is stated in the error itself: an address passed to a prakriya that
 ; keeps it or returns it, and an address carried by a kosh.
 r72_parse_mandapa:
+    call cur_tok                   ; R82: where the block is written
+    mov rax, [rax+32]
+    mov [rel r82_tmp], rax
     call advance_tok               ; consume 'mandapa'
     mov rax, [rel r72_mdepth]
     cmp rax, R73_MAXDEPTH - 1
     jae .nesting
     inc qword [rel r72_mdepth]
     mov rcx, [rel r72_mdepth]
+    cmp rcx, 64
+    jae .r82_deep
+    lea rax, [rel r82_need]
+    mov qword [rax + rcx*8], 0
+    lea rax, [rel r82_pos]
+    mov rdx, [rel r82_tmp]
+    mov [rax + rcx*8], rdx
+.r82_deep:
     mov rax, [rel r4_seen_count]
     lea rdx, [rel r73_seenidx]
     mov [rdx + rcx*8], rax         ; names declared from here on are at this depth
@@ -7673,6 +7711,7 @@ r72_parse_mandapa:
     call alloc_ast
     mov qword [rax], AST_BLOCK
     mov qword [rax+8], 3
+    call r82_mark_block            ; R82: [48] magic, [56] needs a liveness slot, [64] position
     pop rcx
     mov [rax+32], rcx              ; rewind
     pop rcx
@@ -8111,6 +8150,480 @@ r80_fold_overflow:
     lea rdx, [rel r80_txt_fold]
     lea rcx, [rel r80_hint_fold]
     jmp r80_compile_error
+
+; ---------------------------------------------------------------- R82
+; A kosh made inside a mandapa lives as long as the block. Only in a program that declares
+; a kosh inside a mandapa (r82_on; every other program compiles to the same bytes):
+;   - such a block reserves a stack slot and writes a fresh generation (rdtsc | 1) into it
+;     on entry; every rewind of the block (its end, nivartanam, krama/agrim) writes 0;
+;   - every kosh carries a 5-qword header: [-40] the block's line, [-32] the slot's address
+;     (0: made outside any block), [-24] the generation, [-16] length, [-8] capacity -
+;     length and capacity where they always were;
+;   - a prakriya with a kosh parameter checks it on entry: a kosh whose slot no longer holds
+;     its generation (the block has ended, or the frame is gone) is E_KOSH_MANDAPA.
+; The kosh's storage is on the persistent side, so its header is never reused and the check
+; is exact; the slot is on the stack, and a slot below the caller's rsp is a dead frame.
+R82_MAGIC equ 0x5238324D       ; 'R82M' in a mandapa BLOCK's [48]
+r82_grow_len equ 36
+r82_c1_len equ 5
+r82_c2_len equ 9
+r82_c3_len equ 5
+r82_c4_len equ 9
+r82_c5_len equ 4
+
+; r82_note_kosh_decl: a kosh declared at parse depth > 0. Preserves all.
+r82_note_kosh_decl:
+    push rax
+    mov rax, [rel r72_mdepth]
+    test rax, rax
+    jz .r
+    cmp rax, 64
+    jae .r
+    mov qword [rel r82_on], 1
+    push rcx
+    lea rcx, [rel r82_need]
+    mov qword [rcx + rax*8], 1
+    pop rcx
+.r:
+    pop rax
+    ret
+
+; r82_mark_block(rax = the mandapa BLOCK being built). Preserves all.
+r82_mark_block:
+    push rcx
+    push rdx
+    mov qword [rax+48], R82_MAGIC
+    mov rcx, [rel r72_mdepth]
+    xor edx, edx
+    cmp rcx, 64
+    jae .set
+    push rax
+    lea rax, [rel r82_need]
+    mov rdx, [rax + rcx*8]
+    pop rax
+    mov [rax+56], rdx
+    push rax
+    lea rax, [rel r82_pos]
+    mov rdx, [rax + rcx*8]
+    pop rax
+.set:
+    mov [rax+64], rdx
+    pop rdx
+    pop rcx
+    ret
+
+; r82_block_enter(rdi = a BLOCK about to be generated) -> rax = 1 if it is a mandapa (r82_on).
+r82_block_enter:
+    xor eax, eax
+    cmp qword [rel r82_on], 0
+    je .r
+    cmp qword [rdi+48], R82_MAGIC
+    jne .r
+    push rbx
+    mov rbx, rdi
+    mov rcx, [rel r82_gdepth]
+    cmp rcx, 62
+    jae .full
+    inc rcx
+    mov [rel r82_gdepth], rcx
+    lea rax, [rel r82_off]
+    mov qword [rax + rcx*8], 0
+    cmp qword [rbx+56], 0
+    je .one
+    mov rax, [rel stack_dep]       ; a slot of its own, on the stack
+    add rax, 8
+    mov [rel stack_dep], rax
+    neg rax
+    lea rdx, [rel r82_off]
+    mov [rdx + rcx*8], rax
+    push rcx
+    mov rdi, [rbx+64]
+    call r80_line_of
+    pop rcx
+    lea rdx, [rel r82_line]
+    mov [rdx + rcx*8], rax
+    mov dil, 0x0F                  ; rdtsc
+    call emit_byte
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0x48                  ; shl rdx,32
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0xE2
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    mov dil, 0x48                  ; or rax,rdx
+    call emit_byte
+    mov dil, 0x09
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x48                  ; or rax,1
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0x48                  ; mov [rbp+slot],rax
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov rcx, [rel r82_gdepth]
+    lea rdx, [rel r82_off]
+    mov esi, [rdx + rcx*8]
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+.one:
+    mov eax, 1
+    pop rbx
+    ret
+.full:
+    xor eax, eax
+    pop rbx
+.r:
+    ret
+
+; r82_emit_zero(rcx = depth): mov qword [rbp+slot], 0 if that block has a slot.
+r82_emit_zero:
+    lea rdx, [rel r82_off]
+    mov rsi, [rdx + rcx*8]
+    test rsi, rsi
+    jz .r
+    push rcx
+    push rsi
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    pop rsi
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    xor edi, edi
+    call emit_u32
+    pop rcx
+.r:
+    ret
+
+; r82_block_leave: the block's end.
+r82_block_leave:
+    mov rcx, [rel r82_gdepth]
+    call r82_emit_zero
+    mov rcx, [rel r82_gdepth]
+    lea rdx, [rel r82_off]
+    mov qword [rdx + rcx*8], 0
+    dec qword [rel r82_gdepth]
+    ret
+
+; r82_gen_rewind(rbx = AST_REWIND): a rewind to depth d's mark ends blocks d .. current.
+r82_gen_rewind:
+    cmp qword [rel r82_on], 0
+    je .r
+    push r12
+    mov rax, [rbx+8]
+    mov rax, [rax+8]               ; the mark's name: r73_mark_names + 5 * (d - 1)
+    lea rcx, [rel r73_mark_names]
+    sub rax, rcx
+    js .out
+    xor edx, edx
+    mov rcx, 5
+    div rcx
+    lea r12, [rax+1]
+.l:
+    cmp r12, [rel r82_gdepth]
+    ja .out
+    cmp r12, 64
+    jae .out
+    mov rcx, r12
+    call r82_emit_zero
+    inc r12
+    jmp .l
+.out:
+    pop r12
+.r:
+    ret
+
+; r82_emit_kosh_header: rax = the new block, rcx = capacity (generated code). Writes
+; [rax] line, [rax+8] slot address or 0, [rax+16] generation or 0, [rax+24] 0, [rax+32] cap,
+; then rax += 40.
+r82_emit_kosh_header:
+    push rbx
+    push r12
+    mov rbx, [rel r82_gdepth]
+    lea rax, [rel r82_off]
+    mov r12, [rax + rbx*8]         ; 0 outside a block with a slot
+    xor eax, eax
+    test r12, r12
+    jz .line
+    lea rax, [rel r82_line]
+    mov rax, [rax + rbx*8]
+.line:
+    push rax
+    mov dil, 0x48                  ; mov qword [rax], imm32 line
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x00
+    call emit_byte
+    pop rdi
+    call emit_u32
+    test r12, r12
+    jz .noslot
+    mov dil, 0x48                  ; lea rdx,[rbp+slot]
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov esi, r12d
+    mov dil, 0x55
+    call emit_rbp_modrm_disp
+    mov dil, 0x48                  ; mov [rax+8],rdx
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x50
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    mov dil, 0x48                  ; mov rdx,[rbp+slot]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov esi, r12d
+    mov dil, 0x55
+    call emit_rbp_modrm_disp
+    mov dil, 0x48                  ; mov [rax+16],rdx
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x50
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    jmp .rest
+.noslot:
+    mov dil, 0x48                  ; mov qword [rax+8],0
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x48                  ; mov qword [rax+16],0
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0x10
+    call emit_byte
+    xor edi, edi
+    call emit_u32
+.rest:
+    mov dil, 0x48                  ; mov qword [rax+24],0
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x40
+    call emit_byte
+    mov dil, 0x18
+    call emit_byte
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x48                  ; mov [rax+32],rcx
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x20
+    call emit_byte
+    mov dil, 0x48                  ; add rax,40
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x28
+    call emit_byte
+    pop r12
+    pop rbx
+    ret
+
+; r82_emit_grow_header: kosh growth, rax = new block, r8 = old user pointer, r9 = len,
+; r11 = new cap. Copies line, slot, generation; writes len and cap; r10 = rax + 40.
+r82_emit_grow_header:
+    lea rsi, [rel r82_grow_bytes]
+    mov rcx, r82_grow_len
+.l:
+    mov dil, [rsi]
+    push rsi
+    push rcx
+    call emit_byte
+    pop rcx
+    pop rsi
+    inc rsi
+    dec rcx
+    jnz .l
+    ret
+
+; r82_param_checks: in a prakriya's prologue (rbx = FUNCDEF, r13 = parameter count, r14 = its
+; parameter base). For each kosh parameter, the check. Preserves rbx, r12-r15.
+r82_param_checks:
+    cmp qword [rel r82_on], 0
+    je .r
+    push r12
+    push r15
+    xor r15d, r15d
+.l:
+    cmp r15, r13
+    jae .out
+    mov rax, r14
+    shr rax, 3
+    add rax, r15
+    lea rdx, [rel func_param_types]
+    movzx eax, byte [rdx + rax]
+    cmp eax, PARAM_KOSH
+    je .k
+    cmp eax, PARAM_KOSH_DASHAM
+    jne .n
+.k:
+    lea rax, [rel func_params]
+    add rax, r14
+    mov r12, [rax + r15*8]          ; the parameter's name
+    mov rdi, r12
+    call r82_emit_check
+.n:
+    inc r15
+    jmp .l
+.out:
+    pop r15
+    pop r12
+.r:
+    ret
+
+; r82_emit_check(rdi = kosh parameter name; rbx = FUNCDEF).
+r82_emit_check:
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12, rdi
+    call emit_load_named_var        ; rax = the kosh
+    lea rsi, [rel r82_c1]           ; test rax,rax ; jz ok
+    mov rcx, r82_c1_len
+    call r82_bytes
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    lea rsi, [rel r82_c2]           ; mov rcx,[rax-32] ; test rcx,rcx ; jz ok
+    mov rcx, r82_c2_len
+    call r82_bytes
+    mov r14, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    lea rsi, [rel r82_c3]           ; cmp rcx,rsp ; jb stale
+    mov rcx, r82_c3_len
+    call r82_bytes
+    mov r15, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    lea rsi, [rel r82_c4]           ; mov rdx,[rcx] ; cmp rdx,[rax-24] ; je ok
+    mov rcx, r82_c4_len
+    call r82_bytes
+    mov rax, [rel code_sz]
+    mov [rel r82_pk], rax
+    xor edi, edi
+    call emit_u32
+    mov rdi, r15
+    call r73_patch32                ; stale:
+    lea rsi, [rel r82_c5]           ; mov rax,[rax-40] (the block's line)
+    mov rcx, r82_c5_len
+    call r82_bytes
+    lea rdi, [rel r82_lname]
+    call alloc_var
+    test rax, rax
+    jle .stk
+    mov rdi, rax
+    call emit_store_reg
+    jmp .msg
+.stk:
+    push rax
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    pop rax
+    mov esi, eax
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+.msg:
+    lea rcx, [rel r82_m1]
+    call r80_emit_likha_str
+    mov rcx, [rbx+8]
+    call r80_emit_likha_raw
+    lea rcx, [rel r82_m2]
+    call r80_emit_likha_str
+    mov rcx, r12
+    call r80_emit_likha_raw
+    lea rcx, [rel r82_m3]
+    call r80_emit_likha_str
+    call alloc_ast
+    mov qword [rax], AST_VAR
+    lea rcx, [rel r82_lname]
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LKHB
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    push rbx
+    call gen_expr
+    pop rbx
+    lea rcx, [rel r82_m4]
+    call r80_emit_likha_str
+    lea rcx, [rel r82_m5]
+    call r80_emit_likha_str
+    mov dil, 0xB8                   ; mov eax,60 ; mov edi,1 ; syscall
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov rdi, r13                    ; ok:
+    call r73_patch32
+    mov rdi, r14
+    call r73_patch32
+    mov rdi, [rel r82_pk]
+    call r73_patch32
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    ret
+
+; r82_bytes(rsi = bytes, rcx = count)
+r82_bytes:
+    mov dil, [rsi]
+    push rsi
+    push rcx
+    call emit_byte
+    pop rcx
+    pop rsi
+    inc rsi
+    dec rcx
+    jnz r82_bytes
+    ret
 
 ; ---------------------------------------------------------------- R81
 ; parikshita prakriya: ChatGPT R149's design, R81's first build. A declaration modifier, not a
@@ -11504,6 +12017,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     ; T18 growable array. `kosh name` is integer/raw-qword;
     ; `kosh dasham name` / `कोश दशम name` stores IEEE-754 binary64 elements.
     ; Capacity is optional (default 4); logical length starts at zero.
+    call r82_note_kosh_decl  ; R82: inside a mandapa, the block must keep a liveness slot
     call advance_tok         ; consume kosh / कोश
     call cur_tok
     mov rdx, 2               ; AST_DECL marker 2 = integer/raw kosh
@@ -14998,6 +15512,7 @@ gen_all_functions:
     call emit_byte
     mov edi, FUNC_SPILL_BYTES
     call emit_u32
+    call r82_param_checks     ; R82: a kosh parameter made in a block that has ended
     ; Generate function body
     mov rax, [rbx+8]          ; R25: the prakriya being generated
     mov [rel r25_cur_func], rax
@@ -15252,6 +15767,7 @@ gen_stmt:
     je .gs_handle
     cmp rax, AST_REWIND       ; R73: a mandapa's rewind
     jne .r73_not_rewind
+    call r82_gen_rewind       ; R82: the blocks it leaves are no longer alive
     call r73_gen_rewind
     pop rbx
     ret
@@ -15565,6 +16081,10 @@ gen_stmt:
     mov dil, 0xC0
     call emit_byte
     mov dil, 0x02
+    cmp qword [rel r82_on], 0 ; R82: 5 - line, liveness slot, generation, length, capacity
+    je .r82_dk_2
+    mov dil, 0x05
+.r82_dk_2:
     call emit_byte
     mov dil, 0x48             ; shl rax,3
     call emit_byte
@@ -15577,6 +16097,11 @@ gen_stmt:
     call emit_nirmmita_from_rax
     mov dil, 0x59             ; pop cap -> rcx
     call emit_byte
+    cmp qword [rel r82_on], 0
+    je .r82_dk_plain
+    call r82_emit_kosh_header ; R82: line, slot, generation, 0, cap; rax += 40
+    jmp .r82_dk_store
+.r82_dk_plain:
     mov dil, 0x48             ; mov qword [rax],0
     call emit_byte
     mov dil, 0xC7
@@ -15601,6 +16126,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0x10
     call emit_byte
+.r82_dk_store:
     mov rdi, [rbx+8]
     call alloc_var
     test rax, rax
@@ -17197,8 +17723,16 @@ gen_stmt:
 
 .gs_block:
     ; R9: a statement-level block (the hidden-value form of guna)
+    mov rdi, rbx
+    call r82_block_enter      ; R82: a mandapa with a kosh: its liveness slot
+    push rax
     mov rax, rbx
     call gen_block
+    pop rax
+    test rax, rax
+    jz .r82_bl_no
+    call r82_block_leave
+.r82_bl_no:
     pop rbx
     ret
 
@@ -18442,6 +18976,10 @@ gen_expr:
     mov dil, 0xC0
     call emit_byte
     mov dil, 0x02
+    cmp qword [rel r82_on], 0 ; R82: the 5-qword header
+    je .r82_pg_2
+    mov dil, 0x05
+.r82_pg_2:
     call emit_byte
     mov dil, 0x48
     call emit_byte
@@ -18464,6 +19002,11 @@ gen_expr:
     call emit_byte
     mov dil, 0x58
     call emit_byte
+    cmp qword [rel r82_on], 0
+    je .r82_pg_plain
+    call r82_emit_grow_header ; R82: line, slot and generation carried to the new block
+    jmp .r82_pg_done
+.r82_pg_plain:
     mov dil, 0x4C             ; mov [rax],r9
     call emit_byte
     mov dil, 0x89
@@ -18486,6 +19029,7 @@ gen_expr:
     call emit_byte
     mov dil, 0x10
     call emit_byte
+.r82_pg_done:
     mov dil, 0x31             ; xor ecx,ecx
     call emit_byte
     mov dil, 0xC9
