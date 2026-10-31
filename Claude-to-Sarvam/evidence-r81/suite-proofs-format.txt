@@ -1,0 +1,7 @@
+NO-EXPECTATION=4  PASS=253
+229 passed, 0 failed, 229 total
+86/86 properties hold
+r77 format: 2267 checks, 0 failed
+r77 stray: 715 checks, 0 failed
+r81 parikshita: 24 checks, 0 failed
+r29 separate: 267 programs with modules behave the same, 164 without are byte-identical, 0 failed

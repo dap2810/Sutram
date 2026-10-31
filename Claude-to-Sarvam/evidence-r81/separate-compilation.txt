@@ -1,0 +1,34 @@
+R81: a checked mukhya calling a module's functions, whole-program and --separate (tools/sutram_build.py).
+--- lib/r81m.smlib
+  | parikshita prakriya r81m_tigun(x) {
+  |     nivartanam x * 3
+  | }
+  | 
+  | prakriya r81m_kachcha(x) {
+  |     nivartanam x
+  | }
+--- ok.sm
+  | yoj r81m
+  | parikshita mukhya() {
+  |     likha(r81m_tigun(14))
+  | }
+ whole program:
+    run: 42
+ separate:
+    run: 42
+--- bad.sm
+  | yoj r81m
+  | parikshita mukhya() {
+  |     likha(r81m_kachcha(14))
+  | }
+ whole program:
+    bad.sm:3:11: Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya 'mukhya' aparikshitam prakriyam 'r81m_kachcha' ahvayati
+          likha(r81m_kachcha(14))
+                ^
+    Sanket: parikshita prakriya keval parikshita prakriyah ahvayitum shaknoti - 'r81m_kachcha' api 'parikshita prakriya' bhavet, athava ahvanam tyajyatam
+ separate:
+    bad.sm:3:11: Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya 'mukhya' aparikshitam prakriyam 'r81m_kachcha' ahvayati
+          likha(r81m_kachcha(14))
+                ^
+    Sanket: parikshita prakriya keval parikshita prakriyah ahvayitum shaknoti - 'r81m_kachcha' api 'parikshita prakriya' bhavet, athava ahvanam tyajyatam
+    sutram-build: ./bad.sm: did not compile

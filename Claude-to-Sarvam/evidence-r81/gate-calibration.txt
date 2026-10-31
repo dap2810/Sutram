@@ -1,0 +1,26 @@
+R81: the gate can fail. tests/r81_parikshita/test_parikshita.py run against two deliberately broken checkers:
+  off     - r81_check_all returns at once (no body is checked)
+  notrans - r81_is_marked always says 'marked' (any call allowed)
+
+== checker off:
+FAIL  unmarked leaf refused at the first bad edge: compiled (an output file was written)
+FAIL  unmarked library function refused: compiled (an output file was written)
+FAIL  a marked prototype is not a marked definition: compiled (an output file was written)
+FAIL  a call through a function value refused: compiled (an output file was written)
+FAIL  a parameter indexed: refused: compiled (an output file was written)
+FAIL  a parameter written through: refused: compiled (an output file was written)
+FAIL  a pointer assigned again: refused: compiled (an output file was written)
+FAIL  a size computed at run time: refused: compiled (an output file was written)
+FAIL  likh8 refused: compiled (an output file was written)
+FAIL  akshar_rakh refused: compiled (an output file was written)
+FAIL  memset refused: compiled (an output file was written)
+FAIL  shabda (reads a string through an address) refused: compiled (an output file was written)
+FAIL  kosh refused: compiled (an output file was written)
+FAIL  likha(fd, buffer, count) refused: compiled (an output file was written)
+FAIL  a rachana field refused: compiled (an output file was written)
+r81 parikshita: 24 checks, 15 failed
+== checker notrans:
+FAIL  unmarked leaf refused at the first bad edge: compiled (an output file was written)
+FAIL  unmarked library function refused: compiled (an output file was written)
+FAIL  a marked prototype is not a marked definition: compiled (an output file was written)
+r81 parikshita: 24 checks, 3 failed

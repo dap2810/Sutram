@@ -66,6 +66,7 @@ language has a pack of native words (see the `lang/` table at the end).
 | `yadi` | if |
 | `yavat` | while |
 | `mandapa` (मण्डप) | a scratch block: temporary buffers of numbers for one piece of work (R72; §19) |
+| `parikshita` | before `prakriya` / `mukhya` only: a checked function (R81; §20). Elsewhere an ordinary name |
 
 ## 3. Operators and precedence
 
@@ -850,6 +851,43 @@ returns a number computed from the buffer (`yoga(buf, n)`) is fine.
 Not a way to manage memory that a `kosh` grows into, and not a way to reclaim what a called `prakriya` allocates:
 the block covers the `nirmmita` written inside it, in its own text. For when the block helps and when it does
 not, see `docs/MEMORY-DECISION.md`.
+
+## 20. `parikshita` — a checked function (v277)
+
+**Write `parikshita` before `prakriya` or `mukhya` and the compiler verifies the whole function: if it cannot
+show that every memory access stays inside its block, the program is refused — not warned.**
+
+```
+parikshita prakriya agla(x) {
+    nivartanam (x * 1103515245 + 12345) % 2147483648
+}
+parikshita mukhya() {
+    mandapa {
+        vitti p = nirmmita(12 * 8)
+        ...                         # p[i] = agla(...) ; sort p ; likha(p[i])
+    }
+}
+```
+
+(`examples/282`.) In a checked function:
+
+| allowed | refused |
+|---|---|
+| numbers, `dasham`, `yadi`, `yavat`, `kuru`, `chakra`, `mandapa`, `nivartanam`, module `vitti` | `kosh`, `rachana` fields (`p.x`), slices, function values, `prasar`, `yadi dosh`, inline assembly |
+| calls to **other `parikshita` functions** | a call to any other `prakriya` — `E_APARIKSHITA_AHVAN`, at the call, naming it |
+| `likha` (not the `likha(fd, buffer, count)` form), `likha_fmt`, `grahan`, `nirmmita` | every other builtin: `likh8`, `pad8`, `akshar`, `akshar_rakh`, `smaran`, `shabda`, `kosh_*`, files … — `E_APARIKSHITA_KARYA` |
+| `a[i]` on a `mala` declared in the function; `p[i]` where `vitti p = nirmmita(NUMBER)` and `p` is never assigned again — both checked against their size | `x[i]` on anything else — a parameter, `p + 8`, a size computed at run time — `E_APARIKSHITA_SMRITI` |
+
+**The rule is transitive:** a checked function calls only checked functions, and each of those is checked
+too, so everything a checked `mukhya` can reach has been verified. A refusal is reported at the first bad
+edge (`examples/284`). An unmarked `prakriya` keeps today's behaviour exactly; an unmarked caller may call a
+checked function with numbers. Under `--separate` the verdict is the same. A refused program writes no file.
+
+**What it does not do yet.** A checked function cannot take a buffer as a parameter (nothing says how long the
+block behind an address is), so a checked sort is one function. Run-time `+ - *` still wrap (§3a). A
+`parikshita` prototype does not mark the definition; mark the definition. The library: **63 of its 306
+functions** could be marked as they are (all of `ank`, `madhava`, `sadhan`; most of `ganit`, `chandas`,
+`ganita`); none is marked yet, so a checked program calls none of them (`examples/283`).
 
 ## Printing a string variable - READ THIS BEFORE YOU TRY IT
 

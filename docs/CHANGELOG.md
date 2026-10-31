@@ -69,6 +69,23 @@
 
 **Sutram has no overflow story and no divide-by-zero story.** **For a language aimed at school students, a silent negative square is worse than an error: the student concludes they do not understand arithmetic.**
 
+## Compiler v277 (Claude, R81) - `parikshita`: the checked function, transitive
+
+- **`parikshita prakriya` / `parikshita mukhya`** (ChatGPT R149's design): the compiler verifies the whole body
+  after the program is parsed and **refuses** what it cannot verify. A checked function may call only checked
+  functions (`E_APARIKSHITA_AHVAN`, at the call, naming the callee - the first bad edge of a chain) and the trust
+  base `likha` / `likha_fmt` / `grahan` / `nirmmita` (`E_APARIKSHITA_KARYA` for any other builtin, `kosh`, fields,
+  slices, function values, `prasar`); it may index only a `mala` or a `vitti p = nirmmita(NUMBER)` never assigned
+  again (`E_APARIKSHITA_SMRITI`). `parikshita` is contextual - an ordinary name elsewhere; misplaced, it is
+  `E_PARIKSHITA_STHAN`. Unmarked code: **the guard is 0 DIFFER** (no program's bytes change).
+- Examples 282 (a checked program that sorts in a block - accepted), 283 (calls `mala_yog` - refused), 284 (the
+  transitive edge), 285 (a parameter indexed). Gate **`R81 parikshita`**: 24 cases; it fails 15 with the checker
+  switched off and 3 with transitivity switched off.
+- **The library: 63 of 306 functions pass unchanged** (`ank`, `madhava`, `sadhan` entirely); all 243 others
+  trace to a buffer passed as a parameter (131) or a byte / `kosh` / raw builtin (112) - both need a checked form
+  in the language before the library can use it. None is marked yet.
+- `tools/sutram_fmt.py` reads `parikshita prakriya` as a header (braceless bodies).
+
 ## Compiler v276 (Claude, R80) - division by zero stops with a message; written numbers that do not fit are refused; the library stops wrapping
 
 - **`/` or `%` by zero stops the program** with `Sutram Error [E_SHUNYA_BHAJAN]: pankti N - shunye vibhajanam na

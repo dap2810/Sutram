@@ -1,0 +1,224 @@
+R81: the first cases, on Sutram 1.0 (v277) - sampurna sutra, Linux ELF. Each: the program, then the compile, then the run (stdin '7').
+
+=== a1.sm
+  | parikshita prakriya varg_yog(n) {
+  |     vitti s = 0
+  |     mandapa {
+  |         vitti p = nirmmita(10 * 8)
+  |         vitti i = 0
+  |         yavat (i < 10) {
+  |             p[i] = i * i
+  |             i = i + 1
+  |         }
+  |         i = 0
+  |         yavat (i < 10) {
+  |             s = s + p[i]
+  |             i = i + 1
+  |         }
+  |     }
+  |     nivartanam s * n
+  | }
+  | parikshita mukhya() {
+  |     vitti a[5]
+  |     chakra i = 0 tak 4 {
+  |         a[i] = varg_yog(i)
+  |     }
+  |     likha(a[4])
+  |     likha("sab parikshita\n")
+  | }
+  compiled (exit 0); run:
+    1140
+    sab parikshita
+
+=== a2.sm
+  | yoj ganit
+  | parikshita mukhya() {
+  |     vitti x = 5
+  |     likha(kramgun(x))
+  | }
+    a2.sm:4:11: Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya 'mukhya' aparikshitam prakriyam 'kramgun' ahvayati
+          likha(kramgun(x))
+                ^
+    Sanket: parikshita prakriya keval parikshita prakriyah ahvayitum shaknoti - 'kramgun' api 'parikshita prakriya' bhavet, athava ahvanam tyajyatam
+  REFUSED (compiler exit 1), no output file
+
+=== a3.sm
+  | prakriya g(x) {
+  |     nivartanam x + 1
+  | }
+  | parikshita prakriya f(x) {
+  |     nivartanam g(x) * 2
+  | }
+  | parikshita mukhya() {
+  |     likha(f(3))
+  | }
+    a3.sm:5:16: Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya 'f' aparikshitam prakriyam 'g' ahvayati
+          nivartanam g(x) * 2
+                     ^
+    Sanket: parikshita prakriya keval parikshita prakriyah ahvayitum shaknoti - 'g' api 'parikshita prakriya' bhavet, athava ahvanam tyajyatam
+  REFUSED (compiler exit 1), no output file
+
+=== a4.sm
+  | parikshita mukhya() {
+  |     vitti p = nirmmita(16)
+  |     likh8(p, 5)
+  |     likha(p[0])
+  | }
+    a4.sm:1:1: Sutram Error [E_APARIKSHITA_KARYA]: parikshita prakriya 'mukhya' - 'likh8' parikshitum na shakyate
+      parikshita mukhya() {
+      ^
+    Sanket: parikshita prakriyayam vishvasta: likha, likha_fmt, grahan, nirmmita, mala, parikshita prakriyah
+  REFUSED (compiler exit 1), no output file
+
+=== a5.sm
+  | parikshita prakriya pehla(p) {
+  |     nivartanam p[0]
+  | }
+  | parikshita mukhya() {
+  |     vitti q = nirmmita(8)
+  |     likha(pehla(q))
+  | }
+    a5.sm:2:19: Sutram Error [E_APARIKSHITA_SMRITI]: parikshita prakriya 'pehla' - 'p[...]' - asya smriti-sima parikshitum na shakyate
+          nivartanam p[0]
+                        ^
+    Sanket: x[i] keval mala-nama athava 'vitti p = nirmmita(SANKHYA)' (p punah na nirdishtam) - na prachalah, na sthanam
+  REFUSED (compiler exit 1), no output file
+
+=== a6.sm
+  | parikshita mukhya() {
+  |     kosh k
+  |     kosh_push(k, 3)
+  |     likha(kosh_len(k))
+  | }
+    a6.sm:1:1: Sutram Error [E_APARIKSHITA_KARYA]: parikshita prakriya 'mukhya' - 'kosh' parikshitum na shakyate
+      parikshita mukhya() {
+      ^
+    Sanket: parikshita prakriyayam vishvasta: likha, likha_fmt, grahan, nirmmita, mala, parikshita prakriyah
+  REFUSED (compiler exit 1), no output file
+
+=== a7.sm
+  | parikshita mukhya() {
+  |     vitti p = nirmmita(16)
+  |     p = p + 8
+  |     p[0] = 1
+  |     likha(p[0])
+  | }
+    a7.sm:4:8: Sutram Error [E_APARIKSHITA_SMRITI]: parikshita prakriya 'mukhya' - 'p[...]' - asya smriti-sima parikshitum na shakyate
+          p[0] = 1
+             ^
+    Sanket: x[i] keval mala-nama athava 'vitti p = nirmmita(SANKHYA)' (p punah na nirdishtam) - na prachalah, na sthanam
+  REFUSED (compiler exit 1), no output file
+
+=== a8.sm
+  | parikshita vitti x = 3
+  | mukhya() {
+  |     likha(1)
+  | }
+    a8.sm:1:1: Sutram Error [E_PARIKSHITA_STHAN]: 'parikshita' keval 'prakriya' athava 'mukhya' purvam
+      parikshita vitti x = 3
+      ^
+  REFUSED (compiler exit 1), no output file
+
+=== a9.sm
+  | parikshita prakriya sam(n);
+  | parikshita prakriya visham(n) {
+  |     yadi (n == 0) { nivartanam 0 }
+  |     nivartanam sam(n - 1)
+  | }
+  | parikshita prakriya sam(n) {
+  |     yadi (n == 0) { nivartanam 1 }
+  |     nivartanam visham(n - 1)
+  | }
+  | parikshita mukhya() {
+  |     likha(sam(10))
+  |     likha(sam(7))
+  | }
+  compiled (exit 0); run:
+    1
+    0
+
+=== b1.sm
+  | prakriya f(p) {
+  |     nivartanam p[0]
+  | }
+  | mukhya() {
+  |     vitti q = nirmmita(8)
+  |     q[0] = 4
+  |     likha(f(q))
+  | }
+  compiled (exit 0); run:
+    4
+
+=== b2.sm
+  | parikshita mukhya() {
+  |     vitti n = grahan()
+  |     likha("n = ", n)
+  | }
+  compiled (exit 0); run:
+    n = 7
+
+=== b3.sm
+  | parikshita mukhya() {
+  |     vitti p = nirmmita(16)
+  |     likha(1, p, 16)
+  | }
+    b3.sm:1:1: Sutram Error [E_APARIKSHITA_KARYA]: parikshita prakriya 'mukhya' - 'likha(fd, smriti, sankhya)' parikshitum na shakyate
+      parikshita mukhya() {
+      ^
+    Sanket: parikshita prakriyayam vishvasta: likha, likha_fmt, grahan, nirmmita, mala, parikshita prakriyah
+  REFUSED (compiler exit 1), no output file
+
+=== c1.sm
+  | parikshita mukhya() {
+  |     vitti a[5]
+  |     vitti i = 0
+  |     yavat (i < 6) {
+  |         a[i] = i
+  |         i = i + 1
+  |     }
+  |     likha(a[4])
+  | }
+  compiled (exit 0); run:
+    Sutram Error: mala ank seema atikram
+
+=== c2.sm
+  | parikshita mukhya() {
+  |     mandapa {
+  |         vitti p = nirmmita(10)
+  |         vitti i = 0
+  |         yavat (i < 10) {
+  |             p[i] = i
+  |             i = i + 1
+  |         }
+  |     }
+  |     likha(1)
+  | }
+  compiled (exit 0); run:
+    Sutram Error: mala ank seema atikram
+
+=== c3.sm
+  | parikshita mukhya() {
+  |     vitti b = 0
+  |     likha(10 / b)
+  | }
+  compiled (exit 0); run:
+    Sutram Error [E_SHUNYA_BHAJAN]: pankti 3 - shunye vibhajanam na sambhavati
+
+=== c4.sm
+  | parikshita mukhya() {
+  |     vitti p = nirmmita(8 * 4)
+  |     likha(p[4])
+  | }
+    Sutram Error [E_NIRMMITA_SEEMA]: pankti 3:14 - p[4] nirmmita(32) bahih
+    Sanket: nirmmita bhaita-sankhyam ganayati, p[i] ashta-bhaita-ekakaih: p[4] hetu nirmmita(40) avashyakam
+  REFUSED (compiler exit 1), no output file
+
+=== d1.sm
+  | parikshita prakriya dvi(x)
+  |     nivartanam x * 2
+  | 
+  | parikshita mukhya()
+  |     vitti a = dvi(21)
+  |     likha(a)
+  compiled (exit 0); run:
+    42

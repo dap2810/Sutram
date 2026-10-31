@@ -1,0 +1,277 @@
+R81 WS2 - the library under the first parikshita checker (v277), every prakriya marked, refusals unmarked to a fixpoint
+306 functions in 24 modules: 63 pass unchanged, 243 refused.
+
+Direct reason: {'uses': 75, 'calls': 64, 'index': 104}
+Root reason (a 'calls' refusal followed to the function that fails on its own): {'uses': 112, 'index': 131}
+  builtins at the root: akshar 33, akshar_rakh 30, kosh_len 18, likh8 11, pad8 10, vartani_aayam 7, dvaram 3
+
+Per module (pass / total), and the functions that pass:
+  ank         10/ 10  ank_gan, ank_yog, asti_sampurna, asti_viparyay_sam, asti_visham, asti_yugm, collatz_charan, fib, seemit, viparyay_ank
+  madhava      5/  5  madhava_atan, madhava_cos, madhava_pi, madhava_sin, madhava_vargmool
+  sadhan       7/  7  ank_adhik, ank_chihna, antarveshan, bhaj_urdhva, satya_tak_ank, shesh, yog_seema
+  ganit       17/ 18  adhik2, asti_abhajya, bit_gan, dvigun, ganit_seemit, ghan, ghat, kramgun, laghu2, laghuttam_samapavartya, mahattam_samapavartak, nirapeksh_mulya, trigun, vardh, varg, vargit, yog_tak
+  chandas      5/  6  asti_guru, dwi_ghat, guru_gan, matra_meru, meru
+  ganita      13/ 23  brahmagupta_kshetr, ganita_nirapeksh, ganita_paripurna_bhaj, ganita_paripurna_ghat, ganita_paripurna_gun, ganita_paripurna_kramgun, ganita_paripurna_nirapeksh, ganita_paripurna_nyun, ganita_paripurna_shesh, ganita_paripurna_yuj, ganita_vargmool, kuttaka, kuttaka_gun_shesh
+  anukram      1/  5  anukram_maap_aayam_purva
+  mala         1/  8  mala_nava
+  samanvaya    1/ 11  samanvaya_akar_ayogya
+  varna        2/ 27  avanat_sanket, unnat_sanket
+  sankhyiki    1/ 16  sankhyiki_vargmool
+  aadhar       0/  2  -
+  brihat       0/ 13  -
+  gudh         0/  2  -
+  kalana       0/  6  -
+  khand        0/ 22  -
+  nighantu     0/ 17  -
+  patra        0/  3  -
+  phal         0/ 14  -
+  roop         0/ 23  -
+  sangrah      0/ 14  -
+  shreni       0/ 14  -
+  suchi        0/ 34  -
+  vakyank      0/  6  -
+
+Every refused function, its direct reason, and the root:
+  aadhar     brihat_ank_se                      calls  brihat_shunyank           <- root: uses likh8
+  aadhar     brihat_ank_tak                     index  dst                     
+  anukram    anukram_grah_aayam_purva           calls  anukram_grah_i64          <- root: uses akshar
+  anukram    anukram_grah_i64                   uses   akshar                  
+  anukram    anukram_khip_aayam_purva           calls  anukram_khip_i64          <- root: uses akshar_rakh
+  anukram    anukram_khip_i64                   uses   akshar_rakh             
+  brihat     brihat_ank_se_laghu                uses   likh8                   
+  brihat     brihat_ank_tak_laghu               uses   pad8                    
+  brihat     brihat_asti_shunyank               uses   pad8                    
+  brihat     brihat_bhajshesh                   uses   likh8                   
+  brihat     brihat_ghatmod                     calls  brihat_ank_se_laghu       <- root: uses likh8
+  brihat     brihat_gun                         uses   likh8                   
+  brihat     brihat_nyun                        uses   pad8                    
+  brihat     brihat_pratilip                    uses   likh8                   
+  brihat     brihat_shesh                       calls  brihat_asti_shunyank      <- root: uses pad8
+  brihat     brihat_shesh_sahaya                calls  brihat_asti_shunyank      <- root: uses pad8
+  brihat     brihat_shunyank                    uses   likh8                   
+  brihat     brihat_tul                         uses   pad8                    
+  brihat     brihat_yuj                         uses   pad8                    
+  chandas    meru_mala                          index  a                       
+  ganit      ganit_yadricch                     index  s                       
+  ganita     chakravala                         index  out                     
+  ganita     ganita_janchit_bhaj                index  okp                     
+  ganita     ganita_janchit_ghat                index  okp                     
+  ganita     ganita_janchit_gun                 index  okp                     
+  ganita     ganita_janchit_kramgun             index  okp                     
+  ganita     ganita_janchit_nirapeksh           index  okp                     
+  ganita     ganita_janchit_nyun                index  okp                     
+  ganita     ganita_janchit_shesh               index  okp                     
+  ganita     ganita_janchit_yuj                 index  okp                     
+  ganita     samasa                             index  out                     
+  gudh       fnv1a                              uses   akshar                  
+  gudh       fnv1a_varna                        calls  fnv1a                     <- root: uses akshar
+  kalana     bahu_ganana                        uses   kosh_len                
+  kalana     bahu_mula                          calls  bahu_ganana               <- root: uses kosh_len
+  kalana     dvitiya_pravan                     uses   kosh_len                
+  kalana     kalana_trapiz                      uses   kosh_len                
+  kalana     pravan                             uses   kosh_len                
+  kalana     simpson                            uses   kosh_len                
+  khand      khand_aadi                         uses   akshar                  
+  khand      khand_ant                          uses   akshar                  
+  khand      khand_antah                        calls  khand_anwesh              <- root: uses akshar
+  khand      khand_anwesh                       uses   akshar                  
+  khand      khand_anwesh_akshar                uses   akshar                  
+  khand      khand_asti_sarv_ank                uses   akshar                  
+  khand      khand_avanat                       uses   akshar_rakh             
+  khand      khand_bandh                        uses   akshar_rakh             
+  khand      khand_bhed                         index  dst                     
+  khand      khand_chhid                        uses   akshar                  
+  khand      khand_gan                          calls  khand_anwesh              <- root: uses akshar
+  khand      khand_gan_akshar                   uses   akshar                  
+  khand      khand_gan_swar                     uses   akshar                  
+  khand      khand_maap                         uses   vartani_aayam           
+  khand      khand_mukt                         index  dst                     
+  khand      khand_pratilip                     uses   akshar_rakh             
+  khand      khand_pratisthap                   uses   akshar                  
+  khand      khand_sam                          calls  khand_tul                 <- root: uses akshar
+  khand      khand_tul                          uses   akshar                  
+  khand      khand_unnat                        uses   akshar_rakh             
+  khand      khand_viparyay                     uses   akshar_rakh             
+  khand      khand_yuj                          index  p                       
+  mala       mala_grah                          uses   pad8                    
+  mala       mala_grah_surakshit                uses   pad8                    
+  mala       mala_pratilip                      uses   likh8                   
+  mala       mala_purn                          uses   likh8                   
+  mala       mala_sangrah                       uses   likh8                   
+  mala       mala_sangrah_surakshit             uses   likh8                   
+  mala       mala_yog                           uses   pad8                    
+  nighantu   nighantu_antah                     calls  nighantu_anwesh           <- root: uses akshar
+  nighantu   nighantu_anwesh                    calls  nighantu_kunji_gudh       <- root: uses akshar
+  nighantu   nighantu_apanay                    calls  nighantu_anwesh           <- root: uses akshar
+  nighantu   nighantu_grah                      calls  nighantu_anwesh           <- root: uses akshar
+  nighantu   nighantu_grah_mool                 calls  nighantu_anwesh           <- root: uses akshar
+  nighantu   nighantu_khip                      calls  nighantu_anwesh           <- root: uses akshar
+  nighantu   nighantu_koshtha_likh              index  m                       
+  nighantu   nighantu_kunji_gudh                calls  fnv1a                     <- root: uses akshar
+  nighantu   nighantu_kunji_sam                 index  m                       
+  nighantu   nighantu_kunjika                   index  m                       
+  nighantu   nighantu_kunjika_ashtak            index  m                       
+  nighantu   nighantu_maap                      index  m                       
+  nighantu   nighantu_mil                       index  src                     
+  nighantu   nighantu_mulya                     index  m                       
+  nighantu   nighantu_rikta                     index  m                       
+  nighantu   nighantu_srij                      index  m                       
+  nighantu   nighantu_vardh                     index  m                       
+  patra      patra_asti                         uses   dvaram                  
+  patra      patra_likh_sarv                    uses   dvaram                  
+  patra      patra_path_sarv                    uses   dvaram                  
+  phal       phal_asti_siddhi                   index  r                       
+  phal       phal_dosh                          index  o                       
+  phal       phal_janchit_bhaj                  calls  ganita_janchit_bhaj       <- root: index okp
+  phal       phal_janchit_ghat                  calls  ganita_janchit_ghat       <- root: index okp
+  phal       phal_janchit_gun                   calls  ganita_janchit_gun        <- root: index okp
+  phal       phal_janchit_kramgun               calls  ganita_janchit_kramgun    <- root: index okp
+  phal       phal_janchit_nirapeksh             calls  ganita_janchit_nirapeksh  <- root: index okp
+  phal       phal_janchit_nyun                  calls  ganita_janchit_nyun       <- root: index okp
+  phal       phal_janchit_shesh                 calls  ganita_janchit_shesh      <- root: index okp
+  phal       phal_janchit_yuj                   calls  ganita_janchit_yuj        <- root: index okp
+  phal       phal_mulya                         index  r                       
+  phal       phal_mulya_va                      index  r                       
+  phal       phal_se_siddhi                     index  ok                      
+  phal       phal_siddhi                        index  o                       
+  roop       roop_ank                           uses   akshar_rakh             
+  roop       roop_ank_aadhar                    uses   akshar_rakh             
+  roop       roop_ank_aadhar_saral              calls  roop_ank_aadhar           <- root: uses akshar_rakh
+  roop       roop_ank_dhvaj                     calls  roop_ank_aadhar           <- root: uses akshar_rakh
+  roop       roop_ank_pre                       calls  roop_ank_dhvaj            <- root: uses akshar_rakh
+  roop       roop_asht                          calls  roop_ank_aadhar_saral     <- root: uses akshar_rakh
+  roop       roop_chinhit                       uses   akshar_rakh             
+  roop       roop_dash                          calls  roop_ank_aadhar_saral     <- root: uses akshar_rakh
+  roop       roop_dwi                           calls  roop_ank_aadhar_saral     <- root: uses akshar_rakh
+  roop       roop_pad_dakshin                   uses   akshar_rakh             
+  roop       roop_pad_madhya                    uses   akshar_rakh             
+  roop       roop_pad_vam                       uses   akshar_rakh             
+  roop       roop_shodash                       calls  roop_ank_aadhar_saral     <- root: uses akshar_rakh
+  roop       roop_shodash_unnat                 calls  roop_ank_dhvaj            <- root: uses akshar_rakh
+  roop       roop_sign_akshar                   uses   akshar_rakh             
+  roop       roop_sthir                         calls  roop_sthir_mool           <- root: uses akshar_rakh
+  roop       roop_sthir_chinhit                 calls  roop_sthir_mool           <- root: uses akshar_rakh
+  roop       roop_sthir_mool                    uses   akshar_rakh             
+  roop       roop_varg                          calls  roop_varg_bharatiya       <- root: uses akshar_rakh
+  roop       roop_varg_ank                      uses   akshar_rakh             
+  roop       roop_varg_bharatiya                calls  roop_varg_sahaya          <- root: uses akshar_rakh
+  roop       roop_varg_sahaya                   uses   akshar_rakh             
+  roop       roop_varg_vishwa                   calls  roop_varg_sahaya          <- root: uses akshar_rakh
+  samanvaya  adish_gunan                        uses   kosh_len                
+  samanvaya  ekaka_matrika                      index  out                     
+  samanvaya  karna_yog                          index  a                       
+  samanvaya  matrika_gunana                     index  a                       
+  samanvaya  matrika_yoga                       uses   kosh_len                
+  samanvaya  rekha_manak                        index  a                       
+  samanvaya  saranik2                           index  a                       
+  samanvaya  saranik3                           index  a                       
+  samanvaya  skalar                             uses   kosh_len                
+  samanvaya  vivartana                          index  out                     
+  sangrah    rakh_antah                         calls  nighantu_antah            <- root: uses akshar
+  sangrah    rakh_apanay                        calls  nighantu_apanay           <- root: uses akshar
+  sangrah    rakh_asti_upasamuh                 index  a                       
+  sangrah    rakh_bhed                          index  out                     
+  sangrah    rakh_maap                          calls  nighantu_maap             <- root: index m
+  sangrah    rakh_rikta                         calls  nighantu_rikta            <- root: index m
+  sangrah    rakh_sam                           calls  rakh_asti_upasamuh        <- root: index a
+  sangrah    rakh_sampat                        index  out                     
+  sangrah    rakh_samroop_diff                  index  out                     
+  sangrah    rakh_sangam                        index  out                     
+  sangrah    rakh_srij                          calls  nighantu_srij             <- root: index m
+  sangrah    rakh_tak_mala                      index  s                       
+  sangrah    rakh_vardh                         calls  nighantu_vardh            <- root: index m
+  sangrah    rakh_yuj                           calls  nighantu_khip             <- root: uses akshar
+  sankhyiki  adhikatama                         uses   kosh_len                
+  sankhyiki  bindu_gunan                        uses   kosh_len                
+  sankhyiki  laghutama                          uses   kosh_len                
+  sankhyiki  madhya                             uses   kosh_len                
+  sankhyiki  manak                              calls  bindu_gunan               <- root: uses kosh_len
+  sankhyiki  prasaran                           uses   kosh_len                
+  sankhyiki  purna_adhikatama                   index  xs                      
+  sankhyiki  purna_laghutama                    index  xs                      
+  sankhyiki  purna_madhya                       calls  purna_yoga                <- root: index xs
+  sankhyiki  purna_prasaran                     calls  purna_madhya              <- root: index xs
+  sankhyiki  purna_vyapti                       calls  purna_adhikatama          <- root: index xs
+  sankhyiki  purna_yoga                         index  xs                      
+  sankhyiki  vichalan                           calls  prasaran                  <- root: uses kosh_len
+  sankhyiki  vyapti                             calls  adhikatama                <- root: uses kosh_len
+  sankhyiki  yoga                               uses   kosh_len                
+  shreni     adhik                              index  a                       
+  shreni     anwesh_sarak                       index  a                       
+  shreni     asti_sorted                        index  a                       
+  shreni     budbud_shreni                      index  a                       
+  shreni     dwi_anwesh                         index  a                       
+  shreni     gan                                index  a                       
+  shreni     laghu                              index  a                       
+  shreni     mil_shreni                         calls  mil_shreni_punar          <- root: index tmp
+  shreni     mil_shreni_punar                   index  tmp                     
+  shreni     nivesh_shreni                      index  arr                     
+  shreni     shankh_shreni                      index  a                       
+  shreni     vinimay                            index  a                       
+  shreni     viparyay_mala                      calls  vinimay                   <- root: index a
+  shreni     yog                                index  a                       
+  suchi      avali_antah                        index  qu                      
+  suchi      avali_avalok                       index  qu                      
+  suchi      avali_maap                         index  q                       
+  suchi      avali_nishkas                      index  qu                      
+  suchi      avali_pravesh                      index  qu                      
+  suchi      avali_rikta                        index  q                       
+  suchi      avali_shunya                       index  q                       
+  suchi      avali_srij                         index  q                       
+  suchi      avali_tak_mala                     index  qu                      
+  suchi      chay_apanay                        index  lst                     
+  suchi      chay_avalok                        index  lst                     
+  suchi      chay_khip                          calls  suchi_khip                <- root: index lst
+  suchi      chay_rikta                         index  l                       
+  suchi      suchi_adhik                        index  l                       
+  suchi      suchi_antah                        index  lst                     
+  suchi      suchi_anwesh                       calls  anwesh_sarak              <- root: index a
+  suchi      suchi_apanay                       index  lst                     
+  suchi      suchi_asti_sorted                  calls  asti_sorted               <- root: index a
+  suchi      suchi_dwi_anwesh                   calls  dwi_anwesh                <- root: index a
+  suchi      suchi_gan                          calls  gan                       <- root: index a
+  suchi      suchi_grah                         index  lst                     
+  suchi      suchi_khip                         index  lst                     
+  suchi      suchi_kramank                      index  lst                     
+  suchi      suchi_laghu                        index  l                       
+  suchi      suchi_maap                         index  l                       
+  suchi      suchi_nivesh                       index  lst                     
+  suchi      suchi_rikta                        index  l                       
+  suchi      suchi_sangrah                      index  lst                     
+  suchi      suchi_shreni                       calls  mil_shreni                <- root: index tmp
+  suchi      suchi_srij                         index  l                       
+  suchi      suchi_vardh                        index  lst                     
+  suchi      suchi_vinimay                      index  lst                     
+  suchi      suchi_viparyay                     index  lst                     
+  suchi      suchi_yog                          calls  yog                       <- root: index a
+  vakyank    ank_tak_aadhar_varna               index  dst                     
+  vakyank    ank_tak_varna                      index  dst                     
+  vakyank    pad_vam                            index  dst                     
+  vakyank    varna_tak_ank                      index  okp                     
+  vakyank    varna_tak_ank_aadhar               index  okp                     
+  vakyank    varna_tak_dashm                    index  okp                     
+  varna      akshar_sanket                      uses   akshar                  
+  varna      anwesh_akshar                      uses   vartani_aayam           
+  varna      asti_akshar_akshar                 uses   akshar                  
+  varna      asti_ank_akshar                    uses   akshar                  
+  varna      asti_avakash_akshar                uses   akshar                  
+  varna      asti_avanat_akshar                 uses   akshar                  
+  varna      asti_sarv_ank                      uses   vartani_aayam           
+  varna      asti_unnat_akshar                  uses   akshar                  
+  varna      gan_akshar                         uses   vartani_aayam           
+  varna      gan_swar                           uses   vartani_aayam           
+  varna      varna_aadi                         index  s                       
+  varna      varna_ant                          index  s                       
+  varna      varna_antah                        calls  varna_anwesh              <- root: index h
+  varna      varna_anwesh                       index  h                       
+  varna      varna_avanat                       index  dst                     
+  varna      varna_bhed                         index  dst                     
+  varna      varna_chhid                        index  s                       
+  varna      varna_gan                          calls  varna_anwesh              <- root: index h
+  varna      varna_maap                         uses   vartani_aayam           
+  varna      varna_pratisthap                   index  r                       
+  varna      varna_sam                          uses   vartani_aayam           
+  varna      varna_tul                          index  x                       
+  varna      varna_unnat                        index  dst                     
+  varna      varna_viparyay                     index  dst                     
+  varna      varna_yuj                          index  p                       
