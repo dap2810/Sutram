@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v273) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v274) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -400,6 +400,18 @@ r54_builtin_arity_table:
     r75_msg_neg_lit db "Sutram Error [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati", 10
     db "Sanket: nirmmita(n) - n shunyam va dhanatmakam bhavet", 10, 0
     r75_msg_neg_run db "Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati", 10, 0
+    ; R77/R78: p = nirmmita(BYTES), p[IDX] with a constant IDX past the end
+    r78_msg_a db "Sutram Error [E_NIRMMITA_SEEMA]: pankti ", 0
+    r78_msg_b db " - ", 0
+    r78_msg_c db " nirmmita(", 0
+    r78_msg_d db ") bahih", 10, "Sanket: nirmmita bhaita-sankhyam ganayati, ", 0
+    r78_msg_e db "[i] ashta-bhaita-ekakaih: ", 0
+    r78_msg_f db "] hetu nirmmita(", 0
+    r78_msg_g db ") avashyakam", 10, 0
+    r78_msg_neg db "] - rnatmakah ankah", 10, 0
+    r78_s_lb db "[", 0
+    r78_rb db "]", 0
+    r78_minus db "-", 0
     r73_mark_names:                 ; R73: "0m01".."0m32", the hidden mark of each block depth
 %assign r73_i 1
 %rep R73_MAXDEPTH
@@ -1028,6 +1040,11 @@ section .bss
     r73_fflow     resq 64                 ; r73_flown at each prakriya's entry
     r73_maxmode   resq 1                  ; 1 while a loop is re-checked: a name's taint is its largest
     r73_late      resq 256                ; R74: names given a scratch address - none may be a module vitti
+    r78_ents      resq 6 * 4096           ; R78: p = nirmmita(CONST): name, function, R4 index, bytes, reassigned, dead
+    r78_n         resq 1
+    r78_fn        resq 1                  ; the function being parsed (a serial)
+    r78_next      resq 1
+    r78_fstk      resq 64
     r73_laten     resq 1
     parse_expr_depth  resq 1 ; R17 R6: nesting depth of the expression being parsed
     orig_rsp    resq 1      ; original stack ptr at _start (for envp scan)
@@ -7165,6 +7182,9 @@ parse_function:
     call r55_validate_prototypes
     mov qword [rel r4_seen_count], 0   ; R4: mukhya's own name scope
     mov qword [rel r4_seen_base], 0
+    inc qword [rel r78_next]           ; R78: mukhya is a function of its own
+    mov rax, [rel r78_next]
+    mov [rel r78_fn], rax
     cmp qword [rel r28_object_mode], 0 ; R28: an object may be a module with no mukhya
     je .r28_need_mukhya
     call cur_tok
@@ -8018,6 +8038,292 @@ r75_const:
     mov rax, rcx
     ret
 
+; ---------------------------------------------------------------- R77/R78
+; The byte-versus-qword trap: nirmmita(n) gives n BYTES; p[i] is the 8 bytes at p + 8*i.
+; A name declared `vitti p = nirmmita(CONST)` and never assigned again in its function points
+; at the start of exactly CONST bytes, so p[i] can be checked: a constant i past the end is a
+; compile error (E_NIRMMITA_SEEMA); a computed i gets the mala bounds check against CONST / 8.
+; Only such names: an address computed from p (p + 8), a parameter, or any name assigned
+; again is a bare address and stays unchecked (LANGUAGE-REFERENCE 6c).
+; Entry: [0] name, [8] function serial, [16] R4 index of the declaration, [24] bytes,
+;        [32] reassigned, [40] dead.
+
+; r78_kill_name(rdi = name): a new binding ends the older ones. Preserves every register.
+r78_kill_name:
+    push rax
+    push rbx
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r12
+    mov r12, rdi
+    mov rbx, [rel r78_n]
+.next:
+    test rbx, rbx
+    jz .out
+    dec rbx
+    imul rax, rbx, 48
+    lea rcx, [rel r78_ents]
+    add rax, rcx
+    mov rcx, [rel r78_fn]
+    cmp [rax+8], rcx
+    jne .next
+    cmp qword [rax+40], 0
+    jne .next
+    push rax
+    mov rdi, [rax]
+    mov rsi, r12
+    call strcmp
+    test rax, rax
+    pop rax
+    jnz .next
+    mov qword [rax+40], 1
+    jmp .next
+.out:
+    pop r12
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rbx
+    pop rax
+    ret
+
+; r78_note_decl(rdi = name, rsi = initializer). Preserves every register.
+r78_note_decl:
+    push rax
+    push rbx
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r12
+    push r13
+    mov r12, rdi
+    test rsi, rsi
+    jz .out
+    cmp qword [rsi], AST_CALL
+    jne .out
+    mov rax, [rsi+8]
+    cmp rax, BN_NIRMRITA
+    je .nirm
+    cmp rax, BN_NIRM_SCRATCH
+    jne .out
+.nirm:
+    cmp qword [rsi+16], 1
+    jne .out
+    mov rdi, [rsi+24]
+    call r75_const
+    test rdx, rdx
+    jz .out                        ; a computed size: not known here
+    test rax, rax
+    js .out
+    mov r13, rax                   ; bytes
+    mov rbx, [rel r4_seen_count]   ; the declaration: the name's latest R4 entry
+.scan:
+    cmp rbx, [rel r4_seen_base]
+    jbe .out
+    dec rbx
+    lea rax, [rel r4_seen]
+    mov rsi, [rax + rbx*8]
+    mov rdi, r12
+    call strcmp
+    test rax, rax
+    jnz .scan
+    mov rcx, [rel r78_n]
+    cmp rcx, 4096
+    jae .out                       ; full: the name simply stays unchecked
+    imul rax, rcx, 48
+    lea rdx, [rel r78_ents]
+    add rax, rdx
+    mov [rax], r12
+    mov rdx, [rel r78_fn]
+    mov [rax+8], rdx
+    mov [rax+16], rbx
+    mov [rax+24], r13
+    mov qword [rax+32], 0
+    mov qword [rax+40], 0
+    inc qword [rel r78_n]
+.out:
+    pop r13
+    pop r12
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rbx
+    pop rax
+    ret
+
+; r78_find(rdi = name) -> rax = the live entry of that name in scope, or 0. Preserves rbx, r12, r13.
+r78_find:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    mov rbx, [rel r78_n]
+.next:
+    test rbx, rbx
+    jz .none
+    dec rbx
+    imul r13, rbx, 48
+    lea rax, [rel r78_ents]
+    add r13, rax
+    mov rax, [rel r78_fn]
+    cmp [r13+8], rax
+    jne .next
+    cmp qword [r13+40], 0
+    jne .next
+    mov rax, [r13+16]
+    cmp rax, [rel r4_seen_base]
+    jb .next
+    cmp rax, [rel r4_seen_count]
+    jae .next                      ; its block has closed
+    mov rdi, [r13]
+    mov rsi, r12
+    call strcmp
+    test rax, rax
+    jnz .next
+    mov rax, [r13+16]
+    lea rcx, [rel r4_seen]
+    mov rsi, [rcx + rax*8]
+    mov rdi, r12
+    call strcmp
+    test rax, rax
+    jnz .next                      ; that R4 slot now holds another name
+    mov rax, r13
+    jmp .out
+.none:
+    xor eax, eax
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r78_note_assign(rdi = name): p = ... forgets p's size for the whole function.
+r78_note_assign:
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    call r78_find
+    test rax, rax
+    jz .out
+    mov qword [rax+32], 1
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r78_raw_len(rdi = AST_INDEX) -> rax = -1: no check; else the number of whole cells, and
+; `push imm32 cells` has been emitted for the bounds check. A constant index is decided here:
+; in range -> -1 (nothing to check at run time); out of range -> E_NIRMMITA_SEEMA.
+r78_raw_len:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, [rbx+24]              ; the entry
+    test r12, r12
+    jz .none
+    cmp qword [r12+32], 0
+    jne .none                      ; p is assigned again somewhere in the function
+    mov r13, [r12+24]
+    shr r13, 3                     ; whole cells
+    mov rdi, [rbx+16]
+    call r75_const
+    test rdx, rdx
+    jz .runtime
+    test rax, rax
+    js .oob
+    cmp rax, r13
+    jae .oob
+    jmp .none                      ; a constant in range
+.runtime:
+    cmp r13, 0x7fffffff
+    ja .none
+    mov dil, 0x68                  ; push imm32 cells
+    call emit_byte
+    mov rdi, r13
+    call emit_u32
+    mov rax, r13
+    jmp .out
+.none:
+    mov rax, -1
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.oob:
+    mov r13, rax                   ; the index
+    lea rdi, [rel r78_msg_a]
+    call print_str_z
+    mov rdi, [rbx+32]
+    call r51_origin_line_col
+    test rax, rax
+    jz .noloc
+    push rdx
+    call mg_print_uint
+    lea rdi, [rel msg_err_colon]
+    call print_str_z
+    pop rax
+    call mg_print_uint
+.noloc:
+    lea rdi, [rel r78_msg_b]
+    call print_str_z
+    mov rdi, [r12]
+    call print_str_z
+    lea rdi, [rel r78_s_lb]
+    call print_str_z
+    test r13, r13
+    js .neg
+    mov rax, r13
+    call mg_print_uint
+    lea rdi, [rel r78_rb]
+    call print_str_z
+    lea rdi, [rel r78_msg_c]
+    call print_str_z
+    mov rax, [r12+24]
+    call mg_print_uint
+    lea rdi, [rel r78_msg_d]
+    call print_str_z
+    mov rdi, [r12]
+    call print_str_z
+    lea rdi, [rel r78_msg_e]
+    call print_str_z
+    mov rdi, [r12]
+    call print_str_z
+    lea rdi, [rel r78_s_lb]
+    call print_str_z
+    mov rax, r13
+    call mg_print_uint
+    lea rdi, [rel r78_msg_f]
+    call print_str_z
+    lea rax, [r13 + 1]
+    shl rax, 3
+    call mg_print_uint
+    lea rdi, [rel r78_msg_g]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.neg:
+    lea rdi, [rel r78_minus]
+    call print_str_z
+    mov rax, r13
+    neg rax
+    call mg_print_uint
+    lea rdi, [rel r78_msg_neg]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+
 r73_fail_var:
     lea rdi, [rel r73_msg_escape_var]
     jmp capacity_fail
@@ -8057,6 +8363,18 @@ r73_func_enter:
     mov [rax + rcx*8], rdx
     pop rdx
 .nf:
+    push rdx
+    mov rcx, [rel r73_fsn]
+    cmp rcx, 64
+    jae .nf2
+    lea rax, [rel r78_fstk]
+    mov rdx, [rel r78_fn]
+    mov [rax + rcx*8], rdx         ; R78: the enclosing function's serial
+.nf2:
+    inc qword [rel r78_next]
+    mov rdx, [rel r78_next]
+    mov [rel r78_fn], rdx
+    pop rdx
     inc qword [rel r73_fsn]
     mov qword [rel r72_mdepth], 0
     mov rax, [rel r73_loopn]
@@ -8088,6 +8406,10 @@ r73_func_leave:
     lea rax, [rel r73_fflow]
     mov rax, [rax + rcx*8]
     mov [rel r73_flown], rax       ; R74: a prakriya's flows are its own
+    mov rcx, [rel r73_fsn]
+    lea rax, [rel r78_fstk]
+    mov rax, [rax + rcx*8]
+    mov [rel r78_fn], rax          ; R78
 .r:
     pop rcx
     pop rax
@@ -8288,6 +8610,16 @@ r73_note_decl:
 r73_check_stmt:
     test rax, rax
     jz .ret
+    cmp qword [rax], AST_ASSIGN    ; R78: an assignment to p forgets p's size
+    jne .r78_no
+    mov rcx, [rax+8]
+    cmp qword [rcx], AST_VAR
+    jne .r78_no
+    push rax
+    mov rdi, [rcx+8]
+    call r78_note_assign
+    pop rax
+.r78_no:
     cmp qword [rel r73_symn], 0    ; nothing tainted has ever been seen, and no block
     jne .go
     cmp qword [rel r72_mdepth], 0
@@ -9145,6 +9477,7 @@ r7_check_arity:
 ; error: before R7 the second `vitti x = 2` got a fresh slot while every later
 ; read still used the first, so x silently kept its old value. Preserves regs.
 r7_declare_new:
+    call r78_kill_name             ; R78: a new binding of the name ends any older one's size
     push rax
     call r4_is_seen
     test rax,rax
@@ -10055,6 +10388,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     push rax
     mov rdi, rbx                ; R73: the binding's taint (Step 4)
     mov rsi, rcx
+    call r78_note_decl          ; R78: p = nirmmita(CONST) - p's size is known
     call r73_note_decl
     pop rax
     call maybe_semi
@@ -12670,6 +13004,18 @@ parse_primary_inner:
     mov qword [rax], AST_INDEX
     mov [rax+8], rdx          ; name ptr
     mov [rax+16], rcx         ; index node
+    push rax                  ; R78: p's known size, if p = nirmmita(CONST); the ']' for errors
+    mov rdi, rdx
+    call r78_find
+    mov rcx, [rsp]
+    mov [rcx+24], rax
+    mov rax, [rel token_idx]
+    dec rax
+    imul rax, rax, TOKEN_SIZE
+    lea rdx, [rel token_arr]
+    mov rax, [rdx + rax + 32]
+    mov [rcx+32], rax
+    pop rax
     pop rbx
     ret
 
@@ -14566,7 +14912,14 @@ gen_stmt:
     call is_array_var
     mov r12, rax
     test r12, r12
-    jz .gs_ai_no_len
+    jnz .r78_gs_pankti
+    mov rdi, [rbx+8]
+    call r78_raw_len         ; R78: p = nirmmita(CONST) - check p[i] = v against it
+    test rax, rax
+    js .gs_ai_no_len
+    mov r12, 1
+    jmp .gs_ai_no_len
+.r78_gs_pankti:
     mov dil, 0x48             ; mov rcx,[rax-8]
     call emit_byte
     mov dil, 0x8B
@@ -16372,7 +16725,14 @@ gen_expr:
     call is_array_var
     mov r12, rax             ; 1=fixed pankti, 0=raw pointer
     test r12, r12
-    jz .ge_index_no_len
+    jnz .r78_ge_pankti
+    mov rdi, rbx
+    call r78_raw_len         ; R78: p = nirmmita(CONST) - check p[i] against it
+    test rax, rax
+    js .ge_index_no_len
+    mov r12, 1
+    jmp .ge_index_no_len
+.r78_ge_pankti:
     mov dil, 0x48
     call emit_byte
     mov dil, 0x8B

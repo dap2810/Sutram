@@ -1,0 +1,8 @@
+# R77/R78: the same loop with the size written the right way - nirmmita(10 * 8) - runs. Prints 9.
+mukhya()
+    vitti p = nirmmita(10 * 8)
+    vitti i = 0
+    yavat (i < 10)
+        p[i] = i
+        i = i + 1
+    likha(p[9], "\n")

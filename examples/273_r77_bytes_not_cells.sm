@@ -1,0 +1,5 @@
+# R77/R78: nirmmita counts BYTES; p[i] counts 8-byte cells. nirmmita(10) holds one whole cell, so
+# p[9] is refused when compiled - E_NIRMMITA_SEEMA - and the message says why and what to write.
+mukhya()
+    vitti p = nirmmita(10)
+    p[9] = 1

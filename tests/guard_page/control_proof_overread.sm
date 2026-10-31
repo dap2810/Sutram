@@ -1,8 +1,12 @@
 # guard-page control 2 (R65): the property proof "bigint divmod reconstruct"
 # before R65 allocated 8 cells and then compared 16. A READ past the block, no
 # write at all. Under GUARD_PAGES the read of cell 8 must fault.
+# R77: since v274 the language itself refuses this read when the size is a written number
+# (`nirmmita(8 * 8)`: mala ank seema atikram, exit 1), before the guard page is reached. The size is
+# computed here so that this stays a control of the GUARD PAGE, which is what it is for.
 mukhya() {
-    vitti a = nirmmita(8 * 8)
+    vitti cells = 8
+    vitti a = nirmmita(cells * 8)
     vitti s = 0
     vitti i = 0
     yavat (i < 16) {

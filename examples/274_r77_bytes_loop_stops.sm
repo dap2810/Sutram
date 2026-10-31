@@ -1,0 +1,10 @@
+# R77/R78: the student's loop - nirmmita(10), then p[i] for i < 10 (80 bytes into 10). The index is
+# computed, so it is checked when the program runs: it stops at p[1] with the mala bounds error, exit 1,
+# instead of writing past the block. (Before v274 it ran and wrote 70 bytes that were not its own.)
+mukhya()
+    vitti p = nirmmita(10)
+    vitti i = 0
+    yavat (i < 10)
+        p[i] = i
+        i = i + 1
+    likha(p[0])

@@ -254,6 +254,10 @@ r26_parse_handler:
     cmp qword [rax], TOK_IDENT
     jne parse_error
     mov r12, [rax + 8]              ; the name
+    push rax
+    mov rdi, r12
+    call r78_note_assign            ; R78: the handler assigns its name
+    pop rax
     call advance_tok
     call cur_tok
     cmp qword [rax], TOK_OPERATOR
