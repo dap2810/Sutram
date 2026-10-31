@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v280) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v281) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -425,6 +425,7 @@ r54_builtin_arity_table:
     r87_hdr db ": Sutram Error [E_DASHAM_VITTI]: ", 0
     r87_txt db "dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta", 10, 0
     r87_hint db "Sanket: vitti purnankanam eva; dashamaya 'dasham' likhyatam: dasham f = 3.5", 10, 0
+    r161_narrow_msg db "Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati",10,0
     ; mov rdx,[r8-40] ; mov [rax],rdx ; mov rdx,[r8-32] ; mov [rax+8],rdx ; mov rdx,[r8-24] ;
     ; mov [rax+16],rdx ; mov [rax+24],r9 ; mov [rax+32],r11 ; lea r10,[rax+40]
     r82_grow_bytes db 0x49,0x8B,0x50,0xD8, 0x48,0x89,0x10, 0x49,0x8B,0x50,0xE0, 0x48,0x89,0x50,0x08
@@ -24194,7 +24195,10 @@ emit_i64_to_f64_rax:
     ret
 
 emit_f64_to_i64_rax:
-    ; Raw binary64 bits in runtime RAX -> truncating signed integer in RAX.
+    ; Exact-only conversion: reject non-integral, unordered and out-of-range
+    ; values before publishing the converted integer. Uses XMM0/XMM1 scratch.
+    push r12
+    push r13
     mov dil, 0x66
     call emit_byte
     mov dil, 0x48
@@ -24215,6 +24219,55 @@ emit_f64_to_i64_rax:
     call emit_byte
     mov dil, 0xC0            ; cvttsd2si rax,xmm0
     call emit_byte
+    mov dil, 0xF2            ; cvtsi2sd xmm1,rax
+    call emit_byte
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2A
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x66            ; ucomisd xmm0,xmm1
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x2E
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    mov dil, 0x0F            ; jp failure (NaN)
+    call emit_byte
+    mov dil, 0x8A
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov dil, 0x0F            ; je success (exact round-trip)
+    call emit_byte
+    mov dil, 0x84
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov rdi, r12
+    call r73_patch32
+    lea rcx, [rel r161_narrow_msg]
+    call r80_emit_likha_str
+    mov dil, 0xB8            ; exit(1) through target-specific emitter
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov rdi, r13
+    call r73_patch32
+    pop r13
+    pop r12
     ret
 
 ; ============================================================

@@ -1,7 +1,8 @@
-# R87: a written fraction stored in a vitti is refused (E_DASHAM_VITTI); a computed dasham
-# value stored in a vitti still converts, truncating toward zero - which this pins.
+# R87: a written fraction stored in a vitti is refused (E_DASHAM_VITTI). R92 (v281): a computed
+# dasham stored in a vitti must be a whole number - 2.0 converts to 2; 2.75 would stop the
+# program with E_DASHAM_VITTI (up to v280 it truncated toward zero, silently).
 mukhya() {
-    dasham x = 2.75
+    dasham x = 2.0
     vitti a = x
     vitti b = 0.0 - x
     dasham c = 2 + 0.5

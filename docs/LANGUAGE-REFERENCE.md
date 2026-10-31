@@ -606,13 +606,23 @@ mukhya() {
 ```
 
 A **written** fraction (or a written float too large for a `vitti`) stored in a `vitti` — in a declaration
-or an assignment — is refused with `E_DASHAM_VITTI` at the number. A **computed** `dasham` value stored
-in a `vitti` is still converted, **truncating toward zero**: with `dasham x = 2.75`, `vitti a = x` is 2 and
-`vitti b = 0.0 - x` is −2 (`examples/r71/conversion.sm`). The library relies on this (`madhava`:
-`vitti k = x / pi2`). Up to v278 `vitti f = 3.5` silently held 3.
+or an assignment — is refused with `E_DASHAM_VITTI` at the number. Up to v278 `vitti f = 3.5` silently held 3.
 
-Not covered by the refusal, and still silent: a written fraction pushed into or stored in an integer
-`kosh` (`kosh_push(a, 2.9)` stores 2 — `examples/112_t18_kosh_integer_conversion.sm`).
+**A computed `dasham` stored as a whole number must be whole (v281).** When the program runs, a `dasham`
+value stored in a `vitti`, pushed into or stored in an integer `kosh`, passed as an integer argument, or
+returned from `mukhya` is checked: a whole number that fits converts exactly (`dasham x = 2.0; vitti a = x`
+is 2, and `-0.0` is 0); anything else — a fraction, `inf`, `-inf`, NaN, or a value beyond the `vitti`
+range — stops the program:
+
+```
+Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati
+```
+
+exit 1, before the value is stored (`examples/112_t18_kosh_integer_conversion.sm`,
+`examples/295_r92_computed_fraction_into_vitti.sm`). Up to v280 the value was truncated toward zero,
+silently (`dasham d = 3.7; vitti i = d` gave 3). The message does not yet give the line. To take the whole
+part of a `dasham` on purpose, round it yourself first — the library does: `madhava_sin` computes
+`trunc(x / 2PI)` as a `dasham` with `(m + 2^52) - 2^52`, and `roop_sthir` the same way.
 
 **How `likha` prints a `dasham` (v279).** Six decimal places, rounded, for every value below 2⁶³
 (9.2×10¹⁸) — `10000000000000.0` prints `10000000000000.000000`. From 2⁶³ up it prints

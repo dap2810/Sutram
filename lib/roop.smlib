@@ -532,6 +532,14 @@ prakriya roop_sthir_mool(dasham x, places, always_sign, out) {
         akshar_rakh(dst, 0, 0)
         nivartanam 0
     }
+    # R92: a dasham stored in a vitti must be a whole number (E_DASHAM_VITTI otherwise), so
+    # take the whole part here: (s + 2^52) - 2^52 rounds s >= 0 to a whole number; one step
+    # down if it rounded up. From 2^52 every dasham is already whole.
+    yadi (scaled < 4503599627370496.0) {
+        dasham whole = (scaled + 4503599627370496.0) - 4503599627370496.0
+        yadi (whole > scaled) { whole = whole - 1.0 }
+        scaled = whole
+    }
     rounded = scaled
     intpart = rounded / p10i
     fracpart = rounded % p10i

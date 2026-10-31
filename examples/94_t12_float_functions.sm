@@ -1,5 +1,5 @@
 # T12 function interoperability: typed dasham parameters, forward-call return
-# inference, integer promotion at calls, mixed returns, and float->int assignment.
+# inference, integer promotion at calls, mixed returns, and float->int assignment of a whole value.
 
 prakriya wrapper(dasham x) {
     nivartanam twice(x)
@@ -33,6 +33,6 @@ mukhya() {
     likha(choose(1))
     likha(choose(0))
 
-    vitti whole = blend(1.0, 4.0)
+    vitti whole = blend(1.0, 3.0)        # 2.0: a whole dasham converts; 2.5 would stop (v281)
     likha(whole)
 }

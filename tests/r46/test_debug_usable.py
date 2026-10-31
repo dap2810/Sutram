@@ -16,10 +16,11 @@
   7. R49: the flags repeat, in any order: --debug=yoga --debug=i --debug-from=11 is --debug=yoga,i@11; a
      malformed --debug-from is the usage; the environment is still read after the extra flags are dropped.
   6. A WRONG ANSWER IS FINDABLE: madhava_sin with the sign error that survives every library proof
-     (PROJECT-MASTER; here line 10 is `y = y - pi2` where it should be `y + pi2`). The program prints a wrong
-     sin(-4.0) - 0.757068 for 0.756802, off in the fourth digit. Compiled with --debug=y@5-12 the trace shows y
-     = -4.000000 before line 10 and y = -10.283185 at line 12: outside [-pi, pi], the first wrong value, made
-     by line 10. With the sign corrected, the same trace shows y = 2.283185 and the program prints 0.756802.
+     (PROJECT-MASTER; here line 21 is `y = y - pi2` where it should be `y + pi2` - line 10 of sin_galat, after
+     an 11-line helper, R92). The program prints a wrong sin(-4.0) - 0.757068 for 0.756802, off in the fourth
+     digit. Compiled with --debug=y@16-23 the trace shows y = -4.000000 before line 21 and y = -10.283185 at
+     line 23: outside [-pi, pi], the first wrong value, made by line 21. With the sign corrected, the same
+     trace shows y = 2.283185 and the program prints 0.756802.
 
 No network; writes only to a temporary directory.
 usage: python3 -B tests/r46/test_debug_usable.py [--compiler ./sutram_compiler]
@@ -51,10 +52,25 @@ PROG = ('prakriya dviguna(n) {\n'          # 1
         '    likha(yoga)\n'                 # 14
         '}\n')
 
-SIN = ('prakriya sin_galat(dasham x) {\n'                  # 1
+SIN = (
+       # R92: a fraction stored in a vitti stops the program (E_DASHAM_VITTI), so the whole
+       # part of x / 2pi is taken as a dasham - defined first, so every
+       # line of sin_galat moved down by 11 (line 10 of the old program is line 21).
+       'prakriya purna_bhag(dasham m) {\n'
+       '    dasham a = m\n'
+       '    yadi (a < 0.0) { a = 0.0 - a }\n'
+       '    yadi (a < 4503599627370496.0) {\n'
+       '        dasham w = (a + 4503599627370496.0) - 4503599627370496.0\n'
+       '        yadi (w > a) { w = w - 1.0 }\n'
+       '        a = w\n'
+       '    }\n'
+       '    yadi (m < 0.0) { a = 0.0 - a }\n'
+       '    nivartanam a\n'
+       '}\n'
+       'prakriya sin_galat(dasham x) {\n'                  # 1
        '    dasham pi2 = 6.283185307179586\n'               # 2
        '    dasham pi = 3.141592653589793\n'                # 3
-       '    vitti k = x / pi2\n'                            # 4
+       '    dasham k = purna_bhag(x / pi2)\n'               # 4  (R92: was vitti k = x / pi2)
        '    dasham y = x - k * pi2\n'                       # 5
        '    yadi (y > pi) {\n'                              # 6
        '        y = y - pi2\n'                              # 7
@@ -178,13 +194,13 @@ def main(argv) -> int:
         rc, out = build(bad, None)
         check(rc == 0 and out == '0.757068\n', f'the sign error gives a wrong sin(-4.0): {out.strip()!r} '
               f'(true: 0.756802)')
-        rc, out = build(bad, '--debug=y@5-12')
-        want = ('[shodhan] pankti 6\n    y = -4.000000\n[shodhan] pankti 9\n    y = -4.000000\n'
-                '[shodhan] pankti 10\n    y = -4.000000\n[shodhan] pankti 12\n    y = -10.283185\n0.757068\n')
+        rc, out = build(bad, '--debug=y@16-23')
+        want = ('[shodhan] pankti 17\n    y = -4.000000\n[shodhan] pankti 20\n    y = -4.000000\n'
+                '[shodhan] pankti 21\n    y = -4.000000\n[shodhan] pankti 23\n    y = -10.283185\n0.757068\n')
         trace = out.split('[shodhan] samapti')[0] if rc == 0 else ''
-        check(trace == want, 'the trace finds it: y = -4.000000 before line 10, y = -10.283185 (outside [-pi, pi]) '
-              f'at line 12 - line 10 made the first wrong value (got {trace!r:.200})')
-        rc, out = build(good, '--debug=y@5-12')
+        check(trace == want, 'the trace finds it: y = -4.000000 before line 21, y = -10.283185 (outside [-pi, pi]) '
+              f'at line 23 - line 21 made the first wrong value (got {trace!r:.200})')
+        rc, out = build(good, '--debug=y@16-23')
         trace = out.split('[shodhan] samapti')[0] if rc == 0 else ''
         check('    y = 2.283185\n' in trace and trace.endswith('0.756802\n'),
               f'with the sign corrected: y = 2.283185 and sin(-4.0) = 0.756802 (got {trace[-60:]!r})')

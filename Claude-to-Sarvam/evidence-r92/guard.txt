@@ -1,0 +1,144 @@
+# R92 WS2. Step 1: the R161 patch alone (v280 + patch, library and programs unchanged), every program compiled by
+# origin/main's v280 and by the patched compiler, every DIFFER run with both.
+## 671 programs: 517 byte-identical, 128 refused identically, 26 DIFFER, 0 new
+SAME    examples/102_ast_multimodule_capacity.sm: rc 0 -> 0
+CHANGED examples/112_t18_kosh_integer_conversion.sm: rc 0 -> 1
+        line 1: old '2'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 2: old '4'  new ''
+        line 3: old ''  new '<none>'
+SAME    examples/126_numeric_pipeline.sm: rc 0 -> 0
+CHANGED examples/201_madhava_library.sm: rc 0 -> 1
+        line 2: old 'sin .5 = 0.479426'  new 'sin .5 = Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 3: old 'cos .5 = 0.877583'  new ''
+        line 4: old 'atan .5= 0.463648'  new '<none>'
+        line 5: old 'sqrt 2 = 1.414214'  new '<none>'
+        line 6: old ''  new '<none>'
+CHANGED examples/93_t12_float_functions.sm: rc 0 -> 1
+        line 5: old '2'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+CHANGED examples/94_t12_float_functions.sm: rc 0 -> 1
+        line 7: old '2'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+SAME    examples/99_ast_multimodule_capacity.sm: rc 0 -> 0
+CHANGED examples/r71/conversion.sm: rc 0 -> 1
+        line 1: old '2'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 2: old '-2'  new ''
+        line 3: old '2.500000'  new '<none>'
+        line 4: old ''  new '<none>'
+SAME    tests/r79_real/report_blocks.sm: rc 1 -> 1
+SAME    tests/r79_real/report_plain.sm: rc -11 -> -11
+CHANGED tests/stdlib/fmt_fixed.sm: rc 0 -> 1
+        line 1: old '3.14'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 2: old '3'  new ''
+        line 3: old '-3'  new '<none>'
+        line 4: old '-0.00'  new '<none>'
+        line 5: old '100.000'  new '<none>'
+        line 6: old '+3.10'  new '<none>'
+        line 7: old '-3.10'  new '<none>'
+        line 8: old '1.500000000'  new '<none>'
+        line 9: old '2'  new '<none>'
+        line 10: old ''  new '<none>'
+SAME    tests/stdlib/fmt_group.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_int_base.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_min.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_pad.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_signed.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_atan.sm: rc 0 -> 0
+CHANGED tests/stdlib/madhava_madhava_cos.sm: rc 0 -> 1
+        line 3: old '0.540302'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 5: old ''  new '<none>'
+SAME    tests/stdlib/madhava_madhava_pi.sm: rc 0 -> 0
+CHANGED tests/stdlib/madhava_madhava_sin.sm: rc 0 -> 1
+        line 3: old '0.841471'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 5: old '0.479426'  new '<none>'
+        line 6: old ''  new '<none>'
+        line 7: old ''  new '<none>'
+SAME    tests/stdlib/madhava_madhava_sqrt.sm: rc 0 -> 0
+SAME    tests/stdlib/numeric29.sm: rc 0 -> 0
+SAME    tests/stdlib/r10_roop_suchi_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_misc_edges.sm: rc 0 -> 0
+CHANGED tests/stdlib/r18_madhava_reduction.sm: rc 0 -> 1
+        line 1: old '0.141120'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 3: old '0.750987'  new '<none>'
+        line 4: old ''  new '<none>'
+        line 5: old '0.756802'  new '<none>'
+        line 6: old ''  new '<none>'
+        line 7: old '-0.416147'  new '<none>'
+        line 8: old ''  new '<none>'
+        line 9: old '0.660317'  new '<none>'
+        line 10: old ''  new '<none>'
+        line 11: old '-0.653644'  new '<none>'
+        line 12: old ''  new '<none>'
+        line 13: old '-1.520838'  new '<none>'
+        line 14: old ''  new '<none>'
+        line 15: old '-0.982794'  new '<none>'
+        line 16: old ''  new '<none>'
+        line 17: old '1.520838'  new '<none>'
+        line 18: old ''  new '<none>'
+        line 19: old ''  new '<none>'
+CHANGED tests/stdlib/r76_known_values.sm: rc 0 -> 1
+        line 16: old '0.500000 1.000000'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+        line 17: old '-1.000000 0.500000'  new ''
+        line 18: old '-1.000000 0.785398'  new '<none>'
+        line 19: old '-0.785398 -1.047198'  new '<none>'
+        line 20: old ''  new '<none>'
+elf: 26 DIFFER run old and new: 16 same output and exit code, 10 changed
+
+# Step 2: this commit (v281, library rewritten, four programs updated). ELF and PE:
+## elf: 673 programs: 517 byte-identical, 128 refused identically, 26 DIFFER, 2 new
+## pe:  673 programs: 517 byte-identical, 128 refused identically, 26 DIFFER, 2 new
+SAME    examples/102_ast_multimodule_capacity.sm: rc 0 -> 0
+CHANGED examples/112_t18_kosh_integer_conversion.sm: rc 0 -> 1
+        line 2: old '4'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+SAME    examples/126_numeric_pipeline.sm: rc 0 -> 0
+SAME    examples/201_madhava_library.sm: rc 0 -> 0
+SAME    examples/93_t12_float_functions.sm: rc 0 -> 0
+SAME    examples/94_t12_float_functions.sm: rc 0 -> 0
+SAME    examples/99_ast_multimodule_capacity.sm: rc 0 -> 0
+SAME    examples/r71/conversion.sm: rc 0 -> 0
+SAME    tests/r79_real/report_blocks.sm: rc 1 -> 1
+SAME    tests/r79_real/report_plain.sm: rc -11 -> -11
+SAME    tests/stdlib/fmt_fixed.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_group.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_int_base.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_min.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_pad.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_signed.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_atan.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_cos.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_pi.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_sin.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_sqrt.sm: rc 0 -> 0
+SAME    tests/stdlib/numeric29.sm: rc 0 -> 0
+SAME    tests/stdlib/r10_roop_suchi_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_misc_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r18_madhava_reduction.sm: rc 0 -> 0
+SAME    tests/stdlib/r76_known_values.sm: rc 0 -> 0
+elf: 26 DIFFER run old and new: 25 same output and exit code, 1 changed
+
+SAME    examples/102_ast_multimodule_capacity.sm: rc 0 -> 0
+CHANGED examples/112_t18_kosh_integer_conversion.sm: rc 0 -> 1
+        line 2: old '4'  new 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati'
+SAME    examples/126_numeric_pipeline.sm: rc 0 -> 0
+SAME    examples/201_madhava_library.sm: rc 0 -> 0
+SAME    examples/93_t12_float_functions.sm: rc 0 -> 0
+SAME    examples/94_t12_float_functions.sm: rc 0 -> 0
+SAME    examples/99_ast_multimodule_capacity.sm: rc 0 -> 0
+SAME    examples/r71/conversion.sm: rc 0 -> 0
+SAME    tests/r79_real/report_blocks.sm: rc 1 -> 1
+SAME    tests/r79_real/report_plain.sm: rc 1 -> 1
+SAME    tests/stdlib/fmt_fixed.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_group.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_int_base.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_min.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_pad.sm: rc 0 -> 0
+SAME    tests/stdlib/fmt_signed.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_atan.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_cos.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_pi.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_sin.sm: rc 0 -> 0
+SAME    tests/stdlib/madhava_madhava_sqrt.sm: rc 0 -> 0
+SAME    tests/stdlib/numeric29.sm: rc 0 -> 0
+SAME    tests/stdlib/r10_roop_suchi_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r11_misc_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r18_madhava_reduction.sm: rc 0 -> 0
+SAME    tests/stdlib/r76_known_values.sm: rc 0 -> 0
+pe: 26 DIFFER run old and new: 25 same output and exit code, 1 changed

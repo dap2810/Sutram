@@ -1,0 +1,18 @@
+# R160 (ChatGPT; numbered 294 because 291 was taken in R90): each comparison of a NaN with a finite number follows IEEE unordered rules.
+# Create infinity by repeated multiplication, then NaN by infinity - infinity.
+# This remains valid when float division by zero is rejected.
+mukhya() {
+    dasham h = 100000000000000000000.0
+    h = h * h
+    h = h * h
+    h = h * h
+    h = h * h
+    dasham n = h - h
+    dasham p = 5.0
+    likha(n == p)
+    likha(n != p)
+    likha(n < p)
+    likha(n <= p)
+    likha(n > p)
+    likha(n >= p)
+}

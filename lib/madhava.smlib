@@ -50,7 +50,17 @@ prakriya madhava_pi() {
 prakriya madhava_sin(dasham x) {
     dasham pi2 = 6.283185307179586
     dasham pi = 3.141592653589793
-    vitti k = x / pi2
+    # k = trunc(x / 2PI), as a dasham (R92: a fraction stored in a vitti stops the program).
+    # (m + 2^52) - 2^52 rounds m >= 0 to a whole number; one step down if it rounded up.
+    # From 2^52 every dasham is already whole. Same k, bit for bit, as the old vitti k.
+    dasham k = x / pi2
+    dasham km = k
+    yadi (km < 0.0) { km = 0.0 - km }
+    yadi (km < 4503599627370496.0) {
+        dasham kw = (km + 4503599627370496.0) - 4503599627370496.0
+        yadi (kw > km) { kw = kw - 1.0 }
+        yadi (k < 0.0) { k = 0.0 - kw } anya { k = kw }
+    }
     dasham y = x - k * pi2
     yadi (y > pi) { y = y - pi2 }
     yadi (y < 0.0 - pi) { y = y + pi2 }
@@ -70,7 +80,17 @@ prakriya madhava_sin(dasham x) {
 prakriya madhava_cos(dasham x) {
     dasham pi2 = 6.283185307179586
     dasham pi = 3.141592653589793
-    vitti k = x / pi2
+    # k = trunc(x / 2PI), as a dasham (R92: a fraction stored in a vitti stops the program).
+    # (m + 2^52) - 2^52 rounds m >= 0 to a whole number; one step down if it rounded up.
+    # From 2^52 every dasham is already whole. Same k, bit for bit, as the old vitti k.
+    dasham k = x / pi2
+    dasham km = k
+    yadi (km < 0.0) { km = 0.0 - km }
+    yadi (km < 4503599627370496.0) {
+        dasham kw = (km + 4503599627370496.0) - 4503599627370496.0
+        yadi (kw > km) { kw = kw - 1.0 }
+        yadi (k < 0.0) { k = 0.0 - kw } anya { k = kw }
+    }
     dasham y = x - k * pi2
     yadi (y > pi) { y = y - pi2 }
     yadi (y < 0.0 - pi) { y = y + pi2 }

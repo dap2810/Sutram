@@ -1,0 +1,51 @@
+# R92 oracles, Linux ELF
+## tests/r161_narrow/test_runtime_narrow.py
+v280 (origin/main): r161 runtime narrowing: 4 pass, 9 fail
+v281:               r161 runtime narrowing: 13 pass, 0 fail
+v281 peephole+XMM-cache build: r161 runtime narrowing: 13 pass, 0 fail
+## tests/r159_float_compare/test_float_compare.py
+v280 (origin/main): r159 float comparison: 10 pass, 0 fail
+v281:               r159 float comparison: 10 pass, 0 fail
+v281 peephole+XMM-cache build: r159 float comparison: 10 pass, 0 fail
+## tests/r159_float_div/test_float_div.py
+v280 (origin/main): r159 float division: 8 pass, 0 fail
+v281:               r159 float division: 8 pass, 0 fail
+v281 peephole+XMM-cache build: r159 float division: 8 pass, 0 fail
+
+## the six-operator fixture (ChatGPT R160, examples/294), v281: 0 1 0 0 0 0 
+
+## the two R92 cases
+dasham d = 3.7; vitti i = d; likha(i) -> 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati', exit 1
+dasham d = 3.0; vitti i = d; likha(i) -> '3', exit 0
+
+## inf by overflow is still printed
+mukhya() {
+    dasham h = 100000000000000000000.0
+    h = h * h
+    h = h * h
+    h = h * h
+    h = h * h
+    likha(h)
+    vitti i = h
+}
+inf
+Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati
+exit 1
+
+## the 2^63 literal is parsed as the next double (found, not fixed)
+mukhya() {
+    dasham p = 1.0
+    vitti i = 0
+    yavat (i < 63) {
+        p = p * 2.0
+        i = i + 1
+    }
+    dasham q = 9223372036854775808.0
+    likha("2^63 computed == literal: ", p == q, 0)
+    likha("literal minus computed: ", q - p)
+    dasham r = 4611686018427387904.0
+    likha("2^62 literal == p / 2: ", r == p / 2.0, 0)
+}
+2^63 computed == literal: 00
+literal minus computed: 2048.000000
+2^62 literal == p / 2: 10

@@ -4611,27 +4611,31 @@ def prop_edge30_float(compiler, rng):
     lines.append('        likha("FAIL sqrt 1e300 high\\n")')
     lines.append("        prati 1")
     lines.append("    }")
-    # sin/cos with argument reduction, scaled by 1e6 and truncated
-    # to vitti (the check compares vitti to vitti: a dasham !=
-    # vitti comparison does not promote, so compare after the
-    # converting assignment).
-    lines.append("    vitti s100 = madhava_sin(100.0) * 1000000.0")
-    lines.append("    vitti c100 = madhava_cos(100.0) * 1000000.0")
-    lines.append("    vitti s10 = madhava_sin(10.0) * 1000000.0")
-    lines.append("    vitti c10 = madhava_cos(10.0) * 1000000.0")
-    check("s100", "0 - 506365", "sin 100 scaled")
-    check("c100", 862318, "cos 100 scaled")
-    check("s10", "0 - 544021", "sin 10 scaled")
-    check("c10", "0 - 839071", "cos 10 scaled")
+    # sin/cos with argument reduction, scaled by 1e6; the check is that the
+    # scaled value truncates toward zero to `want`. R92: these were `vitti v = ...`,
+    # which truncated - a fraction stored in a vitti now stops the program
+    # (E_DASHAM_VITTI), so the value stays a dasham and the truncation is a range:
+    # want <= v < want + 1 (want >= 0), want - 1 < v <= want (want < 0).
+    def scaled(name, expr, want, msg):
+        lines.append(f"    dasham {name} = {expr} * 1000000.0")
+        lo, hi = (f"{want}.0", f"{want + 1}.0") if want >= 0 else (f"0.0 - {-want + 1}.0", f"0.0 - {-want}.0")
+        if want >= 0:
+            bad = f"({name} < {lo}) || ({name} >= {hi})"
+        else:
+            bad = f"({name} <= {lo}) || ({name} > {hi})"
+        lines.append(f"    yadi ({bad}) {{")
+        lines.append(f'        likha("FAIL {msg}\\n")')
+        lines.append("        prati 1")
+        lines.append("    }")
+    scaled("s100", "madhava_sin(100.0)", -506365, "sin 100 scaled")
+    scaled("c100", "madhava_cos(100.0)", 862318, "cos 100 scaled")
+    scaled("s10", "madhava_sin(10.0)", -544021, "sin 10 scaled")
+    scaled("c10", "madhava_cos(10.0)", -839071, "cos 10 scaled")
     # atan via halving + reciprocal, scaled by 1e6
-    lines.append("    vitti a1 = madhava_atan(1.0) * 1000000.0")
-    lines.append("    vitti a2 = madhava_atan(2.0) * 1000000.0")
-    lines.append("    vitti a10 = madhava_atan(10.0) * 1000000.0")
-    lines.append("    vitti an1 = madhava_atan(0 - 1.0) * 1000000.0")
-    check("a1", 785398, "atan 1 scaled")
-    check("a2", 1107148, "atan 2 scaled")
-    check("a10", 1471127, "atan 10 scaled")
-    check("an1", "0 - 785398", "atan -1 scaled")
+    scaled("a1", "madhava_atan(1.0)", 785398, "atan 1 scaled")
+    scaled("a2", "madhava_atan(2.0)", 1107148, "atan 2 scaled")
+    scaled("a10", "madhava_atan(10.0)", 1471127, "atan 10 scaled")
+    scaled("an1", "madhava_atan(0 - 1.0)", -785398, "atan -1 scaled")
     # roop_sthir NaN -> 0 (empty)
     # R90: 0.0 / 0.0 stops the program (E_SHUNYA_BHAJAN) since v280; NaN as inf - inf instead
     lines.append("    dasham huge = e300 * e300")
@@ -4646,7 +4650,8 @@ def prop_edge30_float(compiler, rng):
         for i, ch in enumerate(s):
             lines.append(f"    buf[{i}] = {ord(ch)}")
         # R7: one name per call (was `vitti f` three times; E_DUPLICATE_NAME since R7)
-        lines.append(f"    vitti fbig{n} = varna_tak_dashm(buf, {len(s)}, ok)")
+        # R92: dasham - 1.7e308 stored in a vitti would stop the program (E_DASHAM_VITTI)
+        lines.append(f"    dasham fbig{n} = varna_tak_dashm(buf, {len(s)}, ok)")
         check("ok[0]", want, msg)
     # kalana: duplicate x -> pravan/dvitiya_pravan 0.0 (was inf/blank)
     lines.append("    kosh_push(xs, 1.0)")

@@ -1,0 +1,27 @@
+# R92: the library rewrite gives the same answers. Old = origin/main (v280 compiler, old madhava/roop);
+# new = this commit (v281, rewritten). 6000 madhava_sin/cos inputs (x up to +-1.1e4, y up to +-5e9) scaled by 1e9,
+# and 3000 roop_sthir(r, 4) results (length and a hash of the digits).
+result: IDENTICAL, 9000 lines
+
+yoj madhava
+yoj roop
+mukhya() {
+    vitti buf = nirmmita(40 * 8)
+    vitti i = 0
+    yavat (i < 3000) {
+        dasham x = (i - 1500) * 7.123456789 + i * 0.000731
+        dasham y = (i - 1500) * 3333333.333 + 0.37
+        likha("a ", madhava_sin(x) * 1000000000.0, " ", madhava_cos(x) * 1000000000.0)
+        likha("b ", madhava_sin(y) * 1000000000.0, " ", madhava_cos(y) * 1000000000.0)
+        dasham r = (i - 1500) * 0.0123456 + 0.0005
+        vitti n = roop_sthir(r, 4, buf)
+        vitti h = 0
+        vitti j = 0
+        yavat (j < n) {
+            h = h * 31 + akshar(buf, j)
+            j = j + 1
+        }
+        likha("c ", n, " ", h)
+        i = i + 1
+    }
+}

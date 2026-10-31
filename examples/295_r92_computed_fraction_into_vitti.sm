@@ -1,0 +1,11 @@
+# R92 (v281): a computed dasham stored in a vitti must be a whole number. 3.0 converts to 3;
+# 3.7 stops the program with E_DASHAM_VITTI before it is stored. Up to v280, 3.7 gave 3.
+# ChatGPT's R161 patch.
+mukhya() {
+    dasham whole = 3.0
+    vitti a = whole
+    likha("3.0 -> ", a)
+    dasham d = 3.7
+    vitti i = d
+    likha("not reached ", i)
+}
