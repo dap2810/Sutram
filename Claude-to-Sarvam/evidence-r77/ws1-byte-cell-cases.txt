@@ -1,0 +1,114 @@
+# R77 WS1 / R78 WS1: the byte-versus-qword check (v274), every case run
+
+===== g1
+mukhya()
+    vitti p = nirmmita(10)
+    p[9] = 1
+--- v273:
+(exit 0)
+--- v274:
+Sutram Error [E_NIRMMITA_SEEMA]: pankti 3:8 - p[9] nirmmita(10) bahih
+Sanket: nirmmita bhaita-sankhyam ganayati, p[i] ashta-bhaita-ekakaih: p[9] hetu nirmmita(80) avashyakam
+
+===== g2
+mukhya()
+    vitti p = nirmmita(10)
+    vitti i = 0
+    yavat (i < 10)
+        p[i] = i
+        i = i + 1
+    likha(p[0])
+--- v273:
+0
+(exit 0)
+--- v274:
+Sutram Error: mala ank seema atikram
+(exit 1)
+
+===== g3
+mukhya()
+    vitti p = nirmmita(1)
+    p[0] = 123456
+--- v273:
+(exit 0)
+--- v274:
+Sutram Error [E_NIRMMITA_SEEMA]: pankti 3:8 - p[0] nirmmita(1) bahih
+Sanket: nirmmita bhaita-sankhyam ganayati, p[i] ashta-bhaita-ekakaih: p[0] hetu nirmmita(8) avashyakam
+
+===== g4
+mukhya()
+    vitti p = nirmmita(10 * 8)
+    vitti i = 0
+    yavat (i < 10)
+        p[i] = i
+        i = i + 1
+    likha(p[9], "\n")
+--- v273:
+9
+
+(exit 0)
+--- v274:
+9
+
+(exit 0)
+
+===== g5
+mukhya()
+    vitti p = nirmmita(16)
+    p[1] = 7
+    likha(p[1], "\n")
+    p = p + 8
+    likha(p[0], "\n")
+--- v273:
+7
+
+7
+
+(exit 0)
+--- v274:
+7
+
+7
+
+(exit 0)
+
+===== g6
+mukhya()
+    vitti p = nirmmita(16)
+    vitti x = p[0 - 1]
+--- v273:
+/bin/bash: line 13: 21137 Segmentation fault      $T/x
+(exit 139)
+--- v274:
+Sutram Error [E_NIRMMITA_SEEMA]: pankti 3:22 - p[-1] - rnatmakah ankah
+
+===== g7
+prakriya f(c)
+    yadi (c == 1)
+        vitti p = nirmmita(8)
+        p[0] = 5
+        nivartanam p[0]
+    anya
+        vitti p = nirmmita(64)
+        p[7] = 9
+        nivartanam p[7]
+    nivartanam 0
+mukhya()
+    likha(f(1), " ", f(2), "\n")
+--- v273:
+5 9
+(exit 0)
+--- v274:
+5 9
+(exit 0)
+
+===== g8
+mukhya()
+    mandapa
+        vitti p = nirmmita(3 * 8)
+        p[3] = 1
+--- v273:
+(exit 0)
+--- v274:
+Sutram Error [E_NIRMMITA_SEEMA]: pankti 4:12 - p[3] nirmmita(24) bahih
+Sanket: nirmmita bhaita-sankhyam ganayati, p[i] ashta-bhaita-ekakaih: p[3] hetu nirmmita(32) avashyakam

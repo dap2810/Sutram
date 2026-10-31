@@ -1,0 +1,37 @@
+FAIL  mixed_alt: 11 program(s)
+      258_r70_loop_indent: no longer compiles: Sutram Error: vyakaran dosh, pankti 9:3, shabd 'vitti'
+      260_r71_indented_bodies: no longer compiles: Sutram Error: vyakaran dosh, pankti 13:2, shabd 'b'
+      263_r72_mandapa: no longer compiles: Sutram Error: vyakaran dosh, pankti 9:3, shabd 't'
+      266_r73_inside_only: no longer compiles: .r77_266_r73_inside_only_mixed_alt.sm:5:9: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'bu
+      267_r73_outer_number: no longer compiles: Sutram Error: vyakaran dosh, pankti 7:3, shabd 'outer'
+      268_r73_return_value: no longer compiles: Sutram Error: vyakaran dosh, pankti 8:3, shabd 'yavat'
+      269_r73_copy_out: no longer compiles: Sutram Error: vyakaran dosh, pankti 7:2, shabd 'mandapa'
+      271_r75_nested_store_data: no longer compiles: Sutram Error: vyakaran dosh, pankti 6:3, shabd 'buf'
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: hangs
+      275_r77_cells_times_eight: hangs
+FAIL  crlf: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+FAIL  trailing: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+FAIL  blank_ws: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+FAIL  tabs: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+FAIL  no_eol: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+FAIL  extra_eol: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+FAIL  bom: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+FAIL  mixed_deep: 2 program(s)
+      273_r77_bytes_not_cells: a refusal golden now compiles
+      274_r77_bytes_loop_stops: output or exit differs (exit 0)
+r77 format: 2186 checks, 27 failed

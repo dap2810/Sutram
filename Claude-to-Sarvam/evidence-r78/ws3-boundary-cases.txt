@@ -1,0 +1,78 @@
+===== q1_lib_alloc
+# Q1: inside a mandapa, call a library function that allocates (roop_ank's 22-cell buffer, persistent).
+# 1,000,000 calls. Is anything wrong, and is anything reclaimed?
+yoj roop
+mukhya() {
+    vitti s = 0
+    vitti i = 0
+    yavat (i < 1000000) {
+        mandapa {
+            vitti out = nirmmita(32)
+            s = s + roop_ank(i, out)
+        }
+        i = i + 1
+    }
+    likha(s, "\n")
+}
+--- v274: 5888890  (peak 171904 KB, exit 0) 
+
+===== q1_keep
+# Q1b: a library-made (persistent) block kept past the block - allowed, and correct.
+prakriya banao(n)
+    vitti p = nirmmita(16)
+    p[0] = n
+    nivartanam p
+mukhya()
+    vitti kept = 0
+    mandapa
+        vitti scratch = nirmmita(64)
+        scratch[0] = 5
+        kept = banao(41)
+    mandapa
+        vitti other = nirmmita(64)
+        other[0] = 99
+        other[1] = 99
+    likha(kept[0] + 1, "\n")
+--- v274: 42  (peak 264 KB, exit 0) 
+
+===== q2_overwrite
+# Q2: a checked buffer (a, known to be 16 bytes, its own indexes bounds-checked) is changed by an
+# unchecked writer: b is the next scratch block, passed to a prakriya that writes 4 cells into 2.
+prakriya bhar(p, n)
+    vitti i = 0
+    yavat (i < n)
+        p[i] = 77
+        i = i + 1
+    nivartanam 0
+mukhya()
+    mandapa
+        vitti a = nirmmita(16)
+        a[0] = 1
+        a[1] = 2
+        vitti b = nirmmita(16)
+        bhar(b, 4)
+        likha(a[0], " ", a[1], "\n")
+--- v274: 77 77 (peak 264 KB, exit 0) 
+
+===== q2_keep
+# Q2b: the escape guarantee broken from the other side: a prakriya keeps the address it is given.
+vitti g = 0
+prakriya rakh(p)
+    g = p
+    nivartanam 0
+mukhya()
+    mandapa
+        vitti a = nirmmita(16)
+        a[0] = 42
+        rakh(a)
+    mandapa
+        vitti b = nirmmita(16)
+        b[0] = 99
+    vitti x = g
+    likha(x[0], "\n")
+--- v274: 99  (peak 264 KB, exit 0) 
+
+q1 with the block replaced by yadi (1 == 1): 5888890  (peak 203136 KB) 
+
+library: 306 functions; touch raw memory at all: 199; WRITE raw memory (unchecked index store or a raw builtin): 124
+examples: 346 functions; touch raw memory at all: 50; WRITE raw memory (unchecked index store or a raw builtin): 26

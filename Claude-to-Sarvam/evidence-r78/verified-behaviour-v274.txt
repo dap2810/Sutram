@@ -1,0 +1,54 @@
+# R78: the brief's '## Verified behaviour' block, re-run on v274
+--- 
+mukhya()
+    vitti outer = 0
+    mandapa
+        vitti buf = nirmmita(64)
+        outer = buf + 64
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate
+--- 
+mukhya()
+    vitti m = nirmmita(8)
+    mandapa
+        vitti buf = nirmmita(64)
+        m[0] = buf
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate
+--- 
+prakriya f()
+    mandapa
+        vitti buf = nirmmita(64)
+        nivartanam buf
+    nivartanam 0
+mukhya()
+    likha(f())
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate
+--- 
+mukhya()
+    vitti outer = 0
+    vitti box = nirmmita(8)
+    mandapa
+        box[0] = nirmmita(64)
+        outer = box[0]
+Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate
+--- 
+mukhya()
+    vitti outer = 0
+    mandapa
+        vitti buf = nirmmita(64)
+        outer = buf[0]
+Siddh: 567 baait sankalit
+--- 
+prakriya y(p)
+    nivartanam p[0] + 1
+mukhya()
+    vitti t = 0
+    mandapa
+        vitti buf = nirmmita(8)
+        t = y(buf)
+    likha(t)
+Siddh: 753 baait sankalit
+--- 
+mukhya()
+    mandapa
+        vitti p = nirmmita(-1)
+Sutram Error [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati

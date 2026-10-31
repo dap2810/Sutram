@@ -1,0 +1,5 @@
+100,000 students, 7 interleaved runs each; peak RSS (KB) and wall time (s), median
+no block, library as shipped                       184,704 KB (100.0%)   1.110 s (100.0%)   runs: [1.18, 1.05, 1.11, 1.06, 1.02, 1.14, 1.16]
+blocks in the program, library as shipped          110,208 KB ( 59.7%)   1.050 s ( 94.6%)   runs: [1.04, 1.17, 1.01, 1.04, 1.11, 1.05, 1.19]
+no block, library with R76 patch                    81,536 KB ( 44.1%)   1.010 s ( 91.0%)   runs: [0.98, 1.04, 0.94, 0.98, 1.01, 1.07, 1.1]
+blocks in the program, library with R76 patch        7,040 KB (  3.8%)   1.010 s ( 91.0%)   runs: [1.01, 0.95, 0.95, 0.94, 1.16, 1.11, 1.04]

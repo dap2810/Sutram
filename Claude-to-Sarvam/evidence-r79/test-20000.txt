@@ -1,0 +1,4 @@
+PASS  report_plain: 20000 students, output identical to the reference, peak 35456 KB
+PASS  report_blocks: 20000 students, output identical to the reference, peak 22016 KB
+PASS  memory: with blocks 22016 KB = 62% of 35456 KB
+r79 real: 3 checks, 0 failed

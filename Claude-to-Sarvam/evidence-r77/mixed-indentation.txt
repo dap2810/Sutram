@@ -1,0 +1,44 @@
+# R77 (found through Muse's R77 mutator): mixed tab/space indentation, v273 / v275
+
+===== mix1 (\t = a tab)
+mukhya()
+    vitti c = 0
+    yadi (1 == 2)
+\tc = c + 1
+\tc = c + 10
+    likha(c)
+--- Sutram 1.0 (v273) - sampurna sutra:
+10
+(exit 0)
+--- Sutram 1.0 (v275) - sampurna sutra:
+Sutram Error [E_ANTARAL_MISHRA]: pankti 4:2 - pankti-arambhe tab space cha mishritau: purva-panktya saha tulana na shakyate
+Sanket: ekasmin khande sarvatra tab athava sarvatra space - ekam eva upayujyatam
+
+===== mix2 (\t = a tab)
+mukhya()
+\tvitti c = 0
+\tyadi (1 == 2)
+\t    c = c + 1
+\t\tc = c + 10
+\tlikha(c)
+--- Sutram 1.0 (v273) - sampurna sutra:
+
+Sutram Error: vyakaran dosh, pankti 5:3, shabd 'c'
+--- Sutram 1.0 (v275) - sampurna sutra:
+Sutram Error [E_ANTARAL_MISHRA]: pankti 5:3 - pankti-arambhe tab space cha mishritau: purva-panktya saha tulana na shakyate
+Sanket: ekasmin khande sarvatra tab athava sarvatra space - ekam eva upayujyatam
+
+===== mix3 (\t = a tab)
+prakriya f(c)
+    yadi (c == 1)
+\tc = c + 1
+\tc = c + 10
+    nivartanam c
+mukhya()
+    likha(f(0))
+--- Sutram 1.0 (v273) - sampurna sutra:
+
+Sutram Error: vyakaran dosh, pankti 4:2, shabd 'c'
+--- Sutram 1.0 (v275) - sampurna sutra:
+Sutram Error [E_ANTARAL_MISHRA]: pankti 3:2 - pankti-arambhe tab space cha mishritau: purva-panktya saha tulana na shakyate
+Sanket: ekasmin khande sarvatra tab athava sarvatra space - ekam eva upayujyatam

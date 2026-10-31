@@ -1,0 +1,4 @@
+# the run-time check's cost (v273 = no check, v274 = checked), 11 interleaved runs; the 8 shipped benchmarks and the sieve compile to identical binaries
+11 interleaved runs, wall seconds min / median
+raw_read   v273 0.0528/0.0540  v274 0.0513/0.0527  cost min -2.8% median -2.3%
+raw_write  v273 0.0270/0.0279  v274 0.0322/0.0326  cost min +19.2% median +17.1%

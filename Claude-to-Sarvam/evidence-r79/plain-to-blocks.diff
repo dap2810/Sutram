@@ -1,0 +1,128 @@
+--- tests/r79_real/report_plain.sm	2026-10-31 02:25:17.065283916 -0400
++++ tests/r79_real/report_blocks.sm	2026-10-31 02:26:07.932008691 -0400
+@@ -1,4 +1,5 @@
+-# R79: a real program - a class marks report - written the natural way, with no mandapa.
++# R79: the same program, with the three functions that allocate wrapped in a mandapa (and nothing else
++# changed - see the diff in Claude-to-Sarvam/evidence-r79/).
+ # Input (stdin), one number per line: N, then for each student: roll, mark1, mark2, mark3 (0..100).
+ # Output: per-subject statistics (mean, median, lowest, highest), a histogram of totals, the
+ # grade counts, and every student ranked by total, in aligned columns.
+@@ -6,15 +7,17 @@
+ 
+ # stambh(v, width): print v right-aligned in a column of `width` characters.
+ prakriya stambh(v, width) {
+-    vitti buf = nirmmita(32)
+-    vitti n = roop_ank(v, buf)
+-    vitti rikt = width - n
+-    yavat (rikt > 0) {
+-        likha(" ")
+-        rikt = rikt - 1
++    mandapa {
++        vitti buf = nirmmita(32)
++        vitti n = roop_ank(v, buf)
++        vitti rikt = width - n
++        yavat (rikt > 0) {
++            likha(" ")
++            rikt = rikt - 1
++        }
++        shabda(buf)
++        nivartanam n
+     }
+-    shabda(buf)
+-    nivartanam n
+ }
+ 
+ # shreni_varna(total): the grade letter for a total out of 300, as its character code.
+@@ -29,36 +32,38 @@
+ # milan(keys, idx, lo, mid, hi): merge idx[lo..mid) and idx[mid..hi), highest key first;
+ # equal keys keep roll order (the lower index first).
+ prakriya milan(keys, idx, lo, mid, hi) {
+-    vitti tmp = nirmmita((hi - lo) * 8)
+-    vitti i = lo
+-    vitti j = mid
+-    vitti k = 0
+-    yavat (i < mid && j < hi) {
+-        yadi (keys[idx[j]] > keys[idx[i]]) {
+-            tmp[k] = idx[j]
+-            j = j + 1
+-        } anya {
++    mandapa {
++        vitti tmp = nirmmita((hi - lo) * 8)
++        vitti i = lo
++        vitti j = mid
++        vitti k = 0
++        yavat (i < mid && j < hi) {
++            yadi (keys[idx[j]] > keys[idx[i]]) {
++                tmp[k] = idx[j]
++                j = j + 1
++            } anya {
++                tmp[k] = idx[i]
++                i = i + 1
++            }
++            k = k + 1
++        }
++        yavat (i < mid) {
+             tmp[k] = idx[i]
+             i = i + 1
++            k = k + 1
+         }
+-        k = k + 1
+-    }
+-    yavat (i < mid) {
+-        tmp[k] = idx[i]
+-        i = i + 1
+-        k = k + 1
+-    }
+-    yavat (j < hi) {
+-        tmp[k] = idx[j]
+-        j = j + 1
+-        k = k + 1
+-    }
+-    k = 0
+-    yavat (k < hi - lo) {
+-        idx[lo + k] = tmp[k]
+-        k = k + 1
++        yavat (j < hi) {
++            tmp[k] = idx[j]
++            j = j + 1
++            k = k + 1
++        }
++        k = 0
++        yavat (k < hi - lo) {
++            idx[lo + k] = tmp[k]
++            k = k + 1
++        }
++        nivartanam 0
+     }
+-    nivartanam 0
+ }
+ 
+ prakriya kram(keys, idx, lo, hi) {
+@@ -72,16 +77,18 @@
+ 
+ # madhyaka(vals, n): the median of n values (the lower middle for even n), from a sorted copy.
+ prakriya madhyaka(vals, n) {
+-    vitti copy = nirmmita(n * 8)
+-    vitti idx = nirmmita(n * 8)
+-    vitti i = 0
+-    yavat (i < n) {
+-        copy[i] = vals[i]
+-        idx[i] = i
+-        i = i + 1
++    mandapa {
++        vitti copy = nirmmita(n * 8)
++        vitti idx = nirmmita(n * 8)
++        vitti i = 0
++        yavat (i < n) {
++            copy[i] = vals[i]
++            idx[i] = i
++            i = i + 1
++        }
++        kram(copy, idx, 0, n)
++        nivartanam copy[idx[n - 1 - (n - 1) / 2]]
+     }
+-    kram(copy, idx, 0, n)
+-    nivartanam copy[idx[n - 1 - (n - 1) / 2]]
+ }
+ 
+ prakriya vishay(naam, vals, n) {

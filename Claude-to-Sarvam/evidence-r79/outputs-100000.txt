@@ -1,0 +1,5 @@
+# outputs at 100,000 students, all four builds, against reference.py
+plain: identical
+blocks: identical
+plain_lib: identical
+blocks_lib: identical

@@ -1,0 +1,36 @@
+mutant | the change | killed by the OLD proofs | killed by r78_suchi_avali_srij alone | real passes it
+real library passes r78_suchi_avali_srij: True
+suchi_srij C1:<-><=@L51 | yadi (c <= 1) { c = 1 } | old: survives | r78 golden: survives
+suchi_srij C2:>->>=@L52 | yadi (c >= 1152921504606846975) { nivartanam 0 }   # R35: c * 8 must not wrap | old: survives | r78 golden: survives
+suchi_srij C3:<-><=@L54 | yadi (sz <= 0) { nivartanam 0 } | old: survives | r78 golden: survives
+suchi_srij K:0@L48 | vitti l = 1 | old: survives | r78 golden: survives
+suchi_srij K:0@L49 | vitti d = 1 | old: survives | r78 golden: survives
+suchi_srij K:0@L50 | vitti sz = 1 | old: survives | r78 golden: survives
+suchi_srij K:1@L51 | yadi (c < 2) { c = 1 } | old: survives | r78 golden: survives
+suchi_srij K:1@L51 | yadi (c < 1) { c = 2 } | old: survives | r78 golden: KILLS
+suchi_srij K:1152921504606846975@L52 | yadi (c > 1152921504606846976) { nivartanam 0 }   # R35: c * 8 must not wrap | old: survives | r78 golden: survives
+suchi_srij K:8@L53 | sz = c * 9 | old: survives | r78 golden: survives
+suchi_srij K:0@L54 | yadi (sz < 1) { nivartanam 0 } | old: survives | r78 golden: survives
+suchi_srij K:0@L54 | yadi (sz < 0) { nivartanam 1 } | old: survives | r78 golden: survives
+suchi_srij K:0@L56 | yadi (l == 1) { nivartanam 0 } | old: survives | r78 golden: survives
+suchi_srij K:0@L56 | yadi (l == 0) { nivartanam 1 } | old: survives | r78 golden: survives
+suchi_srij K:0@L59 | l[1] = 0 | old: survives | r78 golden: survives
+suchi_srij D@L59 |  | old: survives | r78 golden: survives
+avali_srij C1:<-><=@L386 | yadi (c <= 1) { c = 1 } | old: survives | r78 golden: survives
+avali_srij C2:>->>=@L387 | yadi (c >= 1152921504606846975) { nivartanam 0 }   # R35: c * 8 must not wrap | old: survives | r78 golden: survives
+avali_srij C3:<-><=@L389 | yadi (sz <= 0) { nivartanam 0 } | old: survives | r78 golden: survives
+avali_srij K:0@L383 | vitti q = 1 | old: survives | r78 golden: survives
+avali_srij K:0@L384 | vitti d = 1 | old: survives | r78 golden: survives
+avali_srij K:0@L385 | vitti sz = 1 | old: survives | r78 golden: survives
+avali_srij K:1@L386 | yadi (c < 2) { c = 1 } | old: survives | r78 golden: survives
+avali_srij K:1@L386 | yadi (c < 1) { c = 2 } | old: survives | r78 golden: KILLS
+avali_srij K:1152921504606846975@L387 | yadi (c > 1152921504606846976) { nivartanam 0 }   # R35: c * 8 must not wrap | old: survives | r78 golden: survives
+avali_srij K:8@L388 | sz = c * 9 | old: survives | r78 golden: survives
+avali_srij K:0@L389 | yadi (sz < 1) { nivartanam 0 } | old: survives | r78 golden: survives
+avali_srij K:0@L389 | yadi (sz < 0) { nivartanam 1 } | old: survives | r78 golden: survives
+avali_srij K:0@L391 | yadi (q == 1) { nivartanam 0 } | old: survives | r78 golden: survives
+avali_srij K:0@L391 | yadi (q == 0) { nivartanam 1 } | old: survives | r78 golden: survives
+avali_srij K:0@L394 | q[1] = 0 | old: survives | r78 golden: survives
+avali_srij D@L394 |  | old: survives | r78 golden: survives
+avali_srij K:3@L397 | q[4] = 0 | old: survives | r78 golden: survives
+avali_srij D@L397 |  | old: survives | r78 golden: survives

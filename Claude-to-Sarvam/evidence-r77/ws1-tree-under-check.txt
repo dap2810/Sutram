@@ -1,0 +1,4 @@
+# R78: the tree under the new check before it shipped: suite / library proofs / properties
+NO-EXPECTATION=4  PASS=240
+227 passed, 0 failed, 227 total
+86/86 properties hold
