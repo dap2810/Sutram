@@ -1,0 +1,93 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 2390ffba..95741b54 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -425,6 +425,8 @@ r54_builtin_arity_table:
+     r87_hdr db ": Sutram Error [E_DASHAM_VITTI]: ", 0
+     r87_txt db "dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta", 10, 0
+     r87_hint db "Sanket: vitti purnankanam eva; dashamaya 'dasham' likhyatam: dasham f = 3.5", 10, 0
++    r159_calc_txt db "dashamah phalam purnanka-vittau na sthapyate", 10, 0
++    r159_calc_hint db "Sanket: dashama-phalasya krte dasham vittim upayujyatam", 10, 0
+     ; mov rdx,[r8-40] ; mov [rax],rdx ; mov rdx,[r8-32] ; mov [rax+8],rdx ; mov rdx,[r8-24] ;
+     ; mov [rax+16],rdx ; mov [rax+24],r9 ; mov [rax+32],r11 ; lea r10,[rax+40]
+     r82_grow_bytes db 0x49,0x8B,0x50,0xD8, 0x48,0x89,0x10, 0x49,0x8B,0x50,0xE0, 0x48,0x89,0x50,0x08
+@@ -8326,7 +8328,7 @@ r87_check_float_literal:
+     test rax, rax
+     jz .out
+     cmp qword [rax], AST_FLOAT
+-    jne .out
++    jne .computed
+     movq xmm0, [rax+8]
+     mov rcx, 0x43E0000000000000    ; 2^63
+     movq xmm1, rcx
+@@ -8340,6 +8342,21 @@ r87_check_float_literal:
+     jne .bad                       ; has a fraction
+     jp .bad
+     jmp .out
++.computed:
++    ; Initial prototype: refuse a statically typed float expression in a
++    ; scalar integer declaration or assignment. Other conversion sites and
++    ; untyped ABI values need separate handling and are deliberately not claimed.
++    push rax
++    mov rdi, rax
++    call expr_is_float
++    pop rdx
++    test rax, rax
++    jz .out
++    xor edi, edi                   ; no reliable AST position: file-level error
++    lea rsi, [rel r87_hdr]
++    lea rdx, [rel r159_calc_txt]
++    lea rcx, [rel r159_calc_hint]
++    jmp r80_compile_error
+ .bad:
+     mov rdi, [rax+56]
+     lea rsi, [rel r87_hdr]
+diff --git a/tests/r159_float_narrow/test_float_narrow.py b/tests/r159_float_narrow/test_float_narrow.py
+new file mode 100644
+index 00000000..679342bb
+--- /dev/null
++++ b/tests/r159_float_narrow/test_float_narrow.py
+@@ -0,0 +1,43 @@
++#!/usr/bin/env python3
++"""Prototype checks for scalar float-to-integer declarations/assignments."""
++import pathlib
++import subprocess
++import sys
++import tempfile
++
++ROOT = pathlib.Path(__file__).resolve().parents[2]
++CASES = (
++    ('decl_var', 'dasham x = 3.7\n vitti i = x\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('assign_var', 'dasham x = 3.7\n vitti i = 0\n i = x\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('decl_expr', 'dasham x = 3.7\n vitti i = x + 1.0\n likha(i)', 1, 'E_DASHAM_VITTI'),
++    ('int_control', 'vitti i = 3\n i = i + 1\n likha(i)', 0, '4\n'),
++    ('float_control', 'dasham x = 3.7\n dasham y = x\n likha(y)', 0, '3.700000\n'),
++    ('comparison_control', 'dasham x = 3.7\n vitti i = x > 2.0\n likha(i)', 0, '1\n'),
++)
++
++def main():
++    compiler = pathlib.Path(sys.argv[1]).resolve()
++    failed = 0
++    with tempfile.TemporaryDirectory(prefix='sutram-r159-narrow-', dir=ROOT.parent) as tmp:
++        for name, body, compile_status, expected in CASES:
++            source = pathlib.Path(tmp) / (name + '.sm')
++            binary = pathlib.Path(tmp) / (name + '.exe')
++            source.write_text('mukhya() {\n ' + body + '\n}\n', encoding='utf-8')
++            c = subprocess.run([str(compiler), str(source), str(binary)], cwd=ROOT,
++                               capture_output=True, text=True, timeout=15)
++            if compile_status:
++                ok = c.returncode == compile_status and expected in c.stdout and not binary.exists()
++                print('PASS' if ok else 'FAIL', name, 'compile', c.returncode, repr(c.stdout))
++            elif c.returncode or not binary.exists():
++                ok = False
++                print('FAIL', name, 'compile', c.returncode, repr(c.stdout), repr(c.stderr))
++            else:
++                run = subprocess.run([str(binary)], capture_output=True, text=True, timeout=10)
++                ok = run.returncode == 0 and run.stdout == expected and not run.stderr
++                print('PASS' if ok else 'FAIL', name, 'run', run.returncode, repr(run.stdout))
++            failed += not ok
++    print('r159 float narrowing:', len(CASES) - failed, 'pass,', failed, 'fail')
++    return int(bool(failed))
++
++if __name__ == '__main__':
++    sys.exit(main())

@@ -1,0 +1,131 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 2390ffba..66083bac 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -22836,6 +22836,48 @@ gen_expr:
+     call emit_byte
+     jmp .gfb_arith_done
+ .gfb_div:
++    ; Float division: reject either signed zero before DIVSD.  Unordered
++    ; (NaN) is not zero: preserve its propagation and let comparisons handle it.
++    push r12
++    push r13
++    mov dil, 0x66                 ; xorpd xmm2,xmm2
++    call emit_byte
++    mov dil, 0x0F
++    call emit_byte
++    mov dil, 0x57
++    call emit_byte
++    mov dil, 0xD2
++    call emit_byte
++    mov dil, 0x66                 ; ucomisd xmm1,xmm2
++    call emit_byte
++    mov dil, 0x0F
++    call emit_byte
++    mov dil, 0x2E
++    call emit_byte
++    mov dil, 0xCA
++    call emit_byte
++    mov dil, 0x0F                 ; jp .divide (unordered)
++    call emit_byte
++    mov dil, 0x8A
++    call emit_byte
++    mov r12, [rel code_sz]
++    xor edi, edi
++    call emit_u32
++    mov dil, 0x0F                 ; jne .divide (nonzero)
++    call emit_byte
++    mov dil, 0x85
++    call emit_byte
++    mov r13, [rel code_sz]
++    xor edi, edi
++    call emit_u32
++    xor edi, edi
++    call r80_emit_div_fatal        ; zero: diagnostic + exit 1
++    mov rdi, r12
++    call r73_patch32
++    mov rdi, r13
++    call r73_patch32
++    pop r13
++    pop r12
+     mov dil, 0xF2
+     call emit_byte
+     mov dil, 0x0F
+@@ -25214,8 +25256,7 @@ try_emit_xmm_cached_assignment:
+     je .txca_op_ok
+     cmp r15, OP_MUL
+     je .txca_op_ok
+-    cmp r15, OP_DIV
+-    jne .txca_no
++    jmp .txca_no                ; division guard lives in general lowering
+ .txca_op_ok:
+     mov r14, [r13+16]
+     cmp qword [r14], AST_VAR
+@@ -25389,8 +25430,7 @@ try_emit_float_reg_self_update:
+     je .tfrsu_op_ok
+     cmp r14, OP_MUL
+     je .tfrsu_op_ok
+-    cmp r14, OP_DIV
+-    jne .tfrsu_no
++    jmp .tfrsu_no               ; division guard lives in general lowering
+ .tfrsu_op_ok:
+     mov r15, [r13+16]
+     cmp qword [r15], AST_VAR
+@@ -25462,8 +25502,7 @@ try_emit_float_reg_destination:
+     je .tfrd_op_ok
+     cmp r15, OP_MUL
+     je .tfrd_op_ok
+-    cmp r15, OP_DIV
+-    jne .tfrd_no
++    jmp .tfrd_no                ; division guard lives in general lowering
+ .tfrd_op_ok:
+     mov r14, [r13+16]             ; left
+     cmp qword [r14], AST_VAR
+diff --git a/tests/r159_float_div/test_float_div.py b/tests/r159_float_div/test_float_div.py
+new file mode 100644
+index 00000000..04b0dfcc
+--- /dev/null
++++ b/tests/r159_float_div/test_float_div.py
+@@ -0,0 +1,42 @@
++#!/usr/bin/env python3
++"""Native Windows float-division zero guard; pass the compiler path as argv[1]."""
++import pathlib
++import subprocess
++import sys
++import tempfile
++
++ROOT = pathlib.Path(__file__).resolve().parents[2]
++CASES = (
++    ('positive_zero', 'dasham a = 5.0\n dasham b = 0.0\n likha(a / b)', 1, 'E_SHUNYA_BHAJAN'),
++    ('negative_zero', 'dasham a = 5.0\n dasham b = -0.0\n likha(a / b)', 1, 'E_SHUNYA_BHAJAN'),
++    ('zero_zero', 'dasham a = 0.0\n dasham b = 0.0\n likha(a / b)', 1, 'E_SHUNYA_BHAJAN'),
++    ('literal_zero', 'likha(5.0 / 0.0)', 1, 'E_SHUNYA_BHAJAN'),
++    ('self_update', 'dasham a = 5.0\n dasham b = 0.0\n a = a / b\n likha(a)', 1, 'E_SHUNYA_BHAJAN'),
++    ('destination', 'dasham a = 5.0\n dasham b = 0.0\n dasham c = 0.0\n c = a / b\n likha(c)', 1, 'E_SHUNYA_BHAJAN'),
++    ('compound', 'dasham a = 5.0\n dasham b = 0.0\n a /= b\n likha(a)', 1, 'E_SHUNYA_BHAJAN'),
++    ('nonzero', 'dasham a = 5.0\n dasham b = 2.0\n likha(a / b)', 0, '2.500000\n'),
++)
++
++def main():
++    compiler = pathlib.Path(sys.argv[1]).resolve()
++    failures = 0
++    with tempfile.TemporaryDirectory(prefix='sutram-r159-div-', dir=ROOT.parent) as tmp:
++        for name, body, status, expected in CASES:
++            source = pathlib.Path(tmp) / (name + '.sm')
++            binary = pathlib.Path(tmp) / (name + '.exe')
++            source.write_text('mukhya() {\n ' + body + '\n}\n', encoding='utf-8')
++            c = subprocess.run([str(compiler), str(source), str(binary)], cwd=ROOT,
++                               capture_output=True, text=True, timeout=15)
++            if c.returncode or not binary.exists():
++                print('FAIL', name, 'compile', c.returncode, repr(c.stdout), repr(c.stderr))
++                failures += 1
++                continue
++            run = subprocess.run([str(binary)], capture_output=True, text=True, timeout=10)
++            ok = run.returncode == status and expected in run.stdout and not run.stderr
++            print('PASS' if ok else 'FAIL', name, 'exit', run.returncode, 'stdout', repr(run.stdout))
++            failures += not ok
++    print('r159 float division:', len(CASES) - failures, 'pass,', failures, 'fail')
++    return int(bool(failures))
++
++if __name__ == '__main__':
++    sys.exit(main())
