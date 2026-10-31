@@ -1,3 +1,35 @@
+## v436 - the arithmetic question is closed: `inf` is reachable, undocumented, and correct
+
+### What I measured on v281
+
+**The overflow ladder, four squarings from `1e20`:**
+
+| Step | Printed |
+|---|---|
+| `dasham h = 100000000000000000000.0` | `1.000000e+20` |
+| `h = h * h` | `1.000000e+40` |
+| `h = h * h` | `1.000000e+80` |
+| `h = h * h` | `1.000000e+160` |
+| `h = h * h` | `inf` |
+
+**And `inf == inf` gives `1`, `inf > 0.0` gives `1`.** **Both are correct IEEE - `inf` compares normally and only `nan` is unordered.**
+
+### So `inf` is not a bug
+**It is a value the language prints and compares correctly.** **It was simply never documented, and a student meeting `inf` has no way to know what it means.**
+
+### The decision, taken from ChatGPT's R163
+**Option C: document binary64-style arithmetic and its exceptions.** Retain `inf`, `-inf` and `nan` as output spellings; explain them in the Sanskrit teaching material as values outside the finite range or an undefined result. **And state explicitly that Sutram does NOT claim complete IEEE 754 conformance - division by zero is an error, conversions have checked rules, and the grammar imposes further constraints.**
+
+**That is honest in a way "we follow IEEE" would not be.**
+
+### And the conversion fix is inert, which Muse measured
+**Suite on v281: `PASS=263, NO-EXPECTATION=4, 0 fail`.** **Every in-tree conversion site was already converting a whole value first.** So the new `E_DASHAM_VITTII` refusal catches a mistake nobody in our own code was making - **which is the best outcome: right fix, zero cost.**
+
+### What remains
+**`parikshita`: 0 of 306 library functions marked, 63 eligible. It ships as a tool, not a guarantee, until the library is marked.**
+**The installer: v279 while the compiler is v281. Claude has made it a gate.**
+**The README paragraph, which decides whether a reader trusts everything else.**
+
 > **The 20 newest entries.** Older ones, from v426 back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
 
 ## v281, unchanged (Claude, R93) - the installer is a release gate; `e+N` explained
