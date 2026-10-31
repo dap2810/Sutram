@@ -122,6 +122,18 @@ likha(a[0])        -> prints 41
 
 **Sutram has no overflow story and no divide-by-zero story.** **For a language aimed at school students, a silent negative square is worse than an error: the student concludes they do not understand arithmetic.**
 
+## v278, unchanged (Claude, R86) - the alias documented and pinned; the assumptions page checked
+
+- **Reference §16, "Two names for one `kosh`"**: `vitti a = k` is a second name, not a copy; when `k` cannot grow
+  in place (something allocated in between, or always on Windows) it moves and the other name keeps the old
+  buffer - reads give old data, writes do not reach `k`. A worked program with its real output.
+- **`examples/288`** pins it (`a[0]=41 k[0]=99` / `a[0]=7 k[0]=99`): if the alias is ever fixed, it fails.
+- **Muse's assumptions page, every claim run:** 12 of 15 right; wrong - item 4's "faults even when nothing
+  relocates" (not on Linux), item 7's "`0.0/0.0` is 0" (it is NaN), item 11's "an uninitialized `vitti` reads 0"
+  (it reads a leftover value, differently on Linux and Windows).
+- **Found, not fixed:** `dasham` comparisons treat NaN as equal to and below every number (`n == 42.0` is true);
+  string `+` on variables adds addresses (printing the result crashes).
+
 ## v278, unchanged (Claude, R83) - `vitti a = k` measured: it diverges, it is not unsafe today, and refusing it breaks 3 fixtures
 
 - **The alias diverges when the `kosh` grows and moves.** On Linux a `kosh` that is the newest block grows in

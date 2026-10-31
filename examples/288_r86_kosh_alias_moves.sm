@@ -1,0 +1,15 @@
+# R86: `vitti a = k` is a second NAME for the same kosh, not a copy - until k moves. Here something is
+# allocated in between (obstacle), so k cannot grow in place: kosh_push moves k's cells, and a stays on the
+# old buffer. Reading through a gives the old data; writing through a does not reach k. This golden pins
+# that behaviour: if the alias is ever fixed, it fails - and the reference (s16) must change with it.
+mukhya() {
+    kosh k[1]
+    kosh_push(k, 41)
+    vitti a = k
+    vitti obstacle = nirmmita(64)
+    kosh_push(k, 42)
+    k[0] = 99
+    likha("a[0]=", a[0], " k[0]=", k[0])
+    a[0] = 7
+    likha("a[0]=", a[0], " k[0]=", k[0])
+}

@@ -620,26 +620,45 @@ abort with their own diagnostics — `rikta kosh se kosh_pop`,
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
 
-**A second name for a `kosh` is NOT the same `kosh` once it grows (v278, R83).** `vitti a = k` (or `a = k`)
-compiles and makes `a` a bounds-checked view of `k`'s buffer *as it is now*. When `kosh_push` outgrows the
-capacity, the cells usually **move** to a new buffer and only the name pushed through follows them; the other
-name stays on the old buffer, with the old length:
+### Two names for one `kosh`: `vitti a = k` is not a copy (v278)
+
+**`vitti a = k` (or `a = k`) makes a second name for the same `kosh`, not a copy.** Both names read and write
+the same cells — until `k` grows and its cells **move**:
+
+- `kosh_push` past the capacity first tries to extend the buffer in place. That works only if nothing was
+  allocated after it (and never on Windows: there a growing `kosh` always moves).
+- **If it cannot extend in place, `k` moves to a new buffer and `a` still points at the old one**, with the old
+  length. **Reading through `a` then gives the old data. Writing through `a` does not affect `k`.**
 
 ```
-kosh k[2]
-kosh_push(k, 41)
-vitti a = k
-vitti p = nirmmita(64)      # anything allocated in between
-kosh_push(k, 42)
-kosh_push(k, 43)            # k grows: its cells move
-k[0] = 7
-likha(a[0])                 # 41 - a is still on the old buffer
+mukhya() {
+    kosh k[1]
+    kosh_push(k, 41)
+    vitti a = k
+    vitti obstacle = nirmmita(64)     # something allocated in between
+    kosh_push(k, 42)                  # k cannot grow in place: it moves
+    k[0] = 99
+    likha("a[0]=", a[0], " k[0]=", k[0])
+    a[0] = 7
+    likha("a[0]=", a[0], " k[0]=", k[0])
+}
 ```
 
-Whether they move depends on what else was allocated: on Linux a `kosh` that is the newest block grows in place
-(the two names stay one), on Windows it always moves — **so the same program can print different results on
-the two systems.** Nothing is ever freed, so the old buffer is valid memory: a stale read or write, not a crash.
-**Rule: keep one name per `kosh`; copy values out (`k[i]`, `kosh_len(k)`), not the `kosh`.**
+prints, on Linux and on Windows alike (`examples/288`, which pins it):
+
+```
+a[0]=41 k[0]=99
+a[0]=7 k[0]=99
+```
+
+Without the `obstacle` line, on Linux `k` grows in place and the names stay one (`a[0]=99 k[0]=99`, then
+`a[0]=7 k[0]=7`); on Windows the output is the one above either way — **the same program can print
+differently on the two systems.**
+
+**A program that does not alias is unaffected**, and nothing in the standard examples relies on a second name
+after a move (the three that alias — 252, 255, 287 — never grow it afterwards). The old buffer is never freed, so
+this is a wrong value, not a crash. **Rule: keep one name per `kosh`; copy values out (`k[i]`, `kosh_len(k)`),
+not the `kosh`.**
 
 ## 17. Function values, methods and slices (R23)
 

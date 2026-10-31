@@ -1,0 +1,315 @@
+R86 WS2 - Muse-to-Sarvam/R83-THE-ASSUMPTIONS-PAGE.md checked against Sutram 1.0 (v278) - sampurna sutra: every claim run,
+Linux ELF and PE under Wine (the Linux compiler writing .exe - not real Windows).
+
+=== item 1 tak inclusive  (c01.sm)
+  | mukhya() {
+  |     chakra i = 0 tak 3 {
+  |         likha(i)
+  |     }
+  | }
+  Linux ELF: 0 1 2 3 
+  PE (Wine): 0 1 2 3 
+
+=== item 2 nirmmita bytes / p[i] cells  (c02.sm)
+  | mukhya() {
+  |     vitti p = nirmmita(64)
+  |     p[7] = 5
+  |     likha(p[7])
+  |     p[8] = 6
+  | }
+  REFUSED when compiled:
+    Sutram Error [E_NIRMMITA_SEEMA]: pankti 5:8 - p[8] nirmmita(64) bahih
+    Sanket: nirmmita bhaita-sankhyam ganayati, p[i] ashta-bhaita-ekakaih: p[8] hetu nirmmita(72) avashyakam
+
+=== item 3 division truncates toward zero, % takes the dividend's sign  (c03.sm)
+  | mukhya() {
+  |     likha(0 - 7 / 2)
+  |     vitti a = 0 - 7
+  |     likha(a / 2)
+  |     likha(a % 2)
+  | }
+  Linux ELF: -3 -3 -1 
+  PE (Wine): -3 -3 -1 
+
+=== item 4 sharpening: a[1] faults even when nothing relocates  (c04.sm)
+  | mukhya() {
+  |     kosh k[1]
+  |     kosh_push(k, 41)
+  |     vitti a = k
+  |     kosh_push(k, 42)
+  |     likha("len k=", kosh_len(k), " len a=", kosh_len(a))
+  |     likha(a[1])
+  | }
+  Linux ELF: len k=2 len a=2 42 
+  PE (Wine): len k=2 len a=1 Sutram Error: mala ank seema atikram 
+
+=== item 5 string == compares addresses  (c05.sm)
+  | mukhya() {
+  |     vitti s = "hello"
+  |     vitti t = "hello"
+  |     likha(s == t)
+  |     likha(s == "hello")
+  |     vitti u = s
+  |     likha(u == s)
+  | }
+  Linux ELF: 0 0 1 
+  PE (Wine): 0 0 1 
+
+=== item 6 s[0] reads a qword, akshar reads the byte  (c06.sm)
+  | mukhya() {
+  |     vitti s = "hello"
+  |     likha(s[0])
+  |     likha(akshar(s, 0))
+  |     likha(akshar(s, 1))
+  | }
+  Linux ELF: -8554587013629844120 104 101 
+  PE (Wine): -8554587013629844120 104 101 
+
+=== item 7 dasham division by zero; 0.0/0.0  (c07.sm)
+  | mukhya() {
+  |     dasham z = 0.0
+  |     dasham a = 1.0 / z
+  |     likha(a)
+  |     dasham b = z / z
+  |     likha(b)
+  |     likha(b == b)
+  |     likha(a > 1000000.0)
+  |     likha("chalta\n")
+  | }
+  Linux ELF: -9223372036854.775808 -9223372036854.775808 1 1 chalta 
+  PE (Wine): -9223372036854.775808 -9223372036854.775808 1 1 chalta 
+
+=== item 7 dasham division by zero; 0.0/0.0  (d4.sm)
+  | mukhya() {
+  |     dasham z = 0.0
+  |     dasham b = z / z
+  |     likha(b == 0.0)
+  |     likha(b < 1.0)
+  |     likha(b > 1.0)
+  |     likha(b != b)
+  |     dasham c = 1.0
+  |     likha(c == c)
+  | }
+  Linux ELF: 1 1 0 0 1 
+  PE (Wine): 1 1 0 0 1 
+
+=== item 7 dasham division by zero; 0.0/0.0  (d6.sm)
+  | mukhya() {
+  |     dasham z = 0.0
+  |     dasham n = z / z
+  |     likha(n == 5.0)
+  |     likha(n == 1000.0)
+  |     likha(n <= 0.0 - 7.0)
+  |     likha(n >= 3.0)
+  |     likha(n > 3.0)
+  |     likha(n < 3.0)
+  |     likha(n != 5.0)
+  |     yadi (n == 42.0) {
+  |         likha("NaN == 42.0 maana gaya\n")
+  |     }
+  | }
+  Linux ELF: 1 1 1 0 0 1 0 NaN == 42.0 maana gaya 
+  PE (Wine): 1 1 1 0 0 1 0 NaN == 42.0 maana gaya 
+
+=== item 8 assignment is not an expression  (c08.sm)
+  | mukhya() {
+  |     vitti y = 0
+  |     vitti x = (y = 5)
+  |     likha(x)
+  | }
+  REFUSED when compiled:
+    
+    Sutram Error: vyakaran dosh, pankti 3:18, shabd '='
+          vitti x = (y = 5)
+                       ^
+    Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+
+=== item 9 vitti is not a parameter type  (c09.sm)
+  | prakriya f(vitti n) {
+  |     nivartanam n
+  | }
+  | mukhya() {
+  |     likha(f(1))
+  | }
+  REFUSED when compiled:
+    
+    Sutram Error: vyakaran dosh, pankti 1:12, shabd 'vitti'
+      prakriya f(vitti n) {
+                 ^
+    Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+
+=== item 10 kosh_push on a kosh parameter refused  (c10.sm)
+  | prakriya f(kosh x) {
+  |     kosh_push(x, 5)
+  |     nivartanam 0
+  | }
+  | mukhya() {
+  |     kosh k[1]
+  |     likha(f(k))
+  | }
+  REFUSED when compiled:
+    Sutram Error: kosh-tarke kosh_push asamarthitam
+
+=== item 11 an uninitialized vitti reads 0  (c11.sm)
+  | prakriya f(n) {
+  |     vitti x
+  |     yadi (n == 1) { x = 99 }
+  |     nivartanam x
+  | }
+  | mukhya() {
+  |     likha(f(1))
+  |     likha(f(0))
+  | }
+  Linux ELF: 99 99 
+  PE (Wine): 99 99 
+
+=== item 11 an uninitialized vitti reads 0  (d1.sm)
+  | prakriya f(n) {
+  |     vitti x
+  |     yadi (n == 1) { x = 99 }
+  |     nivartanam x
+  | }
+  | mukhya() {
+  |     likha(f(0))
+  |     likha(f(1))
+  |     likha(f(0))
+  | }
+  Linux ELF: 0 99 99 
+  PE (Wine): 0 99 99 
+
+=== item 11 an uninitialized vitti reads 0  (d2.sm)
+  | prakriya f(n) {
+  |     vitti a = 1
+  |     vitti b = 2
+  |     vitti c = 3
+  |     vitti d = 4
+  |     vitti e = 5
+  |     vitti x
+  |     yadi (n == 1) { x = 99 }
+  |     nivartanam x
+  | }
+  | prakriya g() {
+  |     vitti q = 7
+  |     nivartanam q
+  | }
+  | mukhya() {
+  |     likha(f(1))
+  |     likha(g())
+  |     likha(f(0))
+  | }
+  Linux ELF: 99 7 99 
+  PE (Wine): 99 7 0 
+
+=== item 11 an uninitialized vitti reads 0  (d3.sm)
+  | mukhya() {
+  |     vitti i = 0
+  |     yavat (i < 3) {
+  |         vitti x
+  |         likha(x)
+  |         x = 50 + i
+  |         i = i + 1
+  |     }
+  | }
+  Linux ELF: 0 50 51 
+  PE (Wine): 0 50 51 
+
+=== item 12 after braced / indented mukhya  (c12a.sm)
+  | mukhya() {
+  |     likha(1)
+  | }
+  | likha(2)
+  REFUSED when compiled:
+    
+    Sutram Error: vyakaran dosh, pankti 4:1, shabd 'likha'
+      likha(2)
+      ^
+    Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+
+=== item 12 after braced / indented mukhya  (c12b.sm)
+  | mukhya()
+  |     likha(1)
+  | likha(2)
+  Linux ELF: 1 2 
+  PE (Wine): 1 2 
+
+=== item 13 negative kosh index faults  (c13.sm)
+  | mukhya() {
+  |     kosh k[2]
+  |     kosh_push(k, 1)
+  |     kosh_push(k, 2)
+  |     likha(k[0 - 1])
+  | }
+  Linux ELF: Sutram Error: mala ank seema atikram 
+  PE (Wine): Sutram Error: mala ank seema atikram 
+
+=== item 14 likha(k) prints the address  (c14.sm)
+  | mukhya() {
+  |     kosh k[2]
+  |     kosh_push(k, 1)
+  |     likha(k)
+  | }
+  Linux ELF: 140457843621904 
+  PE (Wine): 7995408 
+
+=== item 15 kosh == kosh compares addresses  (c15.sm)
+  | mukhya() {
+  |     kosh a[2]
+  |     kosh b[2]
+  |     kosh_push(a, 1)
+  |     kosh_push(b, 1)
+  |     likha(a == b)
+  |     likha(a != b)
+  | }
+  Linux ELF: 0 1 
+  PE (Wine): 0 1 
+
+=== item already-stated: string + concatenates  (c16.sm)
+  | mukhya() {
+  |     likha("a" + "b")
+  |     likha("\n")
+  | }
+  Linux ELF: ab 
+  PE (Wine): ab 
+
+=== item already-stated: string + concatenates  (d7.sm)
+  | mukhya() {
+  |     vitti s = "a"
+  |     vitti t = "b"
+  |     vitti u = s + t
+  |     likha(u)
+  |     likha("\n")
+  |     shabda(u)
+  |     likha("\n")
+  | }
+  Linux ELF: 8388922  
+  PE (Wine): 10737428034  
+
+=== item already-stated: redeclaring is refused  (c17.sm)
+  | mukhya() {
+  |     vitti x = 1
+  |     yadi (x == 1) {
+  |         vitti x = 2
+  |     }
+  |     likha(x)
+  | }
+  REFUSED when compiled:
+    c17.sm:4:15: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+              vitti x = 2
+                    ^
+    Sanket: 'x' purvam eva ghoshitam; navinam manam datum: x = ...
+
+=== item already-stated: redeclaring is refused  (d5.sm)
+  | mukhya() {
+  |     vitti x = 1
+  |     vitti x = 2
+  |     likha(x)
+  | }
+  REFUSED when compiled:
+    d5.sm:3:11: Sutram Error [E_DUPLICATE_NAME]: punah ghoshana 'x'
+          vitti x = 2
+                ^
+    Sanket: 'x' purvam eva ghoshitam; navinam manam datum: x = ...
+
+Exit codes (Linux ELF) where they matter - the shell reports a signal outside the captured output above:
+  d7.sm (string + on variables, then shabda(u)): exit -11 = SIGSEGV
+  c13.sm (k[0 - 1]): exit 1
