@@ -1,0 +1,4 @@
+284_r81_parikshita_transitive.sm:8:16: Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya 'dugna' aparikshitam prakriyam 'ek_adhik' ahvayati
+      nivartanam ek_adhik(x) * 2
+                 ^
+Sanket: parikshita prakriya keval parikshita prakriyah ahvayitum shaknoti - 'ek_adhik' api 'parikshita prakriya' bhavet, athava ahvanam tyajyatam

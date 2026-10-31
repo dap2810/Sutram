@@ -1,0 +1,13 @@
+# R81: the rule is transitive. mukhya calls dugna (checked), dugna calls ek_adhik (not marked):
+# the refusal is at the first bad edge - dugna's call - not at mukhya.
+prakriya ek_adhik(x) {
+    nivartanam x + 1
+}
+
+parikshita prakriya dugna(x) {
+    nivartanam ek_adhik(x) * 2
+}
+
+parikshita mukhya() {
+    likha(dugna(20))
+}

@@ -1,0 +1,10 @@
+# R81: in a checked function, x[i] must be bounds-checked. A parameter is only an address (as in
+# C: nothing says how long the block behind it is), so p[0] here is refused: E_APARIKSHITA_SMRITI.
+parikshita prakriya pratham(p) {
+    nivartanam p[0]
+}
+
+parikshita mukhya() {
+    vitti q = nirmmita(8)
+    likha(pratham(q))
+}

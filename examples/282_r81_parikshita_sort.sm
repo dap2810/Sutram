@@ -1,0 +1,42 @@
+# R81: a checked program. 'parikshita' before prakriya / mukhya asks the compiler to verify the
+# whole body: only checked calls (other parikshita prakriya, and likha / grahan / nirmmita), only
+# bounds-checked memory (a mala, or vitti p = nirmmita(NUMBER) never assigned again). This one makes
+# twelve numbers, sorts them in a mandapa block (insertion sort) and prints them - and is accepted.
+parikshita prakriya agla(x) {
+    nivartanam (x * 1103515245 + 12345) % 2147483648
+}
+
+parikshita prakriya shatak(x) {
+    nivartanam x % 100
+}
+
+parikshita mukhya() {
+    vitti n = 12
+    vitti beej = 2026
+    mandapa {
+        vitti p = nirmmita(12 * 8)
+        vitti i = 0
+        yavat (i < n) {
+            beej = agla(beej)
+            p[i] = shatak(beej)
+            i = i + 1
+        }
+        i = 1
+        yavat (i < n) {
+            vitti v = p[i]
+            vitti j = i - 1
+            yavat (j >= 0 && p[j] > v) {
+                p[j + 1] = p[j]
+                j = j - 1
+            }
+            p[j + 1] = v
+            i = i + 1
+        }
+        i = 0
+        yavat (i < n) {
+            likha(p[i])
+            i = i + 1
+        }
+    }
+    likha("kramit\n")
+}

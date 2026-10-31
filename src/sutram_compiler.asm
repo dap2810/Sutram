@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v276) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v277) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -383,6 +383,37 @@ r54_builtin_arity_table:
     r80_hint_lit  db "Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam", 10, 0
     r80_txt_fold  db "sthira-gananayah phalam 64-bit purnanka-seemam atikramati", 10, 0
     r80_hint_fold db "Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam; ganana punah likhyatam", 10, 0
+    ; R81: parikshita prakriya - a checked function (ChatGPT R149's design). The body is verified
+    ; after the whole program is parsed; a checked function may call only checked functions and
+    ; the builtins of the trust base. What the checker cannot verify is refused, not warned.
+    r81_word      db "parikshita", 0
+    r81_mukhya    db "mukhya", 0
+    r81_hdr_call  db ": Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya '", 0
+    r81_hdr_karya db ": Sutram Error [E_APARIKSHITA_KARYA]: parikshita prakriya '", 0
+    r81_hdr_smriti db ": Sutram Error [E_APARIKSHITA_SMRITI]: parikshita prakriya '", 0
+    r81_hdr_sthan db ": Sutram Error [E_PARIKSHITA_STHAN]: ", 0
+    r81_txt_call  db "' aparikshitam prakriyam '", 0
+    r81_txt_call2 db "' ahvayati", 10, 0
+    r81_hint_call db "Sanket: parikshita prakriya keval parikshita prakriyah ahvayitum shaknoti - '", 0
+    r81_hint_call2 db "' api 'parikshita prakriya' bhavet, athava ahvanam tyajyatam", 10, 0
+    r81_txt_q     db "' - '", 0
+    r81_txt_karya db "' parikshitum na shakyate", 10, 0
+    r81_hint_karya db "Sanket: parikshita prakriyayam vishvasta: likha, likha_fmt, grahan, nirmmita, mala, parikshita prakriyah", 10, 0
+    r81_txt_smriti db "[...]' - asya smriti-sima parikshitum na shakyate", 10, 0
+    r81_hint_smriti db "Sanket: x[i] keval mala-nama athava 'vitti p = nirmmita(SANKHYA)' (p punah na nirdishtam) - na prachalah, na sthanam", 10, 0
+    r81_txt_sthan db "'parikshita' keval 'prakriya' athava 'mukhya' purvam", 10, 0
+    r81_k_field   db "rachana-kshetra (x.y)", 0
+    r81_k_kosh    db "kosh", 0
+    r81_k_slice   db "khanda (x[a:b])", 0
+    r81_k_fref    db "prakriya-mulya", 0
+    r81_k_prasar  db "prasar", 0
+    r81_k_handle  db "yadi dosh", 0
+    r81_k_asm     db "nishkriya", 0
+    r81_k_raw     db "smriti-lekhana", 0
+    r81_k_vec     db "sadisha", 0
+    r81_k_other   db "ayam prayogah", 0
+    r81_k_rawlikha db "likha(fd, smriti, sankhya)", 0
+    r81_k_nirm    db "nirmmita", 0
     align 8
     r80_ten dq 10.0
     msg_kosh_required db "Sutram Error: kosh prakriya hetu kosh-vitti avashyak", 10, 0
@@ -1069,6 +1100,17 @@ section .bss
     r78_ents      resq 6 * 4096           ; R78: p = nirmmita(CONST): name, function, R4 index, bytes, reassigned, dead
     r78_n         resq 1
     r80_lit_ovf   resq 1                  ; R80: the number being lexed does not fit
+    r81_pending   resq 1                  ; R81: 'parikshita' seen; its position, for the next definition
+    r81_main      resq 1                  ; R81: position of 'parikshita mukhya', or 0
+    r81_n         resq 1
+    r81_tab       resq 2 * 4096           ; R81: (FUNCDEF, position of its 'parikshita')
+    r81_ncall     resq 1
+    r81_calls     resq 2 * 65536          ; R81: (AST_FUNCALL, its name token) - where a call is
+    r81_cur_name  resq 1                  ; R81: the checked function being walked
+    r81_cur_pos   resq 1
+    r81_nmala     resq 1
+    r81_malas     resq 1024               ; R81: mala names declared in it
+    r81_ctx       resq 1
     r78_fn        resq 1                  ; the function being parsed (a serial)
     r78_next      resq 1
     r78_fstk      resq 64
@@ -7144,6 +7186,7 @@ parse_program:
     call r73_check_late                ; R74: a scratch address in a module vitti declared later
     call r23_resolve_methods           ; R23 WS2: q.m(...) calls the one Rachana.m
     call r7_check_arity                ; R7: a call with the wrong number of arguments is an error
+    call r81_check_all                 ; R81: every parikshita body, now that every definition is known
     mov rax, [rel root_node]
     ret
 
@@ -7153,6 +7196,14 @@ parse_function:
 .pf_top_loop:
     call cur_tok
     mov rcx, [rax]
+    cmp rcx, TOK_IDENT             ; R81: 'parikshita prakriya' / 'parikshita mukhya'
+    jne .r81_not_mark
+    call r81_take_mark
+    test rax, rax
+    jnz .pf_top_loop
+    call cur_tok
+    mov rcx, [rax]
+.r81_not_mark:
     cmp rcx, TOK_KEYWORD
     jne .pf_expect_mukhya
     mov rcx, [rax+16]
@@ -7245,6 +7296,7 @@ parse_function:
     lea rcx, [rel func_defs]
     mov [rcx + rdx*8], rax
     inc qword [rel func_def_cnt]
+    call r81_note_def                     ; R81: marked 'parikshita'?
     cmp qword [rel r29_separate_mode], 0  ; R29: a prakriya a yoj brought in is
     je .r29_store_plain                   ; known here, but its code is the
     call r29_mark_extern                  ; module's own object's
@@ -7256,8 +7308,12 @@ parse_function:
     lea rdi, [rel msg_func_defs_overflow]
     jmp capacity_fail
 .pf_top_skip_store:
+    mov qword [rel r81_pending], 0        ; R81: a mark binds only the definition it precedes
     jmp .pf_top_loop
 .pf_expect_mukhya:
+    mov rax, [rel r81_pending]            ; R81: 'parikshita mukhya'
+    mov [rel r81_main], rax
+    mov qword [rel r81_pending], 0
     call r55_validate_prototypes
     mov qword [rel r4_seen_count], 0   ; R4: mukhya's own name scope
     mov qword [rel r4_seen_base], 0
@@ -8055,6 +8111,559 @@ r80_fold_overflow:
     lea rdx, [rel r80_txt_fold]
     lea rcx, [rel r80_hint_fold]
     jmp r80_compile_error
+
+; ---------------------------------------------------------------- R81
+; parikshita prakriya: ChatGPT R149's design, R81's first build. A declaration modifier, not a
+; keyword: the identifier 'parikshita' directly before 'prakriya' or 'mukhya'. After the whole
+; program is parsed, r81_check_all walks every marked body. A marked function may call only
+; marked functions (so the rule is transitive: each marked callee is itself checked) and the
+; builtins of the trust base (likha, likha_fmt, grahan, nirmmita); it may index only a mala
+; or a 'vitti p = nirmmita(NUMBER)' name never assigned again (both bounds-checked); anything
+; else the checker does not know is refused. Unmarked prakriya: nothing changes.
+
+; r81_take_mark: cur_tok is an identifier. If it is 'parikshita' followed by prakriya/mukhya,
+; consume it, remember its position, rax = 1; else rax = 0 (nothing consumed). Another token
+; after 'parikshita' is E_PARIKSHITA_STHAN.
+r81_take_mark:
+    push rbx
+    call cur_tok
+    mov rbx, rax
+    mov rdi, [rbx+8]
+    lea rsi, [rel r81_word]
+    call strcmp
+    test rax, rax
+    jnz .no
+    cmp qword [rbx + TOKEN_SIZE], TOK_KEYWORD
+    jne .bad
+    mov rax, [rbx + TOKEN_SIZE + 16]
+    cmp rax, KW_PRAKRIYA
+    je .yes
+    cmp rax, KW_MUKHYA
+    je .yes
+.bad:
+    mov rdi, [rbx+32]
+    lea rsi, [rel r81_hdr_sthan]
+    lea rdx, [rel r81_txt_sthan]
+    xor ecx, ecx
+    jmp r80_compile_error
+.yes:
+    mov rax, [rbx+32]
+    mov [rel r81_pending], rax
+    call advance_tok
+    mov eax, 1
+    pop rbx
+    ret
+.no:
+    xor eax, eax
+    pop rbx
+    ret
+
+; r81_note_def(rax = a FUNCDEF just stored): marked, if 'parikshita' preceded it. Preserves all.
+r81_note_def:
+    push rcx
+    push rdx
+    mov rdx, [rel r81_pending]
+    test rdx, rdx
+    jz .out
+    mov rcx, [rel r81_n]
+    cmp rcx, 4096
+    jae .full
+    shl rcx, 4
+    push rax
+    lea rax, [rel r81_tab]
+    add rcx, rax
+    pop rax
+    mov [rcx], rax
+    mov [rcx+8], rdx
+    inc qword [rel r81_n]
+    mov qword [rel r81_pending], 0
+.out:
+    pop rdx
+    pop rcx
+    ret
+.full:
+    lea rdi, [rel msg_func_defs_overflow]
+    jmp capacity_fail
+
+; r81_note_call(rax = an AST_FUNCALL, rcx = its name token): remembered for the message.
+; Preserves all registers.
+r81_note_call:
+    push rdx
+    push rsi
+    cmp qword [rax], AST_FUNCALL
+    jne .out
+    mov rdx, [rel r81_ncall]
+    cmp rdx, 65536
+    jae .out                       ; past the table: the message falls back to the definition
+    shl rdx, 4
+    lea rsi, [rel r81_calls]
+    add rdx, rsi
+    mov [rdx], rax
+    mov rsi, rcx
+    and rsi, -2
+    mov rsi, [rsi+32]
+    mov [rdx+8], rsi
+    inc qword [rel r81_ncall]
+.out:
+    pop rsi
+    pop rdx
+    ret
+
+; r81_is_marked(rdi = a function name) -> rax = 1 if a marked definition has that name.
+r81_is_marked:
+    push rbx
+    push r12
+    mov r12, rdi
+    xor ebx, ebx
+.l:
+    cmp rbx, [rel r81_n]
+    jae .no
+    mov rax, rbx
+    shl rax, 4
+    lea rcx, [rel r81_tab]
+    mov rax, [rcx + rax]
+    mov rdi, [rax+8]
+    mov rsi, r12
+    call strcmp
+    test rax, rax
+    jz .yes
+    inc rbx
+    jmp .l
+.yes:
+    mov eax, 1
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop r12
+    pop rbx
+    ret
+
+; r81_check_all: walk every marked body (and mukhya's, if marked).
+r81_check_all:
+    push rbx
+    xor ebx, ebx
+.l:
+    cmp rbx, [rel r81_n]
+    jae .main
+    mov rax, rbx
+    shl rax, 4
+    lea rcx, [rel r81_tab]
+    add rax, rcx
+    mov rcx, [rax]
+    mov rdx, [rcx+8]
+    mov [rel r81_cur_name], rdx
+    mov rdx, [rax+8]
+    mov [rel r81_cur_pos], rdx
+    mov qword [rel r81_nmala], 0
+    mov rdi, [rcx+24]
+    call r81_walk
+    inc rbx
+    jmp .l
+.main:
+    cmp qword [rel r81_main], 0
+    je .out
+    lea rax, [rel r81_mukhya]
+    mov [rel r81_cur_name], rax
+    mov rax, [rel r81_main]
+    mov [rel r81_cur_pos], rax
+    mov qword [rel r81_nmala], 0
+    mov rax, [rel root_node]
+    test rax, rax
+    jz .out
+    mov rdi, rax
+    cmp qword [rax], AST_FUNC
+    jne .walk
+    mov rdi, [rax+8]
+.walk:
+    call r81_walk
+.out:
+    pop rbx
+    ret
+
+; r81_walk(rdi = a node of a checked body): refuse what cannot be verified.
+r81_walk:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    test rbx, rbx
+    jz .out
+    mov rax, [rbx]
+    cmp rax, AST_NUM
+    je .out
+    cmp rax, AST_FLOAT
+    je .out
+    cmp rax, AST_STR
+    je .out
+    cmp rax, AST_VAR
+    je .out
+    cmp rax, AST_SCRCUR
+    je .out
+    cmp rax, AST_REWIND
+    je .out
+    cmp rax, AST_BREAK
+    je .out
+    cmp rax, AST_CONTINUE
+    je .out
+    cmp rax, AST_BINOP
+    je .two_16_24
+    cmp rax, AST_TERNARY
+    je .three
+    cmp rax, AST_IF
+    je .three
+    cmp rax, AST_WHILE
+    je .two_8_16
+    cmp rax, AST_DO_WHILE
+    je .two_8_16
+    cmp rax, AST_RETURN
+    je .one_8
+    cmp rax, AST_ASSERT
+    je .one_8
+    cmp rax, AST_HALT
+    je .one_8
+    cmp rax, AST_BLOCK
+    je .block
+    cmp rax, AST_FOR
+    je .for
+    cmp rax, AST_DECL
+    je .decl
+    cmp rax, AST_ASSIGN
+    je .assign
+    cmp rax, AST_INDEX
+    je .index
+    cmp rax, AST_CALL
+    je .builtin
+    cmp rax, AST_FUNCALL
+    je .funcall
+    lea r12, [rel r81_k_field]
+    cmp rax, AST_FIELD
+    je .refuse
+    lea r12, [rel r81_k_slice]
+    cmp rax, AST_SLICE
+    je .refuse
+    lea r12, [rel r81_k_fref]
+    cmp rax, AST_FUNCREF
+    je .refuse
+    lea r12, [rel r81_k_prasar]
+    cmp rax, AST_PRASAR
+    je .refuse
+    lea r12, [rel r81_k_handle]
+    cmp rax, AST_HANDLE
+    je .refuse
+    lea r12, [rel r81_k_asm]
+    cmp rax, AST_NISHKRIYA
+    je .refuse
+    lea r12, [rel r81_k_raw]
+    cmp rax, AST_WRITEMEM
+    je .refuse
+    lea r12, [rel r81_k_vec]
+    cmp rax, AST_VEC
+    je .refuse
+    lea r12, [rel r81_k_other]
+    jmp .refuse
+.one_8:
+    mov rdi, [rbx+8]
+    call r81_walk
+    jmp .out
+.two_8_16:
+    mov rdi, [rbx+8]
+    call r81_walk
+    mov rdi, [rbx+16]
+    call r81_walk
+    jmp .out
+.two_16_24:
+    mov rdi, [rbx+16]
+    call r81_walk
+    mov rdi, [rbx+24]
+    call r81_walk
+    jmp .out
+.three:
+    mov rdi, [rbx+8]
+    call r81_walk
+    jmp .two_16_24
+.block:
+    xor r12d, r12d
+    mov r13, [rbx+8]
+.bl:
+    cmp r12, r13
+    jae .out
+    mov rdi, [rbx + 16 + r12*8]
+    call r81_walk
+    inc r12
+    jmp .bl
+.for:
+    mov rdi, [rbx+16]
+    call r81_walk
+    mov rdi, [rbx+24]
+    call r81_walk
+    mov rdi, [rbx+32]
+    call r81_walk
+    mov rdi, [rbx+40]
+    call r81_walk
+    jmp .out
+.decl:
+    mov rax, [rbx+32]
+    lea r12, [rel r81_k_kosh]
+    cmp rax, 2
+    je .refuse
+    cmp rax, 3
+    je .refuse
+    cmp qword [rbx+24], 0
+    je .decl_init
+    mov rcx, [rel r81_nmala]       ; a mala: its indexes are bounds-checked
+    cmp rcx, 1024
+    jae .decl_size
+    lea rdx, [rel r81_malas]
+    mov rax, [rbx+8]
+    mov [rdx + rcx*8], rax
+    inc qword [rel r81_nmala]
+.decl_size:
+    mov rdi, [rbx+24]
+    call r81_walk
+.decl_init:
+    cmp qword [rbx+32], 1          ; [32] is a kind for a decl (0 integer, 1 dasham) - and
+    jbe .decl_val                  ; a mandapa's mark decl has no other field to walk
+    jmp .out
+.decl_val:
+    mov rdi, [rbx+16]
+    call r81_walk
+    jmp .out
+.assign:
+    mov rdi, [rbx+8]
+    call r81_walk                  ; a VAR, or an INDEX checked as any other; a FIELD is refused
+    mov rdi, [rbx+16]
+    call r81_walk
+    jmp .out
+.index:
+    mov rdi, rbx
+    call r81_index_ok
+    test rax, rax
+    jz .bad_index
+    mov rdi, [rbx+16]
+    call r81_walk
+    jmp .out
+.builtin:
+    mov rax, [rbx+8]
+    cmp rax, BN_LIKHA
+    je .likha
+    cmp rax, BN_LKHB
+    je .args
+    cmp rax, BN_LKFMT
+    je .args
+    cmp rax, BN_GRAHAN
+    je .args
+    cmp rax, BN_NIRMRITA
+    je .args
+    cmp rax, BN_NIRM_SCRATCH
+    je .args
+    mov rdi, rax
+    call r81_bn_name
+    mov r12, rax
+    jmp .refuse
+.likha:
+    cmp qword [rbx+16], 3          ; likha(fd, buffer, count): a raw read of memory
+    jne .args
+    mov rax, [rbx+24]
+    test rax, rax
+    jz .args
+    cmp qword [rax], AST_STR
+    je .args
+    lea r12, [rel r81_k_rawlikha]
+    jmp .refuse
+.args:
+    xor r12d, r12d
+    mov r13, [rbx+16]
+    cmp r13, 6
+    jbe .al
+    mov r13, 6
+.al:
+    cmp r12, r13
+    jae .out
+    mov rdi, [rbx + 24 + r12*8]
+    call r81_walk
+    inc r12
+    jmp .al
+.funcall:
+    mov rdi, [rbx+8]
+    call r81_is_marked
+    test rax, rax
+    jz .bad_call
+    jmp .args
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.refuse:                           ; r12 = what it is
+    mov rdi, [rel r81_cur_pos]
+    lea rsi, [rel r81_hdr_karya]
+    call r81_begin
+    mov rdi, [rel r81_cur_name]
+    call print_str_z
+    lea rdi, [rel r81_txt_q]
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    lea rdi, [rel r81_txt_karya]
+    call print_str_z
+    lea rdi, [rel r81_hint_karya]
+    jmp r81_end
+.bad_index:
+    mov rdi, [rbx+32]              ; the ']'
+    lea rsi, [rel r81_hdr_smriti]
+    call r81_begin
+    mov rdi, [rel r81_cur_name]
+    call print_str_z
+    lea rdi, [rel r81_txt_q]
+    call print_str_z
+    mov rdi, [rbx+8]
+    call print_str_z
+    lea rdi, [rel r81_txt_smriti]
+    call print_str_z
+    lea rdi, [rel r81_hint_smriti]
+    jmp r81_end
+.bad_call:
+    mov rdi, rbx
+    call r81_call_pos
+    mov rdi, rax
+    lea rsi, [rel r81_hdr_call]
+    call r81_begin
+    mov rdi, [rel r81_cur_name]
+    call print_str_z
+    lea rdi, [rel r81_txt_call]
+    call print_str_z
+    mov rdi, [rbx+8]
+    call print_str_z
+    lea rdi, [rel r81_txt_call2]
+    call print_str_z
+    call r81_context
+    lea rdi, [rel r81_hint_call]
+    call print_str_z
+    mov rdi, [rbx+8]
+    call print_str_z
+    lea rdi, [rel r81_hint_call2]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+
+; r81_index_ok(rdi = AST_INDEX) -> rax = 1 when the access is bounds-checked: a mala of this
+; function, or a name R78 knows the size of (never assigned again; the check's range).
+r81_index_ok:
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov rax, [rbx+24]
+    test rax, rax
+    jz .mala
+    cmp qword [rax+32], 0
+    jne .mala
+    mov rcx, [rax+24]
+    shr rcx, 3
+    test rcx, rcx
+    jz .mala
+    cmp rcx, 0x7fffffff
+    ja .mala
+    jmp .yes
+.mala:
+    xor r12d, r12d
+.ml:
+    cmp r12, [rel r81_nmala]
+    jae .no
+    lea rax, [rel r81_malas]
+    mov rdi, [rax + r12*8]
+    mov rsi, [rbx+8]
+    call strcmp
+    test rax, rax
+    jz .yes
+    inc r12
+    jmp .ml
+.yes:
+    mov eax, 1
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop r12
+    pop rbx
+    ret
+
+; r81_call_pos(rdi = AST_FUNCALL) -> rax = its name token's position, else the definition's mark.
+r81_call_pos:
+    xor ecx, ecx
+.l:
+    cmp rcx, [rel r81_ncall]
+    jae .def
+    mov rax, rcx
+    shl rax, 4
+    lea rdx, [rel r81_calls]
+    add rax, rdx
+    cmp [rax], rdi
+    je .hit
+    inc rcx
+    jmp .l
+.hit:
+    mov rax, [rax+8]
+    ret
+.def:
+    mov rax, [rel r81_cur_pos]
+    ret
+
+; r81_bn_name(rdi = builtin id) -> rax = its name.
+r81_bn_name:
+    lea rax, [rel bn_table]
+.l:
+    lea rcx, [rel bn_table_end]
+    cmp rax, rcx
+    jae .none
+    cmp [rax+16], rdi
+    je .hit
+    add rax, 24
+    jmp .l
+.hit:
+    mov rax, [rax]
+    ret
+.none:
+    lea rax, [rel r81_k_nirm]
+    cmp rdi, BN_NIRM_SCRATCH
+    je .r
+    lea rax, [rel r81_k_other]
+.r:
+    ret
+
+; r81_begin(rdi = position or 0, rsi = header): "file:line:col" (or "file") then the header.
+r81_begin:
+    push rsi
+    mov qword [rel r81_ctx], 0
+    call r80_src_valid
+    jz .nopos
+    call r51_print_origin
+    mov qword [rel r81_ctx], 1
+    jmp .h
+.nopos:
+    mov rdi, [rel source_path_ptr]
+    call graph_print_file
+.h:
+    pop rdi
+    jmp print_str_z
+
+; r81_context: the source line and a caret, when r81_begin had a position.
+r81_context:
+    cmp qword [rel r81_ctx], 0
+    je .r
+    call r51_print_original_context
+    mov qword [rel r81_ctx], 0
+.r:
+    ret
+
+; r81_end(rdi = Sanket line): context, the line, exit 1.
+r81_end:
+    push rdi
+    call r81_context
+    pop rdi
+    call print_str_z
+    mov rdi, 1
+    call os_exit
 
 ; r80_src_valid(rdi) -> ZF clear (jnz) when rdi points into source_buf (a token's position).
 ; The BINOPs built by the other parse levels keep a line count in [32], not a position.
@@ -13569,6 +14178,7 @@ parse_primary_inner:
     and rcx, -2               ; R23 WS2: a method call, resolved after the parse
     call r23_note_method_call
 .r23_plain_call:
+    call r81_note_call        ; R81: (rax node, rcx token) - where the call is written
     call r7_note_call         ; (rbx name, r12 argc, rcx token)
     pop r12                   ; restore r12
     add rsp, 8                ; drop the name token

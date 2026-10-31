@@ -71,7 +71,7 @@ CORE = {'mukhya', 'vitti', 'anka', 'yadi', 'yavat', 'prati', 'nivartanam', 'sank
         'ganana', 'guna', 'bhavana', 'mala', 'yantra', 'kuru', 'dasham', 'kosh', 'vibhag', 'siddhi', 'dosh', 'prasar',
         'mandapa'}   # R72
 CALLLIKE_CORE = {'mukhya', 'yantra', 'abhava', 'siddhi', 'dosh'}   # R25: prati siddhi(v)     # keyword( ... ) written like a call
-TOPLEVEL_CORE = {'prakriya', 'rachana', 'yoj', 'mukhya'}
+TOPLEVEL_CORE = {'prakriya', 'rachana', 'yoj', 'mukhya', 'parikshita'}   # R81: parikshita prakriya / mukhya
 HEADER_CORE = {'yadi', 'anya', 'yavat', 'chakra', 'kuru', 'guna', 'bhavana', 'mandapa'}   # R72: mandapa
 
 
@@ -325,6 +325,9 @@ def format_text(text: str) -> str:
             out.append(ln[0][1]); last_was_open = False
             continue
         first = code[0] if code else None
+        if (first is not None and first[0] == 'word' and first[1] == 'parikshita' and len(code) > 1
+                and code[1][0] == 'word' and mean(code[1][1]) in ('prakriya', 'mukhya')):
+            first = code[1]            # R81: the marker belongs to the header it precedes
         if code and paren == 0:
             # R70: an indented body ends at the first code line indented less than it
             si = _src_indent(rawof.get(id(ln), ''))

@@ -1,0 +1,11 @@
+# R81: a checked program may call only checked functions. mala_yog (lib/mala) is not marked
+# parikshita - it reads memory through the address it is given - so the call is refused when
+# compiled, at the call, naming it: E_APARIKSHITA_AHVAN.
+yoj mala
+parikshita mukhya() {
+    vitti p = nirmmita(3 * 8)
+    p[0] = 1
+    p[1] = 2
+    p[2] = 3
+    likha(mala_yog(p, 3))
+}
