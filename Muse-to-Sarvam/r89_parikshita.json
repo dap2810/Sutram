@@ -1,0 +1,1599 @@
+{
+ "funcs": {
+  "brihat_ank_tak": {
+   "module": "aadhar",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "brihat_ank_se": {
+   "module": "aadhar",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls brihat_shunyank (not markable)"
+  },
+  "asti_yugm": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "asti_visham": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "ank_gan": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "ank_yog": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "viparyay_ank": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "asti_viparyay_sam": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "seemit": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "fib": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "asti_sampurna": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "collatz_charan": {
+   "module": "ank",
+   "markable": true,
+   "reason": null
+  },
+  "anukram_maap_aayam_purva": {
+   "module": "anukram",
+   "markable": true,
+   "reason": null
+  },
+  "anukram_khip_i64": {
+   "module": "anukram",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "anukram_grah_i64": {
+   "module": "anukram",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "anukram_khip_aayam_purva": {
+   "module": "anukram",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls anukram_khip_i64 (not markable)"
+  },
+  "anukram_grah_aayam_purva": {
+   "module": "anukram",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls anukram_grah_i64 (not markable)"
+  },
+  "brihat_shunyank": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "brihat_ank_se_laghu": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "brihat_ank_tak_laghu": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "brihat_pratilip": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "brihat_tul": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "brihat_yuj": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "brihat_nyun": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "brihat_gun": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "brihat_asti_shunyank": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "brihat_bhajshesh": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "brihat_shesh": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls brihat_asti_shunyank (not markable)"
+  },
+  "brihat_shesh_sahaya": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls brihat_asti_shunyank (not markable)"
+  },
+  "brihat_ghatmod": {
+   "module": "brihat",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls brihat_ank_se_laghu (not markable)"
+  },
+  "dwi_ghat": {
+   "module": "chandas",
+   "markable": true,
+   "reason": null
+  },
+  "meru": {
+   "module": "chandas",
+   "markable": true,
+   "reason": null
+  },
+  "matra_meru": {
+   "module": "chandas",
+   "markable": true,
+   "reason": null
+  },
+  "asti_guru": {
+   "module": "chandas",
+   "markable": true,
+   "reason": null
+  },
+  "guru_gan": {
+   "module": "chandas",
+   "markable": true,
+   "reason": null
+  },
+  "meru_mala": {
+   "module": "chandas",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "varg": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "vargit": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "ghan": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "nirapeksh_mulya": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "laghu2": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "adhik2": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "mahattam_samapavartak": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "laghuttam_samapavartya": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "ghat": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "kramgun": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "asti_abhajya": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "yog_tak": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "dvigun": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "trigun": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "vardh": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "bit_gan": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "ganit_yadricch": {
+   "module": "ganit",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index s[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganit_seemit": {
+   "module": "ganit",
+   "markable": true,
+   "reason": null
+  },
+  "kuttaka": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "kuttaka_gun_shesh": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_vargmool": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_nirapeksh": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "chakravala": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "samasa": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "brahmagupta_kshetr": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_janchit_yuj": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_janchit_nyun": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_janchit_gun": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_janchit_bhaj": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_janchit_shesh": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_paripurna_yuj": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_paripurna_nyun": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_paripurna_gun": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_janchit_ghat": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_janchit_kramgun": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_paripurna_ghat": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_paripurna_bhaj": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_paripurna_shesh": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_janchit_nirapeksh": {
+   "module": "ganita",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ganita_paripurna_nirapeksh": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "ganita_paripurna_kramgun": {
+   "module": "ganita",
+   "markable": true,
+   "reason": null
+  },
+  "fnv1a": {
+   "module": "gudh",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "fnv1a_varna": {
+   "module": "gudh",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls fnv1a (not markable)"
+  },
+  "kalana_trapiz": {
+   "module": "kalana",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "simpson": {
+   "module": "kalana",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "pravan": {
+   "module": "kalana",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "dvitiya_pravan": {
+   "module": "kalana",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "bahu_ganana": {
+   "module": "kalana",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "bahu_mula": {
+   "module": "kalana",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls bahu_ganana (not markable)"
+  },
+  "khand_bandh": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "khand_mukt": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "khand_pratilip": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "khand_maap": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin vartani_aayam"
+  },
+  "khand_anwesh": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_antah": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls khand_anwesh (not markable)"
+  },
+  "khand_pratisthap": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_bhed": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "khand_yuj": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index p[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "khand_chhid": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_unnat": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "khand_avanat": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "khand_aadi": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_ant": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_tul": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_viparyay": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "khand_gan": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls khand_anwesh (not markable)"
+  },
+  "khand_gan_swar": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_gan_akshar": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_anwesh_akshar": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_asti_sarv_ank": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "khand_sam": {
+   "module": "khand",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls khand_tul (not markable)"
+  },
+  "madhava_vargmool": {
+   "module": "madhava",
+   "markable": true,
+   "reason": null
+  },
+  "madhava_pi": {
+   "module": "madhava",
+   "markable": true,
+   "reason": null
+  },
+  "madhava_sin": {
+   "module": "madhava",
+   "markable": true,
+   "reason": null
+  },
+  "madhava_cos": {
+   "module": "madhava",
+   "markable": true,
+   "reason": null
+  },
+  "madhava_atan": {
+   "module": "madhava",
+   "markable": true,
+   "reason": null
+  },
+  "mala_nava": {
+   "module": "mala",
+   "markable": true,
+   "reason": null
+  },
+  "mala_sangrah": {
+   "module": "mala",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "mala_grah": {
+   "module": "mala",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "mala_purn": {
+   "module": "mala",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "mala_pratilip": {
+   "module": "mala",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "mala_yog": {
+   "module": "mala",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "mala_sangrah_surakshit": {
+   "module": "mala",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin likh8"
+  },
+  "mala_grah_surakshit": {
+   "module": "mala",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin pad8"
+  },
+  "nighantu_kunji_gudh": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls fnv1a (not markable)"
+  },
+  "nighantu_kunji_sam": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "nighantu_koshtha_likh": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "nighantu_anwesh": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_kunji_gudh (not markable)"
+  },
+  "nighantu_srij": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on nirmmita (runtime size or reassigned)"
+  },
+  "nighantu_khip": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_anwesh (not markable)"
+  },
+  "nighantu_grah": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_anwesh (not markable)"
+  },
+  "nighantu_antah": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_anwesh (not markable)"
+  },
+  "nighantu_apanay": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_anwesh (not markable)"
+  },
+  "nighantu_rikta": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "nighantu_vardh": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "nighantu_grah_mool": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_anwesh (not markable)"
+  },
+  "nighantu_maap": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "nighantu_mil": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index src[i] on parameter"
+  },
+  "nighantu_mulya": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "nighantu_kunjika": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "nighantu_kunjika_ashtak": {
+   "module": "nighantu",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index m[i] on parameter"
+  },
+  "patra_path_sarv": {
+   "module": "patra",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin dvaram"
+  },
+  "patra_likh_sarv": {
+   "module": "patra",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin dvaram"
+  },
+  "patra_asti": {
+   "module": "patra",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin dvaram"
+  },
+  "phal_siddhi": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index o[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "phal_dosh": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index o[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "phal_asti_siddhi": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index r[i] on parameter"
+  },
+  "phal_mulya": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index r[i] on parameter"
+  },
+  "phal_mulya_va": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index r[i] on parameter"
+  },
+  "phal_se_siddhi": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index ok[i] on parameter"
+  },
+  "phal_janchit_yuj": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_yuj (not markable)"
+  },
+  "phal_janchit_nyun": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_nyun (not markable)"
+  },
+  "phal_janchit_gun": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_gun (not markable)"
+  },
+  "phal_janchit_bhaj": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_bhaj (not markable)"
+  },
+  "phal_janchit_shesh": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_shesh (not markable)"
+  },
+  "phal_janchit_ghat": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_ghat (not markable)"
+  },
+  "phal_janchit_kramgun": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_kramgun (not markable)"
+  },
+  "phal_janchit_nirapeksh": {
+   "module": "phal",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls ganita_janchit_nirapeksh (not markable)"
+  },
+  "roop_ank": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_ank_aadhar": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_ank_aadhar_saral": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_aadhar (not markable)"
+  },
+  "roop_ank_dhvaj": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_aadhar (not markable)"
+  },
+  "roop_dash": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_aadhar_saral (not markable)"
+  },
+  "roop_shodash": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_aadhar_saral (not markable)"
+  },
+  "roop_shodash_unnat": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_dhvaj (not markable)"
+  },
+  "roop_asht": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_aadhar_saral (not markable)"
+  },
+  "roop_dwi": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_aadhar_saral (not markable)"
+  },
+  "roop_ank_pre": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_ank_dhvaj (not markable)"
+  },
+  "roop_pad_vam": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_pad_dakshin": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_pad_madhya": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_varg_sahaya": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_varg_bharatiya": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_varg_sahaya (not markable)"
+  },
+  "roop_varg_vishwa": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_varg_sahaya (not markable)"
+  },
+  "roop_varg": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_varg_bharatiya (not markable)"
+  },
+  "roop_varg_ank": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_sthir_mool": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_sthir": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_sthir_mool (not markable)"
+  },
+  "roop_sthir_chinhit": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls roop_sthir_mool (not markable)"
+  },
+  "roop_chinhit": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "roop_sign_akshar": {
+   "module": "roop",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar_rakh"
+  },
+  "antarveshan": {
+   "module": "sadhan",
+   "markable": true,
+   "reason": null
+  },
+  "yog_seema": {
+   "module": "sadhan",
+   "markable": true,
+   "reason": null
+  },
+  "shesh": {
+   "module": "sadhan",
+   "markable": true,
+   "reason": null
+  },
+  "bhaj_urdhva": {
+   "module": "sadhan",
+   "markable": true,
+   "reason": null
+  },
+  "ank_chihna": {
+   "module": "sadhan",
+   "markable": true,
+   "reason": null
+  },
+  "satya_tak_ank": {
+   "module": "sadhan",
+   "markable": true,
+   "reason": null
+  },
+  "ank_adhik": {
+   "module": "sadhan",
+   "markable": true,
+   "reason": null
+  },
+  "samanvaya_akar_ayogya": {
+   "module": "samanvaya",
+   "markable": true,
+   "reason": null
+  },
+  "ekaka_matrika": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "vivartana": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "matrika_yoga": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "skalar": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "matrika_gunana": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "karna_yog": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "saranik2": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "saranik3": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "adish_gunan": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "rekha_manak": {
+   "module": "samanvaya",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "rakh_srij": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_srij (not markable)"
+  },
+  "rakh_yuj": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_khip (not markable)"
+  },
+  "rakh_antah": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_antah (not markable)"
+  },
+  "rakh_apanay": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_apanay (not markable)"
+  },
+  "rakh_maap": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_maap (not markable)"
+  },
+  "rakh_samroop_diff": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "rakh_sangam": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "rakh_sampat": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "rakh_bhed": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index out[i] on parameter"
+  },
+  "rakh_vardh": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_vardh (not markable)"
+  },
+  "rakh_rikta": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls nighantu_rikta (not markable)"
+  },
+  "rakh_sam": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls rakh_asti_upasamuh (not markable)"
+  },
+  "rakh_asti_upasamuh": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "rakh_tak_mala": {
+   "module": "sangrah",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index s[i] on parameter"
+  },
+  "yoga": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "madhya": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "laghutama": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "adhikatama": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "vyapti": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls adhikatama (not markable)"
+  },
+  "prasaran": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "sankhyiki_vargmool": {
+   "module": "sankhyiki",
+   "markable": true,
+   "reason": null
+  },
+  "vichalan": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls prasaran (not markable)"
+  },
+  "bindu_gunan": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin kosh_len"
+  },
+  "manak": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls bindu_gunan (not markable)"
+  },
+  "purna_yoga": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index xs[i] on parameter"
+  },
+  "purna_madhya": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls purna_yoga (not markable)"
+  },
+  "purna_laghutama": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index xs[i] on parameter"
+  },
+  "purna_adhikatama": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index xs[i] on parameter"
+  },
+  "purna_vyapti": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls purna_adhikatama (not markable)"
+  },
+  "purna_prasaran": {
+   "module": "sankhyiki",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls purna_madhya (not markable)"
+  },
+  "vinimay": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "budbud_shreni": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "viparyay_mala": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls vinimay (not markable)"
+  },
+  "laghu": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "adhik": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "yog": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "anwesh_sarak": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "gan": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "asti_sorted": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "dwi_anwesh": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "shankh_shreni": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index a[i] on parameter"
+  },
+  "nivesh_shreni": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index arr[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "mil_shreni_punar": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index tmp[i] on parameter"
+  },
+  "mil_shreni": {
+   "module": "shreni",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls mil_shreni_punar (not markable)"
+  },
+  "suchi_srij": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index l[i] on nirmmita (runtime size or reassigned)"
+  },
+  "suchi_vardh": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_khip": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_grah": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_sangrah": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_maap": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index l[i] on parameter"
+  },
+  "suchi_nivesh": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_apanay": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_vinimay": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_viparyay": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_shreni": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls mil_shreni (not markable)"
+  },
+  "suchi_laghu": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index l[i] on parameter"
+  },
+  "suchi_adhik": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index l[i] on parameter"
+  },
+  "suchi_yog": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls yog (not markable)"
+  },
+  "suchi_gan": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls gan (not markable)"
+  },
+  "suchi_anwesh": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls anwesh_sarak (not markable)"
+  },
+  "suchi_asti_sorted": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls asti_sorted (not markable)"
+  },
+  "suchi_dwi_anwesh": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls dwi_anwesh (not markable)"
+  },
+  "suchi_rikta": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index l[i] on parameter"
+  },
+  "suchi_antah": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "suchi_kramank": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "chay_khip": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls suchi_khip (not markable)"
+  },
+  "chay_apanay": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "chay_avalok": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index lst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "chay_rikta": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index l[i] on parameter"
+  },
+  "avali_srij": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index q[i] on nirmmita (runtime size or reassigned)"
+  },
+  "avali_pravesh": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index qu[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "avali_nishkas": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index qu[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "avali_avalok": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index qu[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "avali_tak_mala": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index qu[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "avali_antah": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index qu[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "avali_rikta": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index q[i] on parameter"
+  },
+  "avali_shunya": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index q[i] on parameter"
+  },
+  "avali_maap": {
+   "module": "suchi",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index q[i] on parameter"
+  },
+  "ank_tak_varna": {
+   "module": "vakyank",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_tak_ank": {
+   "module": "vakyank",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "ank_tak_aadhar_varna": {
+   "module": "vakyank",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_tak_ank_aadhar": {
+   "module": "vakyank",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "pad_vam": {
+   "module": "vakyank",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_tak_dashm": {
+   "module": "vakyank",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index okp[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_maap": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin vartani_aayam"
+  },
+  "akshar_sanket": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "asti_ank_akshar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "asti_unnat_akshar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "asti_avanat_akshar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "asti_akshar_akshar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "asti_avakash_akshar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin akshar"
+  },
+  "gan_swar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin vartani_aayam"
+  },
+  "gan_akshar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin vartani_aayam"
+  },
+  "anwesh_akshar": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin vartani_aayam"
+  },
+  "asti_sarv_ank": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin vartani_aayam"
+  },
+  "unnat_sanket": {
+   "module": "varna",
+   "markable": true,
+   "reason": null
+  },
+  "avanat_sanket": {
+   "module": "varna",
+   "markable": true,
+   "reason": null
+  },
+  "varna_sam": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_KARYA: builtin vartani_aayam"
+  },
+  "varna_anwesh": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index h[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_antah": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls varna_anwesh (not markable)"
+  },
+  "varna_pratisthap": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index r[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_bhed": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_yuj": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index p[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_chhid": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index s[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_unnat": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_avanat": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_aadi": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index s[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_ant": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index s[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_tul": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index x[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_viparyay": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_SMRITI: index dst[i] on a name whose size is not known (not a mala local, not vitti NAME = nirmmita(CONST) never reassigned)"
+  },
+  "varna_gan": {
+   "module": "varna",
+   "markable": false,
+   "reason": "E_APARIKSHITA_AHVAN: calls varna_anwesh (not markable)"
+  }
+ },
+ "markable": [
+  "adhik2",
+  "ank_adhik",
+  "ank_chihna",
+  "ank_gan",
+  "ank_yog",
+  "antarveshan",
+  "anukram_maap_aayam_purva",
+  "asti_abhajya",
+  "asti_guru",
+  "asti_sampurna",
+  "asti_viparyay_sam",
+  "asti_visham",
+  "asti_yugm",
+  "avanat_sanket",
+  "bhaj_urdhva",
+  "bit_gan",
+  "brahmagupta_kshetr",
+  "collatz_charan",
+  "dvigun",
+  "dwi_ghat",
+  "fib",
+  "ganit_seemit",
+  "ganita_nirapeksh",
+  "ganita_paripurna_bhaj",
+  "ganita_paripurna_ghat",
+  "ganita_paripurna_gun",
+  "ganita_paripurna_kramgun",
+  "ganita_paripurna_nirapeksh",
+  "ganita_paripurna_nyun",
+  "ganita_paripurna_shesh",
+  "ganita_paripurna_yuj",
+  "ganita_vargmool",
+  "ghan",
+  "ghat",
+  "guru_gan",
+  "kramgun",
+  "kuttaka",
+  "kuttaka_gun_shesh",
+  "laghu2",
+  "laghuttam_samapavartya",
+  "madhava_atan",
+  "madhava_cos",
+  "madhava_pi",
+  "madhava_sin",
+  "madhava_vargmool",
+  "mahattam_samapavartak",
+  "mala_nava",
+  "matra_meru",
+  "meru",
+  "nirapeksh_mulya",
+  "samanvaya_akar_ayogya",
+  "sankhyiki_vargmool",
+  "satya_tak_ank",
+  "seemit",
+  "shesh",
+  "trigun",
+  "unnat_sanket",
+  "vardh",
+  "varg",
+  "vargit",
+  "viparyay_ank",
+  "yog_seema",
+  "yog_tak"
+ ]
+}
