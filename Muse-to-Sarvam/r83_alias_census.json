@@ -1,0 +1,39 @@
+[
+ {
+  "file": "examples/252_r38_alias_kosh_oob.sm",
+  "scope": "mukhya",
+  "alias": "w",
+  "kosh": "v",
+  "form": "assign",
+  "grows": false,
+  "intervening": null,
+  "passed_to": []
+ },
+ {
+  "file": "examples/255_r42_alias_kosh_push.sm",
+  "scope": "mukhya",
+  "alias": "w",
+  "kosh": "v",
+  "form": "assign",
+  "grows": true,
+  "intervening": null,
+  "passed_to": [
+   "kosh_len",
+   "kosh_push",
+   "likha"
+  ]
+ },
+ {
+  "file": "examples/287_r82_kosh_after_mandapa.sm",
+  "scope": "mukhya",
+  "alias": "bahar",
+  "kosh": "k",
+  "form": "assign",
+  "grows": false,
+  "intervening": null,
+  "passed_to": [
+   "likha",
+   "padh"
+  ]
+ }
+]
