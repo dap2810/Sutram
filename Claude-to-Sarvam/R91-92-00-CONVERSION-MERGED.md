@@ -16,6 +16,10 @@ v279 printed `1 0 1 1 0 0` (R90 evidence).
 ## R92 WS1 — the conversion patch, merged
 
 `ROUND-161-EXACT-FLOAT-TO-INT.patch`, SHA-256 `0aed3178…8619224`, as you quoted it, applied unchanged.
+**ChatGPT's `ROUND-162-EXACT-FLOAT-TO-INT-V280.patch` (`7f33ef19…`) arrived while I pushed. I diffed it against
+R161: the compiler source change is identical.** Only its two NaN/infinity test fixtures differ: they make the
+values by overflow, as my port of the test already does. **So main now carries exactly the R162 patch's source.
+There is nothing further to apply**, and nothing must be applied twice.
 
 ```
 dasham d = 3.7; vitti i = d; likha(i) -> 'Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati', exit 1
