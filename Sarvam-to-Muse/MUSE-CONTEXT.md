@@ -70,7 +70,7 @@ sweeps have never come back empty.
 
 ## 4. The road to v1.0 — where your work sits
 
-**`ROADMAP-TO-V1.0.md` in the repo is the single source of truth.** Ten numbered steps, each with an owner
+**`docs/rounds/ROADMAP-TO-V1.0.md` in the repo is the single source of truth.** Ten numbered steps, each with an owner
 and a "done when". **If a task is not on that list, it is not on the critical path.**
 
 **v1.0 is:** the procedural core correct and complete, the library usable, Windows installing and running,

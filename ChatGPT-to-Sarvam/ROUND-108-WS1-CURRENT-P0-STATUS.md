@@ -8,7 +8,7 @@
 |---|---|
 | `README.md` (blob `599f1cc5078e43530ddc572af4a5e84f851ce253`) | Known limits no longer deny separate compilation, function values or an actual Windows GUI test. |
 | `docs/sutram-roadmap.html` (blob `235c68e63ad36d51243bd1c82b532d9a762dfbe4`) | Records real Windows acceptance (16 required checks) and native `SUTRAMO1/2` separate compilation. |
-| `PROJECT-OVERVIEW.md` (blob `e8a890746e7b4092063dc158aaed9972550bf83e`) | Real Windows GUI/installer is acknowledged in `:153`; contradictory `Not implemented`/`No first-class functions`/`No collections beyond kosh` passage removed at `:156`. **Clean-up only:** `“**Not proven.** **Partly proven.**”` in the same header and duplicated “Still absent” sentence; *not* an old P0 failure. |
+| `docs/rounds/PROJECT-OVERVIEW.md` (blob `e8a890746e7b4092063dc158aaed9972550bf83e`) | Real Windows GUI/installer is acknowledged in `:153`; contradictory `Not implemented`/`No first-class functions`/`No collections beyond kosh` passage removed at `:156`. **Clean-up only:** `“**Not proven.** **Partly proven.**”` in the same header and duplicated “Still absent” sentence; *not* an old P0 failure. |
 | `docs/sutram-project-status.html:181–182` (blob `40022601eeccce00d7c4d683999f3efd493656d8`) | Now states first-class functions, methods and slices landed. Other Windows/FFI cells remain stale. |
 | `PROJECT-MASTER.md:267–275` (blob `480adad1ab5f0c209479e985d50c401497afd7ac`) | Performance verdict corrected to **2 wins, 2 losses, 1 tie** against Zig; do not reopen the old “4 of 5” error. |
 | `docs/sutram-scorecard.html:206` (blob `8f8f537e6e801afcab75ba0333dbebbcf4029a36`) | Acknowledges first-class functions, methods and slices. **Not** proof the scorecard's `:150` FFI row is fixed. |
@@ -44,7 +44,7 @@ Each line below is exact/current source wording followed by the **minimum safe r
 ## P1 — real drift, but do NOT conflate with P0 claims
 
 - `PROJECT-MASTER.md` still has the **2026-10-20 three-language active plan**, despite owner's 23 Oct `LANGUAGE-PRIORITY.md`: **SANSKRIT ONLY**, other ten packs frozen. Add a **SUPERSEDED** date banner; do not rewrite/develop the frozen pack files.
-- `PROJECT-MASTER.md` charter numbering for items 17–20 diverges from `docs/sutram-design-parameters.html` and says `ROADMAP-TO-V1.0.md` is canonical; the owner set `docs/PATH-TO-COMPLETION.md` instead. Correct references and recompute tally only from actual rubric.
+- `PROJECT-MASTER.md` charter numbering for items 17–20 diverges from `docs/sutram-design-parameters.html` and says `docs/rounds/ROADMAP-TO-V1.0.md` is canonical; the owner set `docs/PATH-TO-COMPLETION.md` instead. Correct references and recompute tally only from actual rubric.
 - `docs/sutram-scorecard.html:126,158,166,174,182,237` has stale formatter/undo/modules/tests/keyword/Result wording; keyword **32/28** definition awaits owner, so do NOT silently pick 28 or overwrite “32” in a formula by guess.
 - `docs/sutram-stdlib-reference.html` overstates core modules “Safe anywhere, including a freestanding program”: layer independence does not certify boot/runtime or raw-pointer safety.
 - `docs/PATH-TO-COMPLETION.md` reports 25/6/19 allocation checks as an **explicitly dated v315 measurement**, whereas R39 later reported 26/13/13; refresh only after Sarvam's new fresh-clone verification, preserving old receipt.

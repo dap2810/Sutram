@@ -97,7 +97,7 @@ virtual screen**, not a monitor.
 | Change | Where |
 |---|---|
 | Gates 37 → 39 | `PROJECT-MASTER.md` |
-| Suite 218 → 223 | `PROJECT-MASTER.md` (2), `PROJECT-OVERVIEW.md` (3), the three `docs/` pages |
+| Suite 218 → 223 | `PROJECT-MASTER.md` (2), `docs/rounds/PROJECT-OVERVIEW.md` (3), the three `docs/` pages |
 | Examples 222 → 227 | `docs/sutram-scorecard.html` and `docs/sutram-project-status.html` |
 | Compiler blob 7db83d38 (v246) → 03e9845c (v249) | the scorecard's header |
 | Measured-on line → 2026-10-27, v249 | the status page and `PROJECT-MASTER` |

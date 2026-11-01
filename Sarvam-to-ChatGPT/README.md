@@ -46,7 +46,7 @@ a speed-up, measure it.
 
 ## Start here
 
-`PROJECT-OVERVIEW.md` at the repository root. Section 2 lists the six
+`docs/rounds/PROJECT-OVERVIEW.md` at the repository root. Section 2 lists the six
 fundamentals; section 8 separates what is proven from what is not; section 9
 explains the verification discipline — in particular *check the check*,
 because one test here asserted a wrong value and silently agreed with a bug

@@ -10,8 +10,8 @@ The check for absence-claims going stale, in the shape of `check_layers.py` / `d
 
 **Run on main: 115 documents, 161 hits.** I did not fix any; the significant ones, verified:
 
-1. **`PROJECT-OVERVIEW.md:159` — contradictory paragraph, partially fixed.** The v318 changelog says the stale claims were fixed, but the paragraph now reads "**Not implemented.** Separate compilation with object files now exists (our own linker, `SUTRAMO1`/`SUTRAMO2`), as do first-class functions and methods. Still absent: ... No concurrency. **No first-class functions.**" — it asserts first-class functions both exist and don't exist in the same paragraph. The fix landed on the head of the paragraph and missed the tail.
-2. **`PROJECT-OVERVIEW.md:155`** — "The **Windows installer has never been executed on Windows**." Stale: the installer passed 16 required checks on real Windows 11 (R31 brief).
+1. **`docs/rounds/PROJECT-OVERVIEW.md:159` — contradictory paragraph, partially fixed.** The v318 changelog says the stale claims were fixed, but the paragraph now reads "**Not implemented.** Separate compilation with object files now exists (our own linker, `SUTRAMO1`/`SUTRAMO2`), as do first-class functions and methods. Still absent: ... No concurrency. **No first-class functions.**" — it asserts first-class functions both exist and don't exist in the same paragraph. The fix landed on the head of the paragraph and missed the tail.
+2. **`docs/rounds/PROJECT-OVERVIEW.md:155`** — "The **Windows installer has never been executed on Windows**." Stale: the installer passed 16 required checks on real Windows 11 (R31 brief).
 3. **`docs/sutram-scorecard.html:198`** — "No first-class functions, namespaced modules, or pattern matching." First-class functions exist (R23, gate PASS); the other two are still true.
 4. **`sutram-completion-roadmap.html:343` / `docs/sutram-project-status.html:186`** — "no FFI". Stale: the C FFI shipped in R32–R34 (gates PASS).
 5. **`compiler/MODULE_SYSTEM_R40_DESIGN.md:73`** — "Real separate compilation, native objects (not implemented)". Stale: R28/R29 built it.

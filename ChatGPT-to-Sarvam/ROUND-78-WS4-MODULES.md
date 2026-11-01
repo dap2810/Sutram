@@ -10,4 +10,4 @@ The review fixture already exists in [draft PR #41](https://github.com/dap2810/S
 Sarvam can reproduce the smallest case on a full current Linux checkout containing PR #41:
 `python3 tools/r76_module_object_probe.py --compiler ./sutram_compiler --report /tmp/r78-two-units.json`
 
-Provide the **raw JSON** from that run, including whether first object is ET_EXEC instead of ET_REL or whether the compiler rejects no-entry sources. `ROADMAP-TO-V1.0.md` says separate compilation is v2, so do not destabilize F1/memory acceptance with a speculative whole-compiler rewrite. No compiler or linker changes made here.
+Provide the **raw JSON** from that run, including whether first object is ET_EXEC instead of ET_REL or whether the compiler rejects no-entry sources. `docs/rounds/ROADMAP-TO-V1.0.md` says separate compilation is v2, so do not destabilize F1/memory acceptance with a speculative whole-compiler rewrite. No compiler or linker changes made here.

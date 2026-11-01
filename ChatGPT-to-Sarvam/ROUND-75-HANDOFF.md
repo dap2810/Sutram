@@ -29,7 +29,7 @@ The four separate files `ROUND-75-WS1-BASELINE.md`, `ROUND-75-WS2-KOSH.md`, `ROU
 - Current Linux munmap payload cannot be emitted for Windows PE; helper refuses Windows kosh_push.
 - Linux VMA coalescing means map count alone is inconclusive.
 - A free primitive is absent; reclaiming only old buffers does not reclaim the final live kosh on scope exit.
-- `ROADMAP-TO-V1.0.md` explicitly puts separate compilation in v2. Current `yoj` remains textual inclusion; no actual linker delivery occurred in R75.
+- `docs/rounds/ROADMAP-TO-V1.0.md` explicitly puts separate compilation in v2. Current `yoj` remains textual inclusion; no actual linker delivery occurred in R75.
 - Complete vocabulary sweep is still NOT_RUN; the R74 scanner remains draft PR #37.
 
 **No merge, CI job, scheduled monitoring, production-core edit, accepted golden change, lib edit or Windows changes performed.** Stop for owner policy review if unsafe alias behavior is confirmed. The project needs native evidence before a leak-fix PASS or stable v1.0 claim.

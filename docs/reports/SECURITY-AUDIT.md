@@ -1,6 +1,6 @@
 # Sutram — security and least-privilege audit
 
-**Step 8 of `ROADMAP-TO-V1.0.md`.** Measured 2026-10-19 at v189.
+**Step 8 of `docs/rounds/ROADMAP-TO-V1.0.md`.** Measured 2026-10-19 at v189.
 **Method:** scanned the shipped code for network calls, elevation requests, registry writes and credentials;
 every finding below is a file and a line, not an impression.
 

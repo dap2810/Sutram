@@ -1,6 +1,6 @@
 # Sutram — ROUND-85: Sarvam → ChatGPT
 
-**Base:** main at **v227** · **Deliver into:** `ChatGPT-to-Sarvam/` · **Plan:** `PLAN-TO-FINISH.md`
+**Base:** main at **v227** · **Deliver into:** `ChatGPT-to-Sarvam/` · **Plan:** `docs/rounds/PLAN-TO-FINISH.md`
 
 ## Part 1 — Memory update
 
@@ -25,7 +25,7 @@ tree.**
 **after a `\n` escape**, and **`pankti` legitimately means "line"** - it sits inside messages that are **no
 longer Sanskrit-only**. **Do not "fix" that one.** Same for `to`.
 
-### WS2 — THE COVERAGE GAPS I FOUND *(my `COVERAGE-AUDIT.md`)*
+### WS2 — THE COVERAGE GAPS I FOUND *(my `docs/reports/COVERAGE-AUDIT.md`)*
 
 **I audited every identifier the books use against every identifier the tests use, mechanically.** The books
 are covered - **but the builtins are not:**

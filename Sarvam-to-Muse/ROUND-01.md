@@ -105,6 +105,6 @@ your GUI work when the owner says it is ready.
 
 ## Start here
 
-`PROJECT-OVERVIEW.md` at the repository root — section 2 for the six
+`docs/rounds/PROJECT-OVERVIEW.md` at the repository root — section 2 for the six
 fundamentals, section 8 for what is proven and what is not, section 9 for the
 verification discipline.

@@ -1,6 +1,6 @@
 # Sutram ROUND-90 WS4 — F8: what the false language-pack warning actually tests
 
-**Scope:** SOURCE-ONLY diagnosis, pinned `main` v253 commit `7ec9c9b58498bb34b826ea6abbcbc5cf2e2f7ec4`. **Native Windows/Linux execution: NOT_RUN.** The owner's real Windows observations are in [F8-PACK-WARNING-FALSE-ALARM.md](../F8-PACK-WARNING-FALSE-ALARM.md). This report does **not modify compiler code**: Claude owns the fix.
+**Scope:** SOURCE-ONLY diagnosis, pinned `main` v253 commit `7ec9c9b58498bb34b826ea6abbcbc5cf2e2f7ec4`. **Native Windows/Linux execution: NOT_RUN.** The owner's real Windows observations are in [docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md](../docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md). This report does **not modify compiler code**: Claude owns the fix.
 
 ## Short answer
 

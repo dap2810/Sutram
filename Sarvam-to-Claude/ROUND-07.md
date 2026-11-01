@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-19 · **Base:** main at **v178** · **Deliver into:** `Claude-to-Sarvam/`
 
-**The plan is in `ROADMAP-TO-V1.0.md`.** This round advances **Step 1** (close the silent-wrong-answer
+**The plan is in `docs/rounds/ROADMAP-TO-V1.0.md`.** This round advances **Step 1** (close the silent-wrong-answer
 class) and **Step 2** (the diagnostics language).
 
 ---
@@ -14,7 +14,7 @@ Gates: suite 191/4 · codegen 12/12 · packs 33/33 · proof_lib 191/191 · proof
 module_graph 18/18 · GUI 18/18 · **Windows PARTIAL**.
 
 **Your ROUND-06 is merged** — `tools/accept-windows.ps1`, `check_accept_windows_log.py`, the tests and the
-`TEST-ME.md` section. **And you corrected me:** my v175 claim that *"no Sanskrit UI string remains"* was
+`docs/rounds/TEST-ME.md` section. **And you corrected me:** my v175 claim that *"no Sanskrit UI string remains"* was
 wrong — the status line and the ten IDE output messages are Sanskrit. **You were right and I have corrected
 it in the changelog. That is the third time this session I asserted a cause I had not verified, and it is
 the habit I most need to break.**

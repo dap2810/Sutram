@@ -268,7 +268,7 @@ For a first real application, consider a local file/data-summary utility with mu
 
 The following are discrepancies observed during review, not permission to overwrite current work:
 
-1. `PROJECT-MASTER.md` and `PROJECT-OVERVIEW.md` still show bare-core build commands; `docs/BUILDING.md` specifies R68.
+1. `PROJECT-MASTER.md` and `docs/rounds/PROJECT-OVERVIEW.md` still show bare-core build commands; `docs/BUILDING.md` specifies R68.
 2. The master/README/reference differ in library/function/test counts. Generate current counts and retain historical records as historical.
 3. Older reference text says floating parameters/returns are unsupported, while the source contains scalar binary64 parameter/return handling.
 4. The roadmap's broad “no raw pointers/no Windows IDE” descriptions do not match the newer raw-address builtins and GUI source. Replace broad statements with the actual missing contracts and execution limits.

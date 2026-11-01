@@ -1,7 +1,7 @@
 # Sutram — ROUND-10: Sarvam → Claude
 
 **Date:** 2026-10-19 · **Base:** main at **v191** · **Deliver into:** `Claude-to-Sarvam/`
-**Plan:** `ROADMAP-TO-V1.0.md`
+**Plan:** `docs/rounds/ROADMAP-TO-V1.0.md`
 
 > **This is the complete round.** Everything agreed since ROUND-09 is here. **If it is not in this file, it
 > is not in scope.**

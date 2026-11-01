@@ -1,6 +1,6 @@
 # Sutram — ROUND-12: Sarvam → Claude
 
-**Base:** main at **v203** · **Deliver into:** `Claude-to-Sarvam/` · **Plan:** `ROADMAP-TO-V1.0.md`
+**Base:** main at **v203** · **Deliver into:** `Claude-to-Sarvam/` · **Plan:** `docs/rounds/ROADMAP-TO-V1.0.md`
 
 ## Part 1 — Memory update
 

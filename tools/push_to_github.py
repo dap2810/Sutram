@@ -14,7 +14,7 @@ ROOT = "/scratch/work"
 STATE = os.path.join(ROOT, ".gh-pushed")
 
 INCLUDE_DIRS = ["src", "lib", "lang", "examples", "tools", "ide", "windows", "docs", "compiler"]
-EXTRA = ["ROADMAP.md", "LICENSE.txt", "INSTALL-WINDOWS.md", "PROJECT-OVERVIEW.md", "README.md"]
+EXTRA = ["ROADMAP.md", "LICENSE.txt", "INSTALL-WINDOWS.md", "docs/rounds/PROJECT-OVERVIEW.md", "README.md"]
 SKIP_PARTS = {"tests/expect", "benchmarks", "nasm", "__pycache__", ".backup", ".oldicons",
               "ret", "inbox", "downloads", ".git", "payload.manifest.sha256"}
 SKIP_EXT = {".o", ".obj", ".zip", ".exe"}

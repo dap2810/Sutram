@@ -2090,7 +2090,7 @@ they exist.**
 | Document | Found | Fixed |
 |---|---|---|
 | `PROJECT-MASTER.md` | **41 PASS** | already correct |
-| `PROJECT-OVERVIEW.md` | **v246** | **v250** |
+| `docs/rounds/PROJECT-OVERVIEW.md` | **v246** | **v250** |
 | `README.md` | **218 pass** | **224 pass** |
 | `docs/PATH-TO-COMPLETION.md` | **v246** (twice), **223** | **v250**, **224** |
 | `ROADMAP.md` | clean | - |
@@ -3150,7 +3150,7 @@ trusted partner still has to be read - which is the same rule as the guard: veri
 ### It checked the live tree and confirmed the fixes are real
 
 **Its WS1 opens with "Applied - CLOSED, DO NOT repeat"** and names `README.md`, `docs/sutram-roadmap.html` and
-`PROJECT-OVERVIEW.md` with their blobs. **It verified rather than assumed** - *"a proposed Muse patch is not a
+`docs/rounds/PROJECT-OVERVIEW.md` with their blobs. **It verified rather than assumed** - *"a proposed Muse patch is not a
 main-branch fix until its content is present on main."*
 
 ### And it found a leftover from my own partial fix
@@ -3230,7 +3230,7 @@ project made in the opposite direction a week ago, when the README understated i
 
 ## v324 - the last P0 in PROJECT-OVERVIEW: the Windows claim, fixed by exact block
 
-**ChatGPT's R106 P0 list flagged `PROJECT-OVERVIEW.md`: *"Nobody has run the Windows GUI on real Windows... The
+**ChatGPT's R106 P0 list flagged `docs/rounds/PROJECT-OVERVIEW.md`: *"Nobody has run the Windows GUI on real Windows... The
 Windows installer has never been executed on Windows."*** **Both are false - the acceptance ran on real Windows 11,
 non-elevated, 16 required checks PASS.**
 
@@ -3260,7 +3260,7 @@ proof** - *"it finds sentences shaped like absence claims and cannot decide whet
 
 ### And its first significant hit was my own incomplete edit
 
-> *"`PROJECT-OVERVIEW.md:159` - contradictory paragraph, partially fixed. The v318 changelog says the stale claims
+> *"`docs/rounds/PROJECT-OVERVIEW.md:159` - contradictory paragraph, partially fixed. The v318 changelog says the stale claims
 > were fixed, but the paragraph now reads '**Not implemented.** Separate compilation..."*
 
 **So my v318 fix left the words "Not implemented." in front of a sentence saying it IS implemented, and left the
@@ -3323,7 +3323,7 @@ and recorded the verdict I wanted rather than the one they showed.**
 **A partner caught it, from the table I wrote.** **That is exactly why the prose audit was worth asking for - and
 exactly why I asked for it to be done by someone who did not write the numbers.**
 
-**ChatGPT's R106-WS1 lists 17 more P0 corrections across `PROJECT-OVERVIEW.md`, `docs/sutram-project-status.html`,
+**ChatGPT's R106-WS1 lists 17 more P0 corrections across `docs/rounds/PROJECT-OVERVIEW.md`, `docs/sutram-project-status.html`,
 `docs/sutram-design-parameters.html` and `PROJECT-MASTER.md`.** **All are the same class: a document stating a limit
 that has been removed, or a status that has moved.** **To be applied.**
 
@@ -3354,7 +3354,7 @@ written reasons is only as good as those reasons, and one of them was wrong.**
 **Its prose-correction list opens with a "Do not re-fix" section:**
 
 > *"`README.md` known limits; `docs/sutram-roadmap.html` real Windows acceptance, separate compilation and
-> first-class functions; `docs/sutram-scorecard.html`... `PROJECT-OVERVIEW.md`... **Sarvam has already changed
+> first-class functions; `docs/sutram-scorecard.html`... `docs/rounds/PROJECT-OVERVIEW.md`... **Sarvam has already changed
 > those.**"*
 
 **It checked the tree before writing, found my fixes, and did not redo them.** **That is the check I told it to
@@ -3362,7 +3362,7 @@ make because I had failed to make it - and it made it.** **The instruction worke
 was written for.**
 
 **Its list is 18 KB of actionable corrections, each with the current line and the minimum replacement text** -
-**and it notes `PROJECT-OVERVIEW.md` still has "other stale words" beyond the phrase I fixed.** **To be applied.**
+**and it notes `docs/rounds/PROJECT-OVERVIEW.md` still has "other stale words" beyond the phrase I fixed.** **To be applied.**
 
 ### WS3 - the spec maintenance actions
 **Which spec files to update, which to mark historical, which to merge.** **To be applied.**
@@ -3410,7 +3410,7 @@ still awaits the owner's run.**
 
 | File | The stale claim |
 |---|---|
-| **`PROJECT-OVERVIEW.md`** | *"No separate compilation... there are no `.smo` object files. No concurrency. No first-class functions."* |
+| **`docs/rounds/PROJECT-OVERVIEW.md`** | *"No separate compilation... there are no `.smo` object files. No concurrency. No first-class functions."* |
 | **`docs/sutram-roadmap.html`** | *"Verify on a real Windows machine - Planned - **the Windows build has never been run on Windows**"* |
 | **`docs/sutram-scorecard.html`** | *"No first-class functions, namespaced modules, or pattern matching."* |
 
@@ -5027,7 +5027,7 @@ needed before that claim can be made.
 |---|---|---|
 | `README.md` | 12/12 gates, 191 pass | **22 gates, 218 pass** |
 | `PROJECT-MASTER.md` | 12 PASS, 205 pass, `PASS=187`, v229 | **22 gates, 218 pass, v237** |
-| `PROJECT-OVERVIEW.md` | 12/12, 186/186, 205 pass | **22 gates, 220/220 proofs, 218 pass** |
+| `docs/rounds/PROJECT-OVERVIEW.md` | 12/12, 186/186, 205 pass | **22 gates, 220/220 proofs, 218 pass** |
 | `docs/sutram-scorecard.html` | 191 pass, 205/205 | **218 pass, 220/220** |
 | `docs/sutram-project-status.html` | 12/12, 205 pass, 24 pass | **22 gates, 218 pass** |
 | `docs/sutram-design-parameters.html` | 12/12, 205 pass | **22 gates, 218 pass** |
@@ -5663,7 +5663,7 @@ why it matters: a false "your language is not available" message is the worst er
 **F8 is now in `PROJECT-MASTER.md`'s "what is NOT true" section**, beside F7 - so anyone reading the master
 document sees both open defects before they make a claim.
 
-**And `TEST-ME.md` carries a note for the owner:** the warning is cosmetic, **it does not affect the output** -
+**And `docs/rounds/TEST-ME.md` carries a note for the owner:** the warning is cosmetic, **it does not affect the output** -
 the program compiles and the messages are in the right language. **"Ignore the warning; report it if you see
 it."**
 
@@ -5858,7 +5858,7 @@ and it is now pinned by a gate rather than by a claim.
 
 ## v245 - ROUND-21 and ROUND-89: the queue is empty, so the work is now verification
 
-**The manual-free queue is done.** Every item on `PLAN-TO-FINISH.md` is complete or in flight, so this round is
+**The manual-free queue is done.** Every item on `docs/rounds/PLAN-TO-FINISH.md` is complete or in flight, so this round is
 not new features - **it is a second pair of eyes on work that is not the reviewer's own.**
 
 **That is the right use of two partners when there is nothing to build.** A project's weakest moment is when
@@ -6396,7 +6396,7 @@ reproduce.**
 suffixes, plus ~646 Sutram programs, plus the docs and the books.** **The audit has still never been run
 across the whole tree.**
 
-**WS2 is my `COVERAGE-AUDIT.md` findings** - `sthagita`, four `kosh_*` internals, and the four network
+**WS2 is my `docs/reports/COVERAGE-AUDIT.md` findings** - `sthagita`, four `kosh_*` internals, and the four network
 builtins, **each either reached by a program or established as unreachable.** **A builtin no program can reach
 is dead code worth knowing about.**
 
@@ -6552,7 +6552,7 @@ editor's column arithmetic, cursor, gutter and colouring all assume one byte is 
 - **And it is the kind of change that touches everything** - a font-path rewrite plus a shaper plus layout
   arithmetic is weeks of work **with a high chance of regressing the Linux GUI that currently works.**
 
-**Recorded in `ITEM-6-X11-INDIC-ASSESSMENT.md` with the evidence, so the decision is the owner's and it is
+**Recorded in `docs/rounds/ITEM-6-X11-INDIC-ASSESSMENT.md` with the evidence, so the decision is the owner's and it is
 informed. If he wants it, it should be its own milestone rather than an item in a queue.**
 
 **The alternative - starting a rewrite and stopping halfway - would leave the Linux GUI worse than it is
@@ -6591,7 +6591,7 @@ recorded that the language can open sockets; **this adds that nothing has ever o
 security-relevant surface with zero coverage is worth naming** - not because it is wrong, but because **the
 project cannot say it works.**
 
-**`COVERAGE-AUDIT.md` records all three, each with a small, mechanical next step.**
+**`docs/reports/COVERAGE-AUDIT.md` records all three, each with a small, mechanical next step.**
 
 **And the honest note: the finding is real, but the route to it was wrong twice.** I claimed a gap that did
 not exist, then found a gap that does. **The mechanical method is what made the difference** - set difference
@@ -6599,7 +6599,7 @@ cannot be fooled by a search I designed badly.
 
 ## v221 - THE PLAN TO FINISH, and the manual-free priority queue issued
 
-**`PLAN-TO-FINISH.md` is on main.** The working order, who owns each item, and what "done" means.
+**`docs/rounds/PLAN-TO-FINISH.md` is on main.** The working order, who owns each item, and what "done" means.
 
 ### The rule the plan follows
 
@@ -6742,7 +6742,7 @@ It is not applied to indexing a scalar.**
 **The failure mode is the same class as F1** - `Siddh: ... sankalit`, then the program dies - **and the user
 would not suspect the compiler.**
 
-**Recorded as F7 in `F7-SCALAR-INDEX-CRASH.md`, and added to ROUND-15 as WS4.** The robustness fuzzer is told
+**Recorded as F7 in `docs/rounds/F7-SCALAR-INDEX-CRASH.md`, and added to ROUND-15 as WS4.** The robustness fuzzer is told
 this shape specifically, because **a generator of random VALID programs would not produce it** - this is a
 valid program whose type use is wrong, and the language has no check for it.
 
@@ -7045,8 +7045,8 @@ what happened.
 
 ### And the roadmap did not carry the course change
 
-**`PROJECT-MASTER.md`, `README.md`, `PROJECT-OVERVIEW.md` and `MUSE-CONTEXT.md` all had it. The
-`ROADMAP-TO-V1.0.md` did not** - and the roadmap is the document that says what we are building. **Fixed.**
+**`PROJECT-MASTER.md`, `README.md`, `docs/rounds/PROJECT-OVERVIEW.md` and `MUSE-CONTEXT.md` all had it. The
+`docs/rounds/ROADMAP-TO-V1.0.md` did not** - and the roadmap is the document that says what we are building. **Fixed.**
 
 **The course change is now in five places**, which is what it takes for a decision to be findable rather
 than remembered.
@@ -7660,7 +7660,7 @@ were absent before. **A user can now retry a failed install.**
 ## v190 - Step 8: the security and least-privilege audit. One real violation, found and retired.
 
 **A static audit of the shipped tooling** - network calls, elevation requests, registry writes, credentials -
-with a file and a line for every finding, in `SECURITY-AUDIT.md`.
+with a file and a line for every finding, in `docs/reports/SECURITY-AUDIT.md`.
 
 ### The one real violation: `windows/sutram-installer.nsi` writes HKLM
 
@@ -8025,7 +8025,7 @@ language. **A benchmark set that does not exercise arithmetic, loops, strings, t
 allocation cannot support a performance claim about the language** - it supports a claim about call
 overhead. Extending the set is the honest next step before any number is quoted.
 
-**Step 7 is marked done on `ROADMAP-TO-V1.0.md` for the gate; the benchmark set itself is a follow-up.**
+**Step 7 is marked done on `docs/rounds/ROADMAP-TO-V1.0.md` for the gate; the benchmark set itself is a follow-up.**
 
 ## v180 - Step 6 done: every code sample in every document compiled
 
@@ -8039,11 +8039,11 @@ message**. They are supposed to fail, and they fail with the right message.
 using `to` instead of `tak`, and a stale keyword in the language reference. **This time it came back clean** -
 which is the first time that sweep has returned empty, and worth recording as such.
 
-**Step 6 is marked done on `ROADMAP-TO-V1.0.md`.**
+**Step 6 is marked done on `docs/rounds/ROADMAP-TO-V1.0.md`.**
 
 ## v179 - ROUND-07 to Claude and ROUND-75 to ChatGPT; both point at the roadmap
 
-**Both rounds now open with a memory update and name the step they advance on `ROADMAP-TO-V1.0.md`** - the
+**Both rounds now open with a memory update and name the step they advance on `docs/rounds/ROADMAP-TO-V1.0.md`** - the
 practice the owner asked for, applied to every partner.
 
 ### ROUND-07 (Claude) - Steps 1 and 2
@@ -8083,7 +8083,7 @@ if it cannot be done.
 
 ### Claude built the Windows gate
 
-`tools/accept-windows.ps1` and `tools/check_accept_windows_log.py` are merged, with tests and a `TEST-ME.md`
+`tools/accept-windows.ps1` and `tools/check_accept_windows_log.py` are merged, with tests and a `docs/rounds/TEST-ME.md`
 section. **It records the binary SHA-256s (repo and installed), the Windows build, the elevation tokens, and
 PASS/FAIL/NOT-RUN per check as JSON.**
 
@@ -8138,7 +8138,7 @@ keyword** - it appears legitimately inside the Sanskrit diagnostic `vyakaran dos
 "fix" it.
 
 **The practice is now general, not just for Muse:** every brief opens with a memory update and points at
-**`ROADMAP-TO-V1.0.md`**, which names the step that round advances. **The plan lives in the repo, so no round
+**`docs/rounds/ROADMAP-TO-V1.0.md`**, which names the step that round advances. **The plan lives in the repo, so no round
 has to re-derive it and no partner works from a stale picture.**
 
 ## v176 - ROUND-06 to Claude and ROUND-74 to ChatGPT; Windows becomes a gate
@@ -8198,7 +8198,7 @@ and ChatGPT's pins were cut before R5. **Read the current file before changing i
    listbox bound to the examples folder. **I read its absence from a screenshot where it must have been
    empty, and stated a conclusion I had not checked.**
 2. **Six documents on Claude's branch carried MY v174 housekeeping backwards** - `PROJECT-MASTER.md`,
-   `PROJECT-OVERVIEW.md`, `README.md`, the CHANGELOG and three HTML docs. Claude's branch predates v174, so
+   `docs/rounds/PROJECT-OVERVIEW.md`, `README.md`, the CHANGELOG and three HTML docs. Claude's branch predates v174, so
    merging them would have reverted the date, the version and the corrected gate counts. **They were
    excluded; the branch's own doc fixes were taken.**
 
@@ -8239,8 +8239,8 @@ code, comments, HTML, prose, keyword tables and the teaching books - and not one
 |---|---|---|
 | `README.md` | 202 example programs | **195** (counted) |
 | `README.md` | 187 passing cases | **191** |
-| `PROJECT-OVERVIEW.md` | 187 pass | **191** |
-| `PROJECT-OVERVIEW.md` | 21 library modules | **24** |
+| `docs/rounds/PROJECT-OVERVIEW.md` | 187 pass | **191** |
+| `docs/rounds/PROJECT-OVERVIEW.md` | 21 library modules | **24** |
 | `docs/sutram-project-status.html` | 187 pass, v151 | **191 pass, v173** |
 | `docs/sutram-design-parameters.html` | 187 pass | **191** |
 | `docs/sutram-scorecard.html` | **136 pass** | **191** |
@@ -8298,7 +8298,7 @@ which is exactly what the test file says to expect.
 **NOT verified from this side:** anything requiring Windows to run - the installer, the GUI, the key
 handling and the uninstall. **This side cannot execute Windows.** Claude's evidence covers those.
 
-**`TEST-ME.md` added** - the acceptance script, with the steps and an explicit note of what was and was not
+**`docs/rounds/TEST-ME.md` added** - the acceptance script, with the steps and an explicit note of what was and was not
 verified here, so the boundary is not blurred.
 
 ## v171 - Claude's Windows ROUND-03 merged: WINDOWS HAS NOW BEEN EXECUTED
@@ -8533,7 +8533,7 @@ recorded here rather than guessed at. **The Windows IDE would colour the wrong w
 
 **Found - there are two Linux IDEs.** `ide/sutram_gui_linux.asm` (X11 GUI, 18/18 tests, the one I have been
 building) and `ide/sutram_ide.asm` (a full-screen terminal editor, 32 KB, referenced by
-`PROJECT-OVERVIEW.md`). Both are live and both are described as *the* IDE. That needs a decision, not a
+`docs/rounds/PROJECT-OVERVIEW.md`). Both are live and both are described as *the* IDE. That needs a decision, not a
 fix.
 
 **The pattern, now five times:** code, comments, HTML, prose, keyword tables. **After a rename, every list
@@ -8612,7 +8612,7 @@ strings corrected, and the help/banner text is now Sanskrit - `Aadesh`, `chakra 
 and others. **The CHANGELOG and the `R*` round records were deliberately left alone** - they are historical
 and changing them would falsify the record.
 
-**4. Stale counts.** `PROJECT-OVERVIEW.md` said 21 modules / 278 functions; `LANGUAGE-REFERENCE.md` said
+**4. Stale counts.** `docs/rounds/PROJECT-OVERVIEW.md` said 21 modules / 278 functions; `LANGUAGE-REFERENCE.md` said
 49 functions across four modules. Corrected to the measured **24 modules / 303 functions**, and one
 over-correction of mine fixed (the "four modules" line was about the library table, now six).
 
@@ -8826,7 +8826,7 @@ stdlib **24 modules / 303 functions**. The first genuinely `std` module exists.
 - **A real error of mine, found by measuring instead of trusting my own earlier note.** The docs said
   **216 worked examples**. The actual count is **202** `.sm` files under `examples/` (191 top level plus
   11 nested). I had written 216 in an earlier round without counting. Corrected in `README.md`,
-  `PROJECT-OVERVIEW.md`, `sutram-scorecard.html` and `sutram-completion-roadmap.html`. This is the same
+  `docs/rounds/PROJECT-OVERVIEW.md`, `sutram-scorecard.html` and `sutram-completion-roadmap.html`. This is the same
   failure mode as the `.legend` bug and the stale counts: **a number I had previously "fixed" was still
   wrong, and only a fresh count caught it.**
 - Also confirmed: the raw tarball served a stale tree showing v150 while the API confirmed v151 was on

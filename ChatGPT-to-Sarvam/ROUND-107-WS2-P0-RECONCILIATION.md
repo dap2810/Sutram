@@ -10,8 +10,8 @@
 | Old Windows roadmap denied native Windows execution / separate compilation | `docs/sutram-roadmap.html` blob `235c68e63ad36d51243bd1c82b532d9a762dfbe4` now describes real Windows 16 required checks and object-based separate compilation near `:130–131`. | **APPLIED before R107.** |
 | Scorecard denied first-class functions/methods/slices in one row | `docs/sutram-scorecard.html` `:206` says they landed. **But `:150` still says “no C FFI”**, so do not call the whole file fixed. | **PARTIAL.** |
 | Master performance: memory “Sutram wins” despite Zig 120 KB lower; runtime “wins” despite tie; overall four of five wins | `PROJECT-MASTER.md` blob `480adad1ab5f0c209479e985d50c401497afd7ac` `:270–275` now says **“Zig wins by 120 KB,” “Sutram and Zig tie,” “two measured wins … two measured losses … one tie.”** Its historical measurement cells are preserved. | **APPLIED at v321 (`aafaed38`).** |
-| Overview denied object compilation, function values, methods in its first line | `PROJECT-OVERVIEW.md` blob `3366312395ab9c23aff740176ecd57061c5ab0e2` `:159` now opens with acknowledgment of those features. **But the paragraph continues “No first-class functions.”** | **PARTIAL and still internally contradictory.** |
-| Doc counts/overview build entry | Prior R39 updated measured numbers and changed `PROJECT-OVERVIEW.md` build input to `src/r68_compiler_entry.asm`. | **APPLIED**, do not reopen the older number/build-entry defect. |
+| Overview denied object compilation, function values, methods in its first line | `docs/rounds/PROJECT-OVERVIEW.md` blob `3366312395ab9c23aff740176ecd57061c5ab0e2` `:159` now opens with acknowledgment of those features. **But the paragraph continues “No first-class functions.”** | **PARTIAL and still internally contradictory.** |
+| Doc counts/overview build entry | Prior R39 updated measured numbers and changed `docs/rounds/PROJECT-OVERVIEW.md` build input to `src/r68_compiler_entry.asm`. | **APPLIED**, do not reopen the older number/build-entry defect. |
 
 ## STILL OPEN — remaining P0 present-tense claims in the pinned R107 tree
 
@@ -19,8 +19,8 @@ These are current **file:line + actual quote**; the smallest replacement text is
 
 | File / lines | Still present in v322 | Action |
 |---|---|---|
-| `PROJECT-OVERVIEW.md:153–155` | **“Nobody has run the Windows GUI on real Windows”**, **“Windows installer has never been executed on Windows”** | Replace absolutes with **owner's real native non-elevated acceptance on pinned older revision**, not current-release acceptance. |
-| `PROJECT-OVERVIEW.md:159–160` | After its new “Separate compilation ... exists,” it still says **“No concurrency. No first-class functions. No collections beyond kosh and mala.”** | Replace **the complete mixed old/new paragraph**, not merely prepend another corrected sentence. |
+| `docs/rounds/PROJECT-OVERVIEW.md:153–155` | **“Nobody has run the Windows GUI on real Windows”**, **“Windows installer has never been executed on Windows”** | Replace absolutes with **owner's real native non-elevated acceptance on pinned older revision**, not current-release acceptance. |
+| `docs/rounds/PROJECT-OVERVIEW.md:159–160` | After its new “Separate compilation ... exists,” it still says **“No concurrency. No first-class functions. No collections beyond kosh and mala.”** | Replace **the complete mixed old/new paragraph**, not merely prepend another corrected sentence. |
 | `PROJECT-MASTER.md:80,82–83` | **“functions exist, but not first-class”**, **“no methods or traits”**, **“no slices or SIMD”** | Acknowledge R23 function values, methods and slices; retain missing traits/closures/SIMD. |
 | `PROJECT-MASTER.md:107,110–111` | **“Windows never executed”**; **“Not started | No C FFI”**; **“no fuzzing, no cross-platform run”** | Distinguish Linux-main FFI, native older Windows tests and unmerged v245 Windows FFI, and existing fuzz evidence. Fix charter row labels with the v1.0 rubric. |
 | `PROJECT-MASTER.md:360–362` | **“Two of them — Windows execution and the freestanding boot — have never been performed by anyone”** | Windows execution was performed; **freestanding boot** remains unproven. The master itself acknowledges real Windows in `:306–311`. |
@@ -39,7 +39,7 @@ These are current **file:line + actual quote**; the smallest replacement text is
 ## Other priority/status contradictions — retain in review queue
 
 - `PROJECT-MASTER.md:209–225` still tells developers to build **Sanskrit, Gujarati, Hindi in parallel**, with Gujarati first. **SUPERSEDED** by owner's 23 October **Sanskrit-only** directive. Keep as an explicitly labeled old policy, not active instruction. No frozen-pack edits.
-- `PROJECT-MASTER.md:331–337` still says old `ROADMAP-TO-V1.0.md` is single source of truth and separate compilation belongs to a future v2. Current canonical owner path is `docs/PATH-TO-COMPLETION.md`, and object compilation exists.
+- `PROJECT-MASTER.md:331–337` still says old `docs/rounds/ROADMAP-TO-V1.0.md` is single source of truth and separate compilation belongs to a future v2. Current canonical owner path is `docs/PATH-TO-COMPLETION.md`, and object compilation exists.
 - `docs/sutram-stdlib-reference.html:122–123` overstates **“Safe anywhere, including a freestanding program”**: core layer is OS/allocator-independent in source but no native freestanding boot or memory-safety proof exists.
 - `docs/_newchapter_en.html:83,95–97` is an old draft saying the Windows IDE is unavailable and Windows never tested; archive/date-label it or correct its two claims.
 - `docs/sutram-performance.html:60–63` is a dated performance discussion claiming speed is the top priority; current policy says Sanskrit-first release before performance.

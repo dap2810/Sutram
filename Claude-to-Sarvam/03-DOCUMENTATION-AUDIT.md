@@ -1,7 +1,7 @@
 # WS3 — Documentation audited against the code
 
 **Date:** 2026-10-18 · **Base:** main at v162, commit `feef075` · **Scope:** `README.md`,
-`PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md`, `AGENTS.md`, `docs/*.md` (48 files), plus the vocabulary HTML
+`PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md`, `AGENTS.md`, `docs/*.md` (48 files), plus the vocabulary HTML
 where a `.md` file points at it. **No document was changed.**
 
 ---
@@ -53,7 +53,7 @@ printf 'yoj ganit\nyoj ank\nyoj shreni\nyoj madhava\nmukhya() {\n    likha(varg(
 |---|---|---|---|
 | 000 | `README.md:9` | PASS | prints `Namaste, jagat` |
 | 001 | `PROJECT-MASTER.md:26` | PASS | |
-| 002 | `PROJECT-OVERVIEW.md:19` | PASS | |
+| 002 | `docs/rounds/PROJECT-OVERVIEW.md:19` | PASS | |
 | 003 | `docs/ERROR-CONVENTION.md:142` | PASS (fragment, wrapped with `yoj phal`) | prints `1` then `20` |
 | 004 | `docs/reports/KOSH-REUSE.md:13` | PASS (fragment, wrapped; `... use v ...` line removed) | `kosh_cap` stays 100000 as the doc says |
 | 005 | `docs/LANGUAGE-REFERENCE.md:10` | PASS | |
@@ -90,7 +90,7 @@ broke (reads wrong or misquotes the compiler) · **I** = the document contradict
 | 104 | "no phal type or propagation" | reads "result type" | P |
 | 203, 212 | "is a gap suchi", "where patra ownership is disjoint" | list / file | P |
 
-### 4.2 `PROJECT-OVERVIEW.md`
+### 4.2 `docs/rounds/PROJECT-OVERVIEW.md`
 
 | Line | Claim | What the code does | Sev |
 |---|---|---|---|

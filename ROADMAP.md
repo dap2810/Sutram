@@ -1,3 +1,9 @@
+> **R95: this is the one roadmap.** The two earlier plans are archived, unchanged, as records:
+> [`docs/rounds/ROADMAP-TO-V1.0.md`](docs/rounds/ROADMAP-TO-V1.0.md) (the v1.0 release path, last edited
+> 28 October) and [`docs/rounds/PLAN-TO-FINISH.md`](docs/rounds/PLAN-TO-FINISH.md) (written at v220).
+> The status block below is the owner's, at v411 - the current numbers are in `PROJECT-MASTER.md` and the
+> top of `docs/CHANGELOG.md`.
+
 > **Status at v411, 29 October 2026 — read this before the page below.**
 >
 > **Compiler v261.** Suite **PASS=225** · crash corpus **227/0** · library proofs **226/226** · property proofs 86/86 · doc signatures PASS · layers 14/9/1 · alloc bounds 26 (13 bounded, 13 exempt) · built-in packs CURRENT · gates **48 PASS / 0 FAIL / 1 NOT-RUN**.

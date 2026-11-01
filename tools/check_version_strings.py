@@ -25,7 +25,7 @@ import sys
 CURRENT_STATE = (
     "README.md",
     "PROJECT-MASTER.md",
-    "PROJECT-OVERVIEW.md",
+    # R95: PROJECT-OVERVIEW.md archived to docs/rounds/ - PROJECT-MASTER.md is the project summary
     "ROADMAP.md",
     "docs/PATH-TO-COMPLETION.md",
     "docs/sutram-scorecard.html",

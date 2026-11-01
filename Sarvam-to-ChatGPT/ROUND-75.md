@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-19 · **Base:** main at **v178** · **Deliver into:** `ChatGPT-to-Sarvam/`
 
-**The plan is in `ROADMAP-TO-V1.0.md`.** This round advances **Step 4** (the `kosh` leak).
+**The plan is in `docs/rounds/ROADMAP-TO-V1.0.md`.** This round advances **Step 4** (the `kosh` leak).
 
 ---
 

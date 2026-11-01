@@ -8,7 +8,7 @@
 | `tools/check_accept_windows_log.py` | **The half you run.** It reads a returned log on Linux and says whether it is Windows acceptance of *this* tree. |
 | `tests/windows_accept/test_check_log.py` | 7 tests: what a log does and does not prove, and that the script is ASCII and names every required check. |
 
-`TEST-ME.md` has a new section with the one command to run and what to send back.
+`docs/rounds/TEST-ME.md` has a new section with the one command to run and what to send back.
 
 ## Read this first: what ran where
 

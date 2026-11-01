@@ -1,3 +1,6 @@
+> **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
+> unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
+
 > **Status at v411, 29 October 2026 — read this before the page below.**
 >
 > **Compiler v261.** Suite **PASS=225** · crash corpus **227/0** · library proofs **226/226** · property proofs 86 of 86 · doc signatures PASS · layers 14/9/1 · alloc bounds 26 (13 bounded, 13 exempt) · built-in packs CURRENT · gates **48 PASS / 0 FAIL / 1 NOT-RUN**.
@@ -333,7 +336,7 @@ and why we do not repeat the myth: see `docs/reports/SANSKRIT-AND-AI-BRIGGS-1985
 - **The language can open sockets.** It ships `net*` builtins (`netsock`, `netbind`, `netlisten`,
   `netaccept`). That is normal for a systems language and **surprising for one aimed at first-time
   programmers.** The layer check forbids `core` modules from using them, but **no test in the tree opens a
-  socket.** Stated here so a learner does not find out by accident. See `SECURITY-AUDIT.md`.
+  socket.** Stated here so a learner does not find out by accident. See `docs/reports/SECURITY-AUDIT.md`.
 - **The Windows console encoding defect is fixed** (v166). It once rendered an en-dash as `ĞÖ`; the
   compiler's own banners are now ASCII-safe, and the non-ASCII path was exercised on a real Windows run.
   **A residual risk remains:** the language is fully Sanskrit, so keyword output is non-ASCII, and only the
@@ -341,7 +344,7 @@ and why we do not repeat the myth: see `docs/reports/SANSKRIT-AND-AI-BRIGGS-1985
 
 ## 9b. The road to v1.0 — what we finish, in what order
 
-**`ROADMAP-TO-V1.0.md` is the single source of truth for what is being finished before release.** Ten
+**`docs/rounds/ROADMAP-TO-V1.0.md` is the single source of truth for what is being finished before release.** Ten
 numbered steps, each placed by what it unblocks, with an owner and a "done when" for each. **If a task is
 not on that list, it is not on the critical path.**
 
@@ -447,4 +450,4 @@ picture — and every brief carries the **language directive**, so no new Englis
 - **F8 - the language-pack warning is a FALSE ALARM.** `sutram --lang hindi prog.sm out.bin` prints
   **"language pack not found" IN HINDI**, and then the messages that follow ARE in Hindi. **The pack loaded;
   the warning is wrong.** It fires for hindi, sanskrit and tamil, **each time in the language it claims to be
-  missing.** Found by the owner on real Windows. See `F8-PACK-WARNING-FALSE-ALARM.md`.
+  missing.** Found by the owner on real Windows. See `docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md`.

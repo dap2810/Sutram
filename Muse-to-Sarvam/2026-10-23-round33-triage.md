@@ -6,20 +6,20 @@ Buckets: **FALSE** (doc says absent/never, but it exists/was done) · **TRUE** (
 
 | File:Line | Bucket | Claim (short) | Evidence / note |
 |---|---|---|---|
-| F8-PACK-WARNING-FALSE-ALARM.md:36 | TRUE | False "language not available" msg is worst error | Value judgment / design principle, not an absence claim |
+| docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md:36 | TRUE | False "language not available" msg is worst error | Value judgment / design principle, not an absence claim |
 | PROJECT-MASTER.md:107 | FALSE | "Windows never executed" | 16 required checks passed on real Windows 11 (CHANGELOG v318) |
 | PROJECT-MASTER.md:226 | TRUE | Ten packs never exercised by a human | Stated fact, still true per MUSE-CONTEXT |
 | PROJECT-MASTER.md:305 | TRUE | No ownership model | Real language limit |
 | PROJECT-MASTER.md:335 | TRUE | Not on list ⇒ not on critical path | Project policy/rule, not an absence claim |
 | PROJECT-MASTER.md:364 | FALSE | "Windows execution… never performed by anyone" | Windows part false (16 checks); freestanding-boot part true — mixed claim, bucketed FALSE |
-| PROJECT-OVERVIEW.md:13 | TRUE | No C backend / Python / LLVM / interpreter / runtime | By design (native compiler) |
+| docs/rounds/PROJECT-OVERVIEW.md:13 | TRUE | No C backend / Python / LLVM / interpreter / runtime | By design (native compiler) |
 | README.md:22 | TRUE | No C backend / Python / LLVM / runtime | By design |
 | README.md:148 | TRUE | No concurrency | Real limit |
 | README.md:149 | TRUE | No GC, no ownership, no borrow checker | Real limits |
-| ROADMAP-TO-V1.0.md:4 | TRUE | Not on list ⇒ not on critical path | Project policy |
-| ROADMAP-TO-V1.0.md:129 | TRUE | Ten packs never exercised by a human | Stated fact |
+| docs/rounds/ROADMAP-TO-V1.0.md:4 | TRUE | Not on list ⇒ not on critical path | Project policy |
+| docs/rounds/ROADMAP-TO-V1.0.md:129 | TRUE | Ten packs never exercised by a human | Stated fact |
 | ROADMAP.md:54 | TRUE | No address-of / dereference | Language design |
-| SECURITY-AUDIT.md:68 | TRUE | Network code "never been exercised" | True — no test opens a socket |
+| docs/reports/SECURITY-AUDIT.md:68 | TRUE | Network code "never been exercised" | True — no test opens a socket |
 | sutram-completion-roadmap.html:292 | HISTORICAL | (old snapshot) | Embedded stamp: compiler d0fe190c, 19 modules / 186 functions — predates FFI, Windows run |
 | sutram-completion-roadmap.html:342 | HISTORICAL | (old snapshot, incl. "no FFI") | Same old snapshot; "no FFI" false today but doc is historical |
 | sutram-completion-roadmap.html:343 | HISTORICAL | (old snapshot, "no FFI" ×2) | Same |

@@ -1,6 +1,6 @@
 # Sutram — ROUND-15: Sarvam → Claude
 
-**Base:** main at **v214** · **Deliver into:** `Claude-to-Sarvam/` · **Plan:** `ROADMAP-TO-V1.0.md`
+**Base:** main at **v214** · **Deliver into:** `Claude-to-Sarvam/` · **Plan:** `docs/rounds/ROADMAP-TO-V1.0.md`
 
 ## Part 1 — Memory update
 
@@ -63,7 +63,7 @@ with the environment named. No `__pycache__`.
 
 ### WS4 - F7: A NEW CRASH, found while I was writing a benchmark
 
-**Read `F7-SCALAR-INDEX-CRASH.md` at the repository root. Minimal reproduction:**
+**Read `docs/rounds/F7-SCALAR-INDEX-CRASH.md` at the repository root. Minimal reproduction:**
 
 ```sm
 prakriya f(ok) {

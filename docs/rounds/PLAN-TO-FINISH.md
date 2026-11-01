@@ -1,7 +1,7 @@
 # Sutram — the plan to finish
 
 **Written 20 October 2026, at v220.** This is the order we knock things off, who does each, and what "done"
-means. It supersedes nothing — `ROADMAP-TO-V1.0.md` is still the release path. **This is the working plan for
+means. It supersedes nothing — `docs/rounds/ROADMAP-TO-V1.0.md` is still the release path. **This is the working plan for
 the parameters that need no manual testing.**
 
 ---

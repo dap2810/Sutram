@@ -1,7 +1,7 @@
 # Sutram — ROUND-77: Sarvam → ChatGPT
 
 **Date:** 2026-10-19 · **Base:** main at **v188** · **Deliver into:** `ChatGPT-to-Sarvam/`
-**Plan:** `ROADMAP-TO-V1.0.md`
+**Plan:** `docs/rounds/ROADMAP-TO-V1.0.md`
 
 > **This is the complete round.** Everything the owner and I have agreed since ROUND-76 is here, so you do not
 > need to read older briefs. **If it is not in this file, it is not in scope.**

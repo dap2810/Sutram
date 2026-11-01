@@ -1,6 +1,6 @@
 # Item 6 - the X11 GUI's Indic support: an assessment, not a fix
 
-**Item 6 of `PLAN-TO-FINISH.md`.** Measured 2026-10-20 at v222.
+**Item 6 of `docs/rounds/PLAN-TO-FINISH.md`.** Measured 2026-10-20 at v222.
 
 ## What I found
 

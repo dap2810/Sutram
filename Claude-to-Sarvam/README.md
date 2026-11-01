@@ -965,7 +965,7 @@ On `main` only this folder changes, in a documentation-only commit.
 - `tools/accept-windows.ps1`
 - `tools/check_accept_windows_log.py`
 - `tests/windows_accept/`
-- a `TEST-ME.md` section
+- a `docs/rounds/TEST-ME.md` section
 
 On `main` only this folder changes, in a documentation-only commit. **No compiler, IDE or installer source
 changed this round.**
@@ -978,7 +978,7 @@ Linux**:
 - **C:** a harness build with two Wine-only script lines
 
 Each log is labelled Wine. The elevation checks are NOT-RUN, because Wine has no UAC. **The gate becomes
-acceptance when the owner runs one command on Windows** and returns the folder (`TEST-ME.md`).
+acceptance when the owner runs one command on Windows** and returns the folder (`docs/rounds/TEST-ME.md`).
 
 **Two facts the runs showed:**
 

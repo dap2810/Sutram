@@ -106,7 +106,7 @@ docs/sutram-book-sanskrit.html	PROPOSE_AFTER_CANONICAL_MERGE	<tr><td><code><span
 docs/sutram-book-sanskrit.html	PROPOSE_AFTER_CANONICAL_MERGE	    <span class="kw">prati</span> s / <span class="kw">kosh_len</span>(xs)	    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
 docs/sutram-vocabulary.html	PROPOSE_AFTER_CANONICAL_MERGE	<tr><td><code>return</code></td><td><code>prati</code></td><td><b>prati</b></td><td>प्रति</td></tr>	<tr><td><code>return</code></td><td><code>nivartanam</code></td><td><b>nivartanam</b></td><td>प्रति</td></tr>
 docs/WHATS-LEFT.md	PROPOSE_EXACT_CURRENT	| **F4** | **`prati` stays** - decided | **and `nivartan` was considered and set aside** |	| **F4** | **`nivartanam` (निवर्तनम्) approved as canonical return keyword** | `prati` remains a compatibility alias; compiler and documentation migration must be verified on exact main |
-PROJECT-OVERVIEW.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prakriya` | function | `prati` | return |	| `prakriya` | function | `nivartanam` | return |
+docs/rounds/PROJECT-OVERVIEW.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prakriya` | function | `prati` | return |	| `prakriya` | function | `nivartanam` | return |
 README.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prakriya` | function | `prati` | return |	| `prakriya` | function | `nivartanam` | return |
 ```
 
@@ -120,7 +120,7 @@ README.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prakriya` | function | `prati` | retu
 - **docs/CHANGELOG.md — KEEP_HISTORICAL.** All historical v396/v397/v398 narrative, earlier spellings and test claims remain dated evidence; do NOT replace every prati.
 - **docs/reports/LEXER-BOUNDARY-TEST.md — KEEP_HISTORICAL.** Recorded original lexer tests on prati, pratiX and prati_test retain meaning: prati remains accepted legacy alias.
 - **docs/rounds/R56-MODULE-GLOBALS.md — KEEP_HISTORICAL.** Round-56 historical fixture example contains prati counter.
-- **F7-SCALAR-INDEX-CRASH.md — KEEP_HISTORICAL.** Historical input example prati 1; preserve reproducer.
+- **docs/rounds/F7-SCALAR-INDEX-CRASH.md — KEEP_HISTORICAL.** Historical input example prati 1; preserve reproducer.
 - **docs/vocabulary/VOCABULARY-TABLE.md — KEEP_HISTORICAL.** Older vocabulary proposal considered prati KEEP and wrong native प्रतियाति; preserve review as provenance, may append dated supersession later.
 - **docs/vocabulary/VOCABULARY-SHORT.md — KEEP_HISTORICAL.** Earlier shortening proposal keeps prati; historical proposal rather than current syntax authority.
 - **docs/vocabulary/VOCABULARY-DERIVATION.md — KEEP_HISTORICAL.** Historical keyword boundary and vocabulary reports; legacy alias remains accepted.
@@ -148,7 +148,7 @@ README.md	PROPOSE_AFTER_CANONICAL_MERGE	| `prakriya` | function | `prati` | retu
 - GitHub READ: `docs/reports/KOSH-BUILTINS.md 8062b5bae846c8314113c44f695ec44c18b0aa56 1 lexical-hit line(s)`
 - GitHub READ: `docs/reports/LAGHU-EXAMPLE.md 271d7519c0f54675f1be807621f17463f9afd976 1 lexical-hit line(s)`
 - GitHub READ: `README.md d711d81fe9cd8fa7aab592546e61302367a67442 1 lexical-hit line(s)`
-- GitHub READ: `PROJECT-OVERVIEW.md d84993a3d84adb7c34986f9ed1bdb32843cfacfd 1 lexical-hit line(s)`
+- GitHub READ: `docs/rounds/PROJECT-OVERVIEW.md d84993a3d84adb7c34986f9ed1bdb32843cfacfd 1 lexical-hit line(s)`
 - GitHub READ: `docs/sutram-vocabulary.html 94c5d5221e7a6fcaf18502949bba824f62f59f65 1 lexical-hit line(s)`
 - GitHub READ: `docs/WHATS-LEFT.md bfea3578c36bf314173b0f2219991f0d43ccf886 1 lexical-hit line(s)`
 - **PASS:** byte decoding, source/doc path review, current reference line inventory and historical/frozen classification.

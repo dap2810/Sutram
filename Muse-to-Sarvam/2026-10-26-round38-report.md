@@ -117,6 +117,6 @@ identical to the working-tree binary.
 ## Files in the patch
 
 `tools/gates.sh`, `tools/doc_counts_gate.py`, `src/sutram_compiler.asm`,
-`PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md`,
+`PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md`,
 `docs/sutram-scorecard.html`, `docs/sutram-project-status.html`,
 `docs/sutram-design-parameters.html`, 3 new examples + 6 expect files.

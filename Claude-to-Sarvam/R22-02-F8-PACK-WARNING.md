@@ -78,7 +78,7 @@ all eleven languages, not just three. (`evidence-r22/f8-test-on-*-compiler.txt`)
   reads `HOME`, and it left out the beside-the-exe path. Corrected, with the built-in copy added.
 - **The Windows set is rebuilt:** `win/sutram.exe` = `sutram.exe` `2468dca0…`, `Sutram-Setup.exe`;
   `cross_build_windows.py --check`: REPRODUCED. `sutram-ide-gui.exe` is unchanged.
-- **`TEST-ME.md`'s F8 note** ("ignore the warning") is yours. Once this lands, it can say "fixed in v233".
+- **`docs/rounds/TEST-ME.md`'s F8 note** ("ignore the warning") is yours. Once this lands, it can say "fixed in v233".
   For the owner's zip: **the new `sutram.exe` alone is enough**, no `lang\` folder needed.
 
 | Check | Environment | Result |

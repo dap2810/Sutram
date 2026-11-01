@@ -34,7 +34,7 @@ Windows**, and a Windows installer + IDE that **passed 16 required checks on rea
 
 ### WS1 — THE NUMBERS AUDIT: measure the counts
 **Run `tools/doc_counts_gate.py`. Fix what it reports. REPORT WHAT IT DOES NOT CATCH.**
-Check against the tree: `README.md`, `PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md`,
+Check against the tree: `README.md`, `PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md`,
 `docs/sutram-scorecard.html`, `docs/sutram-project-status.html`, `docs/sutram-design-parameters.html`.
 
 **You own the NUMBERS** (measurable). **ChatGPT owns the PROSE** (readable). Do not both do both.

@@ -122,7 +122,7 @@ Both shipped and freshly rebuilt Windows compilers accepted this; both emitted p
 
 ## WS3 — an auditable v1.0 gate, not a completion percentage
 
-Use [the v1 roadmap's product definition](../ROADMAP-TO-V1.0.md): correct procedural core, usable library, native per-user Windows installation/execution, and diagnostics in the user's language. Later generics, concurrency, kernel work and a package manager must not silently become release prerequisites. Conversely, the brief's “memory work is done” is too broad: bounds fixes and useful arenas do not establish a transitive verified boundary.
+Use [the v1 roadmap's product definition](../docs/rounds/ROADMAP-TO-V1.0.md): correct procedural core, usable library, native per-user Windows installation/execution, and diagnostics in the user's language. Later generics, concurrency, kernel work and a package manager must not silently become release prerequisites. Conversely, the brief's “memory work is done” is too broad: bounds fixes and useful arenas do not establish a transitive verified boundary.
 
 **SATISFIED** means the specific stated condition has evidence at this pin; **UNSATISFIED** means a demonstrated counterexample or missing implementation; **UNKNOWN** means the required candidate-bound evidence was not established here. A historical pass is neither a current failure nor a current acceptance. Every mandatory row must pass, or its feature must be explicitly removed from the advertised supported scope with tests enforcing that restriction.
 

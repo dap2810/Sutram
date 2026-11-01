@@ -49,7 +49,7 @@ exactly one lagging document:
 ### Reconciliation — every document that quotes them
 
 Checked, in full, the six documents named in the brief: `README.md`,
-`PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md`, `docs/sutram-scorecard.html`,
+`PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md`, `docs/sutram-scorecard.html`,
 `docs/sutram-project-status.html`, `docs/sutram-design-parameters.html`.
 
 - **Suite 218 is already correct everywhere it appears** (PROJECT-MASTER

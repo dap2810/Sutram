@@ -48,7 +48,7 @@ No `__pycache__`.
 
 ### WS3 - F8: THE LANGUAGE-PACK WARNING IS A FALSE ALARM *(found on Windows by the owner)*
 
-**Read `F8-PACK-WARNING-FALSE-ALARM.md`. The reproduction:**
+**Read `docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md`. The reproduction:**
 
 ```
 sutram --lang hindi bad.sm o.exe

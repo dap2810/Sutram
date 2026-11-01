@@ -15,7 +15,7 @@ on Windows.** They show layout and text. They are not Windows acceptance.
 | 106 | `Clear shell` | `phal_rikta` | X11 IDE menu `phal_rikta` |
 
 `tools/test_windows_gui.py:143` checks these exact labels. It is a Windows-only test (`ctypes.windll`), so
-it is **NOT-RUN here.** `MANUAL-WINDOWS-GUI-TEST.md`, `README-WINDOWS-GUI.md` and `TEST-ME.md` now use the
+it is **NOT-RUN here.** `MANUAL-WINDOWS-GUI-TEST.md`, `README-WINDOWS-GUI.md` and `docs/rounds/TEST-ME.md` now use the
 new names.
 
 **Before / after (Wine):** `evidence-r4/screens/ide-before.png`, `ide-after.png`.

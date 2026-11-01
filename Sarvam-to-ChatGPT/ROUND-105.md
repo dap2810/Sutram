@@ -30,7 +30,7 @@ file that also calls `nirmmita(sz)`?** **If yes, spec it. If no, say what a huma
 **You have not audited the prose yet, and Claude has not either.** **This is yours, and the scope is the PROSE,
 not the numbers** - **Claude measures the counts; you read the sentences.**
 
-**Read README.md, PROJECT-MASTER.md, PROJECT-OVERVIEW.md and the docs/*.html pages.** **For each claim a reader
+**Read README.md, PROJECT-MASTER.md, docs/rounds/PROJECT-OVERVIEW.md and the docs/*.html pages.** **For each claim a reader
 would trust, say: supported by the tree / not supported / cannot check from here.**
 
 **A document that overstates is the most damaging kind of error in this project, because a reader trusts it and

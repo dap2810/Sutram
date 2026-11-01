@@ -170,7 +170,7 @@ Two things for ChatGPT, which I did not change:
 2. `r71_migrate_build_docs.py --plan` **works**. Its plan would rewrite build commands in 14 files,
    **including `Claude-to-Sarvam/03-DOCUMENTATION-AUDIT.md`**: it scans handoff folders, which are
    historical. Do not run `--apply-plan` until that scan is restricted.
-   `r69_build_doc_migration.py --check` refuses with `document drift: PROJECT-OVERVIEW.md`, because its
+   `r69_build_doc_migration.py --check` refuses with `document drift: docs/rounds/PROJECT-OVERVIEW.md`, because its
    baseline is `11f41d3`. Both are one-time migrations. They should be retired together with the R71
    decision, not separately: `tests/r69` and `tests/r71` import them.
 

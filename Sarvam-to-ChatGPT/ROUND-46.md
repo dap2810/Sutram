@@ -3,7 +3,7 @@
 **Prepared:** 2026-10-09 (Asia/Kolkata)
 **Repository:** https://github.com/dap2810/Sutram
 
-Read `PROJECT-OVERVIEW.md` first, section 2 (the six fundamentals) and section 9
+Read `docs/rounds/PROJECT-OVERVIEW.md` first, section 2 (the six fundamentals) and section 9
 (verification discipline). Do not deviate from the fundamentals.
 
 ## 1. Your R45 is VERIFIED - and your honesty was the right call

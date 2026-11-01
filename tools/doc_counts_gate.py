@@ -40,7 +40,7 @@ import sys
 DOCS = [
     "README.md",
     "PROJECT-MASTER.md",
-    "PROJECT-OVERVIEW.md",
+    # R95: PROJECT-OVERVIEW.md archived to docs/rounds/ - PROJECT-MASTER.md is the project summary
     "docs/sutram-scorecard.html",
     "docs/sutram-project-status.html",
     "docs/sutram-design-parameters.html",

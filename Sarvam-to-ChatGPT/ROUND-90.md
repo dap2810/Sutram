@@ -41,7 +41,7 @@ Least privilege. **Read the current file from main before changing it.** PASS / 
 
 ### WS4 - F8: FIND WHAT THE WARNING ACTUALLY CHECKS *(no compiler needed)*
 
-**The owner found this on real Windows. Read `F8-PACK-WARNING-FALSE-ALARM.md`.**
+**The owner found this on real Windows. Read `docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md`.**
 
 ```
 sutram --lang hindi bad.sm o.exe

@@ -19,7 +19,7 @@ the end.
 
 ## The options
 
-| | Option | What a user of the English IDE sees | Cost, counted | Fits "an error message in their own language" (`ROADMAP-TO-V1.0.md`, What v1.0 is) |
+| | Option | What a user of the English IDE sees | Cost, counted | Fits "an error message in their own language" (`docs/rounds/ROADMAP-TO-V1.0.md`, What v1.0 is) |
 |---|---|---|---|---|
 | **A** | Keep it as it is | English menus; Sanskrit status line and errors | 0 | partly: Sanskrit for everyone |
 | **B** | Everything English | English throughout | 90 + 22 strings; **41 goldens, 4 R70 cases, 16 tool files, 18 docs (~255 lines)** re-recorded or re-quoted; locks re-pinned. About one round, mechanical. | **no**: it drops the aim |

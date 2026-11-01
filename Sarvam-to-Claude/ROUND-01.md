@@ -98,7 +98,7 @@ An advisory found **three real errors in my own documents**: a code sample using
 exist (`samapt`), a wrong build path, and stale counts. **Every gate passed while the documents were
 wrong**, because the gates test code and nobody was testing the documents.
 
-**Deliver:** every factual claim in `README.md`, `PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md` and `docs/*.md`
+**Deliver:** every factual claim in `README.md`, `PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md` and `docs/*.md`
 that is **not supported by the code** — file, line, the claim, and what the code actually does. Include
 counts, build commands, feature claims, and **every code sample** (compile it and see).
 

@@ -20,7 +20,7 @@ it, or say precisely what blocks it.**
 
 **So the R39 table (218 to 221) must NOT be applied.** **The documents should say 37 gates and 218 suite.**
 
-**WS1: apply those two numbers** across `README.md`, `PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md`,
+**WS1: apply those two numbers** across `README.md`, `PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md`,
 `docs/sutram-scorecard.html`, `docs/sutram-project-status.html`, `docs/sutram-design-parameters.html`.
 
 ## Part 3 — The rest

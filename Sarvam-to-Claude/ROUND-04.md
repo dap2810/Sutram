@@ -17,7 +17,7 @@ run". Verified before merging:
 - `examples/218_sanskrit_devanagari.sm` compiles through the `sanskrit` pack and prints **`योगः = 15`** —
   exactly what your `TEST-ME.txt` says to expect.
 
-**Merged as v171–v172.** `TEST-ME.md` is in the repo, with an explicit section on what was verified here and
+**Merged as v171–v172.** `docs/rounds/TEST-ME.md` is in the repo, with an explicit section on what was verified here and
 what was not — this side cannot execute Windows, and that boundary must not blur.
 
 **Touching `windows/` was the right call.** My brief said not to; the owner asked you directly, three times.

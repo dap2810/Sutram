@@ -16,7 +16,7 @@ the whole answer, and it is going to the owner as a definition decision.**
 ## Part 2 — The work
 
 ### WS1 — THE REMAINING P0s: I have applied several. Reconcile.
-**Applied so far:** the README's three limits; `sutram-roadmap.html`; `sutram-scorecard.html`; `PROJECT-OVERVIEW.md`
+**Applied so far:** the README's three limits; `sutram-roadmap.html`; `sutram-scorecard.html`; `docs/rounds/PROJECT-OVERVIEW.md`
 (the Windows claim, and the contradictory paragraph); `docs/sutram-project-status.html` (first-class); the
 `PROJECT-MASTER.md` performance verdict.
 

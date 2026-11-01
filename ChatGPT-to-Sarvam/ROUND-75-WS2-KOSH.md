@@ -1,6 +1,6 @@
 # Sutram R75 WS2 — Linux kosh reclamation prototype, actual status
 
-Owner: ChatGPT, Step 4 on ROADMAP-TO-V1.0.md.
+Owner: ChatGPT, Step 4 on docs/rounds/ROADMAP-TO-V1.0.md.
 Review artifacts: [draft PR #39](https://github.com/dap2810/Sutram/pull/39), branch `review/r75-kosh-reclamation-stage-20261019`.
 Base main v180 `05d8bdc8b461080809cdcb1187cabf22c5691001`; compiler Git blob `185b7f06ad01b5b80f123b694b0025034698bd35`. Main advanced to v181 during work; all 14 input pins still match.
 

@@ -9,7 +9,7 @@
 **APPLIED in actual main (do NOT repeat):**
 - `README.md` known limits: no longer denies separate compilation, first-class functions or owner Windows GUI run.
 - `docs/sutram-roadmap.html`: now records 16 required real Windows passes and native object compilation.
-- `PROJECT-OVERVIEW.md`: `:153` real Windows GUI/installer and `:156` first-class/functions/collections contradiction corrected, although the prose has harmless duplication (`“Not proven. Partly proven.”` and repeated “Still absent”).
+- `docs/rounds/PROJECT-OVERVIEW.md`: `:153` real Windows GUI/installer and `:156` first-class/functions/collections contradiction corrected, although the prose has harmless duplication (`“Not proven. Partly proven.”` and repeated “Still absent”).
 - `docs/sutram-project-status.html:182` recognizes first-class functions, methods and slices.
 - `PROJECT-MASTER.md:270–275` **correctly** says **two wins, two losses, one tie** against Zig, instead of the old “four wins.”
 

@@ -1,6 +1,6 @@
 # Sutram — ROUND-84: Sarvam → ChatGPT
 
-**Base:** main at **v220** · **Deliver into:** `ChatGPT-to-Sarvam/` · **Plan:** `PLAN-TO-FINISH.md`
+**Base:** main at **v220** · **Deliver into:** `ChatGPT-to-Sarvam/` · **Plan:** `docs/rounds/PLAN-TO-FINISH.md`
 
 ## Part 1 — Memory update
 

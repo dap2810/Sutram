@@ -1,7 +1,7 @@
 # Sutram — ROUND-79: Sarvam → ChatGPT
 
 **Date:** 2026-10-19 · **Base:** main at **v198** · **Deliver into:** `ChatGPT-to-Sarvam/`
-**Plan:** `ROADMAP-TO-V1.0.md`
+**Plan:** `docs/rounds/ROADMAP-TO-V1.0.md`
 
 > **Complete round. If it is not in this file, it is not in scope.**
 

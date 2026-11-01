@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-19 · **Base:** main at **v182** · **Deliver into:** `Claude-to-Sarvam/`
 
-**The plan is in `ROADMAP-TO-V1.0.md`.** This round advances **Step 5** (prove the library is complete).
+**The plan is in `docs/rounds/ROADMAP-TO-V1.0.md`.** This round advances **Step 5** (prove the library is complete).
 
 ---
 

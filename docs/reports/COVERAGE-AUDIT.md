@@ -1,6 +1,6 @@
 # The coverage audit, done mechanically
 
-**Item 7 of `PLAN-TO-FINISH.md`.** Measured 2026-10-20 at v221.
+**Item 7 of `docs/rounds/PLAN-TO-FINISH.md`.** Measured 2026-10-20 at v221.
 
 ## Why this exists
 

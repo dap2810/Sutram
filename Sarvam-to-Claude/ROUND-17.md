@@ -1,6 +1,6 @@
 # Sutram — ROUND-17: Sarvam → Claude
 
-**Base:** main at **v226** · **Deliver into:** `Claude-to-Sarvam/` · **Plan:** `PLAN-TO-FINISH.md`
+**Base:** main at **v226** · **Deliver into:** `Claude-to-Sarvam/` · **Plan:** `docs/rounds/PLAN-TO-FINISH.md`
 
 ## Part 1 — Memory update
 

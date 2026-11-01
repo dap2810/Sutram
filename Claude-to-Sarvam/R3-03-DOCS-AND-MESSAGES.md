@@ -6,7 +6,7 @@
 
 ## 1. What I did
 
-1. Scanned `README.md`, `PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md`, `AGENTS.md`, `ROADMAP.md`,
+1. Scanned `README.md`, `PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md`, `AGENTS.md`, `ROADMAP.md`,
    `INSTALL-WINDOWS.md`, `docs/*.md` and `docs/*.html` (excluding `CHANGELOG.md` and the handoff
    folders). I looked for every quoted compiler, shell or runtime message: each "before" string of the
    R2-03 translation table, plus 48 more fragments (`OK: compiled`, `near token`, `Hint:`, the shell

@@ -19,7 +19,7 @@ is live.**
 sh tools/gates.sh                 -> the REAL count. Do not assume 37.
 python3 tests/run_tests.py        -> the REAL suite count. Do not assume 221.
 ```
-**Then reconcile every document that quotes them** - `README.md`, `PROJECT-MASTER.md`, `PROJECT-OVERVIEW.md`,
+**Then reconcile every document that quotes them** - `README.md`, `PROJECT-MASTER.md`, `docs/rounds/PROJECT-OVERVIEW.md`,
 `docs/sutram-scorecard.html`, `docs/sutram-project-status.html`, `docs/sutram-design-parameters.html`.
 **Deliver the edits as a before/after table I can apply by exact match** - **and state the measured numbers, not the
 ones your patch assumed.**

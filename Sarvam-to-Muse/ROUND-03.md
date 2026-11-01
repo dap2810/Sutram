@@ -3,7 +3,7 @@
 **Prepared:** 2026-10-09 (Asia/Kolkata)
 **Repository:** https://github.com/dap2810/Sutram
 
-Read `PROJECT-OVERVIEW.md` first, especially section 2 (the six fundamentals)
+Read `docs/rounds/PROJECT-OVERVIEW.md` first, especially section 2 (the six fundamentals)
 and section 9 (verification discipline). Do not deviate from the fundamentals.
 
 ## 1. Your R41 is MERGED — thank you, it was the better implementation

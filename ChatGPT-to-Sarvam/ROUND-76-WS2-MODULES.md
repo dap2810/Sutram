@@ -9,4 +9,4 @@ The four module probe fixture tests PASS locally (4/4), and all four GitHub file
 Native invocation for Sarvam:
 `python3 tools/r76_module_object_probe.py --compiler ./sutram_compiler --report /tmp/r76-modules.json`
 
-No actual native command failure has been observed, only the documented absence of accepted object-output and relocation capability. Capture the first real native failure and its exact stdout/stderr; never claim an object link based on textual yoj. `ROADMAP-TO-V1.0.md` puts separate compilation in v2; Sarvam should confirm priority relative to Step 4 memory correctness. No compiler source, locks, goldens, libraries or Windows files changed.
+No actual native command failure has been observed, only the documented absence of accepted object-output and relocation capability. Capture the first real native failure and its exact stdout/stderr; never claim an object link based on textual yoj. `docs/rounds/ROADMAP-TO-V1.0.md` puts separate compilation in v2; Sarvam should confirm priority relative to Step 4 memory correctness. No compiler source, locks, goldens, libraries or Windows files changed.

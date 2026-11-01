@@ -81,7 +81,7 @@ Before deciding a performance budget, benchmark the actual prototype on the same
 2. **Generics.** Reusing one algorithm for numbers and strings is valuable once there are reliable concrete types and containers. Type checking, diagnostics, instantiation/code size and compatibility make it a larger undertaking; avoid requiring it for one numeric sort.
 3. **Threads.** Useful for larger workloads but add races, memory model, scheduling, failure and platform obligations that beginners do not need for a first list/sort program. They are least useful for this immediate student goal.
 
-**Not in v1: generics and threads.** The [v1 roadmap](../ROADMAP-TO-V1.0.md) scopes the release to a correct procedural core, usable library, Windows installation and diagnostics, and explicitly parks generics/concurrency later. Even the first-ranked vector is optional unless its contract and target support are actually qualified. A v1 package still needs the arithmetic/display, library, diagnostics and Windows gates from [R150](ROUND-150-TRANSITIVE-CHECKS-ARITHMETIC-AND-V1-GATE.md); implementing one container does not satisfy them.
+**Not in v1: generics and threads.** The [v1 roadmap](../docs/rounds/ROADMAP-TO-V1.0.md) scopes the release to a correct procedural core, usable library, Windows installation and diagnostics, and explicitly parks generics/concurrency later. Even the first-ranked vector is optional unless its contract and target support are actually qualified. A v1 package still needs the arithmetic/display, library, diagnostics and Windows gates from [R150](ROUND-150-TRANSITIVE-CHECKS-ARITHMETIC-AND-V1-GATE.md); implementing one container does not satisfy them.
 
 ## Acceptance matrix — specified, not run
 

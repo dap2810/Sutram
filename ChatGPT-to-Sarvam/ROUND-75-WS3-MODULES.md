@@ -1,6 +1,6 @@
 # Sutram R75 WS3 — smallest separate compilation limit
 
-`ROADMAP-TO-V1.0.md` now explicitly places **separate compilation in v2**, not on the v1.0 critical path. WS2 kosh safety is prioritized in this round.
+`docs/rounds/ROADMAP-TO-V1.0.md` now explicitly places **separate compilation in v2**, not on the v1.0 critical path. WS2 kosh safety is prioritized in this round.
 
 Current `yoj` is source/textual inclusion. There is no accepted compiler command that emits a relocatable native object from an individual `.sm` source and resolves a second compiled object's symbols. Thus compiling two actual Sutram modules independently and linking them cannot be truthfully claimed.
 

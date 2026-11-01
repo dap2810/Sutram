@@ -30,7 +30,7 @@ a handover that said "unassembled" got assembled, and three defects fell out.
 
 ## Before you change anything
 
-Read `PROJECT-OVERVIEW.md` at the repository root, especially section 2 (the
+Read `docs/rounds/PROJECT-OVERVIEW.md` at the repository root, especially section 2 (the
 six fundamentals) and section 8 (what is proven and what is not). Section 9
 explains the verification discipline this project runs on — in particular,
 *check the check*: one test here asserted a wrong value and silently agreed

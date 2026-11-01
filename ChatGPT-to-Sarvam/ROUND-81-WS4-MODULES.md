@@ -5,6 +5,6 @@
 No current accepted compiler ELF or full checkout was materialized in this container. A hypothetical unsupported flag response is not raw evidence. Sarvam can perform the actual negative/positive native test on its checkout:
 `python3 tools/r76_module_object_probe.py --compiler ./sutram_compiler --report /tmp/r81-modules.json`
 
-Return the first actually observed subprocess error (stdout, stderr, exit, object kind); if compiler lacks object-output capability, report that as measured after running rather than a new design or an invented failure. Current `ROADMAP-TO-V1.0.md` places separate compilation in v2; avoid destabilizing active compiler/pack fixes.
+Return the first actually observed subprocess error (stdout, stderr, exit, object kind); if compiler lacks object-output capability, report that as measured after running rather than a new design or an invented failure. Current `docs/rounds/ROADMAP-TO-V1.0.md` places separate compilation in v2; avoid destabilizing active compiler/pack fixes.
 
 **No code-generation, parser, NASM or Windows code changed for WS4.**
