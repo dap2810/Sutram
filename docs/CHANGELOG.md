@@ -1,3 +1,27 @@
+## v438 - CORRECTION to v437: a decimal loop bound is an off-by-one, not a hang
+
+### What I got wrong
+**v437 said `chakra dasham i = 0.0 tak 3.0` never terminates.** **It does terminate.**
+
+**My test used `chakra vitti i = 0 tak 3` - invalid syntax, no braces, the type keyword in the wrong place - which printed nothing. I read "nothing" as "hangs" and wrote it down as fact.**
+
+### What is actually true
+| Form | Output | Correct? |
+|---|---|---|
+| `chakra i = 0 tak 3` | `0 1 2 3` | yes |
+| `chakra i = 0 tak 3.0` | `0 1 2 3 4` | **no - one extra iteration** |
+| `dasham d = 3.0; chakra i = 0 tak d` | `0 1 2 3 4` | **no - same** |
+
+**So it is a wrong answer, not a non-termination.** **Less severe, still wrong, and it produced no error message.**
+
+### And Muse's README sentence was wrong for the same reason
+**It said "a loop whose end number is a decimal never stops."** **It stops, one iteration late.** **A README that overstates a limitation is as bad as one that hides it, because a reader who finds it stops will distrust the rest.**
+
+### The lesson, which is the ninth of its kind
+**Every one of the nine false claims in this session has the same shape: I ran something, got an unexpected result, and reported my interpretation instead of checking the setup.** **This time the setup was the syntax, and `examples/103_b10_nested_break_patches.sm` had the correct form all along.**
+
+**The rule that would have caught it: when a test produces nothing, suspect the test before the compiler.**
+
 ## v437 - a decimal loop bound never terminates, and that is the worst bug in the language
 
 ### Verified by me on v282
