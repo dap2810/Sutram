@@ -1,1 +1,1 @@
-Still open, and stated plainly so you are not caught by them: a decimal number grown too large silently turns into infinity, and a loop that counts up to a decimal never stops — anything else that surprises you is worth reporting as a bug.
+Still open, and stated plainly so you are not caught by them: a decimal number grown too large silently turns into infinity — anything else that surprises you is worth reporting as a bug.
