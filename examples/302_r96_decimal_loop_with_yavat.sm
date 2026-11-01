@@ -1,0 +1,12 @@
+# R96: the way to step through decimals - yavat with a dasham, compared with <= against the end.
+# A chakra counts whole numbers only (E_CHAKRA_DASHAM, example 300).
+mukhya() {
+    dasham x = 0.0
+    yavat (x <= 3.0) {
+        likha(x)
+        x = x + 1.0
+    }
+    chakra i = 0 tak 3 {
+        likha(i)
+    }
+}

@@ -407,6 +407,27 @@ mukhya() {
 3
 4
 ```
+**A `chakra` counts in whole numbers (v283).** Its counter is a `vitti` and steps by 1, so both ends must be
+whole numbers: `chakra i = 0 tak 3.0`, `chakra i = 0.5 tak 2.5`, a `dasham` variable as an end
+(`chakra i = 0 tak n` with `dasham n`), or a `dasham` variable as the counter are refused when compiled:
+`Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati`, with
+a caret under a written decimal. **Up to v282 such a loop compared the decimal's bits as a whole number** -
+3.0 is 4613937818241073152 - so `chakra i = 0 tak 3.0` printed 0, 1, 2, ... and never stopped, and a
+decimal start counted from its bits. To step through decimals, use `yavat`:
+
+```sutram
+mukhya() {
+    dasham x = 0.0
+    yavat (x <= 3.0) {
+        likha(x)          # 0.000000 1.000000 2.000000 3.000000
+        x = x + 1.0
+    }
+}
+```
+
+Adding `0.1` ten times does not give exactly `1.0` (§15), so a `yavat` on decimals should compare with `<`
+or `<=` against a bound, never `==`.
+
 The endpoints in this example are **inclusive**; `arabhya` means 'starting from' and `paryantam` means 'up to'. Both are contextual words in the `chakra` grammar, **not reserved keywords**: they can still name variables. `arabhya` without the closing `paryantam` is invalid. `chakra` means wheel/cycle and is a technical loop marker; neither spelling makes the whole code a classical Sanskrit sentence.
 
 **Evidence:** `src/sutram_compiler.asm:9361-9415`, `tests/r52/test_r52.py:89-99`, `examples/11_forloop.sm` (legacy `tak` form). Test assertions are partner-maintained, not re-executed here.

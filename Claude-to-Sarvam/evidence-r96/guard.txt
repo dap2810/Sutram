@@ -1,0 +1,7 @@
+# R96 guard: origin/main (v282) -> v283
+elf:  680 programs: 548 byte-identical, 129 refused identically, 0 DIFFER, 3 new
+pe:   680 programs: 548 byte-identical, 129 refused identically, 0 DIFFER, 3 new
+wine: 680 programs: 548 byte-identical, 129 refused identically, 0 DIFFER, 3 new - the Windows compiler under Wine; its 1096 outputs byte-identical to the Linux compiler's PE outputs
+NEW          examples/300_r96_chakra_decimal_bound.sm
+NEW          examples/301_r96_chakra_dasham_counter.sm
+NEW          examples/302_r96_decimal_loop_with_yavat.sm

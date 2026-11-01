@@ -52,6 +52,22 @@ def main():
             checks += 1
             fails += not ok
             print(('PASS  ' if ok else 'FAIL  ') + f'{name}: exit {rc}, {last[:110]}')
+        # R95: a tree binary one version behind fails even with a current installer
+        repo = os.path.join(d, 'repo')
+        for sub in ('src', 'win'):
+            os.makedirs(os.path.join(repo, sub), exist_ok=True)
+        open(os.path.join(repo, 'src', 'sutram_compiler.asm'), 'wb').write(
+            open(os.path.join(ROOT, 'src', 'sutram_compiler.asm'), 'rb').read())
+        open(os.path.join(repo, 'sutram_compiler'), 'wb').write(open(os.path.join(ROOT, 'sutram_compiler'), 'rb').read())
+        open(os.path.join(repo, 'win', 'sutram.exe'), 'wb').write(exe)
+        open(os.path.join(repo, 'sutram.exe'), 'wb').write(old)
+        good = setup_with(d, {'bin\\sutram.exe': exe, 'win\\sutram.exe': exe})
+        r = subprocess.run([sys.executable, TOOL, '--repo', repo, '--setup', good], capture_output=True, text=True)
+        last = r.stdout.strip().splitlines()[-1]
+        ok = r.returncode == 1 and 'sutram.exe (in the tree) is v' in last
+        checks += 1
+        fails += not ok
+        print(('PASS  ' if ok else 'FAIL  ') + f'tree sutram.exe one version behind: exit {r.returncode}, {last[:110]}')
         rc, last = verdict(os.path.join(d, 'absent.exe'))
         checks += 1
         fails += not (rc == 1 and last.startswith('FAIL no installer'))

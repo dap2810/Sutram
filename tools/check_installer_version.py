@@ -6,7 +6,9 @@ then v281) and nothing failed. A release gate that does not look at the installe
 
 WHAT: opens Sutram-Setup.exe, finds the embedded payload.zip (the wizard incbins it), reads the version
 string ("Sutram 1.0 (vNNN)") of bin/sutram.exe and win/sutram.exe inside it, and compares both with the
-compiler version in src/sutram_compiler.asm (msg_version). It also checks that Sutram-Setup.sha256, when
+compiler version in src/sutram_compiler.asm (msg_version). R95: the tree's own sutram_compiler (Linux ELF),
+sutram.exe and win/sutram.exe (Windows PE) must carry that version too - every binary prints it with
+--version, and the string is in each file. It also checks that Sutram-Setup.sha256, when
 present, is the SHA-256 of Sutram-Setup.exe - the hash the maintainer verifies after installing.
 
 The embedded compiler's BYTES are not compared with win/sutram.exe: the installer's compiler is built on
@@ -82,6 +84,19 @@ def main(argv):
                 problems.append(f'{key} is v{found[key]}')
     elif not problems:
         problems.append('no embedded payload found')
+    # R95: the binaries in the tree must be the same version as the source and the installer.
+    tree = {}
+    for rel in ('sutram_compiler', 'sutram.exe', 'win/sutram.exe'):
+        f = os.path.join(a.repo, rel)
+        if not os.path.exists(f):
+            problems.append(f'{rel} is missing')
+            continue
+        m = VERSION.search(open(f, 'rb').read())
+        tree[rel] = int(m.group(1)) if m else None
+        if tree[rel] is None:
+            problems.append(f'{rel} has no version string')
+        elif tree[rel] != want:
+            problems.append(f'{rel} (in the tree) is v{tree[rel]}')
     digest = hashlib.sha256(setup).hexdigest()
     sha_file = os.path.join(os.path.dirname(path), 'Sutram-Setup.sha256')
     if os.path.exists(sha_file):
@@ -96,7 +111,8 @@ def main(argv):
         print(f'FAIL installer ({shown or "no compiler found"}), compiler v{want}: {"; ".join(problems)} - '
               f'rebuild it on Windows: windows/build-windows-setup.ps1')
         return 1
-    print(f'PASS installer v{want} = compiler v{want} ({shown}; sha256 {digest[:16]}...)')
+    print(f'PASS installer v{want} = compiler v{want} ({shown}; sutram_compiler, sutram.exe, win/sutram.exe '
+          f'v{want}; sha256 {digest[:16]}...)')
     return 0
 
 

@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v282) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v283) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -439,6 +439,9 @@ r54_builtin_arity_table:
     r82_c5 db 0x48,0x8B,0x40,0xD8                             ; mov rax,[rax-40]
     r82_c_end:
     align 16
+    r96_hdr db ": Sutram Error [E_CHAKRA_DASHAM]: ", 0
+    r96_txt db "chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati", 10, 0
+    r96_hint db "Sanket: chakra i = 0 tak 3 likhyatam; dashamaya yavat upayujyatam", 10, 0
     r94_hdr db ": Sutram Error [E_DASHAM_KRIYA]: ", 0
     r94_txt db "dashama-sankhyayam % & | ^ << >> kriyah na sambhavanti", 10, 0
     r94_hint db "Sanket: etah purnanka-kriyah - vitti upayujyatam", 10, 0
@@ -8305,6 +8308,47 @@ r80_fold_overflow:
 ; R94: r94_check_float_bitop(rdi = AST_BINOP). `%`, `&`, `|`, `^`, `<<` and `>>` have no dasham meaning
 ; here; with a dasham operand the integer code ran on the IEEE-754 bits, so 5.5 % 2.0 printed
 ; 6192449487634432. Refused: E_DASHAM_KRIYA at the operator. Other operators return untouched.
+; R96: r96_check_for_float(rdi = AST_FOR). The loop counts in whole numbers: it adds 1 to the counter
+; and compares with `cmp` - so a dasham bound was compared as its IEEE-754 bits (3.0 is
+; 4613937818241073152) and `chakra i = 0 tak 3.0` ran for ever; a dasham start (0.5) counted
+; from its bits; a dasham variable as the counter received whole-number bits (printed 0.000000).
+; Refused: E_CHAKRA_DASHAM, at the written number when there is one, else naming the file.
+r96_check_for_float:
+    push rbx
+    mov rbx, rdi
+    mov rdi, [rbx+8]
+    call is_float_var
+    test rax, rax
+    jnz .r96_bad_var
+    mov rdi, [rbx+16]
+    call expr_is_float
+    test rax, rax
+    jnz .r96_bad_start
+    mov rdi, [rbx+24]
+    call expr_is_float
+    test rax, rax
+    jnz .r96_bad_end
+    pop rbx
+    ret
+.r96_bad_start:
+    mov rax, [rbx+16]
+    jmp .r96_pos
+.r96_bad_end:
+    mov rax, [rbx+24]
+.r96_pos:
+    xor edi, edi
+    cmp qword [rax], AST_FLOAT
+    jne .r96_err
+    mov rdi, [rax+56]
+    jmp .r96_err
+.r96_bad_var:
+    xor edi, edi
+.r96_err:
+    lea rsi, [rel r96_hdr]
+    lea rdx, [rel r96_txt]
+    lea rcx, [rel r96_hint]
+    jmp r80_compile_error
+
 r94_check_float_bitop:
     push rbx
     mov rbx, rdi
@@ -17217,6 +17261,8 @@ gen_stmt:
     ; PERF2: test-at-bottom shape.  Emit one initial jump to the test, then
     ; one backward conditional branch per iteration.  This removes the old
     ; forward-exit + backward-unconditional branch pair from hot loops.
+    mov rdi, rbx                   ; R96: a chakra counts whole numbers
+    call r96_check_for_float
     push r12
     push r13
     push r14

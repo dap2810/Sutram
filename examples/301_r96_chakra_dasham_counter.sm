@@ -1,0 +1,8 @@
+# R96 (v283): a dasham variable as the chakra counter received whole-number bits (it printed
+# 0.000000 each time). Refused: E_CHAKRA_DASHAM. For decimals, use yavat (example 302).
+mukhya() {
+    dasham i = 0.5
+    chakra i = 0 tak 2 {
+        likha(i)
+    }
+}

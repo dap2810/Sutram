@@ -1,3 +1,21 @@
+> **The 20 newest entries.** Older ones, from Compiler v274-v275 (Claude, R77-R79) back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v283 (Claude, R96) - a `chakra` with a decimal end is refused instead of running for ever
+
+- **Why it hung (disassembly):** the loop is whole-number code - `inc` the counter, `cmp` with the end, `jle`. A
+  decimal end was compared as its IEEE-754 bits: 3.0 is `0x4008000000000000` = 4613937818241073152, so
+  `chakra i = 0 tak 3.0` counted toward 4.6 x 10^18. A decimal start counted from its bits (0.5 printed
+  4602678819172646912, ...); a `dasham` variable as the counter got whole-number bits (printed 0.000000).
+- **`E_CHAKRA_DASHAM`** (`r96_check_for_float`): a decimal start or end (written or a `dasham` variable), or a
+  `dasham` counter, is refused when compiled, with a caret under a written decimal. Decimals step with `yavat`.
+- **The installer gate also checks the tree's binaries** (R95 WS1): `sutram_compiler`, `sutram.exe`,
+  `win/sutram.exe` must carry the source's version.
+- **Goldens:** 300, 301 (refusals), 302 (decimals with `yavat`).
+- **v438 below says it was an off-by-one, not a hang. Measured again on v282: it does not stop.**
+  `chakra i = 0 tak 3.0` printed 6,625,058 lines in 3 seconds (ELF), 16-17 million in 10 s (PE, from both the
+  Linux and the Windows compiler), still counting; it would end near 4.6 x 10^18. `0 1 2 3 4` is what its first
+  five lines look like (evidence-r96/v282-remeasured.txt).
+
 ## v438 - CORRECTION to v437: a decimal loop bound is an off-by-one, not a hang
 
 ### What I got wrong
@@ -75,8 +93,6 @@
 **`parikshita`: 0 of 306 library functions marked, 63 eligible. It ships as a tool, not a guarantee, until the library is marked.**
 **The installer: v279 while the compiler is v281. Claude has made it a gate.**
 **The README paragraph, which decides whether a reader trusts everything else.**
-
-> **The 20 newest entries.** Older ones, from v426 back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
 
 ## v282 (Claude, R94) - `%` and the bit operators refuse a `dasham`; the arithmetic gaps written down
 
@@ -422,60 +438,3 @@ likha(a[0])        -> prints 41
 - **Frozen packs:** the two new messages are Sanskrit in every pack (no new pack text).
 - **Found, not fixed:** `likha` of a `dasham` from about ±9.2e12 prints `-9223372036854.775808` (v275 too; Muse's
   R80 audit measured the threshold).
-
-## Compiler v274-v275 (Claude, R77-R79) - the byte-versus-qword trap is caught; mixed indentation refused; a real program in blocks
-
-- **`nirmmita` counts bytes, `p[i]` counts 8-byte cells.** When `vitti p = nirmmita(SIZE)` has a written SIZE and
-  `p` is never assigned again in its function, a constant index past the end is a compile error
-  (`E_NIRMMITA_SEEMA`, `nirmmita(10)` then `p[9]` -> "p[9] hetu nirmmita(80) avashyakam"), and a computed index is
-  bounds-checked like a `mala`'s (the loop `p[i]`, i < 10, over `nirmmita(10)` stops at `p[1]`). No false alarm
-  in the suite, the 228 library proofs or the 86 properties; cost 0% on the shipped benchmarks, +17-19% on a tight
-  raw-write loop. **It found an overrun in our own test** (`tests/r73_scratch/reuse_zeroed`: 16 bytes into 13).
-- **v275: tabs and spaces mixed in a body's indentation are refused** (`E_ANTARAL_MISHRA`). Muse's R77 mutator
-  found the class; under it, a tab-indented body below a space-indented header ran its second line
-  unconditionally (printed 10, not 0), and one example hung. `examples/276`.
-- **No silent partial compilation:** 715 stray-token programs (every kind of body, indented and braced) and
-  every example saved 9 ways (CRLF, trailing spaces, whitespace-only lines, tabs, mixed tabs and spaces two
-  ways, no/extra final newline, UTF-8 BOM) - 2,186 checks - refuse or run every statement. New gates `R77 stray`, `R77 format`.
-- **A real 185-line program in blocks** (`tests/r79_real/`): 185 MB -> 110 MB with blocks in the program alone,
-  -> 7 MB with the library's own temporaries in blocks too (the R76 patch, not yet landed). Gate `R79 real`.
-
-## v428 - I was repeating a wrong number: the mutants are 2, not 15, and there is no Madhava sign error
-
-### Muse's correction
-**I have said for several rounds that there are "15 surviving mutants including a sign error in the Madhava trig functions".**
-
-**Muse's R76: the shipped Madhava code has no sign error.** **All five functions match Python's `math` to 6 printed decimals at 16 points.** **The sign flip is a MUTANT - a defect injected deliberately that no proof killed - not a bug in shipped code.**
-
-**And of the 15: 12 are killed by today's tests, 1 is moot because the function no longer exists, and 2 still survive - the `suchi` and `avali_srij` size mutants.**
-
-**So the real count is 2.** **I repeated 15 because nobody listed them and I did not ask.** **The same error as everything else this session: citing a figure instead of checking it.**
-
-### And two independent parties rejected the run-time range check
-**Gemini: "an address-range check cannot distinguish iteration 1's dead pointer from iteration 2's live allocation at the same address."**
-**ChatGPT: "after reuse, an old pointer and a valid new pointer can have exactly the same address."**
-
-**Same conclusion, different reasoning, no contact between them.** **The run-time range check is out and will not be revisited.**
-
-### And ChatGPT named the top risk, which is not a bug
-**> "The single release risk I prioritize is an unenforced safe/unsafe boundary: ordinary unchecked raw memory can invalidate the assumptions of the checked part."**
-
-**That is not a defect to fix; it is that the checked and unchecked parts share one language and nothing stops them mixing.** **It is now the top item, and the round asks for the smallest marking that makes the boundary visible to a reader and to the compiler.**
-
-### Process change, applied
-**Every partner brief now opens with a `## Verified behaviour` block carrying the exact tested outputs of the check, so a partner reasons from the current compiler rather than from my description of an earlier one.** **Gemini's best work went into a hole that was already closed because I sent a stale brief; that will not repeat.**
-
-## Library (Claude, R76) - two wrong answers fixed; raw memory stated as unchecked
-
-- **`kuttaka` (Aryabhata) was wrong in every one of 438 random cases with a modulus above 2^40:** `old_s * mult` overflowed. On 600 random
-  cases it was right 162/162 times for small moduli and **0/438** for large ones; `tests/stdlib/numeric29` had
-  recorded a wrong answer (2605677504891245458; the solution is 1483584605987376058). Now the product is taken
-  modulo |b| without overflow (`kuttaka_gun_shesh`): 600/600.
-- **`meru(n, k)` (Pingala's C(n, k)) wrapped silently past 2^63 - 1** (`meru(1000, 10)` gave C(1000, 10) mod 2^64).
-  It now returns **-1** when the answer does not fit; all 2,556 values for n <= 70 checked.
-- **The Madhava functions had no sign error to fix:** the R15 "sign error" was a surviving *mutant* (a missing
-  test), killed since R18. sin/cos/atan match Python to the printed 6 places on 24,003 points from -100 to 100.
-- `tests/stdlib/r76_known_values` pins every behaviour a surviving mutant showed no proof pinned, each value
-  checked against exact arithmetic, not recorded from the implementation.
-- **`nirmmita` buffers are not bounds-checked** - now said in `docs/LANGUAGE-REFERENCE.md` §6c. `mala` and
-  `kosh` are.

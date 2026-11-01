@@ -1,0 +1,19 @@
+# R97 claimed v282 prints '0 1 2 3 4' for chakra i = 0 tak 3.0 and stops. Re-measured on v282 (origin/main c6c572b's binaries):
+## ELF, timeout 3 s: exit 124 (killed), 6625058 lines printed, last value 6625057
+## PE from the Linux compiler, under Wine, timeout 10 s: exit 124, 16511651 lines
+## PE from the Windows compiler (sutram.exe v282) under Wine, timeout 10 s: exit 124, 17077101 lines
+## first five lines (what '| head -5' shows): 0 1 2 3 4 
+
+# R97 WS4 - every bound type, v282 then v283 (timeout 3 s, first 6 values; ... = still running when killed)
+## Sutram 1.0 (v282) - sampurna sutra
+  [] chakra i = 0 tak 3 -> exit 0, 5 lines: 0 1 2 3 done 
+  [] chakra i = 0 tak 3.0 -> exit 124, 7270326 lines: 0 1 2 3 4 5 ...
+  [vitti n = 3] chakra i = 0 tak n -> exit 0, 5 lines: 0 1 2 3 done 
+  [dasham n = 3.0] chakra i = 0 tak n -> exit 124, 8277190 lines: 0 1 2 3 4 5 ...
+  [] chakra i = 0.0 tak 3 -> exit 0, 5 lines: 0 1 2 3 done 
+## Sutram 1.0 (v283) - sampurna sutra
+  [] chakra i = 0 tak 3 -> exit 0, 5 lines: 0 1 2 3 done 
+  [] chakra i = 0 tak 3.0 -> refused: b.sm:3:22: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na
+  [vitti n = 3] chakra i = 0 tak n -> exit 0, 5 lines: 0 1 2 3 done 
+  [dasham n = 3.0] chakra i = 0 tak n -> refused: b.sm: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na samb
+  [] chakra i = 0.0 tak 3 -> refused: b.sm:3:16: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na

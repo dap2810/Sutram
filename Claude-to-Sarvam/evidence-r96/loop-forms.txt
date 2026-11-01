@@ -1,0 +1,67 @@
+# R96: every counter/bound combination, v282 (origin/main) then v283. 3-second timeout; first 6 values shown.
+## Sutram 1.0 (v282) - sampurna sutra
+  chakra dasham i = 0.0 tak 3.0  -> refused when compiled, both versions: Sutram Error: vyakaran dosh, pankti 2:12, shabd 'dasham' (a type is not allowed in the chakra header)
+  chakra i = 0.0 tak 3.0  -> runs: 0 1 2 3 4 5 
+  chakra i = 0 tak 3.0  -> runs: 0 1 2 3 4 5 
+  chakra i = 0.0 tak 3  -> runs: 0 1 2 3 done 
+  chakra i = 0.5 tak 2.5  -> runs: 4602678819172646912 4602678819172646913 4602678819172646914 4602678819172646915 4602678819172646916 4602678819172646917 
+  chakra i = 0 tak 2.5  -> runs: 0 1 2 3 4 5 
+  chakra i = 3.0 tak 0.0  -> runs: done 
+  chakra i = 0 arabhya 2.0 paryantam  -> runs: 0 1 2 3 4 5 
+  chakra i = 0 tak 3  -> runs: 0 1 2 3 done 
+  chakra i = 3 tak 0  -> runs: 3 2 1 0 done 
+   dasham n = 3.0; chakra i = 0 tak n {; -> runs: 0 1 2 3 ... (only 4 lines shown here; it does NOT stop - see v282-remeasured.txt: 8,277,190 lines in 3 s)
+   dasham i = 0.5; chakra i = 0 tak 2 {; -> runs: 0.000000 0.000000 0.000000 
+## Sutram 1.0 (v283) - sampurna sutra
+  chakra dasham i = 0.0 tak 3.0  -> refused when compiled, both versions: Sutram Error: vyakaran dosh, pankti 2:12, shabd 'dasham' (a type is not allowed in the chakra header)
+  chakra i = 0.0 tak 3.0  -> refused: l.sm:2:16: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavat
+  chakra i = 0 tak 3.0  -> refused: l.sm:2:22: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavat
+  chakra i = 0.0 tak 3  -> refused: l.sm:2:16: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavat
+  chakra i = 0.5 tak 2.5  -> refused: l.sm:2:16: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavat
+  chakra i = 0 tak 2.5  -> refused: l.sm:2:22: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavat
+  chakra i = 3.0 tak 0.0  -> refused: l.sm:2:16: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavat
+  chakra i = 0 arabhya 2.0 paryantam  -> refused: l.sm:2:26: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavat
+  chakra i = 0 tak 3  -> runs: 0 1 2 3 done 
+  chakra i = 3 tak 0  -> runs: 3 2 1 0 done 
+   dasham n = 3.0; chakra i = 0 tak n {; -> refused: v.sm: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankh
+   dasham i = 0.5; chakra i = 0 tak 2 {; -> refused: e.sm: Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankh
+
+# the loop test emitted by v282 for 'chakra i = 0 tak 3.0' (objdump of the ELF):
+ 133:	0f 8e 61 ff ff ff    	jle    0x9a
+ 139:	48 89 ec             	mov    rsp,rbp
+ 13c:	41 5f                	pop    r15
+ 13e:	41 5e                	pop    r14
+ 140:	41 5d                	pop    r13
+ 142:	41 5c                	pop    r12
+ 144:	5b                   	pop    rbx
+ 145:	5d                   	pop    rbp
+ 146:	48 b8 3c 00 00 00 00 	movabs rax,0x3c
+# inc rbx = the counter +1; the bound is 3.0's bits 0x4008000000000000; cmp rax,rdx / jle = whole-number compare
+
+# other loop forms with decimals, v283 (they use the dasham comparisons and terminate):
+mukhya() {
+    dasham x = 0.0
+    yavat (x <= 3.0) {
+        likha(x)
+        x = x + 1.0
+    }
+    dasham y = 0.0
+    yavat (y < 1.0) {
+        y = y + 0.1
+    }
+    likha(y)
+    vitti n = 0
+    yavat (n < 2.5) {
+        n = n + 1
+    }
+    likha(n)
+}
+mukhya() {
+    dasham x = 0.0
+    kuru {
+        x = x + 0.5
+    } yavat (x < 2.0)
+    likha(x)
+}
+0.000000 1.000000 2.000000 3.000000 1.100000 3 
+2.000000

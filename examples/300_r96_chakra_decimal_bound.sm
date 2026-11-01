@@ -1,0 +1,7 @@
+# R96 (v283): a chakra counts whole numbers. With a decimal end it compared 3.0's bits as a
+# whole number (4613937818241073152) and never stopped. Refused: E_CHAKRA_DASHAM.
+mukhya() {
+    chakra i = 0 tak 3.0 {
+        likha(i)
+    }
+}
