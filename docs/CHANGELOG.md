@@ -1,3 +1,35 @@
+## v440 - CORRECTION 3, the final one: it WAS a hang, and my own `head -8` faked the count
+
+### The truth, counted by lines rather than truncated
+
+| form | v282 | v283 |
+|---|---|---|
+| `chakra i = 0 tak 2` | `0 1 2`, exit 0 | same |
+| `chakra i = 0.0 tak 3` | `0 1 2 3` - **right by luck**, `0.0`'s bits are 0 | refused |
+| `chakra i = 0 tak 3.0` | **5,375,137 lines before kill** | refused, `E_CHAKRA_DASHAM` |
+| `chakra i = 0 tak 2.5` | **5,853,479 lines** | refused |
+| `chakra i = 0 tak 2.9` | **6,987,595 lines** | refused |
+| `chakra i = 0 tak 0.5` | **7,499,473 lines** | refused |
+
+**The bound's bit pattern is read as an integer - about 4.6 x 10^18 - so the loop runs essentially forever.**
+
+### The worst error of this session, and it is a measurement failure
+**I piped output through `head -8`.** A loop printing 7.5 million lines looks exactly like an 8-iteration loop when truncated at eight.
+
+**v437 said HANG - correct.**
+**v438 said off-by-one - wrong, caused by `head`.**
+**v439 said unpredictable eight iterations - wrong, same cause.**
+
+**I corrected a correct finding twice, from my own truncation, and told three partners they were wrong on that basis.**
+
+### Muse was right and I overrode it twice
+**Muse wrote "a loop whose end number is a decimal never stops."** Accurate. **I asked for it to be changed. It should not have been.**
+
+### The rule
+**`head -N` on an unbounded stream is not a measurement.** Count the lines, cap the loop, or watch for exit. **Never truncate a stream and treat what you saw as the number of iterations.**
+
+**This is a different class from the other nine errors. Those were describing belief instead of testing. This one was testing with an instrument that could not show the truth.**
+
 ## v439 - CORRECTION 2: the decimal loop bound count is unpredictable
 
 ### Measured on v282, all forms, correct syntax
