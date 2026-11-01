@@ -1,0 +1,48 @@
+# R100: first-term traps, probed on v283 (stdin empty, 5-second timeout). Programs in probes.py.
+== uninit_vitti: exit 0: b'0 99 99\n'
+== uninit_loop: exit 0: b'0\n50\n51\n'
+== string_plus_vars: exit 0: b'8388923\n'
+== likha_var_first: exit 0: b'after\n'
+== likha_var_first_two: exit 0: b'7\n8\n'
+== string_eq: exit 0: b'0\n'
+== int_overflow: exit 0: b'-2446744073709551616\n'
+== kosh_alias: exit 0: b'1\n'
+== grahan_empty: exit 0: b'-1\n'
+== likha_string_no_nl: exit 0: b'ab'
+== array_oob: exit 1: b'Sutram Error: mala ank seema atikram\n'
+== deep_recursion: exit -11: b''
+== string_plus_then_shabda: exit 139 (139 = SIGSEGV)
+
+import subprocess
+C='/home/claude/sutram/sutram_compiler'
+P = [
+ ('uninit_vitti', 'prakriya f(n) {\n    vitti x\n    yadi (n == 1) {\n        x = 99\n    }\n    nivartanam x\n}\n\nmukhya() {\n    likha(f(0), " ", f(1), " ", f(0))\n}\n'),
+ ('uninit_loop', 'mukhya() {\n    vitti i = 0\n    yavat (i < 3) {\n        vitti x\n        likha(x)\n        x = 50 + i\n        i = i + 1\n    }\n}\n'),
+ ('string_plus_vars', 'mukhya() {\n    vitti s = "ab"\n    vitti t = "cd"\n    vitti u = s + t\n    likha(u)\n}\n'),
+ ('likha_var_first', 'mukhya() {\n    vitti a = 7\n    vitti b = 8\n    likha(a, " ", b)\n    likha("after\\n")\n}\n'),
+ ('likha_var_first_two', 'mukhya() {\n    vitti a = 7\n    vitti b = 8\n    likha(a, b)\n}\n'),
+ ('string_eq', 'mukhya() {\n    vitti s = "ab"\n    likha(s == "ab")\n}\n'),
+ ('int_overflow', 'mukhya() {\n    vitti x = 4000000000\n    likha(x * x)\n}\n'),
+ ('kosh_alias', 'mukhya() {\n    kosh k[1]\n    kosh_push(k, 1)\n    vitti a = k\n    vitti p = nirmmita(8)\n    kosh_push(k, 2)\n    a[0] = 7\n    likha(k[0])\n}\n'),
+ ('grahan_empty', 'mukhya() {\n    vitti n = grahan()\n    likha(n)\n}\n'),
+ ('likha_string_no_nl', 'mukhya() {\n    likha("a")\n    likha("b")\n}\n'),
+ ('array_oob', 'mukhya() {\n    mala m[3]\n    m[5] = 1\n}\n'),
+ ('deep_recursion', 'prakriya f(n) {\n    nivartanam f(n + 1)\n}\n\nmukhya() {\n    likha(f(0))\n}\n'),
+]
+for name, src in P:
+    open(name + '.sm', 'w').write(src)
+    c = subprocess.run([C, name + '.sm', name], capture_output=True, text=True)
+    if c.returncode:
+        msg = [l for l in (c.stdout + c.stderr).splitlines() if 'Error' in l or 'dosh' in l][:1]
+        print(f'== {name}: COMPILE REFUSED {c.returncode}: {msg}'); continue
+    try:
+        r = subprocess.run(['./' + name], capture_output=True, input=b'', timeout=5)
+        print(f'== {name}: exit {r.returncode}: {r.stdout[:120]!r}')
+    except subprocess.TimeoutExpired:
+        print(f'== {name}: TIMEOUT')
+mukhya() {
+    vitti s = "ab"
+    vitti t = "cd"
+    vitti u = s + t
+    likha(shabda(u))
+}
