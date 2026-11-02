@@ -1,0 +1,1841 @@
+{
+  "round": 172,
+  "base": "4ef00a432a2f9f8ee1490a1e9092514ebb1b709d",
+  "kind": "source audit, naming scan and design arithmetic; no native executions",
+  "compiler_source_blob": "d27f0d8109825361c16686058c31dc640464a533",
+  "arithmetic": {
+    "reservation_bytes": 67108864,
+    "maximum_compared_capacity": 8388603,
+    "initial_capacity": 1,
+    "first_relocation_push": 4194305,
+    "second_relocation_push": 8388609,
+    "reservations_100000_TiB": 6.103515625,
+    "minimum_100000_touched_4KiB_pages_KiB": 400000
+  },
+  "naming_scan": {
+    "patterns": [
+      "samskara",
+      "saṃskāra",
+      "संस्कार"
+    ],
+    "scope": [
+      "lang/sanskrit.lang",
+      "lib/**",
+      "examples/**"
+    ],
+    "method": "Full UTF-8 content at pinned revision, case-insensitive substring match; Git blob SHA compared to nontruncated recursive tree.",
+    "count": 361,
+    "bytes": 416531,
+    "hits": [],
+    "fetch_failures": [],
+    "files": [
+      {
+        "path": "examples/01_hello.sm",
+        "sha": "f35db13ec6eafbb34b9f41e4c51c659ed4610d81",
+        "bytes": 64
+      },
+      {
+        "path": "examples/02_arith.sm",
+        "sha": "869e6095fe853204d59874ff4cd0685db011335a",
+        "bytes": 115
+      },
+      {
+        "path": "examples/03_if_else.sm",
+        "sha": "5acac8caac28b9b1ac49d1d180d214cc356e2f23",
+        "bytes": 96
+      },
+      {
+        "path": "examples/04_while.sm",
+        "sha": "27326bdc56cd28b7c56706eef0128af3aa6a21aa",
+        "bytes": 133
+      },
+      {
+        "path": "examples/05_func_params.sm",
+        "sha": "d9362756b126ccc2a769eeee3f91632cf1044bbd",
+        "bytes": 240
+      },
+      {
+        "path": "examples/06_rachana.sm",
+        "sha": "8dbdb392e211d94341990c6adf54c9797472d6af",
+        "bytes": 239
+      },
+      {
+        "path": "examples/07_module.sm",
+        "sha": "d54ada10f909256b8461958902b5a9c1c77f1266",
+        "bytes": 148
+      },
+      {
+        "path": "examples/08_demo.sm",
+        "sha": "38ac4572ac3dc05a172277278ebe7c947e2a77ef",
+        "bytes": 432
+      },
+      {
+        "path": "examples/09_comparisons.sm",
+        "sha": "a112e56c816384053f5c4fe72cb97736bf193898",
+        "bytes": 779
+      },
+      {
+        "path": "examples/100_t18_kosh_bounds.sm",
+        "sha": "6655aa274557a96e4228b138a33d9ee06dc31deb",
+        "bytes": 143
+      },
+      {
+        "path": "examples/100_t18_kosh_devanagari.sm",
+        "sha": "d7161bb8507da713e7a393cc7153513b2e5c30f2",
+        "bytes": 224
+      },
+      {
+        "path": "examples/101_t18_kosh_empty.sm",
+        "sha": "abe5c46894226b2d44c8f4cd2ffddd3837ef282e",
+        "bytes": 117
+      },
+      {
+        "path": "examples/102_ast_multimodule_capacity.sm",
+        "sha": "5b4eafa1a850779553fd518790e2e3cf06f175d3",
+        "bytes": 183
+      },
+      {
+        "path": "examples/103_b10_nested_break_patches.sm",
+        "sha": "d7c1ceb57b9698e0598d80e4e1cd47316f8a14c3",
+        "bytes": 3080
+      },
+      {
+        "path": "examples/104_b10_nested_continue_patches.sm",
+        "sha": "9a14e15aa3783f43dde30d00cbac81c7699e5875",
+        "bytes": 3083
+      },
+      {
+        "path": "examples/105_block_nesting_capacity.sm",
+        "sha": "6ddaacd829e39ff842a12f78cb5077443371c6f1",
+        "bytes": 70422
+      },
+      {
+        "path": "examples/106_rachana_field_capacity.sm",
+        "sha": "4a2e117dc4463c78c48697c872cf5e6ead211a8f",
+        "bytes": 193
+      },
+      {
+        "path": "examples/107_b11_block_65_statements.sm",
+        "sha": "068c8e6337774b3b9e31b966818b7866dbcc22cd",
+        "bytes": 1266
+      },
+      {
+        "path": "examples/108_b11_block_statement_capacity.sm",
+        "sha": "f1a5f85df470252c8ff4f6da6a21247f07a33f81",
+        "bytes": 4737
+      },
+      {
+        "path": "examples/109_t18_kosh_dasham.sm",
+        "sha": "c552ba1e6ba7f51903e3ca559e2209d7115a4c0d",
+        "bytes": 335
+      },
+      {
+        "path": "examples/10_mathlib.sm",
+        "sha": "e6e1d3a3c60a022718bc19352381caf778c39807",
+        "bytes": 299
+      },
+      {
+        "path": "examples/110_t18_kosh_dasham_devanagari.sm",
+        "sha": "9a184cf3325bde5881a156fae69d325ef18e5eec",
+        "bytes": 253
+      },
+      {
+        "path": "examples/111_t18_kosh_dasham_function_return.sm",
+        "sha": "6fdbaeda87038cbbba4443a75eb2c3d4c96bde9d",
+        "bytes": 350
+      },
+      {
+        "path": "examples/112_t18_kosh_integer_conversion.sm",
+        "sha": "cf5012f6500b6f5cf3f6cf57b491ed034d721e76",
+        "bytes": 334
+      },
+      {
+        "path": "examples/113_perf_self_update.sm",
+        "sha": "74815ab52b7c038012d069883d71a335c04379d7",
+        "bytes": 429
+      },
+      {
+        "path": "examples/114_perf_loop_fastpaths.sm",
+        "sha": "bd879abd5846c5f26cdebcc693d56f0b210b374a",
+        "bytes": 317
+      },
+      {
+        "path": "examples/115_perf_loop_bottom.sm",
+        "sha": "e59a2458dc068396394f816f0337756d5b6cd3b6",
+        "bytes": 777
+      },
+      {
+        "path": "examples/116_perf_reg_destination.sm",
+        "sha": "1c8f067aac19f62655f5da6fc344908b3ecfcaf5",
+        "bytes": 320
+      },
+      {
+        "path": "examples/117_perf_constant_literals.sm",
+        "sha": "d6f83d58c202ec190b1cee9ad81a1cc3a9bfd10d",
+        "bytes": 254
+      },
+      {
+        "path": "examples/118_t18_kosh_param.sm",
+        "sha": "237dc98c40f75dea62a2fe826869474bc2aa3b6a",
+        "bytes": 538
+      },
+      {
+        "path": "examples/119_t18_kosh_param_forward.sm",
+        "sha": "12ccdbe1e73828521709701ccdae4342296bde94",
+        "bytes": 497
+      },
+      {
+        "path": "examples/11_forloop.sm",
+        "sha": "6d08fac9cc9b45db05874b3685626dd8cf83dc82",
+        "bytes": 564
+      },
+      {
+        "path": "examples/120_t18_kosh_param_mismatch.sm",
+        "sha": "920286b93e669b1b9f93f8daf55da25837120c6e",
+        "bytes": 209
+      },
+      {
+        "path": "examples/121_t18_kosh_param_push_reject.sm",
+        "sha": "105a28cf792f243c18f48730148b9c16d8e98061",
+        "bytes": 302
+      },
+      {
+        "path": "examples/122_t18_kosh_param_devanagari.sm",
+        "sha": "8267a6ecd8e8b5ff8b73eb5106523e8d974fbb0c",
+        "bytes": 241
+      },
+      {
+        "path": "examples/123_t18_kosh_param_statement_call.sm",
+        "sha": "86215409e3f4fa447b057ac7fb76f52ce0f14029",
+        "bytes": 239
+      },
+      {
+        "path": "examples/124_perf_wide_immediate.sm",
+        "sha": "630f81df3e95a16f00f16acba9c8e7d18fd42617",
+        "bytes": 621
+      },
+      {
+        "path": "examples/125_perf_register_immediate_destination.sm",
+        "sha": "f29e6fae0835846205412f322992d9b1c354a0b3",
+        "bytes": 684
+      },
+      {
+        "path": "examples/126_numeric_pipeline.sm",
+        "sha": "d10364a36da60fc534c802dad76a5527c54951f7",
+        "bytes": 1061
+      },
+      {
+        "path": "examples/127_perf_float_self_register.sm",
+        "sha": "35bacb19d468f2d761121afc27e3ee88d828a344",
+        "bytes": 290
+      },
+      {
+        "path": "examples/128_perf_float_self_fallback.sm",
+        "sha": "5c82d2b189c018aa8a7fb676567c9d90ee0a64d1",
+        "bytes": 302
+      },
+      {
+        "path": "examples/129_perf_float_destination.sm",
+        "sha": "74a7f718334c9ab6950122d1a27ac59d584c9d7e",
+        "bytes": 313
+      },
+      {
+        "path": "examples/12_elif.sm",
+        "sha": "788c1248b8c0e53f6ed9749f43aa2bc5854f6a36",
+        "bytes": 640
+      },
+      {
+        "path": "examples/130_perf_float_destination_alias.sm",
+        "sha": "9787084686d6637b74297c08b7109ef9b2d7690b",
+        "bytes": 485
+      },
+      {
+        "path": "examples/131_perf_float_compare_register.sm",
+        "sha": "2f04857fef29ec229e3211b51832233391ba3be4",
+        "bytes": 289
+      },
+      {
+        "path": "examples/132_perf_float_compare_fallback.sm",
+        "sha": "4fa407a7c19b594baae25a212c93227fdf37c220",
+        "bytes": 350
+      },
+      {
+        "path": "examples/133_perf_float_scalar_call_rhs.sm",
+        "sha": "fdd96b5ffd783b471c352fd52a2946d276f64b29",
+        "bytes": 624
+      },
+      {
+        "path": "examples/134_perf_float_complex_fallback.sm",
+        "sha": "b75bd5385fae3f1e54fe269dc6565e27ce0a2f4f",
+        "bytes": 626
+      },
+      {
+        "path": "examples/135_r30_float_index_scalar.sm",
+        "sha": "5df2ce86258fb16f37c4f53a72725b92f87f13e2",
+        "bytes": 665
+      },
+      {
+        "path": "examples/136_r30_float_complex_left.sm",
+        "sha": "f7340e19386375df96969ddfc70d259ccb0399c5",
+        "bytes": 533
+      },
+      {
+        "path": "examples/137_r30_float_literal_rhs.sm",
+        "sha": "712c4051f2e80a3ad2e28c4e172357aa658b2f4a",
+        "bytes": 450
+      },
+      {
+        "path": "examples/138_r30_float_comparison_index.sm",
+        "sha": "fb6b1f828c6800c8ad992202a22723b7932744ad",
+        "bytes": 460
+      },
+      {
+        "path": "examples/139_r30_float_mixed_fallback.sm",
+        "sha": "6690845f871772baa430b2ae58eee55a924648f6",
+        "bytes": 460
+      },
+      {
+        "path": "examples/13_negatives.sm",
+        "sha": "8e1b093c137326be2338cf120a935ab035df4cd7",
+        "bytes": 757
+      },
+      {
+        "path": "examples/140_r30_index_side_effect.sm",
+        "sha": "e1c592b25a8ea0dd2a830aaf0487dad61646f333",
+        "bytes": 512
+      },
+      {
+        "path": "examples/141_xmm_cache_basic.sm",
+        "sha": "c3f0fe61534937fb0ac97b7a89ddb126122e30e3",
+        "bytes": 317
+      },
+      {
+        "path": "examples/142_xmm_cache_alias.sm",
+        "sha": "27f19432abeb36feb699fe6a8eb59b1417fdd71c",
+        "bytes": 283
+      },
+      {
+        "path": "examples/143_xmm_cache_barriers.sm",
+        "sha": "b376694124c074b3b69616eeb9b7f6799a47cc90",
+        "bytes": 494
+      },
+      {
+        "path": "examples/144_xmm_cache_fallback.sm",
+        "sha": "ef46bfa36ab5aeabd97ba3cd048dc079cb4574b6",
+        "bytes": 382
+      },
+      {
+        "path": "examples/145_xmm_cache_nested_calls.sm",
+        "sha": "06160e5f20af27d663ac80e38d4c273a410581d0",
+        "bytes": 368
+      },
+      {
+        "path": "examples/146_stage2_loop_call_boundary.sm",
+        "sha": "3ae8ffa026a52acdf223b3661c39eee2880013c0",
+        "bytes": 482
+      },
+      {
+        "path": "examples/147_stage2_recursive_float_boundary.sm",
+        "sha": "521efd9007c4b20b1762fe0e96138d2bb2776f0d",
+        "bytes": 396
+      },
+      {
+        "path": "examples/148_stage2_array_mutation_call.sm",
+        "sha": "a572e816847c1b1daabdae4c2ba10336e0da9a3f",
+        "bytes": 559
+      },
+      {
+        "path": "examples/149_namespaced_colliding_imports.sm",
+        "sha": "58f655b48e9352ebd5afb34eaa7b0bc2655ecfcd",
+        "bytes": 230
+      },
+      {
+        "path": "examples/14_strings.sm",
+        "sha": "261455ff81d5b19f997518caa59ce5b73ed844ef",
+        "bytes": 560
+      },
+      {
+        "path": "examples/150_namespaced_same_module_two_aliases.sm",
+        "sha": "0e01b37234cdc1e28269100ace9083fcf4cb1412",
+        "bytes": 164
+      },
+      {
+        "path": "examples/151_namespaced_and_legacy_import.sm",
+        "sha": "d6dcfbab268213f87d941e0f6e6b1b40e6831e51",
+        "bytes": 174
+      },
+      {
+        "path": "examples/152_namespaced_comment_string_preservation.sm",
+        "sha": "ffe13779f4b5861fe9bd7212a0048a0e037e5cb1",
+        "bytes": 180
+      },
+      {
+        "path": "examples/153_namespaced_devanagari_function.sm",
+        "sha": "cf0d7e8206d5bda9853ba4f87659bc07ee0523ae",
+        "bytes": 74
+      },
+      {
+        "path": "examples/154_namespaced_duplicate_idempotent.sm",
+        "sha": "6e856cf910c69d47d9ec886e54f8782190ca5640",
+        "bytes": 134
+      },
+      {
+        "path": "examples/155_namespaced_multi_alias_composition.sm",
+        "sha": "a07067b7525a4a27ae2a6facef812f43191e8540",
+        "bytes": 245
+      },
+      {
+        "path": "examples/156_namespaced_alias_collision.sm",
+        "sha": "65f3b05e6c094bd7efbdcbcdff30b286b84ef89b",
+        "bytes": 121
+      },
+      {
+        "path": "examples/157_namespaced_missing_module.sm",
+        "sha": "68b3a09c96b71301e3c8aa60d1d0bc7b54d5e3c6",
+        "bytes": 53
+      },
+      {
+        "path": "examples/158_namespaced_alias_digit.sm",
+        "sha": "533f89d6f0d1e77cf2c2b97ca6b63d99c835ec94",
+        "bytes": 41
+      },
+      {
+        "path": "examples/159_namespaced_path_traversal.sm",
+        "sha": "d1e71b731a31666828352e11b5a65298e6f26064",
+        "bytes": 46
+      },
+      {
+        "path": "examples/15_sutra_const.sm",
+        "sha": "5427660a668083e20dc9eeb0eaedc565d5c75a3a",
+        "bytes": 481
+      },
+      {
+        "path": "examples/160_namespaced_empty_alias.sm",
+        "sha": "9534ae8e581b5c309cd260e11daa91a42bb76c56",
+        "bytes": 37
+      },
+      {
+        "path": "examples/161_namespaced_overlong_alias.sm",
+        "sha": "7763eaa50ae737c5e68a5650ef1ac344a4fbfea4",
+        "bytes": 72
+      },
+      {
+        "path": "examples/162_namespaced_import_capacity.sm",
+        "sha": "d1a81697afa55a157c0c564f7f0ddf49544b0914",
+        "bytes": 448
+      },
+      {
+        "path": "examples/163_r40_transitive_diamond.sm",
+        "sha": "bf1b96cecf4d8f94c7955ac8e83a95288710d960",
+        "bytes": 72
+      },
+      {
+        "path": "examples/164_r41_cycle_reject.sm",
+        "sha": "538b878b8bdbee8bec5b21875862801db1e7b09a",
+        "bytes": 57
+      },
+      {
+        "path": "examples/165_r41_missing_reject.sm",
+        "sha": "ef2c4a005834969ee28a3adb757ba3e20e0149b3",
+        "bytes": 61
+      },
+      {
+        "path": "examples/166_r41_optin_diamond.sm",
+        "sha": "b07d1ffc49b60f1e7a9981a2abb94ab1400e722f",
+        "bytes": 91
+      },
+      {
+        "path": "examples/16_advanced.sm",
+        "sha": "b39130c316afca0c05bc09a5e27c4854294d2b4f",
+        "bytes": 782
+      },
+      {
+        "path": "examples/17_booleans.sm",
+        "sha": "2ad6311d77a1457ecfa96981f07bdc66d3dda594",
+        "bytes": 757
+      },
+      {
+        "path": "examples/18_guna_switch.sm",
+        "sha": "6e7105c0fc6d2330af9c8196032bbdf37693450b",
+        "bytes": 384
+      },
+      {
+        "path": "examples/19_srijana_enum.sm",
+        "sha": "f3ff403d0ca59827900acf20fe37fb3679270dab",
+        "bytes": 380
+      },
+      {
+        "path": "examples/200_madhava_series.sm",
+        "sha": "41a09f34287f117b920411f2a81b0fc55ef10f44",
+        "bytes": 1426
+      },
+      {
+        "path": "examples/201_madhava_library.sm",
+        "sha": "186909431a4ebb22bbc02eb2248a69d76c1e6d75",
+        "bytes": 353
+      },
+      {
+        "path": "examples/202_brahmagupta_area.sm",
+        "sha": "433e37e549c7170c7fabfba34aea4666e6c0333e",
+        "bytes": 455
+      },
+      {
+        "path": "examples/203_meru_with_kosh.sm",
+        "sha": "32c8e76cbb5eed7f661b7f6021264608037a17f9",
+        "bytes": 506
+      },
+      {
+        "path": "examples/204_b11_block_statement_capacity.sm",
+        "sha": "25d745c4e72ee5ec675f8d993aac5679df3b928a",
+        "bytes": 5045
+      },
+      {
+        "path": "examples/205_madhava_pi_kosh.sm",
+        "sha": "cf44ebae0ef34aeaa9fdbf4c264ca40f1cb27b24",
+        "bytes": 678
+      },
+      {
+        "path": "examples/206_sankhyiki.sm",
+        "sha": "f4c31703960f4a04872fe74b4309eff86d029c6d",
+        "bytes": 708
+      },
+      {
+        "path": "examples/207_sankhyiki_vector.sm",
+        "sha": "5f0f6d600b5efca911cee474966eb02327855678",
+        "bytes": 500
+      },
+      {
+        "path": "examples/208_kalana.sm",
+        "sha": "141da8619d6fb3cfd720ed53587d0f61b9dde76d",
+        "bytes": 1275
+      },
+      {
+        "path": "examples/209_samanvaya.sm",
+        "sha": "0665f29e0162fb995969e489ef8bc9e49fdbc3b4",
+        "bytes": 1525
+      },
+      {
+        "path": "examples/20_pankti_array.sm",
+        "sha": "d7dba3f02e248473214d75f351fc56b8c827db45",
+        "bytes": 243
+      },
+      {
+        "path": "examples/210_r41_cycle.sm",
+        "sha": "22847847a1463ba30b61dfb6a21a56a444bf509f",
+        "bytes": 174
+      },
+      {
+        "path": "examples/211_r41_v1_public.sm",
+        "sha": "4e08493ea616db9d89cce26ebaf3a13995436bbc",
+        "bytes": 148
+      },
+      {
+        "path": "examples/212_r41_v1_private.sm",
+        "sha": "c56ea363872aac923a912f7d2cb0d87d392103be",
+        "bytes": 158
+      },
+      {
+        "path": "examples/213_r41_v1_dupexp.sm",
+        "sha": "a7922c2fe1a5bdbb78824d2839e0a68cc34eb489",
+        "bytes": 152
+      },
+      {
+        "path": "examples/214_r41_v1_noalias.sm",
+        "sha": "8bffa67e100bc9215d67f4dc85660debf978df30",
+        "bytes": 135
+      },
+      {
+        "path": "examples/215_r12_wordfreq.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/215_r12_wordfreq.out",
+        "sha": "dcbf74adba9aa99027caba5031eb2b845a5f6b51",
+        "bytes": 72
+      },
+      {
+        "path": "examples/215_r12_wordfreq.sm",
+        "sha": "e531eaf0a3f192642543c18b65d719dd761a6f40",
+        "bytes": 2446
+      },
+      {
+        "path": "examples/216_r12_expr.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/216_r12_expr.out",
+        "sha": "b9646012ea493f23338153301cb82f95f5fa062c",
+        "bytes": 15
+      },
+      {
+        "path": "examples/216_r12_expr.sm",
+        "sha": "c72c6e58b947a5c4e6039e74c272675b2db18631",
+        "bytes": 2743
+      },
+      {
+        "path": "examples/217_r12_report.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/217_r12_report.out",
+        "sha": "4613223083fbc186a0aa509dc9c4a10229b5afa4",
+        "bytes": 190
+      },
+      {
+        "path": "examples/217_r12_report.sm",
+        "sha": "0b7512a63687bccb29f55f21b3335b5f808e3868",
+        "bytes": 1807
+      },
+      {
+        "path": "examples/218_sanskrit_devanagari.sm",
+        "sha": "a8abb56cc9e201c81806cf8050255305f31f1a17",
+        "bytes": 636
+      },
+      {
+        "path": "examples/219_sanskrit_kosh_aliases.sm",
+        "sha": "424f61034ff78c3764164cad64de9f2aad24ea65",
+        "bytes": 290
+      },
+      {
+        "path": "examples/21_break_continue.sm",
+        "sha": "b1966d5d8782ac898aa6169d825d182d31b485c4",
+        "bytes": 213
+      },
+      {
+        "path": "examples/220_hindi_parse_error.sm",
+        "sha": "ffc304ca094a8c9cc371c60d8e1cce63bee9b2f2",
+        "bytes": 224
+      },
+      {
+        "path": "examples/221_eof_location.sm",
+        "sha": "ee23b768cd068df411517b2029d754ccf20d3db8",
+        "bytes": 421
+      },
+      {
+        "path": "examples/222_old_keyword_name.sm",
+        "sha": "2389868a11489a2ff2497a32b05bfd43189258a4",
+        "bytes": 430
+      },
+      {
+        "path": "examples/223_undefined_name.sm",
+        "sha": "df265d9f5b4c1a2a719adc09f57e0206bdf188d8",
+        "bytes": 193
+      },
+      {
+        "path": "examples/224_unknown_field.sm",
+        "sha": "d3a15d07513e4ed6c00302e6cb7c936184152699",
+        "bytes": 244
+      },
+      {
+        "path": "examples/225_undeclared_array.sm",
+        "sha": "65c59862aa104c0da67aea9c41d9549bec4116ee",
+        "bytes": 199
+      },
+      {
+        "path": "examples/226_long_field_names.sm",
+        "sha": "9cf87a3034e6970f61cf14a99d20140a9424f1bc",
+        "bytes": 338
+      },
+      {
+        "path": "examples/227_assign_undeclared.sm",
+        "sha": "160ad7239917a47dd6f6d513af52bd3e5cb33d1b",
+        "bytes": 257
+      },
+      {
+        "path": "examples/228_block_scope.sm",
+        "sha": "39dca1535be2bed5b7804e31c0ad266fe445b6cf",
+        "bytes": 222
+      },
+      {
+        "path": "examples/229_loop_var_scope.sm",
+        "sha": "ed4ff2eb54b8ccdf3b0b62450018e324367a14fb",
+        "bytes": 216
+      },
+      {
+        "path": "examples/22_precedence.sm",
+        "sha": "ebd7eebc5b8694921a0c858267316961472d3bf6",
+        "bytes": 275
+      },
+      {
+        "path": "examples/230_redeclare_after_block.sm",
+        "sha": "5804f1699d1cf944723e5947d2e1392c3a55692d",
+        "bytes": 378
+      },
+      {
+        "path": "examples/231_duplicate_name.sm",
+        "sha": "9107c361ee1b400a9395a29e81f92e419954e6e9",
+        "bytes": 223
+      },
+      {
+        "path": "examples/232_arity.sm",
+        "sha": "0aee9de1482c3668315831f81493eed7fed64c35",
+        "bytes": 208
+      },
+      {
+        "path": "examples/233_missing_module.sm",
+        "sha": "bf94357dc1dd97a143ee0fdac163de5a5d533b4c",
+        "bytes": 191
+      },
+      {
+        "path": "examples/234_ambiguous_field.sm",
+        "sha": "33255b8a687b9e6c39246e8a2f0959dc9cfac6a7",
+        "bytes": 359
+      },
+      {
+        "path": "examples/235_duplicate_field.sm",
+        "sha": "e516e2f541934c07ba125a3d307a3d327968b4ed",
+        "bytes": 203
+      },
+      {
+        "path": "examples/236_guna_once.sm",
+        "sha": "e0812c104fa1eb611394e6483953a67784b85638",
+        "bytes": 1157
+      },
+      {
+        "path": "examples/237_many_variables.sm",
+        "sha": "f41b0df58ea7cfd307e6544227ae55c289de61dc",
+        "bytes": 2157
+      },
+      {
+        "path": "examples/238_r17_d1_unary_not.sm",
+        "sha": "9fdae944669580ef2dec8e3cf665cb1f329d9075",
+        "bytes": 336
+      },
+      {
+        "path": "examples/239_r17_d2_anya_loop_krama.sm",
+        "sha": "1c5085cb4b7b12c8b18284f94f2a6bf8b3a6acb2",
+        "bytes": 411
+      },
+      {
+        "path": "examples/23_grahan_input.sm",
+        "sha": "a6db5096e3cafac39e02540f5da3bb02f0bee5a6",
+        "bytes": 309
+      },
+      {
+        "path": "examples/240_r17_d3_anya_self_assign.sm",
+        "sha": "02d83daa902f71cf4e5af505bc096afea5f0ef45",
+        "bytes": 251
+      },
+      {
+        "path": "examples/241_r17_d4_precedence.sm",
+        "sha": "b963650fae4dcf038b4c217e51d4d78f238251ef",
+        "bytes": 358
+      },
+      {
+        "path": "examples/242_r17_empty_guna.sm",
+        "sha": "99b2fc68c9b1ccc86222eda56351b9512a578672",
+        "bytes": 235
+      },
+      {
+        "path": "examples/243_r18_sthagita.sm",
+        "sha": "615bf40bae03389d6e502b1fabe7755ff2dd876e",
+        "bytes": 348
+      },
+      {
+        "path": "examples/244_r18_rachana_in_function.sm",
+        "sha": "3bf6492cacca995d5a95520182fd51d4b6e45901",
+        "bytes": 338
+      },
+      {
+        "path": "examples/245_r18_netsock.sm",
+        "sha": "8c9f6bef9f95587a1592cd113df80d0f7bfa790d",
+        "bytes": 705
+      },
+      {
+        "path": "examples/246_r23_comparator_sort.sm",
+        "sha": "f2b5ce06b673f3ee7c57c5fb024061885cec6452",
+        "bytes": 1640
+      },
+      {
+        "path": "examples/247_r23_methods.sm",
+        "sha": "54d3b8f3a1ca3cd2f27ae0525b88a3040718ebf3",
+        "bytes": 1201
+      },
+      {
+        "path": "examples/248_r23_slices.sm",
+        "sha": "91427dd966979219327573371c096baf0277bb82",
+        "bytes": 1322
+      },
+      {
+        "path": "examples/249_r25_phal.sm",
+        "sha": "217242f011161e3473fb519ca1681db99d430632",
+        "bytes": 1545
+      },
+      {
+        "path": "examples/24_guess_game.sm",
+        "sha": "d742fd2091a8c69580772e1184795078a6572a55",
+        "bytes": 503
+      },
+      {
+        "path": "examples/250_r26_dosh_handler.sm",
+        "sha": "a240b5ffa6eab278f9115d745e1d631c4abe5212",
+        "bytes": 1307
+      },
+      {
+        "path": "examples/251_r38_alias_mala_oob.sm",
+        "sha": "5f86eacf9c836feece86268de6c96ec133a28ab1",
+        "bytes": 231
+      },
+      {
+        "path": "examples/252_r38_alias_kosh_oob.sm",
+        "sha": "b22dca6bb4718ebd65ad3e53afb26e89bf0e654b",
+        "bytes": 211
+      },
+      {
+        "path": "examples/253_r38_alias_slice_oob.sm",
+        "sha": "278b8fd855c33ef1b92f4d9b6bd0db30829b74f8",
+        "bytes": 182
+      },
+      {
+        "path": "examples/254_r42_alias_pankti_len.sm",
+        "sha": "d5792c2a9834e680b85fdddcd57d6dd7c5ddc478",
+        "bytes": 293
+      },
+      {
+        "path": "examples/255_r42_alias_kosh_push.sm",
+        "sha": "ce9a796e136ae95952cb7db11622fac87ae93c3b",
+        "bytes": 279
+      },
+      {
+        "path": "examples/256_r44_vartani_sanskrit_names.sm",
+        "sha": "531928104f26f1f1ee56c5c110e4cffef180fd0c",
+        "bytes": 720
+      },
+      {
+        "path": "examples/257_r48_kosh_empty.sm",
+        "sha": "191279b70be9a23a208f8fb5aba27a996b98ab81",
+        "bytes": 627
+      },
+      {
+        "path": "examples/258_r70_loop_indent.sm",
+        "sha": "3e794341451b0e9d629d11762cf63b2b69ca2c55",
+        "bytes": 1126
+      },
+      {
+        "path": "examples/259_r70_indent_ambiguous.sm",
+        "sha": "36f9cf92902abe5afa08b3c3b19c53c2344ee142",
+        "bytes": 245
+      },
+      {
+        "path": "examples/25_patterns.sm",
+        "sha": "9a2a1aa48b81704c705df07e0ca35093dcbe3cd5",
+        "bytes": 298
+      },
+      {
+        "path": "examples/260_r71_indented_bodies.sm",
+        "sha": "153077f0569164a5387c1b0ff28daa68ab61238c",
+        "bytes": 2271
+      },
+      {
+        "path": "examples/261_r71_after_mukhya.sm",
+        "sha": "616c4d7e5c73293a939739e9f6e792b8723586d3",
+        "bytes": 187
+      },
+      {
+        "path": "examples/262_r71_same_line_body.sm",
+        "sha": "41483bb7a486a764e80f9189b839aef4bfbb48db",
+        "bytes": 304
+      },
+      {
+        "path": "examples/263_r72_mandapa.sm",
+        "sha": "888218648c27b63eb0d067296b92e887c18d4224",
+        "bytes": 896
+      },
+      {
+        "path": "examples/264_r73_escape_arith.sm",
+        "sha": "e9444d11236e6561e59fa82c5d109550438c1b3d",
+        "bytes": 246
+      },
+      {
+        "path": "examples/265_r73_escape_mala.sm",
+        "sha": "3292639774fcb5f6c72c1e04e7d7b7d49a2a276b",
+        "bytes": 239
+      },
+      {
+        "path": "examples/266_r73_inside_only.sm",
+        "sha": "3766d7ebb7e798a4ccf54e6ff150e5eb236c48ee",
+        "bytes": 254
+      },
+      {
+        "path": "examples/267_r73_outer_number.sm",
+        "sha": "ade8738521ddb2cd248c2d716a5c791915a4f414",
+        "bytes": 222
+      },
+      {
+        "path": "examples/268_r73_return_value.sm",
+        "sha": "8d918f2a2698a6cf663900bdb3a5284c54ff374c",
+        "bytes": 654
+      },
+      {
+        "path": "examples/269_r73_copy_out.sm",
+        "sha": "f37d921570c6ccda3c2659f00c59534d549cba6f",
+        "bytes": 802
+      },
+      {
+        "path": "examples/26_calculator.sm",
+        "sha": "13628750c52da91138cfdacdf6f4070e3d672be4",
+        "bytes": 844
+      },
+      {
+        "path": "examples/270_r75_nested_store.sm",
+        "sha": "b4a4acf7daa90aed76f0506c8d323fd0895e1f2f",
+        "bytes": 588
+      },
+      {
+        "path": "examples/271_r75_nested_store_data.sm",
+        "sha": "f86d07627e9ec136c0a980021c9d508076ffffea",
+        "bytes": 280
+      },
+      {
+        "path": "examples/272_r75_negative_size.sm",
+        "sha": "90a915648601a67a3c7a5744170042dfb4500322",
+        "bytes": 162
+      },
+      {
+        "path": "examples/273_r77_bytes_not_cells.sm",
+        "sha": "076f029751b8b5f86986bef55d8d50a3d9640779",
+        "bytes": 244
+      },
+      {
+        "path": "examples/274_r77_bytes_loop_stops.sm",
+        "sha": "127be092a931482a9816bd8d686ce24efb65b04c",
+        "bytes": 427
+      },
+      {
+        "path": "examples/275_r77_cells_times_eight.sm",
+        "sha": "908e136e762a8380e86a73251b9b189c0d222f11",
+        "bytes": 230
+      },
+      {
+        "path": "examples/276_r77_mixed_indentation.sm",
+        "sha": "848aa4f4efaaececd6a59fa7dd475f46dd7332ff",
+        "bytes": 464
+      },
+      {
+        "path": "examples/277_r80_divide_by_zero.sm",
+        "sha": "4a1d4c28abc95b6d6a77c537fd6b726cba2a81c8",
+        "bytes": 315
+      },
+      {
+        "path": "examples/278_r80_literal_too_large.sm",
+        "sha": "0dbe0eaeccaeda086c39e931241b088646c54fa1",
+        "bytes": 231
+      },
+      {
+        "path": "examples/279_r80_constant_overflow.sm",
+        "sha": "6ae4a44a8bdc25cd9a2a813a69a2b692a98b31fe",
+        "bytes": 214
+      },
+      {
+        "path": "examples/27_even_odd.sm",
+        "sha": "bf61c1076bf304316cd31bcf4e7b36c29e9bbbab",
+        "bytes": 201
+      },
+      {
+        "path": "examples/280_r80_runtime_wraps.sm",
+        "sha": "82ddb7c2e7484956f536243f3703e65c120b4efd",
+        "bytes": 588
+      },
+      {
+        "path": "examples/281_r80_divide_in_module.sm",
+        "sha": "ab1e6dec75a6b4e0efc1d0877afac8a80114f14f",
+        "bytes": 243
+      },
+      {
+        "path": "examples/282_r81_parikshita_sort.sm",
+        "sha": "0b5a22e721d721a1088081f4559c096b70dd350a",
+        "bytes": 1174
+      },
+      {
+        "path": "examples/283_r81_parikshita_refuses_library.sm",
+        "sha": "f41bcf7a2f3a01caf6ec7b48ad80926feb6b01e3",
+        "bytes": 370
+      },
+      {
+        "path": "examples/284_r81_parikshita_transitive.sm",
+        "sha": "de65642c86eb4f364e712c9977954b35eef27945",
+        "bytes": 324
+      },
+      {
+        "path": "examples/285_r81_parikshita_address_param.sm",
+        "sha": "126fa6ca6b591b639d6578f36ab2f9b6ff8b597d",
+        "bytes": 324
+      },
+      {
+        "path": "examples/286_r82_kosh_in_mandapa.sm",
+        "sha": "ca9f101d0a2b27d81c94d4cd2cd50d2bf5ccf2e3",
+        "bytes": 622
+      },
+      {
+        "path": "examples/287_r82_kosh_after_mandapa.sm",
+        "sha": "9cfa7e4637efdc3cd089811de98a93c3fba00937",
+        "bytes": 553
+      },
+      {
+        "path": "examples/288_r86_kosh_alias_moves.sm",
+        "sha": "dd6b1670fc8950202a143813a08523779ed5fa1c",
+        "bytes": 621
+      },
+      {
+        "path": "examples/289_r87_float_print.sm",
+        "sha": "3ba3a5e0ee8e9501669cc30c1b62629d2ec3d34a",
+        "bytes": 900
+      },
+      {
+        "path": "examples/28_compound.sm",
+        "sha": "8d659ba2b393a35052fcee0e2ddbe5bffd02bead",
+        "bytes": 623
+      },
+      {
+        "path": "examples/290_r87_fraction_into_vitti.sm",
+        "sha": "9b8e22710bf48779eac21643b3a4afdab720a097",
+        "bytes": 230
+      },
+      {
+        "path": "examples/291_r90_nan_compare.sm",
+        "sha": "da5611027197922194a82cf173515daa44593110",
+        "bytes": 850
+      },
+      {
+        "path": "examples/292_r90_likha_after_division.sm",
+        "sha": "b6968404c4f8a66469dd1653b4e0c5d5ccbc44c9",
+        "bytes": 292
+      },
+      {
+        "path": "examples/293_r90_float_divide_by_zero.sm",
+        "sha": "e1c2eceaf07ecbbe73712cf91bfab08531fa5385",
+        "bytes": 317
+      },
+      {
+        "path": "examples/294_r160_nan_comparisons.sm",
+        "sha": "31fba91bb229cddc04360c5daa47922e41da9dc6",
+        "bytes": 532
+      },
+      {
+        "path": "examples/295_r92_computed_fraction_into_vitti.sm",
+        "sha": "db848c21dc0fb515b686a812922a7c7cfff917cf",
+        "bytes": 350
+      },
+      {
+        "path": "examples/296_r93_float_e_notation.sm",
+        "sha": "f77a27bb1857785a560fa53b2f55f51967ae5630",
+        "bytes": 499
+      },
+      {
+        "path": "examples/297_r94_whole_number_operators.sm",
+        "sha": "cafaed8f2dbb3bdd1399662784b454d2b0ace760",
+        "bytes": 591
+      },
+      {
+        "path": "examples/298_r94_dasham_remainder_refused.sm",
+        "sha": "80f06e1a088c47092b4d5f676742cb06d7201996",
+        "bytes": 243
+      },
+      {
+        "path": "examples/299_r94_nonfinite_kosh_mandapa.sm",
+        "sha": "36e68e2179c04d8dc0ce614635be4888a5111613",
+        "bytes": 1449
+      },
+      {
+        "path": "examples/29_nishkriya.sm",
+        "sha": "5dee34463ea251e792649839786c625d49edc004",
+        "bytes": 460
+      },
+      {
+        "path": "examples/300_r96_chakra_decimal_bound.sm",
+        "sha": "ef060f5eb2c293cfe6d7b3fe463e604ad5ec4cf8",
+        "bytes": 237
+      },
+      {
+        "path": "examples/301_r96_chakra_dasham_counter.sm",
+        "sha": "c722c0d00348a03bc5f5c1cd7f71f31d01ec5c51",
+        "bytes": 261
+      },
+      {
+        "path": "examples/302_r96_decimal_loop_with_yavat.sm",
+        "sha": "a2fca5bd09f3d3948fa70311ef14547ee325c2c5",
+        "bytes": 312
+      },
+      {
+        "path": "examples/30_lkhb.sm",
+        "sha": "8c1163ca3f9b5f81ccbdc583cbf70b57ea989d9b",
+        "bytes": 568
+      },
+      {
+        "path": "examples/31_strcat.sm",
+        "sha": "49b763f04815fc81ce0e4a13590b0b8ec398dc1e",
+        "bytes": 262
+      },
+      {
+        "path": "examples/32_bank_interest.sm",
+        "sha": "57452af4ae45b3adcc6da6a1579b56e92162b0bb",
+        "bytes": 599
+      },
+      {
+        "path": "examples/33_unit_conversion.sm",
+        "sha": "308c0719a64fbe1b37498b8c672240ab72937b38",
+        "bytes": 666
+      },
+      {
+        "path": "examples/34_incdec.sm",
+        "sha": "f992072e6a73883c357b704cbe984c6565a64986",
+        "bytes": 550
+      },
+      {
+        "path": "examples/35_comments.sm",
+        "sha": "90323ca462ff5e9f672d3b6be052aa32720904ce",
+        "bytes": 324
+      },
+      {
+        "path": "examples/36_descending.sm",
+        "sha": "2d46b2a24860a0189b7b9e8931ecb9386a1f8f6d",
+        "bytes": 368
+      },
+      {
+        "path": "examples/37_native_gujarati.sm",
+        "sha": "aedd12d69b77f3e66610278bf24a5709f1b75a18",
+        "bytes": 567
+      },
+      {
+        "path": "examples/38_native_hindi.sm",
+        "sha": "0777586439d76c2386e84ceea929df9e00b6581d",
+        "bytes": 443
+      },
+      {
+        "path": "examples/39_native_tamil.sm",
+        "sha": "5b2de9321940b3fd3ea82b306201f3c6e33bcd61",
+        "bytes": 575
+      },
+      {
+        "path": "examples/40_functions_params.sm",
+        "sha": "f34ceb9e5d0eae2ebad7d0c44418521cf076bdce",
+        "bytes": 297
+      },
+      {
+        "path": "examples/41_recursion.sm",
+        "sha": "ca8af36d18d4ba6204e3c808b63a76f2fcbb8092",
+        "bytes": 460
+      },
+      {
+        "path": "examples/42_block_comments.sm",
+        "sha": "0d1c060ee4fcf18539c77f37a2d64153af1bd52f",
+        "bytes": 136
+      },
+      {
+        "path": "examples/43_nested_likha.sm",
+        "sha": "93664f1f56f15e0e12f2d3bad563866e70ad86aa",
+        "bytes": 355
+      },
+      {
+        "path": "examples/44_shabda.sm",
+        "sha": "0fecdbefd90ebb7005beb757bea044e1043c498f",
+        "bytes": 416
+      },
+      {
+        "path": "examples/45_shifts.sm",
+        "sha": "3dcceb2ddf161fac378ebf821a2b2df010c7369e",
+        "bytes": 342
+      },
+      {
+        "path": "examples/46_language_reference.sm",
+        "sha": "fb3da159249bfdce5d69266cbbb54ffdfd06775b",
+        "bytes": 1184
+      },
+      {
+        "path": "examples/59_windows_grahan_runtime.sm",
+        "sha": "d6a8ecf8bdf0f1e9e24810f11c494fa7caadd093",
+        "bytes": 284
+      },
+      {
+        "path": "examples/60_six_func_args.sm",
+        "sha": "6b5e219cc74b5c9cf2f0a0279e53e6991d9e6cf1",
+        "bytes": 267
+      },
+      {
+        "path": "examples/61_stdlib_math.sm",
+        "sha": "429c5815dd1239b1c1483beedba108284f8301fc",
+        "bytes": 503
+      },
+      {
+        "path": "examples/62_stdlib_num.sm",
+        "sha": "b2340240cd3ba9c5a5f0d26d9e3dd74dcaf0a841",
+        "bytes": 422
+      },
+      {
+        "path": "examples/63_stdlib_string.sm",
+        "sha": "e7d0a5677b173a4be54cd9e87f97ff1c9ea98d7c",
+        "bytes": 538
+      },
+      {
+        "path": "examples/64_param_reassign.sm",
+        "sha": "a29a37dea602f593e129625af78c0d0acc3084f0",
+        "bytes": 87
+      },
+      {
+        "path": "examples/65_char_code_index.sm",
+        "sha": "8762f7a3221db91672bc6e744cb441b4f6513f80",
+        "bytes": 43
+      },
+      {
+        "path": "examples/66_module_dedupe.sm",
+        "sha": "967ee7cfe8a63a6fd3930b76c8b737cde9ea9592",
+        "bytes": 52
+      },
+      {
+        "path": "examples/67_array_len_bounds.sm",
+        "sha": "a9bbe9fcfdee3ea234465550a3aa1b8bed25dd4e",
+        "bytes": 110
+      },
+      {
+        "path": "examples/68_array_oob.sm",
+        "sha": "8516c15301d688e2cb99f5b939cff412b6746228",
+        "bytes": 56
+      },
+      {
+        "path": "examples/69_undefined_function.sm",
+        "sha": "74bc96e32c8921623cdaac3ec441e8fbf9f26c4c",
+        "bytes": 42
+      },
+      {
+        "path": "examples/70_module_collision.sm",
+        "sha": "28bf9f92611d5e05ddb9e9f6c56235543cd1902f",
+        "bytes": 80
+      },
+      {
+        "path": "examples/71_array_negative_index.sm",
+        "sha": "147c18adcc314cc35dafcda549aef4a6cd238237",
+        "bytes": 57
+      },
+      {
+        "path": "examples/72_array_variable_index.sm",
+        "sha": "321ae54ab63934cae64c31e6e66a16914075d5e9",
+        "bytes": 98
+      },
+      {
+        "path": "examples/73_array_equal_length.sm",
+        "sha": "25cb69b389ed78273f97656d7cc8db82d5bf9b85",
+        "bytes": 56
+      },
+      {
+        "path": "examples/74_array_highest_valid.sm",
+        "sha": "d5ea7c2c740bc75ff23adfca6c63209d57888756",
+        "bytes": 82
+      },
+      {
+        "path": "examples/75_array_dynamic_length.sm",
+        "sha": "f325a1dd8923d438ee9dc669003f7442833199d3",
+        "bytes": 102
+      },
+      {
+        "path": "examples/76_array_function_scope.sm",
+        "sha": "a24488f7f9c7790e5230b3ce2315f1ee45a2b26a",
+        "bytes": 231
+      },
+      {
+        "path": "examples/77_ternary.sm",
+        "sha": "461bc7a154c2214bb0b9be9fa77be227825eb679",
+        "bytes": 171
+      },
+      {
+        "path": "examples/78_do_while.sm",
+        "sha": "c5ac0c92c9d7680ea3d7386a58dc299de44f2dc9",
+        "bytes": 266
+      },
+      {
+        "path": "examples/79_ayojan_cwd.sm",
+        "sha": "1ab44357d0885f96e5fdf5e5aabaf668109fb0cd",
+        "bytes": 43
+      },
+      {
+        "path": "examples/80_b6_nested_call_loop.sm",
+        "sha": "7e5a0107ace2fce8f5fe3b0bf10fa1e425978bd3",
+        "bytes": 502
+      },
+      {
+        "path": "examples/81_stdlib_num2.sm",
+        "sha": "df33166bcbe95cc2f8bfe31c5fddf2cefd7879f4",
+        "bytes": 403
+      },
+      {
+        "path": "examples/82_b7_stack_spill.sm",
+        "sha": "e5653a9f1eee21a9780406720ade02c32d02c980",
+        "bytes": 600
+      },
+      {
+        "path": "examples/83_stdlib_sort.sm",
+        "sha": "4b55c6116019039059e3bc9668c708ebc5755277",
+        "bytes": 701
+      },
+      {
+        "path": "examples/84_stdlib_string2.sm",
+        "sha": "a2827b8808cd61ea2ab7621898be0eb6cec6d80a",
+        "bytes": 607
+      },
+      {
+        "path": "examples/85_stdlib_shellsort.sm",
+        "sha": "53b0fa2639a4da56976d7a4e6c4539c1c9d0c42a",
+        "bytes": 445
+      },
+      {
+        "path": "examples/86_b8_multi_modules.sm",
+        "sha": "9d6a68bbad61618f8d2f61a1615d2643c325f11c",
+        "bytes": 156
+      },
+      {
+        "path": "examples/87_b8_all_modules.sm",
+        "sha": "b9869fbc91333c023073aed7ec10012f856a1caf",
+        "bytes": 62
+      },
+      {
+        "path": "examples/87_b8_func_params_capacity.sm",
+        "sha": "e992cc0239e1863b2b88113d4e6fb3867a66fbd7",
+        "bytes": 54
+      },
+      {
+        "path": "examples/87_b8_math_sort_string.sm",
+        "sha": "e992cc0239e1863b2b88113d4e6fb3867a66fbd7",
+        "bytes": 54
+      },
+      {
+        "path": "examples/88_pingala_chandas.sm",
+        "sha": "3ce3357393231f13ef438ed3c859c800b15bf53c",
+        "bytes": 469
+      },
+      {
+        "path": "examples/89_b9_short_circuit.sm",
+        "sha": "5d1a6c3bc26ecff0c7254b955c4802fadb68fd50",
+        "bytes": 311
+      },
+      {
+        "path": "examples/90_b9_short_circuit_bounds.sm",
+        "sha": "0d39bb87aac0f1ec514fa8bc677ac7994ea907a2",
+        "bytes": 154
+      },
+      {
+        "path": "examples/91_indian_number_theory.sm",
+        "sha": "04a28a65899dc13f2c8fac601cc3932e306c5a8b",
+        "bytes": 561
+      },
+      {
+        "path": "examples/92_t12_dasham_float.sm",
+        "sha": "20c70ab899f9068ce7d6957171c3a62f9ea14216",
+        "bytes": 507
+      },
+      {
+        "path": "examples/93_t12_float_functions.sm",
+        "sha": "eb317a2a68dea198623e36ab039182af3562c42f",
+        "bytes": 667
+      },
+      {
+        "path": "examples/94_t12_float_functions.sm",
+        "sha": "931d547ae50548517864d430d9e1459acac74e14",
+        "bytes": 844
+      },
+      {
+        "path": "examples/95_t12_madhava_functions.sm",
+        "sha": "a5d86bcdc0578c9100df390fff6b75eb43e2834e",
+        "bytes": 1340
+      },
+      {
+        "path": "examples/96_t18_kosh.sm",
+        "sha": "647ad6bd2f35491d24e6f156464e0149b32ca596",
+        "bytes": 399
+      },
+      {
+        "path": "examples/97_t18_kosh_devanagari.sm",
+        "sha": "d7161bb8507da713e7a393cc7153513b2e5c30f2",
+        "bytes": 224
+      },
+      {
+        "path": "examples/98_t18_kosh_empty.sm",
+        "sha": "abe5c46894226b2d44c8f4cd2ffddd3837ef282e",
+        "bytes": 117
+      },
+      {
+        "path": "examples/99_ast_multimodule_capacity.sm",
+        "sha": "5b4eafa1a850779553fd518790e2e3cf06f175d3",
+        "bytes": 183
+      },
+      {
+        "path": "examples/99_t18_kosh.sm",
+        "sha": "647ad6bd2f35491d24e6f156464e0149b32ca596",
+        "bytes": 399
+      },
+      {
+        "path": "examples/array_demo.sm",
+        "sha": "09ec82fd6ae8b86536d8ad10d8203967df1844bb",
+        "bytes": 553
+      },
+      {
+        "path": "examples/char_ops.sm",
+        "sha": "1ccd49c3b736b16cde53fe8a8eb1d99b95c17484",
+        "bytes": 317
+      },
+      {
+        "path": "examples/fizzbuzz.sm",
+        "sha": "6b2aeecb4e3d14256d38a196e0849dd806cfff3e",
+        "bytes": 525
+      },
+      {
+        "path": "examples/format_demo.sm",
+        "sha": "4d4eed72476a8440977ebab25522942ce65c4c1a",
+        "bytes": 198
+      },
+      {
+        "path": "examples/full_demo.sm",
+        "sha": "3866d2ea6a32a09d81e61dd90ed41dad2646332a",
+        "bytes": 884
+      },
+      {
+        "path": "examples/func_demo.sm",
+        "sha": "0faf4e9d2294f9399227278aa22a77308f4e1911",
+        "bytes": 442
+      },
+      {
+        "path": "examples/hello.sm",
+        "sha": "671217b68782310757de5241f63daf2618dfe8d8",
+        "bytes": 69
+      },
+      {
+        "path": "examples/import_demo.sm",
+        "sha": "1146d377299f9a090783b5f1296dfa1330e80545",
+        "bytes": 395
+      },
+      {
+        "path": "examples/lib/r33_alpha.smlib",
+        "sha": "c1f975bfb84d3777359d53fa88f6dc37c6882cf7",
+        "bytes": 143
+      },
+      {
+        "path": "examples/lib/r33_beta.smlib",
+        "sha": "cdba756b37649902b6733b11ded53332788ca93b",
+        "bytes": 153
+      },
+      {
+        "path": "examples/lib/r33_devanagari.smlib",
+        "sha": "85f4183bd7c0214753eb800ee92e6239b9111915",
+        "bytes": 124
+      },
+      {
+        "path": "examples/lib/r40_a.smlib",
+        "sha": "8906c0d333c2f2063ade0532a8ce899072a26cfa",
+        "bytes": 87
+      },
+      {
+        "path": "examples/lib/r40_b.smlib",
+        "sha": "934a991aca6420a32359de1966cea19b4becb293",
+        "bytes": 66
+      },
+      {
+        "path": "examples/lib/r40_c.smlib",
+        "sha": "9cf189b41c88bb238d5bacd6a47b2ad84fab607c",
+        "bytes": 67
+      },
+      {
+        "path": "examples/lib/r40_d.smlib",
+        "sha": "92a4be83af4e95ac823d8035ba219a7d69bb7d73",
+        "bytes": 87
+      },
+      {
+        "path": "examples/lib/r41_cyc_a.smlib",
+        "sha": "305cfa3be93ec47708764670788a1e9aac4d8a39",
+        "bytes": 129
+      },
+      {
+        "path": "examples/lib/r41_cyc_b.smlib",
+        "sha": "3f4283ec4c2e19155b3def4125846cc97d3063ad",
+        "bytes": 129
+      },
+      {
+        "path": "examples/lib/r41_cycle_a.smlib",
+        "sha": "573e2c7ad3767eba942d38c2d9ec01c1da2de6d8",
+        "bytes": 71
+      },
+      {
+        "path": "examples/lib/r41_cycle_b.smlib",
+        "sha": "e57635f1d948315d020f9982c6451d1f74c2d6a6",
+        "bytes": 71
+      },
+      {
+        "path": "examples/lib/r41_dup.smlib",
+        "sha": "edf80d8d1f2da41639206356255e30b0467c20f4",
+        "bytes": 142
+      },
+      {
+        "path": "examples/lib/r41_vec.smlib",
+        "sha": "a3ced3089e9801fd4c21d8e4d12ee4455edb6253",
+        "bytes": 198
+      },
+      {
+        "path": "examples/lib/r80_ausat.smlib",
+        "sha": "692c5409f7df018b2e7750a0966b635261031131",
+        "bytes": 148
+      },
+      {
+        "path": "examples/mem_safe.sm",
+        "sha": "084eec630b37dc18a33655f2ee4369135303f28c",
+        "bytes": 358
+      },
+      {
+        "path": "examples/multable.sm",
+        "sha": "c40bf16d617749688b7971b4caf1834b4045ee40",
+        "bytes": 246
+      },
+      {
+        "path": "examples/number_game.sm",
+        "sha": "4f868ebde3eeb4ee2196fc183c30f818c8bd1047",
+        "bytes": 403
+      },
+      {
+        "path": "examples/prime.sm",
+        "sha": "e4c5f1ad8ed6a8d7964a37fc1fca5a25abfbbb09",
+        "bytes": 479
+      },
+      {
+        "path": "examples/r67/bengali_native.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r67/bengali_native.out",
+        "sha": "c4aadf53eda80b7bd400857ee5bf9ebda6ff27a3",
+        "bytes": 33
+      },
+      {
+        "path": "examples/r67/bengali_native.sm",
+        "sha": "3cc27518c85d18ae6050a01caa07573b9876ab21",
+        "bytes": 400
+      },
+      {
+        "path": "examples/r67/punjabi_native.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r67/punjabi_native.out",
+        "sha": "c4aadf53eda80b7bd400857ee5bf9ebda6ff27a3",
+        "bytes": 33
+      },
+      {
+        "path": "examples/r67/punjabi_native.sm",
+        "sha": "222cb1cfe870abf89ef3b290c7e6831e34621619",
+        "bytes": 388
+      },
+      {
+        "path": "examples/r68/hindi.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/hindi.out",
+        "sha": "dd12a81d42237da9a23dcdb92d646f34313178b7",
+        "bytes": 19
+      },
+      {
+        "path": "examples/r68/hindi.sm",
+        "sha": "a88dc3e471e75ac18d5723d6858c2801570331dd",
+        "bytes": 238
+      },
+      {
+        "path": "examples/r68/kannada.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/kannada.out",
+        "sha": "dd12a81d42237da9a23dcdb92d646f34313178b7",
+        "bytes": 19
+      },
+      {
+        "path": "examples/r68/kannada.sm",
+        "sha": "b5dd8a0f48469a731821161dc391b9f2ef130354",
+        "bytes": 249
+      },
+      {
+        "path": "examples/r68/marathi.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/marathi.out",
+        "sha": "dd12a81d42237da9a23dcdb92d646f34313178b7",
+        "bytes": 19
+      },
+      {
+        "path": "examples/r68/marathi.sm",
+        "sha": "45900ad5566a598debecd4208b6cef2aaf590349",
+        "bytes": 240
+      },
+      {
+        "path": "examples/r68/odia.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/odia.out",
+        "sha": "dd12a81d42237da9a23dcdb92d646f34313178b7",
+        "bytes": 19
+      },
+      {
+        "path": "examples/r68/odia.sm",
+        "sha": "f41d25c3407a7a97d4664046af7b2b7600065321",
+        "bytes": 246
+      },
+      {
+        "path": "examples/r68/pairs/all_registers.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/pairs/all_registers.out",
+        "sha": "d69c74c8b95c8c0574cec707ab1a39d5926b9398",
+        "bytes": 3
+      },
+      {
+        "path": "examples/r68/pairs/all_registers.sm",
+        "sha": "2f3ed27a5e87be2ff3613eeb82c174114898bf30",
+        "bytes": 478
+      },
+      {
+        "path": "examples/r68/pairs/no_pairs.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/pairs/no_pairs.out",
+        "sha": "d69c74c8b95c8c0574cec707ab1a39d5926b9398",
+        "bytes": 3
+      },
+      {
+        "path": "examples/r68/pairs/no_pairs.sm",
+        "sha": "af26a55d8ee1dee87158da001deb52cc50a46452",
+        "bytes": 252
+      },
+      {
+        "path": "examples/r68/pairs/nonmatching.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/pairs/nonmatching.out",
+        "sha": "d69c74c8b95c8c0574cec707ab1a39d5926b9398",
+        "bytes": 3
+      },
+      {
+        "path": "examples/r68/pairs/nonmatching.sm",
+        "sha": "692ad559b7d7d2474560b311c1d986287b00a16c",
+        "bytes": 90
+      },
+      {
+        "path": "examples/r68/tamil.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/tamil.out",
+        "sha": "dd12a81d42237da9a23dcdb92d646f34313178b7",
+        "bytes": 19
+      },
+      {
+        "path": "examples/r68/tamil.sm",
+        "sha": "d601f639ed4f808e67475b26eb74801fa044e3da",
+        "bytes": 271
+      },
+      {
+        "path": "examples/r68/telugu.exit",
+        "sha": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+        "bytes": 2
+      },
+      {
+        "path": "examples/r68/telugu.out",
+        "sha": "dd12a81d42237da9a23dcdb92d646f34313178b7",
+        "bytes": 19
+      },
+      {
+        "path": "examples/r68/telugu.sm",
+        "sha": "2c03ed2637fceb2686b1a4f786c70e6ce3114034",
+        "bytes": 284
+      },
+      {
+        "path": "examples/r71/associativity.out",
+        "sha": "0f990fce1abe457711cb51038fd52361b9fc7eb8",
+        "bytes": 9
+      },
+      {
+        "path": "examples/r71/associativity.sm",
+        "sha": "090f78cfb3b1c8dab7a48a44c9d9896d169eaeef",
+        "bytes": 103
+      },
+      {
+        "path": "examples/r71/boundary_bad.sm",
+        "sha": "ef4f25a915cd66e52ab803acd63be4bb6166d19f",
+        "bytes": 72
+      },
+      {
+        "path": "examples/r71/boundary_good.out",
+        "sha": "d81cc0710eb6cf9efd5b920a8453e1e07157b6cd",
+        "bytes": 3
+      },
+      {
+        "path": "examples/r71/boundary_good.sm",
+        "sha": "551084fb44b768ff6dd52c4b6ea919f572194a1c",
+        "bytes": 135
+      },
+      {
+        "path": "examples/r71/conversion.out",
+        "sha": "141eb55195c7fb9d0f7e308cb9989fe771b27ef4",
+        "bytes": 14
+      },
+      {
+        "path": "examples/r71/conversion.sm",
+        "sha": "da8dae5da11a382e6191099d4c3324b3242215b6",
+        "bytes": 398
+      },
+      {
+        "path": "examples/r71/evaluation_order.out",
+        "sha": "181b12128cfb9d4d3d484a4ebdc2c260462341ef",
+        "bytes": 14
+      },
+      {
+        "path": "examples/r71/evaluation_order.sm",
+        "sha": "d38d16ba868eb5ec1a6b3de5672de8c9033cbb39",
+        "bytes": 327
+      },
+      {
+        "path": "examples/strength_reduction.sm",
+        "sha": "1eb94dfde4ca83df3a2429ea8f29fd0edb12e2c5",
+        "bytes": 261
+      },
+      {
+        "path": "lang/sanskrit.lang",
+        "sha": "c7820d27aa615169777f6f57fd6641345a945897",
+        "bytes": 3032
+      },
+      {
+        "path": "lib/aadhar.smlib",
+        "sha": "03a29301d6b5528c0d981ad190c0bf880d9b2d7c",
+        "bytes": 3244
+      },
+      {
+        "path": "lib/ank.smlib",
+        "sha": "8041b2a5de08409803cebaaabe1f2f566b8f1779",
+        "bytes": 3978
+      },
+      {
+        "path": "lib/anukram.smlib",
+        "sha": "39b053569dd509b58f4611030c1361fb94ac578b",
+        "bytes": 4629
+      },
+      {
+        "path": "lib/brihat.smlib",
+        "sha": "46a918138c96153781d63ab0c43ea7660afa0bbb",
+        "bytes": 9852
+      },
+      {
+        "path": "lib/chandas.smlib",
+        "sha": "8274cd1a3a0346b5c6c81d87e2fac98aa51e8ddf",
+        "bytes": 3841
+      },
+      {
+        "path": "lib/ganit.smlib",
+        "sha": "6182bad001beb088f396839b7ba1691d4e98dcaa",
+        "bytes": 7903
+      },
+      {
+        "path": "lib/ganita.smlib",
+        "sha": "fc51ac83fda925686ae99e96ad72da94eb777a75",
+        "bytes": 18815
+      },
+      {
+        "path": "lib/gudh.smlib",
+        "sha": "c3c444bd27311247d484d1fa7e9617464cdd91b2",
+        "bytes": 1059
+      },
+      {
+        "path": "lib/kalana.smlib",
+        "sha": "b5155a3323042ecf46ad25fba4f7999207701247",
+        "bytes": 5843
+      },
+      {
+        "path": "lib/khand.smlib",
+        "sha": "04a8e8b689f96aabd99b8371445730a8e3c67e5f",
+        "bytes": 17692
+      },
+      {
+        "path": "lib/madhava.smlib",
+        "sha": "45a597810884d30bb1c443579f97d6ec433a90d3",
+        "bytes": 4972
+      },
+      {
+        "path": "lib/mala.smlib",
+        "sha": "de4e247aeb862e0f8986ce04de47b08aac417fe4",
+        "bytes": 2552
+      },
+      {
+        "path": "lib/nighantu.smlib",
+        "sha": "53b584607efe8065bea4e7f59d18e782607905c0",
+        "bytes": 15559
+      },
+      {
+        "path": "lib/patra.smlib",
+        "sha": "84a164e5e809fb73cc546cce6333abf08195385e",
+        "bytes": 2905
+      },
+      {
+        "path": "lib/phal.smlib",
+        "sha": "9fd9dacffb9129f380ae97bd35a443be97fb5127",
+        "bytes": 6154
+      },
+      {
+        "path": "lib/roop.smlib",
+        "sha": "5e6082a6bcd6ac62ead7116fc2a0517b41ed541d",
+        "bytes": 20098
+      },
+      {
+        "path": "lib/sadhan.smlib",
+        "sha": "199c5e037ea3f1644f2d89d7109277feeb292a2b",
+        "bytes": 2899
+      },
+      {
+        "path": "lib/samanvaya.smlib",
+        "sha": "4b56c998bbd06ee3dd2efcea75592ab687d826a9",
+        "bytes": 5028
+      },
+      {
+        "path": "lib/sangrah.smlib",
+        "sha": "539bc6e4b45efcb70096eae97339c35941649c07",
+        "bytes": 9758
+      },
+      {
+        "path": "lib/sankhyiki.smlib",
+        "sha": "7a4aae32442c6fc036a9c653bceb48d8693b2e6c",
+        "bytes": 6217
+      },
+      {
+        "path": "lib/shreni.smlib",
+        "sha": "b356405884c5f09cf1de8c806c22ce0bcc502b7d",
+        "bytes": 5822
+      },
+      {
+        "path": "lib/suchi.smlib",
+        "sha": "a6834561bf086f163c933bf18afe9e7d310eaec3",
+        "bytes": 15173
+      },
+      {
+        "path": "lib/vakyank.smlib",
+        "sha": "4d4e6c1ef27d27e8dafeeb62479003c8948ab924",
+        "bytes": 11705
+      },
+      {
+        "path": "lib/varna.smlib",
+        "sha": "49e74f1e80d0275588ce7a3c20adb191867d2065",
+        "bytes": 16119
+      }
+    ]
+  },
+  "native_checks": "NOT RUN — no toolchain"
+}
+
