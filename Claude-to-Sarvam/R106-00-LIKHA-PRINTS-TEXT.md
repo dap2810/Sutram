@@ -1,6 +1,6 @@
 # R106-00 — `likha` prints a string's text (v288); three of Muse's traps fixed in other emitters; the region stays for the program's life. One commit.
 
-- **Commit on `main`:** `__SHA__` (the v287 base was `8577d59`).
+- **Commit on `main`:** `9eca44b` (rebased onto Muse's R102 and ChatGPT's R175 files, `4e841bb`; the v287 base was `8577d59`).
 - **Compiler: `Sutram 1.0 (v288) - sampurna sutra`** (was v287). Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=283`, FAIL=0** (279 + four goldens, 312–315). Proofs 229/229 and 86/86; r52 12/0; r81 24/0;
