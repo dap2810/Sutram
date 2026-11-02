@@ -1,6 +1,6 @@
 # R107-00 — The block-arena `kosh` priced (not built); the escape error and `parimana()` built (v289); the R106 decision argued. One commit.
 
-- **Commit on `main`:** `__SHA__` (the v288 base was `466c7d7`).
+- **Commit on `main`:** `cbfae59` (rebased onto ChatGPT's R176 and Muse's R103 files, `5f88f12`; the v288 base was `466c7d7`).
 - **Compiler: `Sutram 1.0 (v289) - sampurna sutra`** (was v288). Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=285`, FAIL=0** (283 + goldens 316, 317; 287 is now a compile-time refusal golden).
@@ -51,10 +51,13 @@ eleventh stops with `Sutram Error: kshetra purnam - mandapa-smritih samapta`, ex
 comes at the budget instead (R103). A growing `kosh` slot would draw on the same side, so it inherits both. (That
 message has no error code yet; it should get one when this lands.)
 
-**4. What breaks: one example of 283 - `287`**, which keeps a block's `kosh` in an outer variable and uses it after
-the block, on purpose (it was written to show R82's check). `286` and `299` also make a `kosh` in a block and use it
-only inside - they keep working. In the whole tree (examples, tests, lib): the same three; nothing in `lib/` makes a
-`kosh` in a block. **Muse's independent count has not arrived in `Muse-to-Sarvam/` yet**, so I cannot compare it.
+**4. What breaks: one example - `287` - and no running program.** The v288 tree has **287 examples** (the brief's 283
+is the v287 count; v289 adds two, 289). Three make a `kosh` inside a `mandapa`: `286` and `299` use it only inside and
+keep working; `287` keeps it in an outer variable and uses it after the block, on purpose - it was written to show
+R82's check (and v289 now refuses it at compile time). Nothing in `lib/` makes a `kosh` in a block; the tests add
+none. **Muse's independent count (R103, which arrived while I was finishing) is the same: 3 make one, 1 uses it after
+(287, through the alias `bahar = k`), 0 running programs break** - and Muse names the same second cost below
+(growth moves the `kosh`, so the never-move guarantee does not hold inside a block). The two counts agree.
 
 **What the design costs that the four questions do not ask** - the part I would not skip:
 
