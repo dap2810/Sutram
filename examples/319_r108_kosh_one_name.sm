@@ -1,0 +1,11 @@
+# R108: a kosh made in a block has one name. It moves to a new slot when it grows, so a second name
+# (vitti a = k) would keep the old slot. E_KOSH_MANDAPA at compile time.
+mukhya() {
+    mandapa {
+        kosh k[1]
+        vitti a = k
+        kosh_push(k, 1)
+        kosh_push(k, 2)
+        likha(a[0])
+    }
+}

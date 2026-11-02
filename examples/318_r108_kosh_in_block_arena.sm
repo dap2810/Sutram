@@ -1,0 +1,25 @@
+# R108: a kosh made inside a mandapa is a slot of the block's arena. It grows by taking a new slot
+# (the old ones stay until the block ends), the block's parimita budget counts it, and the block
+# gives every byte back at its end. parimana() shows the bytes move.
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+
+mukhya() {
+    vitti s = 0
+    likha("before the block ", parimana(), "\n")
+    mandapa {
+        kosh k[1]
+        vitti i = 0
+        yavat (i < 1000) {
+            kosh_push(k, i)
+            i = i + 1
+        }
+        likha("1000 numbers, capacity ", kosh_cap(k), ": ", parimana(), " bytes\n")
+        s = padh(k, 999) + k[0]
+    }
+    likha("after the block ", parimana(), " bytes, s = ", s, "\n")
+    kosh bahar[1]
+    kosh_push(bahar, 7)
+    likha("a kosh outside every block keeps its region: ", parimana(), " bytes\n")
+}

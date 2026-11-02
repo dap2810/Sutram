@@ -7,9 +7,9 @@
   4. a kosh grown to 100,000 with an allocation between pushes: up to v283 it moved at every doubling and
      the abandoned copies cost about one more kosh (1.8 MB against 0.8 MB). R101A (v284): a kosh has a
      region of its own and grows in place, so it costs the same as one that grows alone (within 1.25x)
-  5. a kosh made in a mandapa 100,000 times: NOT reclaimed by the block (about 100 MB). This pins a known,
-     documented gap: if it starts passing below 8 MB, the block reclaims kosh storage and the reference
-     (section 19) must change with it. (R101A: 400 MB, one page per kosh at least.)
+  5. a kosh made in a mandapa 100,000 times: up to v289 NOT reclaimed (about 100 MB; R101A: 400 MB, one
+     page per kosh). R108 (v290): a kosh made in a block is a slot of the block's arena and goes with it -
+     under 1 MB.
   6. R101A: a kosh past its region (9,000,000 pushes; the region holds 8,388,603) moves once and keeps
      every value - the sum is exact.
   7. R103 (v285): 1,000,000 x nirmmita(64) in ONE block with `mandapa parimita 1048576` refuses (E_PARIMITA,
@@ -124,7 +124,7 @@ def main():
             ('10,000,000 in a block: still under 1 MB (flat)', m['with_10m'][0] < 1024),
             ('a kosh of 100,000 grown past an allocation costs what one grown alone does (within 1.25x; R101A)',
              m['kosh_moving'][0] <= 1.25 * max(m['kosh_in_place'][0], 256)),
-            ('a kosh made in a block 100,000 times is NOT reclaimed (the documented gap): over 8 MB', m['kosh_in_block'][0] > 8192),
+            ('a kosh made in a block 100,000 times is reclaimed with the block (R108: a slot of its arena): under 1 MB', m['kosh_in_block'][0] < 1024),
             ('a kosh past its region keeps every value (9,000,000 pushes; R101A)',
              past == f's {sum(range(9000000))} len 9000000'),
             ('a 1 MB budget refuses 1,000,000 x 64 bytes (E_PARIMITA, exit 1) with a peak under 2 MB (R103)',

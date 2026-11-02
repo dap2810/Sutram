@@ -1,0 +1,4 @@
+before the block 0
+1000 numbers, capacity 1024: 16896 bytes
+after the block 0 bytes, s = 999
+a kosh outside every block keeps its region: 48 bytes
