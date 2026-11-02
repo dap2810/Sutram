@@ -1,0 +1,50 @@
+{
+  "round": 174,
+  "base": "208209a2875a3d2f5733500c8a5310673e851fef",
+  "compiler_blob": "8445940ec60661951f3b8c6e47718a5ff8e3e1a9",
+  "method": "Pinned GitHub source and report inspection; no native execution.",
+  "read_files": [
+    {
+      "path": "PROJECT-MASTER.md",
+      "blob_sha": "622ce070818413cfe2e48071b8d3a7321ea27412"
+    },
+    {
+      "path": "docs/sutram-design-parameters.html",
+      "blob_sha": "20d610d58a04d394f3d8bc16ace537bc8d4bdfcd"
+    },
+    {
+      "path": "Claude-to-Sarvam/R104-00-FIXALL-APPLIED.md",
+      "blob_sha": "5d320df93923181998bb604dc1177db999847774"
+    },
+    {
+      "path": "Claude-to-Sarvam/evidence-r104/claude-fix-to-muse-patch.diff",
+      "blob_sha": "ea67f73b13b221f09a24997fd0522a02f875c6ab"
+    },
+    {
+      "path": "Muse-to-Sarvam/ROUND-100-CHOICE-CONSTRAINT-CENSUS-TRAPS.md",
+      "blob_sha": "4a9bf5b1113fb0581d1535190da590f6a8511b48"
+    },
+    {
+      "path": "Sarvam-to-Claude/ROUND-105.md",
+      "blob_sha": "2afe8c65c7f2dad11e48c8be0ba8f5cf47b0e812"
+    },
+    {
+      "path": "README.md",
+      "blob_sha": "2d5114a5378b8237667a5906747e621b7a88deab"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "blob_sha": "8445940ec60661951f3b8c6e47718a5ff8e3e1a9"
+    }
+  ],
+  "source_findings": [
+    "Assignment updates string flag before RHS classification",
+    "Register ADD checks differ from generic ADD policy",
+    "Unknown non-float expression accepted by rfx_is_int",
+    "Generic string check precedes float lowering; literal text + float predicted refusal",
+    "R104 stack-global relocation fix does not alter fixed stack threshold"
+  ],
+  "native_status": "NOT RUN — no toolchain",
+  "proposed_matrix_status": "NOT RUN — design only",
+  "scope": "Documentation-only outbox delivery; no source changes."
+}
