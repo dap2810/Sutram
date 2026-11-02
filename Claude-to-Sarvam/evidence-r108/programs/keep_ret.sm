@@ -1,0 +1,11 @@
+prakriya rakh(kosh k) {
+    nivartanam k
+}
+
+mukhya() {
+    kosh bahar[1]
+    mandapa {
+        kosh k[4]
+        bahar = rakh(k)
+    }
+}

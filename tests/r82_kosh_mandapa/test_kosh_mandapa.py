@@ -3,7 +3,9 @@
 
 Each case is a program and what it must do: print exactly OUT and exit 0, or stop with E_KOSH_MANDAPA
 (exit 1) after printing what came before;
-or (R107) be refused when compiled. Last line: `r82 kosh-mandapa: N checks, M failed`.
+or (R107, R108) be refused when compiled. From v290 every case that used to reach the runtime
+check is refused when compiled: a prakriya that returns or stores a kosh parameter keeps it, and a block
+kosh may not be given to one. The runtime check stays, as a second line. Last line: `r82 kosh-mandapa: N checks, M failed`.
 
 usage: python3 -B tests/r82_kosh_mandapa/test_kosh_mandapa.py [--compiler PATH]
 """
@@ -24,21 +26,21 @@ CASES = [
     ('kosh dasham in a block',
      'prakriya padh(kosh dasham k, i) {\n    nivartanam k[i]\n}\nmukhya() {\n    dasham s = 0.0\n    mandapa {\n        kosh dasham k[1]\n        kosh_push(k, 1.5)\n        kosh_push(k, 2.25)\n        s = padh(k, 0) + padh(k, 1)\n    }\n    likha(s)\n}\n',
      '3.750000\n', 0),
-    ('read after its block ended: refused, naming its block (R107: the kosh leaves through a prakriya, which the compiler cannot see)',
+    ('read after its block ended: refused, naming its block (R108: through a prakriya that returns it - refused at compile time, the prakriya keeps it)',
      'prakriya rakh(kosh k) {\n    nivartanam k\n}\nprakriya padh(kosh k, i) {\n    nivartanam k[i]\n}\nmukhya() {\n    kosh bahar[1]\n    mandapa {\n        kosh k[4]\n        kosh_push(k, 11)\n        kosh_push(k, 22)\n        likha(padh(k, 1))\n        bahar = rakh(k)\n    }\n    likha(padh(bahar, 0))\n}\n',
-     'pankti 9 mandape', 1),
-    ('left by krama out of a loop, read after: refused (R107: the kosh leaves through a prakriya, which the compiler cannot see)',
+     'rakshati', 2),
+    ('left by krama out of a loop, read after: refused (R108: through a prakriya that returns it - refused at compile time, the prakriya keeps it)',
      'prakriya rakh(kosh k) {\n    nivartanam k\n}\nprakriya padh(kosh k, i) {\n    nivartanam k[i]\n}\nmukhya() {\n    kosh bahar[1]\n    vitti i = 0\n    yavat (i < 3) {\n        mandapa {\n            kosh k[2]\n            kosh_push(k, i)\n            bahar = rakh(k)\n            krama\n        }\n    }\n    likha(padh(bahar, 0))\n}\n',
-     'pankti 11 mandape', 1),
-    ('an inner block ended, the outer still running: refused (R107: the kosh leaves through a prakriya, which the compiler cannot see)',
+     'rakshati', 2),
+    ('an inner block ended, the outer still running: refused (R108: through a prakriya that returns it - refused at compile time, the prakriya keeps it)',
      'prakriya rakh(kosh k) {\n    nivartanam k\n}\nprakriya padh(kosh k, i) {\n    nivartanam k[i]\n}\nmukhya() {\n    mandapa {\n        kosh bahar[1]\n        mandapa {\n            kosh k[2]\n            kosh_push(k, 4)\n            bahar = rakh(k)\n            likha(padh(bahar, 0))\n        }\n        likha(padh(bahar, 0))\n    }\n}\n',
-     'pankti 10 mandape', 1),
-    ('the same block in the next loop iteration (same slot, new generation): refused (R107: the kosh leaves through a prakriya, which the compiler cannot see)',
+     'rakshati', 2),
+    ('the same block in the next loop iteration (same slot, new generation): refused (R108: through a prakriya that returns it - refused at compile time, the prakriya keeps it)',
      'prakriya rakh(kosh k) {\n    nivartanam k\n}\nprakriya padh(kosh k, i) {\n    nivartanam k[i]\n}\nmukhya() {\n    kosh pichhla[1]\n    mandapa {\n        kosh z[1]\n        kosh_push(z, 9)\n        pichhla = rakh(z)\n    }\n    vitti i = 0\n    yavat (i < 3) {\n        mandapa {\n            kosh k[2]\n            kosh_push(k, i * 10)\n            likha(padh(k, 0))\n            yadi (i > 0) {\n                likha(padh(pichhla, 0))\n            }\n            pichhla = rakh(k)\n        }\n        i = i + 1\n    }\n}\n',
-     'pankti 16 mandape', 1),
-    ('a sibling block (another slot): refused (R107: the kosh leaves through a prakriya, which the compiler cannot see)',
+     'rakshati', 2),
+    ('a sibling block (another slot): refused (R108: through a prakriya that returns it - refused at compile time, the prakriya keeps it)',
      'prakriya rakh(kosh k) {\n    nivartanam k\n}\nprakriya padh(kosh k, i) {\n    nivartanam k[i]\n}\nmukhya() {\n    kosh pichhla[1]\n    mandapa {\n        kosh z[1]\n        kosh_push(z, 9)\n        pichhla = rakh(z)\n    }\n    mandapa {\n        kosh y[1]\n        kosh_push(y, 8)\n        likha(padh(y, 0))\n        likha(padh(pichhla, 0))\n    }\n}\n',
-     'pankti 9 mandape', 1),
+     'rakshati', 2),
     # R107 (v289): the forms the compiler sees are refused when compiled - E_KOSH_MANDAPA, nothing is built
     ('R107: stored in a variable declared outside the block: refused at compile time',
      'mukhya() {\n    vitti bahar = 0\n    mandapa {\n        kosh k[4]\n        bahar = k\n    }\n}\n',

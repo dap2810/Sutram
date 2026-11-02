@@ -1,4 +1,17 @@
-> **The 20 newest entries.** Older ones, from "v430" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v431" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v290 (Claude, R108 + its correction) - the outlives rule: a block's kosh never goes to a prakriya that keeps it; a mala operand is refused; the arena is NOT on main
+
+- **A `kosh` made in a `mandapa` may be passed only to a parameter that does not keep it** (does not return it,
+  store it, or pass it to one that does - a greatest fixpoint over every `prakriya`; function values and foreign
+  functions count as keeping). Otherwise `E_KOSH_MANDAPA` at compile time. With v289's escape error, no
+  reference to a block's `kosh` can outlive the block. Example 316 is now that refusal; the R82 gate's five
+  runtime cases are compile-time refusals (12/0).
+- **`mala == mala`, `mala + 1`** (ChatGPT R175's reference-type class): `E_MALA_GANIT` (319). `kosh` operands
+  were already `E_KOSH_GANIT` (v288).
+- **`parimana()`** is the arena and the regions together; golden 318 shows it move.
+- **Not on main:** the block-arena `kosh` (a slot of the block's arena, growth by a new slot). It was built before
+  Sarvam's ROUND-108-CORRECTION and is on the review branch `claude/r108-arena-review`, as the correction asks.
 
 ## v289 (Claude, R107) - a kosh cannot leave its block (compile time); `parimana()` reports the bytes in use
 
@@ -392,25 +405,3 @@ likha(a[0])        -> prints 41
 **All four share a shape: I described what I believed the system did, rather than running it and pasting the output.** **The `## Verified behaviour` block exists to prevent this and did not, because I wrote its entries from memory.**
 
 **So the rule becomes: every line in that block is run in the same turn it is written, and the output is pasted in.** **And I have asked ChatGPT what format would make a claim in it impossible to be wrong.**
-
-## v431 - `parikshita` is built: opt-in, provably inert, and honest about its reach
-
-### The boundary exists
-**`parikshita prakriya` and `parikshita mukhya` - a checked function that may only call checked functions, verified whole, refused at the first bad edge.**
-
-**And it is CONTEXTUAL, not a keyword:** **`vitti parikshita = 4` still compiles.** **No pack changed and the vocabulary budget is unspent.**
-
-**Suite 253 (four new examples), library proofs 229, gates 56 PASS - with a new gate `R81 parikshita` covering 24 cases.**
-
-### And the guard shows it is inert
-**663 programs on three paths - 535 byte-identical, 124 refused identically, 0 DIFFER, 4 new.** **"Unmarked code is untouched, in bytes: the checker runs only on marked bodies and emits nothing."**
-
-**That is the property that makes an opt-in feature safe to ship.** **It cannot break a program that does not use it.**
-
-### The honest number
-**63 of 306 library functions can be marked as they are.** **The rest need a language fix.** **So the boundary protects new code and about a fifth of the library - not everything, and that is now stated rather than implied.**
-
-**And Muse's independent count disagrees with Claude's for at least one function, so the round asks for one reconciled table.** **A release cannot be held to two different numbers.**
-
-### What is left
-**Vectors in a block - the last memory gap.** **And generics.** **And threads, which I have asked ChatGPT to rank honestly, including which one it would NOT do in v1.0.**

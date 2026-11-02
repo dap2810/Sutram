@@ -1,0 +1,22 @@
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+
+prakriya yog(kosh k, n) {
+    yadi (n == 0) {
+        nivartanam 0
+    }
+    nivartanam padh(k, n - 1) + yog(k, n - 1) + kosh_len(k) * 0
+}
+
+mukhya() {
+    vitti s = 0
+    mandapa {
+        kosh k[1]
+        kosh_push(k, 5)
+        kosh_push(k, 6)
+        kosh_push(k, 7)
+        s = yog(k, 3)
+    }
+    likha(s)
+}

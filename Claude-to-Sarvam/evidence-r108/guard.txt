@@ -1,0 +1,29 @@
+# The guard, origin/main (v289, 3d8e6c4) -> v290, tools/guard_pair.py, Linux cloud (2 cores). One run, final compiler.
+
+## elf
+DIFFER       examples/316_r107_kosh_kept_by_a_prakriya.sm (source changed) old rc=0 new rc=1
+NEW          examples/318_r108_parimana_moves.sm
+NEW          examples/319_r108_mala_operand.sm
+source files whose text changed: 1
+697 programs: 557 byte-identical, 137 refused identically, 1 DIFFER, 2 new
+
+## pe
+DIFFER       examples/316_r107_kosh_kept_by_a_prakriya.sm (source changed) old rc=0 new rc=1
+NEW          examples/318_r108_parimana_moves.sm
+NEW          examples/319_r108_mala_operand.sm
+source files whose text changed: 1
+697 programs: 557 byte-identical, 137 refused identically, 1 DIFFER, 2 new
+
+## wine
+DIFFER       examples/316_r107_kosh_kept_by_a_prakriya.sm (source changed) old rc=0 new rc=1
+NEW          examples/318_r108_parimana_moves.sm
+NEW          examples/319_r108_mala_operand.sm
+source files whose text changed: 1
+697 programs: 557 byte-identical, 137 refused identically, 1 DIFFER, 2 new
+
+## Wine outputs against the Linux compiler's PE outputs, byte for byte: 1115 identical, 0 differ, 0 missing
+
+## diffrun (every ELF DIFFER old and new):
+CHANGED examples/316_r107_kosh_kept_by_a_prakriya.sm: rc 1 -> None
+elf: 1 DIFFER run old and new: 0 same output and exit code, 1 changed
+("rc 1 -> None": v289 ran 316 to its runtime E_KOSH_MANDAPA, exit 1; v290 writes no binary - the compile-time refusal. The intended change, an error example.)

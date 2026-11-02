@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v289) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v290) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -555,6 +555,11 @@ r54_builtin_arity_table:
     r107_p3 db 0x48,0x89,0xC1, 0x48,0x2B,0x0C,0x24, 0x48,0x2D,0x00,0x00,0x00,0x40, 0x48,0x8B,0x54,0x24,0x08
     db 0x48,0x29,0xC2, 0x48,0x8D,0x04,0x11, 0x48,0x83,0xC4,0x10, 0xEB,0x02, 0x31,0xC0
     r107_p3_len equ $ - r107_p3
+    r108_msg_keep db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
+    db "Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
+    rfx_bc_hdr_mala db ": Sutram Error [E_MALA_GANIT]: ", 0
+    rfx_bc_txt_mala db "mala-upari ganitam tulana va na sambhavati - mala sankhya na", 10, 0
+    rfx_bc_hint_mala db "Sanket: a[i] tasyah mulyam - tani tulyantam", 10, 0
     rfx2_msg_cap db "Sutram Error: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
     rfx2_msg_nomem db "Sutram Error [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
     rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
@@ -1332,7 +1337,18 @@ section .bss
     rfx3_ret    resb FUNC_DEFS_CAP          ; R105: what each prakriya returns (bits)
     rfx3_par    resb FUNC_DEFS_CAP * 16     ; R105: what each prakriya's parameters receive
     rfx3_changed resq 1
+    r108_esc    resb FUNC_DEFS_CAP * 16     ; R108: 1 when a prakriya's parameter may keep what it is given
+    r108_esc_done resq 1
+    r108_stack  resq 65536
+    r108_seen   resb AST_HEAP_CAP / 64
+    r108_cnt_all resq 1
+    r108_cnt_ok resq 1
+    r108_pname  resq 1
     r107_used   resq 1                      ; R107: parimana() appears in the program
+    r108_bk_name resq 256                   ; R108: kosh made in an open mandapa of this function:
+    r108_bk_gd  resq 256                    ;   name, the r82 depth of its block,
+    r108_bk_node resq 256                   ;   a BN_NIRM_SCRATCH node carrying its depth and budgets
+    r108_bk_n   resq 1
     r107_kosh_hit resq 1                    ; R107: the last tainted name met was a kosh made in a block
     r107_knames resq 256                    ; R107: those kosh names
     r107_kn     resq 1
@@ -8966,6 +8982,18 @@ expr_is_str:
     movzx eax, al
     ret
 
+rfx_is_mala_operand:
+    ; R108: rdi = AST node -> rax = 1 when it is a bare mala variable (not a[i]).
+    test rdi, rdi
+    jz .no
+    cmp qword [rdi], AST_VAR
+    jne .no
+    mov rdi, [rdi+8]
+    jmp is_array_var
+.no:
+    xor eax, eax
+    ret
+
 rfx_is_kosh_operand:
     ; R106: rdi = AST node -> rax = 1 when it is a bare kosh variable (not k[i], not kosh_len(k)).
     test rdi, rdi
@@ -9208,6 +9236,14 @@ rfx_check_str_binop:
     call rfx_is_kosh_operand
     test rax, rax
     jnz .rfx_csb_kosh
+    mov rdi, [rbx+16]              ; R108: a mala likewise (ChatGPT R175: mala == mala compared
+    call rfx_is_mala_operand       ; two addresses)
+    test rax, rax
+    jnz .rfx_csb_mala
+    mov rdi, [rbx+24]
+    call rfx_is_mala_operand
+    test rax, rax
+    jnz .rfx_csb_mala
     mov rax, [rbx+8]
     cmp rax, OP_LAND               ; R106: && / || on a string: a string is no condition
     je .rfx_csb_truth
@@ -9251,6 +9287,12 @@ rfx_check_str_binop:
     lea rsi, [rel rfx_bc_hdr_kosh]
     lea rdx, [rel rfx_bc_txt_kosh]
     lea rcx, [rel rfx_bc_hint_kosh]
+    jmp r80_compile_error
+.rfx_csb_mala:
+    mov rdi, [rbx+32]
+    lea rsi, [rel rfx_bc_hdr_mala]
+    lea rdx, [rel rfx_bc_txt_mala]
+    lea rcx, [rel rfx_bc_hint_mala]
     jmp r80_compile_error
 .rfx_csb_truth:
     mov rdi, [rbx+16]
@@ -10276,6 +10318,17 @@ r82_emit_zero:
 
 ; r82_block_leave: the block's end.
 r82_block_leave:
+    mov rcx, [rel r82_gdepth]      ; R108: the kosh it made are gone with it
+.r108_pop:
+    mov rdx, [rel r108_bk_n]
+    test rdx, rdx
+    jz .r108_popped
+    lea rax, [rel r108_bk_gd]
+    cmp [rax + rdx*8 - 8], rcx
+    jb .r108_popped
+    dec qword [rel r108_bk_n]
+    jmp .r108_pop
+.r108_popped:
     mov rcx, [rel r82_gdepth]
     call r82_emit_zero
     mov rcx, [rel r82_gdepth]
@@ -12083,6 +12136,15 @@ r73_taint:
 r107_note_kosh:
     cmp qword [rel r72_mdepth], 0
     je .r
+    push rcx                       ; R108: the declaration (rax) remembers its block's depth and
+    mov rcx, [rel r72_mdepth]      ; the budgets in force there, for its slot in the block's arena
+    mov [rax+40], rcx
+    push rdx
+    lea rdx, [rel r103_chain]
+    mov rdx, [rdx + rcx*8]
+    mov [rax+48], rdx
+    pop rdx
+    pop rcx
     push rax
     push rcx
     push rdx
@@ -12104,6 +12166,355 @@ r107_note_kosh:
     pop rcx
     pop rax
 .r:
+    ret
+
+; ---------------------------------------------------------------- R108: the block's arena
+; r108_kosh_alloc(rbx = the kosh's AST_DECL): generated code, rax = bytes -> rax = the block.
+; R108 (main, after ROUND-108-CORRECTION): the storage is unchanged - R101A's region (or nirmmita).
+; A kosh declared in an open mandapa is only remembered, so that r108_check_call can refuse to give it
+; to a prakriya that keeps it (the outlives rule). No arena slot: reclaiming waits for the descriptor.
+r108_kosh_alloc:
+    cmp qword [rbx+40], 0
+    je r101a_emit_kosh_alloc
+    cmp qword [rel r82_gdepth], 0
+    je r101a_emit_kosh_alloc
+    mov rcx, [rel r108_bk_n]
+    cmp rcx, 256
+    jae r101a_emit_kosh_alloc
+    lea rdx, [rel r108_bk_node]
+    mov qword [rdx+rcx*8], 1       ; non-zero: "a kosh of an open block"
+    lea rdx, [rel r108_bk_name]
+    mov rsi, [rbx+8]
+    mov [rdx+rcx*8], rsi
+    lea rdx, [rel r108_bk_gd]
+    mov rsi, [rel r82_gdepth]
+    mov [rdx+rcx*8], rsi
+    inc qword [rel r108_bk_n]
+    jmp r101a_emit_kosh_alloc
+
+; r108_bk_of(rdi = AST node) -> rax = the BN_NIRM_SCRATCH node of the open-block kosh it names, or 0
+r108_bk_of:
+    xor eax, eax
+    test rdi, rdi
+    jz .r
+    cmp qword [rdi], AST_VAR
+    jne .r
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rcx, [rel r108_bk_n]
+.l:
+    test rcx, rcx
+    jz .no
+    dec rcx
+    lea rax, [rel r108_bk_name]
+    mov rsi, [rax+rcx*8]
+    mov rdi, [rsp]
+    mov rdi, [rdi+8]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jnz .l
+    lea rax, [rel r108_bk_node]
+    mov rax, [rax+rcx*8]
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+.r:
+    ret
+
+; r108_check_call(rdi = AST_FUNCALL, at code generation): an argument that is a kosh of an open block
+; of this function may go only to a parameter that does not keep it (r108_esc); to an unknown callee
+; (a function value, a foreign function) not at all.
+r108_check_call:
+    cmp qword [rel r108_bk_n], 0
+    je .r
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    xor r12d, r12d
+.a:
+    cmp r12, [rbx+16]
+    jae .out
+    cmp r12, 6
+    jae .out
+    mov rdi, [rbx+24+r12*8]
+    call r108_bk_of
+    test rax, rax
+    jz .next
+    call r108_compute_esc
+    mov rdi, [rbx+8]
+    call rfx3_fn_index
+    test rax, rax
+    js .bad
+    shl rax, 4
+    lea rcx, [rel r108_esc]
+    add rcx, rax
+    cmp byte [rcx+r12], 0
+    jne .bad
+.next:
+    inc r12
+    jmp .a
+.bad:
+    lea rdi, [rel r108_msg_keep]
+    jmp capacity_fail
+.out:
+    pop r13
+    pop r12
+    pop rbx
+.r:
+    ret
+
+; r108_compute_esc: once - for every prakriya and parameter (first six), whether it may keep what it
+; is given: a greatest fixpoint, every parameter starting as "does not keep" and marked when some use
+; of it is not a read (k[i]), a kosh builtin's own operand, or an argument to a parameter that does
+; not keep. Recursion is allowed for.
+r108_compute_esc:
+    cmp qword [rel r108_esc_done], 0
+    jne .r
+    mov qword [rel r108_esc_done], 1
+    push rbx
+    push r12
+    push r13
+    push r14
+    lea rdi, [rel r108_esc]
+    xor eax, eax
+    mov ecx, FUNC_DEFS_CAP * 16
+    rep stosb
+    mov r14d, 32                   ; rounds
+.round:
+    xor r13d, r13d                 ; changed
+    xor r12d, r12d
+.fn:
+    cmp r12, [rel func_def_cnt]
+    jae .rend
+    lea rax, [rel func_defs]
+    mov rbx, [rax+r12*8]
+    xor ecx, ecx
+.par:
+    cmp rcx, [rbx+16]
+    jae .fnext
+    cmp ecx, 6
+    jae .fnext
+    mov rax, r12
+    shl rax, 4
+    lea rdx, [rel r108_esc]
+    add rdx, rax
+    cmp byte [rdx+rcx], 0
+    jne .pnext
+    push rcx
+    push rdx
+    mov rdi, rbx
+    call rfx3_params_of            ; rsi = names
+    mov rcx, [rsp+8]
+    mov rdi, [rsi+rcx*8]
+    mov rsi, [rbx+24]
+    call r108_param_kept
+    pop rdx
+    pop rcx
+    test rax, rax
+    jz .pnext
+    mov byte [rdx+rcx], 1
+    mov r13d, 1
+.pnext:
+    inc rcx
+    jmp .par
+.fnext:
+    inc r12
+    jmp .fn
+.rend:
+    test r13d, r13d
+    jz .done
+    dec r14d
+    jnz .round
+.done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+.r:
+    ret
+
+; r108_param_kept(rdi = a parameter's name, rsi = the body) -> rax = 1 if some use of the name is
+; neither a kosh builtin's operand nor an argument to a parameter that does not keep it.
+r108_param_kept:
+    push rbx
+    push r12
+    push r15
+    mov [rel r108_pname], rdi
+    mov qword [rel r108_cnt_all], 0
+    mov qword [rel r108_cnt_ok], 0
+    push rsi
+    lea rdi, [rel r108_seen]
+    xor eax, eax
+    mov ecx, AST_HEAP_CAP / 64
+    rep stosb
+    pop rsi
+    xor r15d, r15d
+    lea rax, [rel r108_stack]
+    mov [rax], rsi
+    inc r15
+.walk:
+    test r15, r15
+    jz .end
+    dec r15
+    lea rax, [rel r108_stack]
+    mov rbx, [rax+r15*8]
+    lea rax, [rel ast_heap]
+    cmp rbx, rax
+    jb .walk
+    cmp rbx, [rel ast_ptr]
+    jae .walk
+    mov rcx, rbx
+    sub rcx, rax
+    test ecx, 7
+    jnz .walk
+    shr rcx, 3
+    mov rdx, rcx
+    shr rdx, 3
+    and ecx, 7
+    lea rax, [rel r108_seen]
+    movzx r8d, byte [rax+rdx]
+    bt r8d, ecx
+    jc .walk
+    bts r8d, ecx
+    mov [rax+rdx], r8b
+    mov rax, [rbx]
+    test rax, rax
+    jz .walk
+    cmp rax, 128
+    ja .walk
+    cmp rax, AST_NUM
+    je .walk
+    cmp rax, AST_FLOAT
+    je .walk
+    cmp rax, AST_STR
+    je .walk
+    cmp rax, AST_FUNCDEF
+    je .walk
+    cmp rax, AST_VAR
+    je .var
+    cmp rax, AST_BLOCK
+    je .blk
+    cmp rax, AST_CALL
+    je .bcall
+    cmp rax, AST_FUNCALL
+    je .fcall
+.gen:
+    mov r9d, 8
+.gl:
+    cmp r9d, 72
+    jae .walk
+    mov rdi, [rbx+r9]
+    call .push
+    add r9d, 8
+    jmp .gl
+.blk:
+    mov r10, [rbx+8]
+    cmp r10, BLOCK_STMT_CAP
+    ja .walk
+    xor r9, r9
+.bl:
+    cmp r9, r10
+    jae .walk
+    mov rdi, [rbx+16+r9*8]
+    call .push
+    inc r9
+    jmp .bl
+.var:
+    mov rdi, [rbx+8]
+    mov rsi, [rel r108_pname]
+    call strcmp
+    test rax, rax
+    jnz .walk
+    inc qword [rel r108_cnt_all]
+    jmp .walk
+.bcall:                            ; a kosh builtin's own operand is a read
+    mov rax, [rbx+8]
+    cmp rax, BN_KOSHPUSH
+    jb .gen
+    cmp rax, BN_KOSHDEQUEUE
+    ja .gen
+    cmp rax, BN_SETCHAR
+    je .gen
+    mov rdi, [rbx+24]
+    call .is_p
+    test rax, rax
+    jz .gen
+    inc qword [rel r108_cnt_ok]
+    jmp .gen
+.fcall:                            ; an argument to a parameter that does not keep it
+    mov rdi, [rbx+8]
+    call rfx3_fn_index
+    mov r12, rax
+    xor r9d, r9d
+.fa:
+    cmp r9, [rbx+16]
+    jae .gen
+    cmp r9d, 6
+    jae .gen
+    test r12, r12
+    js .fan
+    mov rdi, [rbx+24+r9*8]
+    call .is_p
+    test rax, rax
+    jz .fan
+    mov rax, r12
+    shl rax, 4
+    lea rdx, [rel r108_esc]
+    add rdx, rax
+    cmp byte [rdx+r9], 0
+    jne .fan
+    inc qword [rel r108_cnt_ok]
+.fan:
+    inc r9
+    jmp .fa
+.end:
+    mov rax, [rel r108_cnt_all]
+    cmp rax, [rel r108_cnt_ok]
+    seta al
+    movzx eax, al
+    pop r15
+    pop r12
+    pop rbx
+    ret
+.push:                             ; rdi = node or 0 (clobbers rax)
+    test rdi, rdi
+    jz .pr
+    cmp r15, 65536
+    jae .pr
+    lea rax, [rel r108_stack]
+    mov [rax+r15*8], rdi
+    inc r15
+.pr:
+    ret
+.is_p:                             ; rdi = node -> rax = 1 if AST_VAR naming the parameter
+    xor eax, eax
+    test rdi, rdi
+    jz .ir
+    cmp qword [rdi], AST_VAR
+    jne .ir
+    push rcx
+    push rdx
+    push rsi
+    mov rdi, [rdi+8]
+    mov rsi, [rel r108_pname]
+    call strcmp
+    test rax, rax
+    sete al
+    movzx eax, al
+    pop rsi
+    pop rdx
+    pop rcx
+.ir:
     ret
 
 ; r107_is_kosh_name(rdi = name) -> rax = 1 if a kosh of that name was made in a block. Preserves rdi.
@@ -18271,7 +18682,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0x03
     call emit_byte
-    call r101a_emit_kosh_alloc   ; R101A (Option A): a region of its own on Linux ELF
+    call r108_kosh_alloc         ; R108: in a mandapa, a slot of the block's arena; else R101A's region
     mov dil, 0x59             ; pop cap -> rcx
     call emit_byte
     cmp qword [rel r82_on], 0
@@ -20232,6 +20643,8 @@ gen_expr:
     ret
 
 .ge_funcall:
+    mov rdi, rbx                      ; R108: a block kosh only to a prakriya that does not keep it
+    call r108_check_call
     cmp qword [rel r32_ffi_count], 0  ; R32/R33: a declared foreign function,
     je .r33_fc_sutram                 ; not called through a variable
     mov rdi, [rbx+8]

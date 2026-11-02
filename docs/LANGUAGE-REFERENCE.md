@@ -351,6 +351,7 @@ A program with no string comparison compiles to the same bytes as before (the gu
 |---|---|
 | a string as a whole condition: `yadi (s)`, `yavat (s)`, `s && x`, `s ? a : b` - every string, even `""`, was true | **`E_VARTANI_SATYA`** `vartani satyam asatyam va na bhavati` - write `yadi (s != "")` |
 | a `kosh` as an operand: `a == b` on two koshes (0 for two equal ones), `k + 1` | **`E_KOSH_GANIT`** `kosh-upari ganitam tulana va na sambhavati` - compare `k[i]` or `kosh_len(k)` |
+| a `mala` as an operand (v290): `a == b` on two mala, `a + 1` | **`E_MALA_GANIT`** `mala-upari ganitam tulana va na sambhavati` - compare `a[i]` (`examples/319`) |
 
 **Not known to be strings, and so not handled:** module-level variables, `kosh` and `mala` elements, and a
 `prakriya` used as a value (`vitti g = f`). Compared with a string they are refused, not guessed. Two of them
@@ -1108,9 +1109,19 @@ Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; ba
 
 *(a kosh made in a block does not go outside it - it is not put in an outer variable; use it inside, return the
 value; if it is needed outside, make it before the block)*. These are the scratch-escape rules (`E_SCRATCH_ESCAPE`,
-above) applied to the `kosh` itself. **What the compiler cannot see** - a `prakriya` that is given the `kosh` and
-returns or keeps it - is still caught when the dead `kosh` reaches a `prakriya` after the block, which stops the
-program with
+above) applied to the `kosh` itself.
+
+**From v290 a block's `kosh` may be given only to a `prakriya` that does not keep it** - one that reads its `kosh`
+parameter (`k[i]`, `kosh_len(k)`, passing it on to another such `prakriya`) but does not return it, store it, or
+pass it to one that does. The compiler works this out for every `prakriya` and parameter of the program; a
+function value or a foreign function counts as keeping. Otherwise (`examples/316`):
+
+```
+Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+```
+
+So no reference to a block's `kosh` outlives the block. The runtime check below stays as a second line; no program
+in the tree, and none written for its gate, can reach it any more. If one ever does, it stops the program with
 
 ```
 Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 10 mandape rachitah; sa mandapah samaptah
@@ -1118,7 +1129,7 @@ Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam
 ```
 
 *(the kosh made in the block on line 10 — that block has ended; use it inside the block and return the value)*,
-exit 1 (`examples/316`). That holds however the block ended — at its end, by `nivartanam`, or by `krama` /
+exit 1. That holds however the block ended — at its end, by `nivartanam`, or by `krama` /
 `agrim` out of a loop — and for an inner block ended inside a running outer one; the same block entered again
 (the next turn of a loop) makes a new `kosh`, and the old one stays dead.
 
@@ -1165,6 +1176,11 @@ a kosh of 1000 8272
 - **Not counted:** a `nirmmita` that the arena could not hold (past 1 GiB it falls back to its own `mmap`).
 - **Cost:** a program without `parimana` compiles to the same bytes; with it, each `kosh` allocation and growth
   adds one counter update. **Linux ELF only; in a Windows program it returns 0.**
+
+**One number, moving (`examples/318`):** `parimana()` is the arena and the `kosh` regions together, so it answers
+"how much am I holding" the same way for a program and for a test. A block's `nirmmita` comes back at its end; a
+`kosh`'s bytes do not, even one made in the block - its storage is kept for the program's life (§16; reclaiming
+it waits for a stable `kosh` descriptor, so that a growing `kosh` cannot leave a second name behind).
 
 ### A budget: `mandapa parimita N` (v285)
 

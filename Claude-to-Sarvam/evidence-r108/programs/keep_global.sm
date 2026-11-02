@@ -1,0 +1,13 @@
+vitti g = 0
+
+prakriya rakh(kosh k) {
+    g = k
+    nivartanam 0
+}
+
+mukhya() {
+    mandapa {
+        kosh k[4]
+        vitti z = rakh(k)
+    }
+}

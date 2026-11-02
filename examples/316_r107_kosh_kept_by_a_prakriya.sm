@@ -1,6 +1,7 @@
-# R107: the case the compiler cannot see - a kosh made in a block leaves it through a prakriya
-# that returns what it is given. The runtime check (R82) still stops the program when the dead kosh
-# reaches a prakriya after the block: E_KOSH_MANDAPA, naming the block's line, exit 1.
+# R107/R108: a kosh made in a block given to a prakriya that keeps it (here: returns it). Up to v289
+# the program ran and the runtime check (R82) stopped it after the block. From v290 the compiler
+# refuses the call - E_KOSH_MANDAPA, the prakriya keeps it - so no reference to a block's kosh can
+# outlive the block. A prakriya that only reads its kosh parameter (padh) may be given one.
 prakriya rakh(kosh k) {
     nivartanam k
 }

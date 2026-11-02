@@ -1,0 +1,19 @@
+# R108: parimana() - one number, the bytes the program's nirmmita and kosh hold now - moving as
+# allocations happen. A block gives back its nirmmita; a kosh (made inside a block or not) keeps its
+# header and capacity for the program's life: kosh storage is not reclaimed yet.
+mukhya() {
+    likha("start ", parimana(), "\n")
+    kosh k[1]
+    kosh_push(k, 1)
+    likha("a kosh of 1 ", parimana(), "\n")
+    kosh_push(k, 2)
+    kosh_push(k, 3)
+    likha("grown to capacity 4 ", parimana(), "\n")
+    mandapa {
+        vitti b = nirmmita(100)
+        likha("a block's nirmmita(100) ", parimana(), "\n")
+        kosh m[8]
+        likha("and a kosh of 8 in it ", parimana(), "\n")
+    }
+    likha("after the block ", parimana(), "\n")
+}

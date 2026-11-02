@@ -1,0 +1,7 @@
+mukhya() {
+    vitti a[2]
+    vitti b[2]
+    a[0] = 7
+    b[0] = 7
+    likha(a == b)
+}

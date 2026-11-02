@@ -1,0 +1,22 @@
+# R108 probes on main's v290 (Linux x86-64)
+== keep_chain: REFUSED (exit 1): Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+== keep_global: REFUSED (exit 1): Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+== keep_ret: REFUSED (exit 1): Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+== keq: REFUSED (exit 1): keq.sm: Sutram Error [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na
+== malias: exit 0
+   | 1
+== meq: REFUSED (exit 1): meq.sm: Sutram Error [E_MALA_GANIT]: mala-upari ganitam tulana va na sambhavati - mala sankhya na
+== mplus: REFUSED (exit 1): mplus.sm:3:13: Sutram Error [E_MALA_GANIT]: mala-upari ganitam tulana va na sambhavati - mala sankhya na
+== ok_read: exit 0
+   | 18
+== outer_ok: exit 0
+   | 9
+
+# golden 318 on the review-branch compiler (arena kosh): ends at 72
+== 318_r108_parimana_moves: exit 0
+   | start 0
+   | a kosh of 1 48
+   | grown to capacity 4 72
+   | a block's nirmmita(100) 184
+   | and a kosh of 8 in it 296
+   | after the block 72

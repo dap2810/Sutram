@@ -1,0 +1,9 @@
+# R108: a mala is not a number. mala == mala compared two addresses (0 for two equal mala), and
+# mala + 1 added to an address. E_MALA_GANIT; compare a[i] instead.
+mukhya() {
+    vitti a[2]
+    vitti b[2]
+    a[0] = 7
+    b[0] = 7
+    likha(a == b)
+}
