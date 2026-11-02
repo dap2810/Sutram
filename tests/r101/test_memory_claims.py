@@ -4,11 +4,14 @@
   1. 1,000,000 x nirmmita(64) with a mandapa per pass: flat (under 1 MB of resident memory)
   2. the same without the block: every allocation stays (over 32 MB; 62 MB measured)
   3. 10,000,000 with the block: still flat - the claim "a block bounds memory" for nirmmita
-  4. a kosh grown to 100,000 with an allocation between pushes (it moves at every doubling): the abandoned
-     copies cost at most about one more kosh - under 3x the kosh that grows in place
+  4. a kosh grown to 100,000 with an allocation between pushes: up to v283 it moved at every doubling and
+     the abandoned copies cost about one more kosh (1.8 MB against 0.8 MB). R101A (v284): a kosh has a
+     region of its own and grows in place, so it costs the same as one that grows alone (within 1.25x)
   5. a kosh made in a mandapa 100,000 times: NOT reclaimed by the block (about 100 MB). This pins a known,
      documented gap: if it starts passing below 8 MB, the block reclaims kosh storage and the reference
-     (section 19) must change with it.
+     (section 19) must change with it. (R101A: 400 MB, one page per kosh at least.)
+  6. R101A: a kosh past its region (9,000,000 pushes; the region holds 8,388,603) moves once and keeps
+     every value - the sum is exact.
 Last line: "r101 memory: N checks, M failed".
 """
 import os, subprocess, sys, tempfile
@@ -82,14 +85,37 @@ def main():
         m['kosh_in_place'] = peak(w, 'kosh_in_place', KOSH.format(obstacle=''))
         m['kosh_moving'] = peak(w, 'kosh_moving', KOSH.format(obstacle='        vitti o = nirmmita(8)\n'))
         m['kosh_in_block'] = peak(w, 'kosh_in_block', KOSH_IN_BLOCK)
+        big = os.path.join(w, 'kosh_past_region')
+        open(big + '.sm', 'w').write('''mukhya() {
+    kosh k[1]
+    vitti i = 0
+    yavat (i < 9000000) {
+        kosh_push(k, i)
+        i = i + 1
+    }
+    vitti s = 0
+    i = 0
+    yavat (i < kosh_len(k)) {
+        s = s + k[i]
+        i = i + 1
+    }
+    likha("s ", s, " len ", kosh_len(k))
+}
+''')
+        subprocess.run([COMP, big + '.sm', big], cwd=ROOT, capture_output=True)
+        past = subprocess.run([big], capture_output=True, text=True).stdout.strip()
+        print(f'      kosh_past_region: {past!r}')
         for k, (kb, code) in m.items():
             print(f'      {k}: peak {kb} KB, exit {code}')
         tests = [
             ('1,000,000 nirmmita(64) in a block: under 1 MB', m['with_1m'][0] < 1024),
             ('the same without the block: over 32 MB', m['without_1m'][0] > 32768),
             ('10,000,000 in a block: still under 1 MB (flat)', m['with_10m'][0] < 1024),
-            ('a moving kosh of 100,000: under 3x the in-place one', m['kosh_moving'][0] < 3 * max(m['kosh_in_place'][0], 256)),
+            ('a kosh of 100,000 grown past an allocation costs what one grown alone does (within 1.25x; R101A)',
+             m['kosh_moving'][0] <= 1.25 * max(m['kosh_in_place'][0], 256)),
             ('a kosh made in a block 100,000 times is NOT reclaimed (the documented gap): over 8 MB', m['kosh_in_block'][0] > 8192),
+            ('a kosh past its region keeps every value (9,000,000 pushes; R101A)',
+             past == f's {sum(range(9000000))} len 9000000'),
         ]
         for text, ok in tests:
             checks += 1

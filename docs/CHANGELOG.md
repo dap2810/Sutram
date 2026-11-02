@@ -1,3 +1,20 @@
+> **The 20 newest entries.** Older ones, from "Compiler v278 (Claude, R82)" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v284 (Claude, R101A - the owner's Option A) - on Linux every `kosh` has a region of its own and never moves
+
+- **Owner's decision (2 November): Option A.** On Linux ELF a `kosh` is made in its own `mmap` reservation (64 MB
+  of address space, `MAP_NORESERVE` - only touched pages count) and grows in place inside it; capacity still
+  doubles. It moves only past 8,388,603 elements, once, on the old path. Not under `--fail-alloc`, not in the
+  guard-page build, not on Windows (PE unchanged).
+- **What it fixes:** `vitti a = k` stays one name however `k` grows (example 288 now prints `a[0]=99 k[0]=99` /
+  `a[0]=7 k[0]=7`); a growing `kosh` leaves no copies behind (100,000 pushes past an allocation: 1.8 MB -> 0.8 MB).
+- **What it costs, measured:** one page (4 KB) at least per used `kosh` and an `mmap` per `kosh` made: a loop making
+  100,000 small `kosh`s goes from 100 MB / 0.05 s to 400 MB / 0.45 s. The tree's 86 `kosh` programs: none uses
+  more memory (one 78 -> 70 MB).
+- **Not done:** the block giving its `kosh` regions back (it would break the exact `E_KOSH_MANDAPA` check - see the
+  hand-back), and Windows regions (`VirtualAlloc` reserve/commit in the PE runtime).
+- Gate `R101 memory`: 6 checks (in-place cost, 9,000,000 pushes past the region).
+
 ## v440 - CORRECTION 3, the final one: it WAS a hang, and my own `head -8` faked the count
 
 ### The truth, counted by lines rather than truncated
@@ -57,8 +74,6 @@
 **Refusing a `dasham` loop bound is still right. But the reason is not "it runs one extra time" - it is "the iteration count is wrong and unpredictable, and it produces no error".**
 
 **And the test matrix must include fractional bounds.** `3.0` was the one value that looked like an off-by-one.
-
-> **The 20 newest entries.** Older ones, from Compiler v274-v275 (Claude, R77-R79) back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
 
 ## v283 (Claude, R96) - a `chakra` with a decimal end is refused instead of running for ever
 
@@ -429,72 +444,3 @@ likha(a[0])        -> prints 41
 - **Option 3 done:** reference §16 states the rule, with the program that shows it (checked on Linux and PE).
 - **Guard pages on v278:** controls 5/5, suite 255/0, library 229/229, properties 86/86; the R81 and R82 gates
   pass under the guard-page build. Nothing faults that did not before.
-
-## Compiler v278 (Claude, R82) - a `kosh` made in a `mandapa` lives as long as the block
-
-- **A `kosh` declared inside a `mandapa` is generation-checked** (ChatGPT R148's handle idea, smallest form): the
-  block takes a fresh generation on entry (a stack slot, `rdtsc`), clears it on every exit (its end,
-  `nivartanam`, `krama`/`agrim`); the `kosh` records it; a `prakriya` with a `kosh` parameter checks it on entry.
-  After the block: `E_KOSH_MANDAPA`, naming the block's line, exit 1. Inside: unchanged - growth, recursion,
-  `kosh dasham`. Examples 286 (accepted, computed value), 287 (read after the block - refused).
-- **Only in a program that declares a `kosh` in a block. Every other program: the same bytes** (guard, 665
-  programs, 0 DIFFER; the 8 benchmarks identical). In such a program: 3 more header words per `kosh`; one entry
-  check per `kosh` parameter - +11% on a call whose body is one `kosh` read, +3.5% on `kosh_push`.
-- Gate **`R82 kosh-mandapa`**: 9 cases; with the check off, all 5 refusals fail.
-- **Not yet:** the block does not take the `kosh`'s memory back (kept, so that the header - and the check - stays
-  exact); raw reads of its address are unchecked, as all raw memory.
-- **The `parikshita` count:** `kosh` is still refused in a checked function (unchanged rule). An experimental
-  checker that admits it - sound now, since a `kosh` is bounds- and lifetime-checked - passes **88** of 306
-  library functions (63 today): all of `kalana` and `samanvaya`, 9 of `sankhyiki`. Not shipped; your decision.
-
-## Compiler v277 (Claude, R81) - `parikshita`: the checked function, transitive
-
-- **`parikshita prakriya` / `parikshita mukhya`** (ChatGPT R149's design): the compiler verifies the whole body
-  after the program is parsed and **refuses** what it cannot verify. A checked function may call only checked
-  functions (`E_APARIKSHITA_AHVAN`, at the call, naming the callee - the first bad edge of a chain) and the trust
-  base `likha` / `likha_fmt` / `grahan` / `nirmmita` (`E_APARIKSHITA_KARYA` for any other builtin, `kosh`, fields,
-  slices, function values, `prasar`); it may index only a `mala` or a `vitti p = nirmmita(NUMBER)` never assigned
-  again (`E_APARIKSHITA_SMRITI`). `parikshita` is contextual - an ordinary name elsewhere; misplaced, it is
-  `E_PARIKSHITA_STHAN`. Unmarked code: **the guard is 0 DIFFER** (no program's bytes change).
-- Examples 282 (a checked program that sorts in a block - accepted), 283 (calls `mala_yog` - refused), 284 (the
-  transitive edge), 285 (a parameter indexed). Gate **`R81 parikshita`**: 24 cases; it fails 15 with the checker
-  switched off and 3 with transitivity switched off.
-- **The library: 63 of 306 functions pass unchanged** (`ank`, `madhava`, `sadhan` entirely); all 243 others
-  trace to a buffer passed as a parameter (131) or a byte / `kosh` / raw builtin (112) - both need a checked form
-  in the language before the library can use it. None is marked yet.
-- `tools/sutram_fmt.py` reads `parikshita prakriya` as a header (braceless bodies).
-
-## Compiler v276 (Claude, R80) - division by zero stops with a message; written numbers that do not fit are refused; the library stops wrapping
-
-- **`/` or `%` by zero stops the program** with `Sutram Error [E_SHUNYA_BHAJAN]: pankti N - shunye vibhajanam na
-  sambhavati` (`%`: `shunyena sheshah na sambhavati`), exit 1. It was SIGFPE, exit 136, no message. N is the line
-  in the user's own file (a `yoj` does not offset it); inside a module, that module's line and name -
-  `pankti 3 (r80_ausat.smlib)`, `examples/281`. A divisor written as `0` is refused when compiled. **The smallest `vitti` divided by −1 no longer crashes** (it wraps to
-  itself; `% -1` is 0). A divisor that is a written number other than 0 or −1 gets no check: the shipped
-  benchmarks compile to the same bytes; a loop that divides by a variable costs +6%.
-- **A written whole number that does not fit in 64 bits is refused** (`E_ATIPRAVAH`): `99999999999999999999`
-  printed 7766279631452241919, `0x10000000000000000` printed 0. `-9223372036854775808` and
-  `0 - 9223372036854775808` (the smallest `vitti`) are still allowed. **A `dasham` literal past 2^63 now has its
-  value** (`100000000000000000000.5` was read as 7766279631452241919.5).
-- **Arithmetic on written numbers whose answer does not fit is refused** — `4000000000 * 4000000000`,
-  `9223372036854775807 + 1`, `-(0 - 9223372036854775808)` (`E_ATIPRAVAH`, "ganana punah likhyatam"), as
-  `file:line:col` with the source line and a caret, like every other compile error.
-- **The compiler itself no longer crashes on a written `MIN / -1`**: `(0 - 9223372036854775808) / (0 - 1)` killed
-  it with SIGFPE (exit 136, v275 and before); it is now refused (`E_ATIPRAVAH`), and a written `MIN % -1` is 0.
-- **`tools/fuzz_valid.py` writes an operand as `(1 ? A : 0)`** where folding two written numbers would now be
-  refused - the same value, not folded - so the generated programs stay valid and still test run-time wraparound
-  (seed 24: the same 1,376 output lines, 60/60 agree, on v275 and v276).
-- **Run-time `+ - *` still wrap, as in C — measured, not assumed:** checking every operation (the `trap` build)
-  costs +5.6% to +282% on the shipped benchmarks (+282% on `bench_loop`, +104% on `bench_nested`). Over the 10%
-  line, so not shipped. The reference says so in one sentence (§3a).
-- **The library stops wrapping on plausible input:** `kramgun` (21! and up), `fib` and `matra_meru` (93 and up),
-  `varg`/`vargit` (|n| > 3037000499), `dwi_ghat` (63 and up), `yog_tak` (n > 4294967295) now return −1 when the
-  answer does not fit; `ghat` and `ghan` return the largest or smallest `vitti`. Before, `kramgun(21)` was
-  −4249290049419214848 and `kramgun(25)` a wrong *positive* number. **After Muse's R80 audit, three more:**
-  `laghuttam_samapavartya` (lcm) and `purna_prasaran` (integer variance) return −1 when the answer does not fit
-  (lcm(4000000000, 4000000001) was a wrong positive; the variance of [2^31, −2^31] was negative, now exactly 2^62);
-  `yog_seema` halves before multiplying and saturates (yog_seema(0, 4294967295) was −2147483648 though it fits).
-  `tests/stdlib/r80_library_edges`. Examples 277–281.
-- **Frozen packs:** the two new messages are Sanskrit in every pack (no new pack text).
-- **Found, not fixed:** `likha` of a `dasham` from about ±9.2e12 prints `-9223372036854.775808` (v275 too; Muse's
-  R80 audit measured the threshold).

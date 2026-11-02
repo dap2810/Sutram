@@ -1,0 +1,86 @@
+# v283 against v284 (regions), Linux ELF: best-of-3 seconds and peak RSS (tools/peak_rss.py)
+kb0 v283: 0.05s peak_rss_kb 101504 exit 0
+kb0 region: 0.43s peak_rss_kb 400000 exit 0
+kb1 v283: 0.05s peak_rss_kb 104576 exit 0
+kb1 region: 0.49s peak_rss_kb 400000 exit 0
+reuse v283: 0.0s peak_rss_kb 0 exit 0
+reuse region: 0.0s peak_rss_kb 0 exit 0
+kosh_alone_10m v283: 0.04s peak_rss_kb 78080 exit 0
+kosh_alone_10m region: 0.09s peak_rss_kb 176384 exit 0
+kosh_moving_10m v283: 0.14s peak_rss_kb 209152 exit 0
+kosh_moving_10m region: 0.12s peak_rss_kb 176384 exit 0
+
+# the programs
+## kb0.sm
+mukhya() {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        kosh k[1]
+        kosh_clear(k)
+        vitti j = 0
+        yavat (j < 100) {
+            kosh_push(k, j)
+            j = j + 1
+        }
+        s = s + k[99]
+        i = i + 1
+    }
+    likha("s ", s)
+}
+## kb1.sm
+mukhya() {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        mandapa {
+            kosh k[1]
+            vitti j = 0
+            yavat (j < 100) {
+                kosh_push(k, j)
+                j = j + 1
+            }
+            s = s + k[99]
+        }
+        i = i + 1
+    }
+    likha("s ", s)
+}
+## reuse.sm
+mukhya() {
+    kosh k[1]
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        kosh_clear(k)
+        vitti j = 0
+        yavat (j < 100) {
+            kosh_push(k, j)
+            j = j + 1
+        }
+        s = s + k[99]
+        i = i + 1
+    }
+    likha("s ", s)
+}
+## kosh_alone.sm
+mukhya() {
+    kosh k[1]
+    vitti i = 0
+    yavat (i < 100000) {
+        kosh_push(k, i)
+        i = i + 1
+    }
+    likha("len ", kosh_len(k), " cap ", kosh_cap(k))
+}
+## kosh_moving.sm
+mukhya() {
+    kosh k[1]
+    vitti i = 0
+    yavat (i < 100000) {
+        kosh_push(k, i)
+        vitti obstacle = nirmmita(8)
+        i = i + 1
+    }
+    likha("len ", kosh_len(k), " cap ", kosh_cap(k))
+}

@@ -185,9 +185,10 @@ Three known gaps, in plain words:
 
 The details are in `docs/LANGUAGE-REFERENCE.md`, §19.
 
-**`vitti a = k` gives a `kosh` a second name; it does not copy it.** If `k` then grows and has to move (always on
-Windows), `a` still points at the old storage, so give each `kosh` one name — see
-[`docs/LANGUAGE-REFERENCE.md`, §16, "Two names for one `kosh`"](docs/LANGUAGE-REFERENCE.md#two-names-for-one-kosh-vitti-a--k-is-not-a-copy-v278).
+**`vitti a = k` gives a `kosh` a second name; it does not copy it.** On Linux the two names stay one however
+`k` grows (each `kosh` has a region of its own, v284). On Windows, if `k` grows it moves and `a` keeps the old
+storage - so give each `kosh` one name - see
+[`docs/LANGUAGE-REFERENCE.md`, §16, "Two names for one `kosh`"](docs/LANGUAGE-REFERENCE.md#two-names-for-one-kosh-vitti-a--k-is-not-a-copy-v278-on-linux-the-names-stay-one-from-v284).
 
 ## Honest status
 

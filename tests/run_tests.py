@@ -142,6 +142,10 @@ def main():
     record = "--record" in args
     args = [a for a in args if not a.startswith("--")]
     names = args or tests()
+    # R101A: SUTRAM_TEST_SKIP names examples a special build cannot run as the shipped one does -
+    # tools/guard_page.py's build has no kosh regions, so example 288 (two names stay one) differs there.
+    skip = [n for n in os.environ.get('SUTRAM_TEST_SKIP', '').split(',') if n]
+    names = [n for n in names if n not in skip]
     if "--list" in sys.argv:
         print("\n".join(names)); return 0
 

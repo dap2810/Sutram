@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v283) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v284) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -439,6 +439,20 @@ r54_builtin_arity_table:
     r82_c5 db 0x48,0x8B,0x40,0xD8                             ; mov rax,[rax-40]
     r82_c_end:
     align 16
+    ; R101A: mov rsi,REGION ; cmp rax,rsi ; cmova rsi,rax ; xor edi,edi ; mov edx,3 ;
+    ;       mov r10d,0x4022 (PRIVATE|ANONYMOUS|NORESERVE) ; mov r8,-1 ; xor r9d,r9d ; mov eax,9
+    r101a_a1 db 0x48,0xC7,0xC6,0x00,0x00,0x00,0x04, 0x48,0x39,0xF0, 0x48,0x0F,0x47,0xF0, 0x31,0xFF
+    db 0xBA,0x03,0x00,0x00,0x00, 0x41,0xBA,0x22,0x40,0x00,0x00, 0x49,0xC7,0xC0,0xFF,0xFF,0xFF,0xFF
+    db 0x45,0x31,0xC9, 0xB8,0x09,0x00,0x00,0x00
+    r101a_a1_len equ $ - r101a_a1
+    ; (syscall) cmp rax,-4095 ; jb +2 ; xor eax,eax
+    r101a_a2 db 0x48,0x3D,0x01,0xF0,0xFF,0xFF, 0x72,0x02, 0x31,0xC0
+    r101a_a2_len equ $ - r101a_a2
+    ; cmp r11,MAXCAP ; ja +12 ; mov [r8-8],r11 ; mov r10,r11 ; jmp rel32 (the rel32 follows)
+    r101a_e1 db 0x49,0x81,0xFB
+    dd R101A_MAXCAP
+    db 0x77,0x0C, 0x4D,0x89,0x58,0xF8, 0x4D,0x89,0xDA, 0xE9
+    r101a_e1_len equ $ - r101a_e1
     r96_hdr db ": Sutram Error [E_CHAKRA_DASHAM]: ", 0
     r96_txt db "chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati", 10, 0
     r96_hint db "Sanket: chakra i = 0 tak 3 likhyatam; dashamaya yavat upayujyatam", 10, 0
@@ -8348,6 +8362,69 @@ r96_check_for_float:
     lea rdx, [rel r96_txt]
     lea rcx, [rel r96_hint]
     jmp r80_compile_error
+
+;; ============================================================
+;; R101A (Option A, R101): every kosh has a region of its own.
+;; A kosh used to be a block in the arena: when it grew and something had been allocated
+;; after it, it moved - the old block was abandoned (R101: about one more kosh), and a
+;; second name (`vitti a = k`) kept the old block (section 16). Now, on Linux ELF, a kosh is
+;; made in its own mmap reservation of R101A_REGION bytes, MAP_NORESERVE: pages are committed
+;; only when touched, so a 4-element kosh costs one page. It grows in place inside its region
+;; - capacity still doubles, as kosh_cap shows - and never moves until it passes
+;; R101A_MAXCAP elements (8,388,603 - 64 MB); only then does it take the old relocating path.
+;; A kosh declared larger than the region gets a region of exactly its size, so its first
+;; growth relocates as before. Not under --fail-alloc (its counted allocations stay the old
+;; path), not in the GUARD_PAGES build, not on PE (r65_active is 0 there): unchanged.
+;; ============================================================
+R101A_REGION equ 0x04000000          ; 64 MB of address space per kosh
+R101A_MAXCAP equ (R101A_REGION - 40) / 8
+
+; r101a_regions_on -> rax = 1 when kosh regions apply (Linux ELF, not --fail-alloc)
+r101a_regions_on:
+    call r65_active
+    test rax, rax
+    jz .r101a_off
+    cmp qword [rel r38_fail_n], 0
+    jne .r101a_off
+    mov eax, 1
+    ret
+.r101a_off:
+    xor eax, eax
+    ret
+
+; r101a_emit_kosh_alloc: generated code, rax = bytes for the header and the initial capacity ->
+; rax = the region (or 0 if mmap failed, as nirmmita). Off: the ordinary nirmmita.
+r101a_emit_kosh_alloc:
+    call r101a_regions_on
+    test rax, rax
+    jz emit_nirmmita_from_rax
+    lea rsi, [rel r101a_a1]
+    mov rcx, r101a_a1_len
+    call r23_emit_bytes
+    call emit_syscall
+    lea rsi, [rel r101a_a2]
+    mov rcx, r101a_a2_len
+    call r23_emit_bytes
+    ret
+
+; r101a_emit_kosh_extend: kosh growth with newcap in r11 (r8 user ptr, r10 cap). On: emits
+;   cmp r11, R101A_MAXCAP ; ja .relocate ; mov [r8-8], r11 ; mov r10, r11 ; jmp .space (rel32)
+; recording the rel32 in r65_ext_patch exactly as r65_emit_kosh_extend does, and returns 1.
+; Off: returns 0 and emits nothing.
+r101a_emit_kosh_extend:
+    call r101a_regions_on
+    test rax, rax
+    jz .r101a_ext_out
+    lea rsi, [rel r101a_e1]
+    mov rcx, r101a_e1_len
+    call r23_emit_bytes
+    mov rax, [rel code_sz]
+    mov [rel r65_ext_patch], rax
+    xor edi, edi
+    call emit_u32
+    mov eax, 1
+.r101a_ext_out:
+    ret
 
 r94_check_float_bitop:
     push rbx
@@ -16390,7 +16467,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0x03
     call emit_byte
-    call emit_nirmmita_from_rax
+    call r101a_emit_kosh_alloc   ; R101A (Option A): a region of its own on Linux ELF
     mov dil, 0x59             ; pop cap -> rcx
     call emit_byte
     cmp qword [rel r82_on], 0
@@ -19248,7 +19325,11 @@ gen_expr:
     call emit_byte
     mov dil, 0xD8
     call emit_byte
+    call r101a_emit_kosh_extend ; R101A: grow in place inside the kosh's own region
+    test rax, rax
+    jnz .r101a_extended
     call r65_emit_kosh_extend  ; R65: grow in place when the kosh ends at the arena cursor
+.r101a_extended:
     ; Preserve old pointer, length, and new capacity across allocation.
     mov dil, 0x41
     call emit_byte

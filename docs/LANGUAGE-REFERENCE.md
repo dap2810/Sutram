@@ -733,15 +733,15 @@ abort with their own diagnostics — `rikta kosh se kosh_pop`,
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
 
-### Two names for one `kosh`: `vitti a = k` is not a copy (v278)
+### Two names for one `kosh`: `vitti a = k` is not a copy (v278; on Linux the names stay one from v284)
 
 **`vitti a = k` (or `a = k`) makes a second name for the same `kosh`, not a copy.** Both names read and write
-the same cells — until `k` grows and its cells **move**:
+the same cells.
 
-- `kosh_push` past the capacity first tries to extend the buffer in place. That works only if nothing was
-  allocated after it (and never on Windows: there a growing `kosh` always moves).
-- **If it cannot extend in place, `k` moves to a new buffer and `a` still points at the old one**, with the old
-  length. **Reading through `a` then gives the old data. Writing through `a` does not affect `k`.**
+**On Linux (from v284) a `kosh` never moves**, so the two names stay one however `k` grows. Every `kosh` is made
+in a region of its own - 64 MB of address space, of which only the pages it touches are used - and grows in
+place inside it, doubling its capacity as before. Only a `kosh` past **8,388,603 elements** leaves its region:
+then it moves once, as below.
 
 ```
 mukhya() {
@@ -749,7 +749,7 @@ mukhya() {
     kosh_push(k, 41)
     vitti a = k
     vitti obstacle = nirmmita(64)     # something allocated in between
-    kosh_push(k, 42)                  # k cannot grow in place: it moves
+    kosh_push(k, 42)                  # k grows - in its own region, in place
     k[0] = 99
     likha("a[0]=", a[0], " k[0]=", k[0])
     a[0] = 7
@@ -757,21 +757,25 @@ mukhya() {
 }
 ```
 
-prints, on Linux and on Windows alike (`examples/288`, which pins it):
+prints on Linux (`examples/288`, which pins it):
 
 ```
-a[0]=41 k[0]=99
-a[0]=7 k[0]=99
+a[0]=99 k[0]=99
+a[0]=7 k[0]=7
 ```
 
-Without the `obstacle` line, on Linux `k` grows in place and the names stay one (`a[0]=99 k[0]=99`, then
-`a[0]=7 k[0]=7`); on Windows the output is the one above either way — **the same program can print
-differently on the two systems.**
+**On Windows the old behaviour remains (not yet changed there):** a growing `kosh` always moves, `a` stays on
+the old buffer, and the program prints `a[0]=41 k[0]=99` / `a[0]=7 k[0]=99` - reading through `a` gives the
+old data, writing through `a` does not reach `k`. Up to v283 Linux did the same whenever something had been
+allocated after the `kosh`. **Until Windows has regions too, keep one name per `kosh` and copy values out
+(`k[i]`, `kosh_len(k)`), not the `kosh`.** A program that does not alias is unaffected on both systems.
 
-**A program that does not alias is unaffected**, and nothing in the standard examples relies on a second name
-after a move (the three that alias — 252, 255, 287 — never grow it afterwards). The old buffer is never freed, so
-this is a wrong value, not a crash. **Rule: keep one name per `kosh`; copy values out (`k[i]`, `kosh_len(k)`),
-not the `kosh`.**
+**What a region costs (R101A, measured with `tools/peak_rss.py`):** at least one 4 KB page per `kosh` that is
+used, and one `mmap` (about 4 microseconds) when a `kosh` is made. For the tree's programs that is nothing - all
+86 programs with a `kosh` use the same memory or less (one: 78 MB down to 70 MB). A loop that makes a new
+100-number `kosh` 100,000 times uses 400 MB instead of 100 MB and 0.45 s instead of 0.05 s: make the `kosh`
+once, before the loop, and `kosh_clear` it each pass (0 MB). A `kosh` that grows no longer leaves its old
+copies behind: grown to 100,000 past an allocation it used 1.8 MB, now 0.8 MB, the same as growing alone.
 
 ## 17. Function values, methods and slices (R23)
 
@@ -1028,8 +1032,9 @@ and a program with no `kosh` in a block compiles to the same bytes as before. In
 whole body is one `kosh` read; +3.5% on `kosh_push`).
 
 **Not yet:** the block does not take the `kosh`'s memory back — it is kept, so that the check is exact.
-**Measured (R101, `tools/peak_rss.py`):** a block run 100,000 times that makes a `kosh` of 100 numbers peaks at
-**about 100 MB** - the same as without the block. The block bounds `nirmmita` (10,000,000 `nirmmita(64)`, one
+**Measured (R101, `tools/peak_rss.py`):** a block run 100,000 times that makes a `kosh` of 100 numbers peaked at
+**about 100 MB** on v283, and at **400 MB** on Linux from v284 (each `kosh` now has its own region, one 4 KB page
+at least - section 16) - the same as without the block. The block bounds `nirmmita` (10,000,000 `nirmmita(64)`, one
 block per pass: under 1 MB; without blocks: 625 MB), not `kosh` storage. Make a `kosh` that is reused once,
 outside the loop, and empty it with `kosh_clear` each pass. Reading
 the `kosh`'s address as raw memory (`x[i]` on a plain `vitti`) is not checked — as all raw memory (§6c). Under

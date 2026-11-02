@@ -1,7 +1,7 @@
-# R86: `vitti a = k` is a second NAME for the same kosh, not a copy - until k moves. Here something is
-# allocated in between (obstacle), so k cannot grow in place: kosh_push moves k's cells, and a stays on the
-# old buffer. Reading through a gives the old data; writing through a does not reach k. This golden pins
-# that behaviour: if the alias is ever fixed, it fails - and the reference (s16) must change with it.
+# R86: `vitti a = k` is a second NAME for the same kosh, not a copy. Up to v283, with something allocated
+# in between (obstacle), kosh_push moved k's cells and a stayed on the old buffer (a[0]=41 k[0]=99).
+# R101A (v284): on Linux every kosh has a region of its own and grows in place, so the names stay one:
+# a[0]=99 k[0]=99, then a[0]=7 k[0]=7. Windows still moves (reference section 16).
 mukhya() {
     kosh k[1]
     kosh_push(k, 41)
