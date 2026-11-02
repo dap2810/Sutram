@@ -1,0 +1,149 @@
+[
+ {
+  "column": "cond",
+  "kind": "int",
+  "probe": "cond_int",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "column": "print",
+  "kind": "int",
+  "probe": "print_int",
+  "result": "5",
+  "exit": 0
+ },
+ {
+  "column": "store",
+  "kind": "int",
+  "probe": "store_int",
+  "result": "5",
+  "exit": 0
+ },
+ {
+  "column": "cond",
+  "kind": "dasham",
+  "probe": "cond_dasham",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "column": "print",
+  "kind": "dasham",
+  "probe": "print_dasham",
+  "result": "2.500000",
+  "exit": 0
+ },
+ {
+  "column": "store",
+  "kind": "dasham",
+  "probe": "store_dasham",
+  "result": "Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati",
+  "exit": 1
+ },
+ {
+  "column": "cond",
+  "kind": "string",
+  "probe": "cond_string",
+  "result": "REFUSED",
+  "code": "E_VARTANI_SATYA"
+ },
+ {
+  "column": "print",
+  "kind": "string",
+  "probe": "print_string",
+  "result": "ab",
+  "exit": 0
+ },
+ {
+  "column": "store",
+  "kind": "string",
+  "probe": "store_string",
+  "result": "4194461",
+  "exit": 0
+ },
+ {
+  "column": "cond",
+  "kind": "string_empty",
+  "probe": "cond_string_empty",
+  "result": "REFUSED",
+  "code": "E_VARTANI_SATYA"
+ },
+ {
+  "column": "print",
+  "kind": "string_empty",
+  "probe": "print_string_empty",
+  "result": "",
+  "exit": 0
+ },
+ {
+  "column": "store",
+  "kind": "string_empty",
+  "probe": "store_string_empty",
+  "result": "4194461",
+  "exit": 0
+ },
+ {
+  "column": "cond",
+  "kind": "kosh",
+  "probe": "cond_kosh",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "column": "print",
+  "kind": "kosh",
+  "probe": "print_kosh",
+  "result": "136952701517840",
+  "exit": 0
+ },
+ {
+  "column": "store",
+  "kind": "kosh",
+  "probe": "store_kosh",
+  "result": "139669475950608",
+  "exit": 0
+ },
+ {
+  "column": "cond",
+  "kind": "mala",
+  "probe": "cond_mala",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "column": "print",
+  "kind": "mala",
+  "probe": "print_mala",
+  "result": "127335099531272",
+  "exit": 0
+ },
+ {
+  "column": "store",
+  "kind": "mala",
+  "probe": "store_mala",
+  "result": "135579090026504",
+  "exit": 0
+ },
+ {
+  "column": "cond",
+  "kind": "rachana",
+  "probe": "cond_rachana",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "column": "print",
+  "kind": "rachana",
+  "probe": "print_rachana",
+  "result": "124174324465664",
+  "exit": 0
+ },
+ {
+  "column": "store",
+  "kind": "rachana",
+  "probe": "store_rachana",
+  "result": "139126714138624",
+  "exit": 0
+ }
+]
