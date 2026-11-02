@@ -1,0 +1,4 @@
+mukhya() {
+    vitti a = 7
+    likha(a, "\n")
+}

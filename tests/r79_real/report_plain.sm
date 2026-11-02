@@ -178,7 +178,7 @@ mukhya() {
         stambh(m3[s], 7)
         stambh(total[s], 7)
         likha("     ")
-        likha(1, letters + shreni_varna(total[s]) - 65, 1)
+        dvaram_likha(1, letters + shreni_varna(total[s]) - 65, 1)
         likha("\n")
         i = i + 1
     }

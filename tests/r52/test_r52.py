@@ -3,8 +3,8 @@
 
   1. likha WITH UP TO SIX VALUES: likha("x = ", x, ", y = ", y) prints `x = 42, y = 7` and a newline. Each value
      but the last prints as lkhb (a number, no newline) or likha (a string literal); the last as likha, so the line
-     ends the way likha(a, b) ends it. Three values take this form only when the first is a string literal: every
-     three-argument call in the tree passes 1 or an fd first and stays a raw write. Seven values are refused.
+     ends the way likha(a, b) ends it. Three values take this form only when the first is a string literal: a non-literal first is refused (E_LIKHA_TRAYA); the raw write moved
+     to dvaram_likha(fd, smriti, sankhya). Seven values are refused.
   2. lkhb ON A DASHAM prints the number (2.500000), not its IEEE-754 bits (4612811918334230528).
   3. THE yoj HINT: a call to a library prakriya without its `yoj` prints, after `agyat prakriya: <name>`, the line
      `  Sanket: '<name>' '<module>' ghatake asti; 'yoj <module>' iti likhatu` - in the ordinary compile and in
@@ -60,12 +60,17 @@ def main(argv) -> int:
                           '    likha("three: ", x, "!\\n")\n'
                           '    likha(x, " ", y, "\\n")\n'
                           '    likha("two: ", x)\n'
-                          '    likha(1, "raw\\n", 4)\n}\n')
+                          '    dvaram_likha(1, "raw\\n", 4)\n}\n')
         want = 'x = 42, y = 7\nd = 2.500000 and x+y = 49\nabcde6\nthree: 42!\n42 7\ntwo: 42\nraw\n'
-        check(out == want, f'likha with 3 to 6 values prints one line; likha(a, b) and the raw 3-argument write are '
+        check(out == want, f'likha with 3 to 6 values prints one line; likha(a, b) and the raw write (dvaram_likha) are '
               f'unchanged (got {out!r})')
         out, msg, _ = build('mukhya() {\n    likha("a", 1, "b", 2, "c", 3, "d")\n}\n')
         check(out is None, 'likha with seven values is refused')
+        # FIXALL (a): variable-first 3-arg likha is refused; dvaram_likha is the raw write.
+        out, msg, _ = build('mukhya() {\n    vitti a = 42\n    vitti b = 7\n    likha(a, " ", b)\n}\n')
+        check(out is None and 'E_LIKHA_TRAYA' in (msg or ''), 'likha(a, " ", b) is refused (E_LIKHA_TRAYA)')
+        out, _, _ = build('mukhya() {\n    dvaram_likha(1, "raw\n", 4)\n}\n')
+        check(out == 'raw\n', f'dvaram_likha(1, buf, len) writes raw (got {out!r})')
 
         # 2. lkhb on a dasham
         out, _, _ = build('mukhya() {\n    dasham d = 2.5\n    lkhb(d)\n    likha("|\\n")\n    lkhb(0.0 - 1.25)\n'

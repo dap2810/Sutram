@@ -3,7 +3,7 @@ mukhya() {
     vitti out = nirmmita(16)
     likha(khand_pratilip("hello", 5, out))
     likha("\n")
-    likha(1, out, 5)
+    dvaram_likha(1, out, 5)
     likha("\n")
     likha(akshar(out, 0))
     likha("\n")
@@ -12,7 +12,7 @@ mukhya() {
     # dup agrees with the source bytes, including an interior space
     likha(khand_pratilip("a b", 3, out))
     likha("\n")
-    likha(1, out, 3)
+    dvaram_likha(1, out, 3)
     likha("\n")
     # empty edge
     likha(khand_pratilip("abc", 0, out))

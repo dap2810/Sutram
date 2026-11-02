@@ -132,7 +132,8 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `likh8c` | print a character |
 | `pad8c` | read a character |
 | `pankti_len` | length of a constant-length `mala` mala |
-| `likha` | 1–6 arguments: value(s) or raw three-argument write; see §4a (string literals do not append LF, numeric final values do) |
+| `likha` | 1–6 arguments: value(s); see §4a (string literals do not append LF, numeric final values do). A three-argument call whose first argument is not a string literal is refused from v286 (`E_LIKHA_TRAYA`): raw writes are `dvaram_likha` |
+| `dvaram_likha` | `dvaram_likha(fd, buf, len)`: write `len` bytes of `buf` to file descriptor `fd`; returns the count written (v286; see §4a) |
 | `lkhb` | numeric output without LF; includes `dasham` numeric printing since R52 |
 | `likha_fmt` | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
 | `shabda` | print a string variable |
@@ -203,17 +204,28 @@ mukhya() {
 x = 42, y = 7
 ```
 
-**Raw write — `likha(fd, buf, len)` is a different THREE-argument operation:**
+**Raw write — `dvaram_likha(fd, buf, len)` (v286; it was the three-argument `likha`):**
 ```sutram
 mukhya() {
-    likha(1, "raw\n", 4)
+    dvaram_likha(1, "raw\n", 4)
 }
 ```
 **Exact expected stdout** (`raw` plus LF, four bytes):
 ```text
 raw
 ```
-Here `1` is stdout's file descriptor; the second value is a byte-buffer pointer and the third is its byte count. **Do not assume all three-argument `likha` calls print three values.** The first argument's syntax determines the mode: a string literal means multi-value print; a nonliteral first argument means raw write. Keep existing raw-write calls unchanged.
+Here `1` is stdout's file descriptor; the second value is a byte-buffer pointer and the third is its byte count;
+the result is the number of bytes written. `dvaram` (an opening) is the fd family's word, with `dvaram`/`band`/`grahan`.
+
+**Up to v285 this was `likha(fd, buf, len)`: a three-argument `likha` whose first argument was not a string
+literal wrote raw bytes.** So `likha(a, " ", b)` printed nothing, exit 0 (R100's first trap). **From v286 that
+form is refused at compile time:**
+```
+Sutram Error [E_LIKHA_TRAYA]: tri-mulya-likha prathamam uddharanam apeksate
+Sanket: smriti-lekhanaya dvaram_likha(fd, smriti, sankhya) iti prayujyatam
+```
+*(a three-value `likha` expects a quotation first; for a memory write use `dvaram_likha`)*. Two-argument `likha`
+and a literal-first three-argument `likha` are unchanged. Old raw-write calls must be renamed.
 
 **`lkhb(x)` — numeric output without a newline (R52 also fixes `dasham`):**
 ```sutram
@@ -294,6 +306,22 @@ After `brihat_ank_se_laghu(1234, digits, 4)`, `pad8(digits + 0 * 8)` is `4`, `pa
 | mala | `mala a[10]` or `vitti a[10]`; index reads/stores are bounds-checked |
 | struct | `rachana Name = { field1, field2 }` |
 | enum | `ganana RED = 1` (declared inside a function) |
+
+### 5a. Three refusals that replace silent wrong answers (v286, R100's traps)
+
+Up to v285 these compiled and ran, and gave a number with no explanation. From v286 the compiler refuses them.
+
+| you write | up to v285 | from v286 |
+|---|---|---|
+| `vitti x` with no value, in a function | the slot's leftover: `0 99 99` from a function called twice | **`E_MULYA_VINA`**: `vitti 'x' mulyam vina ghoshita - prathamam mulyam dehi` (*declared without a value - give it one first*). Write `vitti x = 0`. A `mala` (`vitti m[4]`), a `kosh`, and a module-level `vitti` are unchanged. |
+| `s == "ab"`, `s != "ab"` on a string variable or literal (also in `yadi` / `yavat`) | compared the two addresses: `"ab" == "ab"` is 0 | **`E_VARTANI_TUL`**: `vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam`. Use `vartani_tul(a, b)`: **0 when equal**, non-zero otherwise. |
+| `s + t` with two strings, `s + "b"`, a string plus a `dasham` or a `kosh` | added the addresses; `shabda` of the sum crashed | **`E_VARTANI_CAT`**: `vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam`. Use `vartani_cat(dst, src)`; `dst` must have room - there is no capacity check. |
+
+What is still allowed: `"a" + "b"` (two literals fold at compile time to `ab`); **a string plus an integer is
+pointer arithmetic** (`base + 6` for a slice, `letters + grade - 65`), so it compiles as before. The string
+tracking is by variable, last assignment wins: `s = "ab"` marks `s`, `s = 5` unmarks it. Not tracked: parameters,
+call results, `kosh` elements, module globals - two of those compared with `==` still compare addresses; a
+literal on either side is still refused. `<` `>` on strings, and `-` `*` `/`, are untouched.
 
 ## 6. Syntax by example
 
@@ -484,6 +512,22 @@ it breaks the library's addresses into the middle of buffers. `mala` and `kosh` 
 To *find* such a mistake, build the compiler with guard pages (`nasm -dGUARD_PAGES`, as `tools/guard_page.py`
 does): every `nirmmita` block then ends against memory that cannot be touched, and a write past its end stops
 the program at once.
+
+### 6d. Recursion depth: `E_GAHANATA` (v286)
+
+A function that never reaches its base case used to end the program with a segmentation fault, exit 139, no
+output. From v286 every `prakriya` checks the stack on entry (Linux); past **8,339,456 bytes below `mukhya`'s
+entry** (8 MiB less 48 KiB, under the default 8 MiB stack) it prints
+
+```
+Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram
+```
+
+*(call depth: limit exceeded)*, exit 1. Each call frame is 2,048 bytes plus the saved registers, so the limit is
+about **4,000 nested calls** - `yog(3900)` runs, `yog(4000)` is refused; up to v285 `yog(4000)` ran and `yog(4100)`
+crashed. 500 levels, and the tree's deepest recursion (single digits), are far inside it. The check is `mov rax,
+[entry_rsp]; sub rax, rsp; cmp rax, LIMIT; jb ok` in each prologue; the cost in the binary is 15 bytes in `mukhya` and
+115 per `prakriya` (the check and its message are emitted with each); a 50,000,000-call loop ran in the same 0.10 s. Windows: not checked (PE output is unchanged).
 
 ## 7. Command line
 
@@ -1117,7 +1161,7 @@ parikshita mukhya() {
 |---|---|
 | numbers, `dasham`, `yadi`, `yavat`, `kuru`, `chakra`, `mandapa`, `nivartanam`, module `vitti` | `kosh`, `rachana` fields (`p.x`), slices, function values, `prasar`, `yadi dosh`, inline assembly |
 | calls to **other `parikshita` functions** | a call to any other `prakriya` — `E_APARIKSHITA_AHVAN`, at the call, naming it |
-| `likha` (not the `likha(fd, buffer, count)` form), `likha_fmt`, `grahan`, `nirmmita` | every other builtin: `likh8`, `pad8`, `akshar`, `akshar_rakh`, `smaran`, `shabda`, `kosh_*`, files … — `E_APARIKSHITA_KARYA` |
+| `likha`, `likha_fmt`, `grahan`, `nirmmita` | every other builtin: `dvaram_likha`, `likh8`, `pad8`, `akshar`, `akshar_rakh`, `smaran`, `shabda`, `kosh_*`, files … — `E_APARIKSHITA_KARYA` |
 | `a[i]` on a `mala` declared in the function; `p[i]` where `vitti p = nirmmita(NUMBER)` and `p` is never assigned again — both checked against their size | `x[i]` on anything else — a parameter, `p + 8`, a size computed at run time — `E_APARIKSHITA_SMRITI` |
 
 **The rule is transitive:** a checked function calls only checked functions, and each of those is checked
@@ -1152,7 +1196,7 @@ a number.
 CHANGELOG but until now in no reference. **A beginner writes `vitti s = "hello"` and then `likha(s)`, and gets
 a seven-digit number with no explanation.**
 
-**The workaround:** print a string with an explicit length - `likha(1, s, n)` - or print it as a literal.
+**The workaround:** print a string with an explicit length - `dvaram_likha(1, s, n)` (v286; before it, `likha(1, s, n)`) - or print it as a literal.
 
 *Open: should `likha` print a string variable as text? That would be a language change and it is the owner's
 call. Documented here so nobody has to discover it by confusion.*

@@ -1,0 +1,10 @@
+prakriya yog(n) {
+    yadi (n == 0) {
+        nivartanam 0
+    }
+    nivartanam n + yog(n - 1)
+}
+
+mukhya() {
+    likha(yog(500), " ", yog(3000), "\n")
+}

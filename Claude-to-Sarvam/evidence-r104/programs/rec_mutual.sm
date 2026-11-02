@@ -1,0 +1,11 @@
+prakriya a(n) {
+    nivartanam b(n + 1)
+}
+
+prakriya b(n) {
+    nivartanam a(n + 1)
+}
+
+mukhya() {
+    likha(a(0), "\n")
+}

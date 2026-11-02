@@ -1,0 +1,5 @@
+mukhya() {
+    vitti m[4]
+    m[0] = 3
+    likha(m[0], "\n")
+}

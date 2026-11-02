@@ -1,0 +1,16 @@
+prakriya yog(n) {
+    yadi (n == 0) {
+        nivartanam 0
+    }
+    nivartanam n + yog(n - 1)
+}
+
+mukhya() {
+    vitti d = 0
+    vitti n = 0
+    yavat (n < 50000) {
+        d = n * 100
+        likha(d, " ", yog(d), "\n")
+        n = n + 1
+    }
+}

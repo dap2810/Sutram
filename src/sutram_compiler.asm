@@ -225,6 +225,7 @@ BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
 BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
 BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
 BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
+BN_DVARLIKHA equ 46 ; FIXALL (a): dvaram_likha(fd, smriti, sankhya) -> bytes written (raw fd write)
 BN_NIRM_SCRATCH equ 90 ; R73: nirmmita written inside a mandapa - the scratch side
 
 ; ============================================================
@@ -239,7 +240,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v285) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v286) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -305,6 +306,7 @@ r54_builtin_arity_table:
     db 1,1               ; 43 kosh_empty
     db 1,1               ; 44 kosh_peek
     db 1,1               ; 45 kosh_dequeue
+    db 3,3               ; 46 dvaram_likha (FIXALL (a))
 
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
     ; R4: a read of a name that was never declared or assigned is an error
@@ -459,6 +461,44 @@ r54_builtin_arity_table:
     r94_hdr db ": Sutram Error [E_DASHAM_KRIYA]: ", 0
     r94_txt db "dashama-sankhyayam % & | ^ << >> kriyah na sambhavanti", 10, 0
     r94_hint db "Sanket: etah purnanka-kriyah - vitti upayujyatam", 10, 0
+    ; FIXALL (d): scalar locals declared without a value are refused (E_MULYA_VINA).
+    rfx_hdr db ": Sutram Error [E_MULYA_VINA]: ", 0
+    rfx_vitti db "vitti", 0
+    rfx_dasham db "dasham", 0
+    rfx_q db " '", 0
+    rfx_msg db "' mulyam vina ghoshita - prathamam mulyam dehi", 10, 0
+    rfx_hint db "Sanket: ghoshana-kale mulyam likha", 10, 0
+    ; FIXALL (a): likha 3-value refusal strings (Sanskrit-only, outside the
+    ; per-pack sandesh table, like the R52 hints). The name dvaram_likha is
+    ; the FIXALL choice under the vocabulary rule (Sanskrit-only: dvaram =
+    ; door/opening, completing the dvaram/band/grahan fd family); R100's
+    ; suggested likha_fd mixes in the English abbreviation "fd". Renaming
+    ; is one table entry plus this hint.
+    rfx_lk_hdr db ": Sutram Error [E_LIKHA_TRAYA]: ", 0
+    rfx_lk_txt db "tri-mulya-likha prathamam uddharanam apeksate", 10, 0
+    rfx_lk_hint db "Sanket: smriti-lekhanaya dvaram_likha(fd, smriti, sankhya) iti prayujyatam", 10, 0
+    ; FIXALL (b/c): string ==/!=/+ refusal strings (Sanskrit-only, outside
+    ; the per-pack sandesh table, like the R52 hints; transliterations are
+    ; best-effort pending native-speaker review, as with all new strings).
+    rfx_bc_hdr_tul db ": Sutram Error [E_VARTANI_TUL]: ", 0
+    rfx_bc_txt_eq db "vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam", 10, 0
+    rfx_bc_txt_ne db "vartani-samyam '!=' na parikshate - vartani_tul prakriyaya parikshyatam", 10, 0
+    rfx_bc_hint_tul db "Sanket: samam cet vartani_tul(a, b) == 0; asamam cet vartani_tul(a, b) != 0", 10, 0
+    rfx_bc_hdr_cat db ": Sutram Error [E_VARTANI_CAT]: ", 0
+    rfx_bc_txt_add db "vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam", 10, 0
+    rfx_bc_hint_cat db "Sanket: vartani_cat(dst, src) src-am dst-ante yojayati - dst-asya paryaptam sthanam bhavet", 10, 0
+    ; FIXALL (rec): runaway-recursion message (Sanskrit-only, outside the
+    ; per-pack sandesh table). The message is embedded in the emitted
+    ; program by the function-prologue guard; its length drives the guard's
+    ; jump displacements (see RFX_REC_TRAP_LEN), so NASM computes them.
+    rfx_rec_msg db "Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram", 10
+    rfx_rec_msg_len equ $ - rfx_rec_msg
+    RFX_REC_THRESH equ 8339456 ; 8 MiB stack minus 48 KiB margin: below every
+    ; usage ever observed to survive (depth 4020 = 8365776 bytes), so the
+    ; guard always fires before the true bottom, in every ASLR run.
+    RFX_REC_TRAP_LEN equ 36 ; lea(7) + write(5+5+5+2) + exit(5+5+2)
+    rfx_slot_name db "0gahanata", 0   ; R104: the hidden module global holding mukhya's entry rsp
+    rfx_slot_idx dq -1                ; its r56 index once registered
     align 16
     r87_absmask dq 0x7FFFFFFFFFFFFFFF, 0x7FFFFFFFFFFFFFFF
     align 8
@@ -712,6 +752,7 @@ r54_builtin_arity_table:
         dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
         dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
         dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
+        dq bn_dvarlikha, TOK_BUILTIN, BN_DVARLIKHA
     bn_table_end:
 
     ; grahan(): read one line from stdin, parse digits, return in rax.
@@ -1024,6 +1065,7 @@ r54_builtin_arity_table:
     bn_sthagita  db "sthagita", 0
     bn_pad       db "pad", 0
     bn_dvaram    db "dvaram", 0
+    bn_dvarlikha db "dvaram_likha", 0
     bn_paadh     db "paadh", 0
     msg_guna_dbg1  db "G1", 10
     msg_guna_dbg2  db "BAD\n", 0
@@ -1193,6 +1235,7 @@ section .bss
     float_kosh_var_cnt resq 1
     float_vars  resq VAR_TABLE_CAP ; T12 dasham names in current generated-function scope
     float_var_cnt resq 1
+    str_flags   resb VAR_TABLE_CAP ; FIXALL (b/c): 1 when the var_table slot holds a string
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Stage 1 within-basic-block virtual cache. Fixed logical slots 1..4 map
     ; to XMM2..XMM5. GPRs/stack remain authoritative at ALL times (write-through).
@@ -8228,6 +8271,33 @@ r73_check_call:
     pop rax
     ret
 
+; FIXALL (a): refuse likha of exactly 3 values whose first is not a string
+; literal. Called from the generic argument parser on every AST_CALL just
+; built (rax = call node), beside r73_check_call / r75_check_nirm_size.
+; Unconditional: unlike r73_check_call it is NOT gated on being inside a
+; mandapa, since the trap happens everywhere. The call node carries no
+; source position at parse time, so this is the message + Sanket form
+; (position 0), like the variable forms of E_CHAKRA_DASHAM.
+; 1-, 2- and 4-6-arg likha always print and are untouched; literal-first
+; 3-arg prints are untouched; only the raw-write shape refuses.
+rfx_check_likha:
+    cmp qword [rax+8], BN_LIKHA
+    jne .rfx_lk_out
+    cmp qword [rax+16], 3
+    jne .rfx_lk_out
+    mov rcx, [rax+24]
+    test rcx, rcx
+    jz .rfx_lk_out
+    cmp qword [rcx], AST_STR
+    je .rfx_lk_out
+    xor edi, edi
+    lea rsi, [rel rfx_lk_hdr]
+    lea rdx, [rel rfx_lk_txt]
+    lea rcx, [rel rfx_lk_hint]
+    jmp r80_compile_error
+.rfx_lk_out:
+    ret
+
 ; r73_check_stored(rdi = a value written into memory): refused if it is a scratch address;
 ; remembered inside a loop. Preserves rax, rbx, r12.
 r73_check_stored:
@@ -8645,6 +8715,285 @@ r94_check_float_bitop:
     lea rcx, [rel r94_hint]
     jmp r80_compile_error
 .r94_out:
+    pop rbx
+    ret
+
+; FIXALL (b/c): string-operand tracking for ==/!=/+ refusal.
+; A variable holds a string when its last assignment (in source order) gave
+; it one: a string literal, or another string-holding variable. Numbers,
+; calls, binops, kosh/mala values and parameters never set the flag.
+; The flag is slot-indexed (so reassignment clears it) and is set at every
+; declaration and assignment, cleared at function entry and for loop
+; counters. It is deliberately flow-insensitive: a variable assigned a
+; string on one branch and a number on another is tracked by the last
+; branch in source order, so conditional code may over- or under-refuse;
+; straight-line code (the trap shapes) is exact. Parameters, call results,
+; kosh elements and module globals are not tracked: a literal operand
+; still refuses those shapes, but param-vs-param and element-vs-element
+; string operations survive. String ordering (<, >, <=, >=) is out of
+; scope: R100 prescribed no ordering builtin to redirect to.
+rfx_find_var_index:
+    ; rdi = name -> rax = var_table slot index, or -1 when absent.
+    ; Same scan as r7_find_var, but returns the index (r7 returns the location).
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    xor r8d, r8d
+.rfx_fvi_loop:
+    cmp r8, [rel var_cnt]
+    jae .rfx_fvi_none
+    mov rax, r8
+    shl rax, 4
+    lea rdx, [rel var_table]
+    mov rsi, [rdx+rax]
+    mov rdi, [rsp+8]
+    call strcmp
+    test rax, rax
+    jz .rfx_fvi_hit
+    inc r8
+    jmp .rfx_fvi_loop
+.rfx_fvi_hit:
+    mov rax, r8
+    jmp .rfx_fvi_out
+.rfx_fvi_none:
+    mov rax, -1
+.rfx_fvi_out:
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    ret
+
+rfx_set_str_flag:
+    ; rdi = name: set its string flag (no-op when the name has no slot).
+    call rfx_find_var_index
+    test rax, rax
+    js .rfx_ssf_out
+    lea rcx, [rel str_flags]
+    mov byte [rcx+rax], 1
+.rfx_ssf_out:
+    ret
+
+rfx_clear_str_flag:
+    ; rdi = name: clear its string flag (no-op when the name has no slot).
+    call rfx_find_var_index
+    test rax, rax
+    js .rfx_csf_out
+    lea rcx, [rel str_flags]
+    mov byte [rcx+rax], 0
+.rfx_csf_out:
+    ret
+
+is_str_var:
+    ; rdi = name -> rax = 1 when the variable currently holds a string.
+    call rfx_find_var_index
+    test rax, rax
+    js .rfx_isv_no
+    lea rcx, [rel str_flags]
+    movzx eax, byte [rcx+rax]
+    ret
+.rfx_isv_no:
+    xor eax, eax
+    ret
+
+expr_is_str:
+    ; rdi = AST node -> rax = 1 when the expression is a string value:
+    ; a string literal, or a string-holding variable. All other node kinds
+    ; (numbers, calls, binops, indices) are 0: a binop result is numeric
+    ; (literal+literal concatenation folds to one AST_STR at parse time).
+    push rbx
+    mov rbx, rdi
+    test rbx, rbx
+    jz .rfx_eis_no
+    mov rax, [rbx]
+    cmp rax, AST_STR
+    je .rfx_eis_yes
+    cmp rax, AST_VAR
+    jne .rfx_eis_no
+    mov rdi, [rbx+8]
+    call is_str_var
+    jmp .rfx_eis_done
+.rfx_eis_yes:
+    mov rax, 1
+.rfx_eis_done:
+    pop rbx
+    ret
+.rfx_eis_no:
+    xor eax, eax
+    pop rbx
+    ret
+
+rfx_is_int:
+    ; rdi = AST node -> rax = 1 when the node is usable as an int offset
+    ; for string pointer arithmetic: an int literal; an int variable
+    ; (neither string-, float- nor kosh-flagged); or any other expression
+    ; whose result is not dasham (calls, binops, indices — e.g.
+    ; letters + shreni_varna(total[s]) in r79). String literals are 0,
+    ; and a kosh operand is 0 (a container is not an offset).
+    push rbx
+    mov rbx, rdi
+    test rbx, rbx
+    jz .rfx_ii_no
+    mov rax, [rbx]
+    cmp rax, AST_NUM
+    je .rfx_ii_yes
+    cmp rax, AST_STR
+    je .rfx_ii_no
+    cmp rax, AST_VAR
+    je .rfx_ii_var
+    mov rdi, rbx
+    call expr_is_float
+    test rax, rax
+    jnz .rfx_ii_no
+    mov rax, 1
+    jmp .rfx_ii_done
+.rfx_ii_var:
+    mov rdi, [rbx+8]
+    call is_str_var
+    test rax, rax
+    jnz .rfx_ii_no
+    mov rdi, [rbx+8]
+    call is_float_var
+    test rax, rax
+    jnz .rfx_ii_no
+    mov rdi, [rbx+8]
+    call is_kosh_var
+    test rax, rax
+    jnz .rfx_ii_no
+.rfx_ii_yes:
+    mov rax, 1
+    jmp .rfx_ii_done
+.rfx_ii_no:
+    xor eax, eax
+.rfx_ii_done:
+    pop rbx
+    ret
+
+rfx_note_value:
+    ; rdi = target name, rsi = value AST node. Set the target's string flag
+    ; when the value is a string literal or a string-holding variable;
+    ; otherwise clear it (including a copy from a numeric variable, and a
+    ; missing value node). Called after the target's slot exists.
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, rsi
+    test r12, r12
+    jz .rfx_nv_clear
+    mov rax, [r12]
+    cmp rax, AST_STR
+    je .rfx_nv_set
+    cmp rax, AST_VAR
+    jne .rfx_nv_clear
+    mov rdi, [r12+8]
+    call is_str_var
+    test rax, rax
+    jz .rfx_nv_clear
+.rfx_nv_set:
+    mov rdi, rbx
+    call rfx_set_str_flag
+    jmp .rfx_nv_done
+.rfx_nv_clear:
+    mov rdi, rbx
+    call rfx_clear_str_flag
+.rfx_nv_done:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+rfx_check_str_binop:
+    ; rdi = AST_BINOP. Refuse ==/!= where an operand is string-ish, and
+    ; + where the string rule below fires (string+string, or string plus
+    ; a non-int offset). Called at .ge_binop entry, before any fast path,
+    ; so every runtime binop is covered. Uses the operator's source
+    ; position ([rbx+32]), like r94_check_float_bitop.
+    push rbx
+    mov rbx, rdi
+    mov rax, [rbx+8]
+    cmp rax, OP_ADD
+    je .rfx_csb_check
+    cmp rax, OP_EQ
+    je .rfx_csb_check
+    cmp rax, OP_NE
+    je .rfx_csb_check
+    jmp .rfx_csb_out
+.rfx_csb_check:
+    ; ==/!= keep the either-operand-string rule (address comparison is
+    ; never meaningful). + has its own rule below.
+    cmp rax, OP_ADD
+    jne .rfx_csb_operands
+    ; + guard: both operands string literals (literal+literal concatenation)
+    ; never refuses, even if folding ever misses a case.
+    mov rcx, [rbx+16]
+    cmp qword [rcx], AST_STR
+    jne .rfx_csb_plus
+    mov rcx, [rbx+24]
+    cmp qword [rcx], AST_STR
+    je .rfx_csb_out
+.rfx_csb_plus:
+    ; FIXALL (b/c) narrowing, from the slices23 evidence: string + int is
+    ; pointer arithmetic (the khand slice idiom, base + 6), NOT the (c)
+    ; trap. Only string+string (and string+non-int) refuses. Both
+    ; string-ish -> refuse. Exactly one string-ish -> allow iff the other
+    ; is int-like; otherwise refuse. Neither -> allow.
+    mov rdi, [rbx+16]
+    call expr_is_str
+    push rax
+    mov rdi, [rbx+24]
+    call expr_is_str
+    mov rcx, rax
+    pop rax
+    test rax, rax
+    jz .rfx_csb_plus_right
+    test rcx, rcx
+    jnz .rfx_csb_refuse
+    mov rdi, [rbx+24]
+    call rfx_is_int
+    test rax, rax
+    jnz .rfx_csb_out
+    jmp .rfx_csb_refuse
+.rfx_csb_plus_right:
+    test rcx, rcx
+    jz .rfx_csb_out
+    mov rdi, [rbx+16]
+    call rfx_is_int
+    test rax, rax
+    jnz .rfx_csb_out
+    jmp .rfx_csb_refuse
+.rfx_csb_operands:
+    mov rdi, [rbx+16]
+    call expr_is_str
+    test rax, rax
+    jnz .rfx_csb_refuse
+    mov rdi, [rbx+24]
+    call expr_is_str
+    test rax, rax
+    jz .rfx_csb_out
+.rfx_csb_refuse:
+    mov rdi, [rbx+32]
+    mov rax, [rbx+8]
+    cmp rax, OP_ADD
+    je .rfx_csb_add
+    lea rsi, [rel rfx_bc_hdr_tul]
+    lea rcx, [rel rfx_bc_hint_tul]
+    cmp rax, OP_NE
+    je .rfx_csb_ne
+    lea rdx, [rel rfx_bc_txt_eq]
+    jmp r80_compile_error
+.rfx_csb_ne:
+    lea rdx, [rel rfx_bc_txt_ne]
+    jmp r80_compile_error
+.rfx_csb_add:
+    lea rsi, [rel rfx_bc_hdr_cat]
+    lea rdx, [rel rfx_bc_txt_add]
+    lea rcx, [rel rfx_bc_hint_cat]
+    jmp r80_compile_error
+.rfx_csb_out:
     pop rbx
     ret
 
@@ -15362,6 +15711,7 @@ parse_primary_inner:
 .pp_no_pop_b:
     call r73_check_call       ; R74 (R146 F1): a store call is checked wherever it is written
     call r75_check_nirm_size  ; R75: nirmmita(-1) written as a number is refused here
+    call rfx_check_likha      ; FIXALL (a): likha of 3 values with a non-literal first is refused
     pop r12                   ; restore r12
     pop rbx
     ret
@@ -15400,12 +15750,12 @@ parse_primary_inner:
     pop rbx
     ret
 
-; R54/R63: verified ABI signatures for builtin IDs 1..45.
+; R54/R63: verified ABI signatures for builtin IDs 1..46.
 ; Input rdi=id, rsi=parsed arg count, return eax=1 iff allowed.
 ; The check is before any AST argument pointer dereference in codegen.
 ; Updating a builtin ABI requires updating this table and the R54 test matrix.
 r54_builtin_arity_ok:
-    cmp rdi, 45
+    cmp rdi, 46
     ja .bad
     lea rax, [rel r54_builtin_arity_table]
     lea rax, [rax+rdi*2]
@@ -15580,6 +15930,11 @@ gen_code:
     mov qword [rel kosh_param_var_cnt], 0
     mov qword [rel float_kosh_var_cnt], 0
     mov qword [rel float_var_cnt], 0
+    ; FIXALL (b/c): a new function (or mukhya) starts with no string-holding slots.
+    lea rdi, [rel str_flags]
+    xor eax, eax
+    mov ecx, VAR_TABLE_CAP
+    rep stosb
     ; Do NOT reset func_def_cnt — it may have FUNCDEF nodes from top-level parsing
     mov qword [rel patch_count], 0
     mov qword [rel func_count], 0
@@ -15591,6 +15946,22 @@ gen_code:
     mov rax, [rel root_node]
     mov rax, [rax+8]          ; body = block node
 
+    ; FIXALL (rec): save the entry stack pointer into the hidden module global `0gahanata`
+    ; (R104: an ordinary r56 global, as r65's `0kshetra_*` - so --object and --separate builds
+    ; take the same path and link byte-identical to the direct compile). ELF only; PE unchanged.
+    cmp qword [rel target_pe], 0
+    jne .rfx_rec_mukhya_skip
+    call rfx_ensure_slot      ; rax = the global's index
+    push rax
+    mov dil, 0x48             ; mov [rip+disp32], rsp
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0x25
+    call emit_byte
+    pop rdi
+    call r56_record_patch
+.rfx_rec_mukhya_skip:
     ; Function prologue: push rbp; push callee-saved; mov rbp, rsp
     mov dil, 0x55             ; push rbp
     call emit_byte
@@ -15696,6 +16067,7 @@ gen_code:
     ; ELF appends zero-initialized writable slots to the existing load segment;
     ; PE emits a distinct RW .data section in write_pe.
     call r56_patch_global_storage
+    ; FIXALL (rec): the stack-top slot goes after all r56 slots.
 
     pop r15
     pop r14
@@ -15927,6 +16299,11 @@ gen_all_functions:
     mov qword [rel float_kosh_var_cnt], 0
     mov qword [rel float_var_cnt], 0
     mov qword [rel in_function], 1   ; we're inside a user function
+    ; FIXALL (b/c): a new function starts with no string-holding slots.
+    lea rdi, [rel str_flags]
+    xor eax, eax
+    mov ecx, VAR_TABLE_CAP
+    rep stosb
     ; Emit function prologue: push rbp; mov rbp, rsp; push rbx
     mov dil, 0x55             ; push rbp
     call emit_byte
@@ -16076,6 +16453,79 @@ gen_all_functions:
     call emit_byte
     mov edi, FUNC_SPILL_BYTES
     call emit_u32
+    ; FIXALL (rec): per-call stack-depth guard (ELF non-object, slot only).
+    ; rax is free here (arguments already pushed, no return value live).
+    ; The check fires while rsp is still ~64 KiB above the true bottom, so
+    ; the trap's write/exit syscalls (which use no stack) are always safe,
+    ; unlike a post-fault handler. Layout: check(7+3+6+6) + trap(36) + msg;
+    ; jb skips trap+msg, lea reaches msg 29 bytes past its own end.
+    cmp qword [rel target_pe], 0
+    jne .rfx_rec_skip
+    call rfx_ensure_slot      ; R104: mov rax,[0gahanata] (extern in a module object)
+    mov rdi, rax
+    call r56_emit_global_load
+    mov dil, 0x48             ; sub rax, rsp
+    call emit_byte
+    mov dil, 0x29
+    call emit_byte
+    mov dil, 0xE0
+    call emit_byte
+    mov dil, 0x48             ; cmp rax, THRESH
+    call emit_byte
+    mov dil, 0x3D
+    call emit_byte
+    mov edi, RFX_REC_THRESH
+    call emit_u32
+    mov dil, 0x0F             ; jb .ok (past trap + message)
+    call emit_byte
+    mov dil, 0x82
+    call emit_byte
+    mov edi, RFX_REC_TRAP_LEN + rfx_rec_msg_len
+    call emit_u32
+    mov dil, 0x48             ; lea rsi, [msg]
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x35
+    call emit_byte
+    mov edi, RFX_REC_TRAP_LEN - 7
+    call emit_u32
+    mov dil, 0xBA             ; mov edx, MSGLEN
+    call emit_byte
+    mov edi, rfx_rec_msg_len
+    call emit_u32
+    mov dil, 0xBF             ; mov edi, 1 (stdout)
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    mov dil, 0xB8             ; mov eax, 1 (sys_write)
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov dil, 0xB8             ; mov eax, 60 (sys_exit)
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF             ; mov edi, 1
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    lea rsi, [rel rfx_rec_msg] ; message bytes (dead data: exit precedes them)
+    push r12 ; emit_byte clobbers rcx, so the counter lives in r12
+    mov r12d, rfx_rec_msg_len
+.rfx_rec_msg_loop:
+    test r12d, r12d
+    jz .rfx_rec_msg_done
+    mov dil, [rsi]
+    call emit_byte
+    inc rsi
+    dec r12d
+    jmp .rfx_rec_msg_loop
+.rfx_rec_msg_done:
+    pop r12
+.rfx_rec_skip:
     call r82_param_checks     ; R82: a kosh parameter made in a block that has ended
     ; Generate function body
     mov rax, [rbx+8]          ; R25: the prakriya being generated
@@ -16590,6 +17040,12 @@ gen_stmt:
     ; Allocate variable and store
     mov rdi, [rbx+8]         ; name ptr
     call alloc_var            ; rax = location
+    ; FIXALL (b/c): track whether this scalar now holds a string.
+    push rax
+    mov rdi, [rbx+8]
+    mov rsi, [rbx+16]
+    call rfx_note_value
+    pop rax
     test rax, rax
     jle .gs_decl_stack
     mov rdi, rax
@@ -16787,12 +17243,48 @@ gen_stmt:
     ret
 
 .gs_decl_noinit:
+    ; FIXALL (d): a scalar local declared without a value is refused here.
+    ; Only scalar locals reach this label: arrays are routed to .gs_decl_array,
+    ; kosh to .gs_decl_kosh, and globals without a value emit nothing in
+    ; r56_gen_global_initializers, so they never arrive. The DECL node carries
+    ; no source position, so this is the message + Sanket form (no line),
+    ; like the variable forms of E_CHAKRA_DASHAM / E_DASHAM_VITTI.
+    mov rdi, [rel source_path_ptr]
+    call graph_print_file
+    lea rdi, [rel rfx_hdr]
+    call print_str_z
+    cmp qword [rbx+32], 1
+    je .rfx_dasham_word
+    lea rdi, [rel rfx_vitti]
+    call print_str_z
+    jmp .rfx_name_word
+.rfx_dasham_word:
+    lea rdi, [rel rfx_dasham]
+    call print_str_z
+.rfx_name_word:
+    lea rdi, [rel rfx_q]
+    call print_str_z
     mov rdi, [rbx+8]
-    call alloc_var
-    pop rbx
-    ret
+    call print_str_z
+    lea rdi, [rel rfx_msg]
+    call print_str_z
+    lea rdi, [rel rfx_hint]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
 
 .gs_assign:
+    ; FIXALL (b/c): track whether the assigned scalar now holds a string.
+    ; Runs before every fast path (they all return from here) and before the
+    ; generic path; global targets and index/field targets are skipped by
+    ; the AST_VAR gate, and a self-assign (x = x) copies the flag to itself.
+    mov rax, [rbx+8]            ; target node
+    cmp qword [rax], AST_VAR
+    jne .rfx_assign_skip
+    mov rdi, [rax+8]            ; target name
+    mov rsi, [rbx+16]           ; value node
+    call rfx_note_value
+.rfx_assign_skip:
     call r87_check_float_literal  ; R87: f = 2.25 into a whole-number vitti
     ; R59 pre-emission peephole: an existing scalar's x=x has a side-effect-
     ; free AST_VAR RHS, so evaluating x and writing it back cannot alter
@@ -16946,6 +17438,15 @@ gen_stmt:
     mov rax, [rax+8]         ; variable name ptr
     mov rdi, rax
     call lookup_var           ; rax = location
+    ; FIXALL (b/c): the generic path may have just auto-allocated the target;
+    ; (re)note its string-ness now that the slot certainly exists. Idempotent
+    ; with the .gs_assign-top note for already-existing variables.
+    push rax
+    mov rdi, [rbx+8]
+    mov rdi, [rdi+8]
+    mov rsi, [rbx+16]
+    call rfx_note_value
+    pop rax
     ; Check if register or stack
     test rax, rax
     jle .gs_assign_stack
@@ -17305,6 +17806,9 @@ gen_stmt:
     call emit_u32
     jmp .gi_then
 .gi_cmp_cond:
+    ; FIXALL (b/c): comparison conditions bypass .ge_binop; check here.
+    mov rdi, [rbx+8]
+    call rfx_check_str_binop
     pop rbx                  ; restore rbx = if node
     ; PERF1: if both comparison operands are register-resident integer vars,
     ; compare them in place instead of round-tripping through RAX + stack.
@@ -17577,6 +18081,10 @@ gen_stmt:
     call alloc_var
     mov r14, rax
 .gf2_have_loc:
+    ; FIXALL (b/c): a loop counter is an integer, never a string; clear any
+    ; stale flag when the counter reuses a previous string variable's slot.
+    mov rdi, [rbx+8]
+    call rfx_clear_str_flag
     cmp r14, -65536
     jle .r56_for_init_global
     test r14, r14
@@ -17948,6 +18456,9 @@ gen_stmt:
     jmp .gw2_emit_back_offset
 
 .gw2_cmp_cond:
+    ; FIXALL (b/c): comparison conditions bypass .ge_binop; check here.
+    mov rdi, [rbx+8]
+    call rfx_check_str_binop
     mov rdi, [rbx+8]
     call try_emit_int_reg_cmp
     test rax, rax
@@ -19068,6 +19579,8 @@ gen_expr:
     je .ge_call_paadh
     cmp r12, BN_LIKHA
     je .ge_call_likha
+    cmp r12, BN_DVARLIKHA
+    je .ge_call_dvarlikha
     cmp r12, BN_NETSOCK
     je .ge_call_netsock
     cmp r12, BN_NETBIND
@@ -20018,6 +20531,47 @@ gen_expr:
     mov qword [rax+16], 1
     mov [rax+24], rcx
     call gen_expr                 ; print(b)
+    jmp .ge_call_done
+
+.ge_call_dvarlikha:
+    ; FIXALL (a): dvaram_likha(fd, smriti, sankhya) -> bytes written.
+    ; The legitimate raw fd write, moved out of likha's 3-arg form so that
+    ; likha(a, " ", b) with a variable first can be refused instead of
+    ; silently raw-writing. Identical emission to likha's old raw path
+    ; (gen 3 args, mov rdx, pop rsi, pop rdi, mov eax,1, emit_syscall,
+    ; which handles ELF and PE); the write count stays in rax, so
+    ; patra_likh_sarv's write loop keeps its contract.
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC2
+    call emit_byte
+    mov dil, 0x5E
+    call emit_byte
+    mov dil, 0x5F
+    call emit_byte
+    mov dil, 0xB8
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_syscall
     jmp .ge_call_done
 
 .ge_call_shabda:
@@ -22422,6 +22976,9 @@ gen_expr:
 
 .ge_binop:
     ; [AST_BINOP][op][left][right]
+    ; FIXALL (b/c): refuse ==/!=/+ on string operands before any fast path.
+    mov rdi, rbx
+    call rfx_check_str_binop
     ; PERF-FC1: register-only scalar float comparisons. Preserve the exact
     ; existing UCOMISD/SETcc semantics but remove the runtime stack spill.
     mov rdi, rbx
@@ -25135,6 +25692,28 @@ try_emit_int_decl_reg:
     test rax, rax
     jle .teidr_no
     mov r12, rax                ; right reg id
+    ; FIXALL (b/c): this fast path emits dst = left + right without going
+    ; through .ge_binop, so check string operands here (ADD only, like the
+    ; .ge_binop check; SUB/MUL on strings are a noted follow-up).
+    cmp r15, OP_ADD
+    jne .rfx_teidr_ok
+    mov rax, [r13+16]
+    mov rdi, [rax+8]
+    call is_str_var
+    test rax, rax
+    jnz .rfx_teidr_refuse
+    mov rax, [r13+24]
+    mov rdi, [rax+8]
+    call is_str_var
+    test rax, rax
+    jz .rfx_teidr_ok
+.rfx_teidr_refuse:
+    mov rdi, [r13+32]
+    lea rsi, [rel rfx_bc_hdr_cat]
+    lea rdx, [rel rfx_bc_txt_add]
+    lea rcx, [rel rfx_bc_hint_cat]
+    jmp r80_compile_error
+.rfx_teidr_ok:
     mov rdi, [rbx+8]
     call alloc_var
     mov r13, rax                ; destination reg id
@@ -25167,6 +25746,10 @@ try_emit_int_decl_reg:
     mov rsi, r14
     call emit_reg_load_imm
 .teidr_yes:
+    ; FIXALL (b/c): the fast decl path allocated the slot; track its string-ness.
+    mov rdi, [rbx+8]
+    mov rsi, [rbx+16]
+    call rfx_note_value
     mov rax, 1
     jmp .teidr_done
 .teidr_no:
@@ -25220,6 +25803,20 @@ try_emit_int_reg_assignment:
     cmp r15, OP_MUL
     jne .teira_no
 .teira_binop_ok:
+    ; FIXALL (b/c): this fast path emits dst = left op right without going
+    ; through .ge_binop; check the left operand here (ADD only). The left
+    ; operand's VAR shape is validated first: a non-VAR left (e.g. a number)
+    ; must fall through to the original validation, not be read as a name.
+    cmp r15, OP_ADD
+    jne .rfx_teira_left_pass
+    mov rax, [r13+16]
+    cmp qword [rax], AST_VAR
+    jne .rfx_teira_left_pass
+    mov rdi, [rax+8]
+    call is_str_var
+    test rax, rax
+    jnz .rfx_teira_refuse
+.rfx_teira_left_pass:
     mov rax, [r13+16]
     cmp qword [rax], AST_VAR
     jne .teira_no
@@ -25244,6 +25841,22 @@ try_emit_int_reg_assignment:
     test rax, rax
     jle .teira_no
     mov rdx, rax                ; right reg id
+    ; FIXALL (b/c): check the right operand too (ADD only; the left was
+    ; checked at .teira_binop_ok entry, the immediate path needs none).
+    cmp r15, OP_ADD
+    jne .rfx_teira_right_ok
+    mov rax, [r13+24]
+    mov rdi, [rax+8]
+    call is_str_var
+    test rax, rax
+    jz .rfx_teira_right_ok
+.rfx_teira_refuse:
+    mov rdi, [r13+32]
+    lea rsi, [rel rfx_bc_hdr_cat]
+    lea rdx, [rel rfx_bc_txt_add]
+    lea rcx, [rel rfx_bc_hint_cat]
+    jmp r80_compile_error
+.rfx_teira_right_ok:
     cmp r15, OP_SUB
     jne .teira_commutative
     ; For subtraction, dst==right would destroy the RHS before use; fallback.
@@ -26816,6 +27429,35 @@ r56_emit_global_store:
     mov rdi,rbx
     call r56_record_patch
     pop rbx
+    ret
+
+; rfx_ensure_slot (R104) -> rax = the index of the hidden module global `0gahanata`, the entry
+; rsp of mukhya; registered once, at its first use. A module object (no mukhya) marks it extern,
+; as r65_ensure_globals does for the arena globals: the root defines it, sutram-link resolves it.
+rfx_ensure_slot:
+    mov rax, [rel rfx_slot_idx]
+    test rax, rax
+    jns .have
+    push rbx
+    lea rbx, [rel rfx_slot_name]
+    call alloc_ast
+    mov qword [rax], AST_DECL
+    mov [rax + 8], rbx
+    mov qword [rax + 16], 0
+    call r56_register_global
+    mov rdi, rbx
+    call r56_global_index
+    dec rax
+    mov [rel rfx_slot_idx], rax
+    cmp qword [rel r28_object_mode], 0
+    je .owned
+    cmp qword [rel r28_no_mukhya], 0
+    je .owned
+    lea rcx, [rel r30_gextern]
+    mov byte [rcx + rax], 1
+.owned:
+    pop rbx
+.have:
     ret
 
 ; Finalize after main + all functions + user call backpatches.

@@ -1,0 +1,10 @@
+# WS2: recursion depth, v285 against v286 (programs/depth.sm: yog(d) for d = 0, 100, 200, ...; each frame is 'sub rsp,2048' plus pushes)
+v285: 4000 ran (sum 8002000); the 4100 line was begun ("4100 ") and the program died with exit 139 (segmentation fault), no message
+v286: 3900 ran (sum 7606950); then at 4000: Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram exit 1
+500 levels (programs/rec_500.sm): yog(500) = 125250, yog(3000) = 4501500 on both.
+
+# Binary size and speed (programs/calls.sm: 50,000,000 calls of a one-line prakriya)
+01_hello: 217 -> 232 bytes (+15: mov [0gahanata], rsp in mukhya and the 8-byte slot)
+calls.sm (1 prakriya): 434 -> 564 bytes (+130 = 15 + 115 for the prologue check, the trap and its 57-byte message)
+286 (2 prakriya): 2037 -> 2282 bytes (+245 = 15 + 2 x 115)
+calls.sm wall time, 3 runs each (GNU time): v285 0.10 0.09 0.10 s; v286 0.10 0.10 0.12 s (final build: 0.11 0.10 0.15)

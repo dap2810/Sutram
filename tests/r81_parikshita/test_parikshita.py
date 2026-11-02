@@ -181,9 +181,9 @@ parikshita mukhya() {
     kosh_push(k, 1)
 }
 ''', (NO, 'E_APARIKSHITA_KARYA', None)),
-    ('likha(fd, buffer, count) refused', '''parikshita mukhya() {
+    ('dvaram_likha(fd, buffer, count) refused', '''parikshita mukhya() {
     vitti p = nirmmita(8)
-    likha(1, p, 8)
+    dvaram_likha(1, p, 8)
 }
 ''', (NO, 'E_APARIKSHITA_KARYA', None)),
     ('a rachana field refused', '''rachana Bindu = { x, y }

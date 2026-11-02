@@ -1,0 +1,6 @@
+mukhya() {
+    vitti p = nirmmita(16)
+    p[0] = 7306
+    vitti n = dvaram_likha(1, p, 2)
+    likha("\nwrote ", n, "\n")
+}

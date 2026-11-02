@@ -73,7 +73,7 @@ mukhya() {
     i = 0
     yavat (i < nuniq) {
         # uptrs[i] already points tak packed bytes; print directly
-        likha(1, uptrs[i], ulens[i])
+        dvaram_likha(1, uptrs[i], ulens[i])
         likha(": ", nighantu_grah(m, 32, uptrs[i], ulens[i]))
         i = i + 1
     }

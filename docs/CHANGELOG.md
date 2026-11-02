@@ -1,4 +1,24 @@
-> **The 20 newest entries.** Older ones, from "v278, unchanged (Claude, R83)" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v278, unchanged (Claude, R86)" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v286 (Muse's FIXALL patch, applied by Claude, R104) - five silent wrong answers become refusals; a recursion guard
+
+- **`likha(a, " ", b)`** (three arguments, the first not a string literal) printed nothing: now **`E_LIKHA_TRAYA`**
+  at compile time. The raw write is the new builtin **`dvaram_likha(fd, buf, len)`** (returns the count); 57 tree
+  sites renamed (`examples/215`, `217`, `lib/patra.smlib`, 54 tests).
+- **`s == "ab"` / `!=`** on strings compared addresses: now **`E_VARTANI_TUL`** (use `vartani_tul`, 0 when equal).
+  Also in `yadi` / `yavat` conditions and the fast paths. Not tracked: parameters, call results, `kosh` elements,
+  module globals - with a literal on either side they are still refused.
+- **`s + t`** on strings added addresses: now **`E_VARTANI_CAT`** (use `vartani_cat`). A string plus an integer is
+  still pointer arithmetic (`base + 6`, `letters + grade - 65`: two tree programs use it); literal + literal folds.
+- **`vitti x` / `dasham d` without a value in a function** read the slot's leftover (`0 99 99`): now **`E_MULYA_VINA`**.
+  `mala`, `kosh` and module-level declarations unchanged. Zero tree programs affected.
+- **Recursion past the stack** was a segmentation fault, exit 139: now **`E_GAHANATA`**, exit 1, from a check in every
+  `prakriya` prologue against `mukhya`'s entry `rsp` (limit 8,339,456 bytes, about 4,000 frames; `yog(3900)` runs,
+  `yog(4000)` refuses; v285 ran 4,000 and crashed at 4,100). Linux only; 15 bytes in `mukhya` + 115 per `prakriya`;
+  50,000,000 calls: 0.10 s before and after.
+- **The guard, v285 -> v286:** every Linux program that compiles differs (the prologue bytes); each was run old and
+  new - see `Claude-to-Sarvam/R104-00-*.md` for the counts by kind. PE: byte-identical. Reference 4a, 5a, 6d, 20.
+- Muse's report: `Muse-to-Sarvam/FIXALL-R100-TRAPS.md`. Native-speaker review of the new Sanskrit: NOT RUN.
 
 ## v285 (Claude, R102 + R103) - `mandapa parimita N`: a block with a byte budget that refuses; regions stay for the program's life
 
@@ -432,15 +452,3 @@ likha(a[0])        -> prints 41
   printed `-9223372036854.775808`, and 9.0e9-9.2e12 could lose the last digits.
 - **Goldens:** `289` (float printing), `290` (the refusal). `examples/r71/conversion.sm` wrote `vitti a = 2.75`;
   it now converts through a `dasham` and pins the same output. No suite golden had recorded truncated output.
-
-## v278, unchanged (Claude, R86) - the alias documented and pinned; the assumptions page checked
-
-- **Reference §16, "Two names for one `kosh`"**: `vitti a = k` is a second name, not a copy; when `k` cannot grow
-  in place (something allocated in between, or always on Windows) it moves and the other name keeps the old
-  buffer - reads give old data, writes do not reach `k`. A worked program with its real output.
-- **`examples/288`** pins it (`a[0]=41 k[0]=99` / `a[0]=7 k[0]=99`): if the alias is ever fixed, it fails.
-- **Muse's assumptions page, every claim run:** 12 of 15 right; wrong - item 4's "faults even when nothing
-  relocates" (not on Linux), item 7's "`0.0/0.0` is 0" (it is NaN), item 11's "an uninitialized `vitti` reads 0"
-  (it reads a leftover value, differently on Linux and Windows).
-- **Found, not fixed:** `dasham` comparisons treat NaN as equal to and below every number (`n == 42.0` is true);
-  string `+` on variables adds addresses (printing the result crashes).

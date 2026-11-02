@@ -1,0 +1,18 @@
+# The guard, origin/main (v285, 3a78e6e) -> v286, tools/guard_pair.py, Linux cloud (2 cores). Final build (Muse's patch + the 0gahanata fix).
+
+## Linux ELF
+source files whose text changed: 14
+683 programs: 0 byte-identical, 132 refused identically, 551 DIFFER, 0 new
+(the other 537 DIFFER lines: 'old rc=0 new rc=0', same source; the full list is diffrun-elf.txt)
+
+## Linux PE (--pe)
+source files whose text changed: 14
+683 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 0 new
+
+## win/sutram.exe under Wine (--pe)
+source files whose text changed: 14
+683 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 0 new
+
+## Wine outputs against the Linux compiler's PE outputs, byte for byte: 1102 identical, 0 differ, 0 missing
+
+## The first guard run, on Muse's patch applied verbatim (before the 0gahanata fix): ELF 683 programs: 0 byte-identical, 132 refused identically, 551 DIFFER, 0 new; PE 683 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 0 new; diffrun elf: 551 DIFFER run old and new: 551 same output and exit code, 0 changed

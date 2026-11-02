@@ -20,7 +20,7 @@ mukhya() {
     yavat (i < n) {
         sl = arr[pos]
         khand_bandh(arr + (pos + 1) * 8, sl, buf)
-        likha(1, buf, sl)
+        dvaram_likha(1, buf, sl)
         likha("\n")
         pos = pos + 1 + sl
         i = i + 1

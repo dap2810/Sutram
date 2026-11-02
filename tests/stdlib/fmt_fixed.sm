@@ -3,36 +3,36 @@ mukhya() {
     vitti out = nirmmita(128)
     vitti n = 0
     n = roop_sthir(3.14159, 2, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     # half away from zero: 2.5 -> 3, -2.5 -> -3
     n = roop_sthir(2.5, 0, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     n = roop_sthir(0.0 - 2.5, 0, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     # negative that rounds tak zero keeps the util_chinha
     n = roop_sthir(0.0 - 0.004, 2, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     # zero-padded fraction, 3 places
     n = roop_sthir(100.0, 3, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     # always-util_chinha form
     n = roop_sthir_chinhit(3.1, 2, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     n = roop_sthir_chinhit(0.0 - 3.1, 2, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     # places clamped tak 0..9: 12 -> 9
     n = roop_sthir(1.5, 12, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
     # negative places clamped tak 0
     n = roop_sthir(1.5, 0 - 3, out)
-    likha(1, out, n)
+    dvaram_likha(1, out, n)
     likha("\n")
 }

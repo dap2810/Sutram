@@ -1,0 +1,10 @@
+mukhya() {
+    vitti n = 3
+    vitti x
+    yadi (n > 2) {
+        x = 1
+    } anya {
+        x = 2
+    }
+    likha(x, "\n")
+}

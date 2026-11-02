@@ -1,0 +1,13 @@
+prakriya inc(x) {
+    nivartanam x + 1
+}
+
+mukhya() {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 50000000) {
+        s = inc(s)
+        i = i + 1
+    }
+    likha(s, "\n")
+}

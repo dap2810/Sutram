@@ -1,0 +1,4 @@
+mukhya() {
+    vitti s = "ab"
+    likha(vartani_tul(s, "ab"), " ", vartani_tul(s, "ac"), "\n")
+}

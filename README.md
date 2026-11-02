@@ -194,6 +194,15 @@ any memory (Linux, v285; §19, "A budget").
 storage - so give each `kosh` one name - see
 [`docs/LANGUAGE-REFERENCE.md`, §16, "Two names for one `kosh`"](docs/LANGUAGE-REFERENCE.md#two-names-for-one-kosh-vitti-a--k-is-not-a-copy-v278-on-linux-the-names-stay-one-from-v284).
 
+## What the compiler refuses instead of guessing (v286)
+
+Five things that used to compile and give a silent wrong answer are now refused, each with a Sanskrit message
+and the fix in its `Sanket` line: a three-argument `likha` that does not start with a string literal
+(`E_LIKHA_TRAYA`; raw writes are `dvaram_likha(fd, buf, len)`); `==` or `!=` between strings (`E_VARTANI_TUL`;
+use `vartani_tul`); `+` between strings (`E_VARTANI_CAT`; use `vartani_cat`); a `vitti` or `dasham` declared in a
+function without a value (`E_MULYA_VINA`); and a recursion that runs out of stack, which now stops with
+`E_GAHANATA` and exit 1 instead of a segmentation fault. `docs/LANGUAGE-REFERENCE.md` §4a, §5a and §6d.
+
 ## Honest status
 
 The clean-project handoff reports a Linux baseline of **225 passing cases,

@@ -1,0 +1,7 @@
+prakriya f(n) {
+    nivartanam f(n + 1)
+}
+
+mukhya() {
+    likha(f(0), "\n")
+}

@@ -1,0 +1,6 @@
+mukhya() {
+    vitti s = "ab"
+    yadi (s == "ab") {
+        likha("same\n")
+    }
+}

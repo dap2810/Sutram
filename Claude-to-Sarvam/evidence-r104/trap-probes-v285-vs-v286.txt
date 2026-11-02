@@ -1,0 +1,186 @@
+# The R100 traps and the recursion guard: each probe compiled and run by v285 (origin/main) and v286. Linux x86-64.
+
+## a_var_first.sm
+    mukhya() {
+        vitti a = 7
+        vitti b = 9
+        likha(a, " ", b)
+    }
+
+  v285: ran, exit 0, stdout ''
+  v286: COMPILE REFUSED (exit 1): a_var_first.sm: Sutram Error [E_LIKHA_TRAYA]: tri-mulya-likha prathamam uddharanam apeksate / Sanket: smriti-lekhanaya dvaram_likha(fd, smriti, sankhya) iti prayujyatam
+
+## a_lit_first.sm
+    mukhya() {
+        vitti a = 7
+        likha("a ", a, "\n")
+    }
+
+  v285: ran, exit 0, stdout 'a 7|'
+  v286: ran, exit 0, stdout 'a 7|'
+
+## a_two.sm
+    mukhya() {
+        vitti a = 7
+        likha(a, "\n")
+    }
+
+  v285: ran, exit 0, stdout '7||'
+  v286: ran, exit 0, stdout '7||'
+
+## a_dvaram.sm
+    mukhya() {
+        vitti p = nirmmita(16)
+        p[0] = 7306
+        vitti n = dvaram_likha(1, p, 2)
+        likha("\nwrote ", n, "\n")
+    }
+
+  v285: COMPILE REFUSED (exit 1): Sutram Error: agyat prakriya: dvaram_likha
+  v286: ran, exit 0, stdout '�\x1c|wrote 2|'
+
+## b_eq.sm
+    mukhya() {
+        vitti s = "ab"
+        likha(s == "ab")
+    }
+
+  v285: ran, exit 0, stdout '0|'
+  v286: COMPILE REFUSED (exit 1): b_eq.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam / Sanket: samam cet vartani_tul(a, b) == 0; asamam cet vartani_tul(a, b) != 0
+
+## b_yadi.sm
+    mukhya() {
+        vitti s = "ab"
+        yadi (s == "ab") {
+            likha("same\n")
+        }
+    }
+
+  v285: ran, exit 0, stdout ''
+  v286: COMPILE REFUSED (exit 1): b_yadi.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam / Sanket: samam cet vartani_tul(a, b) == 0; asamam cet vartani_tul(a, b) != 0
+
+## b_tul.sm
+    mukhya() {
+        vitti s = "ab"
+        likha(vartani_tul(s, "ab"), " ", vartani_tul(s, "ac"), "\n")
+    }
+
+  v285: ran, exit 0, stdout '0 1|'
+  v286: ran, exit 0, stdout '0 1|'
+
+## c_cat.sm
+    mukhya() {
+        vitti s = "ab"
+        vitti t = "cd"
+        vitti u = s + t
+        likha(u)
+    }
+
+  v285: ran, exit 0, stdout '8388923|'
+  v286: COMPILE REFUSED (exit 1): c_cat.sm:4:17: Sutram Error [E_VARTANI_CAT]: vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam /       vitti u = s + t /                   ^ / Sanket: vartani_cat(dst, src) src-am dst-ante yo
+
+## c_ptr.sm
+    mukhya() {
+        vitti s = "hello"
+        vitti p = s + 1
+        likha(shabda(p), "\n")
+    }
+
+  v285: ran, exit 0, stdout 'ello4||'
+  v286: ran, exit 0, stdout 'ello4||'
+
+## c_relit.sm
+    mukhya() {
+        vitti s = "ab"
+        s = 5
+        likha(s + 3, "\n")
+    }
+
+  v285: ran, exit 0, stdout '8||'
+  v286: ran, exit 0, stdout '8||'
+
+## d_uninit.sm
+    prakriya f(n) {
+        vitti x
+        yadi (n == 0) {
+            x = 99
+        }
+        nivartanam x
+    }
+    
+    mukhya() {
+        likha(f(0), " ", f(1), "\n")
+    }
+
+  v285: ran, exit 0, stdout '99 99|'
+  v286: COMPILE REFUSED (exit 1): d_uninit.sm: Sutram Error [E_MULYA_VINA]: vitti 'x' mulyam vina ghoshita - prathamam mulyam dehi / Sanket: ghoshana-kale mulyam likha
+
+## d_dasham.sm
+    mukhya() {
+        dasham d
+        likha(d, "\n")
+    }
+
+  v285: ran, exit 0, stdout '0.000000||'
+  v286: COMPILE REFUSED (exit 1): d_dasham.sm: Sutram Error [E_MULYA_VINA]: dasham 'd' mulyam vina ghoshita - prathamam mulyam dehi / Sanket: ghoshana-kale mulyam likha
+
+## d_mala.sm
+    mukhya() {
+        vitti m[4]
+        m[0] = 3
+        likha(m[0], "\n")
+    }
+
+  v285: ran, exit 0, stdout '3||'
+  v286: ran, exit 0, stdout '3||'
+
+## rec_none.sm
+    prakriya f(n) {
+        nivartanam f(n + 1)
+    }
+    
+    mukhya() {
+        likha(f(0), "\n")
+    }
+
+  v285: ran, exit -11, stdout ''
+  v286: ran, exit 1, stdout 'Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram|'
+
+## rec_mutual.sm
+    prakriya a(n) {
+        nivartanam b(n + 1)
+    }
+    
+    prakriya b(n) {
+        nivartanam a(n + 1)
+    }
+    
+    mukhya() {
+        likha(a(0), "\n")
+    }
+
+  v285: ran, exit -11, stdout ''
+  v286: ran, exit 1, stdout 'Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram|'
+
+## rec_500.sm
+    prakriya yog(n) {
+        yadi (n == 0) {
+            nivartanam 0
+        }
+        nivartanam n + yog(n - 1)
+    }
+    
+    mukhya() {
+        likha(yog(500), " ", yog(3000), "\n")
+    }
+
+  v285: ran, exit 0, stdout '125250 4501500|'
+  v286: ran, exit 0, stdout '125250 4501500|'
+
+## d_both.sm (declared without a value, assigned in both branches of a yadi - the blanket rule refuses it)
+    (programs/d_both.sm)
+  v286: COMPILE REFUSED (exit 1): d_both.sm: Sutram Error [E_MULYA_VINA]: vitti 'x' mulyam vina ghoshita - prathamam mulyam dehi
+
+## b_params.sm (two parameters compared with ==: not tracked, still compares addresses - the stated scope limit)
+    (programs/b_params.sm)
+  v286: ran, exit 0, stdout '0 1|'   (same(s, "ab") = 0: the literal is a second copy; same(s, s) = 1)

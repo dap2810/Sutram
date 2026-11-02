@@ -1,0 +1,393 @@
+diff --git a/tests/sandesh/expect/bengali/kosh_empty.out b/tests/sandesh/expect/bengali/kosh_empty.out
+index a6039b4..c127298 100644
+--- a/tests/sandesh/expect/bengali/kosh_empty.out
++++ b/tests/sandesh/expect/bengali/kosh_empty.out
+@@ -1,5 +1,5 @@
+ ভাষা প্যাক পাওয়া গেছে: bengali
+-সফল: 402 বাইট সংকলিত
++সফল: 417 বাইট সংকলিত
+ [compile exit 0]
+ Sutram Error: খালি কোশ থেকে kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/bengali/ok.out b/tests/sandesh/expect/bengali/ok.out
+index 7b4ffa3..2741947 100644
+--- a/tests/sandesh/expect/bengali/ok.out
++++ b/tests/sandesh/expect/bengali/ok.out
+@@ -1,5 +1,5 @@
+ ভাষা প্যাক পাওয়া গেছে: bengali
+-সফল: 180 বাইট সংকলিত
++সফল: 195 বাইট সংকলিত
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/bengali/oob.out b/tests/sandesh/expect/bengali/oob.out
+index c902d08..276f002 100644
+--- a/tests/sandesh/expect/bengali/oob.out
++++ b/tests/sandesh/expect/bengali/oob.out
+@@ -1,5 +1,5 @@
+ ভাষা প্যাক পাওয়া গেছে: bengali
+-সফল: 461 বাইট সংকলিত
++সফল: 476 বাইট সংকলিত
+ [compile exit 0]
+ Sutram Error: পঙক্তি সূচক সীমার বাইরে
+ [run exit 1]
+diff --git a/tests/sandesh/expect/default/kosh_empty.out b/tests/sandesh/expect/default/kosh_empty.out
+index fd079e1..fcb3886 100644
+--- a/tests/sandesh/expect/default/kosh_empty.out
++++ b/tests/sandesh/expect/default/kosh_empty.out
+@@ -1,4 +1,4 @@
+-Siddh: 380 baait sankalit
++Siddh: 395 baait sankalit
+ [compile exit 0]
+ Sutram Error: riktat koshat kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/default/ok.out b/tests/sandesh/expect/default/ok.out
+index a4e4c6f..3c756e8 100644
+--- a/tests/sandesh/expect/default/ok.out
++++ b/tests/sandesh/expect/default/ok.out
+@@ -1,4 +1,4 @@
+-Siddh: 180 baait sankalit
++Siddh: 195 baait sankalit
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/default/oob.out b/tests/sandesh/expect/default/oob.out
+index bbb0966..5fa0000 100644
+--- a/tests/sandesh/expect/default/oob.out
++++ b/tests/sandesh/expect/default/oob.out
+@@ -1,4 +1,4 @@
+-Siddh: 420 baait sankalit
++Siddh: 435 baait sankalit
+ [compile exit 0]
+ Sutram Error: mala ank seema atikram
+ [run exit 1]
+diff --git a/tests/sandesh/expect/gujarati/kosh_empty.out b/tests/sandesh/expect/gujarati/kosh_empty.out
+index bd7b7bc..0ae1343 100644
+--- a/tests/sandesh/expect/gujarati/kosh_empty.out
++++ b/tests/sandesh/expect/gujarati/kosh_empty.out
+@@ -1,5 +1,5 @@
+ ભાષા પેક મળ્યો: gujarati
+-સફળ: 417 બાઇટ સંકલિત
++સફળ: 432 બાઇટ સંકલિત
+ [compile exit 0]
+ Sutram Error: ખાલી કોશમાંથી કોશકાઢો
+ [run exit 1]
+diff --git a/tests/sandesh/expect/gujarati/ok.out b/tests/sandesh/expect/gujarati/ok.out
+index c900b0a..5fd5960 100644
+--- a/tests/sandesh/expect/gujarati/ok.out
++++ b/tests/sandesh/expect/gujarati/ok.out
+@@ -1,5 +1,5 @@
+ ભાષા પેક મળ્યો: gujarati
+-સફળ: 180 બાઇટ સંકલિત
++સફળ: 195 બાઇટ સંકલિત
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/gujarati/oob.out b/tests/sandesh/expect/gujarati/oob.out
+index 51c7005..6bfa442 100644
+--- a/tests/sandesh/expect/gujarati/oob.out
++++ b/tests/sandesh/expect/gujarati/oob.out
+@@ -1,5 +1,5 @@
+ ભાષા પેક મળ્યો: gujarati
+-સફળ: 473 બાઇટ સંકલિત
++સફળ: 488 બાઇટ સંકલિત
+ [compile exit 0]
+ Sutram Error: પંક્તિ અનુક્રમાંક સીમા બહાર
+ [run exit 1]
+diff --git a/tests/sandesh/expect/hindi/kosh_empty.out b/tests/sandesh/expect/hindi/kosh_empty.out
+index 3de42d4..7b3e5cc 100644
+--- a/tests/sandesh/expect/hindi/kosh_empty.out
++++ b/tests/sandesh/expect/hindi/kosh_empty.out
+@@ -1,5 +1,5 @@
+ भाषा पैक मिला: hindi
+-सफल: 396 बाइट संकलित
++सफल: 411 बाइट संकलित
+ [compile exit 0]
+ Sutram Error: खाली कोश से kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/hindi/ok.out b/tests/sandesh/expect/hindi/ok.out
+index 4454498..05fd5a7 100644
+--- a/tests/sandesh/expect/hindi/ok.out
++++ b/tests/sandesh/expect/hindi/ok.out
+@@ -1,5 +1,5 @@
+ भाषा पैक मिला: hindi
+-सफल: 180 बाइट संकलित
++सफल: 195 बाइट संकलित
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/hindi/oob.out b/tests/sandesh/expect/hindi/oob.out
+index 0fa98ac..6bacd7e 100644
+--- a/tests/sandesh/expect/hindi/oob.out
++++ b/tests/sandesh/expect/hindi/oob.out
+@@ -1,5 +1,5 @@
+ भाषा पैक मिला: hindi
+-सफल: 471 बाइट संकलित
++सफल: 486 बाइट संकलित
+ [compile exit 0]
+ Sutram Error: पंक्ति सूचकांक सीमा से बाहर
+ [run exit 1]
+diff --git a/tests/sandesh/expect/kannada/kosh_empty.out b/tests/sandesh/expect/kannada/kosh_empty.out
+index 620e8fe..5d1d917 100644
+--- a/tests/sandesh/expect/kannada/kosh_empty.out
++++ b/tests/sandesh/expect/kannada/kosh_empty.out
+@@ -1,5 +1,5 @@
+ ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+-ಯಶಸ್ವಿ: 401 ಬೈಟ್ ಸಂಕಲಿತ
++ಯಶಸ್ವಿ: 416 ಬೈಟ್ ಸಂಕಲಿತ
+ [compile exit 0]
+ Sutram Error: ಖಾಲಿ ಕೋಶದಿಂದ kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/kannada/ok.out b/tests/sandesh/expect/kannada/ok.out
+index 8c082d5..94b2854 100644
+--- a/tests/sandesh/expect/kannada/ok.out
++++ b/tests/sandesh/expect/kannada/ok.out
+@@ -1,5 +1,5 @@
+ ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+-ಯಶಸ್ವಿ: 180 ಬೈಟ್ ಸಂಕಲಿತ
++ಯಶಸ್ವಿ: 195 ಬೈಟ್ ಸಂಕಲಿತ
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/kannada/oob.out b/tests/sandesh/expect/kannada/oob.out
+index af4f853..0c1160d 100644
+--- a/tests/sandesh/expect/kannada/oob.out
++++ b/tests/sandesh/expect/kannada/oob.out
+@@ -1,5 +1,5 @@
+ ಭಾಷಾ ಪ್ಯಾಕ್ ಸಿಕ್ಕಿದೆ: kannada
+-ಯಶಸ್ವಿ: 470 ಬೈಟ್ ಸಂಕಲಿತ
++ಯಶಸ್ವಿ: 485 ಬೈಟ್ ಸಂಕಲಿತ
+ [compile exit 0]
+ Sutram Error: ಪಂಕ್ತಿ ಸೂಚ್ಯಂಕ ಮಿತಿ ಮೀರಿದೆ
+ [run exit 1]
+diff --git a/tests/sandesh/expect/malayalam/kosh_empty.out b/tests/sandesh/expect/malayalam/kosh_empty.out
+index bf1251d..2ae9e6a 100644
+--- a/tests/sandesh/expect/malayalam/kosh_empty.out
++++ b/tests/sandesh/expect/malayalam/kosh_empty.out
+@@ -1,5 +1,5 @@
+ ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+-വിജയം: 435 ബൈറ്റ് സമാഹരിച്ചു
++വിജയം: 450 ബൈറ്റ് സമാഹരിച്ചു
+ [compile exit 0]
+ Sutram Error: ശൂന്യമായ കോശത്തിൽ നിന്ന് kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/malayalam/ok.out b/tests/sandesh/expect/malayalam/ok.out
+index 87fcd9e..2224967 100644
+--- a/tests/sandesh/expect/malayalam/ok.out
++++ b/tests/sandesh/expect/malayalam/ok.out
+@@ -1,5 +1,5 @@
+ ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+-വിജയം: 180 ബൈറ്റ് സമാഹരിച്ചു
++വിജയം: 195 ബൈറ്റ് സമാഹരിച്ചു
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/malayalam/oob.out b/tests/sandesh/expect/malayalam/oob.out
+index 09af08e..19a3d8d 100644
+--- a/tests/sandesh/expect/malayalam/oob.out
++++ b/tests/sandesh/expect/malayalam/oob.out
+@@ -1,5 +1,5 @@
+ ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
+-വിജയം: 473 ബൈറ്റ് സമാഹരിച്ചു
++വിജയം: 488 ബൈറ്റ് സമാഹരിച്ചു
+ [compile exit 0]
+ Sutram Error: വരി സൂചിക പരിധിക്ക് പുറത്ത്
+ [run exit 1]
+diff --git a/tests/sandesh/expect/marathi/kosh_empty.out b/tests/sandesh/expect/marathi/kosh_empty.out
+index 657df41..62c2eb9 100644
+--- a/tests/sandesh/expect/marathi/kosh_empty.out
++++ b/tests/sandesh/expect/marathi/kosh_empty.out
+@@ -1,5 +1,5 @@
+ भाषा पॅक मिळाला: marathi
+-यशस्वी: 413 बाइट संकलित
++यशस्वी: 428 बाइट संकलित
+ [compile exit 0]
+ Sutram Error: रिकाम्या कोशातून kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/marathi/ok.out b/tests/sandesh/expect/marathi/ok.out
+index 92c2a30..b9d102d 100644
+--- a/tests/sandesh/expect/marathi/ok.out
++++ b/tests/sandesh/expect/marathi/ok.out
+@@ -1,5 +1,5 @@
+ भाषा पॅक मिळाला: marathi
+-यशस्वी: 180 बाइट संकलित
++यशस्वी: 195 बाइट संकलित
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/marathi/oob.out b/tests/sandesh/expect/marathi/oob.out
+index c1eeb6a..6e17990 100644
+--- a/tests/sandesh/expect/marathi/oob.out
++++ b/tests/sandesh/expect/marathi/oob.out
+@@ -1,5 +1,5 @@
+ भाषा पॅक मिळाला: marathi
+-यशस्वी: 478 बाइट संकलित
++यशस्वी: 493 बाइट संकलित
+ [compile exit 0]
+ Sutram Error: रांग निर्देशांक मर्यादेबाहेर
+ [run exit 1]
+diff --git a/tests/sandesh/expect/odia/kosh_empty.out b/tests/sandesh/expect/odia/kosh_empty.out
+index a393a2e..b9dfb36 100644
+--- a/tests/sandesh/expect/odia/kosh_empty.out
++++ b/tests/sandesh/expect/odia/kosh_empty.out
+@@ -1,5 +1,5 @@
+ ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+-ସଫଳ: 395 ବାଇଟ୍ ସଂକଳିତ
++ସଫଳ: 410 ବାଇଟ୍ ସଂକଳିତ
+ [compile exit 0]
+ Sutram Error: ଖାଲି କୋଶରୁ kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/odia/ok.out b/tests/sandesh/expect/odia/ok.out
+index 1b7e8e0..3eff042 100644
+--- a/tests/sandesh/expect/odia/ok.out
++++ b/tests/sandesh/expect/odia/ok.out
+@@ -1,5 +1,5 @@
+ ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+-ସଫଳ: 180 ବାଇଟ୍ ସଂକଳିତ
++ସଫଳ: 195 ବାଇଟ୍ ସଂକଳିତ
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/odia/oob.out b/tests/sandesh/expect/odia/oob.out
+index 3c8464e..693ef0d 100644
+--- a/tests/sandesh/expect/odia/oob.out
++++ b/tests/sandesh/expect/odia/oob.out
+@@ -1,5 +1,5 @@
+ ଭାଷା ପ୍ୟାକ୍ ମିଳିଲା: odia
+-ସଫଳ: 458 ବାଇଟ୍ ସଂକଳିତ
++ସଫଳ: 473 ବାଇଟ୍ ସଂକଳିତ
+ [compile exit 0]
+ Sutram Error: ଧାଡ଼ି ସୂଚକ ସୀମା ବାହାରେ
+ [run exit 1]
+diff --git a/tests/sandesh/expect/punjabi/kosh_empty.out b/tests/sandesh/expect/punjabi/kosh_empty.out
+index 00c0237..4a6193a 100644
+--- a/tests/sandesh/expect/punjabi/kosh_empty.out
++++ b/tests/sandesh/expect/punjabi/kosh_empty.out
+@@ -1,5 +1,5 @@
+ ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+-ਸਫਲ: 405 ਬਾਈਟ ਸੰਕਲਿਤ
++ਸਫਲ: 420 ਬਾਈਟ ਸੰਕਲਿਤ
+ [compile exit 0]
+ Sutram Error: ਖ਼ਾਲੀ ਕੋਸ਼ ਤੋਂ kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/punjabi/ok.out b/tests/sandesh/expect/punjabi/ok.out
+index 16594eb..ad7c904 100644
+--- a/tests/sandesh/expect/punjabi/ok.out
++++ b/tests/sandesh/expect/punjabi/ok.out
+@@ -1,5 +1,5 @@
+ ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+-ਸਫਲ: 180 ਬਾਈਟ ਸੰਕਲਿਤ
++ਸਫਲ: 195 ਬਾਈਟ ਸੰਕਲਿਤ
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/punjabi/oob.out b/tests/sandesh/expect/punjabi/oob.out
+index 91ea2cd..f3ef2be 100644
+--- a/tests/sandesh/expect/punjabi/oob.out
++++ b/tests/sandesh/expect/punjabi/oob.out
+@@ -1,5 +1,5 @@
+ ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
+-ਸਫਲ: 459 ਬਾਈਟ ਸੰਕਲਿਤ
++ਸਫਲ: 474 ਬਾਈਟ ਸੰਕਲਿਤ
+ [compile exit 0]
+ Sutram Error: ਕਤਾਰ ਸੂਚਕ ਸੀਮਾ ਤੋਂ ਬਾਹਰ
+ [run exit 1]
+diff --git a/tests/sandesh/expect/sanskrit/kosh_empty.out b/tests/sandesh/expect/sanskrit/kosh_empty.out
+index dcc2613..f31e1f1 100644
+--- a/tests/sandesh/expect/sanskrit/kosh_empty.out
++++ b/tests/sandesh/expect/sanskrit/kosh_empty.out
+@@ -1,5 +1,5 @@
+ भाषा-पुटः प्राप्तः: sanskrit
+-सिद्धम्: 423 बाइट् सङ्कलिताः
++सिद्धम्: 438 बाइट् सङ्कलिताः
+ [compile exit 0]
+ Sutram Error: रिक्तात् कोशात् कोशपोप्
+ [run exit 1]
+diff --git a/tests/sandesh/expect/sanskrit/ok.out b/tests/sandesh/expect/sanskrit/ok.out
+index 0e2d0dc..6d15f39 100644
+--- a/tests/sandesh/expect/sanskrit/ok.out
++++ b/tests/sandesh/expect/sanskrit/ok.out
+@@ -1,5 +1,5 @@
+ भाषा-पुटः प्राप्तः: sanskrit
+-सिद्धम्: 180 बाइट् सङ्कलिताः
++सिद्धम्: 195 बाइट् सङ्कलिताः
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/sanskrit/oob.out b/tests/sandesh/expect/sanskrit/oob.out
+index c944868..0c481a4 100644
+--- a/tests/sandesh/expect/sanskrit/oob.out
++++ b/tests/sandesh/expect/sanskrit/oob.out
+@@ -1,5 +1,5 @@
+ भाषा-पुटः प्राप्तः: sanskrit
+-सिद्धम्: 488 बाइट् सङ्कलिताः
++सिद्धम्: 503 बाइट् सङ्कलिताः
+ [compile exit 0]
+ Sutram Error: पङ्क्ति-अङ्कः सीमाम् अतिक्रान्तः
+ [run exit 1]
+diff --git a/tests/sandesh/expect/tamil/kosh_empty.out b/tests/sandesh/expect/tamil/kosh_empty.out
+index 4efeb25..6463bc2 100644
+--- a/tests/sandesh/expect/tamil/kosh_empty.out
++++ b/tests/sandesh/expect/tamil/kosh_empty.out
+@@ -1,5 +1,5 @@
+ மொழித் தொகுப்பு கிடைத்தது: tamil
+-வெற்றி: 425 பைட் தொகுக்கப்பட்டது
++வெற்றி: 440 பைட் தொகுக்கப்பட்டது
+ [compile exit 0]
+ Sutram Error: காலி கோசத்திலிருந்து kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/tamil/ok.out b/tests/sandesh/expect/tamil/ok.out
+index c9c7ec6..95da6c2 100644
+--- a/tests/sandesh/expect/tamil/ok.out
++++ b/tests/sandesh/expect/tamil/ok.out
+@@ -1,5 +1,5 @@
+ மொழித் தொகுப்பு கிடைத்தது: tamil
+-வெற்றி: 180 பைட் தொகுக்கப்பட்டது
++வெற்றி: 195 பைட் தொகுக்கப்பட்டது
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/tamil/oob.out b/tests/sandesh/expect/tamil/oob.out
+index a650b3f..59c1b9c 100644
+--- a/tests/sandesh/expect/tamil/oob.out
++++ b/tests/sandesh/expect/tamil/oob.out
+@@ -1,5 +1,5 @@
+ மொழித் தொகுப்பு கிடைத்தது: tamil
+-வெற்றி: 500 பைட் தொகுக்கப்பட்டது
++வெற்றி: 515 பைட் தொகுக்கப்பட்டது
+ [compile exit 0]
+ Sutram Error: வரிசைப்பட சுட்டெண் வரம்புக்கு வெளியே
+ [run exit 1]
+diff --git a/tests/sandesh/expect/telugu/kosh_empty.out b/tests/sandesh/expect/telugu/kosh_empty.out
+index 7467b7f..1d5a025 100644
+--- a/tests/sandesh/expect/telugu/kosh_empty.out
++++ b/tests/sandesh/expect/telugu/kosh_empty.out
+@@ -1,5 +1,5 @@
+ భాషా ప్యాక్ దొరికింది: telugu
+-విజయం: 408 బైట్లు సంకలనం
++విజయం: 423 బైట్లు సంకలనం
+ [compile exit 0]
+ Sutram Error: ఖాళీ కోశం నుండి kosh_pop
+ [run exit 1]
+diff --git a/tests/sandesh/expect/telugu/ok.out b/tests/sandesh/expect/telugu/ok.out
+index dfa8960..81fda35 100644
+--- a/tests/sandesh/expect/telugu/ok.out
++++ b/tests/sandesh/expect/telugu/ok.out
+@@ -1,5 +1,5 @@
+ భాషా ప్యాక్ దొరికింది: telugu
+-విజయం: 180 బైట్లు సంకలనం
++విజయం: 195 బైట్లు సంకలనం
+ [compile exit 0]
+ 1
+ [run exit 0]
+diff --git a/tests/sandesh/expect/telugu/oob.out b/tests/sandesh/expect/telugu/oob.out
+index e45a468..129dd37 100644
+--- a/tests/sandesh/expect/telugu/oob.out
++++ b/tests/sandesh/expect/telugu/oob.out
+@@ -1,5 +1,5 @@
+ భాషా ప్యాక్ దొరికింది: telugu
+-విజయం: 476 బైట్లు సంకలనం
++విజయం: 491 బైట్లు సంకలనం
+ [compile exit 0]
+ Sutram Error: పంక్తి సూచిక పరిమితి దాటింది
+ [run exit 1]

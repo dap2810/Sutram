@@ -57,7 +57,7 @@ mukhya() {
             akshar_rakh(row, j, koshtha[j])
             j = j + 1
         }
-        likha(1, row, 6)
+        dvaram_likha(1, row, 6)
         likha("\n")
         i = i + 1
     }

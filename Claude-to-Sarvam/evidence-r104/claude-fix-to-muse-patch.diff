@@ -1,0 +1,177 @@
+--- src/sutram_compiler.asm (Muse's fixall_r100.patch applied verbatim onto v285, version string bumped)
++++ src/sutram_compiler.asm	2026-11-02 11:58:59.073064048 -0500
+@@ -112,7 +112,6 @@
+ R23_MCALL_CAP  equ 2048
+ R56_GLOBAL_CAP equ 128
+ R56_PATCH_CAP equ 16384
+-RFX_PATCH_CAP equ 4096 ; FIXALL (rec): one patch per function prologue + one save
+ R9_GUNA_CAP equ 1024        ; R9: hidden guna values per compilation
+ FUNC_SPILL_BYTES equ 2048 ; reserved stack spill area per generated function/main
+ ; R31 experimental, disabled by default. Enable only with NASM:
+@@ -498,7 +497,8 @@
+     ; usage ever observed to survive (depth 4020 = 8365776 bytes), so the
+     ; guard always fires before the true bottom, in every ASLR run.
+     RFX_REC_TRAP_LEN equ 36 ; lea(7) + write(5+5+5+2) + exit(5+5+2)
+-    rfx_msg_patch_capacity db "Sutram Error: aahvan-gahanata sandarbh seema atikram", 10, 0
++    rfx_slot_name db "0gahanata", 0   ; R104: the hidden module global holding mukhya's entry rsp
++    rfx_slot_idx dq -1                ; its r56 index once registered
+     align 16
+     r87_absmask dq 0x7FFFFFFFFFFFFFFF, 0x7FFFFFFFFFFFFFFF
+     align 8
+@@ -1236,9 +1236,6 @@
+     float_vars  resq VAR_TABLE_CAP ; T12 dasham names in current generated-function scope
+     float_var_cnt resq 1
+     str_flags   resb VAR_TABLE_CAP ; FIXALL (b/c): 1 when the var_table slot holds a string
+-    rfx_slot_used resq 1 ; FIXALL (rec): 1 once the mukhya stack-top slot is emitted
+-    rfx_patch_count resq 1 ; FIXALL (rec): number of recorded stack-slot patches
+-    rfx_patches resq RFX_PATCH_CAP ; FIXALL (rec): disp32 field offsets to patch
+ %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
+     ; Stage 1 within-basic-block virtual cache. Fixed logical slots 1..4 map
+     ; to XMM2..XMM5. GPRs/stack remain authoritative at ALL times (write-through).
+@@ -15949,21 +15946,21 @@
+     mov rax, [rel root_node]
+     mov rax, [rax+8]          ; body = block node
+ 
+-    ; FIXALL (rec): save the entry stack pointer into the appended slot
+-    ; (patched by rfx_patch_stack_slot after all r56 globals).
+-    ; ELF non-object only; PE and object outputs are byte-identical.
++    ; FIXALL (rec): save the entry stack pointer into the hidden module global `0gahanata`
++    ; (R104: an ordinary r56 global, as r65's `0kshetra_*` - so --object and --separate builds
++    ; take the same path and link byte-identical to the direct compile). ELF only; PE unchanged.
+     cmp qword [rel target_pe], 0
+     jne .rfx_rec_mukhya_skip
+-    cmp qword [rel r28_object_mode], 0
+-    jne .rfx_rec_mukhya_skip
++    call rfx_ensure_slot      ; rax = the global's index
++    push rax
+     mov dil, 0x48             ; mov [rip+disp32], rsp
+     call emit_byte
+     mov dil, 0x89
+     call emit_byte
+     mov dil, 0x25
+     call emit_byte
+-    call rfx_record_patch
+-    mov qword [rel rfx_slot_used], 1
++    pop rdi
++    call r56_record_patch
+ .rfx_rec_mukhya_skip:
+     ; Function prologue: push rbp; push callee-saved; mov rbp, rsp
+     mov dil, 0x55             ; push rbp
+@@ -16071,7 +16068,6 @@
+     ; PE emits a distinct RW .data section in write_pe.
+     call r56_patch_global_storage
+     ; FIXALL (rec): the stack-top slot goes after all r56 slots.
+-    call rfx_patch_stack_slot
+ 
+     pop r15
+     pop r14
+@@ -16465,17 +16461,9 @@
+     ; jb skips trap+msg, lea reaches msg 29 bytes past its own end.
+     cmp qword [rel target_pe], 0
+     jne .rfx_rec_skip
+-    cmp qword [rel r28_object_mode], 0
+-    jne .rfx_rec_skip
+-    cmp qword [rel rfx_slot_used], 0
+-    je .rfx_rec_skip
+-    mov dil, 0x48             ; mov rax, [slot]
+-    call emit_byte
+-    mov dil, 0x8B
+-    call emit_byte
+-    mov dil, 0x05
+-    call emit_byte
+-    call rfx_record_patch
++    call rfx_ensure_slot      ; R104: mov rax,[0gahanata] (extern in a module object)
++    mov rdi, rax
++    call r56_emit_global_load
+     mov dil, 0x48             ; sub rax, rsp
+     call emit_byte
+     mov dil, 0x29
+@@ -27443,63 +27431,33 @@
+     pop rbx
+     ret
+ 
+-; FIXALL (rec): record a stack-slot patch. Unlike r56_record_patch this
+-; takes no global index: the slot is appended AFTER every r56 global
+-; (r56_patch_stack_slot runs after r56_patch_global_storage, when the
+-; final count — including codegen-time nirmmita registrations — is known),
+-; so no index captured during codegen can go stale or collide.
+-; Call when code_sz points at the disp32 field; emits 4 placeholder bytes.
+-rfx_record_patch:
+-    push rbx
+-    mov rcx,[rel rfx_patch_count]
+-    cmp rcx,RFX_PATCH_CAP
+-    jae .rfx_patch_overflow
+-    lea rdx,[rel rfx_patches]
+-    mov rax,[rel code_sz]
+-    mov [rdx+rcx*8],rax
+-    inc qword [rel rfx_patch_count]
+-    xor edi,edi
+-    call emit_u32
+-    pop rbx
+-    ret
+-.rfx_patch_overflow:
+-    lea rdi,[rel rfx_msg_patch_capacity]
+-    jmp capacity_fail
+-
+-; FIXALL (rec): patch every recorded stack-slot field to the appended slot
+-; and append the slot itself (one zero qword). Runs after
+-; r56_patch_global_storage, so code_sz already covers all r56 slots and the
+-; new slot lands strictly after them. No-op when nothing was recorded
+-; (PE/object modes record nothing: their output is byte-identical).
+-rfx_patch_stack_slot:
++; rfx_ensure_slot (R104) -> rax = the index of the hidden module global `0gahanata`, the entry
++; rsp of mukhya; registered once, at its first use. A module object (no mukhya) marks it extern,
++; as r65_ensure_globals does for the arena globals: the root defines it, sutram-link resolves it.
++rfx_ensure_slot:
++    mov rax, [rel rfx_slot_idx]
++    test rax, rax
++    jns .have
+     push rbx
+-    push r12
+-    push r13
+-    cmp qword [rel rfx_patch_count], 0
+-    je .rfx_ps_done
+-    mov r12,[rel code_sz] ; slot offset = first byte after the r56 slots
+-    xor r13,r13
+-.rfx_ps_loop:
+-    cmp r13,[rel rfx_patch_count]
+-    jae .rfx_ps_append
+-    lea rax,[rel rfx_patches]
+-    mov rdi,[rax+r13*8]
+-    mov rax,r12
+-    sub rax,rdi
+-    sub rax,4
+-    lea rcx,[rel code_buf]
+-    mov [rcx+rdi],eax
+-    inc r13
+-    jmp .rfx_ps_loop
+-.rfx_ps_append:
+-    xor edi,edi
+-    call emit_u32
+-    xor edi,edi
+-    call emit_u32
+-.rfx_ps_done:
+-    pop r13
+-    pop r12
++    lea rbx, [rel rfx_slot_name]
++    call alloc_ast
++    mov qword [rax], AST_DECL
++    mov [rax + 8], rbx
++    mov qword [rax + 16], 0
++    call r56_register_global
++    mov rdi, rbx
++    call r56_global_index
++    dec rax
++    mov [rel rfx_slot_idx], rax
++    cmp qword [rel r28_object_mode], 0
++    je .owned
++    cmp qword [rel r28_no_mukhya], 0
++    je .owned
++    lea rcx, [rel r30_gextern]
++    mov byte [rcx + rax], 1
++.owned:
+     pop rbx
++.have:
+     ret
+ 
+ ; Finalize after main + all functions + user call backpatches.

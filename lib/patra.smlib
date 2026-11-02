@@ -64,7 +64,7 @@ prakriya patra_likh_sarv(path, data, n) {
     fd = dvaram(p, 577)
     yadi (fd < 0) { nivartanam 0 - 1 }
     yavat (total < c) {
-        vitti w = likha(fd, src + total, c - total)
+        vitti w = dvaram_likha(fd, src + total, c - total)
         yadi (w <= 0) {
             band(fd)
             nivartanam 0 - 1
