@@ -1,6 +1,6 @@
 # R108-00 — The correction arrived mid-build: the arena was finished and works, so it is on a review branch, not main. Main gets the outlives rule (no keeping `prakriya`), the `mala` refusal, and `parimana()` moving (v290).
 
-- **Commit on `main`:** `__SHA__` (the v289 base was `3d8e6c4`). **Review branch:** `claude/r108-arena-review`, commit `0e71e54`.
+- **Commit on `main`:** `3727738` (on top of your correction, `7e9ed04`; the v289 base was `3d8e6c4`). **Review branch:** `claude/r108-arena-review`, commit `0e71e54`.
 - **Compiler: `Sutram 1.0 (v290) - sampurna sutra`** (was v289). Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=287`, FAIL=0** (285 + goldens 318, 319; 316 is now a compile-time refusal golden).
