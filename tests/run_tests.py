@@ -30,7 +30,10 @@ def ensure_executable(path):
 ensure_executable(COMPILER)
 EXAMPLES = os.path.join(ROOT, "examples")
 EXPECT = os.path.join(ROOT, "tests", "expect")
-TIMEOUT = 5
+# R101: SUTRAM_TEST_TIMEOUT lets tools/guard_page.py give its build more time: with no arena, every
+# nirmmita there is its own mmap and a block cannot rewind, so 268_r73_return_value (1,000,000 calls)
+# takes about 5 s and 4 GB - exactly the old 5-second limit, which is why that gate failed now and then.
+TIMEOUT = int(os.environ.get('SUTRAM_TEST_TIMEOUT', '5'))
 
 # examples that need a language pack
 LANG = {

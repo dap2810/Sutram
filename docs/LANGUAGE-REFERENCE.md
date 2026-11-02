@@ -1027,7 +1027,11 @@ and a program with no `kosh` in a block compiles to the same bytes as before. In
 `kosh` carries three more header words and each call with a `kosh` parameter one check (+11% on a call whose
 whole body is one `kosh` read; +3.5% on `kosh_push`).
 
-**Not yet:** the block does not take the `kosh`'s memory back — it is kept, so that the check is exact. Reading
+**Not yet:** the block does not take the `kosh`'s memory back — it is kept, so that the check is exact.
+**Measured (R101, `tools/peak_rss.py`):** a block run 100,000 times that makes a `kosh` of 100 numbers peaks at
+**about 100 MB** - the same as without the block. The block bounds `nirmmita` (10,000,000 `nirmmita(64)`, one
+block per pass: under 1 MB; without blocks: 625 MB), not `kosh` storage. Make a `kosh` that is reused once,
+outside the loop, and empty it with `kosh_clear` each pass. Reading
 the `kosh`'s address as raw memory (`x[i]` on a plain `vitti`) is not checked — as all raw memory (§6c). Under
 `--separate`, a module compiled on its own checks its `kosh` parameters only if it has a `kosh` in a block itself:
 the whole-program compile checks every `prakriya`.

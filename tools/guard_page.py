@@ -98,7 +98,9 @@ def main():
         parts = [f'controls {ok}/{total}']
         failed = total - ok
         if not quick and ok == total:
-            env = dict(os.environ, SUTRAM_COMPILER=exe)
+            # R101: this build has no arena (every nirmmita is an mmap, a block cannot rewind), so a
+            # program that allocates a million times in blocks runs ~5 s here - the suite's limit. 60 s.
+            env = dict(os.environ, SUTRAM_COMPILER=exe, SUTRAM_TEST_TIMEOUT='60')
             out = run([sys.executable, 'tests/run_tests.py'], env)
             p = re.search(r'PASS=(\d+)', out)
             f = re.search(r'FAIL=(\d+)', out)

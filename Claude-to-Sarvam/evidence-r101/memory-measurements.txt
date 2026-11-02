@@ -1,0 +1,117 @@
+# R101: peak resident memory, read by the kernel (tools/peak_rss.py -> tools/peak_rss.asm: fork, execve, wait4, ru_maxrss).
+# 'peak 0 KB' = the program touched too little for the kernel to record (an empty program reports 0 too).
+# GNU time reports 264 KB for such a program: its own resident memory, carried across exec.
+empty: peak_rss_kb 0 exit 0
+with_100000: peak_rss_kb 0 exit 0
+without_100000: peak_rss_kb 6272 exit 0
+with_1000000: peak_rss_kb 0 exit 0
+without_1000000: peak_rss_kb 62464 exit 0
+with_10000000: peak_rss_kb 0 exit 0
+without_10000000: peak_rss_kb 624896 exit 0
+kosh_alone_10000: peak_rss_kb 0 exit 0
+kosh_moving_10000: peak_rss_kb 256 exit 0
+kosh_alone_100000: peak_rss_kb 768 exit 0
+kosh_moving_100000: peak_rss_kb 1792 exit 0
+kosh_alone_1000000: peak_rss_kb 7808 exit 0
+kosh_moving_1000000: peak_rss_kb 16000 exit 0
+kosh_alone_10m: peak_rss_kb 78080 exit 0
+kosh_moving_10m: peak_rss_kb 209280 exit 0
+kb1: peak_rss_kb 104576 exit 0
+kb0: peak_rss_kb 101504 exit 0
+reuse: peak_rss_kb 0 exit 0
+
+# the programs
+## with_1000000.sm
+mukhya()
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 1000000)
+        mandapa
+            vitti b = nirmmita(64)
+            b[0] = i
+            s = s + b[0]
+        i = i + 1
+    likha(s, "\n")
+## without_1000000.sm
+mukhya()
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 1000000)
+        vitti b = nirmmita(64)
+        b[0] = i
+        s = s + b[0]
+        i = i + 1
+    likha(s, "\n")
+## kosh_alone.sm
+mukhya() {
+    kosh k[1]
+    vitti i = 0
+    yavat (i < 100000) {
+        kosh_push(k, i)
+        i = i + 1
+    }
+    likha("len ", kosh_len(k), " cap ", kosh_cap(k))
+}
+## kosh_moving.sm
+mukhya() {
+    kosh k[1]
+    vitti i = 0
+    yavat (i < 100000) {
+        kosh_push(k, i)
+        vitti obstacle = nirmmita(8)
+        i = i + 1
+    }
+    likha("len ", kosh_len(k), " cap ", kosh_cap(k))
+}
+## kb1.sm
+mukhya() {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        mandapa {
+            kosh k[1]
+            vitti j = 0
+            yavat (j < 100) {
+                kosh_push(k, j)
+                j = j + 1
+            }
+            s = s + k[99]
+        }
+        i = i + 1
+    }
+    likha("s ", s)
+}
+## kb0.sm
+mukhya() {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        kosh k[1]
+        kosh_clear(k)
+        vitti j = 0
+        yavat (j < 100) {
+            kosh_push(k, j)
+            j = j + 1
+        }
+        s = s + k[99]
+        i = i + 1
+    }
+    likha("s ", s)
+}
+## reuse.sm
+mukhya() {
+    kosh k[1]
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        kosh_clear(k)
+        vitti j = 0
+        yavat (j < 100) {
+            kosh_push(k, j)
+            j = j + 1
+        }
+        s = s + k[99]
+        i = i + 1
+    }
+    likha("s ", s)
+}

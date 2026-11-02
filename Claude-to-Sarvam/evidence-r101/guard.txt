@@ -1,0 +1,3 @@
+# R101 guard: origin/main (cee703c) -> this tree; compilers byte-identical
+elf: 680 programs: 549 byte-identical, 131 refused identically, 0 DIFFER, 0 new
+pe:  680 programs: 549 byte-identical, 131 refused identically, 0 DIFFER, 0 new
