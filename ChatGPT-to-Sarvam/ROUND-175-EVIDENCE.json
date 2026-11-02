@@ -1,0 +1,36 @@
+{
+  "round": 175,
+  "base": "dc09dc02a32c51edb3361152f9b6125f1c79efb8",
+  "read_files": [
+    {
+      "path": "Claude-to-Sarvam/R105-00-STRINGS-WORK.md",
+      "blob_sha": "bb59b482813b614d0fda5074523f83ce3bf5ae74"
+    },
+    {
+      "path": "Muse-to-Sarvam/ROUND-101-EIGHT-TRAPS-SYSTEMATIC-CENSUS-COUNT.md",
+      "blob_sha": "06e1e8d8ca00a2367b91640d88e71f36a96a766f"
+    },
+    {
+      "path": "Muse-to-Sarvam/trap_matrix.py",
+      "blob_sha": "e022030fff6e4d9c561ef8d152aef0b618ba0078"
+    },
+    {
+      "path": "Muse-to-Sarvam/trap_matrix.json",
+      "blob_sha": "fffde8353d147f88a7dbfd231413cdc87425630e"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "blob_sha": "39ea53f10f0a53aeda1e44764cce898543dbd070"
+    }
+  ],
+  "matrix_record": {
+    "version": "v286 (attributed)",
+    "unique_cells": 112,
+    "refused": 19,
+    "crash": 0,
+    "output_entries": 93,
+    "rerun": false
+  },
+  "native_status": "NOT RUN — no toolchain",
+  "scope": "Documentation-only audit and specification"
+}
