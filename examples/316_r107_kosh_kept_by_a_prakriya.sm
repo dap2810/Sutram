@@ -1,0 +1,22 @@
+# R107: the case the compiler cannot see - a kosh made in a block leaves it through a prakriya
+# that returns what it is given. The runtime check (R82) still stops the program when the dead kosh
+# reaches a prakriya after the block: E_KOSH_MANDAPA, naming the block's line, exit 1.
+prakriya rakh(kosh k) {
+    nivartanam k
+}
+
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+
+mukhya() {
+    kosh bahar[1]
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        bahar = rakh(k)
+        likha(padh(bahar, 0))
+    }
+    likha(padh(bahar, 0))
+    likha("yah pankti na chalati\n")
+}

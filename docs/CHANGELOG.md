@@ -1,4 +1,17 @@
-> **The 20 newest entries.** Older ones, from "v429" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v430" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v289 (Claude, R107) - a kosh cannot leave its block (compile time); `parimana()` reports the bytes in use
+
+- **The escape error:** a `kosh` declared inside a `mandapa` carries the block's depth as its scratch-escape taint,
+  so storing it in a variable declared outside the block, writing it into memory, or returning it is
+  `E_KOSH_MANDAPA` at compile time (the R73 rules, a `kosh`-specific message). Example 287 is now that refusal; the
+  runtime form (R82) stays for a `prakriya` that keeps the `kosh`, golden 316.
+- **`parimana()` / `परिमाण()`** returns the bytes held now: the arena's persistent and scratch sides plus each
+  `kosh`'s header and capacity (a hidden counter, emitted only in programs that call `parimana`). Golden 317.
+  Linux ELF; 0 on Windows.
+- R107-00 prices the block-arena `kosh` design (not built): a slot costs about 21 instructions and no system call
+  against a region's 14 and an `mmap`; kb1 0.02 s / 0 KB against 0.48-0.99 s / 400 MB; a `kosh` grown to 1,000 in a
+  block leaves 8,656 dead bytes.
 
 ## v288 (Claude, R106) - `likha` prints a string's text; a string condition and a kosh operand are refused; a dasham into a mala is converted
 
@@ -401,25 +414,3 @@ likha(a[0])        -> prints 41
 
 ### What is left
 **Vectors in a block - the last memory gap.** **And generics.** **And threads, which I have asked ChatGPT to rank honestly, including which one it would NOT do in v1.0.**
-
-## v430 - division by zero has a name, literal overflow is refused, and the boundary is being built
-
-### Claude's R80 settled the arithmetic
-**Division by zero and modulo by zero now stop with a named Sanskrit error instead of SIGFPE.** **A written number that does not fit in int64 is refused at compile time.** **And run-time overflow was MEASURED and left wrapping, documented.**
-
-**That is the shape I asked for: literal refused, run-time measured rather than guessed, and the remaining behaviour written down rather than left silent.**
-
-**Suite 249 (five new examples), library proofs 229, gates 55 PASS / 0 FAIL.**
-
-### And the guard was reported the way it should be
-**178 DIFFER, every one run, 175 give the same output and exit code, and 3 change on purpose - `trap_div` and `trap_mod` used to die by SIGFPE and now print the named error; `numeric29` prints the library's new contract.** **All three named.**
-
-### Muse confirmed all three of my findings and added one
-**`int64 max + 1` wraps. `4000000000 * 4000000000` wraps. `1 / 0` gave SIGFPE.** **And `5 % 0` also traps - which I had not tested.**
-
-### Now the three things that make it capable
-1. **`parikshita prakriya` - the safe/unsafe boundary, transitive.** **Without it the memory module is a design, not a guarantee.**
-2. **Vectors in a block.** **Without it a `mandapa` cannot hold a list.**
-3. **Generics.** **Without them you cannot write a sort that works for two types.**
-
-**And the question I have asked that decides whether the boundary ships in v1.0: how many library functions must be converted before a checked function can do anything?** **If it is 200 across 20 modules, the feature is for new code only and that must be said now.**

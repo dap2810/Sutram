@@ -1,0 +1,12 @@
+prakriya f() {
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        nivartanam k
+    }
+    nivartanam 0
+}
+
+mukhya() {
+    likha(f())
+}

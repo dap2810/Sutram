@@ -230,6 +230,7 @@ RFX2_ASG_CAP equ 16384     ; R105: assignments per function
 RFX2_STACK_CAP equ 65536   ; R105: the walk's node stack
 BN_VYOJ equ 91             ; R105: internal (no name): string + string -> a new string
 BN_VKRAM equ 92            ; R105: internal (no name): string ordering -> the byte difference
+BN_PARIMANA equ 47        ; R107: parimana() -> bytes the program's nirmmita and kosh hold now
 BN_DVARLIKHA equ 46 ; FIXALL (a): dvaram_likha(fd, smriti, sankhya) -> bytes written (raw fd write)
 BN_NIRM_SCRATCH equ 90 ; R73: nirmmita written inside a mandapa - the scratch side
 
@@ -245,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v288) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v289) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -312,6 +313,7 @@ r54_builtin_arity_table:
     db 1,1               ; 44 kosh_peek
     db 1,1               ; 45 kosh_dequeue
     db 3,3               ; 46 dvaram_likha (FIXALL (a))
+    db 0,0               ; 47 parimana (R107)
 
     r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
     ; R4: a read of a name that was never declared or assigned is an error
@@ -460,6 +462,14 @@ r54_builtin_arity_table:
     dd R101A_MAXCAP
     db 0x77,0x0C, 0x4D,0x89,0x58,0xF8, 0x4D,0x89,0xDA, 0xE9
     r101a_e1_len equ $ - r101a_e1
+    r107_e1 db 0x49,0x81,0xFB
+    dd R101A_MAXCAP
+    db 0x77,0x2B, 0x4D,0x89,0x58,0xF8
+    r107_e1_len equ $ - r107_e1
+    r107_e2 db 0x4C,0x89,0xD9, 0x4C,0x29,0xD1, 0x48,0xC1,0xE1,0x03
+    r107_e2_len equ $ - r107_e2
+    r107_e3 db 0x4D,0x89,0xDA, 0xE9
+    r107_e3_len equ $ - r107_e3
     r96_hdr db ": Sutram Error [E_CHAKRA_DASHAM]: ", 0
     r96_txt db "chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati", 10, 0
     r96_hint db "Sanket: chakra i = 0 tak 3 likhyatam; dashamaya yavat upayujyatam", 10, 0
@@ -529,6 +539,22 @@ r54_builtin_arity_table:
     rfx_bc_hdr_kosh db ": Sutram Error [E_KOSH_GANIT]: ", 0
     rfx_bc_txt_kosh db "kosh-upari ganitam tulana va na sambhavati - kosh sankhya na", 10, 0
     rfx_bc_hint_kosh db "Sanket: k[i] tasya mulyam; kosh_len(k) tasya dirghata - tani tulyantam", 10, 0
+    r107_cname db "0parimana", 0           ; R107: bytes held by kosh regions (only if parimana() is used)
+    r107_cidx dq -1
+    ; R107: a kosh made in a mandapa does not leave it (compile time). The runtime form, for what
+    ; the compiler cannot see (a prakriya that keeps it), is R82's E_KOSH_MANDAPA, unchanged.
+    r107_msg_var db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate", 10
+    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
+    r107_msg_mem db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - smritau na likhyate", 10
+    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
+    r107_msg_ret db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - nivartanam na shakyate", 10
+    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
+    ; R107 parimana(): (cur - base) + (sima - end) of the arena, + the kosh regions' counter
+    r107_p1 db 0x48,0x3D,0x00,0x10,0x00,0x00, 0x72,0x2F, 0x50
+    r107_p2 db 0x50
+    r107_p3 db 0x48,0x89,0xC1, 0x48,0x2B,0x0C,0x24, 0x48,0x2D,0x00,0x00,0x00,0x40, 0x48,0x8B,0x54,0x24,0x08
+    db 0x48,0x29,0xC2, 0x48,0x8D,0x04,0x11, 0x48,0x83,0xC4,0x10, 0xEB,0x02, 0x31,0xC0
+    r107_p3_len equ $ - r107_p3
     rfx2_msg_cap db "Sutram Error: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
     rfx2_msg_nomem db "Sutram Error [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
     rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
@@ -798,6 +824,8 @@ r54_builtin_arity_table:
         dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
         dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
         dq bn_dvarlikha, TOK_BUILTIN, BN_DVARLIKHA
+        dq bn_parimana, TOK_BUILTIN, BN_PARIMANA
+        dq bn_dev_parimana, TOK_BUILTIN, BN_PARIMANA
     bn_table_end:
 
     ; grahan(): read one line from stdin, parse digits, return in rax.
@@ -1111,6 +1139,8 @@ r54_builtin_arity_table:
     bn_pad       db "pad", 0
     bn_dvaram    db "dvaram", 0
     bn_dvarlikha db "dvaram_likha", 0
+    bn_parimana db "parimana", 0
+    bn_dev_parimana db 0xE0,0xA4,0xAA,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAE,0xE0,0xA4,0xBE,0xE0,0xA4,0xA3, 0  ; परिमाण
     bn_paadh     db "paadh", 0
     msg_guna_dbg1  db "G1", 10
     msg_guna_dbg2  db "BAD\n", 0
@@ -1302,6 +1332,10 @@ section .bss
     rfx3_ret    resb FUNC_DEFS_CAP          ; R105: what each prakriya returns (bits)
     rfx3_par    resb FUNC_DEFS_CAP * 16     ; R105: what each prakriya's parameters receive
     rfx3_changed resq 1
+    r107_used   resq 1                      ; R107: parimana() appears in the program
+    r107_kosh_hit resq 1                    ; R107: the last tainted name met was a kosh made in a block
+    r107_knames resq 256                    ; R107: those kosh names
+    r107_kn     resq 1
     rfx3_done   resq 1
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Stage 1 within-basic-block virtual cache. Fixed logical slots 1..4 map
@@ -8723,6 +8757,20 @@ r101a_emit_kosh_alloc:
     call r101a_regions_on
     test rax, rax
     jz emit_nirmmita_from_rax
+    cmp qword [rel r107_used], 0   ; R107: parimana() in the program: count the region's bytes
+    je .r107_no
+    mov dil, 0x51                  ; push rcx
+    call emit_byte
+    mov dil, 0x48                  ; mov rcx,rax
+    call emit_byte
+    mov dil, 0x89
+    call emit_byte
+    mov dil, 0xC1
+    call emit_byte
+    call r107_emit_count_rcx
+    mov dil, 0x59                  ; pop rcx
+    call emit_byte
+.r107_no:
     lea rsi, [rel r101a_a1]
     mov rcx, r101a_a1_len
     call r23_emit_bytes
@@ -8740,9 +8788,28 @@ r101a_emit_kosh_extend:
     call r101a_regions_on
     test rax, rax
     jz .r101a_ext_out
+    cmp qword [rel r107_used], 0
+    jne .r107_ext
     lea rsi, [rel r101a_e1]
     mov rcx, r101a_e1_len
     call r23_emit_bytes
+    jmp .r101a_ext_rel
+.r107_ext:                         ; R107: the same, with (newcap - cap) * 8 counted before
+    lea rsi, [rel r107_e1]         ; mov r10,r11: cmp ; ja +43 ; mov [r8-8],r11 ; count ; ...
+    mov rcx, r107_e1_len
+    call r23_emit_bytes
+    mov dil, 0x51                  ; push rcx ; mov rcx,r11 ; sub rcx,r10 ; shl rcx,3
+    call emit_byte
+    lea rsi, [rel r107_e2]
+    mov rcx, r107_e2_len
+    call r23_emit_bytes
+    call r107_emit_count_rcx
+    mov dil, 0x59                  ; pop rcx
+    call emit_byte
+    lea rsi, [rel r107_e3]         ; mov r10,r11 ; jmp rel32
+    mov rcx, r107_e3_len
+    call r23_emit_bytes
+.r101a_ext_rel:
     mov rax, [rel code_sz]
     mov [rel r65_ext_patch], rax
     xor edi, edi
@@ -11750,12 +11817,21 @@ r78_raw_len:
 
 r73_fail_var:
     lea rdi, [rel r73_msg_escape_var]
+    cmp qword [rel r107_kosh_hit], 0       ; R107: a kosh made in the block: its own message
+    je capacity_fail
+    lea rdi, [rel r107_msg_var]
     jmp capacity_fail
 r73_fail_mem:
     lea rdi, [rel r73_msg_escape_mem]
+    cmp qword [rel r107_kosh_hit], 0
+    je capacity_fail
+    lea rdi, [rel r107_msg_mem]
     jmp capacity_fail
 r73_fail_ret:
     lea rdi, [rel r72_msg_escape]
+    cmp qword [rel r107_kosh_hit], 0
+    je capacity_fail
+    lea rdi, [rel r107_msg_ret]
     jmp capacity_fail
 
 ; r73_func_enter / r73_func_leave: around a prakriya body. A prakriya is its own region:
@@ -11946,10 +12022,15 @@ r73_taint:
 .call:
     cmp qword [rdi+8], BN_NIRM_SCRATCH
     jne .r
+    mov qword [rel r107_kosh_hit], 0
     mov rax, [rdi+40]              ; the depth it was written at
     ret
 .var:
     mov rdi, [rdi+8]
+    push rdi                       ; R107: is it a kosh made in a block? (for the message)
+    call r107_is_kosh_name
+    mov [rel r107_kosh_hit], rax
+    pop rdi
     cmp qword [rel r73_maxmode], 0
     jne r73_sym_max                ; R74: re-checking a loop - the name's largest taint
     call r73_sym_find
@@ -11993,6 +12074,68 @@ r73_taint:
     ret
 .zero:
     xor eax, eax
+    ret
+
+; r107_note_kosh(rbx = the name of a kosh just declared): inside a mandapa, give the name the
+; block's depth as its R73 taint, so the scratch-escape rules apply to the kosh itself: it may not
+; be stored in a variable declared outside the block, written into memory, or returned.
+; Remembered so that the message names the kosh. Preserves all.
+r107_note_kosh:
+    cmp qword [rel r72_mdepth], 0
+    je .r
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rdi, rbx
+    mov rsi, [rel r72_mdepth]
+    call r73_sym_set
+    mov rcx, [rel r107_kn]
+    cmp rcx, 256
+    jae .out
+    lea rax, [rel r107_knames]
+    mov [rax+rcx*8], rbx
+    inc qword [rel r107_kn]
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+.r:
+    ret
+
+; r107_is_kosh_name(rdi = name) -> rax = 1 if a kosh of that name was made in a block. Preserves rdi.
+r107_is_kosh_name:
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    xor ecx, ecx
+.l:
+    cmp rcx, [rel r107_kn]
+    jae .no
+    lea rax, [rel r107_knames]
+    mov rsi, [rax+rcx*8]
+    mov rdi, [rsp]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .yes
+    inc rcx
+    jmp .l
+.yes:
+    mov eax, 1
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
     ret
 
 ; r73_note_decl(rdi = name, rsi = initializer): a vitti declared with a value. A new
@@ -12124,15 +12267,12 @@ r73_check_stmt:
     pop rbx
 .ret:
     ret
-.escape_var:
-    lea rdi, [rel r73_msg_escape_var]
-    jmp capacity_fail
+.escape_var:                       ; R107: through r73_fail_*, which name a kosh made in the block
+    jmp r73_fail_var
 .escape_mem:
-    lea rdi, [rel r73_msg_escape_mem]
-    jmp capacity_fail
+    jmp r73_fail_mem
 .escape_ret:
-    lea rdi, [rel r72_msg_escape]
-    jmp capacity_fail
+    jmp r73_fail_ret
 
 ; r77_ws_check(rdi = token A, rsi = token B): R77 (Muse R77). The leading whitespace of A's line
 ; and of B's line must be comparable: one a prefix of the other. Counting a tab as one column
@@ -13969,6 +14109,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     mov qword [rax+16], 0
     mov [rax+24], rcx
     mov [rax+32], rdx        ; 2=integer/raw kosh, 3=kosh dasham
+    call r107_note_kosh      ; R107: in a mandapa, the kosh's name carries the block's depth
     call maybe_semi
     pop rbx
     ret
@@ -16751,7 +16892,7 @@ parse_primary_inner:
 ; The check is before any AST argument pointer dereference in codegen.
 ; Updating a builtin ABI requires updating this table and the R54 test matrix.
 r54_builtin_arity_ok:
-    cmp rdi, 46
+    cmp rdi, BN_PARIMANA           ; R107: the last row (47)
     ja .bad
     lea rax, [rel r54_builtin_arity_table]
     lea rax, [rax+rdi*2]
@@ -20601,6 +20742,8 @@ gen_expr:
     mov r12, [rbx+8]         ; builtin id
     cmp r12, BN_VYOJ         ; R105: string + string
     je .ge_call_vyoj
+    cmp r12, BN_PARIMANA     ; R107
+    je .ge_call_parimana
     cmp r12, BN_VKRAM        ; R105: string < > <= >=
     je .ge_call_vkram
     ; Check builtin type
@@ -22595,6 +22738,58 @@ gen_expr:
     lea rsi, [rel rfx2_v5]         ; copy a, copy b, NUL; rax = the new string
     mov rcx, rfx2_v5_len
     call r23_emit_bytes
+    jmp .ge_call_done
+
+.ge_call_parimana:
+    ; R107: parimana() -> the bytes the program's nirmmita and kosh hold now: the arena's
+    ; persistent side (cur - start) and scratch side (sima - end), and the kosh regions
+    ; (0parimana, counted at each region's allocation and growth). Linux ELF (direct, --object, --separate); on PE 0.
+    call r65_active
+    test rax, rax
+    jnz .pm_arena
+    mov dil, 0x31                  ; xor eax,eax
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    jmp .ge_call_done
+.pm_arena:
+    call r65_ensure_globals
+    mov rdi, [rel r65_idx_cur]
+    call r56_emit_global_load
+    lea rsi, [rel r107_p1]         ; cmp rax,0x1000 ; jb .zero ; push rax
+    mov rcx, 9
+    call r23_emit_bytes
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_load
+    mov dil, 0x50                  ; push rax
+    call emit_byte
+    mov rdi, [rel r65_idx_sima]
+    call r56_emit_global_load
+    lea rsi, [rel r107_p3]
+    mov rcx, r107_p3_len
+    call r23_emit_bytes
+    call r107_ensure_counter       ; + the kosh regions
+    push rax
+    mov dil, 0x50                  ; push rax
+    call emit_byte
+    pop rdi
+    call r56_emit_global_load
+    mov dil, 0x48                  ; add rax,[rsp]
+    call emit_byte
+    mov dil, 0x03
+    call emit_byte
+    mov dil, 0x04
+    call emit_byte
+    mov dil, 0x24
+    call emit_byte
+    mov dil, 0x48                  ; add rsp,8
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC4
+    call emit_byte
+    mov dil, 0x08
+    call emit_byte
     jmp .ge_call_done
 
 .ge_call_vkram:
@@ -28508,6 +28703,54 @@ r56_emit_global_store:
     pop rbx
     ret
 
+; r107_ensure_counter -> rax = the index of the hidden module global `0parimana` (bytes held by
+; kosh regions), registered once; extern in a module object, as rfx_ensure_slot.
+r107_ensure_counter:
+    mov rax, [rel r107_cidx]
+    test rax, rax
+    jns .have
+    push rbx
+    lea rbx, [rel r107_cname]
+    call alloc_ast
+    mov qword [rax], AST_DECL
+    mov [rax + 8], rbx
+    mov qword [rax + 16], 0
+    call r56_register_global
+    mov rdi, rbx
+    call r56_global_index
+    dec rax
+    mov [rel r107_cidx], rax
+    cmp qword [rel r28_object_mode], 0
+    je .owned
+    cmp qword [rel r28_no_mukhya], 0
+    je .owned
+    lea rcx, [rel r30_gextern]
+    mov byte [rcx + rax], 1
+.owned:
+    pop rbx
+.have:
+    ret
+
+; r107_emit_count_rcx: generated code, rcx = bytes: 0parimana += rcx (rax preserved)
+r107_emit_count_rcx:
+    mov dil, 0x50                  ; push rax
+    call emit_byte
+    call r107_ensure_counter
+    push rax
+    mov rdi, rax
+    call r56_emit_global_load      ; mov rax,[0parimana]
+    mov dil, 0x48                  ; add rax,rcx
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    pop rdi
+    call r56_emit_global_store     ; mov [0parimana],rax
+    mov dil, 0x58                  ; pop rax
+    call emit_byte
+    ret
+
 ; rfx_ensure_slot (R104) -> rax = the index of the hidden module global `0gahanata`, the entry
 ; rsp of mukhya; registered once, at its first use. A module object (no mukhya) marks it extern,
 ; as r65_ensure_globals does for the arena globals: the root defines it, sutram-link resolves it.
@@ -30000,6 +30243,10 @@ lookup_builtin:
     jmp .lb_loop
 .lb_found:
     mov rdx, [r12+16]
+    cmp rdx, BN_PARIMANA           ; R107: the program asks parimana(): count kosh regions
+    jne .lb_found_r
+    mov qword [rel r107_used], 1
+.lb_found_r:
     mov rax, 1
     pop r13
     pop r12

@@ -1,0 +1,46 @@
+# R107 probes on v289 (Linux x86-64)
+== dis_region: exit 0
+== dis_slot: exit 0
+== esc_mem: REFUSED (exit 1): Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - smritau na likhyate
+== esc_ret: REFUSED (exit 1): Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - nivartanam na shakyate
+== esc_scratch: REFUSED (exit 1): Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate
+== esc_var: REFUSED (exit 1): Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate
+== growth_1000_in_block: exit 0
+   | all slots 16896 bytes
+   | the live one (capacity 1024) 8240
+   | dead 8656
+   | after the block 0
+== kb1_arena_equivalent: exit 0
+   | s 9900000
+== kb1_regions: exit 0
+   | s 9900000
+== ok_inside: exit 0
+   | 18
+== pm: exit 0
+   | start 0
+   | after nirmmita(64) 64
+   | inside a block, nirmmita(1000) 1072
+   | after the block 64
+   | kosh k[1] 88
+   | 1000 pushes 8272
+== pm_dev: exit 0
+   | 32
+== pm_none: exit 0
+   | 0
+== runtime_via_global: exit 1
+   | Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 14 mandape rachitah; sa mandapah samaptah
+   | Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+== runtime_via_prakriya: exit 1
+   | Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 11 mandape rachitah; sa mandapah samaptah
+   | Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
+== scratch_full: exit 1
+   | block holds 100000000
+   | block holds 200000000
+   | block holds 300000000
+   | block holds 400000000
+   | block holds 500000000
+   | block holds 600000000
+   | block holds 700000000
+   | block holds 800000000
+   | block holds 900000000
+   | block holds 1000000000

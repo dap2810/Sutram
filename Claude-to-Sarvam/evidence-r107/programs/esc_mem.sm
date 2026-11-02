@@ -1,0 +1,7 @@
+mukhya() {
+    kosh outer[1]
+    mandapa {
+        kosh k[4]
+        kosh_push(outer, k)
+    }
+}

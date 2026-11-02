@@ -1,0 +1,20 @@
+# R107: parimana() - the bytes the program's nirmmita and kosh hold right now. A block gives its
+# bytes back at its end; a kosh holds its header and capacity (8 bytes a number) for the program's
+# life. Every nirmmita is rounded up to 16 bytes. Linux; a Windows program reads 0.
+mukhya() {
+    likha("start ", parimana(), "\n")
+    vitti a = nirmmita(64)
+    likha("after nirmmita(64) ", parimana(), "\n")
+    mandapa {
+        vitti b = nirmmita(1000)
+        likha("in a block, nirmmita(1000) ", parimana(), "\n")
+    }
+    likha("after the block ", parimana(), "\n")
+    kosh k[1]
+    vitti i = 0
+    yavat (i < 1000) {
+        kosh_push(k, i)
+        i = i + 1
+    }
+    likha("a kosh of 1000 ", parimana(), "\n")
+}

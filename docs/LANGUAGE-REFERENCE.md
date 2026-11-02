@@ -133,6 +133,7 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `pad8c` | read a character |
 | `pankti_len` | length of a constant-length `mala` mala |
 | `likha` | 1–6 arguments: value(s); see §4a (string literals do not append LF, numeric final values do). Three values always print (v287); raw writes are `dvaram_likha` |
+| `parimana` | `parimana()`: the bytes the program's `nirmmita` and `kosh` hold now (v289; section 19) |
 | `dvaram_likha` | `dvaram_likha(fd, buf, len)`: write `len` bytes of `buf` to file descriptor `fd`; returns the count written (v286; see §4a) |
 | `lkhb` | numeric output without LF; includes `dasham` numeric printing since R52 |
 | `likha_fmt` | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
@@ -1094,8 +1095,22 @@ not, see `docs/decisions/MEMORY-DECISION.md`.
 ### A `kosh` made inside the block (v278)
 
 **A `kosh` declared inside a `mandapa` lives as long as the block.** Inside it, use it as any `kosh` — push,
-grow, index, pass it to a `prakriya` — and give back a value (`examples/286`). After the block, it is gone: a
-`prakriya` that receives it then stops the program with
+grow, index, pass it to a `prakriya` — and give back a value (`examples/286`).
+
+**From v289 the compiler refuses a `kosh` that would leave its block** - stored in a variable declared outside
+it, written into memory (`kosh_push(outer, k)`, `m[i] = k`), or returned - with the compile-time form of the same
+error (`examples/287`):
+
+```
+Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate
+Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam
+```
+
+*(a kosh made in a block does not go outside it - it is not put in an outer variable; use it inside, return the
+value; if it is needed outside, make it before the block)*. These are the scratch-escape rules (`E_SCRATCH_ESCAPE`,
+above) applied to the `kosh` itself. **What the compiler cannot see** - a `prakriya` that is given the `kosh` and
+returns or keeps it - is still caught when the dead `kosh` reaches a `prakriya` after the block, which stops the
+program with
 
 ```
 Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 10 mandape rachitah; sa mandapah samaptah
@@ -1103,7 +1118,7 @@ Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam
 ```
 
 *(the kosh made in the block on line 10 — that block has ended; use it inside the block and return the value)*,
-exit 1 (`examples/287`). That holds however the block ended — at its end, by `nivartanam`, or by `krama` /
+exit 1 (`examples/316`). That holds however the block ended — at its end, by `nivartanam`, or by `krama` /
 `agrim` out of a loop — and for an inner block ended inside a running outer one; the same block entered again
 (the next turn of a loop) makes a new `kosh`, and the old one stays dead.
 
@@ -1127,6 +1142,29 @@ pass: 0 MB. Reading
 the `kosh`'s address as raw memory (`x[i]` on a plain `vitti`) is not checked — as all raw memory (§6c). Under
 `--separate`, a module compiled on its own checks its `kosh` parameters only if it has a `kosh` in a block itself:
 the whole-program compile checks every `prakriya`.
+
+### How much is in use: `parimana()` (v289)
+
+**`parimana()` (*measure*; `परिमाण`) returns the bytes the program's allocations hold right now**, so a program -
+and a test - can ask without a harness (`examples/317`):
+
+```
+start 0
+after nirmmita(64) 64
+in a block, nirmmita(1000) 1072
+after the block 64
+a kosh of 1000 8272
+```
+
+- **What it counts:** the arena's persistent side (`nirmmita` outside a block; each rounded up to 16), its scratch
+  side (what the open blocks hold - it falls when a block ends), and each `kosh`'s header and capacity, 8 bytes a
+  number (`kosh k[1]` grown to 1,000 has capacity 1,024: 16 + 8,192 bytes). A `kosh` keeps its bytes for the
+  program's life, so they never fall.
+- **It is not the resident memory** the kernel reports: pages, the program's code and its stack are not in it, and
+  a `kosh`'s capacity counts whether or not every page has been touched. It is what the program asked for.
+- **Not counted:** a `nirmmita` that the arena could not hold (past 1 GiB it falls back to its own `mmap`).
+- **Cost:** a program without `parimana` compiles to the same bytes; with it, each `kosh` allocation and growth
+  adds one counter update. **Linux ELF only; in a Windows program it returns 0.**
 
 ### A budget: `mandapa parimita N` (v285)
 
@@ -1160,7 +1198,7 @@ gives its memory back at its end (`examples/304`).
   block's `nirmmita` counts against every budgeted block around it, and an inner block that ends gives its bytes
   back to the outer one.
 - **What does not count:** a `kosh` (it has its own region, section 16), and what a called `prakriya`
-  allocates - as the block itself covers only what is written inside it.
+  allocates - as the block itself covers only what is written inside it. `parimana()` (above) shows both.
 - **`parimita` is not reserved.** It is a budget only between `mandapa` and a number; `vitti parimita = 7`
   still works.
 - **Cost:** a program without `parimita` compiles to the same bytes as before. In a budgeted block each

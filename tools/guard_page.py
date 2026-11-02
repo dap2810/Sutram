@@ -105,8 +105,9 @@ def main():
             # the pre-v284 behaviour, which 288 now pins as gone. It is skipped here, and only here.
             # R103: a block cannot rewind here, so `mandapa parimita N` has nothing to measure against
             # and is not checked; example 303 (a budget that refuses) runs to the end. Skipped here too.
+            # R107: parimana() reads the arena, which this build does not have: example 317 prints 0s.
             env = dict(os.environ, SUTRAM_COMPILER=exe, SUTRAM_TEST_TIMEOUT='60',
-                       SUTRAM_TEST_SKIP='288_r86_kosh_alias_moves,303_r103_parimita_refuses')
+                       SUTRAM_TEST_SKIP='288_r86_kosh_alias_moves,303_r103_parimita_refuses,317_r107_parimana')
             out = run([sys.executable, 'tests/run_tests.py'], env)
             p = re.search(r'PASS=(\d+)', out)
             f = re.search(r'FAIL=(\d+)', out)

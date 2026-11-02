@@ -1,6 +1,7 @@
 # R82: the same kind of kosh, its address kept in a variable outside the block and read after the
-# block has ended. The block is over, so the kosh is too: the program stops with E_KOSH_MANDAPA,
-# naming the block's line - instead of reading memory the block no longer owns.
+# block has ended. R107 (v289): the compiler sees `bahar = k` and refuses it - E_KOSH_MANDAPA at
+# compile time, nothing is built. (Up to v288 the program ran and stopped at padh(bahar, 0) with the
+# runtime form of the same error; that form remains for what the compiler cannot see, example 316.)
 prakriya padh(kosh k, i) {
     nivartanam k[i]
 }

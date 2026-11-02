@@ -1,0 +1,174 @@
+  78:	48 89 25 1e 02 00 00 	mov    QWORD PTR [rip+0x21e],rsp        # 0x29d
+  7f:	55                   	push   rbp
+  80:	48 53                	rex.W push rbx
+  82:	41 54                	push   r12
+  84:	41 55                	push   r13
+  86:	41 56                	push   r14
+  88:	41 57                	push   r15
+  8a:	48 89 e5             	mov    rbp,rsp
+  8d:	48 81 ec 00 08 00 00 	sub    rsp,0x800
+  94:	48 8b 05 0a 02 00 00 	mov    rax,QWORD PTR [rip+0x20a]        # 0x2a5
+  9b:	48 85 c0             	test   rax,rax
+  9e:	75 54                	jne    0xf4
+  a0:	56                   	push   rsi
+  a1:	31 ff                	xor    edi,edi
+  a3:	be 00 00 00 40       	mov    esi,0x40000000
+  a8:	ba 03 00 00 00       	mov    edx,0x3
+  ad:	41 ba 22 40 00 00    	mov    r10d,0x4022
+  b3:	49 c7 c0 ff ff ff ff 	mov    r8,0xffffffffffffffff
+  ba:	45 31 c9             	xor    r9d,r9d
+  bd:	b8 09 00 00 00       	mov    eax,0x9
+  c2:	0f 05                	syscall
+  c4:	5e                   	pop    rsi
+  c5:	ba 00 00 00 40       	mov    edx,0x40000000
+  ca:	48 3d 01 f0 ff ff    	cmp    rax,0xfffffffffffff001
+  d0:	72 07                	jb     0xd9
+  d2:	b8 10 00 00 00       	mov    eax,0x10
+  d7:	31 d2                	xor    edx,edx
+  d9:	48 89 05 c5 01 00 00 	mov    QWORD PTR [rip+0x1c5],rax        # 0x2a5
+  e0:	48 89 c1             	mov    rcx,rax
+  e3:	48 01 d0             	add    rax,rdx
+  e6:	48 89 05 c0 01 00 00 	mov    QWORD PTR [rip+0x1c0],rax        # 0x2ad
+  ed:	48 89 05 c1 01 00 00 	mov    QWORD PTR [rip+0x1c1],rax        # 0x2b5
+  f4:	48 8b 05 b2 01 00 00 	mov    rax,QWORD PTR [rip+0x1b2]        # 0x2ad
+  fb:	48 89 c3             	mov    rbx,rax
+  fe:	b8 48 03 00 00       	mov    eax,0x348
+ 103:	48 85 c0             	test   rax,rax
+ 106:	0f 89 84 00 00 00    	jns    0x190
+ 10c:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x115
+ 113:	eb 5a                	jmp    0x16f
+ 115:	53                   	push   rbx
+ 116:	75 74                	jne    0x18c
+ 118:	72 61                	jb     0x17b
+ 11a:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 11b:	20 45 72             	and    BYTE PTR [rbp+0x72],al
+ 11e:	72 6f                	jb     0x18f
+ 120:	72 3a                	jb     0x15c
+ 122:	20 6e 69             	and    BYTE PTR [rsi+0x69],ch
+ 125:	72 6d                	jb     0x194
+ 127:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 128:	69 74 61 2d 70 61 72 	imul   esi,DWORD PTR [rcx+riz*2+0x2d],0x69726170
+ 12f:	69 
+ 130:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 131:	61                   	(bad)
+ 132:	6e                   	outs   dx,BYTE PTR ds:[rsi]
+ 133:	61                   	(bad)
+ 134:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 135:	20 72 6e             	and    BYTE PTR [rdx+0x6e],dh
+ 138:	61                   	(bad)
+ 139:	74 6d                	je     0x1a8
+ 13b:	61                   	(bad)
+ 13c:	6b 61 6d 20          	imul   esp,DWORD PTR [rcx+0x6d],0x20
+ 140:	2d 20 6d 61 6e       	sub    eax,0x6e616d20
+ 145:	64 61                	fs (bad)
+ 147:	70 61                	jo     0x1aa
+ 149:	2d 6d 61 64 68       	sub    eax,0x6864616d
+ 14e:	79 65                	jns    0x1b5
+ 150:	20 72 6e             	and    BYTE PTR [rdx+0x6e],dh
+ 153:	61                   	(bad)
+ 154:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 155:	20 70 61             	and    BYTE PTR [rax+0x61],dh
+ 158:	72 69                	jb     0x1c3
+ 15a:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 15b:	61                   	(bad)
+ 15c:	6e                   	outs   dx,BYTE PTR ds:[rsi]
+ 15d:	61                   	(bad)
+ 15e:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 15f:	20 6e 61             	and    BYTE PTR [rsi+0x61],ch
+ 162:	20 73 61             	and    BYTE PTR [rbx+0x61],dh
+ 165:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 166:	62                   	(bad)
+ 167:	68 61 76 61 74       	push   0x74617661
+ 16c:	69 0a 48 c7 c7 01    	imul   ecx,DWORD PTR [rdx],0x1c7c748
+ 172:	00 00                	add    BYTE PTR [rax],al
+ 174:	00 48 89             	add    BYTE PTR [rax-0x77],cl
+ 177:	c6                   	(bad)
+ 178:	ba 59 00 00 00       	mov    edx,0x59
+ 17d:	b8 01 00 00 00       	mov    eax,0x1
+ 182:	0f 05                	syscall
+ 184:	b8 3c 00 00 00       	mov    eax,0x3c
+ 189:	bf 01 00 00 00       	mov    edi,0x1
+ 18e:	0f 05                	syscall
+ 190:	48 89 c6             	mov    rsi,rax
+ 193:	48 85 f6             	test   rsi,rsi
+ 196:	0f 8e 54 00 00 00    	jle    0x1f0
+ 19c:	48 8b 05 0a 01 00 00 	mov    rax,QWORD PTR [rip+0x10a]        # 0x2ad
+ 1a3:	48 8d 56 0f          	lea    rdx,[rsi+0xf]
+ 1a7:	48 83 e2 f0          	and    rdx,0xfffffffffffffff0
+ 1ab:	48 29 d0             	sub    rax,rdx
+ 1ae:	0f 82 43 00 00 00    	jb     0x1f7
+ 1b4:	48 89 c2             	mov    rdx,rax
+ 1b7:	48 8b 05 e7 00 00 00 	mov    rax,QWORD PTR [rip+0xe7]        # 0x2a5
+ 1be:	48 39 c2             	cmp    rdx,rax
+ 1c1:	0f 82 30 00 00 00    	jb     0x1f7
+ 1c7:	48 89 d0             	mov    rax,rdx
+ 1ca:	48 89 05 dc 00 00 00 	mov    QWORD PTR [rip+0xdc],rax        # 0x2ad
+ 1d1:	48 8d 4e 07          	lea    rcx,[rsi+0x7]
+ 1d5:	48 c1 e9 03          	shr    rcx,0x3
+ 1d9:	31 d2                	xor    edx,edx
+ 1db:	48 c7 04 d0 00 00 00 	mov    QWORD PTR [rax+rdx*8],0x0
+ 1e2:	00 
+ 1e3:	48 ff c2             	inc    rdx
+ 1e6:	48 39 ca             	cmp    rdx,rcx
+ 1e9:	72 f0                	jb     0x1db
+ 1eb:	e9 69 00 00 00       	jmp    0x259
+ 1f0:	31 c0                	xor    eax,eax
+ 1f2:	e9 62 00 00 00       	jmp    0x259
+ 1f7:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x200
+ 1fe:	eb 38                	jmp    0x238
+ 200:	53                   	push   rbx
+ 201:	75 74                	jne    0x277
+ 203:	72 61                	jb     0x266
+ 205:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 206:	20 45 72             	and    BYTE PTR [rbp+0x72],al
+ 209:	72 6f                	jb     0x27a
+ 20b:	72 3a                	jb     0x247
+ 20d:	20 6b 73             	and    BYTE PTR [rbx+0x73],ch
+ 210:	68 65 74 72 61       	push   0x61727465
+ 215:	20 70 75             	and    BYTE PTR [rax+0x75],dh
+ 218:	72 6e                	jb     0x288
+ 21a:	61                   	(bad)
+ 21b:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 21c:	20 2d 20 6d 61 6e    	and    BYTE PTR [rip+0x6e616d20],ch        # 0x6e616f42
+ 222:	64 61                	fs (bad)
+ 224:	70 61                	jo     0x287
+ 226:	2d 73 6d 72 69       	sub    eax,0x69726d73
+ 22b:	74 69                	je     0x296
+ 22d:	68 20 73 61 6d       	push   0x6d617320
+ 232:	61                   	(bad)
+ 233:	70 74                	jo     0x2a9
+ 235:	61                   	(bad)
+ 236:	0a 48 c7             	or     cl,BYTE PTR [rax-0x39]
+ 239:	c7 01 00 00 00 48    	mov    DWORD PTR [rcx],0x48000000
+ 23f:	89 c6                	mov    esi,eax
+ 241:	ba 37 00 00 00       	mov    edx,0x37
+ 246:	b8 01 00 00 00       	mov    eax,0x1
+ 24b:	0f 05                	syscall
+ 24d:	b8 3c 00 00 00       	mov    eax,0x3c
+ 252:	bf 01 00 00 00       	mov    edi,0x1
+ 257:	0f 05                	syscall
+ 259:	49 89 c4             	mov    r12,rax
+ 25c:	b8 01 00 00 00       	mov    eax,0x1
+ 261:	50                   	push   rax
+ 262:	4c 89 e0             	mov    rax,r12
+ 265:	50                   	push   rax
+ 266:	b8 00 00 00 00       	mov    eax,0x0
+ 26b:	48 c1 e0 03          	shl    rax,0x3
+ 26f:	59                   	pop    rcx
+ 270:	48 01 c8             	add    rax,rcx
+ 273:	5a                   	pop    rdx
+ 274:	48 89 10             	mov    QWORD PTR [rax],rdx
+ 277:	48 89 d8             	mov    rax,rbx
+ 27a:	48 89 05 2c 00 00 00 	mov    QWORD PTR [rip+0x2c],rax        # 0x2ad
+ 281:	48 89 ec             	mov    rsp,rbp
+ 284:	41 5f                	pop    r15
+ 286:	41 5e                	pop    r14
+ 288:	41 5d                	pop    r13
+ 28a:	41 5c                	pop    r12
+ 28c:	5b                   	pop    rbx
+ 28d:	5d                   	pop    rbp
+ 28e:	48 b8 3c 00 00 00 00 	movabs rax,0x3c
+ 295:	00 00 00 
+ 298:	48 31 ff             	xor    rdi,rdi
+ 29b:	0f 05                	syscall
+	...

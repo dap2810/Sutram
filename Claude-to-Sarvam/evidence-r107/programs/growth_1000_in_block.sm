@@ -1,0 +1,21 @@
+# The dead slots of a kosh grown to 1,000 numbers inside a block, if every growth took a new slot of
+# the block's arena: capacity 1, 2, 4, ... 1024, each slot a 40-byte header + 8 bytes a number,
+# rounded up to 16 as the arena rounds. parimana() reads what the block holds.
+mukhya() {
+    vitti base = parimana()
+    mandapa {
+        vitti c = 1
+        vitti live = 0
+        yavat (c <= 1024) {
+            vitti before = parimana()
+            vitti p = nirmmita(40 + c * 8)
+            live = parimana() - before
+            c = c * 2
+        }
+        vitti all = parimana() - base
+        likha("all slots ", all, " bytes\n")
+        likha("the live one (capacity 1024) ", live, "\n")
+        likha("dead ", all - live, "\n")
+    }
+    likha("after the block ", parimana() - base, "\n")
+}

@@ -1,0 +1,21 @@
+vitti g = 0
+
+prakriya rakh(kosh k) {
+    g = k
+    nivartanam 0
+}
+
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+
+mukhya() {
+    kosh bahar[1]
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        vitti z = rakh(k)
+    }
+    bahar = g
+    likha(padh(bahar, 0))
+}

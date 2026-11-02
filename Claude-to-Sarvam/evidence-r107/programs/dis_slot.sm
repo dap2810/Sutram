@@ -1,0 +1,6 @@
+mukhya() {
+    mandapa {
+        vitti p = nirmmita(840)
+        p[0] = 1
+    }
+}

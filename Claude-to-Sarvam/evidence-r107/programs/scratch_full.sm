@@ -1,0 +1,12 @@
+# Is the block's arena fixed? The scratch side is the top of one 1 GiB range (the persistent side
+# grows up from the bottom). A block that asks for more than is left is refused, not grown.
+mukhya() {
+    mandapa {
+        vitti i = 0
+        yavat (i < 100) {
+            vitti b = nirmmita(100000000)
+            i = i + 1
+            likha("block holds ", parimana(), "\n")
+        }
+    }
+}

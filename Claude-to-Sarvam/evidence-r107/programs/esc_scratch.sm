@@ -1,0 +1,7 @@
+mukhya() {
+    vitti bahar = 0
+    mandapa {
+        vitti b = nirmmita(16)
+        bahar = b
+    }
+}

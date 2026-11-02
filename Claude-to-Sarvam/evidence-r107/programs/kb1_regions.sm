@@ -1,0 +1,17 @@
+mukhya() {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        mandapa {
+            kosh k[1]
+            vitti j = 0
+            yavat (j < 100) {
+                kosh_push(k, j)
+                j = j + 1
+            }
+            s = s + k[99]
+        }
+        i = i + 1
+    }
+    likha("s ", s)
+}

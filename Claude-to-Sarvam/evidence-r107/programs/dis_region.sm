@@ -1,0 +1,4 @@
+mukhya() {
+    kosh k[100]
+    kosh_push(k, 1)
+}

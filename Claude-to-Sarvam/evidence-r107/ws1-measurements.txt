@@ -1,0 +1,20 @@
+# WS1 measurements, v289, Linux, tools/peak_rss (fork/wait4) and GNU time, 3 runs each
+## kb1_regions.sm: s 9900000 
+   peak_rss_kb 400000 exit 0 0.59 s
+   peak_rss_kb 399872 exit 0 0.50 s
+   peak_rss_kb 400000 exit 0 0.46 s
+## kb1_arena_equivalent.sm: s 9900000 
+   peak_rss_kb 0 exit 0 0.03 s
+   peak_rss_kb 0 exit 0 0.03 s
+   peak_rss_kb 0 exit 0 0.04 s
+
+## growth_1000_in_block.sm (parimana inside a block)
+   all slots 16896 bytes
+   the live one (capacity 1024) 8240
+   dead 8656
+   after the block 0
+
+## scratch_full.sm (is the block arena fixed?)
+   exit 1; last lines:
+   block holds 1000000000
+   Sutram Error: kshetra purnam - mandapa-smritih samapta

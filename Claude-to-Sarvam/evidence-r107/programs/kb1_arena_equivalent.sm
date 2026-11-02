@@ -1,0 +1,25 @@
+# What kb1 would cost if each kosh were a slot in its block's arena: the same 100,000 blocks, each
+# drawing the bytes a 100-number kosh grown from capacity 1 would draw (a 40-byte header + 8 bytes a
+# number per slot; slots for capacity 1, 2, 4, ... 128), filled with the same 100 numbers.
+mukhya() {
+    vitti i = 0
+    vitti s = 0
+    yavat (i < 100000) {
+        mandapa {
+            vitti c = 1
+            vitti p = 0
+            yavat (c <= 128) {
+                p = nirmmita(40 + c * 8)
+                c = c * 2
+            }
+            vitti j = 0
+            yavat (j < 100) {
+                p[5 + j] = j
+                j = j + 1
+            }
+            s = s + p[5 + 99]
+        }
+        i = i + 1
+    }
+    likha("s ", s, "\n")
+}

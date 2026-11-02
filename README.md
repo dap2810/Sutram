@@ -185,6 +185,10 @@ Three known gaps, in plain words:
 
 The details are in `docs/LANGUAGE-REFERENCE.md`, §19.
 
+**`parimana()` returns the bytes the program's `nirmmita` and `kosh` hold now** (v289, Linux), and a `kosh` made in a
+`mandapa` that would leave it - stored outside, written into memory, returned - is refused at compile time
+(`E_KOSH_MANDAPA`).
+
 **A block can carry a byte budget: `mandapa parimita 65536 { … }`.** Its own `nirmmita` may use at most that
 many bytes; the one that would pass it stops the program with `E_PARIMITA` and the block's line, before it gets
 any memory (Linux, v285; §19, "A budget").

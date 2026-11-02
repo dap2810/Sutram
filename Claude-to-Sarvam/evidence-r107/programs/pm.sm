@@ -1,0 +1,18 @@
+mukhya() {
+    likha("start ", parimana(), "\n")
+    vitti a = nirmmita(64)
+    likha("after nirmmita(64) ", parimana(), "\n")
+    mandapa {
+        vitti b = nirmmita(1000)
+        likha("inside a block, nirmmita(1000) ", parimana(), "\n")
+    }
+    likha("after the block ", parimana(), "\n")
+    kosh k[1]
+    likha("kosh k[1] ", parimana(), "\n")
+    vitti i = 0
+    yavat (i < 1000) {
+        kosh_push(k, i)
+        i = i + 1
+    }
+    likha("1000 pushes ", parimana(), "\n")
+}
