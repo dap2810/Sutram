@@ -1,0 +1,19 @@
+prakriya kaam(i) {
+    vitti r = 0
+    mandapa {
+        vitti b = nirmmita(256)
+        b[0] = i
+        r = b[0]
+    }
+    nivartanam r
+}
+
+mukhya() {
+    vitti s = 0
+    vitti i = 0
+    yavat (i < 200000) {
+        s = s + kaam(i)
+        i = i + 1
+    }
+    likha("s ", s)
+}

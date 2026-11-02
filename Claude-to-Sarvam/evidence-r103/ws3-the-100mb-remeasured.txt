@@ -1,0 +1,37 @@
+# WS3 / R102-WS1: the exact programs behind R101's 'about 100 MB', re-measured on v285 (= v284 for kosh; Linux x86-64, 2 cores).
+# Measurer: tools/peak_rss (NASM: fork, execve, wait4 -> ru_maxrss KB). Three runs each. Programs: evidence-r103/programs/.
+
+## kb0.sm  (output: s 9900000)
+   peak_rss_kb 400000 exit 0
+   peak_rss_kb 400000 exit 0
+   peak_rss_kb 400000 exit 0
+## kb1.sm  (output: s 9900000)
+   peak_rss_kb 400000 exit 0
+   peak_rss_kb 400000 exit 0
+   peak_rss_kb 400000 exit 0
+## reuse.sm  (output: s 9900000)
+   peak_rss_kb 0 exit 0
+   peak_rss_kb 0 exit 0
+   peak_rss_kb 0 exit 0
+## push1m.sm  (output: len 1000000)
+   peak_rss_kb 7808 exit 0
+   peak_rss_kb 7808 exit 0
+   peak_rss_kb 7808 exit 0
+## call256_noblock.sm  (output: s 19999900000)
+   peak_rss_kb 49920 exit 0
+   peak_rss_kb 49920 exit 0
+   peak_rss_kb 49920 exit 0
+## call256_block.sm  (output: s 19999900000)
+   peak_rss_kb 0 exit 0
+   peak_rss_kb 0 exit 0
+   peak_rss_kb 0 exit 0
+
+# The same binaries measured the way a Python harness does it (subprocess.run, then getrusage(RUSAGE_CHILDREN).ru_maxrss):
+   h: ru_maxrss_kb 13288
+   push1m: ru_maxrss_kb 13288
+   kb1: ru_maxrss_kb 400000
+   call256_block: ru_maxrss_kb 13332
+# (h = examples/01_hello: the floor of that method is the Python child's own footprint, ~13 MB, which ru_maxrss keeps across execve.)
+
+# Wall time of kb1 (100,000 koshes made in a block), v285:
+   0.60 s elapsed, 400000 KB maxrss (GNU time)

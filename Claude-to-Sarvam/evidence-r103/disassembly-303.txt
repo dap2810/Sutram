@@ -1,0 +1,453 @@
+
+/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r103/m/d303:     file format binary
+
+
+Disassembly of section .data:
+
+0000000000000000 <.data>:
+   0:	7f 45                	jg     0x47
+   2:	4c                   	rex.WR
+   3:	46 02 01             	rex.RX add r8b,BYTE PTR [rcx]
+   6:	01 00                	add    DWORD PTR [rax],eax
+	...
+  10:	02 00                	add    al,BYTE PTR [rax]
+  12:	3e 00 01             	ds add BYTE PTR [rcx],al
+  15:	00 00                	add    BYTE PTR [rax],al
+  17:	00 78 00             	add    BYTE PTR [rax+0x0],bh
+  1a:	40 00 00             	rex add BYTE PTR [rax],al
+  1d:	00 00                	add    BYTE PTR [rax],al
+  1f:	00 40 00             	add    BYTE PTR [rax+0x0],al
+	...
+  32:	00 00                	add    BYTE PTR [rax],al
+  34:	40 00 38             	add    BYTE PTR [rax],dil
+  37:	00 01                	add    BYTE PTR [rcx],al
+  39:	00 00                	add    BYTE PTR [rax],al
+  3b:	00 00                	add    BYTE PTR [rax],al
+  3d:	00 00                	add    BYTE PTR [rax],al
+  3f:	00 01                	add    BYTE PTR [rcx],al
+  41:	00 00                	add    BYTE PTR [rax],al
+  43:	00 07                	add    BYTE PTR [rdi],al
+  45:	00 00                	add    BYTE PTR [rax],al
+  47:	00 78 00             	add    BYTE PTR [rax+0x0],bh
+  4a:	00 00                	add    BYTE PTR [rax],al
+  4c:	00 00                	add    BYTE PTR [rax],al
+  4e:	00 00                	add    BYTE PTR [rax],al
+  50:	78 00                	js     0x52
+  52:	40 00 00             	rex add BYTE PTR [rax],al
+  55:	00 00                	add    BYTE PTR [rax],al
+  57:	00 78 00             	add    BYTE PTR [rax+0x0],bh
+  5a:	40 00 00             	rex add BYTE PTR [rax],al
+  5d:	00 00                	add    BYTE PTR [rax],al
+  5f:	00 28                	add    BYTE PTR [rax],ch
+  61:	05 00 00 00 00       	add    eax,0x0
+  66:	00 00                	add    BYTE PTR [rax],al
+  68:	28 05 01 00 00 00    	sub    BYTE PTR [rip+0x1],al        # 0x6f
+  6e:	00 00                	add    BYTE PTR [rax],al
+  70:	00 10                	add    BYTE PTR [rax],dl
+  72:	00 00                	add    BYTE PTR [rax],al
+  74:	00 00                	add    BYTE PTR [rax],al
+  76:	00 00                	add    BYTE PTR [rax],al
+  78:	55                   	push   rbp
+  79:	48 53                	rex.W push rbx
+  7b:	41 54                	push   r12
+  7d:	41 55                	push   r13
+  7f:	41 56                	push   r14
+  81:	41 57                	push   r15
+  83:	48 89 e5             	mov    rbp,rsp
+  86:	48 81 ec 00 08 00 00 	sub    rsp,0x800
+  8d:	bb 00 00 00 00       	mov    ebx,0x0
+  92:	48 8b 05 ef 04 00 00 	mov    rax,QWORD PTR [rip+0x4ef]        # 0x588
+  99:	48 85 c0             	test   rax,rax
+  9c:	75 54                	jne    0xf2
+  9e:	56                   	push   rsi
+  9f:	31 ff                	xor    edi,edi
+  a1:	be 00 00 00 40       	mov    esi,0x40000000
+  a6:	ba 03 00 00 00       	mov    edx,0x3
+  ab:	41 ba 22 40 00 00    	mov    r10d,0x4022
+  b1:	49 c7 c0 ff ff ff ff 	mov    r8,0xffffffffffffffff
+  b8:	45 31 c9             	xor    r9d,r9d
+  bb:	b8 09 00 00 00       	mov    eax,0x9
+  c0:	0f 05                	syscall
+  c2:	5e                   	pop    rsi
+  c3:	ba 00 00 00 40       	mov    edx,0x40000000
+  c8:	48 3d 01 f0 ff ff    	cmp    rax,0xfffffffffffff001
+  ce:	72 07                	jb     0xd7
+  d0:	b8 10 00 00 00       	mov    eax,0x10
+  d5:	31 d2                	xor    edx,edx
+  d7:	48 89 05 aa 04 00 00 	mov    QWORD PTR [rip+0x4aa],rax        # 0x588
+  de:	48 89 c1             	mov    rcx,rax
+  e1:	48 01 d0             	add    rax,rdx
+  e4:	48 89 05 a5 04 00 00 	mov    QWORD PTR [rip+0x4a5],rax        # 0x590
+  eb:	48 89 05 a6 04 00 00 	mov    QWORD PTR [rip+0x4a6],rax        # 0x598
+  f2:	48 8b 05 97 04 00 00 	mov    rax,QWORD PTR [rip+0x497]        # 0x590
+  f9:	49 89 c4             	mov    r12,rax
+  fc:	41 bd 00 00 00 00    	mov    r13d,0x0
+ 102:	e9 99 03 00 00       	jmp    0x4a0
+ 107:	b8 40 00 00 00       	mov    eax,0x40
+ 10c:	48 85 c0             	test   rax,rax
+ 10f:	0f 89 84 00 00 00    	jns    0x199
+ 115:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x11e
+ 11c:	eb 5a                	jmp    0x178
+ 11e:	53                   	push   rbx
+ 11f:	75 74                	jne    0x195
+ 121:	72 61                	jb     0x184
+ 123:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 124:	20 45 72             	and    BYTE PTR [rbp+0x72],al
+ 127:	72 6f                	jb     0x198
+ 129:	72 3a                	jb     0x165
+ 12b:	20 6e 69             	and    BYTE PTR [rsi+0x69],ch
+ 12e:	72 6d                	jb     0x19d
+ 130:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 131:	69 74 61 2d 70 61 72 	imul   esi,DWORD PTR [rcx+riz*2+0x2d],0x69726170
+ 138:	69 
+ 139:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 13a:	61                   	(bad)
+ 13b:	6e                   	outs   dx,BYTE PTR ds:[rsi]
+ 13c:	61                   	(bad)
+ 13d:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 13e:	20 72 6e             	and    BYTE PTR [rdx+0x6e],dh
+ 141:	61                   	(bad)
+ 142:	74 6d                	je     0x1b1
+ 144:	61                   	(bad)
+ 145:	6b 61 6d 20          	imul   esp,DWORD PTR [rcx+0x6d],0x20
+ 149:	2d 20 6d 61 6e       	sub    eax,0x6e616d20
+ 14e:	64 61                	fs (bad)
+ 150:	70 61                	jo     0x1b3
+ 152:	2d 6d 61 64 68       	sub    eax,0x6864616d
+ 157:	79 65                	jns    0x1be
+ 159:	20 72 6e             	and    BYTE PTR [rdx+0x6e],dh
+ 15c:	61                   	(bad)
+ 15d:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 15e:	20 70 61             	and    BYTE PTR [rax+0x61],dh
+ 161:	72 69                	jb     0x1cc
+ 163:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 164:	61                   	(bad)
+ 165:	6e                   	outs   dx,BYTE PTR ds:[rsi]
+ 166:	61                   	(bad)
+ 167:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 168:	20 6e 61             	and    BYTE PTR [rsi+0x61],ch
+ 16b:	20 73 61             	and    BYTE PTR [rbx+0x61],dh
+ 16e:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 16f:	62                   	(bad)
+ 170:	68 61 76 61 74       	push   0x74617661
+ 175:	69 0a 48 c7 c7 01    	imul   ecx,DWORD PTR [rdx],0x1c7c748
+ 17b:	00 00                	add    BYTE PTR [rax],al
+ 17d:	00 48 89             	add    BYTE PTR [rax-0x77],cl
+ 180:	c6                   	(bad)
+ 181:	ba 59 00 00 00       	mov    edx,0x59
+ 186:	b8 01 00 00 00       	mov    eax,0x1
+ 18b:	0f 05                	syscall
+ 18d:	b8 3c 00 00 00       	mov    eax,0x3c
+ 192:	bf 01 00 00 00       	mov    edi,0x1
+ 197:	0f 05                	syscall
+ 199:	48 89 c6             	mov    rsi,rax
+ 19c:	48 85 f6             	test   rsi,rsi
+ 19f:	0f 8e 51 02 00 00    	jle    0x3f6
+ 1a5:	48 8b 05 e4 03 00 00 	mov    rax,QWORD PTR [rip+0x3e4]        # 0x590
+ 1ac:	48 8d 56 0f          	lea    rdx,[rsi+0xf]
+ 1b0:	48 83 e2 f0          	and    rdx,0xfffffffffffffff0
+ 1b4:	48 29 d0             	sub    rax,rdx
+ 1b7:	0f 82 40 02 00 00    	jb     0x3fd
+ 1bd:	48 89 c2             	mov    rdx,rax
+ 1c0:	48 8b 05 c1 03 00 00 	mov    rax,QWORD PTR [rip+0x3c1]        # 0x588
+ 1c7:	48 39 c2             	cmp    rdx,rax
+ 1ca:	0f 82 2d 02 00 00    	jb     0x3fd
+ 1d0:	48 89 d0             	mov    rax,rdx
+ 1d3:	56                   	push   rsi
+ 1d4:	50                   	push   rax
+ 1d5:	4c 89 e0             	mov    rax,r12
+ 1d8:	48 2b 04 24          	sub    rax,QWORD PTR [rsp]
+ 1dc:	48 b9 00 00 10 00 00 	movabs rcx,0x100000
+ 1e3:	00 00 00 
+ 1e6:	48 39 c8             	cmp    rax,rcx
+ 1e9:	58                   	pop    rax
+ 1ea:	5e                   	pop    rsi
+ 1eb:	0f 86 df 01 00 00    	jbe    0x3d0
+ 1f1:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x1fa
+ 1f8:	eb 23                	jmp    0x21d
+ 1fa:	53                   	push   rbx
+ 1fb:	75 74                	jne    0x271
+ 1fd:	72 61                	jb     0x260
+ 1ff:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 200:	20 45 72             	and    BYTE PTR [rbp+0x72],al
+ 203:	72 6f                	jb     0x274
+ 205:	72 20                	jb     0x227
+ 207:	5b                   	pop    rbx
+ 208:	45 5f                	rex.RB pop r15
+ 20a:	50                   	push   rax
+ 20b:	41 52                	push   r10
+ 20d:	49                   	rex.WB
+ 20e:	4d                   	rex.WRB
+ 20f:	49 54                	rex.WB push r12
+ 211:	41 5d                	pop    r13
+ 213:	3a 20                	cmp    ah,BYTE PTR [rax]
+ 215:	70 61                	jo     0x278
+ 217:	6e                   	outs   dx,BYTE PTR ds:[rsi]
+ 218:	6b 74 69 20 48       	imul   esi,DWORD PTR [rcx+rbp*2+0x20],0x48
+ 21d:	c7 c7 01 00 00 00    	mov    edi,0x1
+ 223:	48 89 c6             	mov    rsi,rax
+ 226:	ba 22 00 00 00       	mov    edx,0x22
+ 22b:	b8 01 00 00 00       	mov    eax,0x1
+ 230:	0f 05                	syscall
+ 232:	b8 06 00 00 00       	mov    eax,0x6
+ 237:	49 89 c0             	mov    r8,rax
+ 23a:	48 83 ec 20          	sub    rsp,0x20
+ 23e:	4d 85 c0             	test   r8,r8
+ 241:	79 1c                	jns    0x25f
+ 243:	49 f7 d8             	neg    r8
+ 246:	c6 04 24 2d          	mov    BYTE PTR [rsp],0x2d
+ 24a:	b8 01 00 00 00       	mov    eax,0x1
+ 24f:	bf 01 00 00 00       	mov    edi,0x1
+ 254:	48 8d 34 24          	lea    rsi,[rsp]
+ 258:	ba 01 00 00 00       	mov    edx,0x1
+ 25d:	0f 05                	syscall
+ 25f:	48 8d 74 24 1f       	lea    rsi,[rsp+0x1f]
+ 264:	c6 06 0a             	mov    BYTE PTR [rsi],0xa
+ 267:	48 ff ce             	dec    rsi
+ 26a:	4d 85 c0             	test   r8,r8
+ 26d:	75 08                	jne    0x277
+ 26f:	c6 06 30             	mov    BYTE PTR [rsi],0x30
+ 272:	48 ff ce             	dec    rsi
+ 275:	eb 1e                	jmp    0x295
+ 277:	48 31 d2             	xor    rdx,rdx
+ 27a:	4c 89 c0             	mov    rax,r8
+ 27d:	b9 0a 00 00 00       	mov    ecx,0xa
+ 282:	48 f7 f1             	div    rcx
+ 285:	49 89 c0             	mov    r8,rax
+ 288:	80 c2 30             	add    dl,0x30
+ 28b:	88 16                	mov    BYTE PTR [rsi],dl
+ 28d:	48 ff ce             	dec    rsi
+ 290:	4d 85 c0             	test   r8,r8
+ 293:	75 e2                	jne    0x277
+ 295:	48 8d 54 24 20       	lea    rdx,[rsp+0x20]
+ 29a:	48 29 f2             	sub    rdx,rsi
+ 29d:	48 ff ca             	dec    rdx
+ 2a0:	48 ff ca             	dec    rdx
+ 2a3:	48 ff c6             	inc    rsi
+ 2a6:	48 c7 c7 01 00 00 00 	mov    rdi,0x1
+ 2ad:	b8 01 00 00 00       	mov    eax,0x1
+ 2b2:	0f 05                	syscall
+ 2b4:	48 83 c4 20          	add    rsp,0x20
+ 2b8:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x2c1
+ 2bf:	eb 41                	jmp    0x302
+ 2c1:	20 2d 20 6d 61 6e    	and    BYTE PTR [rip+0x6e616d20],ch        # 0x6e616fe7
+ 2c7:	64 61                	fs (bad)
+ 2c9:	70 65                	jo     0x330
+ 2cb:	20 70 61             	and    BYTE PTR [rax+0x61],dh
+ 2ce:	72 69                	jb     0x339
+ 2d0:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 2d1:	69 74 61 74 20 61 64 	imul   esi,DWORD PTR [rcx+riz*2+0x74],0x68646120
+ 2d8:	68 
+ 2d9:	69 6b 61 6d 20 6e 69 	imul   ebp,DWORD PTR [rbx+0x61],0x696e206d
+ 2e0:	72 6d                	jb     0x34f
+ 2e2:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 2e3:	69 74 61 6d 20 6e 61 	imul   esi,DWORD PTR [rcx+riz*2+0x6d],0x20616e20
+ 2ea:	20 
+ 2eb:	73 61                	jae    0x34e
+ 2ed:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 2ee:	62                   	(bad)
+ 2ef:	68 61 76 61 74       	push   0x74617661
+ 2f4:	69 20 28 70 61 72    	imul   esp,DWORD PTR [rax],0x72617028
+ 2fa:	69 6d 69 74 69 68 20 	imul   ebp,DWORD PTR [rbp+0x69],0x20686974
+ 301:	48 c7 c7 01 00 00 00 	mov    rdi,0x1
+ 308:	48 89 c6             	mov    rsi,rax
+ 30b:	ba 40 00 00 00       	mov    edx,0x40
+ 310:	b8 01 00 00 00       	mov    eax,0x1
+ 315:	0f 05                	syscall
+ 317:	b8 00 00 10 00       	mov    eax,0x100000
+ 31c:	49 89 c0             	mov    r8,rax
+ 31f:	48 83 ec 20          	sub    rsp,0x20
+ 323:	4d 85 c0             	test   r8,r8
+ 326:	79 1c                	jns    0x344
+ 328:	49 f7 d8             	neg    r8
+ 32b:	c6 04 24 2d          	mov    BYTE PTR [rsp],0x2d
+ 32f:	b8 01 00 00 00       	mov    eax,0x1
+ 334:	bf 01 00 00 00       	mov    edi,0x1
+ 339:	48 8d 34 24          	lea    rsi,[rsp]
+ 33d:	ba 01 00 00 00       	mov    edx,0x1
+ 342:	0f 05                	syscall
+ 344:	48 8d 74 24 1f       	lea    rsi,[rsp+0x1f]
+ 349:	c6 06 0a             	mov    BYTE PTR [rsi],0xa
+ 34c:	48 ff ce             	dec    rsi
+ 34f:	4d 85 c0             	test   r8,r8
+ 352:	75 08                	jne    0x35c
+ 354:	c6 06 30             	mov    BYTE PTR [rsi],0x30
+ 357:	48 ff ce             	dec    rsi
+ 35a:	eb 1e                	jmp    0x37a
+ 35c:	48 31 d2             	xor    rdx,rdx
+ 35f:	4c 89 c0             	mov    rax,r8
+ 362:	b9 0a 00 00 00       	mov    ecx,0xa
+ 367:	48 f7 f1             	div    rcx
+ 36a:	49 89 c0             	mov    r8,rax
+ 36d:	80 c2 30             	add    dl,0x30
+ 370:	88 16                	mov    BYTE PTR [rsi],dl
+ 372:	48 ff ce             	dec    rsi
+ 375:	4d 85 c0             	test   r8,r8
+ 378:	75 e2                	jne    0x35c
+ 37a:	48 8d 54 24 20       	lea    rdx,[rsp+0x20]
+ 37f:	48 29 f2             	sub    rdx,rsi
+ 382:	48 ff ca             	dec    rdx
+ 385:	48 ff ca             	dec    rdx
+ 388:	48 ff c6             	inc    rsi
+ 38b:	48 c7 c7 01 00 00 00 	mov    rdi,0x1
+ 392:	b8 01 00 00 00       	mov    eax,0x1
+ 397:	0f 05                	syscall
+ 399:	48 83 c4 20          	add    rsp,0x20
+ 39d:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x3a6
+ 3a4:	eb 09                	jmp    0x3af
+ 3a6:	20 62 61             	and    BYTE PTR [rdx+0x61],ah
+ 3a9:	61                   	(bad)
+ 3aa:	69 74 29 0a 48 c7 c7 	imul   esi,DWORD PTR [rcx+rbp*1+0xa],0x1c7c748
+ 3b1:	01 
+ 3b2:	00 00                	add    BYTE PTR [rax],al
+ 3b4:	00 48 89             	add    BYTE PTR [rax-0x77],cl
+ 3b7:	c6                   	(bad)
+ 3b8:	ba 08 00 00 00       	mov    edx,0x8
+ 3bd:	b8 01 00 00 00       	mov    eax,0x1
+ 3c2:	0f 05                	syscall
+ 3c4:	b8 3c 00 00 00       	mov    eax,0x3c
+ 3c9:	bf 01 00 00 00       	mov    edi,0x1
+ 3ce:	0f 05                	syscall
+ 3d0:	48 89 05 b9 01 00 00 	mov    QWORD PTR [rip+0x1b9],rax        # 0x590
+ 3d7:	48 8d 4e 07          	lea    rcx,[rsi+0x7]
+ 3db:	48 c1 e9 03          	shr    rcx,0x3
+ 3df:	31 d2                	xor    edx,edx
+ 3e1:	48 c7 04 d0 00 00 00 	mov    QWORD PTR [rax+rdx*8],0x0
+ 3e8:	00 
+ 3e9:	48 ff c2             	inc    rdx
+ 3ec:	48 39 ca             	cmp    rdx,rcx
+ 3ef:	72 f0                	jb     0x3e1
+ 3f1:	e9 69 00 00 00       	jmp    0x45f
+ 3f6:	31 c0                	xor    eax,eax
+ 3f8:	e9 62 00 00 00       	jmp    0x45f
+ 3fd:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x406
+ 404:	eb 38                	jmp    0x43e
+ 406:	53                   	push   rbx
+ 407:	75 74                	jne    0x47d
+ 409:	72 61                	jb     0x46c
+ 40b:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 40c:	20 45 72             	and    BYTE PTR [rbp+0x72],al
+ 40f:	72 6f                	jb     0x480
+ 411:	72 3a                	jb     0x44d
+ 413:	20 6b 73             	and    BYTE PTR [rbx+0x73],ch
+ 416:	68 65 74 72 61       	push   0x61727465
+ 41b:	20 70 75             	and    BYTE PTR [rax+0x75],dh
+ 41e:	72 6e                	jb     0x48e
+ 420:	61                   	(bad)
+ 421:	6d                   	ins    DWORD PTR es:[rdi],dx
+ 422:	20 2d 20 6d 61 6e    	and    BYTE PTR [rip+0x6e616d20],ch        # 0x6e617148
+ 428:	64 61                	fs (bad)
+ 42a:	70 61                	jo     0x48d
+ 42c:	2d 73 6d 72 69       	sub    eax,0x69726d73
+ 431:	74 69                	je     0x49c
+ 433:	68 20 73 61 6d       	push   0x6d617320
+ 438:	61                   	(bad)
+ 439:	70 74                	jo     0x4af
+ 43b:	61                   	(bad)
+ 43c:	0a 48 c7             	or     cl,BYTE PTR [rax-0x39]
+ 43f:	c7 01 00 00 00 48    	mov    DWORD PTR [rcx],0x48000000
+ 445:	89 c6                	mov    esi,eax
+ 447:	ba 37 00 00 00       	mov    edx,0x37
+ 44c:	b8 01 00 00 00       	mov    eax,0x1
+ 451:	0f 05                	syscall
+ 453:	b8 3c 00 00 00       	mov    eax,0x3c
+ 458:	bf 01 00 00 00       	mov    edi,0x1
+ 45d:	0f 05                	syscall
+ 45f:	49 89 c6             	mov    r14,rax
+ 462:	4c 89 e8             	mov    rax,r13
+ 465:	50                   	push   rax
+ 466:	4c 89 f0             	mov    rax,r14
+ 469:	50                   	push   rax
+ 46a:	b8 00 00 00 00       	mov    eax,0x0
+ 46f:	48 c1 e0 03          	shl    rax,0x3
+ 473:	59                   	pop    rcx
+ 474:	48 01 c8             	add    rax,rcx
+ 477:	5a                   	pop    rdx
+ 478:	48 89 10             	mov    QWORD PTR [rax],rdx
+ 47b:	48 89 d8             	mov    rax,rbx
+ 47e:	50                   	push   rax
+ 47f:	4c 89 f0             	mov    rax,r14
+ 482:	50                   	push   rax
+ 483:	b8 00 00 00 00       	mov    eax,0x0
+ 488:	48 c1 e0 03          	shl    rax,0x3
+ 48c:	59                   	pop    rcx
+ 48d:	48 01 c8             	add    rax,rcx
+ 490:	48 8b 00             	mov    rax,QWORD PTR [rax]
+ 493:	5a                   	pop    rdx
+ 494:	48 87 d0             	xchg   rax,rdx
+ 497:	48 01 d0             	add    rax,rdx
+ 49a:	48 89 c3             	mov    rbx,rax
+ 49d:	49 ff c5             	inc    r13
+ 4a0:	4c 89 e8             	mov    rax,r13
+ 4a3:	50                   	push   rax
+ 4a4:	b8 40 42 0f 00       	mov    eax,0xf4240
+ 4a9:	5a                   	pop    rdx
+ 4aa:	48 87 d0             	xchg   rax,rdx
+ 4ad:	48 39 d0             	cmp    rax,rdx
+ 4b0:	0f 8c 51 fc ff ff    	jl     0x107
+ 4b6:	4c 89 e0             	mov    rax,r12
+ 4b9:	48 89 05 d0 00 00 00 	mov    QWORD PTR [rip+0xd0],rax        # 0x590
+ 4c0:	48 8d 05 02 00 00 00 	lea    rax,[rip+0x2]        # 0x4c9
+ 4c7:	eb 0d                	jmp    0x4d6
+ 4c9:	6e                   	outs   dx,BYTE PTR ds:[rsi]
+ 4ca:	6f                   	outs   dx,DWORD PTR ds:[rsi]
+ 4cb:	74 20                	je     0x4ed
+ 4cd:	72 65                	jb     0x534
+ 4cf:	61                   	(bad)
+ 4d0:	63 68 65             	movsxd ebp,DWORD PTR [rax+0x65]
+ 4d3:	64 20 48 c7          	and    BYTE PTR fs:[rax-0x39],cl
+ 4d7:	c7 01 00 00 00 48    	mov    DWORD PTR [rcx],0x48000000
+ 4dd:	89 c6                	mov    esi,eax
+ 4df:	ba 0c 00 00 00       	mov    edx,0xc
+ 4e4:	b8 01 00 00 00       	mov    eax,0x1
+ 4e9:	0f 05                	syscall
+ 4eb:	48 89 d8             	mov    rax,rbx
+ 4ee:	49 89 c0             	mov    r8,rax
+ 4f1:	48 83 ec 20          	sub    rsp,0x20
+ 4f5:	4d 85 c0             	test   r8,r8
+ 4f8:	79 1c                	jns    0x516
+ 4fa:	49 f7 d8             	neg    r8
+ 4fd:	c6 04 24 2d          	mov    BYTE PTR [rsp],0x2d
+ 501:	b8 01 00 00 00       	mov    eax,0x1
+ 506:	bf 01 00 00 00       	mov    edi,0x1
+ 50b:	48 8d 34 24          	lea    rsi,[rsp]
+ 50f:	ba 01 00 00 00       	mov    edx,0x1
+ 514:	0f 05                	syscall
+ 516:	48 8d 74 24 1f       	lea    rsi,[rsp+0x1f]
+ 51b:	c6 06 0a             	mov    BYTE PTR [rsi],0xa
+ 51e:	48 ff ce             	dec    rsi
+ 521:	4d 85 c0             	test   r8,r8
+ 524:	75 08                	jne    0x52e
+ 526:	c6 06 30             	mov    BYTE PTR [rsi],0x30
+ 529:	48 ff ce             	dec    rsi
+ 52c:	eb 1e                	jmp    0x54c
+ 52e:	48 31 d2             	xor    rdx,rdx
+ 531:	4c 89 c0             	mov    rax,r8
+ 534:	b9 0a 00 00 00       	mov    ecx,0xa
+ 539:	48 f7 f1             	div    rcx
+ 53c:	49 89 c0             	mov    r8,rax
+ 53f:	80 c2 30             	add    dl,0x30
+ 542:	88 16                	mov    BYTE PTR [rsi],dl
+ 544:	48 ff ce             	dec    rsi
+ 547:	4d 85 c0             	test   r8,r8
+ 54a:	75 e2                	jne    0x52e
+ 54c:	48 8d 54 24 20       	lea    rdx,[rsp+0x20]
+ 551:	48 29 f2             	sub    rdx,rsi
+ 554:	48 ff ca             	dec    rdx
+ 557:	48 ff c6             	inc    rsi
+ 55a:	48 c7 c7 01 00 00 00 	mov    rdi,0x1
+ 561:	b8 01 00 00 00       	mov    eax,0x1
+ 566:	0f 05                	syscall
+ 568:	48 83 c4 20          	add    rsp,0x20
+ 56c:	48 89 ec             	mov    rsp,rbp
+ 56f:	41 5f                	pop    r15
+ 571:	41 5e                	pop    r14
+ 573:	41 5d                	pop    r13
+ 575:	41 5c                	pop    r12
+ 577:	5b                   	pop    rbx
+ 578:	5d                   	pop    rbp
+ 579:	48 b8 3c 00 00 00 00 	movabs rax,0x3c
+ 580:	00 00 00 
+ 583:	48 31 ff             	xor    rdi,rdi
+ 586:	0f 05                	syscall
+	...

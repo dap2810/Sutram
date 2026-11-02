@@ -1,0 +1,16 @@
+# R103: `mandapa parimita N` gives a block a byte budget. Its own nirmmita may use at most N bytes
+# (each rounded up to 16); the one that would pass it stops the program before it gets memory:
+# E_PARIMITA, with the block's line, exit 1. Here 1,000,000 x 64 bytes in one 1 MB block.
+mukhya() {
+    vitti s = 0
+    mandapa parimita 1048576 {
+        vitti i = 0
+        yavat (i < 1000000) {
+            vitti b = nirmmita(64)
+            b[0] = i
+            s = s + b[0]
+            i = i + 1
+        }
+    }
+    likha("not reached ", s)
+}

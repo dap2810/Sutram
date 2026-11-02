@@ -239,7 +239,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v284) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v285) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1295,6 +1295,7 @@ section .bss
     r81_ctx       resq 1
     r82_on        resq 1                  ; R82: this program declares a kosh inside a mandapa
     r82_tmp       resq 1
+    r103_chain    resq R73_MAXDEPTH + 1   ; R103: per parse depth - the innermost budgeted block's record (0: none)
     r82_need      resq 64                 ; R82: per parse depth - a kosh is declared in this block
     r82_pos       resq 64                 ; R82: per parse depth - the block's 'mandapa' token
     r82_gdepth    resq 1
@@ -7844,6 +7845,7 @@ r72_parse_mandapa:
     mov rdx, [rel r82_tmp]
     mov [rax + rcx*8], rdx
 .r82_deep:
+    call r103_parse_budget          ; R103: `mandapa parimita N` - a byte budget for the block
     mov rax, [rel r4_seen_count]
     lea rdx, [rel r73_seenidx]
     mov [rdx + rcx*8], rax         ; names declared from here on are at this depth
@@ -8362,6 +8364,191 @@ r96_check_for_float:
     lea rdx, [rel r96_txt]
     lea rcx, [rel r96_hint]
     jmp r80_compile_error
+
+;; ============================================================
+;; R103: `mandapa parimita N { ... }` - a block with a byte budget.
+;; The block's own nirmmita (written in its text, the scratch side) may use at most N bytes in
+;; all; one that would pass the budget stops the program before it is given memory:
+;;   Sutram Error [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)
+;; and exit 1. Nested budgets all hold (an inner block's nirmmita counts against every budgeted
+;; block around it). Like the block itself, it covers what is written inside it: a kosh, or what a
+;; called prakriya allocates, is not counted. Linux ELF only, as the block (PE: inert, unchecked).
+;; ============================================================
+section .data
+    r103_w_lat db "parimita", 0
+    r103_w_dev db 0xE0,0xA4,0xAA,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAE,0xE0,0xA4,0xBF,0xE0,0xA4,0xA4, 0  ; परिमित
+    r103_msg_a db "Sutram Error [E_PARIMITA]: pankti ", 0
+    r103_msg_b db " - mandape parimitat adhikam nirmmitam na sambhavati (parimitih ", 0
+    r103_msg_c db " baait)", 10, 0
+    r103_hdr_bad db ": Sutram Error [E_PARIMITA]: ", 0
+    r103_txt_bad db "'mandapa parimita' dhanatmakam purnankam apekshate (baait)", 10, 0
+    r103_hint_bad db "Sanket: mandapa parimita 65536 { ... }", 10, 0
+    ; push rsi ; push rax  /  sub rax,[rsp] ; mov rcx, imm64 (follows)
+    r103_c1 db 0x56, 0x50
+    r103_c2 db 0x48,0x2B,0x04,0x24, 0x48,0xB9
+    ; cmp rax,rcx ; pop rax ; pop rsi ; jbe .ok (rel32 follows)
+    r103_c3 db 0x48,0x39,0xC8, 0x58, 0x5E, 0x0F,0x86
+section .text
+
+; r103_parse_budget: at 'mandapa' (consumed), depth rcx = the new block's depth. If the next two
+; tokens are `parimita` and a whole number > 0, consume them and make this block budgeted:
+; r103_chain[depth] = a record [8] mark name, [16] N, [24] the block's position, [32] the record
+; around it; otherwise r103_chain[depth] = r103_chain[depth - 1]. Preserves rcx.
+r103_parse_budget:
+    push rcx
+    push rbx
+    mov rbx, rcx
+    lea rax, [rel r103_chain]
+    mov rdx, [rax + rbx*8 - 8]
+    mov [rax + rbx*8], rdx              ; inherit the enclosing budgets
+    call cur_tok
+    cmp qword [rax], TOK_IDENT
+    jne .out
+    mov rdi, [rax+8]
+    lea rsi, [rel r103_w_lat]
+    call strcmp
+    test rax, rax
+    jz .word
+    call cur_tok
+    mov rdi, [rax+8]
+    lea rsi, [rel r103_w_dev]
+    call strcmp
+    test rax, rax
+    jnz .out
+.word:
+    mov rax, [rel token_idx]            ; `parimita` must be followed by a number to be the budget
+    inc rax
+    imul rax, rax, TOKEN_SIZE
+    lea rcx, [rel token_arr]
+    add rax, rcx
+    cmp qword [rax], TOK_NUMBER
+    je .number
+    cmp qword [rax], TOK_OPERATOR       ; `mandapa parimita = 5`: a variable named parimita, the
+    je .out                             ; block's one statement - the word is not reserved
+    cmp qword [rax], TOK_DELIMITER
+    je .out
+    jmp .bad
+.number:
+    mov rdx, [rax+8]
+    test rdx, rdx
+    jle .bad
+    push rdx
+    call advance_tok                    ; 'parimita'
+    call advance_tok                    ; N
+    call alloc_ast
+    pop rdx
+    mov [rax+16], rdx
+    lea rcx, [rel r73_marks]
+    mov rcx, [rcx + rbx*8]
+    test rcx, rcx
+    jnz .have_mark
+    lea rcx, [rbx*4 + rbx - 5]          ; the mark is named before r73_marks is set: "0mNN"
+    lea rdx, [rel r73_mark_names]
+    add rcx, rdx
+.have_mark:
+    mov [rax+8], rcx
+    mov rdx, [rel r82_tmp]
+    mov [rax+24], rdx
+    lea rcx, [rel r103_chain]
+    mov rdx, [rcx + rbx*8]
+    mov [rax+32], rdx
+    mov [rcx + rbx*8], rax
+.out:
+    pop rbx
+    pop rcx
+    ret
+.bad:                                    ; at the token after `parimita`: file:line:col, the line, a caret
+    mov rax, [rel token_idx]
+    inc rax
+    imul rax, rax, TOKEN_SIZE
+    lea rcx, [rel token_arr]
+    mov rdi, [rax + rcx + 32]
+    lea rsi, [rel r103_hdr_bad]
+    lea rdx, [rel r103_txt_bad]
+    lea rcx, [rel r103_hint_bad]
+    jmp r80_compile_error
+
+; r103_emit_budget_checks(rbx = the BN_NIRM_SCRATCH call): generated code, at the point where
+; rax = the new scratch end and rsi = the size, before it is stored. For each budgeted block in
+; force: if (its mark - new end) > N, print E_PARIMITA with the block's line and exit 1.
+; rax and rsi survive on the .ok paths.
+r103_emit_budget_checks:
+    push r12
+    push r13
+    mov r12, [rbx+48]
+.next:
+    test r12, r12
+    jz .done
+    lea rsi, [rel r103_c1]
+    mov rcx, 2
+    call r23_emit_bytes                 ; push rsi ; push rax
+    push rbx
+    call alloc_ast
+    mov qword [rax], AST_VAR
+    mov rcx, [r12+8]
+    mov [rax+8], rcx
+    call gen_expr                       ; rax = the block's mark (the scratch end at entry)
+    pop rbx
+    lea rsi, [rel r103_c2]
+    mov rcx, 6
+    call r23_emit_bytes                 ; sub rax,[rsp] ; mov rcx,
+    mov rdi, [r12+16]
+    call emit_u64
+    lea rsi, [rel r103_c3]
+    mov rcx, 7
+    call r23_emit_bytes                 ; cmp rax,rcx ; pop rax ; pop rsi ; jbe .ok
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    push rbx
+    push qword [rel lk_no_nl]
+    mov qword [rel lk_no_nl], 0
+    lea rcx, [rel r103_msg_a]
+    call r80_emit_likha_str
+    mov rdi, [r12+24]
+    call r80_line_of
+    call r103_emit_lkhb_num
+    lea rcx, [rel r103_msg_b]
+    call r80_emit_likha_str
+    mov rax, [r12+16]
+    call r103_emit_lkhb_num
+    lea rcx, [rel r103_msg_c]
+    call r80_emit_likha_str
+    pop qword [rel lk_no_nl]
+    pop rbx
+    mov dil, 0xB8                       ; mov eax,60 ; mov edi,1 ; syscall
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov rdi, r13
+    call r73_patch32                    ; .ok
+    mov r12, [r12+32]
+    jmp .next
+.done:
+    pop r13
+    pop r12
+    ret
+
+; r103_emit_lkhb_num(rax = a number known now): print it with no newline.
+r103_emit_lkhb_num:
+    push rax
+    call alloc_ast
+    pop rdi
+    mov qword [rax], AST_NUM
+    mov [rax+8], rdi
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LKHB
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    jmp gen_expr
 
 ;; ============================================================
 ;; R101A (Option A, R101): every kosh has a region of its own.
@@ -15150,6 +15337,11 @@ parse_primary_inner:
     jz .r73_not_scratch
     mov qword [rax+8], BN_NIRM_SCRATCH
     mov [rax+40], rcx         ; the depth it belongs to (Step 4's taint)
+    push rdx
+    lea rdx, [rel r103_chain] ; R103: the budgets in force here (innermost first)
+    mov rdx, [rdx + rcx*8]
+    mov [rax+48], rdx
+    pop rdx
 .r73_not_scratch:
     mov [rax+16], r12         ; arg count
     ; pop stashed args (pushed in order) into node slots in reverse

@@ -1,0 +1,10 @@
+mukhya() {
+    mandapa parimita 1048576 {
+        vitti i = 0
+        yavat (i < 1000000) {
+            vitti b = nirmmita(64)
+            i = i + 1
+            likha("n ", i, "\n")
+        }
+    }
+}

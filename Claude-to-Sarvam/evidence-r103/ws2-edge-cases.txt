@@ -1,0 +1,102 @@
+# Edge programs run on v285 (scratch tests from the build; the budgeted block's result, exit code)
+## exact.sm
+    mukhya() {
+        mandapa parimita 64 {
+            vitti a = nirmmita(32)
+            vitti b = nirmmita(32)
+            likha("ok 64\n")
+        }
+    }
+  -> run: ok 64| exit 0
+## exact_plus.sm
+    mukhya() {
+        mandapa parimita 64 {
+            vitti a = nirmmita(32)
+            vitti b = nirmmita(33)
+            likha("not reached\n")
+        }
+    }
+  -> run: Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 64 baait)| exit 1
+## nested.sm
+    mukhya() {
+        mandapa parimita 100 {
+            mandapa parimita 100000 {
+                vitti a = nirmmita(200)
+                likha("not reached\n")
+            }
+        }
+    }
+  -> run: Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)| exit 1
+## nested_ok.sm
+    mukhya() {
+        mandapa parimita 1000 {
+            mandapa parimita 100 {
+                vitti a = nirmmita(96)
+            }
+            mandapa parimita 100 {
+                vitti b = nirmmita(96)
+            }
+            likha("rewound, ok\n")
+        }
+    }
+  -> run: rewound, ok| exit 0
+## indented.sm
+    mukhya()
+        mandapa parimita 16
+            vitti a = nirmmita(16)
+            likha("indented ok\n")
+  -> run: indented ok| exit 0
+## devanagari.sm
+    mukhya() {
+        मण्डप परिमित 16 {
+            vitti a = nirmmita(32)
+        }
+    }
+  -> run: Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 16 baait)| exit 1
+## var_named.sm
+    mukhya() {
+        vitti parimita = 0
+        mandapa parimita = 5
+        likha(parimita)
+    }
+  -> run: 5| exit 0
+## func.sm
+    prakriya f() {
+        mandapa parimita 32 {
+            vitti a = nirmmita(64)
+        }
+        nivartanam 1
+    }
+    
+    mukhya() {
+        likha(f())
+    }
+  -> run: Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 32 baait)| exit 1
+## kosh_not_counted.sm
+    mukhya() {
+        mandapa parimita 16 {
+            kosh k[1]
+            vitti i = 0
+            yavat (i < 1000) {
+                kosh_push(k, i)
+                i = i + 1
+            }
+            likha("kosh len ", kosh_len(k))
+        }
+    }
+  -> run: kosh len 1000| exit 0
+## zero.sm
+    mukhya() {
+        mandapa parimita 0 {
+            vitti a = nirmmita(8)
+        }
+    }
+  -> compile refused: zero.sm:2:22: Sutram Error [E_PARIMITA]: 'mandapa parimita' dhanatmakam purnankam apekshate (baait) (exit 1)
+## expr.sm
+    mukhya() {
+        vitti n = 64
+        mandapa parimita n {
+            vitti a = nirmmita(8)
+        }
+    }
+  -> compile refused: expr.sm:3:22: Sutram Error [E_PARIMITA]: 'mandapa parimita' dhanatmakam purnankam apekshate (baait) (exit 1)

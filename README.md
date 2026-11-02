@@ -185,6 +185,10 @@ Three known gaps, in plain words:
 
 The details are in `docs/LANGUAGE-REFERENCE.md`, §19.
 
+**A block can carry a byte budget: `mandapa parimita 65536 { … }`.** Its own `nirmmita` may use at most that
+many bytes; the one that would pass it stops the program with `E_PARIMITA` and the block's line, before it gets
+any memory (Linux, v285; §19, "A budget").
+
 **`vitti a = k` gives a `kosh` a second name; it does not copy it.** On Linux the two names stay one however
 `k` grows (each `kosh` has a region of its own, v284). On Windows, if `k` grows it moves and `a` keeps the old
 storage - so give each `kosh` one name - see

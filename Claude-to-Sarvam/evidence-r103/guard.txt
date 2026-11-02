@@ -1,0 +1,26 @@
+# The guard, origin/main (v284, 4ef00a4) -> v285, tools/guard_pair.py, Linux cloud (2 cores)
+
+## Linux ELF
+NEW          examples/303_r103_parimita_refuses.sm
+NEW          examples/304_r103_parimita_within.sm
+NEW          examples/305_r103_parimita_needs_number.sm
+source files whose text changed: 0
+683 programs: 549 byte-identical, 131 refused identically, 0 DIFFER, 3 new
+
+## Linux PE (--pe)
+NEW          examples/303_r103_parimita_refuses.sm
+NEW          examples/304_r103_parimita_within.sm
+NEW          examples/305_r103_parimita_needs_number.sm
+source files whose text changed: 0
+683 programs: 549 byte-identical, 131 refused identically, 0 DIFFER, 3 new
+
+## win/sutram.exe under Wine (--pe)
+NEW          examples/303_r103_parimita_refuses.sm
+NEW          examples/304_r103_parimita_within.sm
+NEW          examples/305_r103_parimita_needs_number.sm
+source files whose text changed: 0
+683 programs: 549 byte-identical, 131 refused identically, 0 DIFFER, 3 new
+
+## Wine outputs against the Linux compiler's PE outputs, byte for byte: 1098 identical, 0 differ, 0 missing
+
+## 0 DIFFER on every path: no DIFFER to run. The 3 new programs are the goldens 303, 304, 305.

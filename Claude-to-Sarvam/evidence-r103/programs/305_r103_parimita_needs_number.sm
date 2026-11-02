@@ -1,0 +1,8 @@
+# R103: a budget must be a positive whole number written in the source - not 0, not an expression.
+# The compiler refuses this program; nothing is built.
+mukhya() {
+    vitti n = 4096
+    mandapa parimita n {
+        vitti b = nirmmita(64)
+    }
+}

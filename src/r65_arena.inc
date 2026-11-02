@@ -432,6 +432,7 @@ r73_gen_scratch_nirm:
     R65_BYTES r73_s4               ; cmp rdx,rax ; jb .full (would meet the persistent side)
     call .rel32                    ; C
     R65_BYTES r73_s5               ; mov rax,rdx
+    call r103_emit_budget_checks   ; R103: mandapa parimita N - refuse past the budget
     mov rdi, [rel r65_idx_end]
     call r56_emit_global_store     ; mov [end],rax
     R65_BYTES r73_s6               ; zero it (memory is reused) ; jmp .done

@@ -1,4 +1,21 @@
-> **Older changelog entries**, "Compiler v278 (Claude, R82)" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+> **Older changelog entries**, "v278, unchanged (Claude, R83)" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+
+## v278, unchanged (Claude, R83) - `vitti a = k` measured: it diverges, it is not unsafe today, and refusing it breaks 3 fixtures
+
+- **The alias diverges when the `kosh` grows and moves.** On Linux a `kosh` that is the newest block grows in
+  place, so the two names stay one; with anything allocated in between, or always on Windows and in the guard-page
+  build, the cells move and the second name stays on the old buffer, with the old length. **So the same program
+  prints `41 41 7 1` on Linux and `41 41 41 0` under Wine.** R42's "an alias is the kosh" (`examples/255`)
+  holds only while no push grows it.
+- **Not a use-after-free today:** nothing is ever freed (no `munmap` / `VirtualFree` in the compiler); a `kosh`
+  is never on the scratch side. It becomes one the day `kosh` memory is recycled.
+- **Option 1 (refuse the copy), built and measured, not shipped:** it refuses `examples/252`, `255` and `287` -
+  the fixtures that exist to exercise this alias - and no library module. Four routes still give a raw
+  address (a `kosh` returned from a `prakriya`, passed to a plain parameter, pushed into a `kosh`, `k + 0`), but the
+  existing type rule stops each being passed as a `kosh`: with option 1, no second `kosh` name is possible.
+- **Option 3 done:** reference §16 states the rule, with the program that shows it (checked on Linux and PE).
+- **Guard pages on v278:** controls 5/5, suite 255/0, library 229/229, properties 86/86; the R81 and R82 gates
+  pass under the guard-page build. Nothing faults that did not before.
 
 ## Compiler v278 (Claude, R82) - a `kosh` made in a `mandapa` lives as long as the block
 
@@ -11171,7 +11188,6 @@ Major capability batch: real functions + strings.
 - Descending for-loops (auto direction detection)
 - All 6 books: proper native terminology + chapter 14 (new features)
 - 49 examples total, full regression passing
-
 
 ## v21 (2026-09-30)
 - Compound assignment operators: += -= *= /= %=

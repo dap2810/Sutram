@@ -12,6 +12,9 @@
      (section 19) must change with it. (R101A: 400 MB, one page per kosh at least.)
   6. R101A: a kosh past its region (9,000,000 pushes; the region holds 8,388,603) moves once and keeps
      every value - the sum is exact.
+  7. R103 (v285): 1,000,000 x nirmmita(64) in ONE block with `mandapa parimita 1048576` refuses (E_PARIMITA,
+     exit 1) at the 16,385th, and its peak stays under 2 MB: the budget refuses rather than grows.
+  8. R103: the same budget on a block entered once per pass runs to the end, flat (under 1 MB).
 Last line: "r101 memory: N checks, M failed".
 """
 import os, subprocess, sys, tempfile
@@ -102,6 +105,14 @@ def main():
     likha("s ", s, " len ", kosh_len(k))
 }
 ''')
+        refuse_src = open(os.path.join(ROOT, 'examples', '303_r103_parimita_refuses.sm')).read()
+        m_refuse = peak(w, 'budget_refuses', refuse_src)
+        rp = os.path.join(w, 'budget_refuses')
+        r = subprocess.run([rp], capture_output=True, text=True)
+        refuse_msg = (r.stdout + r.stderr).strip()
+        print(f'      budget_refuses: peak {m_refuse[0]} KB, exit {m_refuse[1]}, {refuse_msg[:60]!r}')
+        m['budget_within'] = peak(w, 'budget_within', LOOP.format(n=1000000, body=WITH.replace(
+            '        mandapa', '        mandapa parimita 1048576')))
         subprocess.run([COMP, big + '.sm', big], cwd=ROOT, capture_output=True)
         past = subprocess.run([big], capture_output=True, text=True).stdout.strip()
         print(f'      kosh_past_region: {past!r}')
@@ -116,6 +127,9 @@ def main():
             ('a kosh made in a block 100,000 times is NOT reclaimed (the documented gap): over 8 MB', m['kosh_in_block'][0] > 8192),
             ('a kosh past its region keeps every value (9,000,000 pushes; R101A)',
              past == f's {sum(range(9000000))} len 9000000'),
+            ('a 1 MB budget refuses 1,000,000 x 64 bytes (E_PARIMITA, exit 1) with a peak under 2 MB (R103)',
+             m_refuse[1] == 1 and 'E_PARIMITA' in refuse_msg and m_refuse[0] is not None and m_refuse[0] < 2048),
+            ('the same budget, one block per pass, runs to the end under 1 MB (R103)', m['budget_within'][0] < 1024),
         ]
         for text, ok in tests:
             checks += 1

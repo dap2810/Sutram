@@ -1031,15 +1031,68 @@ and a program with no `kosh` in a block compiles to the same bytes as before. In
 `kosh` carries three more header words and each call with a `kosh` parameter one check (+11% on a call whose
 whole body is one `kosh` read; +3.5% on `kosh_push`).
 
-**Not yet:** the block does not take the `kosh`'s memory back — it is kept, so that the check is exact.
-**Measured (R101, `tools/peak_rss.py`):** a block run 100,000 times that makes a `kosh` of 100 numbers peaked at
-**about 100 MB** on v283, and at **400 MB** on Linux from v284 (each `kosh` now has its own region, one 4 KB page
-at least - section 16) - the same as without the block. The block bounds `nirmmita` (10,000,000 `nirmmita(64)`, one
-block per pass: under 1 MB; without blocks: 625 MB), not `kosh` storage. Make a `kosh` that is reused once,
-outside the loop, and empty it with `kosh_clear` each pass. Reading
+**Decided (R103, v285): the block does not take a `kosh`'s memory back; the `kosh` keeps it for the program's
+life.** That is what keeps the check above exact: the check reads the `kosh`'s header, so the header must still
+be there after the block. Giving the region back would make a dead `kosh` reaching a `prakriya` a crash (or,
+if the address were reused, a silent read of another `kosh`) instead of `E_KOSH_MANDAPA` with its line - and
+in the tree it would give back nothing: the three programs that make a `kosh` in a block (`286`, `287`, `299`)
+peak at the same reading as a three-line program. **Measured (`tools/peak_rss.py`):** a block run 100,000
+times that makes a `kosh` of 100 numbers peaked at **about 100 MB** on v283, and at **400 MB** on Linux from
+v284 (each `kosh` now has its own region, one 4 KB page at least - section 16) - the same as without the block.
+The block bounds `nirmmita` (10,000,000 `nirmmita(64)`, one block per pass: under 1 MB; without blocks: 625 MB),
+not `kosh` storage. Make a `kosh` that is reused once, outside the loop, and empty it with `kosh_clear` each
+pass: 0 MB. Reading
 the `kosh`'s address as raw memory (`x[i]` on a plain `vitti`) is not checked — as all raw memory (§6c). Under
 `--separate`, a module compiled on its own checks its `kosh` parameters only if it has a `kosh` in a block itself:
 the whole-program compile checks every `prakriya`.
+
+### A budget: `mandapa parimita N` (v285)
+
+**`parimita` (*measured, limited*) gives a block a byte budget.** The block's own `nirmmita` may use at most `N`
+bytes in all; the one that would pass the budget stops the program **before it is given memory**:
+
+```
+mukhya() {
+    mandapa parimita 1048576 {
+        vitti i = 0
+        yavat (i < 1000000) {
+            vitti b = nirmmita(64)
+            i = i + 1
+        }
+    }
+}
+```
+
+```
+Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)
+```
+
+*(more than the budget cannot be made in the block; budget 1,048,576 bytes)*, exit 1 (`examples/303`). The
+block refuses; it never grows. A block entered once per pass of a loop gets its budget each time, because it
+gives its memory back at its end (`examples/304`).
+
+- **`N` is a positive whole number written in the source**, in bytes. `mandapa parimita 0`, or a variable or an
+  expression, is refused at compile time (`E_PARIMITA`, `examples/305`). `परिमित` is the same word.
+- **What counts:** each `nirmmita` written inside the block, rounded up to 16 bytes as the arena does - so
+  `nirmmita(32)` and `nirmmita(33)` together are 32 + 48 = 80 bytes. **Nested budgets all hold:** an inner
+  block's `nirmmita` counts against every budgeted block around it, and an inner block that ends gives its bytes
+  back to the outer one.
+- **What does not count:** a `kosh` (it has its own region, section 16), and what a called `prakriya`
+  allocates - as the block itself covers only what is written inside it.
+- **`parimita` is not reserved.** It is a budget only between `mandapa` and a number; `vitti parimita = 7`
+  still works.
+- **Cost:** a program without `parimita` compiles to the same bytes as before. In a budgeted block each
+  `nirmmita` gains one compare per budget around it.
+- **Linux ELF only, as the block.** In a Windows program a `mandapa` releases nothing, and its budget is not
+  checked.
+
+**Measured (R103, `tools/peak_rss.py`, Linux):** 1,000,000 `nirmmita(64)` in one block -
+
+| | peak memory | result |
+|---|---|---|
+| `mandapa parimita 1048576` (`examples/303`) | **1,024 KB** | `E_PARIMITA` at the 16,385th, exit 1 |
+| the same budget, one block per pass (`examples/304`) | **0 KB** (the reading of a three-line program) | runs to the end, exit 0 |
+| the same loop, `mandapa` without a budget | **62,464 KB** | runs to the end, exit 0 |
 
 ## 20. `parikshita` — a checked function (v277)
 

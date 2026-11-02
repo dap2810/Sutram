@@ -1,0 +1,4 @@
+305_r103_parimita_needs_number.sm:5:22: Sutram Error [E_PARIMITA]: 'mandapa parimita' dhanatmakam purnankam apekshate (baait)
+      mandapa parimita n {
+                       ^
+Sanket: mandapa parimita 65536 { ... }

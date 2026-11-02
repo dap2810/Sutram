@@ -1,4 +1,21 @@
-> **The 20 newest entries.** Older ones, from "Compiler v278 (Claude, R82)" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v278, unchanged (Claude, R83)" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v285 (Claude, R102 + R103) - `mandapa parimita N`: a block with a byte budget that refuses; regions stay for the program's life
+
+- **`mandapa parimita N { }`** - the block's own `nirmmita` may use at most `N` bytes (each rounded to 16, as the
+  arena does). The one that would pass the budget stops the program before it is given memory:
+  `Sutram Error [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)`,
+  exit 1. Nested budgets all hold. `N` must be a positive whole number in the source (else `E_PARIMITA` at compile
+  time, with file:line:col). `परिमित` is the same word; `parimita` stays usable as a name. A `kosh`, and what a
+  called `prakriya` allocates, are not counted. Linux ELF only, as the block; on Windows it is not checked.
+- **Measured:** 1,000,000 `nirmmita(64)` in one 1 MB-budgeted block refuses at the 16,385th with a peak of 1,024 KB;
+  the same budget on a block entered once per pass runs to the end at 0 KB (a three-line program's reading); the
+  unbudgeted block peaks at 62,464 KB. Goldens `303` (refuses), `304` (within; nested; `parimita` as a name), `305`
+  (compile-time refusal).
+- **Decided: a block does not return its `kosh` regions** (Reference section 19): the R82 check reads the header,
+  so returning would turn `E_KOSH_MANDAPA` into a crash or a silent read, and in the tree it would return nothing
+  (the three programs with a `kosh` in a block all read 0 KB).
+- A program without `parimita` compiles to the same bytes as on v284 (the guard).
 
 ## v284 (Claude, R101A - the owner's Option A) - on Linux every `kosh` has a region of its own and never moves
 
@@ -427,20 +444,3 @@ likha(a[0])        -> prints 41
   (it reads a leftover value, differently on Linux and Windows).
 - **Found, not fixed:** `dasham` comparisons treat NaN as equal to and below every number (`n == 42.0` is true);
   string `+` on variables adds addresses (printing the result crashes).
-
-## v278, unchanged (Claude, R83) - `vitti a = k` measured: it diverges, it is not unsafe today, and refusing it breaks 3 fixtures
-
-- **The alias diverges when the `kosh` grows and moves.** On Linux a `kosh` that is the newest block grows in
-  place, so the two names stay one; with anything allocated in between, or always on Windows and in the guard-page
-  build, the cells move and the second name stays on the old buffer, with the old length. **So the same program
-  prints `41 41 7 1` on Linux and `41 41 41 0` under Wine.** R42's "an alias is the kosh" (`examples/255`)
-  holds only while no push grows it.
-- **Not a use-after-free today:** nothing is ever freed (no `munmap` / `VirtualFree` in the compiler); a `kosh`
-  is never on the scratch side. It becomes one the day `kosh` memory is recycled.
-- **Option 1 (refuse the copy), built and measured, not shipped:** it refuses `examples/252`, `255` and `287` -
-  the fixtures that exist to exercise this alias - and no library module. Four routes still give a raw
-  address (a `kosh` returned from a `prakriya`, passed to a plain parameter, pushed into a `kosh`, `k + 0`), but the
-  existing type rule stops each being passed as a `kosh`: with option 1, no second `kosh` name is possible.
-- **Option 3 done:** reference §16 states the rule, with the program that shows it (checked on Linux and PE).
-- **Guard pages on v278:** controls 5/5, suite 255/0, library 229/229, properties 86/86; the R81 and R82 gates
-  pass under the guard-page build. Nothing faults that did not before.

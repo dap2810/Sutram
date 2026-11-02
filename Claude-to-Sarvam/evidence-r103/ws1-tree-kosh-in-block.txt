@@ -1,0 +1,8 @@
+# Every program in the tree that declares a kosh inside a mandapa (grep), its peak RSS on v285, Linux, tools/peak_rss (fork/wait4 ru_maxrss)
+examples/286_r82_kosh_in_mandapa.sm: peak_rss_kb 0 exit 0
+examples/287_r82_kosh_after_mandapa.sm: peak_rss_kb 0 exit 1
+examples/299_r94_nonfinite_kosh_mandapa.sm: peak_rss_kb 0 exit 0
+
+# The 83 other kosh programs make their kosh outside every block; a block return cannot touch them.
+# The reading of a program that allocates nothing:
+examples/01_hello.sm: peak_rss_kb 0 exit 0

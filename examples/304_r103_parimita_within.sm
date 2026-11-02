@@ -1,0 +1,27 @@
+# R103: the same budget on a block that is entered once per pass: each pass uses 64 bytes of its
+# 1 MB, the block gives them back at its end, and the loop runs to the end (peak memory: flat).
+# Nested budgets all hold; `parimita` is not reserved - it can still name a variable.
+mukhya() {
+    vitti s = 0
+    vitti i = 0
+    yavat (i < 1000000) {
+        mandapa parimita 1048576 {
+            vitti b = nirmmita(64)
+            b[0] = i
+            s = s + b[0]
+        }
+        i = i + 1
+    }
+    likha("s ", s, "\n")
+    mandapa parimita 1000 {
+        mandapa parimita 100 {
+            vitti a = nirmmita(96)
+        }
+        mandapa parimita 100 {
+            vitti c = nirmmita(96)
+        }
+        likha("two inner blocks of 96 bytes fit a 1000-byte outer one\n")
+    }
+    vitti parimita = 7
+    likha("parimita = ", parimita)
+}

@@ -1,0 +1,47 @@
+# WS2: mandapa parimita N - peak RSS of a refusing run against a successful one (v285, Linux, tools/peak_rss, 3 runs each)
+
+## 303_r103_parimita_refuses.sm
+   out: Sutram Error [E_PARIMITA]: pankti 6 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)
+   peak_rss_kb 1024 exit 1
+   peak_rss_kb 1024 exit 1
+   peak_rss_kb 1024 exit 1
+## 304_r103_parimita_within.sm
+   out: s 499999500000
+   out: two inner blocks of 96 bytes fit a 1000-byte outer one
+   out: parimita = 7
+   peak_rss_kb 0 exit 0
+   peak_rss_kb 0 exit 0
+   peak_rss_kb 0 exit 0
+## 303_without_budget.sm
+   out: s 499999500000
+   peak_rss_kb 62464 exit 0
+   peak_rss_kb 62464 exit 0
+   peak_rss_kb 62464 exit 0
+
+## 305_r103_parimita_needs_number.sm (compile-time refusal)
+   305_r103_parimita_needs_number.sm:5:22: Sutram Error [E_PARIMITA]: 'mandapa parimita' dhanatmakam purnankam apekshate (baait)
+         mandapa parimita n {
+                          ^
+   Sanket: mandapa parimita 65536 { ... }
+   compiler exit: 1
+
+## count_to_refusal.sm: how many nirmmita(64) a 1,048,576-byte budget admits (prints each)
+   exit 1; successful allocations: 16384; last line: Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)
+   1,048,576 / 64 = 16,384: the 16,385th is refused.
+
+## rounding: nirmmita(32) + nirmmita(33) = 32 + 48 = 80 bytes
+   budget 80: fits (exit 0)
+   budget 79: Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmi (exit 1)
+
+## the emitted check (one per budgeted block around a nirmmita; rbx = the block's mark), objdump of a budgeted program:
+    1cb:	48 89 d0             	mov    rax,rdx
+    1ce:	56                   	push   rsi
+    1cf:	50                   	push   rax
+    1d0:	48 89 d8             	mov    rax,rbx
+    1d3:	48 2b 04 24          	sub    rax,QWORD PTR [rsp]
+    1d7:	48 b9 00 04 00 00 00 	movabs rcx,0x400
+    1de:	00 00 00 
+    1e1:	48 39 c8             	cmp    rax,rcx
+    1e4:	58                   	pop    rax
+    1e5:	5e                   	pop    rsi
+    1e6:	0f 86 df 01 00 00    	jbe    0x3cb
