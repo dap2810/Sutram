@@ -1,0 +1,169 @@
+{
+  "round": 173,
+  "base": "106f2074ba675972bde3e25d2cf13c25307bb6c1",
+  "compiler_blob": "837db0b34ac156cb2c7cca3849e27dd4ef67c41f",
+  "patch_blob": "db353d3a8c67ceec2840271affaea72905ec66b4",
+  "verification_kind": "Read-side audit. Exact-context in-memory hunk application, not git apply or native compilation.",
+  "patch_stats": {
+    "files": 18,
+    "hunks": 50,
+    "added_lines": 757,
+    "removed_lines": 68
+  },
+  "hunk_contexts": [
+    {
+      "path": "examples/215_r12_wordfreq.sm",
+      "sha": "e531eaf0a3f192642543c18b65d719dd761a6f40",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "examples/217_r12_report.sm",
+      "sha": "0b7512a63687bccb29f55f21b3335b5f808e3868",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "lib/patra.smlib",
+      "sha": "84a164e5e809fb73cc546cce6333abf08195385e",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "sha": "837db0b34ac156cb2c7cca3849e27dd4ef67c41f",
+      "hunks": 30,
+      "matched": 30,
+      "unmatched": []
+    },
+    {
+      "path": "tests/r52/test_r52.py",
+      "sha": "01615b9e4373305a0271d81b01291d6087736ad7",
+      "hunks": 2,
+      "matched": 2,
+      "unmatched": []
+    },
+    {
+      "path": "tests/r79_real/report_blocks.sm",
+      "sha": "74c56c5df372ada2e698dd7cda5bc6665ef7fc2c",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/r79_real/report_plain.sm",
+      "sha": "855554f1e923e8805b5cdd481b18c5b00973836f",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/r81_parikshita/test_parikshita.py",
+      "sha": "77d96c28eaeed47e425b66fa71fb017a8cae319f",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/fmt_fixed.sm",
+      "sha": "b127f64dfd0a21e61ecbbf1054e2076236e74940",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/fmt_group.sm",
+      "sha": "0069289abd116169d81533d11be4ef5dd578c05e",
+      "hunks": 2,
+      "matched": 2,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/fmt_int_base.sm",
+      "sha": "cd3836f8f7e0d11c5512f8e854a1d467cfade33b",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/fmt_pad.sm",
+      "sha": "379a9ea181f2642c5950a2c3fcd38dce6bd5b7be",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/fmt_signed.sm",
+      "sha": "2d40cd096f79f608c602a849796b196ecf65237a",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/set_difference.sm",
+      "sha": "6693edc4514776251d31294e3e40bb2be9e225d4",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/set_intersect.sm",
+      "sha": "a41fd90a1ed3d9f606ebb52e89bbbfe29b3acacd",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/set_to_array.sm",
+      "sha": "8030a3af31f364132e63d2501fd6c4770e364f86",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/set_union.sm",
+      "sha": "34c1f0bdd042fcd3777b46ab2720d737e85897ad",
+      "hunks": 1,
+      "matched": 1,
+      "unmatched": []
+    },
+    {
+      "path": "tests/stdlib/strb_dup.sm",
+      "sha": "89ab2897ec1107cab09255d90f88b6add975e403",
+      "hunks": 2,
+      "matched": 2,
+      "unmatched": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "P173-01",
+      "status": "source-derived; native probe not run",
+      "finding": "Assignment updates destination string flag before RHS classification; s=s+s loses operand type evidence."
+    },
+    {
+      "id": "P173-02",
+      "status": "source-derived; native probe not run",
+      "finding": "Fast ADD paths reject any string-marked operand while generic path permits string plus integer."
+    },
+    {
+      "id": "P173-03",
+      "status": "source-derived; acknowledged partial scope",
+      "finding": "Unknown call/parameter/control-flow types are treated as non-string/int-like, not proved integers."
+    },
+    {
+      "id": "P173-04",
+      "status": "source-derived; native probe not run",
+      "finding": "Fixed 8339456-byte recursion threshold does not derive actual stack limits; guard follows prologue work."
+    }
+  ],
+  "runtime_validation": "NOT RUN — no toolchain",
+  "external_sources": [
+    "https://docs.oracle.com/javase/specs/jls/se9/html/jls-15.html#jls-15.21.3",
+    "https://man7.org/linux/man-pages/man2/getrlimit.2.html"
+  ]
+}
+
