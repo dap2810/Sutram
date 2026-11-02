@@ -1,0 +1,17 @@
+{
+  "base": "origin/main 66556f20, compiler v283",
+  "patch": "fixall_r100.patch: 18 files, +757/-68, 47090 bytes, git apply --check clean onto origin/main",
+  "suite": {"pass": 270, "no_expectation": 4, "fail": 0, "exit": 1, "note": "exit 1 is the clean signature (bad counts the 4 no-expectation items)"},
+  "proofs": {"proof_lib": "229/229", "proof_props": "86/86"},
+  "guard": {"programs": 680, "refused_identically": 131, "differ_byte_only": 549, "new": 0, "refusal_changes": 0, "note": "all DIFFERs are rc=0/rc=0, attributable to recursion prologue bytes; re-baseline required"},
+  "r52": "12 checks, 0 failed",
+  "r81": "24 checks, 0 failed",
+  "r79": {"students": 20000, "report_plain": "output identical to reference", "report_blocks": "output identical to reference", "peak_plain_kb": 35456, "peak_blocks_kb": 22016, "blocks_pct_of_plain": 62, "note": "RSS via per-process wait4 rusage; harness /usr/bin/time absent here"},
+  "pe": "byte-identical patched vs unpatched (same SHA-256, 259-byte test program)",
+  "object_mode": "compiles cleanly",
+  "recursion_threshold_bytes": 8339456,
+  "recursion_probe_shape": {"survive": [2000, 4000, 4007], "refuse": [4008, 4020], "nobase_and_mutual": "E_GAHANATA exit 1 (was exit 139, 0 bytes)"},
+  "migration": {"sm_sites": 57, "py_sites": 2, "tree_raw_writes": ["examples/215:76", "examples/217:60", "lib/patra.smlib:67"], "tests_sites": 54},
+  "scalar_uninit_census": {"examples_plus_lib": 0},
+  "not_run": ["Windows (PE recursion guard, installer rebuild, wizard test)", "browser", "native-speaker review of new Sanskrit strings", "direct-to-main application"]
+}
