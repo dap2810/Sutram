@@ -1,0 +1,786 @@
+[
+ {
+  "a": "int",
+  "b": "int",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "int",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "int",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "int",
+  "op": "+",
+  "result": "8",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "int",
+  "op": "-",
+  "result": "2",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "int",
+  "op": "*",
+  "result": "15",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "int",
+  "op": "/",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "dasham",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "dasham",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "dasham",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "dasham",
+  "op": "+",
+  "result": "6.500000",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "dasham",
+  "op": "-",
+  "result": "3.500000",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "dasham",
+  "op": "*",
+  "result": "7.500000",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "dasham",
+  "op": "/",
+  "result": "3.333333",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "string",
+  "op": "==",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "int",
+  "b": "string",
+  "op": "!=",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "int",
+  "b": "string",
+  "op": "<",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "string",
+  "op": "+",
+  "result": "4194471",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "string",
+  "op": "-",
+  "result": "-4194461",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "string",
+  "op": "*",
+  "result": "20972330",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "string",
+  "op": "/",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "kosh",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "kosh",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "kosh",
+  "op": "<",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "kosh",
+  "op": "+",
+  "result": "126338490957845",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "kosh",
+  "op": "-",
+  "result": "-127754624303115",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "kosh",
+  "op": "*",
+  "result": "632040854650960",
+  "exit": 0
+ },
+ {
+  "a": "int",
+  "b": "kosh",
+  "op": "/",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "int",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "int",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "int",
+  "op": "<",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "int",
+  "op": "+",
+  "result": "5.500000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "int",
+  "op": "-",
+  "result": "-0.500000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "int",
+  "op": "*",
+  "result": "7.500000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "int",
+  "op": "/",
+  "result": "0.833333",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "dasham",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "dasham",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "dasham",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "dasham",
+  "op": "+",
+  "result": "4.000000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "dasham",
+  "op": "-",
+  "result": "1.000000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "dasham",
+  "op": "*",
+  "result": "3.750000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "dasham",
+  "op": "/",
+  "result": "1.666667",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "string",
+  "op": "==",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "dasham",
+  "b": "string",
+  "op": "!=",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "dasham",
+  "b": "string",
+  "op": "<",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "string",
+  "op": "+",
+  "result": "REFUSED",
+  "code": "E_VARTANI_CAT"
+ },
+ {
+  "a": "dasham",
+  "b": "string",
+  "op": "-",
+  "result": "-4194471.500000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "string",
+  "op": "*",
+  "result": "10486185.000000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "string",
+  "op": "/",
+  "result": "0.000001",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "kosh",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "kosh",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "kosh",
+  "op": "<",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "kosh",
+  "op": "+",
+  "result": "135932082651154.500000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "kosh",
+  "op": "-",
+  "result": "-135402375610381.500000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "kosh",
+  "op": "*",
+  "result": "328753416765480.000000",
+  "exit": 0
+ },
+ {
+  "a": "dasham",
+  "b": "kosh",
+  "op": "/",
+  "result": "0.000000",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "int",
+  "op": "==",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "int",
+  "op": "!=",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "int",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "int",
+  "op": "+",
+  "result": "4194464",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "int",
+  "op": "-",
+  "result": "4194458",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "int",
+  "op": "*",
+  "result": "12583383",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "int",
+  "op": "/",
+  "result": "1398153",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "dasham",
+  "op": "==",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "dasham",
+  "op": "!=",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "dasham",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "dasham",
+  "op": "+",
+  "result": "REFUSED",
+  "code": "E_VARTANI_CAT"
+ },
+ {
+  "a": "string",
+  "b": "dasham",
+  "op": "-",
+  "result": "4194459.500000",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "dasham",
+  "op": "*",
+  "result": "6291691.500000",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "dasham",
+  "op": "/",
+  "result": "2796307.333333",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "string",
+  "op": "==",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "string",
+  "op": "!=",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "string",
+  "op": "<",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "string",
+  "op": "+",
+  "result": "REFUSED",
+  "code": "E_VARTANI_CAT"
+ },
+ {
+  "a": "string",
+  "b": "string",
+  "op": "-",
+  "result": "-15",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "string",
+  "op": "*",
+  "result": "17593565997436",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "string",
+  "op": "/",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "kosh",
+  "op": "==",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "kosh",
+  "op": "!=",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "string",
+  "b": "kosh",
+  "op": "<",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "kosh",
+  "op": "+",
+  "result": "REFUSED",
+  "code": "E_VARTANI_CAT"
+ },
+ {
+  "a": "string",
+  "b": "kosh",
+  "op": "-",
+  "result": "-126437891768179",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "kosh",
+  "op": "*",
+  "result": "5656806885387405776",
+  "exit": 0
+ },
+ {
+  "a": "string",
+  "b": "kosh",
+  "op": "/",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "int",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "int",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "int",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "int",
+  "op": "+",
+  "result": "137423715565587",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "int",
+  "op": "-",
+  "result": "139428511088653",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "int",
+  "op": "*",
+  "result": "369645179633712",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "int",
+  "op": "/",
+  "result": "46594792270512",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "dasham",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "dasham",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "dasham",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "dasham",
+  "op": "+",
+  "result": "125390857175057.500000",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "dasham",
+  "op": "-",
+  "result": "130223173533710.500000",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "dasham",
+  "op": "*",
+  "result": "202996825718808.000000",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "dasham",
+  "op": "/",
+  "result": "91020423331850.671875",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "string",
+  "op": "==",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "kosh",
+  "b": "string",
+  "op": "!=",
+  "result": "REFUSED",
+  "code": "E_VARTANI_TUL"
+ },
+ {
+  "a": "kosh",
+  "b": "string",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "string",
+  "op": "+",
+  "result": "REFUSED",
+  "code": "E_VARTANI_CAT"
+ },
+ {
+  "a": "kosh",
+  "b": "string",
+  "op": "-",
+  "result": "131374568701366",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "string",
+  "op": "*",
+  "result": "2630741373501842848",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "string",
+  "op": "/",
+  "result": "31274675",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "kosh",
+  "op": "==",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "kosh",
+  "op": "!=",
+  "result": "1",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "kosh",
+  "op": "<",
+  "result": "0",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "kosh",
+  "op": "+",
+  "result": "264152148869152",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "kosh",
+  "op": "-",
+  "result": "67108864",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "kosh",
+  "op": "*",
+  "result": "3715524752115237120",
+  "exit": 0
+ },
+ {
+  "a": "kosh",
+  "b": "kosh",
+  "op": "/",
+  "result": "1",
+  "exit": 0
+ }
+]
