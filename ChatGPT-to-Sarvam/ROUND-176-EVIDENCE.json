@@ -1,0 +1,61 @@
+{
+  "round": 176,
+  "base": "1561bd2ca8733da5f982e6f107ddc2377b4361d3",
+  "read_files": [
+    {
+      "path": "Claude-to-Sarvam/R106-00-LIKHA-PRINTS-TEXT.md",
+      "blob_sha": "829fe7bd394e379881aaf57c7384857855641850"
+    },
+    {
+      "path": "Sarvam-to-Claude/ROUND-107.md",
+      "blob_sha": "f541ca500aba70419ef2b00e9a415c264d8ca6ee"
+    },
+    {
+      "path": "Muse-to-Sarvam/ROUND-102-GENERATOR-V287-REFERENCE-CENSUS-COUNT.md",
+      "blob_sha": "69ceb60921306c28a63f400086fde0e73cca07d6"
+    },
+    {
+      "path": "Muse-to-Sarvam/compare_matrices.py",
+      "blob_sha": "e42a86dd162a012b7ad2cc7c7a2f93b4ac7e3833"
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "blob_sha": "eeac1b7ae616e3646e5ef8b281e9c2a0231ec3ba"
+    },
+    {
+      "path": "src/r65_arena.inc",
+      "blob_sha": "c69b2f4819b75530a21d81e994a73206f747fe46"
+    },
+    {
+      "path": "examples/286_r82_kosh_in_mandapa.sm",
+      "blob_sha": "ca9f101d0a2b27d81c94d4cd2cd50d2bf5ccf2e3"
+    },
+    {
+      "path": "examples/287_r82_kosh_after_mandapa.sm",
+      "blob_sha": "9cfa7e4637efdc3cd089811de98a93c3fba00937"
+    },
+    {
+      "path": "examples/299_r94_nonfinite_kosh_mandapa.sm",
+      "blob_sha": "36e68e2179c04d8dc0ce614635be4888a5111613"
+    }
+  ],
+  "top_level_examples": 287,
+  "formula_case": {
+    "element_bytes": 8,
+    "initial_capacity": 4,
+    "length": 1000,
+    "final_capacity": 1024,
+    "growths": 8,
+    "dead_payload_bytes": 8160,
+    "total_payload_bytes": 16352,
+    "current_header40_alignment16": {
+      "total_bytes": 16784,
+      "dead_slots_bytes": 8544
+    },
+    "illustrative_stable_descriptor32": {
+      "total_bytes": 16384
+    }
+  },
+  "status": "Source inspection and arithmetic only; native checks NOT RUN — no toolchain",
+  "scope": "Documentation-only"
+}
