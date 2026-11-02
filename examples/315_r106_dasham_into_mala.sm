@@ -1,0 +1,11 @@
+# R106: a dasham stored into a whole-number mala is converted exactly, as into a vitti: 3.0
+# stores 3. One with a fraction stops the program with E_DASHAM_VITTI. (It used to store the
+# IEEE-754 bits: 3.0 read back as 4613937818241073152.)
+mukhya() {
+    dasham d = 3.0
+    vitti a[2]
+    a[0] = d
+    likha(a[0])
+    a[1] = d * 2.5
+    likha(a[1])
+}

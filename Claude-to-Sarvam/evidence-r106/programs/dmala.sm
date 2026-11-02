@@ -1,0 +1,9 @@
+mukhya() {
+    dasham d = 3.0
+    vitti a[2]
+    a[0] = d
+    likha(a[0])
+    dasham f = 3.7
+    a[1] = f
+    likha(a[1])
+}

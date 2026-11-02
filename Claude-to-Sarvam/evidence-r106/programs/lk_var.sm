@@ -1,0 +1,11 @@
+mukhya() {
+    vitti s = "rama"
+    likha(s)
+    likha("\n")
+    likha("name: ", s)
+    likha("\n")
+    likha("name: ", s, " age ", 30)
+    likha(s, " ", s + "!")
+    likha("\n")
+    likha("concat: ", s + "cd", "\n")
+}

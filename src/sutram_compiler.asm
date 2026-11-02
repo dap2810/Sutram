@@ -245,7 +245,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v287) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v288) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -522,6 +522,13 @@ r54_builtin_arity_table:
     rfx2_o1 db 0x5F, 0x48,0x89,0xC6, 0x0F,0xB6,0x0F, 0x0F,0xB6,0x16, 0x39,0xD1, 0x75,0x0C, 0x85,0xC9, 0x74,0x08
     db 0x48,0xFF,0xC7, 0x48,0xFF,0xC6, 0xEB,0xEA, 0x89,0xC8, 0x29,0xD0, 0x48,0x63,0xC0
     rfx2_o1_len equ $ - rfx2_o1
+    ; R106 (Muse R101 traps 3 and 4): a string as a condition, a kosh as an operand.
+    rfx_bc_hdr_sat db ": Sutram Error [E_VARTANI_SATYA]: ", 0
+    rfx_bc_txt_sat db "vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate", 10, 0
+    rfx_bc_hint_sat db "Sanket: yadi (s != ", 34, 34, ") - rikta na cet; yadi (s == ", 34, "ab", 34, ") - samam cet", 10, 0
+    rfx_bc_hdr_kosh db ": Sutram Error [E_KOSH_GANIT]: ", 0
+    rfx_bc_txt_kosh db "kosh-upari ganitam tulana va na sambhavati - kosh sankhya na", 10, 0
+    rfx_bc_hint_kosh db "Sanket: k[i] tasya mulyam; kosh_len(k) tasya dirghata - tani tulyantam", 10, 0
     rfx2_msg_cap db "Sutram Error: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
     rfx2_msg_nomem db "Sutram Error [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
     rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
@@ -8892,6 +8899,45 @@ expr_is_str:
     movzx eax, al
     ret
 
+rfx_is_kosh_operand:
+    ; R106: rdi = AST node -> rax = 1 when it is a bare kosh variable (not k[i], not kosh_len(k)).
+    test rdi, rdi
+    jz .no
+    cmp qword [rdi], AST_VAR
+    jne .no
+    push rdi
+    mov rdi, [rdi+8]
+    call is_kosh_var
+    pop rdi
+    test rax, rax
+    jnz .yes
+    mov rdi, [rdi+8]
+    jmp is_kosh_param_var
+.yes:
+    mov eax, 1
+    ret
+.no:
+    xor eax, eax
+    ret
+
+; rfx_check_truth(rdi = a condition node): R106 (Muse trap 3) - a string as a whole condition
+; (yadi (s), yavat (s), c ? .. with c a string) is E_VARTANI_SATYA: every string, even "", is a
+; non-zero address, so it always read as true.
+rfx_check_truth:
+    push rdi
+    call rfx_kind
+    pop rdi
+    cmp eax, 1
+    je .bad
+    ret
+.bad:
+    xor edi, edi
+rfx_truth_error:
+    lea rsi, [rel rfx_bc_hdr_sat]
+    lea rdx, [rel rfx_bc_txt_sat]
+    lea rcx, [rel rfx_bc_hint_sat]
+    jmp r80_compile_error
+
 rfx_binop_has_str:
     ; R105: rdi = AST_BINOP -> rax = 1 when either operand may be a string (rfx_kind 1 or 3):
     ; the register fast paths leave such a binop to the generic path, so that one rule decides.
@@ -9087,7 +9133,19 @@ rfx_check_str_binop:
     push r12
     push r13
     mov rbx, rdi
+    mov rdi, [rbx+16]              ; R106: a kosh is no operand of any binop (Muse trap 4:
+    call rfx_is_kosh_operand       ; kosh == kosh compared two addresses)
+    test rax, rax
+    jnz .rfx_csb_kosh
+    mov rdi, [rbx+24]
+    call rfx_is_kosh_operand
+    test rax, rax
+    jnz .rfx_csb_kosh
     mov rax, [rbx+8]
+    cmp rax, OP_LAND               ; R106: && / || on a string: a string is no condition
+    je .rfx_csb_truth
+    cmp rax, OP_LOR
+    je .rfx_csb_truth
     cmp rax, OP_ADD
     je .rfx_csb_check
     cmp rax, OP_EQ
@@ -9121,6 +9179,24 @@ rfx_check_str_binop:
     cmp rax, OP_SHR
     je .rfx_csb_arith
     jmp .rfx_csb_out
+.rfx_csb_kosh:
+    mov rdi, [rbx+32]
+    lea rsi, [rel rfx_bc_hdr_kosh]
+    lea rdx, [rel rfx_bc_txt_kosh]
+    lea rcx, [rel rfx_bc_hint_kosh]
+    jmp r80_compile_error
+.rfx_csb_truth:
+    mov rdi, [rbx+16]
+    call rfx_kind
+    cmp eax, 1
+    je .rfx_csb_truth_bad
+    mov rdi, [rbx+24]
+    call rfx_kind
+    cmp eax, 1
+    jne .rfx_csb_out
+.rfx_csb_truth_bad:
+    mov rdi, [rbx+32]
+    jmp rfx_truth_error
 .rfx_csb_arith:
     ; R105: arithmetic on a string is refused, except string - integer (pointer arithmetic,
     ; as string + integer). A sometimes-string beside a number keeps the integer meaning.
@@ -18459,7 +18535,17 @@ gen_stmt:
     pop r14
     pop r13
     test r13, r13
+    jnz .gs_ai_kosh_conv
+    test r14, r14            ; R106 (Muse trap 8): a dasham into a whole-number mala is
+    jz .gs_ai_value_ready    ; converted exactly, as into a vitti (E_DASHAM_VITTI if it has
+    mov rax, [rbx+8]         ; a fraction); it used to store the IEEE-754 bits
+    mov rdi, [rax+8]
+    call is_array_var
+    test rax, rax
     jz .gs_ai_value_ready
+    call emit_f64_to_i64_rax
+    jmp .gs_ai_value_ready
+.gs_ai_kosh_conv:
     mov rdi, r14
     xor esi, esi             ; integer/raw target
     cmp r13, 2
@@ -18726,6 +18812,8 @@ gen_stmt:
     je .gi_cmp_cond
 .gi_normal_cond:
     pop rbx
+    mov rdi, [rbx+8]         ; R106: a string is no condition
+    call rfx_check_truth
     mov rax, [rbx+8]         ; condition
     call gen_expr
     ; test rax, rax
@@ -19380,6 +19468,8 @@ gen_stmt:
     je .gw2_cmp_cond
 
 .gw2_normal_cond:
+    mov rdi, [rbx+8]            ; R106: a string is no condition
+    call rfx_check_truth
     mov rax, [rbx+8]
     call gen_expr
     mov dil, 0x48               ; test rax,rax
@@ -20240,6 +20330,8 @@ gen_expr:
 
 .ge_ternary:
     ; [AST_TERNARY][cond][true_expr][false_expr]
+    mov rdi, [rbx+8]         ; R106: a string is no condition
+    call rfx_check_truth
     push r12
     push r13
     push r14
@@ -21409,6 +21501,14 @@ gen_expr:
     je .r52_lk_emit                ; the last value: likha
     cmp qword [rcx], AST_STR
     je .r52_lk_emit                ; a string literal: likha (no newline)
+    push rax                       ; R106: any string value: likha (its text, no newline)
+    push rcx
+    mov rdi, rcx
+    call rfx_kind
+    pop rcx
+    cmp eax, 1
+    pop rax
+    je .r52_lk_emit
     mov qword [rax+8], BN_LKHB     ; a number: lkhb
 .r52_lk_emit:
     call gen_expr
@@ -21573,7 +21673,14 @@ gen_expr:
     mov rax, [rbx+24]
     mov rcx, [rax]
     cmp rcx, 14
+    je .ge_lk_literal
+    mov rdi, rax                   ; R106: a string value (variable, s + t, a string-returning
+    call rfx_kind                  ; prakriya) prints its text, as a literal does: shabda
+    cmp eax, 1
     jne .ge_lk_maybe_float
+    mov qword [rbx+8], BN_SHABDA
+    jmp .ge_call_shabda
+.ge_lk_literal:
     ; String literal — emit inline string + sys_write(1, str, len)
     push r12
     push r13

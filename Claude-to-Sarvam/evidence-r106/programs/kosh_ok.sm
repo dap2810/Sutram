@@ -1,0 +1,5 @@
+mukhya() {
+    kosh a[2]
+    kosh_push(a, 7)
+    likha(a[0] + 1, " ", kosh_len(a) == 1, "\n")
+}

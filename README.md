@@ -197,8 +197,8 @@ storage - so give each `kosh` one name - see
 ## Strings (v287)
 
 `==`, `!=`, `<`, `>`, `<=`, `>=` between two strings compare their text, and `+` between two strings makes a
-new one: `"rama" + " " + "sita" == "rama sita"` is 1. Print a string with `shabda(s)`. `likha(a, " ", b)` prints
-three values. What the compiler cannot treat as text it refuses at compile time rather than guess - a string
+new one: `"rama" + " " + "sita" == "rama sita"` is 1. `likha` prints a string's text (v288): `likha("name: ", s)`.
+`likha(a, " ", b)` prints three values. What the compiler cannot treat as text it refuses at compile time rather than guess - a string
 beside a number (`E_VARTANI_TUL`, `E_VARTANI_CAT`), arithmetic on a string (`E_VARTANI_GANIT`) - and a `vitti`
 declared without a value in a function is `E_MULYA_VINA`; a recursion that runs out of stack stops with
 `E_GAHANATA`, exit 1 (v286). `docs/LANGUAGE-REFERENCE.md` §5a, §4a and §6d.

@@ -1,0 +1,7 @@
+mukhya() {
+    vitti a[2]
+    vitti s = "hi"
+    a[0] = s
+    likha(a[0])
+    shabda(a[0])
+}

@@ -1,0 +1,7 @@
+mukhya() {
+    kosh a[2]
+    kosh b[2]
+    kosh_push(a, 7)
+    kosh_push(b, 7)
+    likha(a == b)
+}

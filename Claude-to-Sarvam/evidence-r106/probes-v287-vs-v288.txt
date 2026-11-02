@@ -1,0 +1,71 @@
+# R106 probes, compiled and run by v287 (origin/main) and v288. Linux x86-64.
+
+## v287
+== dmala: exit 0
+   | 4613937818241073152
+   | 4615514078110652826
+== kosh_eq: exit 0
+   | 0
+== kosh_ok: exit 0
+   | 8 1
+== koshop: exit 0
+   | 0
+   | 140168572960785
+== lk_fn: exit 0
+   | hello 4194982
+   | 4194982
+== lk_mixed: exit 0
+   | 7 4194466 14
+   | 4194466
+   | 7
+== lk_var: exit 0
+   | 4194461
+   | name: 4194461
+   | name: 4194461 age 30
+   | 4194461 140462551728128
+   | concat: 140462551728144
+== sarvam_concat: exit 0
+   | concat: 140194980298752
+== trap5_likha_kosh: exit 0
+   | 139853809319952
+== trap6_string_in_mala: exit 0
+   | 4194681
+   | hi
+== truth: exit 0
+   | x
+== truth_and: exit 0
+   | x
+== truth_ok: exit 0
+   | empty
+
+## v288
+== dmala: exit 1
+   | 3
+   | Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati
+== kosh_eq: REFUSED (exit 1): kosh_eq.sm: Sutram Error [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na
+== kosh_ok: exit 0
+   | 8 1
+== koshop: REFUSED (exit 1): koshop.sm: Sutram Error [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na
+== lk_fn: exit 0
+   | hello arjuna
+   | arjuna
+== lk_mixed: exit 0
+   | 7 sita 14
+   | sita7
+== lk_var: exit 0
+   | rama
+   | name: rama
+   | name: rama age 30
+   | rama rama!
+   | concat: ramacd
+== sarvam_concat: exit 0
+   | concat: abcd
+== trap5_likha_kosh: exit 0
+   | 140484297097232
+== trap6_string_in_mala: exit 0
+   | 4194681
+   | hi
+== truth: REFUSED (exit 1): truth.sm: Sutram Error [E_VARTANI_SATYA]: vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate
+== truth_and: REFUSED (exit 1): truth_and.sm: Sutram Error [E_VARTANI_SATYA]: vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate
+== truth_ok: exit 0
+   | empty

@@ -87,6 +87,7 @@ section .data
     r49_from_flag db "--debug-from=", 0
     r45_head      db "[shodhan] pankti ", 0
     r45_indent    db "    ", 0
+    r45_nl        db 10, 0           ; R106: ends the line after a string value
     r45_equals    db " = ", 0
     r45_summary   db "[shodhan] samapti, vakya: ", 0
     r45_counter_name db "0shodhan_vakya", 0   ; R46: the statement counter, a module vitti
@@ -663,7 +664,20 @@ r45_likha_node:
     mov qword [rax + 8], BN_LIKHA
     mov qword [rax + 16], 1
     mov [rax + 24], rcx
+    push rcx
     call gen_stmt
+    pop rdi
+    cmp qword [rdi], AST_STR       ; R106: a string variable prints its text, which (as a literal)
+    je .r                          ; has no newline: end the trace line
+    call rfx_kind
+    cmp eax, 1
+    jne .r
+    call alloc_ast
+    mov qword [rax], AST_STR
+    lea rcx, [rel r45_nl]
+    mov [rax + 8], rcx
+    jmp r45_likha_node
+.r:
     ret
 
 ; alloc_var, wrapped: under --debug, the declared name becomes visible at the

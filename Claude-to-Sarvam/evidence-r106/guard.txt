@@ -1,0 +1,31 @@
+# The guard, origin/main (v287, 8577d59) -> v288, tools/guard_pair.py, Linux cloud (2 cores). Final build.
+
+## elf
+NEW          examples/312_r106_likha_string.sm
+NEW          examples/313_r106_string_condition.sm
+NEW          examples/314_r106_kosh_operand.sm
+NEW          examples/315_r106_dasham_into_mala.sm
+source files whose text changed: 0
+693 programs: 555 byte-identical, 134 refused identically, 0 DIFFER, 4 new
+
+## pe
+NEW          examples/312_r106_likha_string.sm
+NEW          examples/313_r106_string_condition.sm
+NEW          examples/314_r106_kosh_operand.sm
+NEW          examples/315_r106_dasham_into_mala.sm
+source files whose text changed: 0
+693 programs: 555 byte-identical, 134 refused identically, 0 DIFFER, 4 new
+
+## wine
+NEW          examples/312_r106_likha_string.sm
+NEW          examples/313_r106_string_condition.sm
+NEW          examples/314_r106_kosh_operand.sm
+NEW          examples/315_r106_dasham_into_mala.sm
+source files whose text changed: 0
+693 programs: 555 byte-identical, 134 refused identically, 0 DIFFER, 4 new
+
+## Wine outputs against the Linux compiler's PE outputs, byte for byte: 1110 identical, 0 differ, 0 missing
+
+## diffrun: elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+
+## The first run (before the --debug fix; stopped after ELF and PE to rebuild): ELF 693 programs: 555 byte-identical, 134 refused identically, 0 DIFFER, 4 new; PE 693 programs: 555 byte-identical, 134 refused identically, 0 DIFFER, 4 new

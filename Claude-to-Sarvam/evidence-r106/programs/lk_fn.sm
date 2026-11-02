@@ -1,0 +1,9 @@
+prakriya naam() {
+    nivartanam "arjuna"
+}
+
+mukhya() {
+    likha("hello ", naam(), "\n")
+    likha(naam())
+    likha("\n")
+}

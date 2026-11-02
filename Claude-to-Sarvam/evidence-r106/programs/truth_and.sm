@@ -1,0 +1,7 @@
+mukhya() {
+    vitti e = "a"
+    vitti n = 1
+    yadi (n > 0 && e) {
+        likha("x\n")
+    }
+}

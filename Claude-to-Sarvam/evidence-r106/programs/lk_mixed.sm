@@ -1,0 +1,6 @@
+mukhya() {
+    vitti n = 7
+    vitti s = "sita"
+    likha(n, " ", s, " ", n * 2)
+    likha(s, n)
+}

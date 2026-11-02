@@ -1,0 +1,8 @@
+mukhya() {
+    vitti e = ""
+    yadi (e != "") {
+        likha("nonempty\n")
+    } anya {
+        likha("empty\n")
+    }
+}

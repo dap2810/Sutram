@@ -164,7 +164,7 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 
 ### 4a. Output: print values, raw bytes, and formatting (compiler v257)
 
-`likha` is overloaded. **A string literal prints its bytes exactly as written** (there is no automatic newline); **a scalar integer or `dasham` prints a value followed by a newline**. A string *variable* passed to ordinary `likha` prints its pointer value, not its contents; use `shabda(s)` for a NUL-terminated string variable.
+`likha` is overloaded. **A string literal prints its bytes exactly as written** (there is no automatic newline); **a scalar integer or `dasham` prints a value followed by a newline**. **From v288 a string value - a variable, `s + t`, a string a `prakriya` returns - prints its text, like a literal, with no newline** (up to v287 it printed its address). A number last on the line ends it with a newline: `likha("name: ", s, " age ", 30)`. `shabda(s)` still prints a string, and a raw buffer is still `dvaram_likha`.
 
 **One scalar value — `likha(x)` (newline included):**
 ```sutram
@@ -314,8 +314,7 @@ the text, not on where it is stored:
 | `a + b` | a **new** string: `a`'s bytes, then `b`'s; `a` and `b` are unchanged | `"rama" + " " + "sita"` is `rama sita` |
 
 All of these work in `yadi` and `yavat` conditions, on literals, variables, what a `prakriya` returns, and
-parameters (`examples/306`, `307`, `309`). **Print a string with `shabda(s)`**; `likha(s)` on a string variable
-still prints its address (section 4a - that is the owner's call to change).
+parameters (`examples/306`, `307`, `309`). **`likha` prints a string's text** (v288, section 4a; `examples/312`).
 
 **Which values are strings.** The compiler decides, before it generates a function, from the whole program:
 a variable is a string when **every** value it is given in that function is one (a literal, another string
@@ -344,6 +343,13 @@ in a loop only what you keep; `s = s + piece` repeated copies the growing prefix
 **Comparison costs** 9 instructions a byte (two loads, compare, two tests, two increments, the loop) to the
 first difference or the NUL, and allocates nothing: 1,000,000 comparisons of two equal 64-byte strings - 0.04 s.
 A program with no string comparison compiles to the same bytes as before (the guard).
+
+**Also refused from v288** (Muse's R101 traps 3 and 4):
+
+| you write | refused with |
+|---|---|
+| a string as a whole condition: `yadi (s)`, `yavat (s)`, `s && x`, `s ? a : b` - every string, even `""`, was true | **`E_VARTANI_SATYA`** `vartani satyam asatyam va na bhavati` - write `yadi (s != "")` |
+| a `kosh` as an operand: `a == b` on two koshes (0 for two equal ones), `k + 1` | **`E_KOSH_GANIT`** `kosh-upari ganitam tulana va na sambhavati` - compare `k[i]` or `kosh_len(k)` |
 
 **Not known to be strings, and so not handled:** module-level variables, `kosh` and `mala` elements, and a
 `prakriya` used as a value (`vitti g = f`). Compared with a string they are refused, not guessed. Two of them
@@ -538,6 +544,12 @@ it breaks the library's addresses into the middle of buffers. `mala` and `kosh` 
 To *find* such a mistake, build the compiler with guard pages (`nasm -dGUARD_PAGES`, as `tools/guard_page.py`
 does): every `nirmmita` block then ends against memory that cannot be touched, and a write past its end stops
 the program at once.
+
+**A `dasham` stored into a whole-number `mala` is converted exactly (v288)**, as one stored into a `vitti`: `a[0] = 3.0`
+stores `3`, and a value with a fraction (or too large for 64 bits) stops the program with `E_DASHAM_VITTI`
+(`examples/315`). Up to v287 it stored the IEEE-754 bits (`3.0` read back as `4613937818241073152`). A raw
+`nirmmita` buffer (`p[i] = d`) is unchanged: it holds whatever 8 bytes it is given. Use `kosh dasham` for a list
+of `dasham`.
 
 ### 6d. Recursion depth: `E_GAHANATA` (v286)
 
@@ -1201,29 +1213,22 @@ block behind an address is), so a checked sort is one function. Run-time `+ - *`
 functions** could be marked as they are (all of `ank`, `madhava`, `sadhan`; most of `ganit`, `chandas`,
 `ganita`); none is marked yet, so a checked program calls none of them (`examples/283`).
 
-## Printing a string variable - READ THIS BEFORE YOU TRY IT
+## Printing a string variable (changed in v288)
 
-**`likha` prints a string LITERAL as a string. It prints a string VARIABLE as a pointer.**
+**`likha` prints a string as its text - a literal, a variable, a concatenation, a string a `prakriya` returns.**
 
 ```sm
 mukhya() {
-    likha("hello")        # prints:  hello
+    likha("hello\n")       # prints:  hello
     vitti s = "ab"
-    likha(s)              # prints:  4194454      <- the address, not the text
-    s = s + "cd"
-    likha(s)              # prints:  8388927
+    likha(s, "\n")         # prints:  ab
+    likha(s + "cd", "\n")  # prints:  abcd
 }
 ```
 
-**Verified on the current compiler.** `likha("hello")` gives `hello`; `likha(s)` where `s` is a variable gives
-a number.
-
-**This is a real trap and it is not a defect** - it is how the language works today, recorded in the
-CHANGELOG but until now in no reference. **A beginner writes `vitti s = "hello"` and then `likha(s)`, and gets
-a seven-digit number with no explanation.**
-
-**The workaround:** print a string with an explicit length - `dvaram_likha(1, s, n)` (v286; before it, `likha(1, s, n)`) - or print it as a literal.
-
-*Open: should `likha` print a string variable as text? That would be a language change and it is the owner's
-call. Documented here so nobody has to discover it by confusion.*
+**Up to v287 this was a trap:** `likha(s)` on a string variable printed its address (`4194454`), and a beginner
+got a seven-digit number with no explanation. From v288 `likha` looks at what it is given: the compiler knows
+which values are strings (section 5a), and prints those with the same code as `shabda`. A value that is not
+known to be a string - a `mala` or `kosh` element holding one, a module-level variable - still prints as a
+number; print it with `shabda(m[0])`.
 

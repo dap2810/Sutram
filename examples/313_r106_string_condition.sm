@@ -1,0 +1,8 @@
+# R106: a string is not a condition. Every string, even "", is a non-zero address, so
+# yadi (s) was always true. E_VARTANI_SATYA at compile time; write yadi (s != "").
+mukhya() {
+    vitti s = ""
+    yadi (s) {
+        likha("always printed before v288\n")
+    }
+}

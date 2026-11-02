@@ -1,4 +1,18 @@
-> **The 20 newest entries.** Older ones, from "v279 (Claude, R87)" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v429" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v288 (Claude, R106) - `likha` prints a string's text; a string condition and a kosh operand are refused; a dasham into a mala is converted
+
+- **`likha` on a string value prints its text** (a variable, `s + t`, a string-returning `prakriya`), with no
+  newline, as a literal: `likha("concat: ", s + "cd")` prints `concat: abcd` (it printed `139381365014528`). The
+  dispatch is at compile time from R105's kinds; numbers print as before. `--debug` ends a string value's trace
+  line itself. Golden 312.
+- **Muse's R101 traps**, the ones outside the `likha` emitter: a string as a condition (`yadi (s)`, `&&`/`||`,
+  `?:`; `""` was true) is `E_VARTANI_SATYA` (313); a bare `kosh` in any binop (`a == b` compared addresses) is
+  `E_KOSH_GANIT` (314); a `dasham` stored into a whole-number `mala` is converted exactly, `E_DASHAM_VITTI` for a
+  fraction (315; it stored the IEEE-754 bits). Traps 1, 2 and 7 were closed by v286/v287. Not changed: 5
+  (`likha(k)` - the `likha` emitter, left out of this commit as the brief asked) and 6 (a string in a `mala` - its
+  element is untyped; `shabda(a[0])` prints it).
+- A `kosh` made in a `mandapa` keeps its region for the program's life (unchanged; reasons in R106-00).
 
 ## v287 (Claude, R105) - strings work: `==` `!=` `<` `>` compare text, `+` makes a new string, `likha(a, " ", b)` prints three values
 
@@ -409,52 +423,3 @@ likha(a[0])        -> prints 41
 3. **Generics.** **Without them you cannot write a sort that works for two types.**
 
 **And the question I have asked that decides whether the boundary ships in v1.0: how many library functions must be converted before a checked function can do anything?** **If it is 200 across 20 modules, the feature is for new code only and that must be said now.**
-
-## v429 - the block sells itself on a real program, the boundary is designed, and the arithmetic lies
-
-### The real-program test, two independent measurements
-**Claude, on a real 185-line program:**
-
-| | peak memory |
-|---|---|
-| **no block** | **185 MB** |
-| **blocks around the allocating functions** | **110 MB** |
-| **with library temporaries in blocks too** | **7 MB** |
-
-**And about 5% faster, with no restructuring - the block was wrapped around the allocating functions and nothing else changed.**
-
-**My own 200,000-iteration test: 27,620 KB -> 11,772 KB, 2.3x, and 20% faster.** **Two measurements, same verdict: the block sells itself.**
-
-**And `R79 real` is now a gate, so the program stays in the suite.**
-
-### v275, and the fifth parser defect closed
-**Suite 244, library proofs 228/228, gates 55 PASS / 0 FAIL, guard 491/120/35 DIFFER on three paths with all 35 same output.**
-
-**The byte-versus-qword fix shipped at v274 - `nirmmita(10)` then `p[0..9]` now stops at `p[1]`.** **And one more silent misparse found and closed at v275: MIXED INDENTATION, tabs and spaces in the same block.** **That is the fifth of this session, and the one a Windows student would hit first.**
-
-**And the whitespace mutator is now a permanent gate, so the class is tested on every run rather than fixed case by case.**
-
-### The safe/unsafe boundary, designed
-**ChatGPT's answer: mark the declaration, and verify the body and everything it can call.**
-
-**`parikshita prakriya` - a checked function.**
-
-| Source form | Meaning |
-|---|---|
-| **unmarked `prakriya`** | **legacy/manual code, no certification, no forced migration** |
-| **`parikshita prakriya`** | **the whole function is verified, and rejected if it cannot be** |
-| **`mandapa` in a marked function** | **lexical lifetime inside an already-checked function** |
-| **`mandapa` in unmarked code** | **existing behaviour, partial diagnostics, not a checked island** |
-
-**The key point: the boundary is TRANSITIVE.** **A checked function's guarantee holds because everything it calls is also checked.** **That is what closes the hole ChatGPT named.**
-
-### And what I found doing the real-program test
-**The program's total overflowed, so I tested the arithmetic directly:**
-
-| Program | Result |
-|---|---|
-| **`9223372036854775807 + 1`** | **`-9223372036854775808`** - silent wraparound |
-| **`4000000000 * 4000000000`** | **`-2446744073709551616`** - silent wraparound |
-| **`1 / 0`** | **SIGFPE, exit 136 - a crash, no message** |
-
-**Sutram has no overflow story and no divide-by-zero story.** **For a language aimed at school students, a silent negative square is worse than an error: the student concludes they do not understand arithmetic.**

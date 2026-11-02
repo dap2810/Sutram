@@ -1,0 +1,19 @@
+# R106: likha prints a string as its text - a string variable, a literal, a concatenation, a
+# string a prakriya returns, mixed with whole numbers. A string prints with no newline, as a
+# literal always has; a number last on the line ends it.
+prakriya naam() {
+    nivartanam "arjuna"
+}
+
+mukhya() {
+    vitti s = "rama"
+    vitti t = "sita"
+    likha(s)
+    likha("\n")
+    likha("name: ", s, "\n")
+    likha("together: ", s + " " + t, "\n")
+    likha("hello ", naam(), "\n")
+    likha(s, " is ", 30)
+    vitti n = 7
+    likha(n, " ", t, " ", n * 2)
+}
