@@ -1,6 +1,6 @@
 # R104-00 — Muse's FIXALL patch is applied (v286), with one fix of my own to it: the recursion guard's slot is now an ordinary module global, so `--object` and `--separate` builds link byte-identical again. All 551 moved programs run the same old and new.
 
-- **Commit on `main`:** `__SHA__` (the v285 base was `3a78e6e`).
+- **Commit on `main`:** `8cc050d` (rebased onto ChatGPT's R173 audit files, `9ceb51e`; the v285 base was `3a78e6e`).
 - **Compiler: `Sutram 1.0 (v286) - sampurna sutra`** (was v285). Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=273`, FAIL=0.** Library proofs 229/229, property proofs 86/86, r52 12/0, r81 24/0.
