@@ -1,0 +1,4 @@
+mukhya() {
+    vitti a = "b"
+    likha(a * 2)
+}

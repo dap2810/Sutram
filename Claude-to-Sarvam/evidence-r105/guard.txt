@@ -1,0 +1,37 @@
+# The guard, origin/main (v286, b929973) -> v287, tools/guard_pair.py, Linux cloud (2 cores). Final build.
+
+## elf
+NEW          examples/306_r105_string_equal.sm
+NEW          examples/307_r105_string_join.sm
+NEW          examples/308_r105_likha_three.sm
+NEW          examples/309_r105_string_order.sm
+NEW          examples/310_r105_string_beside_number.sm
+NEW          examples/311_r105_string_arithmetic.sm
+source files whose text changed: 0
+689 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 6 new
+
+## pe
+NEW          examples/306_r105_string_equal.sm
+NEW          examples/307_r105_string_join.sm
+NEW          examples/308_r105_likha_three.sm
+NEW          examples/309_r105_string_order.sm
+NEW          examples/310_r105_string_beside_number.sm
+NEW          examples/311_r105_string_arithmetic.sm
+source files whose text changed: 0
+689 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 6 new
+
+## wine
+NEW          examples/306_r105_string_equal.sm
+NEW          examples/307_r105_string_join.sm
+NEW          examples/308_r105_likha_three.sm
+NEW          examples/309_r105_string_order.sm
+NEW          examples/310_r105_string_beside_number.sm
+NEW          examples/311_r105_string_arithmetic.sm
+source files whose text changed: 0
+689 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 6 new
+
+## Wine outputs against the Linux compiler's PE outputs, byte for byte: 1102 identical, 0 differ, 0 missing
+
+## diffrun (every ELF DIFFER old and new): elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+
+## The first run (before the module-object fix to parameters): ELF 689 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 6 new; PE 689 programs: 551 byte-identical, 132 refused identically, 0 DIFFER, 6 new; Wine stopped part-way when the compiler was rebuilt (not counted).

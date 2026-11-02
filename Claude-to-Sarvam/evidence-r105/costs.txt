@@ -1,0 +1,6 @@
+# Costs (v287, Linux, tools/peak_rss = fork/wait4 ru_maxrss; GNU time)
+cat1m.sm: n 1000000  peak_rss_kb 31232 exit 0 0.08 s
+cmp1m.sm: n 1000000  peak_rss_kb 0 exit 0 0.04 s
+intcmp1m.sm: n 1000000  peak_rss_kb 0 exit 0 0.00 s
+intcmp1m.sm: the v286 and v287 binaries are byte-identical
+compile time, all examples (283 on v287): see the hand-back (0.31 s v286, 0.28 s v287)

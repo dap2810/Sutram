@@ -1,0 +1,146 @@
+# R105 probes: each compiled and run by v286 (origin/main) and by v287. Linux x86-64. (tools: a Python runner; exit = the process's code, -11 = SIGSEGV)
+
+## v286
+== bitand: exit 0
+   | 1
+== branch_join: REFUSED (exit 1): branch_join.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== call_result: exit -11
+== cat_cases: REFUSED (exit 1): cat_cases.sm:4:17: Sutram Error [E_VARTANI_CAT]: vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam
+== deva: REFUSED (exit 1): deva.sm:4:17: Sutram Error [E_VARTANI_CAT]: vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam
+== empty2: REFUSED (exit 1): empty2.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== eq_cases: REFUSED (exit 1): eq_cases.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== fastpaths: REFUSED (exit 1): fastpaths.sm:4:17: Sutram Error [E_VARTANI_CAT]: vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam
+== funcref: REFUSED (exit 1): funcref.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== global_assign: REFUSED (exit 1): global_assign.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== global_str: REFUSED (exit 1): global_str.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== in_mandapa: REFUSED (exit 1): in_mandapa.sm:5:18: Sutram Error [E_VARTANI_CAT]: vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam
+== kosh_eq: REFUSED (exit 1): kosh_eq.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== likha3: REFUSED (exit 1): likha3.sm: Sutram Error [E_LIKHA_TRAYA]: tri-mulya-likha prathamam uddharanam apeksate
+== long: exit 0
+   | equal 65536-char 0
+   | differ at the end 0 0
+== loop_cat: REFUSED (exit 1): loop_cat.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== ltnum: exit 0
+   | 0
+== mixed: REFUSED (exit 1): mixed.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== mixed_calls: REFUSED (exit 1): mixed_calls.sm: Sutram Error [E_LIKHA_TRAYA]: tri-mulya-likha prathamam uddharanam apeksate
+== mixed_plus: exit 0
+   | 8
+== mul: exit 0
+   | 8388922
+== ne_literal: REFUSED (exit 1): ne_literal.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '!=' na parikshate - vartani_tul prakriyaya parikshyatam
+== nested_cmp: exit 0
+   | 0 0
+== ordering: exit 0
+   | 1 0
+   | 1 0
+   | 0 1
+   | 1 0
+   | yadi apple < banana
+== param: exit 0
+   | 0
+== param_lit: REFUSED (exit 1): param_lit.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== pluskosh: REFUSED (exit 1): pluskosh.sm:4:17: Sutram Error [E_VARTANI_CAT]: vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam
+== ret_mixed: REFUSED (exit 1): ret_mixed.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== ret_str: REFUSED (exit 1): ret_str.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== self_join_loop: REFUSED (exit 1): self_join_loop.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== selfassign: REFUSED (exit 1): selfassign.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== strdasham: REFUSED (exit 1): strdasham.sm:4:17: Sutram Error [E_VARTANI_CAT]: vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam
+== strnum: REFUSED (exit 1): strnum.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== sub: exit 0
+   | -14
+== subint: exit 0
+   | ello
+== ternary: REFUSED (exit 1): ternary.sm: Sutram Error [E_VARTANI_TUL]: vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam
+== truth: exit 0
+   | empty is true
+
+## v287
+== bitand: REFUSED (exit 1): bitand.sm: Sutram Error [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na
+== branch_join: REFUSED (exit 1): branch_join.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== call_result: exit 0
+   | abcd
+== cat_cases: exit 0
+   | abcd
+   | u == abcd 1
+   | a still 1 b still 1
+   | abcd!
+   | xxyz
+   | b
+   | abcdab
+== deva: exit 0
+   | राम सीता
+   | 1 0
+== empty2: exit 0
+   | 1
+== eq_cases: exit 0
+   | eq 1 ne 0
+   | prefix 0 0
+   | empty 1 0
+   | empty2 0
+   | lit 1 1
+   | ne 0 1
+   | yadi same
+   | yavat 3
+   | alias 1 self 1
+== fastpaths: exit 0
+   | bcd
+   | bcd
+== funcref: REFUSED (exit 1): funcref.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== global_assign: REFUSED (exit 1): global_assign.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== global_str: REFUSED (exit 1): global_str.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== in_mandapa: exit 0
+   | abcd
+== kosh_eq: REFUSED (exit 1): kosh_eq.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== likha3: exit 0
+   | 7 9
+   | 797
+   | 1x2
+== long: exit 0
+   | equal 65536-char 1
+   | differ at the end 0 1
+== loop_cat: exit 0
+   | ababababab
+   | len ok 1
+== ltnum: REFUSED (exit 1): ltnum.sm: Sutram Error [E_VARTANI_TUL]: '<' '>' '<=' '>=' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== mixed: REFUSED (exit 1): mixed.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== mixed_calls: REFUSED (exit 1): mixed_calls.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== mixed_plus: exit 0
+   | 8
+== mul: REFUSED (exit 1): mul.sm:3:13: Sutram Error [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na
+== ne_literal: exit 0
+   | ne 1
+   | ll 0
+== nested_cmp: exit 0
+   | 1 0
+== ordering: exit 0
+   | 1 0
+   | 1 0
+   | 1 1
+   | 0 1
+   | yadi apple < banana
+== param: exit 0
+   | 1
+== param_lit: exit 0
+   | 1
+== pluskosh: REFUSED (exit 1): pluskosh.sm:4:17: Sutram Error [E_VARTANI_CAT]: '+' vartanya saha kevalam vartani (navina vartani) athava purnankam (sthana-gati) yojayati
+== ret_mixed: REFUSED (exit 1): ret_mixed.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== ret_str: exit 0
+   | namaste arjuna
+   | 1 0
+== self_join_loop: exit 0
+   | xxxxxxxx
+   | ok 1
+   | ok2 1
+   | ok3 1
+== selfassign: exit 0
+   | 1
+== strdasham: REFUSED (exit 1): strdasham.sm:4:17: Sutram Error [E_VARTANI_CAT]: '+' vartanya saha kevalam vartani (navina vartani) athava purnankam (sthana-gati) yojayati
+== strnum: REFUSED (exit 1): strnum.sm: Sutram Error [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam
+== sub: REFUSED (exit 1): sub.sm:4:13: Sutram Error [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na
+== subint: exit 0
+   | ello
+== ternary: exit 0
+   | 1
+== truth: exit 0
+   | empty is true

@@ -1,0 +1,6 @@
+vitti g = "ab"
+
+mukhya() {
+    vitti s = "ab"
+    likha(g == s)
+}

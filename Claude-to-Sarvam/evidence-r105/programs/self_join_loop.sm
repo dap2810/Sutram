@@ -1,0 +1,14 @@
+mukhya() {
+    vitti s = "x"
+    vitti i = 0
+    yavat (i < 3) {
+        s = s + s
+        i = i + 1
+    }
+    shabda(s)
+    likha("\n")
+    vitti t = s
+    likha("ok ", t == s, "\n")
+    likha("ok2 ", s == "xxxxxxxx", "\n")
+    likha("ok3 ", s == s, "\n")
+}

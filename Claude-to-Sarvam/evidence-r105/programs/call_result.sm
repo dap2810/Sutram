@@ -1,0 +1,9 @@
+prakriya banao() {
+    nivartanam "cd"
+}
+
+mukhya() {
+    vitti s = "ab"
+    vitti u = s + banao()
+    shabda(u)
+}

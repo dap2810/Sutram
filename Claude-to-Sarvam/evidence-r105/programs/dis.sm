@@ -1,0 +1,9 @@
+mukhya() {
+    vitti a = "ab"
+    vitti b = "cd"
+    vitti e = a == b
+    vitti u = a + b
+    vitti o = a < b
+    likha(e, o, 0)
+    shabda(u)
+}

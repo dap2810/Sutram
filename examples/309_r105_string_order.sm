@@ -1,0 +1,12 @@
+# R105: '<' '>' '<=' '>=' between two strings order them by their bytes (dictionary order for
+# plain Latin letters): the first byte that differs decides, and a prefix comes first.
+mukhya() {
+    vitti a = "apple"
+    vitti b = "banana"
+    likha(a < b, " ", b < a, "\n")
+    likha(a <= a, " ", a > b, "\n")
+    likha("ab" < "abc", " ", "abc" < "ab", "\n")
+    yadi (a < b) {
+        likha("apple comes before banana\n")
+    }
+}

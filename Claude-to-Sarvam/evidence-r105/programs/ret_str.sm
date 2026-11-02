@@ -1,0 +1,16 @@
+prakriya naam(n) {
+    yadi (n > 0) {
+        nivartanam "arjuna"
+    }
+    nivartanam "bhima"
+}
+
+prakriya abhivadan(x) {
+    nivartanam "namaste " + x
+}
+
+mukhya() {
+    shabda(abhivadan(naam(1)))
+    likha("\n")
+    likha(naam(1) == "arjuna", " ", naam(0) == "arjuna", "\n")
+}

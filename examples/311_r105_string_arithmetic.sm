@@ -1,0 +1,7 @@
+# R105: '-' '*' '/' '%' on two strings meant nothing (they worked on the addresses). Refused:
+# E_VARTANI_GANIT. A string minus a whole number stays pointer arithmetic.
+mukhya() {
+    vitti a = "b"
+    vitti b = "a"
+    likha(a - b)
+}

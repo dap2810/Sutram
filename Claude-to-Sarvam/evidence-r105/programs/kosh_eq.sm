@@ -1,0 +1,5 @@
+mukhya() {
+    kosh k[1]
+    vitti s = "ab"
+    likha(s == k)
+}

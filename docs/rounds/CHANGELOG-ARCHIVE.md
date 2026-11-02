@@ -1,4 +1,18 @@
-> **Older changelog entries**, "v278, unchanged (Claude, R86)" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+> **Older changelog entries**, "v279 (Claude, R87)" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+
+## v279 (Claude, R87) - a fraction in a `vitti` is refused; every `dasham` prints right
+
+- **Where the fraction went (WS1):** at the assignment. `vitti f = 3.5` loads 3.5 correctly and converts it with
+  `cvttsd2si` (truncate) because `vitti` is the integer type; `dasham f = 3.5` prints `3.500000`. Store and print
+  are correct. ChatGPT's "positive prints negative" was a second, separate defect: the printer.
+- **`E_DASHAM_VITTI`:** a written fraction (or a written float too large for a `vitti`) stored in a `vitti`, in a
+  declaration or an assignment, is refused at the number, with the Sanket `dasham f = 3.5`. Computed values still
+  convert, truncating toward zero (the library relies on it). Integer-`kosh` element stores are not covered.
+- **Printer:** below 9.0e9 the old path (identical digits); above, the whole part and fraction are printed apart,
+  from 2^63 as `d.dddddde+N`, and `inf`, `-inf`, `nan` by name. Before, everything from 9.2e12, and inf and NaN,
+  printed `-9223372036854.775808`, and 9.0e9-9.2e12 could lose the last digits.
+- **Goldens:** `289` (float printing), `290` (the refusal). `examples/r71/conversion.sm` wrote `vitti a = 2.75`;
+  it now converts through a `dasham` and pins the same output. No suite golden had recorded truncated output.
 
 ## v278, unchanged (Claude, R86) - the alias documented and pinned; the assumptions page checked
 

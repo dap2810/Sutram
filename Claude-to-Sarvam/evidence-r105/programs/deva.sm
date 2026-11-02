@@ -1,0 +1,8 @@
+mukhya() {
+    vitti a = "राम"
+    vitti b = "राम"
+    vitti c = a + " " + "सीता"
+    shabda(c)
+    likha("\n")
+    likha(a == b, " ", a == "सीता", "\n")
+}

@@ -1,0 +1,6 @@
+mukhya() {
+    vitti a = "ab"
+    vitti c = "cd"
+    likha("ne ", a != c, "\n")
+    likha("ll ", "ab" != "ab", "\n")
+}

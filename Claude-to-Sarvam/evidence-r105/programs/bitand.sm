@@ -1,0 +1,4 @@
+mukhya() {
+    vitti s = "ab"
+    likha(s & 1)
+}

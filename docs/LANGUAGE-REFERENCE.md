@@ -132,7 +132,7 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `likh8c` | print a character |
 | `pad8c` | read a character |
 | `pankti_len` | length of a constant-length `mala` mala |
-| `likha` | 1–6 arguments: value(s); see §4a (string literals do not append LF, numeric final values do). A three-argument call whose first argument is not a string literal is refused from v286 (`E_LIKHA_TRAYA`): raw writes are `dvaram_likha` |
+| `likha` | 1–6 arguments: value(s); see §4a (string literals do not append LF, numeric final values do). Three values always print (v287); raw writes are `dvaram_likha` |
 | `dvaram_likha` | `dvaram_likha(fd, buf, len)`: write `len` bytes of `buf` to file descriptor `fd`; returns the count written (v286; see §4a) |
 | `lkhb` | numeric output without LF; includes `dasham` numeric printing since R52 |
 | `likha_fmt` | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
@@ -217,15 +217,10 @@ raw
 Here `1` is stdout's file descriptor; the second value is a byte-buffer pointer and the third is its byte count;
 the result is the number of bytes written. `dvaram` (an opening) is the fd family's word, with `dvaram`/`band`/`grahan`.
 
-**Up to v285 this was `likha(fd, buf, len)`: a three-argument `likha` whose first argument was not a string
-literal wrote raw bytes.** So `likha(a, " ", b)` printed nothing, exit 0 (R100's first trap). **From v286 that
-form is refused at compile time:**
-```
-Sutram Error [E_LIKHA_TRAYA]: tri-mulya-likha prathamam uddharanam apeksate
-Sanket: smriti-lekhanaya dvaram_likha(fd, smriti, sankhya) iti prayujyatam
-```
-*(a three-value `likha` expects a quotation first; for a memory write use `dvaram_likha`)*. Two-argument `likha`
-and a literal-first three-argument `likha` are unchanged. Old raw-write calls must be renamed.
+**Up to v285 this was `likha(fd, buf, len)`:** a three-argument `likha` whose first argument was not a string
+literal wrote raw bytes, so `likha(a, " ", b)` printed nothing. v286 refused that form (`E_LIKHA_TRAYA`); **from
+v287 `likha` with three values prints three values**, whatever comes first: `likha(a, " ", b)` prints `7 9`
+(`examples/308`). Old raw-write calls must be `dvaram_likha`.
 
 **`lkhb(x)` — numeric output without a newline (R52 also fixes `dasham`):**
 ```sutram
@@ -307,21 +302,52 @@ After `brihat_ank_se_laghu(1234, digits, 4)`, `pad8(digits + 0 * 8)` is `4`, `pa
 | struct | `rachana Name = { field1, field2 }` |
 | enum | `ganana RED = 1` (declared inside a function) |
 
-### 5a. Three refusals that replace silent wrong answers (v286, R100's traps)
+### 5a. Strings: `==`, `<`, `+` work on their text (v287)
 
-Up to v285 these compiled and ran, and gave a number with no explanation. From v286 the compiler refuses them.
+**A string is a NUL-terminated run of bytes** - a literal, or what `+` builds. From v287 the operators work on
+the text, not on where it is stored:
 
-| you write | up to v285 | from v286 |
+| you write | means | example |
 |---|---|---|
-| `vitti x` with no value, in a function | the slot's leftover: `0 99 99` from a function called twice | **`E_MULYA_VINA`**: `vitti 'x' mulyam vina ghoshita - prathamam mulyam dehi` (*declared without a value - give it one first*). Write `vitti x = 0`. A `mala` (`vitti m[4]`), a `kosh`, and a module-level `vitti` are unchanged. |
-| `s == "ab"`, `s != "ab"` on a string variable or literal (also in `yadi` / `yavat`) | compared the two addresses: `"ab" == "ab"` is 0 | **`E_VARTANI_TUL`**: `vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam`. Use `vartani_tul(a, b)`: **0 when equal**, non-zero otherwise. |
-| `s + t` with two strings, `s + "b"`, a string plus a `dasham` or a `kosh` | added the addresses; `shabda` of the sum crashed | **`E_VARTANI_CAT`**: `vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam`. Use `vartani_cat(dst, src)`; `dst` must have room - there is no capacity check. |
+| `a == b`, `a != b` | the same bytes, to the NUL | `"ab" == "ab"` is 1; `"ab" == "abc"` is 0; `"" == ""` is 1 |
+| `a < b`, `<=`, `>`, `>=` | byte order: the first byte that differs decides, a prefix comes first | `"apple" < "banana"` is 1; `"ab" < "abc"` is 1 |
+| `a + b` | a **new** string: `a`'s bytes, then `b`'s; `a` and `b` are unchanged | `"rama" + " " + "sita"` is `rama sita` |
 
-What is still allowed: `"a" + "b"` (two literals fold at compile time to `ab`); **a string plus an integer is
-pointer arithmetic** (`base + 6` for a slice, `letters + grade - 65`), so it compiles as before. The string
-tracking is by variable, last assignment wins: `s = "ab"` marks `s`, `s = 5` unmarks it. Not tracked: parameters,
-call results, `kosh` elements, module globals - two of those compared with `==` still compare addresses; a
-literal on either side is still refused. `<` `>` on strings, and `-` `*` `/`, are untouched.
+All of these work in `yadi` and `yavat` conditions, on literals, variables, what a `prakriya` returns, and
+parameters (`examples/306`, `307`, `309`). **Print a string with `shabda(s)`**; `likha(s)` on a string variable
+still prints its address (section 4a - that is the owner's call to change).
+
+**Which values are strings.** The compiler decides, before it generates a function, from the whole program:
+a variable is a string when **every** value it is given in that function is one (a literal, another string
+variable, `s + t`, a string-returning `prakriya`); a parameter is a string when **every** call passes one; a
+`prakriya` returns a string when **every** `nivartanam` does. Anything else is a number, as before.
+
+**What the compiler refuses**, each at compile time, instead of guessing:
+
+| you write | refused with |
+|---|---|
+| a string beside a number - `s == 5`, `s < n`; or a variable that is a string in one place and a number in another (`s = "ab"` ... `s = 5`), compared with a string | **`E_VARTANI_TUL`** `'==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam` (*a string on one side and not on the other - both strings, or both numbers*) |
+| `s + 2.5`, `s + k` (a `kosh`), or a sometimes-string `+` a string | **`E_VARTANI_CAT`** |
+| `s - t`, `s * 2`, `s / 2`, `s % 2`, a bit operator on a string | **`E_VARTANI_GANIT`** `vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti` |
+| `vitti x` with no value, in a function | **`E_MULYA_VINA`** (v286) - write `vitti x = 0`; a `mala`, a `kosh` and a module-level `vitti` are unchanged |
+
+**Still allowed, as before:** a string plus or minus a whole number is pointer arithmetic (`s + 1` is `s`
+without its first byte; `base + 6` for a slice). A variable that is sometimes a string, used with numbers only,
+keeps its integer meaning.
+
+**Where `+`'s string lives, and what it costs.** On the persistent side, as a `nirmmita` outside a `mandapa`:
+**for the rest of the program.** It does not die with a block, so it can be kept anywhere; and `mandapa parimita`
+does not count it. Each `+` costs its length + 1 bytes (rounded up to 16) and two `strlen` loops (4 instructions
+a byte) and a `rep movsb`. Measured: 1,000,000 joins of two 8-byte strings in a loop - about 31 MB (31,104 and 31,232 KB in two runs), under 0.1 s. Join
+in a loop only what you keep; `s = s + piece` repeated copies the growing prefix each time.
+
+**Comparison costs** 9 instructions a byte (two loads, compare, two tests, two increments, the loop) to the
+first difference or the NUL, and allocates nothing: 1,000,000 comparisons of two equal 64-byte strings - 0.04 s.
+A program with no string comparison compiles to the same bytes as before (the guard).
+
+**Not known to be strings, and so not handled:** module-level variables, `kosh` and `mala` elements, and a
+`prakriya` used as a value (`vitti g = f`). Compared with a string they are refused, not guessed. Two of them
+compared with each other still compare as numbers. An empty string is still true in `yadi (s)`.
 
 ## 6. Syntax by example
 

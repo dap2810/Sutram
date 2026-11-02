@@ -194,14 +194,14 @@ any memory (Linux, v285; §19, "A budget").
 storage - so give each `kosh` one name - see
 [`docs/LANGUAGE-REFERENCE.md`, §16, "Two names for one `kosh`"](docs/LANGUAGE-REFERENCE.md#two-names-for-one-kosh-vitti-a--k-is-not-a-copy-v278-on-linux-the-names-stay-one-from-v284).
 
-## What the compiler refuses instead of guessing (v286)
+## Strings (v287)
 
-Five things that used to compile and give a silent wrong answer are now refused, each with a Sanskrit message
-and the fix in its `Sanket` line: a three-argument `likha` that does not start with a string literal
-(`E_LIKHA_TRAYA`; raw writes are `dvaram_likha(fd, buf, len)`); `==` or `!=` between strings (`E_VARTANI_TUL`;
-use `vartani_tul`); `+` between strings (`E_VARTANI_CAT`; use `vartani_cat`); a `vitti` or `dasham` declared in a
-function without a value (`E_MULYA_VINA`); and a recursion that runs out of stack, which now stops with
-`E_GAHANATA` and exit 1 instead of a segmentation fault. `docs/LANGUAGE-REFERENCE.md` §4a, §5a and §6d.
+`==`, `!=`, `<`, `>`, `<=`, `>=` between two strings compare their text, and `+` between two strings makes a
+new one: `"rama" + " " + "sita" == "rama sita"` is 1. Print a string with `shabda(s)`. `likha(a, " ", b)` prints
+three values. What the compiler cannot treat as text it refuses at compile time rather than guess - a string
+beside a number (`E_VARTANI_TUL`, `E_VARTANI_CAT`), arithmetic on a string (`E_VARTANI_GANIT`) - and a `vitti`
+declared without a value in a function is `E_MULYA_VINA`; a recursion that runs out of stack stops with
+`E_GAHANATA`, exit 1 (v286). `docs/LANGUAGE-REFERENCE.md` §5a, §4a and §6d.
 
 ## Honest status
 

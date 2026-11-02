@@ -3,8 +3,8 @@
 
   1. likha WITH UP TO SIX VALUES: likha("x = ", x, ", y = ", y) prints `x = 42, y = 7` and a newline. Each value
      but the last prints as lkhb (a number, no newline) or likha (a string literal); the last as likha, so the line
-     ends the way likha(a, b) ends it. Three values take this form only when the first is a string literal: a non-literal first is refused (E_LIKHA_TRAYA); the raw write moved
-     to dvaram_likha(fd, smriti, sankhya). Seven values are refused.
+     ends the way likha(a, b) ends it. Three values always take this form (R105: likha(a, " ", b) prints `42 7`; v286 refused it, E_LIKHA_TRAYA); the
+     raw write moved to dvaram_likha(fd, smriti, sankhya) in v286. Seven values are refused.
   2. lkhb ON A DASHAM prints the number (2.500000), not its IEEE-754 bits (4612811918334230528).
   3. THE yoj HINT: a call to a library prakriya without its `yoj` prints, after `agyat prakriya: <name>`, the line
      `  Sanket: '<name>' '<module>' ghatake asti; 'yoj <module>' iti likhatu` - in the ordinary compile and in
@@ -66,9 +66,9 @@ def main(argv) -> int:
               f'unchanged (got {out!r})')
         out, msg, _ = build('mukhya() {\n    likha("a", 1, "b", 2, "c", 3, "d")\n}\n')
         check(out is None, 'likha with seven values is refused')
-        # FIXALL (a): variable-first 3-arg likha is refused; dvaram_likha is the raw write.
+        # R105: variable-first 3-arg likha prints three values (v286 refused it); dvaram_likha is the raw write.
         out, msg, _ = build('mukhya() {\n    vitti a = 42\n    vitti b = 7\n    likha(a, " ", b)\n}\n')
-        check(out is None and 'E_LIKHA_TRAYA' in (msg or ''), 'likha(a, " ", b) is refused (E_LIKHA_TRAYA)')
+        check(out == '42 7\n', f'likha(a, " ", b) prints three values: 42 7 (got {out!r})')
         out, _, _ = build('mukhya() {\n    dvaram_likha(1, "raw\n", 4)\n}\n')
         check(out == 'raw\n', f'dvaram_likha(1, buf, len) writes raw (got {out!r})')
 

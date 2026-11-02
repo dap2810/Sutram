@@ -1,0 +1,27 @@
+# R105: '+' between two strings makes a new string (a and b are unchanged). The new string lives
+# as long as the program, like a nirmmita outside a mandapa. A string plus a whole number is
+# still pointer arithmetic (s + 1 is s without its first letter).
+prakriya abhivadan(naam) {
+    nivartanam "namaste, " + naam + "!"
+}
+
+mukhya() {
+    vitti a = "rama"
+    vitti b = "sita"
+    vitti u = a + " " + b
+    shabda(u)
+    likha("\n")
+    likha("u == rama sita: ", u == "rama sita", " a unchanged: ", a == "rama", "\n")
+    shabda(abhivadan(b))
+    likha("\n")
+    vitti s = ""
+    vitti i = 0
+    yavat (i < 3) {
+        s = s + "ab"
+        i = i + 1
+    }
+    shabda(s)
+    likha("\n")
+    shabda(a + 1)
+    likha("\n")
+}

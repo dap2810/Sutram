@@ -1,0 +1,6 @@
+mukhya() {
+    vitti s = "abcd"
+    vitti off = 1
+    shabda(s + off)
+    likha("\n")
+}

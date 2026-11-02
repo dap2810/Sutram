@@ -1,0 +1,8 @@
+mukhya() {
+    vitti c = 1
+    vitti s = 5
+    yadi (c == 1) {
+        s = "ab"
+    }
+    likha(s == "ab")
+}

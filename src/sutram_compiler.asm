@@ -225,6 +225,11 @@ BN_KOSHCLEAR equ 42 ; R63 kosh_clear(k) -> 0; reset logical length in place
 BN_KOSHEMPTY equ 43 ; R63 kosh_empty(k) -> 1 when length=0
 BN_KOSHPEEK equ 44  ; R63 kosh_peek(k) -> last element (without popping)
 BN_KOSHDEQUEUE equ 45 ; R63 kosh_dequeue(k) -> first element (FIFO)
+RFX2_NAME_CAP equ 1024    ; R105: names per function in the string analysis
+RFX2_ASG_CAP equ 16384     ; R105: assignments per function
+RFX2_STACK_CAP equ 65536   ; R105: the walk's node stack
+BN_VYOJ equ 91             ; R105: internal (no name): string + string -> a new string
+BN_VKRAM equ 92            ; R105: internal (no name): string ordering -> the byte difference
 BN_DVARLIKHA equ 46 ; FIXALL (a): dvaram_likha(fd, smriti, sankhya) -> bytes written (raw fd write)
 BN_NIRM_SCRATCH equ 90 ; R73: nirmmita written inside a mandapa - the scratch side
 
@@ -240,7 +245,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v286) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v287) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -481,12 +486,45 @@ r54_builtin_arity_table:
     ; the per-pack sandesh table, like the R52 hints; transliterations are
     ; best-effort pending native-speaker review, as with all new strings).
     rfx_bc_hdr_tul db ": Sutram Error [E_VARTANI_TUL]: ", 0
-    rfx_bc_txt_eq db "vartani-samyam '==' na parikshate - vartani_tul prakriyaya parikshyatam", 10, 0
-    rfx_bc_txt_ne db "vartani-samyam '!=' na parikshate - vartani_tul prakriyaya parikshyatam", 10, 0
-    rfx_bc_hint_tul db "Sanket: samam cet vartani_tul(a, b) == 0; asamam cet vartani_tul(a, b) != 0", 10, 0
+    ; R105: '==' / '!=' between two strings compare their contents. Refused only when one side
+    ; is a string and the other is not (or holds a number at one point and a string at another).
+    rfx_bc_txt_eq db "'==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam", 10, 0
+    rfx_bc_txt_ne db "'!=' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam", 10, 0
+    rfx_bc_hint_tul db "Sanket: vartani vartanya saha tulyate (s == ", 34, "ab", 34, "); ekasmin vitti vartani sankhya cha na sthapyatam", 10, 0
     rfx_bc_hdr_cat db ": Sutram Error [E_VARTANI_CAT]: ", 0
-    rfx_bc_txt_add db "vartani-yojanam '+' na karoti - sankhyam eva yojayati; vartani_cat prayujyatam", 10, 0
-    rfx_bc_hint_cat db "Sanket: vartani_cat(dst, src) src-am dst-ante yojayati - dst-asya paryaptam sthanam bhavet", 10, 0
+    ; R105: '+' between two strings makes a new string. Refused only for a string plus a dasham,
+    ; a kosh, or a variable that holds a number at one point and a string at another.
+    rfx_bc_txt_add db "'+' vartanya saha kevalam vartani (navina vartani) athava purnankam (sthana-gati) yojayati", 10, 0
+    rfx_bc_hint_cat db "Sanket: s + t navinam vartanim rachayati; ekasmin vitti vartani sankhya cha na sthapyatam", 10, 0
+    ; R105 string + string, emitted. Stack on entry: [rsp] = b, [rsp+8] = a.
+    rfx2_v1 db 0x48,0x8B,0x7C,0x24,0x08, 0x31,0xC0, 0x80,0x3C,0x07,0x00, 0x74,0x05, 0x48,0xFF,0xC0, 0xEB,0xF5, 0x50
+    db 0x48,0x8B,0x7C,0x24,0x08, 0x31,0xC0, 0x80,0x3C,0x07,0x00, 0x74,0x05, 0x48,0xFF,0xC0, 0xEB,0xF5, 0x50
+    db 0x48,0x03,0x44,0x24,0x08, 0x48,0xFF,0xC0
+    rfx2_v1_len equ $ - rfx2_v1
+    ; cmp rax,0x1000 ; jb .fail ; cmp rax,-4096 ; ja .fail ; (then jmp .ok over the fail block)
+    rfx2_v2 db 0x48,0x3D,0x00,0x10,0x00,0x00, 0x72,0x0A, 0x48,0x3D,0x00,0xF0,0xFF,0xFF, 0x77,0x02
+    rfx2_v2_len equ $ - rfx2_v2
+    rfx2_v3 db 0x48,0x8D,0x35
+    ; mov edi,1 ; mov eax,1 ; syscall ; mov eax,60 ; mov edi,1 ; syscall
+    rfx2_v4 db 0xBF,1,0,0,0, 0xB8,1,0,0,0, 0x0F,0x05, 0xB8,60,0,0,0, 0xBF,1,0,0,0, 0x0F,0x05
+    rfx2_v4_len equ $ - rfx2_v4
+    ; mov rdi,rax ; mov rsi,[rsp+24] ; mov rcx,[rsp+8] ; rep movsb ; mov rsi,[rsp+16] ;
+    ; mov rcx,[rsp] ; rep movsb ; mov byte [rdi],0 ; add rsp,32
+    rfx2_v5 db 0x48,0x89,0xC7, 0x48,0x8B,0x74,0x24,0x18, 0x48,0x8B,0x4C,0x24,0x08, 0xF3,0xA4
+    db 0x48,0x8B,0x74,0x24,0x10, 0x48,0x8B,0x0C,0x24, 0xF3,0xA4, 0xC6,0x07,0x00, 0x48,0x83,0xC4,0x20
+    rfx2_v5_len equ $ - rfx2_v5
+    rfx_bc_txt_ord db "'<' '>' '<=' '>=' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam", 10, 0
+    rfx_bc_hdr_gan db ": Sutram Error [E_VARTANI_GANIT]: ", 0
+    rfx_bc_txt_gan db "vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na", 10, 0
+    rfx_bc_hint_gan db "Sanket: dvayoh vartanyoh '+' navinam vartanim rachayati; '-' '*' '/' sankhyabhih eva", 10, 0
+    ; R105 string ordering: rax = (first differing byte of a) - (that of b), 0 when equal.
+    ; pop rdi ; mov rsi,rax ; loop ; mov eax,ecx ; sub eax,edx ; movsxd rax,eax
+    rfx2_o1 db 0x5F, 0x48,0x89,0xC6, 0x0F,0xB6,0x0F, 0x0F,0xB6,0x16, 0x39,0xD1, 0x75,0x0C, 0x85,0xC9, 0x74,0x08
+    db 0x48,0xFF,0xC7, 0x48,0xFF,0xC6, 0xEB,0xEA, 0x89,0xC8, 0x29,0xD0, 0x48,0x63,0xC0
+    rfx2_o1_len equ $ - rfx2_o1
+    rfx2_msg_cap db "Sutram Error: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
+    rfx2_msg_nomem db "Sutram Error [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
+    rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
     ; FIXALL (rec): runaway-recursion message (Sanskrit-only, outside the
     ; per-pack sandesh table). The message is embedded in the emitted
     ; program by the function-prologue guard; its length drives the guard's
@@ -1236,6 +1274,28 @@ section .bss
     float_vars  resq VAR_TABLE_CAP ; T12 dasham names in current generated-function scope
     float_var_cnt resq 1
     str_flags   resb VAR_TABLE_CAP ; FIXALL (b/c): 1 when the var_table slot holds a string
+    ; R105: the per-function string analysis (rfx2_analyse). A name's bits: 1 = given a string,
+    ; 2 = given anything else (or a parameter, or a name not declared here); text iff exactly 1.
+    rfx2_names  resq RFX2_NAME_CAP
+    rfx2_bits   resb RFX2_NAME_CAP
+    rfx2_decl   resb RFX2_NAME_CAP
+    rfx2_n      resq 1
+    rfx2_asg_name resq RFX2_ASG_CAP
+    rfx2_asg_val  resq RFX2_ASG_CAP
+    rfx2_asg_n  resq 1
+    rfx2_stack  resq RFX2_STACK_CAP
+    rfx2_seen   resb AST_HEAP_CAP / 64
+    rfx2_calls  resq RFX2_ASG_CAP          ; R105: the AST_FUNCALLs met in the walk
+    rfx2_calls_n resq 1
+    rfx2_rets   resq RFX2_ASG_CAP          ; R105: the values of its nivartanam
+    rfx2_rets_n resq 1
+    rfx2_refs   resq RFX2_NAME_CAP         ; R105: prakriya names used as values (AST_FUNCREF)
+    rfx2_refs_n resq 1
+    rfx2_cur_par resb 16                    ; R105: the parameters' bits while analysing
+    rfx3_ret    resb FUNC_DEFS_CAP          ; R105: what each prakriya returns (bits)
+    rfx3_par    resb FUNC_DEFS_CAP * 16     ; R105: what each prakriya's parameters receive
+    rfx3_changed resq 1
+    rfx3_done   resq 1
 %ifdef SUTRAM_EXPERIMENTAL_XMM_CACHE
     ; Stage 1 within-basic-block virtual cache. Fixed logical slots 1..4 map
     ; to XMM2..XMM5. GPRs/stack remain authoritative at ALL times (write-through).
@@ -8281,6 +8341,7 @@ r73_check_call:
 ; 1-, 2- and 4-6-arg likha always print and are untouched; literal-first
 ; 3-arg prints are untouched; only the raw-write shape refuses.
 rfx_check_likha:
+    ret                            ; R105: likha(a, " ", b) prints three values; no refusal
     cmp qword [rax+8], BN_LIKHA
     jne .rfx_lk_out
     cmp qword [rax+16], 3
@@ -8788,41 +8849,146 @@ rfx_clear_str_flag:
     ret
 
 is_str_var:
-    ; rdi = name -> rax = 1 when the variable currently holds a string.
-    call rfx_find_var_index
+    ; R105: rdi = name -> rax = 1 when the variable holds a string everywhere in this function
+    ; (rfx2_analyse: every assignment to it is a string; it is not a parameter or a global).
+    push rcx
+    call rfx2_find
     test rax, rax
     js .rfx_isv_no
-    lea rcx, [rel str_flags]
-    movzx eax, byte [rcx+rax]
+    lea rcx, [rel rfx2_bits]
+    cmp byte [rcx+rax], 1
+    jne .rfx_isv_no
+    mov eax, 1
+    pop rcx
     ret
 .rfx_isv_no:
     xor eax, eax
+    pop rcx
+    ret
+
+is_mixed_var:
+    ; R105: rdi = name -> rax = 1 when the variable is given a string somewhere in this function
+    ; and something else somewhere else (or is a parameter / global also given a string).
+    push rcx
+    call rfx2_find
+    test rax, rax
+    js .rfx_imv_no
+    lea rcx, [rel rfx2_bits]
+    cmp byte [rcx+rax], 3
+    jne .rfx_imv_no
+    mov eax, 1
+    pop rcx
+    ret
+.rfx_imv_no:
+    xor eax, eax
+    pop rcx
     ret
 
 expr_is_str:
-    ; rdi = AST node -> rax = 1 when the expression is a string value:
-    ; a string literal, or a string-holding variable. All other node kinds
-    ; (numbers, calls, binops, indices) are 0: a binop result is numeric
-    ; (literal+literal concatenation folds to one AST_STR at parse time).
+    ; rdi = AST node -> rax = 1 when the expression is a string value (rfx_kind 1).
+    call rfx_kind
+    cmp eax, 1
+    sete al
+    movzx eax, al
+    ret
+
+rfx_binop_has_str:
+    ; R105: rdi = AST_BINOP -> rax = 1 when either operand may be a string (rfx_kind 1 or 3):
+    ; the register fast paths leave such a binop to the generic path, so that one rule decides.
     push rbx
     mov rbx, rdi
-    test rbx, rbx
-    jz .rfx_eis_no
-    mov rax, [rbx]
-    cmp rax, AST_STR
-    je .rfx_eis_yes
-    cmp rax, AST_VAR
-    jne .rfx_eis_no
-    mov rdi, [rbx+8]
-    call is_str_var
-    jmp .rfx_eis_done
-.rfx_eis_yes:
-    mov rax, 1
-.rfx_eis_done:
+    mov rdi, [rbx+16]
+    call rfx_kind
+    cmp eax, 2
+    jne .yes
+    mov rdi, [rbx+24]
+    call rfx_kind
+    cmp eax, 2
+    jne .yes
+    xor eax, eax
     pop rbx
     ret
-.rfx_eis_no:
-    xor eax, eax
+.yes:
+    mov eax, 1
+    pop rbx
+    ret
+
+rfx_kind:
+    ; R105: rdi = AST node -> eax = 1 a string; 3 a variable or prakriya result that is a string
+    ; at one point and not at another; 2 anything else. Strings: a literal, a variable every
+    ; assignment of which is a string (parameters: what every caller passes), a prakriya every
+    ; nivartanam of which is a string, string + string, and the call it becomes.
+    push rbx
+    push rcx
+    mov rbx, rdi
+    test rbx, rbx
+    jz .two
+    mov rax, [rbx]
+    cmp rax, AST_STR
+    je .one
+    cmp rax, AST_VAR
+    je .var
+    cmp rax, AST_FUNCALL
+    je .fcall
+    cmp rax, AST_CALL
+    je .call
+    cmp rax, AST_TERNARY
+    je .tern
+    cmp rax, AST_BINOP
+    jne .two
+    cmp qword [rbx+8], OP_ADD
+    jne .two
+    mov rdi, [rbx+16]
+    call rfx_kind
+    cmp eax, 1
+    jne .two
+    mov rdi, [rbx+24]
+    call rfx_kind
+    cmp eax, 1
+    jne .two
+    jmp .one
+.call:
+    cmp qword [rbx+8], BN_VYOJ
+    je .one
+    jmp .two
+.tern:                             ; c ? x : y - a string when both are; 3 when one is
+    mov rdi, [rbx+16]
+    call rfx_kind
+    mov ecx, eax
+    mov rdi, [rbx+24]
+    call rfx_kind
+    cmp eax, ecx
+    je .out
+    jmp .three
+.three:
+    mov eax, 3
+    jmp .out
+.fcall:
+    mov rdi, [rbx+8]
+    call rfx3_fn_index
+    test rax, rax
+    js .two
+    lea rcx, [rel rfx3_ret]
+    movzx eax, byte [rcx+rax]
+    jmp .bits
+.var:
+    mov rdi, [rbx+8]
+    call rfx2_find
+    test rax, rax
+    js .two
+    lea rcx, [rel rfx2_bits]
+    movzx eax, byte [rcx+rax]
+.bits:
+    test eax, eax
+    jz .two
+    jmp .out
+.one:
+    mov eax, 1
+    jmp .out
+.two:
+    mov eax, 2
+.out:
+    pop rcx
     pop rbx
     ret
 
@@ -8853,6 +9019,10 @@ rfx_is_int:
 .rfx_ii_var:
     mov rdi, [rbx+8]
     call is_str_var
+    test rax, rax
+    jnz .rfx_ii_no
+    mov rdi, [rbx+8]               ; R105: a variable that is a string at one point is no offset
+    call is_mixed_var
     test rax, rax
     jnz .rfx_ii_no
     mov rdi, [rbx+8]
@@ -8907,12 +9077,15 @@ rfx_note_value:
     ret
 
 rfx_check_str_binop:
-    ; rdi = AST_BINOP. Refuse ==/!= where an operand is string-ish, and
-    ; + where the string rule below fires (string+string, or string plus
-    ; a non-int offset). Called at .ge_binop entry, before any fast path,
-    ; so every runtime binop is covered. Uses the operator's source
-    ; position ([rbx+32]), like r94_check_float_bitop.
+    ; rdi = AST_BINOP. R105: two strings make '==' / '!=' compare contents (the node becomes
+    ; vartani_tul(a, b) ==/!= 0, so the integer compare that follows is the ordinary one) and '+'
+    ; build a new string (the node becomes an internal BN_VYOJ call; .ge_binop re-dispatches).
+    ; A string beside a non-string is E_VARTANI_TUL / E_VARTANI_CAT, except string + integer,
+    ; which stays pointer arithmetic. Called at .ge_binop entry and on the two condition paths,
+    ; before any fast path, so the meaning is decided once.
     push rbx
+    push r12
+    push r13
     mov rbx, rdi
     mov rax, [rbx+8]
     cmp rax, OP_ADD
@@ -8921,59 +9094,144 @@ rfx_check_str_binop:
     je .rfx_csb_check
     cmp rax, OP_NE
     je .rfx_csb_check
+    cmp rax, OP_LT
+    je .rfx_csb_check
+    cmp rax, OP_LE
+    je .rfx_csb_check
+    cmp rax, OP_GT
+    je .rfx_csb_check
+    cmp rax, OP_GE
+    je .rfx_csb_check
+    cmp rax, OP_SUB
+    je .rfx_csb_arith
+    cmp rax, OP_MUL
+    je .rfx_csb_arith
+    cmp rax, OP_DIV
+    je .rfx_csb_arith
+    cmp rax, OP_MOD
+    je .rfx_csb_arith
+    cmp rax, OP_AND
+    je .rfx_csb_arith
+    cmp rax, OP_OR
+    je .rfx_csb_arith
+    cmp rax, OP_XOR
+    je .rfx_csb_arith
+    cmp rax, OP_SHL
+    je .rfx_csb_arith
+    cmp rax, OP_SHR
+    je .rfx_csb_arith
     jmp .rfx_csb_out
-.rfx_csb_check:
-    ; ==/!= keep the either-operand-string rule (address comparison is
-    ; never meaningful). + has its own rule below.
-    cmp rax, OP_ADD
-    jne .rfx_csb_operands
-    ; + guard: both operands string literals (literal+literal concatenation)
-    ; never refuses, even if folding ever misses a case.
-    mov rcx, [rbx+16]
-    cmp qword [rcx], AST_STR
-    jne .rfx_csb_plus
-    mov rcx, [rbx+24]
-    cmp qword [rcx], AST_STR
+.rfx_csb_arith:
+    ; R105: arithmetic on a string is refused, except string - integer (pointer arithmetic,
+    ; as string + integer). A sometimes-string beside a number keeps the integer meaning.
+    mov rdi, [rbx+16]
+    call rfx_kind
+    mov r12, rax
+    mov rdi, [rbx+24]
+    call rfx_kind
+    mov r13, rax
+    cmp r12, 2
+    jne .rfx_csb_ar_l
+    cmp r13, 1
+    je .rfx_csb_gan
+    jmp .rfx_csb_out               ; 2 with 2 or 3
+.rfx_csb_ar_l:
+    cmp r12, 3
+    jne .rfx_csb_ar_str
+    cmp r13, 2
     je .rfx_csb_out
-.rfx_csb_plus:
-    ; FIXALL (b/c) narrowing, from the slices23 evidence: string + int is
-    ; pointer arithmetic (the khand slice idiom, base + 6), NOT the (c)
-    ; trap. Only string+string (and string+non-int) refuses. Both
-    ; string-ish -> refuse. Exactly one string-ish -> allow iff the other
-    ; is int-like; otherwise refuse. Neither -> allow.
-    mov rdi, [rbx+16]
-    call expr_is_str
-    push rax
-    mov rdi, [rbx+24]
-    call expr_is_str
-    mov rcx, rax
-    pop rax
-    test rax, rax
-    jz .rfx_csb_plus_right
-    test rcx, rcx
-    jnz .rfx_csb_refuse
+    jmp .rfx_csb_gan
+.rfx_csb_ar_str:                   ; left a string
+    cmp r13, 2
+    jne .rfx_csb_gan
+    cmp qword [rbx+8], OP_SUB
+    jne .rfx_csb_gan
     mov rdi, [rbx+24]
     call rfx_is_int
     test rax, rax
     jnz .rfx_csb_out
-    jmp .rfx_csb_refuse
-.rfx_csb_plus_right:
-    test rcx, rcx
-    jz .rfx_csb_out
+.rfx_csb_gan:
+    mov rdi, [rbx+32]
+    lea rsi, [rel rfx_bc_hdr_gan]
+    lea rdx, [rel rfx_bc_txt_gan]
+    lea rcx, [rel rfx_bc_hint_gan]
+    jmp r80_compile_error
+.rfx_csb_check:
     mov rdi, [rbx+16]
+    call rfx_kind
+    mov r12, rax
+    mov rdi, [rbx+24]
+    call rfx_kind
+    mov r13, rax
+    cmp r12, 1
+    jne .rfx_csb_not_both
+    cmp r13, 1
+    jne .rfx_csb_not_both
+    cmp qword [rbx+8], OP_ADD
+    je .rfx_csb_cat
+    mov rcx, BN_VARTCMP            ; ==/!=: vartani_tul(a, b) ==/!= 0
+    cmp qword [rbx+8], OP_EQ
+    je .rfx_csb_cmp
+    cmp qword [rbx+8], OP_NE
+    je .rfx_csb_cmp
+    mov rcx, BN_VKRAM              ; < > <= >=: (byte difference) op 0
+.rfx_csb_cmp:
+    push rcx
+    call alloc_ast                 ; both strings: the call, compared with 0
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], rcx
+    mov qword [rax+16], 2
+    mov rcx, [rbx+16]
+    mov [rax+24], rcx
+    mov rcx, [rbx+24]
+    mov [rax+32], rcx
+    mov [rbx+16], rax
+    call alloc_ast
+    mov qword [rax], AST_NUM
+    mov qword [rax+8], 0
+    mov [rbx+24], rax
+    jmp .rfx_csb_out
+.rfx_csb_cat:
+    mov r12, [rbx+16]              ; both strings, +: the node becomes BN_VYOJ(a, b)
+    mov r13, [rbx+24]
+    mov qword [rbx], AST_CALL
+    mov qword [rbx+8], BN_VYOJ
+    mov qword [rbx+16], 2
+    mov [rbx+24], r12
+    mov [rbx+32], r13
+    jmp .rfx_csb_out
+.rfx_csb_not_both:
+    cmp r12, 2                     ; neither side a string, or a sometimes-string beside a number:
+    jne .rfx_csb_l                 ; the integer meaning, as before
+    cmp r13, 2
+    je .rfx_csb_out
+    cmp r13, 3
+    je .rfx_csb_out
+    jmp .rfx_csb_r_str             ; number beside a string
+.rfx_csb_l:
+    cmp r12, 3
+    jne .rfx_csb_l_str
+    cmp r13, 2
+    je .rfx_csb_out
+    jmp .rfx_csb_refuse            ; sometimes-string beside a string or sometimes-string
+.rfx_csb_l_str:                    ; r12 = 1, r13 = 2 or 3
+    cmp r13, 3
+    je .rfx_csb_refuse
+    cmp qword [rbx+8], OP_ADD
+    jne .rfx_csb_refuse
+    mov rdi, [rbx+24]              ; string + integer: pointer arithmetic, as before
     call rfx_is_int
     test rax, rax
     jnz .rfx_csb_out
     jmp .rfx_csb_refuse
-.rfx_csb_operands:
+.rfx_csb_r_str:                    ; r12 = 2, r13 = 1
+    cmp qword [rbx+8], OP_ADD
+    jne .rfx_csb_refuse
     mov rdi, [rbx+16]
-    call expr_is_str
+    call rfx_is_int
     test rax, rax
-    jnz .rfx_csb_refuse
-    mov rdi, [rbx+24]
-    call expr_is_str
-    test rax, rax
-    jz .rfx_csb_out
+    jnz .rfx_csb_out
 .rfx_csb_refuse:
     mov rdi, [rbx+32]
     mov rax, [rbx+8]
@@ -8984,6 +9242,9 @@ rfx_check_str_binop:
     cmp rax, OP_NE
     je .rfx_csb_ne
     lea rdx, [rel rfx_bc_txt_eq]
+    cmp rax, OP_EQ
+    je r80_compile_error
+    lea rdx, [rel rfx_bc_txt_ord]
     jmp r80_compile_error
 .rfx_csb_ne:
     lea rdx, [rel rfx_bc_txt_ne]
@@ -8994,6 +9255,665 @@ rfx_check_str_binop:
     lea rcx, [rel rfx_bc_hint_cat]
     jmp r80_compile_error
 .rfx_csb_out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; ---------------------------------------------------------------- R105: the string analysis
+; rfx3_fn_index(rdi = name) -> rax = its index in func_defs, or -1. Preserves rdi, rcx, rdx, rsi.
+rfx3_fn_index:
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    xor r8d, r8d
+.l:
+    cmp r8, [rel func_def_cnt]
+    jae .no
+    lea rax, [rel func_defs]
+    mov rax, [rax+r8*8]
+    mov rsi, [rax+8]
+    mov rdi, [rsp+8]
+    call strcmp
+    test rax, rax
+    jz .yes
+    inc r8
+    jmp .l
+.yes:
+    mov rax, r8
+    jmp .out
+.no:
+    mov rax, -1
+.out:
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    ret
+
+; rfx3_seed(rdi = func_defs index or -1, rsi = 1 for the final analysis): rfx2_cur_par from the
+; table (final: a parameter nobody is seen to pass anything is not known: 2).
+rfx3_seed:
+    xor ecx, ecx
+.l:
+    cmp ecx, 16
+    jae .r
+    xor eax, eax
+    test rdi, rdi
+    js .set
+    mov rax, rdi
+    shl rax, 4
+    lea rdx, [rel rfx3_par]
+    add rdx, rax
+    movzx eax, byte [rdx+rcx]
+.set:
+    test rsi, rsi
+    jz .st
+    test al, al
+    jnz .st
+    mov al, 2
+.st:
+    lea rdx, [rel rfx2_cur_par]
+    mov [rdx+rcx], al
+    inc ecx
+    jmp .l
+.r:
+    ret
+
+; rfx3_propagate(rdi = the analysed function's index or -1): after an rfx2_analyse, OR what
+; its calls pass into the callees' parameters, and what it returns into its own entry.
+rfx3_propagate:
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov r14, rdi
+    xor r12d, r12d
+.calls:
+    cmp r12, [rel rfx2_calls_n]
+    jae .rets
+    lea rax, [rel rfx2_calls]
+    mov rbx, [rax+r12*8]
+    mov rdi, [rbx+8]
+    call rfx3_fn_index
+    test rax, rax
+    js .cnext
+    mov r13, rax
+    shl r13, 4
+    xor ecx, ecx
+.args:
+    cmp rcx, [rbx+16]
+    jae .cnext
+    cmp ecx, 6                     ; the node holds six arguments ([24..64])
+    jae .cnext
+    push rcx
+    mov rdi, [rbx+24+rcx*8]
+    call rfx2_val_bits
+    pop rcx
+    lea rdx, [rel rfx3_par]
+    add rdx, r13
+    mov r8b, [rdx+rcx]
+    mov r9b, r8b
+    or r9b, al
+    cmp r9b, r8b
+    je .anext
+    mov [rdx+rcx], r9b
+    mov qword [rel rfx3_changed], 1
+.anext:
+    inc ecx
+    jmp .args
+.cnext:
+    inc r12
+    jmp .calls
+.rets:
+    test r14, r14
+    js .refs
+    xor r12d, r12d
+.rl:
+    cmp r12, [rel rfx2_rets_n]
+    jae .refs
+    lea rax, [rel rfx2_rets]
+    mov rdi, [rax+r12*8]
+    call rfx2_val_bits
+    lea rdx, [rel rfx3_ret]
+    mov r8b, [rdx+r14]
+    mov r9b, r8b
+    or r9b, al
+    cmp r9b, r8b
+    je .rnext
+    mov [rdx+r14], r9b
+    mov qword [rel rfx3_changed], 1
+.rnext:
+    inc r12
+    jmp .rl
+.refs:
+    xor r12d, r12d                 ; a prakriya used as a value: callers unseen, parameters unknown
+.fl:
+    cmp r12, [rel rfx2_refs_n]
+    jae .done
+    lea rax, [rel rfx2_refs]
+    mov rdi, [rax+r12*8]
+    call rfx3_fn_index
+    test rax, rax
+    js .fnext
+    shl rax, 4
+    lea rdx, [rel rfx3_par]
+    add rdx, rax
+    xor ecx, ecx
+.fp:
+    test byte [rdx+rcx], 2
+    jnz .fpn
+    or byte [rdx+rcx], 2
+    mov qword [rel rfx3_changed], 1
+.fpn:
+    inc ecx
+    cmp ecx, 16
+    jb .fp
+.fnext:
+    inc r12
+    jmp .fl
+.done:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; rfx3_params_of(rdi = funcdef) -> rsi = its parameter names, rdx = their count
+rfx3_params_of:
+    mov rdx, [rdi+16]
+    mov rsi, [rdi+32]
+    mov rax, rdx
+    shl rax, 3
+    sub rsi, rax
+    lea rax, [rel func_params]
+    add rsi, rax
+    ret
+
+; rfx3_global: once, before mukhya is generated - what every prakriya's parameters receive and
+; what it returns, to a fixpoint over the whole program (mukhya and each prakriya analysed in
+; turn). A module object (--object without mukhya) cannot see its callers: parameters unknown.
+rfx3_global:
+    cmp qword [rel rfx3_done], 0
+    jne .r
+    mov qword [rel rfx3_done], 1
+    push rbx
+    push r12
+    push r13
+    lea rdi, [rel rfx3_ret]
+    xor eax, eax
+    mov ecx, FUNC_DEFS_CAP
+    rep stosb
+    lea rdi, [rel rfx3_par]
+    xor eax, eax
+    cmp qword [rel r28_object_mode], 0   ; a module object (no mukhya): its callers are
+    je .fill                             ; elsewhere, so its parameters are not known
+    cmp qword [rel r28_no_mukhya], 0
+    je .fill
+    mov al, 2
+.fill:
+    mov ecx, FUNC_DEFS_CAP * 16
+    rep stosb
+    mov r13d, 16                   ; rounds
+.round:
+    mov qword [rel rfx3_changed], 0
+    mov rdi, [rel root_node]
+    test rdi, rdi
+    jz .no_mukhya
+    mov rdi, [rdi+8]
+    test rdi, rdi
+    jz .no_mukhya
+    push rdi
+    mov rdi, -1
+    xor esi, esi
+    call rfx3_seed
+    pop rdi
+    xor esi, esi
+    xor edx, edx
+    call rfx2_analyse
+    mov rdi, -1
+    call rfx3_propagate
+.no_mukhya:
+    xor r12d, r12d
+.fns:
+    cmp r12, [rel func_def_cnt]
+    jae .rend
+    mov rdi, r12
+    xor esi, esi
+    call rfx3_seed
+    lea rax, [rel func_defs]
+    mov rbx, [rax+r12*8]
+    mov rdi, rbx
+    call rfx3_params_of
+    mov rdi, [rbx+24]
+    call rfx2_analyse
+    mov rdi, r12
+    call rfx3_propagate
+    inc r12
+    jmp .fns
+.rend:
+    cmp qword [rel rfx3_changed], 0
+    je .fin
+    dec r13d
+    jnz .round
+.fin:
+    xor ecx, ecx                   ; a prakriya whose returns stay unknown: not known to be text
+.fr:
+    cmp ecx, FUNC_DEFS_CAP
+    jae .out
+    lea rax, [rel rfx3_ret]
+    cmp byte [rax+rcx], 0
+    jne .frn
+    mov byte [rax+rcx], 2
+.frn:
+    inc ecx
+    jmp .fr
+.out:
+    pop r13
+    pop r12
+    pop rbx
+.r:
+    ret
+
+; rfx2_find(rdi = name) -> rax = its index in rfx2_names, or -1. Preserves rdi.
+rfx2_find:
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    xor ecx, ecx
+.l:
+    cmp rcx, [rel rfx2_n]
+    jae .no
+    lea rax, [rel rfx2_names]
+    mov rsi, [rax+rcx*8]
+    mov rdi, [rsp]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .yes
+    inc rcx
+    jmp .l
+.yes:
+    mov rax, rcx
+    jmp .out
+.no:
+    mov rax, -1
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    ret
+
+; rfx2_add(rdi = name) -> rax = its index, added (bits 0, no decl) if new.
+rfx2_add:
+    call rfx2_find
+    test rax, rax
+    jns .have
+    mov rax, [rel rfx2_n]
+    cmp rax, RFX2_NAME_CAP
+    jae .cap
+    lea rcx, [rel rfx2_names]
+    mov [rcx+rax*8], rdi
+    lea rcx, [rel rfx2_bits]
+    mov byte [rcx+rax], 0
+    lea rcx, [rel rfx2_decl]
+    mov byte [rcx+rax], 0
+    inc qword [rel rfx2_n]
+.have:
+    ret
+.cap:
+    lea rdi, [rel rfx2_msg_cap]
+    jmp capacity_fail
+
+; rfx2_record(rdi = name, rsi = value node or 0, rdx = 1 for a declaration)
+rfx2_record:
+    push rsi
+    push rdx
+    call rfx2_add
+    pop rdx
+    pop rsi
+    test rdx, rdx
+    jz .nodecl
+    lea rcx, [rel rfx2_decl]
+    mov byte [rcx+rax], 1
+.nodecl:
+    mov rcx, [rel rfx2_asg_n]
+    cmp rcx, RFX2_ASG_CAP
+    jae rfx2_add.cap
+    lea rdx, [rel rfx2_asg_name]
+    mov [rdx+rcx*8], rax
+    lea rdx, [rel rfx2_asg_val]
+    mov [rdx+rcx*8], rsi
+    inc qword [rel rfx2_asg_n]
+    ret
+
+; rfx2_val_bits(rdi = value node) -> eax = 1 a string, 2 something else, 0 not known yet
+rfx2_val_bits:
+    test rdi, rdi
+    jz .two
+    mov rax, [rdi]
+    cmp rax, AST_STR
+    je .one
+    cmp rax, AST_VAR
+    je .var
+    cmp rax, AST_CALL
+    je .call
+    cmp rax, AST_FUNCALL
+    je .funcall
+    cmp rax, AST_TERNARY
+    je .tern
+    cmp rax, AST_BINOP
+    jne .two
+    cmp qword [rdi+8], OP_ADD
+    jne .two
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov rdi, [rbx+16]
+    call rfx2_val_bits
+    mov r12d, eax
+    mov rdi, [rbx+24]
+    call rfx2_val_bits
+    cmp r12d, 1
+    jne .mix
+    cmp eax, 1
+    jne .mix
+    pop r12
+    pop rbx
+    jmp .one
+.mix:
+    or eax, r12d
+    and eax, 2                     ; a known non-string side: 2; else not known yet: 0
+    pop r12
+    pop rbx
+    ret
+.call:
+    cmp qword [rdi+8], BN_VYOJ
+    je .one
+    jmp .two
+.tern:
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov rdi, [rbx+16]
+    call rfx2_val_bits
+    mov r12d, eax
+    mov rdi, [rbx+24]
+    call rfx2_val_bits
+    or eax, r12d
+    pop r12
+    pop rbx
+    ret
+.funcall:
+    mov rdi, [rdi+8]
+    call rfx3_fn_index
+    test rax, rax
+    js .two
+    lea rcx, [rel rfx3_ret]
+    movzx eax, byte [rcx+rax]
+    ret
+.var:
+    mov rdi, [rdi+8]
+    call rfx2_find
+    test rax, rax
+    js .two                        ; not assigned in this function: unknown
+    lea rcx, [rel rfx2_bits]
+    movzx eax, byte [rcx+rax]
+    ret
+.one:
+    mov eax, 1
+    ret
+.two:
+    mov eax, 2
+    ret
+
+; rfx2_push(rdi = node or 0): onto the walk stack (r15 = depth). Clobbers rax.
+rfx2_push:
+    test rdi, rdi
+    jz .r
+    cmp r15, RFX2_STACK_CAP
+    jae rfx2_add.cap
+    lea rax, [rel rfx2_stack]
+    mov [rax+r15*8], rdi
+    inc r15
+.r:
+    ret
+
+; rfx2_analyse(rdi = the function's body, rsi = its parameter names or 0, rdx = their count).
+; Walks the body's AST once (every node reachable from it, each once), records each
+; assignment and declaration of a scalar name, and computes each name's bits to a fixpoint.
+rfx2_analyse:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12, rdi
+    mov r13, rsi
+    mov r14, rdx
+    mov qword [rel rfx2_n], 0
+    mov qword [rel rfx2_asg_n], 0
+    mov qword [rel rfx2_calls_n], 0
+    mov qword [rel rfx2_rets_n], 0
+    mov qword [rel rfx2_refs_n], 0
+    lea rdi, [rel rfx2_seen]
+    xor eax, eax
+    mov ecx, AST_HEAP_CAP / 64
+    rep stosb
+    xor r15, r15
+.par:
+    cmp r15, r14
+    jae .walk0
+    mov rdi, [r13+r15*8]
+    call rfx2_add
+    lea rcx, [rel rfx2_bits]
+    mov dl, 2                      ; beyond 16 parameters: not known
+    cmp r15, 16
+    jae .par_set
+    lea rdx, [rel rfx2_cur_par]
+    mov dl, [rdx+r15]              ; what the callers pass (R105, rfx3_global)
+.par_set:
+    or byte [rcx+rax], dl
+    lea rcx, [rel rfx2_decl]
+    mov byte [rcx+rax], 1
+    inc r15
+    jmp .par
+.walk0:
+    xor r15, r15
+    mov rdi, r12
+    call rfx2_push
+.walk:
+    test r15, r15
+    jz .fix
+    dec r15
+    lea rax, [rel rfx2_stack]
+    mov rbx, [rax+r15*8]
+    lea rax, [rel ast_heap]
+    cmp rbx, rax
+    jb .walk
+    cmp rbx, [rel ast_ptr]
+    jae .walk
+    mov rcx, rbx
+    sub rcx, rax
+    test ecx, 7
+    jnz .walk
+    shr rcx, 3
+    mov rdx, rcx
+    shr rdx, 3
+    and ecx, 7
+    lea rax, [rel rfx2_seen]
+    movzx r8d, byte [rax+rdx]
+    bt r8d, ecx
+    jc .walk
+    bts r8d, ecx
+    mov [rax+rdx], r8b
+    mov rax, [rbx]
+    test rax, rax
+    jz .walk
+    cmp rax, 128
+    ja .walk
+    cmp rax, AST_NUM
+    je .walk
+    cmp rax, AST_FLOAT
+    je .walk
+    cmp rax, AST_STR
+    je .walk
+    cmp rax, AST_VAR
+    je .walk
+    cmp rax, AST_FUNCDEF
+    je .walk
+    cmp rax, AST_BLOCK
+    je .blk
+    cmp rax, AST_DECL
+    je .decl
+    cmp rax, AST_ASSIGN
+    je .asg
+    cmp rax, AST_FOR
+    je .for
+    cmp rax, AST_FUNCALL
+    je .fcall
+    cmp rax, AST_RETURN
+    je .ret
+    cmp rax, AST_FUNCREF
+    je .fref
+.gen:
+    mov r9d, 8
+.gl:
+    cmp r9d, 72
+    jae .walk
+    mov rdi, [rbx+r9]
+    call rfx2_push
+    add r9d, 8
+    jmp .gl
+.blk:
+    mov r10, [rbx+8]
+    cmp r10, BLOCK_STMT_CAP
+    ja .walk
+    xor r9, r9
+.bl:
+    cmp r9, r10
+    jae .walk
+    mov rdi, [rbx+16+r9*8]
+    call rfx2_push
+    inc r9
+    jmp .bl
+.decl:
+    cmp qword [rbx+24], 0          ; a mala / kosh: a container, not a scalar
+    jne .gen
+    mov rdi, [rbx+8]
+    mov rsi, [rbx+16]
+    cmp qword [rbx+32], 0          ; a dasham (or typed) declaration: not a string
+    je .decl_rec
+    xor esi, esi
+.decl_rec:
+    mov edx, 1
+    call rfx2_record
+    mov rdi, [rbx+16]
+    call rfx2_push
+    jmp .walk
+.asg:
+    mov rdi, [rbx+16]
+    call rfx2_push
+    mov rdi, [rbx+8]
+    call rfx2_push
+    mov rax, [rbx+8]
+    lea rcx, [rel ast_heap]
+    cmp rax, rcx
+    jb .walk
+    cmp rax, [rel ast_ptr]
+    jae .walk
+    cmp qword [rax], AST_VAR
+    jne .walk
+    mov rdi, [rax+8]
+    mov rsi, [rbx+16]
+    xor edx, edx
+    call rfx2_record
+    jmp .walk
+.for:
+    mov rdi, [rbx+8]
+    xor esi, esi
+    mov edx, 1
+    call rfx2_record
+    jmp .gen
+.fcall:
+    mov rcx, [rel rfx2_calls_n]
+    cmp rcx, RFX2_ASG_CAP
+    jae rfx2_add.cap
+    lea rax, [rel rfx2_calls]
+    mov [rax+rcx*8], rbx
+    inc qword [rel rfx2_calls_n]
+    jmp .gen
+.ret:
+    mov rcx, [rel rfx2_rets_n]
+    cmp rcx, RFX2_ASG_CAP
+    jae rfx2_add.cap
+    lea rax, [rel rfx2_rets]
+    mov rdx, [rbx+8]
+    mov [rax+rcx*8], rdx
+    inc qword [rel rfx2_rets_n]
+    jmp .gen
+.fref:
+    mov rcx, [rel rfx2_refs_n]
+    cmp rcx, RFX2_NAME_CAP
+    jae rfx2_add.cap
+    lea rax, [rel rfx2_refs]
+    mov rdx, [rbx+8]
+    mov [rax+rcx*8], rdx
+    inc qword [rel rfx2_refs_n]
+    jmp .walk
+.fix:
+    xor ecx, ecx                   ; a name assigned here but declared elsewhere: unknown before
+.und:
+    cmp rcx, [rel rfx2_n]
+    jae .passes
+    lea rax, [rel rfx2_decl]
+    cmp byte [rax+rcx], 0
+    jne .und_next
+    lea rax, [rel rfx2_bits]
+    or byte [rax+rcx], 2
+.und_next:
+    inc rcx
+    jmp .und
+.passes:
+    mov r13d, 64
+.pass:
+    xor r14d, r14d
+    xor r15, r15
+.pl:
+    cmp r15, [rel rfx2_asg_n]
+    jae .pend
+    lea rax, [rel rfx2_asg_val]
+    mov rdi, [rax+r15*8]
+    call rfx2_val_bits
+    lea rcx, [rel rfx2_asg_name]
+    mov rcx, [rcx+r15*8]
+    lea rdx, [rel rfx2_bits]
+    mov r8b, [rdx+rcx]
+    mov r9b, r8b
+    or r9b, al
+    cmp r9b, r8b
+    je .pn
+    mov [rdx+rcx], r9b
+    mov r14d, 1
+.pn:
+    inc r15
+    jmp .pl
+.pend:
+    test r14d, r14d
+    jz .done
+    dec r13d
+    jnz .pass
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
     pop rbx
     ret
 
@@ -15935,6 +16855,15 @@ gen_code:
     xor eax, eax
     mov ecx, VAR_TABLE_CAP
     rep stosb
+    call rfx3_global               ; R105: the whole program, once
+    mov rdi, -1
+    mov esi, 1
+    call rfx3_seed
+    mov rdi, [rel root_node]       ; R105: which of mukhya's names hold strings
+    mov rdi, [rdi+8]
+    xor esi, esi
+    xor edx, edx
+    call rfx2_analyse
     ; Do NOT reset func_def_cnt — it may have FUNCDEF nodes from top-level parsing
     mov qword [rel patch_count], 0
     mov qword [rel func_count], 0
@@ -16304,6 +17233,16 @@ gen_all_functions:
     xor eax, eax
     mov ecx, VAR_TABLE_CAP
     rep stosb
+    call rfx3_global               ; R105: (already done unless there is no mukhya)
+    mov rdi, [rbx+8]               ; R105: which of this prakriya's names hold strings; its
+    call rfx3_fn_index             ; parameters hold what every caller passes
+    mov rdi, rax
+    mov esi, 1
+    call rfx3_seed
+    mov rdi, rbx
+    call rfx3_params_of
+    mov rdi, [rbx+24]
+    call rfx2_analyse
     ; Emit function prologue: push rbp; mov rbp, rsp; push rbx
     mov dil, 0x55             ; push rbp
     call emit_byte
@@ -19568,6 +20507,10 @@ gen_expr:
     ; We emit push/pop to save args between evaluations.
     push r12
     mov r12, [rbx+8]         ; builtin id
+    cmp r12, BN_VYOJ         ; R105: string + string
+    je .ge_call_vyoj
+    cmp r12, BN_VKRAM        ; R105: string < > <= >=
+    je .ge_call_vkram
     ; Check builtin type
     cmp r12, BN_PAD
     je .ge_call_pad
@@ -20440,44 +21383,8 @@ gen_expr:
     je .ge_lk_str
     cmp rax, 2
     je .ge_lk_two
-    cmp rax, 3                     ; R52: 4 to 6 values always print; 3 print when the
-    ja .r52_lk_many                ; first is a string literal (every existing 3-argument
-    mov rcx, [rbx+24]              ; call passes 1 or an fd first: a raw write)
-    cmp qword [rcx], AST_STR
-    je .r52_lk_many
-    ; 3-arg form: likha(fd, buf, count)
-    mov rax, [rbx+24]
-    call gen_expr
-    mov dil, 0x50
-    call emit_byte
-    mov rax, [rbx+32]
-    call gen_expr
-    mov dil, 0x50
-    call emit_byte
-    mov rax, [rbx+40]
-    call gen_expr
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xC2
-    call emit_byte
-    mov dil, 0x5E
-    call emit_byte
-    mov dil, 0x5F
-    call emit_byte
-    mov dil, 0xB8
-    call emit_byte
-    mov dil, 0x01
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    call emit_syscall
-    jmp .ge_call_done
+    cmp rax, 3                     ; R105: 3 to 6 values always print (the raw write is
+    jae .r52_lk_many               ; dvaram_likha since v286)
 .r52_lk_many:
     ; R52 likha(v1, ..., vn), n = 3..6: each value but the last as lkhb (a number,
     ; no newline) or likha (a string literal, which has none); the last as likha,
@@ -21536,6 +22443,63 @@ gen_expr:
     call emit_byte
     mov dil, 0xC8
     call emit_byte
+    jmp .ge_call_done
+
+.ge_call_vyoj:
+    ; R105: a + b on two strings -> a new string: strlen both, allocate la + lb + 1 on the
+    ; persistent side (nirmmita's allocator: it lives as long as the program), copy, terminate.
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50                  ; push rax (a)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    mov dil, 0x50                  ; push rax (b)
+    call emit_byte
+    lea rsi, [rel rfx2_v1]         ; la, lb: two strlen loops; rax = la + lb + 1
+    mov rcx, rfx2_v1_len
+    call r23_emit_bytes
+    call emit_nirmmita_from_rax
+    cmp qword [rel target_pe], 0   ; Linux: no memory is E_VARTANI_SMRITI, exit 1
+    jne .vyoj_copy
+    lea rsi, [rel rfx2_v2]
+    mov rcx, rfx2_v2_len
+    call r23_emit_bytes
+    mov dil, 0xEB                  ; jmp over the message
+    call emit_byte
+    mov edi, rfx2_msg_nomem_len + 36
+    call emit_byte
+    lea rsi, [rel rfx2_v3]         ; .fail: lea rsi,[rip+29] ; mov edx,len ; write ; exit 1
+    mov rcx, 3
+    call r23_emit_bytes
+    mov edi, 29
+    call emit_u32
+    mov dil, 0xBA
+    call emit_byte
+    mov edi, rfx2_msg_nomem_len
+    call emit_u32
+    lea rsi, [rel rfx2_v4]
+    mov rcx, rfx2_v4_len
+    call r23_emit_bytes
+    lea rsi, [rel rfx2_msg_nomem]
+    mov rcx, rfx2_msg_nomem_len
+    call r23_emit_bytes
+.vyoj_copy:
+    lea rsi, [rel rfx2_v5]         ; copy a, copy b, NUL; rax = the new string
+    mov rcx, rfx2_v5_len
+    call r23_emit_bytes
+    jmp .ge_call_done
+
+.ge_call_vkram:
+    mov rax, [rbx+24]
+    call gen_expr
+    mov dil, 0x50                  ; push rax (a)
+    call emit_byte
+    mov rax, [rbx+32]
+    call gen_expr
+    lea rsi, [rel rfx2_o1]
+    mov rcx, rfx2_o1_len
+    call r23_emit_bytes
     jmp .ge_call_done
 
 .ge_call_vartcmp:
@@ -22976,9 +23940,11 @@ gen_expr:
 
 .ge_binop:
     ; [AST_BINOP][op][left][right]
-    ; FIXALL (b/c): refuse ==/!=/+ on string operands before any fast path.
+    ; FIXALL (b/c) / R105: decide ==/!=/+ on strings before any fast path.
     mov rdi, rbx
     call rfx_check_str_binop
+    cmp qword [rbx], AST_CALL      ; R105: string + string became a call
+    je .ge_call
     ; PERF-FC1: register-only scalar float comparisons. Preserve the exact
     ; existing UCOMISD/SETcc semantics but remove the runtime stack spill.
     mov rdi, rbx
@@ -25676,6 +26642,10 @@ try_emit_int_decl_reg:
     cmp r15, OP_MUL
     jne .teidr_no
 .teidr_binop_ok:
+    mov rdi, r13                   ; R105: as try_emit_int_self_update
+    call rfx_binop_has_str
+    test rax, rax
+    jnz .teidr_no
     mov rax, [r13+16]
     cmp qword [rax], AST_VAR
     jne .teidr_no
@@ -25707,12 +26677,8 @@ try_emit_int_decl_reg:
     call is_str_var
     test rax, rax
     jz .rfx_teidr_ok
-.rfx_teidr_refuse:
-    mov rdi, [r13+32]
-    lea rsi, [rel rfx_bc_hdr_cat]
-    lea rdx, [rel rfx_bc_txt_add]
-    lea rcx, [rel rfx_bc_hint_cat]
-    jmp r80_compile_error
+.rfx_teidr_refuse:                ; R105: a string operand: the generic path decides (concatenation,
+    jmp .teidr_no                 ; pointer arithmetic or E_VARTANI_CAT) - one rule for every path
 .rfx_teidr_ok:
     mov rdi, [rbx+8]
     call alloc_var
@@ -25803,6 +26769,10 @@ try_emit_int_reg_assignment:
     cmp r15, OP_MUL
     jne .teira_no
 .teira_binop_ok:
+    mov rdi, r13                   ; R105: as try_emit_int_self_update
+    call rfx_binop_has_str
+    test rax, rax
+    jnz .teira_no
     ; FIXALL (b/c): this fast path emits dst = left op right without going
     ; through .ge_binop; check the left operand here (ADD only). The left
     ; operand's VAR shape is validated first: a non-VAR left (e.g. a number)
@@ -25850,12 +26820,8 @@ try_emit_int_reg_assignment:
     call is_str_var
     test rax, rax
     jz .rfx_teira_right_ok
-.rfx_teira_refuse:
-    mov rdi, [r13+32]
-    lea rsi, [rel rfx_bc_hdr_cat]
-    lea rdx, [rel rfx_bc_txt_add]
-    lea rcx, [rel rfx_bc_hint_cat]
-    jmp r80_compile_error
+.rfx_teira_refuse:                ; R105: as .rfx_teidr_refuse - the generic path decides
+    jmp .teira_no
 .rfx_teira_right_ok:
     cmp r15, OP_SUB
     jne .teira_commutative
@@ -26902,6 +27868,10 @@ try_emit_int_self_update:
     cmp r14, OP_SUB
     jne .teisu_no
 .teisu_op_ok:
+    mov rdi, r13                   ; R105: an operand that may be a string: the generic path
+    call rfx_binop_has_str         ; decides (s = s + s is a concatenation)
+    test rax, rax
+    jnz .teisu_no
     ; Keep every float/mixed expression on the established T12 path.
     mov rdi, [r12+8]
     call is_float_var

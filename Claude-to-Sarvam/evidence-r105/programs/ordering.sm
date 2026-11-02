@@ -1,0 +1,11 @@
+mukhya() {
+    vitti a = "apple"
+    vitti b = "banana"
+    likha(a < b, " ", b < a, "\n")
+    likha(a <= a, " ", a > b, "\n")
+    likha(a >= "apple", " ", "ab" < "abc", "\n")
+    likha("abc" < "ab", " ", "b" > "a", "\n")
+    yadi (a < b) {
+        likha("yadi apple < banana\n")
+    }
+}

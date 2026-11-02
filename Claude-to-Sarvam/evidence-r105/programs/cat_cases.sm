@@ -1,0 +1,23 @@
+mukhya() {
+    vitti a = "ab"
+    vitti b = "cd"
+    vitti u = a + b
+    shabda(u)
+    likha("\n")
+    likha("u == abcd ", u == "abcd", "\n")
+    likha("a still ", a == "ab", " b still ", b == "cd", "\n")
+    vitti e = ""
+    vitti v = e + a + e + b + "!"
+    shabda(v)
+    likha("\n")
+    vitti s = "x"
+    s = s + s
+    s = s + "yz"
+    shabda(s)
+    likha("\n")
+    vitti p = a + 1
+    shabda(p)
+    likha("\n")
+    shabda(a + b + a)
+    likha("\n")
+}

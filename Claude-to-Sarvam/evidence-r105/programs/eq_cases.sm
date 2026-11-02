@@ -1,0 +1,23 @@
+mukhya() {
+    vitti a = "ab"
+    vitti b = "ab"
+    vitti c = "cd"
+    vitti d = "abc"
+    vitti e = ""
+    likha("eq ", a == b, " ne ", a == c, "\n")
+    likha("prefix ", a == d, " ", d == a, "\n")
+    likha("empty ", e == "", " ", e == a, "\n")
+    likha("empty2 ", a == e, "\n")
+    likha("lit ", a == "ab", " ", "ab" == "ab", "\n")
+    likha("ne ", "ab" != "ab", " ", a != c, "\n")
+    yadi (a == b) {
+        likha("yadi same\n")
+    }
+    vitti n = 0
+    yavat (a != d && n < 3) {
+        n = n + 1
+    }
+    likha("yavat ", n, "\n")
+    vitti s = a
+    likha("alias ", s == a, " self ", a == a, "\n")
+}

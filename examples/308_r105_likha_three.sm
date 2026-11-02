@@ -1,0 +1,10 @@
+# R105: likha with three values prints three values, whatever comes first. (Up to v285 a
+# three-value likha that did not start with a string literal was a raw write and printed
+# nothing; v286 refused it; the raw write is dvaram_likha.)
+mukhya() {
+    vitti a = 7
+    vitti b = 9
+    likha(a, " ", b)
+    likha(a, b, a)
+    likha(a + b, " = ", 16)
+}

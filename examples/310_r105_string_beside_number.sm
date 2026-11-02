@@ -1,0 +1,13 @@
+# R105: a variable that holds a string at one point and a number at another cannot be compared
+# with a string: the compiler cannot know which it holds. E_VARTANI_TUL at compile time.
+mukhya() {
+    vitti s = "ab"
+    vitti i = 0
+    yavat (i < 2) {
+        yadi (s == "ab") {
+            likha("same\n")
+        }
+        s = 5
+        i = i + 1
+    }
+}

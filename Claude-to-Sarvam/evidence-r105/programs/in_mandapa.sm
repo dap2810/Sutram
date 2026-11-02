@@ -1,0 +1,10 @@
+mukhya() {
+    vitti keep = ""
+    mandapa parimita 64 {
+        vitti a = "ab"
+        keep = a + "cd"
+        vitti b = nirmmita(32)
+    }
+    shabda(keep)
+    likha("\n")
+}

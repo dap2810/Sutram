@@ -1,0 +1,21 @@
+# R105: '==' and '!=' between two strings compare their contents, byte by byte, to the first NUL.
+# Equal, unequal, a prefix, empty against non-empty, a literal, and in yadi / yavat conditions.
+mukhya() {
+    vitti a = "ab"
+    vitti b = "ab"
+    vitti c = "cd"
+    vitti d = "abc"
+    vitti e = ""
+    likha("equal ", a == b, " unequal ", a == c, "\n")
+    likha("prefix ", a == d, " ", d == a, "\n")
+    likha("empty ", e == "", " ", e == a, "\n")
+    likha("literal ", a == "ab", " ", "ab" != "ab", "\n")
+    yadi (a == b) {
+        likha("yadi: a and b hold the same text\n")
+    }
+    vitti n = 0
+    yavat (a != d && n < 3) {
+        n = n + 1
+    }
+    likha("yavat ran ", n, " times\n")
+}

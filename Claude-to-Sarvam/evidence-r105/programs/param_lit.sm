@@ -1,0 +1,7 @@
+prakriya f(s) {
+    nivartanam s == "ab"
+}
+
+mukhya() {
+    likha(f("ab"), "\n")
+}

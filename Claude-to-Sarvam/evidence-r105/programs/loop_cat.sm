@@ -1,0 +1,11 @@
+mukhya() {
+    vitti s = ""
+    vitti i = 0
+    yavat (i < 5) {
+        s = s + "ab"
+        i = i + 1
+    }
+    shabda(s)
+    likha("\n")
+    likha("len ok ", s == "ababababab", "\n")
+}

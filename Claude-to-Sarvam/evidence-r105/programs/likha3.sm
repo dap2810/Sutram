@@ -1,0 +1,7 @@
+mukhya() {
+    vitti a = 7
+    vitti b = 9
+    likha(a, " ", b)
+    likha(a, b, a)
+    likha(1, "x", 2)
+}

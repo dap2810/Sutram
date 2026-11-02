@@ -1,0 +1,11 @@
+prakriya f(n) {
+    yadi (n > 0) {
+        nivartanam "ab"
+    }
+    nivartanam 0
+}
+
+mukhya() {
+    vitti s = "ab"
+    likha(s == f(1))
+}

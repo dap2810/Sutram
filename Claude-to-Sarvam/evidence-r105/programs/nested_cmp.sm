@@ -1,0 +1,11 @@
+prakriya same(a, b) {
+    nivartanam a == b
+}
+
+prakriya madhya(a, b) {
+    nivartanam same(a + b, "abcd")
+}
+
+mukhya() {
+    likha(madhya("ab", "cd"), " ", madhya("ab", "xy"), "\n")
+}

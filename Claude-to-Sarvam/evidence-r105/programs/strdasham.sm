@@ -1,0 +1,5 @@
+mukhya() {
+    vitti s = "ab"
+    dasham d = 2.5
+    vitti u = s + d
+}
