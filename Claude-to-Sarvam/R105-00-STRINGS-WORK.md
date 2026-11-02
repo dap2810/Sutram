@@ -1,6 +1,6 @@
 # R105-00 — Strings work (v287): `==` `!=` `<` `>` `<=` `>=` compare text, `+` makes a new string, and `likha(a, " ", b)` prints three values. The tree's 683 programs: 0 DIFFER.
 
-- **Commit on `main`:** `__SHA__` (the v286 base was `b929973`).
+- **Commit on `main`:** `d305f4a` (rebased onto Muse's R101 census commits, `abd17f2`; the v286 base was `b929973`).
 - **Compiler: `Sutram 1.0 (v287) - sampurna sutra`** (was v286). Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `NO-EXPECTATION=4 PASS=279`, FAIL=0** (273 + six new goldens). Proofs 229/229 and 86/86; r52 12/0; r81 24/0.
