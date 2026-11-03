@@ -1,0 +1,532 @@
+word,exclusive_word_bucket,occurrences,occurrence_bucket_counts,locations_and_bucket
+a,3,26,"{""3"": 20, ""2"": 6}",examples/09_comparisons.sm:11 [3] a; examples/09_comparisons.sm:17 [3] a; examples/09_comparisons.sm:20 [3] a; examples/12_elif.sm:10 [3] A; examples/291_r90_nan_compare.sm:18 [3] a; examples/291_r90_nan_compare.sm:20 [3] a; examples/293_r90_float_divide_by_zero.sm:6 [3] a; examples/293_r90_float_divide_by_zero.sm:8 [3] a; examples/29_nishkriya.sm:7 [3] A; examples/29_nishkriya.sm:11 [3] A; examples/304_r103_parimita_within.sm:23 [3] a; examples/306_r105_string_equal.sm:14 [3] a; examples/307_r105_string_join.sm:14 [3] a; examples/317_r107_parimana.sm:10 [3] a; examples/317_r107_parimana.sm:19 [3] a; examples/318_r108_parimana_moves.sm:8 [3] a; examples/318_r108_parimana_moves.sm:14 [3] a; examples/318_r108_parimana_moves.sm:16 [3] a; examples/char_ops.sm:7 [3] A; examples/char_ops.sm:10 [3] a; lang/gujarati.lang:53 [2] a; lang/punjabi.lang:40 [2] A76; lang/sanskrit.lang:6 [2] a; lang/sanskrit.lang:8 [2] a; lang/sanskrit.lang:50 [2] A; lang/sanskrit.lang:80 [2] a
+abbreviation,2,9,"{""2"": 9}",lang/bengali.lang:40 [2] abbreviation; lang/gujarati.lang:53 [2] abbreviation; lang/hindi.lang:42 [2] abbreviation; lang/kannada.lang:42 [2] abbreviation; lang/marathi.lang:42 [2] abbreviation; lang/odia.lang:42 [2] abbreviation; lang/punjabi.lang:40 [2] abbreviation; lang/tamil.lang:53 [2] abbreviation; lang/telugu.lang:42 [2] abbreviation
+abbreviations,2,1,"{""2"": 1}",lang/sanskrit.lang:70 [2] abbreviations
+above,3,2,"{""3"": 1, ""2"": 1}",examples/289_r87_float_print.sm:16 [3] above; lang/gujarati.lang:54 [2] above
+accepted,2,1,"{""2"": 1}",lang/gujarati.lang:41 [2] accepted
+added,2,1,"{""2"": 1}",lang/sanskrit.lang:79 [2] added
+adding,2,1,"{""2"": 1}",lang/sanskrit.lang:80 [2] adding
+additional,2,1,"{""2"": 1}",lang/sanskrit.lang:48 [2] Additional
+additive,2,1,"{""2"": 1}",lang/sanskrit.lang:78 [2] additive
+adopted,2,4,"{""2"": 4}",lang/kannada.lang:42 [2] adopted; lang/odia.lang:42 [2] adopted; lang/tamil.lang:53 [2] adopted; lang/telugu.lang:42 [2] adopted
+advanced,3,1,"{""3"": 1}",examples/16_advanced.sm:6 [3] Advanced
+after,3,5,"{""3"": 5}",examples/299_r94_nonfinite_kosh_mandapa.sm:48 [3] after; examples/317_r107_parimana.sm:7 [3] after; examples/317_r107_parimana.sm:12 [3] after; examples/318_r108_parimana_moves.sm:18 [3] after; examples/mem_safe.sm:9 [3] After
+again,3,2,"{""3"": 2}",examples/24_guess_game.sm:12 [3] again; examples/24_guess_game.sm:14 [3] again
+age,3,4,"{""3"": 4}",examples/08_demo.sm:2 [3] age; examples/08_demo.sm:12 [3] age; examples/08_demo.sm:14 [3] Age; examples/08_demo.sm:14 [3] age
+alias,2,1,"{""2"": 1}",lang/sanskrit.lang:71 [2] alias
+aliases,2,8,"{""2"": 8}",lang/bengali.lang:40 [2] aliases; lang/gujarati.lang:40 [2] aliases; lang/gujarati.lang:54 [2] aliases; lang/hindi.lang:42 [2] aliases; lang/marathi.lang:42 [2] aliases; lang/punjabi.lang:40 [2] aliases; lang/sanskrit.lang:48 [2] aliases; lang/sanskrit.lang:49 [2] aliases
+aligned,3,1,"{""3"": 1}",examples/30_lkhb.sm:4 [3] aligned
+all,3,1,"{""3"": 1}",examples/16_advanced.sm:38 [3] All
+already,2,2,"{""2"": 2}",lang/sanskrit.lang:5 [2] already; lang/sanskrit.lang:50 [2] already
+always,3,2,"{""3"": 1, ""2"": 1}",examples/313_r106_string_condition.sm:6 [3] always; lib/roop.smlib:478 [2] always_sign
+an,2,5,"{""2"": 5}",lib/khand.smlib:445 [2] an; lib/khand.smlib:592 [2] an; lib/varna.smlib:487 [2] an; lang/gujarati.lang:40 [2] an; lang/sanskrit.lang:9 [2] an
+and,3,7,"{""3"": 4, ""2"": 3}",examples/297_r94_whole_number_operators.sm:7 [3] and; examples/306_r105_string_equal.sm:14 [3] and; examples/318_r108_parimana_moves.sm:16 [3] and; examples/44_shabda.sm:14 [3] and; lang/sanskrit.lang:7 [2] and; lang/sanskrit.lang:79 [2] and; lang/sanskrit.lang:90 [2] and
+answer,3,3,"{""3"": 3}",examples/14_strings.sm:20 [3] answer; examples/31_strcat.sm:5 [3] answer; examples/number_game.sm:15 [3] answer
+apple,3,2,"{""3"": 2}",examples/309_r105_string_order.sm:4 [3] apple; examples/309_r105_string_order.sm:10 [3] apple
+arbitrary,2,1,"{""2"": 1}",lang/sanskrit.lang:70 [2] arbitrary
+are,3,4,"{""3"": 2, ""2"": 2}",examples/23_grahan_input.sm:12 [3] are; examples/26_calculator.sm:36 [3] are; lang/sanskrit.lang:5 [2] are; lang/sanskrit.lang:90 [2] are
+arr,1,12,"{""3"": 1, ""2"": 10, ""1"": 1}",examples/array_demo.sm:13 [3] arr; lib/brihat.smlib:13 [2] arr; lib/brihat.smlib:29 [2] arr; lib/brihat.smlib:70 [2] arr; lib/brihat.smlib:181 [2] arr; lib/mala.smlib:20 [2] arr; lib/mala.smlib:29 [2] arr; lib/mala.smlib:36 [2] arr; lib/mala.smlib:62 [2] arr; lib/mala.smlib:75 [2] arr; lib/mala.smlib:87 [2] arr; src/sutram_compiler.asm:722 [1] arr
+array,3,2,"{""3"": 2}",examples/array_demo.sm:3 [3] Array; examples/array_demo.sm:10 [3] Array
+as,2,1,"{""2"": 1}",lang/gujarati.lang:41 [2] as
+asc,3,4,"{""3"": 4}",examples/115_perf_loop_bottom.sm:18 [3] asc; examples/115_perf_loop_bottom.sm:19 [3] asc; examples/115_perf_loop_bottom.sm:19 [3] asc; examples/115_perf_loop_bottom.sm:20 [3] asc
+assembly,3,1,"{""3"": 1}",examples/29_nishkriya.sm:2 [3] Assembly
+assert,3,1,"{""3"": 1}",examples/15_sutra_const.sm:25 [3] Assert
+assertions,3,1,"{""3"": 1}",examples/16_advanced.sm:38 [3] assertions
+assignment,3,1,"{""3"": 1}",examples/28_compound.sm:2 [3] Assignment
+at,3,2,"{""3"": 2}",examples/17_booleans.sm:24 [3] At; examples/22_precedence.sm:8 [3] At
+audit,2,2,"{""2"": 2}",lang/sanskrit.lang:81 [2] Audit; lang/sanskrit.lang:81 [2] AUDIT
+available,2,1,"{""2"": 1}",lang/gujarati.lang:41 [2] available
+average,3,1,"{""3"": 1}",examples/289_r87_float_print.sm:12 [3] average
+backslash,3,1,"{""3"": 1}",examples/14_strings.sm:14 [3] Backslash
+bad,3,1,"{""3"": 1}",examples/158_namespaced_alias_digit.sm:1 [3] bad
+banana,3,6,"{""3"": 6}",examples/309_r105_string_order.sm:5 [3] banana; examples/309_r105_string_order.sm:10 [3] banana; examples/84_stdlib_string2.sm:5 [3] banana; examples/84_stdlib_string2.sm:7 [3] banana; examples/84_stdlib_string2.sm:9 [3] banana; examples/84_stdlib_string2.sm:11 [3] banana
+bank,3,1,"{""3"": 1}",examples/32_bank_interest.sm:2 [3] Bank
+base,3,13,"{""3"": 3, ""2"": 10}",examples/41_recursion.sm:14 [3] base; examples/41_recursion.sm:18 [3] base; examples/41_recursion.sm:18 [3] base; lib/aadhar.smlib:20 [2] base; lib/aadhar.smlib:78 [2] base; lib/brihat.smlib:322 [2] base; lib/ganit.smlib:98 [2] base; lib/roop.smlib:73 [2] base; lib/roop.smlib:150 [2] base; lib/roop.smlib:174 [2] base; lib/roop.smlib:239 [2] base; lib/vakyank.smlib:142 [2] base; lib/vakyank.smlib:186 [2] base
+bcap,2,6,"{""2"": 6}",lib/sangrah.smlib:63 [2] bcap; lib/sangrah.smlib:96 [2] bcap; lib/sangrah.smlib:126 [2] bcap; lib/sangrah.smlib:148 [2] bcap; lib/sangrah.smlib:186 [2] bcap; lib/sangrah.smlib:194 [2] bcap
+be,3,3,"{""3"": 1, ""2"": 2}",examples/152_namespaced_comment_string_preservation.sm:4 [3] be; lang/sanskrit.lang:7 [2] be; lang/tamil.lang:51 [2] BE6
+bef,2,1,"{""2"": 1}",lang/tamil.lang:51 [2] BEF
+before,3,2,"{""3"": 2}",examples/309_r105_string_order.sm:10 [3] before; examples/313_r106_string_condition.sm:6 [3] before
+belongs,2,1,"{""2"": 1}",lang/sanskrit.lang:71 [2] belongs
+below,3,3,"{""3"": 1, ""2"": 2}",examples/296_r93_float_e_notation.sm:10 [3] below; lang/sanskrit.lang:8 [2] below; lang/sanskrit.lang:49 [2] below
+big,3,3,"{""3"": 3}",examples/03_if_else.sm:5 [3] big; examples/12_elif.sm:24 [3] big; examples/46_language_reference.sm:8 [3] big
+bigger,3,2,"{""3"": 2}",examples/23_grahan_input.sm:8 [3] bigger; examples/23_grahan_input.sm:10 [3] bigger
+bin,4,15,"{""4"": 15}",lang/bengali.lang:3 [4] bin; lang/gujarati.lang:3 [4] bin; lang/hindi.lang:3 [4] bin; lang/kannada.lang:3 [4] bin; lang/malayalam.lang:3 [4] bin; lang/malayalam.lang:4 [4] bin; lang/marathi.lang:3 [4] bin; lang/odia.lang:3 [4] bin; lang/punjabi.lang:3 [4] bin; lang/sanskrit.lang:3 [4] bin; lang/tamil.lang:3 [4] bin; lang/tamil.lang:4 [4] bin; lang/telugu.lang:3 [4] bin; src/sutram_compiler.asm:244 [4] bin; src/sutram_compiler.asm:246 [4] bin
+bit,1,5,"{""3"": 1, ""1"": 4}",examples/16_advanced.sm:34 [3] Bit; lib/ganit.smlib:187 [1] bit_gan; src/sutram_compiler.asm:391 [1] bit; src/sutram_compiler.asm:393 [1] bit; src/sutram_compiler.asm:528 [1] bit
+bitwise,3,1,"{""3"": 1}",examples/15_sutra_const.sm:7 [3] Bitwise
+blend,3,6,"{""3"": 6}",examples/93_t12_float_functions.sm:12 [3] blend; examples/93_t12_float_functions.sm:25 [3] blend; examples/93_t12_float_functions.sm:29 [3] blend; examples/94_t12_float_functions.sm:12 [3] blend; examples/94_t12_float_functions.sm:30 [3] blend; examples/94_t12_float_functions.sm:36 [3] blend
+block,3,6,"{""3"": 5, ""2"": 1}",examples/299_r94_nonfinite_kosh_mandapa.sm:46 [3] block; examples/317_r107_parimana.sm:10 [3] block; examples/317_r107_parimana.sm:12 [3] block; examples/318_r108_parimana_moves.sm:14 [3] block; examples/318_r108_parimana_moves.sm:18 [3] block; lang/sanskrit.lang:90 [2] block
+blocks,3,1,"{""3"": 1}",examples/304_r103_parimita_within.sm:23 [3] blocks
+blue,3,2,"{""3"": 2}",examples/19_srijana_enum.sm:5 [3] BLUE; examples/19_srijana_enum.sm:10 [3] Blue
+booleans,3,1,"{""3"": 1}",examples/17_booleans.sm:11 [3] Booleans
+both,3,6,"{""3"": 5, ""2"": 1}",examples/17_booleans.sm:30 [3] both_positive; examples/17_booleans.sm:31 [3] both_positive; examples/17_booleans.sm:31 [3] both_positive; examples/22_precedence.sm:7 [3] Both; examples/26_calculator.sm:36 [3] Both; lang/sanskrit.lang:90 [2] both
+broke,2,1,"{""2"": 1}",lang/sanskrit.lang:80 [2] broke
+brown,3,1,"{""3"": 1}",examples/215_r12_wordfreq.sm:36 [3] brown
+buf,3,24,"{""3"": 19, ""2"": 5}",examples/264_r73_escape_arith.sm:6 [3] buf; examples/264_r73_escape_arith.sm:7 [3] buf; examples/265_r73_escape_mala.sm:7 [3] buf; examples/265_r73_escape_mala.sm:8 [3] buf; examples/266_r73_inside_only.sm:4 [3] buf; examples/266_r73_inside_only.sm:5 [3] buf; examples/266_r73_inside_only.sm:6 [3] buf; examples/266_r73_inside_only.sm:7 [3] buf; examples/266_r73_inside_only.sm:7 [3] buf; examples/266_r73_inside_only.sm:7 [3] buf; examples/266_r73_inside_only.sm:7 [3] buf; examples/266_r73_inside_only.sm:7 [3] buf; examples/266_r73_inside_only.sm:8 [3] buf; examples/267_r73_outer_number.sm:6 [3] buf; examples/270_r75_nested_store.sm:9 [3] buf; examples/270_r75_nested_store.sm:10 [3] buf; examples/271_r75_nested_store_data.sm:5 [3] buf; examples/271_r75_nested_store_data.sm:6 [3] buf; examples/271_r75_nested_store_data.sm:7 [3] buf; lib/anukram.smlib:61 [2] buf; lib/anukram.smlib:110 [2] buf; lib/vakyank.smlib:84 [2] buf; lib/vakyank.smlib:186 [2] buf; lib/vakyank.smlib:274 [2] buf
+builtin,2,2,"{""2"": 2}",lang/sanskrit.lang:49 [2] builtin; lang/sanskrit.lang:50 [2] builtin
+builtins,2,1,"{""2"": 1}",lang/sanskrit.lang:48 [2] builtins
+but,3,1,"{""3"": 1}",examples/17_booleans.sm:19 [3] but
+buzz,3,2,"{""3"": 2}",examples/fizzbuzz.sm:9 [3] FizzBuzz; examples/fizzbuzz.sm:15 [3] Buzz
+by,3,1,"{""3"": 1}",examples/26_calculator.sm:28 [3] by
+byte,3,1,"{""3"": 1}",examples/304_r103_parimita_within.sm:23 [3] byte
+bytes,3,3,"{""3"": 2, ""2"": 1}",examples/29_nishkriya.sm:4 [3] bytes; examples/304_r103_parimita_within.sm:23 [3] bytes; lib/khand.smlib:61 [2] bytes
+calculator,3,2,"{""3"": 2}",examples/26_calculator.sm:2 [3] Calculator; examples/32_bank_interest.sm:2 [3] Calculator
+calling,3,3,"{""3"": 3}",examples/func_demo.sm:4 [3] Calling; examples/func_demo.sm:6 [3] Calling; examples/func_demo.sm:8 [3] Calling
+calls,3,5,"{""3"": 5}",examples/236_guna_once.sm:3 [3] calls; examples/236_guna_once.sm:5 [3] calls; examples/236_guna_once.sm:5 [3] calls; examples/236_guna_once.sm:23 [3] calls; examples/236_guna_once.sm:39 [3] calls
+can,2,1,"{""2"": 1}",lang/sanskrit.lang:7 [2] can
+cannot,3,1,"{""3"": 1}",examples/26_calculator.sm:28 [3] Cannot
+cap,1,44,"{""1"": 16, ""2"": 28}",examples/100_t18_kosh_devanagari.sm:5 [1] kosh_cap; examples/100_t18_kosh_devanagari.sm:8 [1] kosh_cap; examples/109_t18_kosh_dasham.sm:7 [1] kosh_cap; examples/323_r111_old_names.sm:9 [1] kosh_cap; examples/96_t18_kosh.sm:5 [1] kosh_cap; examples/96_t18_kosh.sm:8 [1] kosh_cap; examples/96_t18_kosh.sm:10 [1] kosh_cap; examples/96_t18_kosh.sm:17 [1] kosh_cap; examples/97_t18_kosh_devanagari.sm:5 [1] kosh_cap; examples/97_t18_kosh_devanagari.sm:8 [1] kosh_cap; examples/99_t18_kosh.sm:5 [1] kosh_cap; examples/99_t18_kosh.sm:8 [1] kosh_cap; examples/99_t18_kosh.sm:10 [1] kosh_cap; examples/99_t18_kosh.sm:17 [1] kosh_cap; lib/anukram.smlib:36 [2] cap; lib/anukram.smlib:61 [2] cap; lib/anukram.smlib:88 [2] cap; lib/anukram.smlib:110 [2] cap; lib/nighantu.smlib:38 [2] cap; lib/nighantu.smlib:47 [2] cap; lib/nighantu.smlib:62 [2] cap; lib/nighantu.smlib:85 [2] cap; lib/nighantu.smlib:107 [2] cap; lib/nighantu.smlib:132 [2] cap; lib/nighantu.smlib:159 [2] cap; lib/nighantu.smlib:169 [2] cap; lib/nighantu.smlib:181 [2] cap; lib/nighantu.smlib:312 [2] cap; lib/patra.smlib:29 [2] cap; lib/sangrah.smlib:33 [2] cap; lib/sangrah.smlib:40 [2] cap; lib/sangrah.smlib:45 [2] cap; lib/sangrah.smlib:50 [2] cap; lib/sangrah.smlib:63 [2] cap; lib/sangrah.smlib:96 [2] cap; lib/sangrah.smlib:126 [2] cap; lib/sangrah.smlib:148 [2] cap; lib/sangrah.smlib:186 [2] cap; lib/sangrah.smlib:194 [2] cap; lib/sangrah.smlib:217 [2] cap; lib/suchi.smlib:46 [2] cap; lib/suchi.smlib:381 [2] cap; lang/gujarati.lang:46 [1] kosh_cap; lang/sanskrit.lang:64 [1] kosh_cap
+capacity,3,1,"{""3"": 1}",examples/318_r108_parimana_moves.sm:11 [3] capacity
+cat,1,1,"{""1"": 1}",examples/323_r111_old_names.sm:22 [1] vartani_cat
+cells,2,1,"{""2"": 1}",lib/khand.smlib:39 [2] cells
+change,2,1,"{""2"": 1}",lang/sanskrit.lang:80 [2] change
+changes,2,1,"{""2"": 1}",lang/sanskrit.lang:49 [2] changes
+char,1,6,"{""1"": 4, ""3"": 2}",examples/323_r111_old_names.sm:18 [1] char_lower; examples/323_r111_old_names.sm:18 [1] char_upper; examples/323_r111_old_names.sm:19 [1] char_from; examples/char_ops.sm:5 [3] char; examples/char_ops.sm:9 [1] char_upper; examples/full_demo.sm:22 [3] Char
+character,2,4,"{""2"": 4}",lang/kannada.lang:42 [2] character; lang/odia.lang:42 [2] character; lang/tamil.lang:53 [2] character; lang/telugu.lang:42 [2] character
+check,3,3,"{""3"": 2, ""4"": 1}",examples/16_advanced.sm:32 [3] check; examples/16_advanced.sm:33 [3] check; src/sutram_compiler.asm:245 [4] check
+choose,3,3,"{""3"": 3}",examples/94_t12_float_functions.sm:24 [3] choose; examples/94_t12_float_functions.sm:33 [3] choose; examples/94_t12_float_functions.sm:34 [3] choose
+clash,3,12,"{""3"": 12}",examples/149_namespaced_colliding_imports.sm:5 [3] first__clash; examples/149_namespaced_colliding_imports.sm:6 [3] second__clash; examples/150_namespaced_same_module_two_aliases.sm:5 [3] north__clash; examples/150_namespaced_same_module_two_aliases.sm:6 [3] south__clash; examples/151_namespaced_and_legacy_import.sm:5 [3] clash; examples/151_namespaced_and_legacy_import.sm:6 [3] isolated__clash; examples/152_namespaced_comment_string_preservation.sm:4 [3] clash; examples/152_namespaced_comment_string_preservation.sm:5 [3] unit__clash; examples/154_namespaced_duplicate_idempotent.sm:4 [3] alpha__clash; examples/155_namespaced_multi_alias_composition.sm:6 [3] alpha__clash; examples/155_namespaced_multi_alias_composition.sm:7 [3] beta__clash; examples/156_namespaced_alias_collision.sm:4 [3] same__clash
+clear,1,3,"{""1"": 3}",examples/323_r111_old_names.sm:14 [1] kosh_clear; lang/gujarati.lang:47 [1] kosh_clear; lang/sanskrit.lang:65 [1] kosh_clear
+cmp,3,1,"{""3"": 1}",examples/299_r94_nonfinite_kosh_mandapa.sm:42 [3] cmp
+cnt,3,2,"{""3"": 2}",examples/217_r12_report.sm:51 [3] cnt; examples/217_r12_report.sm:53 [3] cnt
+code,3,10,"{""3"": 5, ""2"": 5}",examples/29_nishkriya.sm:4 [3] code; examples/29_nishkriya.sm:9 [3] code; examples/char_ops.sm:5 [3] code; examples/char_ops.sm:6 [3] code; examples/char_ops.sm:7 [3] code; lib/khand.smlib:546 [2] code; lib/khand.smlib:561 [2] code; lib/varna.smlib:78 [2] code; lib/varna.smlib:90 [2] code; lang/sanskrit.lang:8 [2] code
+color,3,2,"{""3"": 2}",examples/19_srijana_enum.sm:6 [3] color; examples/19_srijana_enum.sm:7 [3] color
+comes,3,1,"{""3"": 1}",examples/309_r105_string_order.sm:10 [3] comes
+comment,3,1,"{""3"": 1}",examples/35_comments.sm:4 [3] comment
+comments,3,1,"{""3"": 1}",examples/35_comments.sm:8 [3] comments
+comparison,3,1,"{""3"": 1}",examples/09_comparisons.sm:8 [3] Comparison
+compile,2,1,"{""2"": 1}",lang/sanskrit.lang:7 [2] compile
+compiler,2,2,"{""2"": 2}",lang/sanskrit.lang:48 [2] compiler; lang/sanskrit.lang:90 [2] compiler
+compiling,2,1,"{""2"": 1}",lang/sanskrit.lang:78 [2] compiling
+compound,3,2,"{""3"": 2}",examples/28_compound.sm:2 [3] Compound; examples/32_bank_interest.sm:19 [3] Compound
+computed,3,1,"{""3"": 1}",examples/289_r87_float_print.sm:9 [3] computed
+concatenation,3,1,"{""3"": 1}",examples/31_strcat.sm:2 [3] Concatenation
+condition,3,1,"{""3"": 1}",examples/17_booleans.sm:24 [3] condition
+cont,3,8,"{""3"": 8}",examples/216_r12_expr.sm:49 [3] cont; examples/216_r12_expr.sm:50 [3] cont; examples/216_r12_expr.sm:52 [3] cont; examples/216_r12_expr.sm:59 [3] cont; examples/216_r12_expr.sm:70 [3] cont; examples/216_r12_expr.sm:71 [3] cont; examples/216_r12_expr.sm:73 [3] cont; examples/216_r12_expr.sm:80 [3] cont
+container,2,1,"{""2"": 1}",lang/gujarati.lang:40 [2] container
+conversion,3,1,"{""3"": 1}",examples/33_unit_conversion.sm:2 [3] Conversion
+core,2,3,"{""2"": 3}",lang/gujarati.lang:54 [2] core; lang/sanskrit.lang:5 [2] core; lang/sanskrit.lang:9 [2] core
+correct,3,3,"{""3"": 2, ""2"": 1}",examples/24_guess_game.sm:18 [3] Correct; examples/number_game.sm:8 [3] Correct; lang/sanskrit.lang:77 [2] correct
+count,3,13,"{""3"": 9, ""2"": 4}",examples/11_forloop.sm:8 [3] Count; examples/217_r12_report.sm:30 [3] Count; examples/34_incdec.sm:13 [3] count; examples/34_incdec.sm:15 [3] count; examples/34_incdec.sm:17 [3] count; examples/34_incdec.sm:17 [3] count; examples/46_language_reference.sm:4 [3] count; examples/46_language_reference.sm:7 [3] count; examples/46_language_reference.sm:9 [3] count; lib/aadhar.smlib:78 [2] count; lib/khand.smlib:289 [2] count; lib/vakyank.smlib:241 [2] count; lib/varna.smlib:338 [2] count
+countdown,3,2,"{""3"": 2}",examples/30_lkhb.sm:18 [3] Countdown; examples/36_descending.sm:2 [3] Countdown
+counting,3,1,"{""3"": 1}",examples/34_incdec.sm:12 [3] Counting
+cur,3,4,"{""3"": 4}",examples/215_r12_wordfreq.sm:51 [3] cur; examples/215_r12_wordfreq.sm:58 [3] cur; examples/215_r12_wordfreq.sm:59 [3] cur; examples/215_r12_wordfreq.sm:66 [3] cur
+cyc,3,2,"{""3"": 2}",examples/210_r41_cycle.sm:3 [3] r41_cyc_a; examples/210_r41_cycle.sm:5 [3] cyc_a
+cycle,3,1,"{""3"": 1}",examples/164_r41_cycle_reject.sm:2 [3] r41_cycle_a
+cyclic,3,1,"{""3"": 1}",examples/202_brahmagupta_area.sm:9 [3] cyclic
+data,2,1,"{""2"": 1}",lib/patra.smlib:57 [2] data
+day,3,2,"{""3"": 2}",examples/18_guna_switch.sm:3 [3] day; examples/18_guna_switch.sm:4 [3] day
+dcap,2,1,"{""2"": 1}",lib/nighantu.smlib:333 [2] dcap
+decimal,2,13,"{""2"": 13}",lang/gujarati.lang:53 [2] decimal; lang/hindi.lang:40 [2] decimal; lang/hindi.lang:40 [2] decimal; lang/kannada.lang:40 [2] decimal; lang/kannada.lang:40 [2] decimal; lang/marathi.lang:40 [2] decimal; lang/marathi.lang:40 [2] decimal; lang/odia.lang:40 [2] decimal; lang/odia.lang:40 [2] decimal; lang/tamil.lang:51 [2] decimal; lang/tamil.lang:51 [2] decimal; lang/telugu.lang:40 [2] decimal; lang/telugu.lang:40 [2] decimal
+decrement,3,1,"{""3"": 1}",examples/34_incdec.sm:2 [3] Decrement
+dedicated,2,4,"{""2"": 4}",lang/kannada.lang:42 [2] dedicated; lang/odia.lang:42 [2] dedicated; lang/tamil.lang:53 [2] dedicated; lang/telugu.lang:42 [2] dedicated
+def,2,2,"{""2"": 2}",lib/nighantu.smlib:312 [2] def; lib/phal.smlib:62 [2] def
+degrees,3,1,"{""3"": 1}",examples/14_strings.sm:24 [3] degrees
+demo,3,10,"{""3"": 10}",examples/08_demo.sm:8 [3] Demo; examples/11_forloop.sm:5 [3] Demo; examples/12_elif.sm:5 [3] Demo; examples/28_compound.sm:2 [3] Demo; examples/30_lkhb.sm:2 [3] Demo; examples/31_strcat.sm:2 [3] Demo; examples/34_incdec.sm:2 [3] Demo; examples/array_demo.sm:3 [3] Demo; examples/func_demo.sm:3 [3] Demo; examples/import_demo.sm:6 [3] Demo
+denom,3,2,"{""3"": 2}",examples/205_madhava_pi_kosh.sm:9 [3] denom; examples/205_madhava_pi_kosh.sm:10 [3] denom
+dequeue,1,4,"{""1"": 4}",examples/323_r111_old_names.sm:12 [1] kosh_dequeue; lang/gujarati.lang:51 [1] kosh_dequeue; lang/sanskrit.lang:68 [1] kosh_dequeue; src/sutram_compiler.asm:603 [1] kosh_dequeue
+desc,3,4,"{""3"": 4}",examples/115_perf_loop_bottom.sm:23 [3] desc; examples/115_perf_loop_bottom.sm:24 [3] desc; examples/115_perf_loop_bottom.sm:24 [3] desc; examples/115_perf_loop_bottom.sm:25 [3] desc
+descending,3,1,"{""3"": 1}",examples/36_descending.sm:16 [3] Descending
+diamond,3,2,"{""3"": 2}",examples/163_r40_transitive_diamond.sm:3 [3] r40_diamond; examples/166_r41_optin_diamond.sm:4 [3] r40_diamond
+diff,1,3,"{""3"": 2, ""1"": 1}",examples/13_negatives.sm:17 [3] diff; examples/13_negatives.sm:18 [3] diff; lib/sangrah.smlib:63 [1] rakh_samroop_diff
+difference,3,1,"{""3"": 1}",examples/26_calculator.sm:18 [3] Difference
+digits,2,6,"{""2"": 6}",lang/hindi.lang:40 [2] digits; lang/kannada.lang:40 [2] digits; lang/marathi.lang:40 [2] digits; lang/odia.lang:40 [2] digits; lang/tamil.lang:51 [2] digits; lang/telugu.lang:40 [2] digits
+directly,3,1,"{""3"": 1}",examples/44_shabda.sm:14 [3] directly
+divide,3,1,"{""3"": 1}",examples/26_calculator.sm:28 [3] divide
+docs,2,1,"{""2"": 1}",lang/sanskrit.lang:81 [2] docs
+does,3,1,"{""3"": 1}",examples/69_undefined_function.sm:2 [3] does_not_exist
+dog,3,1,"{""3"": 1}",examples/215_r12_wordfreq.sm:36 [3] dog
+done,3,26,"{""3"": 26}",examples/08_demo.sm:21 [3] Done; examples/09_comparisons.sm:43 [3] Done; examples/10_mathlib.sm:12 [3] Done; examples/11_forloop.sm:30 [3] Done; examples/12_elif.sm:31 [3] Done; examples/13_negatives.sm:39 [3] Done; examples/14_strings.sm:26 [3] Done; examples/15_sutra_const.sm:27 [3] Done; examples/16_advanced.sm:40 [3] Done; examples/17_booleans.sm:9 [3] is_done; examples/17_booleans.sm:15 [3] is_done; examples/17_booleans.sm:15 [3] is_done; examples/17_booleans.sm:18 [3] is_done; examples/17_booleans.sm:19 [3] done; examples/17_booleans.sm:23 [3] is_done; examples/17_booleans.sm:33 [3] Done; examples/18_guna_switch.sm:12 [3] Done; examples/19_srijana_enum.sm:14 [3] Done; examples/258_r70_loop_indent.sm:11 [3] done; examples/259_r70_indent_ambiguous.sm:8 [3] done; examples/30_lkhb.sm:25 [3] Done; examples/31_strcat.sm:8 [3] Done; examples/char_ops.sm:11 [3] Done; examples/full_demo.sm:37 [3] Done; examples/func_demo.sm:11 [3] Done; examples/import_demo.sm:16 [3] Done
+dot,1,8,"{""2"": 7, ""1"": 1}",lang/gujarati.lang:53 [2] dot; lang/hindi.lang:40 [2] dot; lang/kannada.lang:40 [2] dot; lang/marathi.lang:40 [2] dot; lang/odia.lang:40 [2] dot; lang/tamil.lang:51 [2] dot; lang/telugu.lang:40 [2] dot; src/sutram_compiler.asm:564 [1] sankhya_dot
+double,3,1,"{""3"": 1}",examples/08_demo.sm:10 [3] double
+doubled,3,2,"{""3"": 2}",examples/import_demo.sm:10 [3] doubled; examples/import_demo.sm:11 [3] doubled
+dst,2,4,"{""2"": 4}",lib/anukram.smlib:110 [2] dst; lib/brihat.smlib:83 [2] dst; lib/mala.smlib:49 [2] dst; lib/nighantu.smlib:333 [2] dst
+dup,3,1,"{""3"": 1}",examples/213_r41_v1_dupexp.sm:3 [3] r41_dup
+edited,2,1,"{""2"": 1}",lang/gujarati.lang:41 [2] edited
+eight,2,1,"{""2"": 1}",lang/sanskrit.lang:77 [2] eight
+elem,2,6,"{""2"": 6}",lib/sangrah.smlib:40 [2] elem; lib/sangrah.smlib:40 [2] elem_n; lib/sangrah.smlib:45 [2] elem; lib/sangrah.smlib:45 [2] elem_n; lib/sangrah.smlib:50 [2] elem; lib/sangrah.smlib:50 [2] elem_n
+elif,3,1,"{""3"": 1}",examples/12_elif.sm:5 [3] Elif
+else,3,1,"{""3"": 1}",examples/full_demo.sm:10 [3] else
+empty,1,10,"{""3"": 5, ""1"": 5}",examples/115_perf_loop_bottom.sm:39 [3] empty; examples/115_perf_loop_bottom.sm:40 [3] empty; examples/115_perf_loop_bottom.sm:40 [3] empty; examples/115_perf_loop_bottom.sm:41 [3] empty; examples/257_r48_kosh_empty.sm:11 [1] kosh_empty; examples/306_r105_string_equal.sm:11 [3] empty; examples/323_r111_old_names.sm:13 [1] kosh_empty; examples/323_r111_old_names.sm:15 [1] kosh_empty; lang/gujarati.lang:48 [1] kosh_empty; lang/sanskrit.lang:66 [1] kosh_empty
+end,2,1,"{""2"": 1}",lib/sadhan.smlib:14 [2] end
+ended,3,1,"{""3"": 1}",examples/24_guess_game.sm:8 [3] ended
+enqueue,1,3,"{""1"": 3}",examples/323_r111_old_names.sm:8 [1] kosh_enqueue; lang/gujarati.lang:50 [1] kosh_enqueue; lang/sanskrit.lang:75 [1] kosh_enqueue
+enter,1,4,"{""3"": 3, ""1"": 1}",examples/23_grahan_input.sm:2 [3] Enter; examples/26_calculator.sm:4 [3] Enter; examples/26_calculator.sm:6 [3] Enter; src/sutram_compiler.asm:713 [1] Enter
+equal,3,4,"{""3"": 4}",examples/23_grahan_input.sm:12 [3] equal; examples/26_calculator.sm:36 [3] equal; examples/297_r94_whole_number_operators.sm:15 [3] equal; examples/306_r105_string_equal.sm:9 [3] equal
+escape,3,1,"{""3"": 1}",examples/159_namespaced_path_traversal.sm:1 [3] escape
+eval,3,5,"{""3"": 5}",examples/216_r12_expr.sm:87 [3] eval; examples/216_r12_expr.sm:96 [3] eval; examples/216_r12_expr.sm:98 [3] eval; examples/216_r12_expr.sm:100 [3] eval; examples/216_r12_expr.sm:102 [3] eval
+even,3,2,"{""3"": 2}",examples/258_r70_loop_indent.sm:23 [3] even; examples/27_even_odd.sm:5 [3] even
+every,2,1,"{""2"": 1}",lang/sanskrit.lang:8 [2] every
+exact,2,6,"{""2"": 6}",lang/bengali.lang:40 [2] exact; lang/gujarati.lang:54 [2] Exact; lang/hindi.lang:42 [2] Exact; lang/marathi.lang:42 [2] Exact; lang/punjabi.lang:40 [2] exact; lang/sanskrit.lang:70 [2] exact
+example,2,1,"{""2"": 1}",lang/gujarati.lang:41 [2] example
+exist,3,1,"{""3"": 1}",examples/69_undefined_function.sm:2 [3] does_not_exist
+existing,2,10,"{""2"": 10}",lang/gujarati.lang:54 [2] existing; lang/hindi.lang:41 [2] Existing; lang/kannada.lang:41 [2] Existing; lang/marathi.lang:41 [2] Existing; lang/odia.lang:41 [2] Existing; lang/sanskrit.lang:9 [2] existing; lang/sanskrit.lang:48 [2] existing; lang/sanskrit.lang:78 [2] existing; lang/tamil.lang:52 [2] Existing; lang/telugu.lang:41 [2] Existing
+exiting,3,1,"{""3"": 1}",examples/29_nishkriya.sm:9 [3] Exiting
+exits,3,1,"{""3"": 1}",examples/29_nishkriya.sm:4 [3] exits
+exp,3,4,"{""3"": 3, ""2"": 1}",examples/41_recursion.sm:14 [3] exp; examples/41_recursion.sm:15 [3] exp; examples/41_recursion.sm:18 [3] exp; lib/brihat.smlib:322 [2] exp
+expansion,2,2,"{""2"": 2}",lang/bengali.lang:40 [2] expansion; lang/punjabi.lang:40 [2] expansion
+explain,3,1,"{""3"": 1}",examples/35_comments.sm:8 [3] explain
+explicit,2,1,"{""2"": 1}",lang/gujarati.lang:40 [2] explicit
+expr,3,3,"{""3"": 3}",examples/216_r12_expr.sm:34 [3] parse_expr; examples/216_r12_expr.sm:66 [3] parse_expr; examples/216_r12_expr.sm:92 [3] parse_expr
+factor,3,3,"{""3"": 3}",examples/216_r12_expr.sm:28 [3] parse_factor; examples/216_r12_expr.sm:46 [3] parse_factor; examples/216_r12_expr.sm:57 [3] parse_factor
+factorial,3,1,"{""3"": 1}",examples/28_compound.sm:22 [3] Factorial
+false,3,1,"{""3"": 1}",examples/full_demo.sm:14 [3] false
+fd,1,2,"{""2"": 1, ""1"": 1}",lang/bengali.lang:40 [2] FD; src/sutram_compiler.asm:494 [1] fd
+fill,2,1,"{""2"": 1}",lib/vakyank.smlib:241 [2] fill
+find,2,2,"{""2"": 2}",lib/khand.smlib:142 [2] find; lib/varna.smlib:189 [2] find
+first,3,7,"{""3"": 7}",examples/149_namespaced_colliding_imports.sm:2 [3] first; examples/149_namespaced_colliding_imports.sm:5 [3] first__clash; examples/149_namespaced_colliding_imports.sm:7 [3] first__helper; examples/23_grahan_input.sm:8 [3] First; examples/26_calculator.sm:4 [3] first; examples/26_calculator.sm:32 [3] First; examples/char_ops.sm:5 [3] First
+fit,3,1,"{""3"": 1}",examples/304_r103_parimita_within.sm:23 [3] fit
+fizz,3,2,"{""3"": 2}",examples/fizzbuzz.sm:9 [3] FizzBuzz; examples/fizzbuzz.sm:11 [3] Fizz
+flags,3,10,"{""3"": 9, ""2"": 1}",examples/16_advanced.sm:27 [3] flags; examples/16_advanced.sm:28 [3] flags; examples/16_advanced.sm:28 [3] flags; examples/16_advanced.sm:29 [3] flags; examples/16_advanced.sm:29 [3] flags; examples/16_advanced.sm:30 [3] Flags; examples/16_advanced.sm:30 [3] flags; examples/16_advanced.sm:32 [3] flags; examples/16_advanced.sm:37 [3] flags; lib/roop.smlib:174 [2] flags
+flow,3,1,"{""3"": 1}",examples/44_shabda.sm:11 [3] flow
+fmt,1,6,"{""1"": 6}",examples/format_demo.sm:5 [1] likha_fmt; examples/format_demo.sm:7 [1] likha_fmt; examples/format_demo.sm:9 [1] likha_fmt; examples/full_demo.sm:24 [1] likha_fmt; examples/multable.sm:7 [1] likha_fmt; src/sutram_compiler.asm:410 [1] likha_fmt
+fn,2,2,"{""2"": 2}",lib/khand.smlib:142 [2] fn; lib/varna.smlib:189 [2] fn
+for,3,8,"{""3"": 2, ""2"": 6}",examples/11_forloop.sm:5 [3] For; examples/91_indian_number_theory.sm:18 [3] for; lang/kannada.lang:42 [2] for; lang/odia.lang:42 [2] for; lang/sanskrit.lang:48 [2] for; lang/sanskrit.lang:77 [2] for; lang/tamil.lang:53 [2] for; lang/telugu.lang:42 [2] for
+format,3,12,"{""3"": 1, ""2"": 11}",examples/full_demo.sm:23 [3] Format; lang/bengali.lang:2 [2] Format; lang/gujarati.lang:2 [2] Format; lang/hindi.lang:2 [2] Format; lang/kannada.lang:2 [2] Format; lang/malayalam.lang:2 [2] Format; lang/marathi.lang:2 [2] Format; lang/odia.lang:2 [2] Format; lang/punjabi.lang:2 [2] Format; lang/sanskrit.lang:2 [2] Format; lang/tamil.lang:2 [2] Format; lang/telugu.lang:2 [2] Format
+formatted,3,1,"{""3"": 1}",examples/30_lkhb.sm:2 [3] Formatted
+found,3,1,"{""3"": 1}",examples/24_guess_game.sm:18 [3] found
+fox,3,2,"{""3"": 2}",examples/215_r12_wordfreq.sm:36 [3] fox; examples/215_r12_wordfreq.sm:36 [3] fox
+friday,3,1,"{""3"": 1}",examples/18_guna_switch.sm:9 [3] Friday
+from,1,2,"{""1"": 1, ""3"": 1}",examples/323_r111_old_names.sm:19 [1] char_from; examples/func_demo.sm:14 [3] from
+function,3,1,"{""3"": 1}",examples/func_demo.sm:3 [3] Function
+functions,3,1,"{""3"": 1}",examples/44_shabda.sm:11 [3] functions
+game,3,2,"{""3"": 2}",examples/number_game.sm:5 [3] game; examples/number_game.sm:17 [3] Game
+gives,3,2,"{""3"": 2}",examples/297_r94_whole_number_operators.sm:11 [3] gives; examples/297_r94_whole_number_operators.sm:13 [3] gives
+glossary,2,2,"{""2"": 2}",lang/malayalam.lang:34 [2] glossary; lang/tamil.lang:34 [2] glossary
+goodbye,3,3,"{""3"": 3}",examples/24_guess_game.sm:8 [3] Goodbye; examples/26_calculator.sm:9 [3] Goodbye; examples/26_calculator.sm:13 [3] Goodbye
+got,3,1,"{""3"": 1}",examples/272_r75_negative_size.sm:5 [3] got
+grade,3,5,"{""3"": 5}",examples/12_elif.sm:10 [3] Grade; examples/12_elif.sm:12 [3] Grade; examples/12_elif.sm:14 [3] Grade; examples/12_elif.sm:16 [3] Grade; examples/12_elif.sm:18 [3] Grade
+greater,3,2,"{""3"": 2}",examples/26_calculator.sm:32 [3] greater; examples/26_calculator.sm:34 [3] greater
+green,3,3,"{""3"": 3}",examples/19_srijana_enum.sm:4 [3] GREEN; examples/19_srijana_enum.sm:6 [3] GREEN; examples/19_srijana_enum.sm:9 [3] Green
+greeting,3,2,"{""3"": 2}",examples/44_shabda.sm:8 [3] greeting; examples/44_shabda.sm:9 [3] greeting
+grown,3,1,"{""3"": 1}",examples/318_r108_parimana_moves.sm:11 [3] grown
+growth,3,2,"{""3"": 2}",examples/32_bank_interest.sm:11 [3] Growth; examples/32_bank_interest.sm:19 [3] growth
+guess,3,11,"{""3"": 11}",examples/24_guess_game.sm:2 [3] Guess; examples/24_guess_game.sm:4 [3] guess; examples/24_guess_game.sm:5 [3] guess; examples/24_guess_game.sm:6 [3] guess; examples/24_guess_game.sm:7 [3] guess; examples/24_guess_game.sm:11 [3] guess; examples/24_guess_game.sm:13 [3] guess; examples/24_guess_game.sm:17 [3] guess; examples/number_game.sm:4 [3] guess; examples/number_game.sm:7 [3] guess; examples/number_game.sm:10 [3] guess
+guessing,3,1,"{""3"": 1}",examples/number_game.sm:5 [3] Guessing
+hay,2,6,"{""2"": 6}",lib/khand.smlib:105 [2] hay; lib/khand.smlib:131 [2] hay; lib/khand.smlib:504 [2] hay; lib/varna.smlib:155 [2] hay; lib/varna.smlib:178 [2] hay; lib/varna.smlib:541 [2] hay
+held,2,1,"{""2"": 1}",lang/sanskrit.lang:77 [2] held
+hello,3,8,"{""3"": 8}",examples/14_strings.sm:8 [3] Hello; examples/14_strings.sm:13 [3] hello; examples/312_r106_likha_string.sm:15 [3] hello; examples/31_strcat.sm:4 [3] Hello; examples/46_language_reference.sm:32 [3] hello; examples/63_stdlib_string.sm:5 [3] hello; examples/char_ops.sm:3 [3] Hello; examples/full_demo.sm:22 [3] Hello
+helper,3,5,"{""3"": 5}",examples/149_namespaced_colliding_imports.sm:7 [3] first__helper; examples/149_namespaced_colliding_imports.sm:8 [3] second__helper; examples/155_namespaced_multi_alias_composition.sm:8 [3] gamma__helper; examples/155_namespaced_multi_alias_composition.sm:9 [3] beta__helper; examples/212_r41_v1_private.sm:5 [3] vec__helper
+here,3,3,"{""3"": 2, ""2"": 1}",examples/14_strings.sm:11 [3] here; examples/14_strings.sm:12 [3] here; lang/sanskrit.lang:79 [2] here
+hi,3,10,"{""3"": 6, ""2"": 4}",examples/115_perf_loop_bottom.sm:38 [3] hi; examples/115_perf_loop_bottom.sm:40 [3] hi; examples/82_b7_stack_spill.sm:3 [3] hi; examples/82_b7_stack_spill.sm:4 [3] hi; examples/82_b7_stack_spill.sm:5 [3] hi; examples/82_b7_stack_spill.sm:7 [3] hi; lib/ank.smlib:66 [2] hi; lib/ganit.smlib:215 [2] hi; lib/kalana.smlib:120 [2] hi; lib/shreni.smlib:174 [2] hi
+high,3,2,"{""3"": 2}",examples/24_guess_game.sm:14 [3] high; examples/number_game.sm:11 [3] high
+hold,3,1,"{""3"": 1}",examples/306_r105_string_equal.sm:14 [3] hold
+holds,2,1,"{""2"": 1}",lang/sanskrit.lang:79 [2] holds
+id,3,5,"{""3"": 4, ""2"": 1}",examples/209_samanvaya.sm:46 [3] id; examples/209_samanvaya.sm:48 [3] id; examples/209_samanvaya.sm:49 [3] id; examples/209_samanvaya.sm:50 [3] id; lang/sanskrit.lang:49 [2] ID
+identifier,2,1,"{""2"": 1}",lang/gujarati.lang:40 [2] identifier
+if,3,1,"{""3"": 1}",examples/full_demo.sm:10 [3] If
+ignored,3,1,"{""3"": 1}",examples/42_block_comments.sm:2 [3] ignored
+import,3,1,"{""3"": 1}",examples/import_demo.sm:6 [3] Import
+in,3,7,"{""3"": 3, ""2"": 4}",examples/299_r94_nonfinite_kosh_mandapa.sm:29 [3] in; examples/317_r107_parimana.sm:10 [3] in; examples/318_r108_parimana_moves.sm:16 [3] in; lang/sanskrit.lang:5 [2] in; lang/sanskrit.lang:6 [2] in; lang/sanskrit.lang:7 [2] in; lang/sanskrit.lang:90 [2] in
+increment,3,1,"{""3"": 1}",examples/34_incdec.sm:2 [3] Increment
+indian,2,1,"{""2"": 1}",lib/roop.smlib:456 [2] indian
+inline,3,2,"{""3"": 2}",examples/29_nishkriya.sm:2 [3] Inline; examples/42_block_comments.sm:6 [3] inline
+inner,3,1,"{""3"": 1}",examples/304_r103_parimita_within.sm:23 [3] inner
+input,3,16,"{""3"": 3, ""2"": 13}",examples/24_guess_game.sm:8 [3] Input; examples/26_calculator.sm:9 [3] input; examples/26_calculator.sm:13 [3] input; lang/bengali.lang:3 [2] input; lang/gujarati.lang:3 [2] input; lang/hindi.lang:3 [2] input; lang/kannada.lang:3 [2] input; lang/malayalam.lang:3 [2] input; lang/malayalam.lang:4 [2] input; lang/marathi.lang:3 [2] input; lang/odia.lang:3 [2] input; lang/punjabi.lang:3 [2] input; lang/sanskrit.lang:3 [2] input; lang/tamil.lang:3 [2] input; lang/tamil.lang:4 [2] input; lang/telugu.lang:3 [2] input
+inside,3,1,"{""3"": 1}",examples/152_namespaced_comment_string_preservation.sm:4 [3] inside
+interest,3,3,"{""3"": 3}",examples/32_bank_interest.sm:2 [3] Interest; examples/32_bank_interest.sm:13 [3] interest; examples/32_bank_interest.sm:14 [3] interest
+introduced,2,1,"{""2"": 1}",lang/sanskrit.lang:8 [2] introduced
+invented,2,4,"{""2"": 4}",lang/kannada.lang:42 [2] invented; lang/odia.lang:42 [2] invented; lang/tamil.lang:53 [2] invented; lang/telugu.lang:42 [2] invented
+is,3,35,"{""3"": 29, ""2"": 6}",examples/12_elif.sm:24 [3] is; examples/12_elif.sm:26 [3] is; examples/12_elif.sm:28 [3] is; examples/13_negatives.sm:36 [3] is; examples/14_strings.sm:20 [3] is; examples/16_advanced.sm:34 [3] is; examples/17_booleans.sm:8 [3] is_ready; examples/17_booleans.sm:9 [3] is_done; examples/17_booleans.sm:13 [3] is_ready; examples/17_booleans.sm:13 [3] is_ready; examples/17_booleans.sm:15 [3] is_done; examples/17_booleans.sm:15 [3] is_done; examples/17_booleans.sm:18 [3] is_ready; examples/17_booleans.sm:18 [3] is_done; examples/17_booleans.sm:23 [3] is_done; examples/17_booleans.sm:23 [3] is_ready; examples/23_grahan_input.sm:8 [3] is; examples/23_grahan_input.sm:10 [3] is; examples/26_calculator.sm:32 [3] is; examples/26_calculator.sm:34 [3] is; examples/27_even_odd.sm:5 [3] is; examples/27_even_odd.sm:8 [3] is; examples/291_r90_nan_compare.sm:18 [3] is; examples/291_r90_nan_compare.sm:20 [3] is; examples/29_nishkriya.sm:5 [3] is; examples/312_r106_likha_string.sm:16 [3] is; examples/31_strcat.sm:5 [3] is; examples/35_comments.sm:4 [3] is; examples/prime.sm:15 [3] is; lang/gujarati.lang:41 [2] is; lang/gujarati.lang:53 [2] is; lang/sanskrit.lang:6 [2] is; lang/sanskrit.lang:8 [2] is; lang/sanskrit.lang:8 [2] is; lang/sanskrit.lang:79 [2] is
+isolated,3,2,"{""3"": 2}",examples/151_namespaced_and_legacy_import.sm:3 [3] isolated; examples/151_namespaced_and_legacy_import.sm:6 [3] isolated__clash
+it,3,3,"{""3"": 3}",examples/24_guess_game.sm:18 [3] it; examples/272_r75_negative_size.sm:5 [3] it; examples/318_r108_parimana_moves.sm:16 [3] it
+jumps,3,1,"{""3"": 1}",examples/215_r12_wordfreq.sm:36 [3] jumps
+just,3,2,"{""3"": 2}",examples/296_r93_float_e_notation.sm:10 [3] just; examples/29_nishkriya.sm:5 [3] just
+key,2,9,"{""2"": 9}",lib/nighantu.smlib:38 [2] key; lib/nighantu.smlib:47 [2] key; lib/nighantu.smlib:62 [2] key; lib/nighantu.smlib:85 [2] key; lib/nighantu.smlib:132 [2] key; lib/nighantu.smlib:159 [2] key; lib/nighantu.smlib:169 [2] key; lib/nighantu.smlib:181 [2] key; lib/nighantu.smlib:312 [2] key
+keyn,2,9,"{""2"": 9}",lib/nighantu.smlib:38 [2] keyn; lib/nighantu.smlib:47 [2] keyn; lib/nighantu.smlib:62 [2] keyn; lib/nighantu.smlib:85 [2] keyn; lib/nighantu.smlib:132 [2] keyn; lib/nighantu.smlib:159 [2] keyn; lib/nighantu.smlib:169 [2] keyn; lib/nighantu.smlib:181 [2] keyn; lib/nighantu.smlib:312 [2] keyn
+keys,3,2,"{""3"": 2}",examples/215_r12_wordfreq.sm:9 [3] sort_keys; examples/215_r12_wordfreq.sm:71 [3] sort_keys
+keyword,2,15,"{""2"": 15}",lang/bengali.lang:2 [2] keyword; lang/gujarati.lang:2 [2] keyword; lang/hindi.lang:2 [2] keyword; lang/kannada.lang:2 [2] keyword; lang/malayalam.lang:2 [2] keyword; lang/marathi.lang:2 [2] keyword; lang/odia.lang:2 [2] keyword; lang/punjabi.lang:2 [2] keyword; lang/sanskrit.lang:2 [2] keyword; lang/sanskrit.lang:8 [2] keyword; lang/sanskrit.lang:9 [2] keyword; lang/sanskrit.lang:49 [2] keyword; lang/sanskrit.lang:79 [2] keyword; lang/tamil.lang:2 [2] keyword; lang/telugu.lang:2 [2] keyword
+keywords,2,2,"{""2"": 2}",lang/sanskrit.lang:5 [2] keywords; lang/sanskrit.lang:77 [2] keywords
+kilograms,4,1,"{""4"": 1}",examples/33_unit_conversion.sm:12 [4] Kilograms
+kilometers,4,1,"{""4"": 1}",examples/33_unit_conversion.sm:4 [4] Kilometers
+lang,2,15,"{""4"": 13, ""2"": 2}",lang/bengali.lang:3 [4] lang; lang/gujarati.lang:3 [4] lang; lang/hindi.lang:3 [4] lang; lang/kannada.lang:3 [4] lang; lang/malayalam.lang:3 [4] lang; lang/malayalam.lang:4 [2] SUTRAM_LANG; lang/marathi.lang:3 [4] lang; lang/odia.lang:3 [4] lang; lang/punjabi.lang:3 [4] lang; lang/sanskrit.lang:3 [4] lang; lang/sanskrit.lang:81 [4] LANG; lang/tamil.lang:3 [4] lang; lang/tamil.lang:4 [2] SUTRAM_LANG; lang/telugu.lang:3 [4] lang; src/sutram_compiler.asm:246 [4] lang
+language,2,11,"{""2"": 11}",lang/bengali.lang:1 [2] language; lang/gujarati.lang:1 [2] language; lang/hindi.lang:1 [2] language; lang/kannada.lang:1 [2] language; lang/malayalam.lang:1 [2] language; lang/marathi.lang:1 [2] language; lang/odia.lang:1 [2] language; lang/punjabi.lang:1 [2] language; lang/sanskrit.lang:1 [2] language; lang/tamil.lang:1 [2] language; lang/telugu.lang:1 [2] language
+large,3,1,"{""3"": 1}",examples/289_r87_float_print.sm:14 [3] large
+last,3,2,"{""3"": 1, ""2"": 1}",examples/299_r94_nonfinite_kosh_mandapa.sm:28 [3] last; lang/sanskrit.lang:80 [2] last
+launch,3,1,"{""3"": 1}",examples/36_descending.sm:9 [3] launch
+lazy,3,1,"{""3"": 1}",examples/215_r12_wordfreq.sm:36 [3] lazy
+least,3,2,"{""3"": 2}",examples/17_booleans.sm:24 [3] least; examples/22_precedence.sm:8 [3] least
+len,1,58,"{""1"": 54, ""3"": 2, ""2"": 2}",examples/100_t18_kosh_devanagari.sm:4 [1] kosh_len; examples/100_t18_kosh_devanagari.sm:7 [1] kosh_len; examples/109_t18_kosh_dasham.sm:4 [1] kosh_len; examples/109_t18_kosh_dasham.sm:14 [1] kosh_len; examples/110_t18_kosh_dasham_devanagari.sm:9 [1] kosh_len; examples/118_t18_kosh_param.sm:5 [1] kosh_len; examples/118_t18_kosh_param.sm:9 [1] kosh_len; examples/119_t18_kosh_param_forward.sm:20 [1] kosh_len; examples/121_t18_kosh_param_push_reject.sm:5 [1] kosh_len; examples/203_meru_with_kosh.sm:16 [1] kosh_len; examples/203_meru_with_kosh.sm:18 [1] kosh_len; examples/205_madhava_pi_kosh.sm:14 [1] kosh_len; examples/205_madhava_pi_kosh.sm:17 [1] kosh_len; examples/206_sankhyiki.sm:17 [1] kosh_len; examples/208_kalana.sm:20 [1] kosh_len; examples/246_r23_comparator_sort.sm:26 [1] pankti_len; examples/246_r23_comparator_sort.sm:50 [1] pankti_len; examples/248_r23_slices.sm:8 [1] pankti_len; examples/248_r23_slices.sm:15 [1] pankti_len; examples/248_r23_slices.sm:23 [1] pankti_len; examples/248_r23_slices.sm:42 [1] pankti_len; examples/248_r23_slices.sm:55 [1] pankti_len; examples/249_r25_phal.sm:16 [1] pankti_len; examples/249_r25_phal.sm:31 [1] pankti_len; examples/254_r42_alias_pankti_len.sm:12 [1] pankti_len; examples/255_r42_alias_kosh_push.sm:9 [1] kosh_len; examples/257_r48_kosh_empty.sm:18 [1] kosh_len; examples/286_r82_kosh_in_mandapa.sm:17 [1] kosh_len; examples/299_r94_nonfinite_kosh_mandapa.sm:28 [3] len; examples/299_r94_nonfinite_kosh_mandapa.sm:28 [1] kosh_len; examples/323_r111_old_names.sm:9 [1] kosh_len; examples/323_r111_old_names.sm:17 [1] pankti_len; examples/67_array_len_bounds.sm:6 [1] pankti_len; examples/72_array_variable_index.sm:6 [1] pankti_len; examples/74_array_highest_valid.sm:5 [1] pankti_len; examples/75_array_dynamic_length.sm:5 [1] pankti_len; examples/76_array_function_scope.sm:4 [1] pankti_len; examples/76_array_function_scope.sm:10 [1] pankti_len; examples/90_b9_short_circuit_bounds.sm:6 [1] pankti_len; examples/90_b9_short_circuit_bounds.sm:7 [1] pankti_len; examples/96_t18_kosh.sm:4 [1] kosh_len; examples/96_t18_kosh.sm:16 [1] kosh_len; examples/97_t18_kosh_devanagari.sm:4 [1] kosh_len; examples/97_t18_kosh_devanagari.sm:7 [1] kosh_len; examples/99_t18_kosh.sm:4 [1] kosh_len; examples/99_t18_kosh.sm:16 [1] kosh_len; examples/full_demo.sm:21 [3] len; lib/gudh.smlib:15 [2] len; lib/samanvaya.smlib:23 [2] len; lang/gujarati.lang:42 [1] pankti_len; lang/gujarati.lang:45 [1] kosh_len; lang/sanskrit.lang:60 [1] pankti_len; lang/sanskrit.lang:63 [1] kosh_len; src/sutram_compiler.asm:541 [1] kosh_len; src/sutram_compiler.asm:547 [1] kosh_len; src/sutram_compiler.asm:549 [1] kosh_len; src/sutram_compiler.asm:551 [1] kosh_len; src/sutram_compiler.asm:559 [1] kosh_len
+length,3,3,"{""3"": 3}",examples/203_meru_with_kosh.sm:16 [3] length; examples/211_r41_v1_public.sm:5 [3] vec__length; examples/import_demo.sm:15 [3] Length
+lens,3,2,"{""3"": 2}",examples/215_r12_wordfreq.sm:9 [3] lens; examples/215_r12_wordfreq.sm:11 [3] lens
+lib,1,1,"{""1"": 1}",src/sutram_compiler.asm:339 [1] lib
+library,3,2,"{""3"": 2}",examples/10_mathlib.sm:3 [3] Library; examples/import_demo.sm:6 [3] Library
+lift,3,1,"{""3"": 1}",examples/36_descending.sm:14 [3] Lift
+like,3,1,"{""3"": 1}",examples/35_comments.sm:4 [3] like
+limit,3,4,"{""3"": 4}",examples/16_advanced.sm:4 [3] LIMIT; examples/16_advanced.sm:8 [3] LIMIT; examples/16_advanced.sm:11 [3] LIMIT; examples/46_language_reference.sm:5 [3] LIMIT
+line,3,4,"{""3"": 3, ""2"": 1}",examples/14_strings.sm:17 [3] Line; examples/14_strings.sm:17 [3] Line; examples/14_strings.sm:17 [3] Line; lang/sanskrit.lang:8 [2] line
+literal,3,3,"{""3"": 3}",examples/289_r87_float_print.sm:5 [3] literal; examples/291_r90_nan_compare.sm:16 [3] literal; examples/306_r105_string_equal.sm:12 [3] literal
+literals,3,1,"{""3"": 1}",examples/44_shabda.sm:14 [3] literals
+local,3,5,"{""3"": 5}",examples/299_r94_nonfinite_kosh_mandapa.sm:45 [3] local; examples/299_r94_nonfinite_kosh_mandapa.sm:46 [3] local; examples/299_r94_nonfinite_kosh_mandapa.sm:46 [3] local; examples/299_r94_nonfinite_kosh_mandapa.sm:46 [3] local; examples/299_r94_nonfinite_kosh_mandapa.sm:46 [3] local
+logic,3,1,"{""3"": 1}",examples/17_booleans.sm:11 [3] Logic
+loop,3,6,"{""3"": 5, ""2"": 1}",examples/08_demo.sm:18 [3] Loop; examples/09_comparisons.sm:24 [3] Loop; examples/09_comparisons.sm:34 [3] Loop; examples/11_forloop.sm:5 [3] Loop; examples/full_demo.sm:30 [3] Loop; lang/sanskrit.lang:79 [2] loop
+low,3,2,"{""3"": 2}",examples/24_guess_game.sm:12 [3] low; examples/number_game.sm:13 [3] low
+lower,1,3,"{""1"": 1, ""3"": 2}",examples/323_r111_old_names.sm:18 [1] char_lower; examples/char_ops.sm:8 [3] lower_a; examples/char_ops.sm:9 [3] lower_a
+machine,2,1,"{""2"": 1}",lang/sanskrit.lang:7 [2] machine
+maps,2,1,"{""2"": 1}",lang/sanskrit.lang:50 [2] maps
+matching,2,3,"{""2"": 3}",lang/hindi.lang:42 [2] matching; lang/marathi.lang:42 [2] matching; lang/sanskrit.lang:70 [2] matching
+math,3,2,"{""3"": 2}",examples/10_mathlib.sm:3 [3] Math; examples/full_demo.sm:9 [3] Math
+max,3,4,"{""3"": 4}",examples/15_sutra_const.sm:5 [3] MAX_VAL; examples/15_sutra_const.sm:9 [3] MAX_VAL; examples/15_sutra_const.sm:9 [3] MAX_VAL; examples/217_r12_report.sm:38 [3] Max
+maxparts,2,2,"{""2"": 2}",lib/khand.smlib:206 [2] maxparts; lib/varna.smlib:251 [2] maxparts
+mean,3,3,"{""3"": 3}",examples/217_r12_report.sm:28 [3] mean; examples/217_r12_report.sm:34 [3] Mean; examples/217_r12_report.sm:35 [3] mean
+medium,3,1,"{""3"": 1}",examples/12_elif.sm:26 [3] medium
+memory,3,2,"{""3"": 2}",examples/full_demo.sm:16 [3] Memory; examples/mem_safe.sm:10 [3] Memory
+memset,3,1,"{""3"": 1}",examples/mem_safe.sm:9 [3] memset
+met,3,1,"{""3"": 1}",examples/17_booleans.sm:24 [3] met
+mid,3,6,"{""3"": 6}",examples/82_b7_stack_spill.sm:5 [3] mid; examples/82_b7_stack_spill.sm:6 [3] mid; examples/82_b7_stack_spill.sm:6 [3] mid; examples/82_b7_stack_spill.sm:7 [3] mid; examples/82_b7_stack_spill.sm:7 [3] mid; examples/82_b7_stack_spill.sm:7 [3] mid
+miles,4,4,"{""4"": 4}",examples/33_unit_conversion.sm:4 [4] Miles; examples/33_unit_conversion.sm:6 [4] miles; examples/33_unit_conversion.sm:9 [4] miles; examples/33_unit_conversion.sm:10 [4] miles
+min,3,1,"{""3"": 1}",examples/217_r12_report.sm:36 [3] Min
+missing,3,1,"{""3"": 1}",examples/157_namespaced_missing_module.sm:1 [3] missing
+mixed,3,9,"{""3"": 9}",examples/92_t12_dasham_float.sm:21 [3] mixed; examples/92_t12_dasham_float.sm:22 [3] mixed; examples/92_t12_dasham_float.sm:24 [3] mixed; examples/93_t12_float_functions.sm:16 [3] mixed; examples/93_t12_float_functions.sm:26 [3] mixed; examples/93_t12_float_functions.sm:27 [3] mixed; examples/94_t12_float_functions.sm:16 [3] mixed; examples/94_t12_float_functions.sm:31 [3] mixed; examples/94_t12_float_functions.sm:32 [3] mixed
+mod,3,22,"{""3"": 22}",examples/162_namespaced_import_capacity.sm:2 [3] mod_0; examples/162_namespaced_import_capacity.sm:3 [3] mod_1; examples/162_namespaced_import_capacity.sm:4 [3] mod_2; examples/162_namespaced_import_capacity.sm:5 [3] mod_3; examples/162_namespaced_import_capacity.sm:6 [3] mod_4; examples/162_namespaced_import_capacity.sm:7 [3] mod_5; examples/162_namespaced_import_capacity.sm:8 [3] mod_6; examples/162_namespaced_import_capacity.sm:9 [3] mod_7; examples/162_namespaced_import_capacity.sm:10 [3] mod_8; examples/162_namespaced_import_capacity.sm:11 [3] mod_9; examples/162_namespaced_import_capacity.sm:12 [3] mod_10; examples/162_namespaced_import_capacity.sm:13 [3] mod_11; examples/162_namespaced_import_capacity.sm:14 [3] mod_12; examples/162_namespaced_import_capacity.sm:15 [3] mod_13; examples/162_namespaced_import_capacity.sm:16 [3] mod_14; examples/162_namespaced_import_capacity.sm:17 [3] mod_15; examples/162_namespaced_import_capacity.sm:18 [3] mod_16; examples/fizzbuzz.sm:5 [3] mod3; examples/fizzbuzz.sm:6 [3] mod5; examples/fizzbuzz.sm:7 [3] mod3; examples/fizzbuzz.sm:8 [3] mod5; examples/fizzbuzz.sm:14 [3] mod5
+module,3,1,"{""3"": 1}",examples/157_namespaced_missing_module.sm:1 [3] no_such_module_r34
+monday,3,1,"{""3"": 1}",examples/18_guna_switch.sm:5 [3] Monday
+msg,3,2,"{""3"": 2}",examples/44_shabda.sm:11 [3] msg; examples/44_shabda.sm:12 [3] msg
+multiplication,3,1,"{""3"": 1}",examples/30_lkhb.sm:4 [3] Multiplication
+must,3,1,"{""3"": 1}",examples/152_namespaced_comment_string_preservation.sm:4 [3] must
+name,3,4,"{""3"": 3, ""2"": 1}",examples/312_r106_likha_string.sm:13 [3] name; examples/44_shabda.sm:4 [3] name; examples/44_shabda.sm:5 [3] name; lang/sanskrit.lang:50 [2] name
+native,2,13,"{""2"": 13}",lang/bengali.lang:2 [2] native; lang/gujarati.lang:2 [2] native; lang/hindi.lang:2 [2] native; lang/kannada.lang:2 [2] native; lang/malayalam.lang:2 [2] native; lang/marathi.lang:2 [2] native; lang/odia.lang:2 [2] native; lang/punjabi.lang:2 [2] native; lang/sanskrit.lang:2 [2] native; lang/sanskrit.lang:7 [2] native; lang/sanskrit.lang:48 [2] native; lang/tamil.lang:2 [2] native; lang/telugu.lang:2 [2] native
+near,3,1,"{""3"": 1}",examples/289_r87_float_print.sm:15 [3] near
+needle,2,6,"{""2"": 6}",lib/khand.smlib:105 [2] needle; lib/khand.smlib:131 [2] needle; lib/khand.smlib:504 [2] needle; lib/varna.smlib:155 [2] needle; lib/varna.smlib:178 [2] needle; lib/varna.smlib:541 [2] needle
+needs,2,1,"{""2"": 1}",lang/sanskrit.lang:80 [2] needs
+neg,3,2,"{""3"": 2}",examples/92_t12_dasham_float.sm:13 [3] neg; examples/92_t12_dasham_float.sm:14 [3] neg
+negative,3,4,"{""3"": 4}",examples/13_negatives.sm:5 [3] Negative; examples/13_negatives.sm:36 [3] negative; examples/289_r87_float_print.sm:13 [3] negative; examples/296_r93_float_e_notation.sm:11 [3] negative
+nested,3,2,"{""3"": 2}",examples/260_r71_indented_bodies.sm:103 [3] nested; examples/43_nested_likha.sm:15 [3] nested
+netbind,1,1,"{""1"": 1}",examples/245_r18_netsock.sm:13 [1] netbind
+netlisten,1,1,"{""1"": 1}",examples/245_r18_netsock.sm:14 [1] netlisten
+netsock,1,2,"{""1"": 2}",examples/245_r18_netsock.sm:9 [1] netsock; examples/245_r18_netsock.sm:11 [1] netsock
+new,2,1,"{""2"": 1}",lang/sanskrit.lang:8 [2] new
+newcap,2,2,"{""2"": 2}",lib/nighantu.smlib:279 [2] newcap; lib/sangrah.smlib:171 [2] newcap
+newline,3,1,"{""3"": 1}",examples/14_strings.sm:12 [3] Newline
+no,3,13,"{""3"": 3, ""2"": 10}",examples/157_namespaced_missing_module.sm:1 [3] no_such_module_r34; examples/26_calculator.sm:9 [3] No; examples/26_calculator.sm:13 [3] No; lang/gujarati.lang:41 [2] No; lang/hindi.lang:42 [2] no; lang/kannada.lang:42 [2] No; lang/marathi.lang:42 [2] no; lang/odia.lang:42 [2] No; lang/sanskrit.lang:8 [2] No; lang/sanskrit.lang:49 [2] No; lang/sanskrit.lang:78 [2] no; lang/tamil.lang:53 [2] No; lang/telugu.lang:42 [2] No
+none,2,4,"{""2"": 4}",lang/kannada.lang:42 [2] none; lang/odia.lang:42 [2] none; lang/tamil.lang:53 [2] none; lang/telugu.lang:42 [2] none
+north,3,2,"{""3"": 2}",examples/150_namespaced_same_module_two_aliases.sm:2 [3] north; examples/150_namespaced_same_module_two_aliases.sm:5 [3] north__clash
+not,3,14,"{""3"": 9, ""2"": 5}",examples/152_namespaced_comment_string_preservation.sm:4 [3] not; examples/165_r41_missing_reject.sm:2 [3] r41_not_present; examples/17_booleans.sm:19 [3] not; examples/291_r90_nan_compare.sm:20 [3] not; examples/293_r90_float_divide_by_zero.sm:9 [3] not; examples/295_r92_computed_fraction_into_vitti.sm:10 [3] not; examples/303_r103_parimita_refuses.sm:15 [3] not; examples/69_undefined_function.sm:2 [3] does_not_exist; examples/prime.sm:19 [3] not; lang/bengali.lang:40 [2] not; lang/gujarati.lang:53 [2] not; lang/punjabi.lang:40 [2] not; lang/sanskrit.lang:70 [2] NOT; lang/sanskrit.lang:79 [2] NOT
+nseg,3,2,"{""3"": 2}",examples/215_r12_wordfreq.sm:39 [3] nseg; examples/215_r12_wordfreq.sm:53 [3] nseg
+num,3,2,"{""3"": 2}",examples/216_r12_expr.sm:15 [3] parse_num; examples/216_r12_expr.sm:42 [3] parse_num
+number,3,7,"{""3"": 7}",examples/24_guess_game.sm:2 [3] number; examples/25_patterns.sm:2 [3] Number; examples/26_calculator.sm:4 [3] number; examples/26_calculator.sm:6 [3] number; examples/291_r90_nan_compare.sm:18 [3] number; examples/291_r90_nan_compare.sm:20 [3] number; examples/import_demo.sm:8 [3] Number
+numbers,3,4,"{""3"": 4}",examples/13_negatives.sm:5 [3] Numbers; examples/21_break_continue.sm:8 [3] numbers; examples/23_grahan_input.sm:2 [3] numbers; examples/full_demo.sm:6 [3] Numbers
+nums,3,8,"{""3"": 8}",examples/118_t18_kosh_param.sm:20 [3] nums; examples/118_t18_kosh_param.sm:21 [3] nums; examples/118_t18_kosh_param.sm:22 [3] nums; examples/118_t18_kosh_param.sm:23 [3] nums; examples/20_pankti_array.sm:2 [3] nums; examples/20_pankti_array.sm:4 [3] nums; examples/20_pankti_array.sm:7 [3] nums; examples/20_pankti_array.sm:11 [3] nums
+nuniq,3,7,"{""3"": 7}",examples/215_r12_wordfreq.sm:45 [3] nuniq; examples/215_r12_wordfreq.sm:61 [3] nuniq; examples/215_r12_wordfreq.sm:62 [3] nuniq; examples/215_r12_wordfreq.sm:63 [3] nuniq; examples/215_r12_wordfreq.sm:63 [3] nuniq; examples/215_r12_wordfreq.sm:71 [3] nuniq; examples/215_r12_wordfreq.sm:74 [3] nuniq
+obstacle,3,1,"{""3"": 1}",examples/288_r86_kosh_alias_moves.sm:9 [3] obstacle
+odd,3,3,"{""3"": 3}",examples/21_break_continue.sm:8 [3] odd; examples/258_r70_loop_indent.sm:25 [3] odd; examples/27_even_odd.sm:8 [3] odd
+of,3,11,"{""3"": 10, ""2"": 1}",examples/11_forloop.sm:23 [3] of; examples/21_break_continue.sm:8 [3] of; examples/25_patterns.sm:9 [3] of; examples/28_compound.sm:22 [3] of; examples/304_r103_parimita_within.sm:23 [3] of; examples/317_r107_parimana.sm:19 [3] of; examples/318_r108_parimana_moves.sm:8 [3] of; examples/318_r108_parimana_moves.sm:16 [3] of; examples/char_ops.sm:7 [3] of; examples/char_ops.sm:10 [3] of; lang/sanskrit.lang:8 [2] of
+off,3,1,"{""3"": 1}",examples/36_descending.sm:14 [3] off
+offset,3,2,"{""3"": 2}",examples/139_r30_float_mixed_fallback.sm:10 [3] offset; examples/139_r30_float_mixed_fallback.sm:12 [3] offset
+ok,3,29,"{""3"": 10, ""2"": 19}",examples/208_kalana.sm:37 [3] ok; examples/208_kalana.sm:38 [3] ok; examples/208_kalana.sm:39 [3] ok; examples/208_kalana.sm:40 [3] ok; examples/256_r44_vartani_sanskrit_names.sm:14 [3] ok; examples/256_r44_vartani_sanskrit_names.sm:16 [3] ok; examples/280_r80_runtime_wraps.sm:9 [3] ok; examples/280_r80_runtime_wraps.sm:10 [3] ok; examples/280_r80_runtime_wraps.sm:11 [3] ok; examples/mem_safe.sm:10 [3] OK; lib/ganita.smlib:239 [2] ok; lib/ganita.smlib:265 [2] ok; lib/ganita.smlib:292 [2] ok; lib/ganita.smlib:329 [2] ok; lib/ganita.smlib:350 [2] ok; lib/ganita.smlib:441 [2] ok; lib/ganita.smlib:464 [2] ok; lib/ganita.smlib:556 [2] ok; lib/kalana.smlib:120 [2] ok; lib/phal.smlib:69 [2] ok; lib/suchi.smlib:223 [2] ok; lib/suchi.smlib:234 [2] ok; lib/suchi.smlib:331 [2] ok; lib/suchi.smlib:348 [2] ok; lib/suchi.smlib:438 [2] ok; lib/suchi.smlib:456 [2] ok; lib/vakyank.smlib:84 [2] ok; lib/vakyank.smlib:186 [2] ok; lib/vakyank.smlib:274 [2] ok
+once,3,5,"{""3"": 5}",examples/78_do_while.sm:10 [3] once; examples/78_do_while.sm:12 [3] once; examples/78_do_while.sm:13 [3] once; examples/78_do_while.sm:13 [3] once; examples/78_do_while.sm:14 [3] once
+one,3,4,"{""3"": 3, ""2"": 1}",examples/17_booleans.sm:24 [3] one; examples/22_precedence.sm:8 [3] one; examples/304_r103_parimita_within.sm:23 [3] one; lang/sanskrit.lang:79 [2] one
+only,2,1,"{""2"": 1}",lang/gujarati.lang:54 [2] only
+op,3,13,"{""3"": 13}",examples/216_r12_expr.sm:47 [3] op; examples/216_r12_expr.sm:54 [3] op; examples/216_r12_expr.sm:55 [3] op; examples/216_r12_expr.sm:55 [3] op; examples/216_r12_expr.sm:58 [3] op; examples/216_r12_expr.sm:68 [3] op; examples/216_r12_expr.sm:75 [3] op; examples/216_r12_expr.sm:76 [3] op; examples/216_r12_expr.sm:76 [3] op; examples/216_r12_expr.sm:79 [3] op; examples/291_r90_nan_compare.sm:13 [3] op; examples/291_r90_nan_compare.sm:14 [3] op; examples/291_r90_nan_compare.sm:15 [3] op
+operations,3,1,"{""3"": 1}",examples/14_strings.sm:5 [3] Operations
+operator,2,1,"{""2"": 1}",lang/sanskrit.lang:49 [2] operator
+operators,3,1,"{""3"": 1}",examples/09_comparisons.sm:8 [3] Operators
+ops,3,1,"{""3"": 1}",examples/full_demo.sm:22 [3] ops
+or,2,7,"{""2"": 7}",lang/bengali.lang:40 [2] or; lang/gujarati.lang:53 [2] or; lang/malayalam.lang:4 [2] or; lang/punjabi.lang:40 [2] or; lang/sanskrit.lang:49 [2] or; lang/sanskrit.lang:70 [2] or; lang/tamil.lang:4 [2] or
+ordinary,2,1,"{""2"": 1}",lang/gujarati.lang:40 [2] ordinary
+out,3,81,"{""3"": 7, ""2"": 74}",examples/269_r73_copy_out.sm:6 [3] out; examples/269_r73_copy_out.sm:15 [3] out; examples/269_r73_copy_out.sm:17 [3] out; examples/270_r75_nested_store.sm:10 [3] out; examples/270_r75_nested_store.sm:11 [3] out; examples/271_r75_nested_store_data.sm:7 [3] out; examples/271_r75_nested_store_data.sm:8 [3] out; lib/aadhar.smlib:20 [2] out; lib/anukram.smlib:36 [2] out; lib/anukram.smlib:61 [2] out; lib/anukram.smlib:88 [2] out; lib/anukram.smlib:110 [2] out_n; lib/ganita.smlib:99 [2] out; lib/ganita.smlib:183 [2] out; lib/khand.smlib:39 [2] out; lib/khand.smlib:61 [2] out; lib/khand.smlib:81 [2] out; lib/khand.smlib:142 [2] out; lib/khand.smlib:289 [2] out; lib/khand.smlib:327 [2] out; lib/khand.smlib:365 [2] out; lib/khand.smlib:388 [2] out; lib/khand.smlib:473 [2] out; lib/nighantu.smlib:360 [2] out; lib/nighantu.smlib:383 [2] out; lib/nighantu.smlib:417 [2] out; lib/patra.smlib:29 [2] out; lib/phal.smlib:33 [2] out; lib/phal.smlib:41 [2] out; lib/phal.smlib:69 [2] out; lib/phal.smlib:85 [2] out; lib/phal.smlib:100 [2] out; lib/phal.smlib:115 [2] out; lib/phal.smlib:130 [2] out; lib/phal.smlib:145 [2] out; lib/phal.smlib:161 [2] out; lib/phal.smlib:174 [2] out; lib/phal.smlib:187 [2] out; lib/roop.smlib:32 [2] out; lib/roop.smlib:73 [2] out; lib/roop.smlib:150 [2] out; lib/roop.smlib:174 [2] out; lib/roop.smlib:212 [2] out; lib/roop.smlib:217 [2] out; lib/roop.smlib:222 [2] out; lib/roop.smlib:227 [2] out; lib/roop.smlib:232 [2] out; lib/roop.smlib:239 [2] out; lib/roop.smlib:252 [2] out; lib/roop.smlib:285 [2] out; lib/roop.smlib:319 [2] out; lib/roop.smlib:363 [2] out; lib/roop.smlib:438 [2] out; lib/roop.smlib:443 [2] out; lib/roop.smlib:450 [2] out; lib/roop.smlib:456 [2] out; lib/roop.smlib:478 [2] out; lib/roop.smlib:597 [2] out; lib/roop.smlib:603 [2] out; lib/roop.smlib:609 [2] out; lib/roop.smlib:646 [2] out; lib/samanvaya.smlib:32 [2] out; lib/samanvaya.smlib:50 [2] out; lib/samanvaya.smlib:66 [2] out; lib/samanvaya.smlib:79 [2] out; lib/samanvaya.smlib:91 [2] out; lib/sangrah.smlib:63 [2] out; lib/sangrah.smlib:96 [2] out; lib/sangrah.smlib:126 [2] out; lib/sangrah.smlib:148 [2] out; lib/sangrah.smlib:217 [2] out; lib/suchi.smlib:475 [2] out; lib/vakyank.smlib:15 [2] out; lib/vakyank.smlib:142 [2] out; lib/vakyank.smlib:241 [2] out; lib/varna.smlib:189 [2] out; lib/varna.smlib:338 [2] out; lib/varna.smlib:373 [2] out; lib/varna.smlib:409 [2] out; lib/varna.smlib:431 [2] out; lib/varna.smlib:510 [2] out
+outer,3,7,"{""3"": 7}",examples/264_r73_escape_arith.sm:4 [3] outer; examples/264_r73_escape_arith.sm:7 [3] outer; examples/264_r73_escape_arith.sm:8 [3] outer; examples/267_r73_outer_number.sm:4 [3] outer; examples/267_r73_outer_number.sm:7 [3] outer; examples/267_r73_outer_number.sm:8 [3] outer; examples/304_r103_parimita_within.sm:23 [3] outer
+output,3,14,"{""3"": 1, ""2"": 13}",examples/30_lkhb.sm:2 [3] Output; lang/bengali.lang:3 [2] output; lang/gujarati.lang:3 [2] output; lang/hindi.lang:3 [2] output; lang/kannada.lang:3 [2] output; lang/malayalam.lang:3 [2] output; lang/malayalam.lang:4 [2] output; lang/marathi.lang:3 [2] output; lang/odia.lang:3 [2] output; lang/punjabi.lang:3 [2] output; lang/sanskrit.lang:3 [2] output; lang/tamil.lang:3 [2] output; lang/tamil.lang:4 [2] output; lang/telugu.lang:3 [2] output
+over,3,3,"{""3"": 3}",examples/215_r12_wordfreq.sm:36 [3] over; examples/32_bank_interest.sm:11 [3] over; examples/number_game.sm:17 [3] over
+own,2,2,"{""2"": 2}",lang/sanskrit.lang:6 [2] own; lang/sanskrit.lang:90 [2] own
+pack,2,14,"{""2"": 14}",lang/bengali.lang:1 [2] pack; lang/gujarati.lang:1 [2] pack; lang/hindi.lang:1 [2] pack; lang/kannada.lang:1 [2] pack; lang/malayalam.lang:1 [2] pack; lang/marathi.lang:1 [2] pack; lang/odia.lang:1 [2] pack; lang/punjabi.lang:1 [2] pack; lang/sanskrit.lang:1 [2] pack; lang/sanskrit.lang:6 [2] pack; lang/sanskrit.lang:77 [2] pack; lang/sanskrit.lang:81 [2] PACK; lang/tamil.lang:1 [2] pack; lang/telugu.lang:1 [2] pack
+pad,1,5,"{""3"": 1, ""1"": 4}",examples/217_r12_report.sm:53 [3] pad_vam; lib/roop.smlib:252 [1] roop_pad_vam; lib/roop.smlib:285 [1] roop_pad_dakshin; lib/roop.smlib:319 [1] roop_pad_madhya; lib/vakyank.smlib:241 [1] pad_vam
+padbyte,2,3,"{""2"": 3}",lib/roop.smlib:252 [2] padbyte; lib/roop.smlib:285 [2] padbyte; lib/roop.smlib:319 [2] padbyte
+padded,3,1,"{""3"": 1}",examples/217_r12_report.sm:42 [3] Padded
+param,3,2,"{""3"": 2}",examples/299_r94_nonfinite_kosh_mandapa.sm:32 [3] param; examples/299_r94_nonfinite_kosh_mandapa.sm:41 [3] param
+parse,3,11,"{""3"": 11}",examples/216_r12_expr.sm:15 [3] parse_num; examples/216_r12_expr.sm:28 [3] parse_factor; examples/216_r12_expr.sm:34 [3] parse_expr; examples/216_r12_expr.sm:42 [3] parse_num; examples/216_r12_expr.sm:45 [3] parse_term; examples/216_r12_expr.sm:46 [3] parse_factor; examples/216_r12_expr.sm:57 [3] parse_factor; examples/216_r12_expr.sm:66 [3] parse_expr; examples/216_r12_expr.sm:67 [3] parse_term; examples/216_r12_expr.sm:78 [3] parse_term; examples/216_r12_expr.sm:92 [3] parse_expr
+parser,2,2,"{""2"": 2}",lang/sanskrit.lang:79 [2] parser; lang/sanskrit.lang:80 [2] parser
+parts,3,8,"{""3"": 4, ""2"": 4}",examples/215_r12_wordfreq.sm:38 [3] parts; examples/215_r12_wordfreq.sm:39 [3] parts; examples/215_r12_wordfreq.sm:54 [3] parts; examples/215_r12_wordfreq.sm:57 [3] parts; lib/khand.smlib:206 [2] parts; lib/khand.smlib:289 [2] parts; lib/varna.smlib:251 [2] parts; lib/varna.smlib:338 [2] parts
+passed,3,2,"{""3"": 2}",examples/15_sutra_const.sm:25 [3] passed; examples/16_advanced.sm:38 [3] passed
+path,1,4,"{""1"": 1, ""2"": 3}",lib/patra.smlib:29 [1] patra_path_sarv; lib/patra.smlib:29 [2] path; lib/patra.smlib:57 [2] path; lib/patra.smlib:81 [2] path
+peek,1,4,"{""1"": 4}",examples/323_r111_old_names.sm:10 [1] kosh_peek; lang/gujarati.lang:49 [1] kosh_peek; lang/sanskrit.lang:67 [1] kosh_peek; src/sutram_compiler.asm:602 [1] kosh_peek
+per,3,2,"{""3"": 1, ""2"": 1}",examples/32_bank_interest.sm:10 [3] per; lang/sanskrit.lang:79 [2] per
+person,3,1,"{""3"": 1}",examples/08_demo.sm:2 [3] Person
+places,2,3,"{""2"": 3}",lib/roop.smlib:478 [2] places; lib/roop.smlib:597 [2] places; lib/roop.smlib:603 [2] places
+point,3,8,"{""3"": 2, ""2"": 6}",examples/06_rachana.sm:2 [3] Point; examples/224_unknown_field.sm:3 [3] Point; lang/hindi.lang:40 [2] point; lang/kannada.lang:40 [2] point; lang/marathi.lang:40 [2] point; lang/odia.lang:40 [2] point; lang/tamil.lang:51 [2] point; lang/telugu.lang:40 [2] point
+pop,1,18,"{""1"": 17, ""3"": 1}",examples/100_t18_kosh_bounds.sm:5 [1] kosh_pop; examples/101_t18_kosh_empty.sm:4 [1] kosh_pop; examples/109_t18_kosh_dasham.sm:12 [1] kosh_pop; examples/110_t18_kosh_dasham_devanagari.sm:8 [1] kosh_pop; examples/111_t18_kosh_dasham_function_return.sm:5 [1] kosh_pop; examples/112_t18_kosh_integer_conversion.sm:10 [1] kosh_pop; examples/119_t18_kosh_param_forward.sm:12 [1] kosh_pop; examples/257_r48_kosh_empty.sm:14 [1] kosh_pop; examples/257_r48_kosh_empty.sm:19 [1] kosh_pop; examples/299_r94_nonfinite_kosh_mandapa.sm:31 [3] pop; examples/299_r94_nonfinite_kosh_mandapa.sm:31 [1] kosh_pop; examples/323_r111_old_names.sm:11 [1] kosh_pop; examples/96_t18_kosh.sm:15 [1] kosh_pop; examples/98_t18_kosh_empty.sm:4 [1] kosh_pop; examples/99_t18_kosh.sm:15 [1] kosh_pop; lang/gujarati.lang:44 [1] kosh_pop; lang/sanskrit.lang:62 [1] kosh_pop; src/sutram_compiler.asm:601 [1] kosh_pop
+pos,3,9,"{""3"": 5, ""2"": 4}",examples/215_r12_wordfreq.sm:49 [3] pos; examples/215_r12_wordfreq.sm:54 [3] pos; examples/215_r12_wordfreq.sm:57 [3] pos; examples/215_r12_wordfreq.sm:68 [3] pos; examples/215_r12_wordfreq.sm:68 [3] pos; lib/anukram.smlib:36 [2] pos; lib/anukram.smlib:61 [2] pos; lib/anukram.smlib:88 [2] pos; lib/anukram.smlib:110 [2] pos
+position,3,6,"{""3"": 6}",examples/226_long_field_names.sm:4 [3] position_x; examples/226_long_field_names.sm:4 [3] position_y; examples/226_long_field_names.sm:7 [3] position_x; examples/226_long_field_names.sm:8 [3] position_y; examples/226_long_field_names.sm:9 [3] position_x; examples/226_long_field_names.sm:10 [3] position_y
+positive,3,3,"{""3"": 3}",examples/17_booleans.sm:30 [3] both_positive; examples/17_booleans.sm:31 [3] both_positive; examples/17_booleans.sm:31 [3] both_positive
+pounds,4,3,"{""4"": 3}",examples/33_unit_conversion.sm:12 [4] Pounds; examples/33_unit_conversion.sm:14 [4] pounds; examples/33_unit_conversion.sm:17 [4] pounds
+pre,1,3,"{""2"": 2, ""1"": 1}",lib/khand.smlib:413 [2] pre; lib/roop.smlib:239 [1] roop_ank_pre; lib/varna.smlib:455 [2] pre
+prefix,3,6,"{""3"": 1, ""2"": 5}",examples/306_r105_string_equal.sm:10 [3] prefix; lang/bengali.lang:40 [2] prefix; lang/hindi.lang:42 [2] prefix; lang/marathi.lang:42 [2] prefix; lang/punjabi.lang:40 [2] prefix; lang/sanskrit.lang:70 [2] prefix
+present,3,1,"{""3"": 1}",examples/165_r41_missing_reject.sm:2 [3] r41_not_present
+preserved,2,6,"{""2"": 6}",lang/hindi.lang:41 [2] preserved; lang/kannada.lang:41 [2] preserved; lang/marathi.lang:41 [2] preserved; lang/odia.lang:41 [2] preserved; lang/tamil.lang:52 [2] preserved; lang/telugu.lang:41 [2] preserved
+previous,2,1,"{""2"": 1}",lang/sanskrit.lang:78 [2] previous
+prime,3,2,"{""3"": 2}",examples/prime.sm:17 [3] prime; examples/prime.sm:19 [3] prime
+primes,3,1,"{""3"": 1}",examples/16_advanced.sm:7 [3] Primes
+principal,3,6,"{""3"": 6}",examples/32_bank_interest.sm:4 [3] principal; examples/32_bank_interest.sm:6 [3] Principal; examples/32_bank_interest.sm:7 [3] principal; examples/32_bank_interest.sm:13 [3] principal; examples/32_bank_interest.sm:14 [3] principal; examples/32_bank_interest.sm:17 [3] principal
+printed,3,1,"{""3"": 1}",examples/313_r106_string_condition.sm:6 [3] printed
+prod,3,2,"{""3"": 2}",examples/13_negatives.sm:20 [3] prod; examples/13_negatives.sm:21 [3] prod
+product,3,2,"{""3"": 2}",examples/23_grahan_input.sm:6 [3] Product; examples/26_calculator.sm:20 [3] Product
+program,3,4,"{""3"": 2, ""2"": 2}",examples/29_nishkriya.sm:4 [3] program; examples/35_comments.sm:8 [3] program; lang/sanskrit.lang:6 [2] program; lang/sanskrit.lang:78 [2] program
+ptrs,3,2,"{""3"": 2}",examples/215_r12_wordfreq.sm:9 [3] ptrs; examples/215_r12_wordfreq.sm:10 [3] ptrs
+punctuation,2,2,"{""2"": 2}",lang/bengali.lang:40 [2] punctuation; lang/punjabi.lang:40 [2] punctuation
+purely,2,1,"{""2"": 1}",lang/sanskrit.lang:78 [2] Purely
+push,1,139,"{""1"": 139}",examples/100_t18_kosh_bounds.sm:4 [1] kosh_push; examples/100_t18_kosh_devanagari.sm:6 [1] kosh_push; examples/109_t18_kosh_dasham.sm:5 [1] kosh_push; examples/109_t18_kosh_dasham.sm:6 [1] kosh_push; examples/110_t18_kosh_dasham_devanagari.sm:4 [1] kosh_push; examples/111_t18_kosh_dasham_function_return.sm:4 [1] kosh_push; examples/111_t18_kosh_dasham_function_return.sm:10 [1] kosh_push; examples/112_t18_kosh_integer_conversion.sm:6 [1] kosh_push; examples/118_t18_kosh_param.sm:14 [1] kosh_push; examples/118_t18_kosh_param.sm:15 [1] kosh_push; examples/118_t18_kosh_param.sm:16 [1] kosh_push; examples/118_t18_kosh_param.sm:21 [1] kosh_push; examples/118_t18_kosh_param.sm:22 [1] kosh_push; examples/119_t18_kosh_param_forward.sm:17 [1] kosh_push; examples/119_t18_kosh_param_forward.sm:18 [1] kosh_push; examples/120_t18_kosh_param_mismatch.sm:8 [1] kosh_push; examples/121_t18_kosh_param_push_reject.sm:4 [1] kosh_push; examples/122_t18_kosh_param_devanagari.sm:8 [1] kosh_push; examples/123_t18_kosh_param_statement_call.sm:8 [1] kosh_push; examples/126_numeric_pipeline.sm:13 [1] kosh_push; examples/126_numeric_pipeline.sm:14 [1] kosh_push; examples/126_numeric_pipeline.sm:15 [1] kosh_push; examples/126_numeric_pipeline.sm:16 [1] kosh_push; examples/126_numeric_pipeline.sm:17 [1] kosh_push; examples/126_numeric_pipeline.sm:18 [1] kosh_push; examples/126_numeric_pipeline.sm:19 [1] kosh_push; examples/126_numeric_pipeline.sm:20 [1] kosh_push; examples/126_numeric_pipeline.sm:23 [1] kosh_push; examples/126_numeric_pipeline.sm:24 [1] kosh_push; examples/126_numeric_pipeline.sm:26 [1] kosh_push; examples/126_numeric_pipeline.sm:27 [1] kosh_push; examples/134_perf_float_complex_fallback.sm:8 [1] kosh_push; examples/134_perf_float_complex_fallback.sm:9 [1] kosh_push; examples/135_r30_float_index_scalar.sm:8 [1] kosh_push; examples/135_r30_float_index_scalar.sm:9 [1] kosh_push; examples/136_r30_float_complex_left.sm:7 [1] kosh_push; examples/136_r30_float_complex_left.sm:8 [1] kosh_push; examples/137_r30_float_literal_rhs.sm:7 [1] kosh_push; examples/137_r30_float_literal_rhs.sm:8 [1] kosh_push; examples/138_r30_float_comparison_index.sm:5 [1] kosh_push; examples/138_r30_float_comparison_index.sm:6 [1] kosh_push; examples/139_r30_float_mixed_fallback.sm:4 [1] kosh_push; examples/140_r30_index_side_effect.sm:11 [1] kosh_push; examples/144_xmm_cache_fallback.sm:9 [1] kosh_push; examples/148_stage2_array_mutation_call.sm:9 [1] kosh_push; examples/203_meru_with_kosh.sm:11 [1] kosh_push; examples/205_madhava_pi_kosh.sm:10 [1] kosh_push; examples/206_sankhyiki.sm:8 [1] kosh_push; examples/206_sankhyiki.sm:9 [1] kosh_push; examples/206_sankhyiki.sm:10 [1] kosh_push; examples/206_sankhyiki.sm:11 [1] kosh_push; examples/206_sankhyiki.sm:12 [1] kosh_push; examples/206_sankhyiki.sm:13 [1] kosh_push; examples/206_sankhyiki.sm:14 [1] kosh_push; examples/206_sankhyiki.sm:15 [1] kosh_push; examples/207_sankhyiki_vector.sm:9 [1] kosh_push; examples/207_sankhyiki_vector.sm:10 [1] kosh_push; examples/207_sankhyiki_vector.sm:13 [1] kosh_push; examples/207_sankhyiki_vector.sm:14 [1] kosh_push; examples/207_sankhyiki_vector.sm:20 [1] kosh_push; examples/207_sankhyiki_vector.sm:21 [1] kosh_push; examples/207_sankhyiki_vector.sm:22 [1] kosh_push; examples/208_kalana.sm:16 [1] kosh_push; examples/208_kalana.sm:17 [1] kosh_push; examples/208_kalana.sm:31 [1] kosh_push; examples/208_kalana.sm:32 [1] kosh_push; examples/208_kalana.sm:33 [1] kosh_push; examples/208_kalana.sm:38 [1] kosh_push; examples/209_samanvaya.sm:10 [1] kosh_push; examples/209_samanvaya.sm:11 [1] kosh_push; examples/209_samanvaya.sm:12 [1] kosh_push; examples/209_samanvaya.sm:13 [1] kosh_push; examples/209_samanvaya.sm:16 [1] kosh_push; examples/209_samanvaya.sm:17 [1] kosh_push; examples/209_samanvaya.sm:18 [1] kosh_push; examples/209_samanvaya.sm:19 [1] kosh_push; examples/209_samanvaya.sm:23 [1] kosh_push; examples/209_samanvaya.sm:35 [1] kosh_push; examples/209_samanvaya.sm:36 [1] kosh_push; examples/209_samanvaya.sm:37 [1] kosh_push; examples/209_samanvaya.sm:38 [1] kosh_push; examples/209_samanvaya.sm:39 [1] kosh_push; examples/209_samanvaya.sm:40 [1] kosh_push; examples/209_samanvaya.sm:41 [1] kosh_push; examples/209_samanvaya.sm:42 [1] kosh_push; examples/209_samanvaya.sm:43 [1] kosh_push; examples/209_samanvaya.sm:48 [1] kosh_push; examples/209_samanvaya.sm:53 [1] kosh_push; examples/209_samanvaya.sm:54 [1] kosh_push; examples/209_samanvaya.sm:55 [1] kosh_push; examples/209_samanvaya.sm:56 [1] kosh_push; examples/209_samanvaya.sm:57 [1] kosh_push; examples/209_samanvaya.sm:58 [1] kosh_push; examples/209_samanvaya.sm:61 [1] kosh_push; examples/237_many_variables.sm:66 [1] kosh_push; examples/237_many_variables.sm:67 [1] kosh_push; examples/248_r23_slices.sm:51 [1] kosh_push; examples/248_r23_slices.sm:52 [1] kosh_push; examples/248_r23_slices.sm:53 [1] kosh_push; examples/252_r38_alias_kosh_oob.sm:4 [1] kosh_push; examples/252_r38_alias_kosh_oob.sm:5 [1] kosh_push; examples/255_r42_alias_kosh_push.sm:5 [1] kosh_push; examples/255_r42_alias_kosh_push.sm:8 [1] kosh_push; examples/257_r48_kosh_empty.sm:8 [1] kosh_push; examples/270_r75_nested_store.sm:10 [1] kosh_push; examples/271_r75_nested_store_data.sm:7 [1] kosh_push; examples/286_r82_kosh_in_mandapa.sm:13 [1] kosh_push; examples/287_r82_kosh_after_mandapa.sm:13 [1] kosh_push; examples/287_r82_kosh_after_mandapa.sm:14 [1] kosh_push; examples/288_r86_kosh_alias_moves.sm:7 [1] kosh_push; examples/288_r86_kosh_alias_moves.sm:10 [1] kosh_push; examples/299_r94_nonfinite_kosh_mandapa.sm:19 [1] kosh_push; examples/299_r94_nonfinite_kosh_mandapa.sm:20 [1] kosh_push; examples/299_r94_nonfinite_kosh_mandapa.sm:21 [1] kosh_push; examples/299_r94_nonfinite_kosh_mandapa.sm:24 [1] kosh_push; examples/299_r94_nonfinite_kosh_mandapa.sm:35 [1] kosh_push; examples/299_r94_nonfinite_kosh_mandapa.sm:36 [1] kosh_push; examples/299_r94_nonfinite_kosh_mandapa.sm:37 [1] kosh_push; examples/314_r106_kosh_operand.sm:6 [1] kosh_push; examples/314_r106_kosh_operand.sm:7 [1] kosh_push; examples/316_r107_kosh_kept_by_a_prakriya.sm:17 [1] kosh_push; examples/317_r107_parimana.sm:16 [1] kosh_push; examples/318_r108_parimana_moves.sm:7 [1] kosh_push; examples/318_r108_parimana_moves.sm:9 [1] kosh_push; examples/318_r108_parimana_moves.sm:10 [1] kosh_push; examples/320_r109_kosh_alias_kept.sm:17 [1] kosh_push; examples/321_r109_kosh_long_chain.sm:141 [1] kosh_push; examples/323_r111_old_names.sm:6 [1] kosh_push; examples/323_r111_old_names.sm:7 [1] kosh_push; examples/96_t18_kosh.sm:6 [1] kosh_push; examples/96_t18_kosh.sm:7 [1] kosh_push; examples/96_t18_kosh.sm:9 [1] kosh_push; examples/97_t18_kosh_devanagari.sm:6 [1] kosh_push; examples/99_t18_kosh.sm:6 [1] kosh_push; examples/99_t18_kosh.sm:7 [1] kosh_push; examples/99_t18_kosh.sm:9 [1] kosh_push; lang/gujarati.lang:43 [1] kosh_push; lang/sanskrit.lang:61 [1] kosh_push; src/sutram_compiler.asm:605 [1] kosh_push
+pyramid,3,1,"{""3"": 1}",examples/25_patterns.sm:2 [3] Pyramid
+quad,3,2,"{""3"": 2}",examples/import_demo.sm:12 [3] quad; examples/import_demo.sm:13 [3] quad
+quick,3,1,"{""3"": 1}",examples/215_r12_wordfreq.sm:36 [3] quick
+quote,3,1,"{""3"": 1}",examples/14_strings.sm:13 [3] Quote
+quotient,3,1,"{""3"": 1}",examples/26_calculator.sm:23 [3] Quotient
+ran,3,1,"{""3"": 1}",examples/306_r105_string_equal.sm:20 [3] ran
+range,3,1,"{""3"": 1}",examples/217_r12_report.sm:40 [3] Range
+rate,3,4,"{""3"": 4}",examples/32_bank_interest.sm:5 [3] rate; examples/32_bank_interest.sm:8 [3] Rate; examples/32_bank_interest.sm:9 [3] rate; examples/32_bank_interest.sm:13 [3] rate
+raw,3,4,"{""3"": 4}",examples/120_t18_kosh_param_mismatch.sm:7 [3] raw; examples/120_t18_kosh_param_mismatch.sm:8 [3] raw; examples/120_t18_kosh_param_mismatch.sm:9 [3] raw; examples/29_nishkriya.sm:4 [3] raw
+reached,3,3,"{""3"": 3}",examples/293_r90_float_divide_by_zero.sm:9 [3] reached; examples/295_r92_computed_fraction_into_vitti.sm:10 [3] reached; examples/303_r103_parimita_refuses.sm:15 [3] reached
+ready,3,6,"{""3"": 6}",examples/17_booleans.sm:8 [3] is_ready; examples/17_booleans.sm:13 [3] is_ready; examples/17_booleans.sm:13 [3] is_ready; examples/17_booleans.sm:18 [3] is_ready; examples/17_booleans.sm:19 [3] Ready; examples/17_booleans.sm:23 [3] is_ready
+recognised,2,1,"{""2"": 1}",lang/sanskrit.lang:50 [2] recognised
+red,3,4,"{""3"": 4}",examples/19_srijana_enum.sm:3 [3] RED; examples/19_srijana_enum.sm:8 [3] Red; examples/19_srijana_enum.sm:13 [3] RED; examples/19_srijana_enum.sm:13 [3] RED
+rem,3,4,"{""3"": 4}",examples/15_sutra_const.sm:11 [3] rem; examples/15_sutra_const.sm:12 [3] rem; examples/prime.sm:8 [3] rem; examples/prime.sm:9 [3] rem
+remain,2,1,"{""2"": 1}",lang/gujarati.lang:54 [2] remain
+remainder,3,1,"{""3"": 1}",examples/26_calculator.sm:25 [3] Remainder
+remains,2,8,"{""2"": 8}",lang/gujarati.lang:41 [2] remains; lang/hindi.lang:40 [2] remains; lang/kannada.lang:40 [2] remains; lang/marathi.lang:40 [2] remains; lang/odia.lang:40 [2] remains; lang/sanskrit.lang:71 [2] remains; lang/tamil.lang:51 [2] remains; lang/telugu.lang:40 [2] remains
+renamed,3,1,"{""3"": 1}",examples/152_namespaced_comment_string_preservation.sm:4 [3] renamed
+repl,2,2,"{""2"": 2}",lib/khand.smlib:142 [2] repl; lib/varna.smlib:189 [2] repl
+report,3,1,"{""3"": 1}",examples/217_r12_report.sm:29 [3] Report
+res,2,6,"{""2"": 6}",lib/brihat.smlib:112 [2] res; lib/brihat.smlib:129 [2] res; lib/brihat.smlib:152 [2] res; lib/brihat.smlib:258 [2] res; lib/brihat.smlib:271 [2] res; lib/brihat.smlib:322 [2] res
+rhs,3,8,"{""3"": 8}",examples/216_r12_expr.sm:48 [3] rhs; examples/216_r12_expr.sm:57 [3] rhs; examples/216_r12_expr.sm:58 [3] rhs; examples/216_r12_expr.sm:58 [3] rhs; examples/216_r12_expr.sm:69 [3] rhs; examples/216_r12_expr.sm:78 [3] rhs; examples/216_r12_expr.sm:79 [3] rhs; examples/216_r12_expr.sm:79 [3] rhs
+rocket,3,1,"{""3"": 1}",examples/36_descending.sm:9 [3] Rocket
+root,1,11,"{""3"": 10, ""1"": 1}",examples/200_madhava_series.sm:6 [3] root12; examples/200_madhava_series.sm:9 [3] root12; examples/200_madhava_series.sm:9 [3] root12; examples/200_madhava_series.sm:9 [3] root12; examples/200_madhava_series.sm:28 [3] root12; examples/95_t12_madhava_functions.sm:5 [3] root12; examples/95_t12_madhava_functions.sm:8 [3] root12; examples/95_t12_madhava_functions.sm:8 [3] root12; examples/95_t12_madhava_functions.sm:8 [3] root12; examples/95_t12_madhava_functions.sm:26 [3] root12; src/sutram_compiler.asm:3973 [1] root__
+row,3,9,"{""3"": 8, ""2"": 1}",examples/203_meru_with_kosh.sm:6 [3] row; examples/203_meru_with_kosh.sm:11 [3] row; examples/203_meru_with_kosh.sm:16 [3] row; examples/203_meru_with_kosh.sm:18 [3] row; examples/203_meru_with_kosh.sm:19 [3] row; examples/217_r12_report.sm:48 [3] row; examples/217_r12_report.sm:57 [3] row; examples/217_r12_report.sm:60 [3] row; lang/sanskrit.lang:77 [2] row
+rows,2,1,"{""2"": 1}",lang/sanskrit.lang:78 [2] rows
+safety,3,1,"{""3"": 1}",examples/mem_safe.sm:10 [3] safety
+same,3,7,"{""3"": 5, ""2"": 2}",examples/156_namespaced_alias_collision.sm:2 [3] same; examples/156_namespaced_alias_collision.sm:3 [3] same; examples/156_namespaced_alias_collision.sm:4 [3] same__clash; examples/306_r105_string_equal.sm:14 [3] same; examples/310_r105_string_beside_number.sm:8 [3] same; lang/sanskrit.lang:6 [2] same; lang/sanskrit.lang:7 [2] same
+saved,3,5,"{""3"": 5}",examples/270_r75_nested_store.sm:7 [3] saved; examples/270_r75_nested_store.sm:10 [3] saved; examples/271_r75_nested_store_data.sm:3 [3] saved; examples/271_r75_nested_store_data.sm:7 [3] saved; examples/271_r75_nested_store_data.sm:9 [3] saved
+scap,2,1,"{""2"": 1}",lib/nighantu.smlib:333 [2] scap
+score,3,9,"{""3"": 9}",examples/08_demo.sm:2 [3] score; examples/08_demo.sm:13 [3] score; examples/08_demo.sm:15 [3] Score; examples/08_demo.sm:15 [3] score; examples/12_elif.sm:7 [3] score; examples/12_elif.sm:9 [3] score; examples/12_elif.sm:11 [3] score; examples/12_elif.sm:13 [3] score; examples/12_elif.sm:15 [3] score
+scores,3,19,"{""3"": 19}",examples/217_r12_report.sm:7 [3] scores; examples/217_r12_report.sm:8 [3] scores; examples/217_r12_report.sm:9 [3] scores; examples/217_r12_report.sm:10 [3] scores; examples/217_r12_report.sm:11 [3] scores; examples/217_r12_report.sm:12 [3] scores; examples/217_r12_report.sm:13 [3] scores; examples/217_r12_report.sm:14 [3] scores; examples/217_r12_report.sm:15 [3] scores; examples/217_r12_report.sm:19 [3] scores; examples/217_r12_report.sm:20 [3] scores; examples/217_r12_report.sm:23 [3] scores; examples/217_r12_report.sm:24 [3] scores; examples/217_r12_report.sm:24 [3] scores; examples/217_r12_report.sm:25 [3] scores; examples/217_r12_report.sm:25 [3] scores; examples/217_r12_report.sm:29 [3] Scores; examples/217_r12_report.sm:42 [3] scores; examples/217_r12_report.sm:51 [3] scores
+scratch,2,2,"{""2"": 2}",lib/brihat.smlib:271 [2] scratch; lang/sanskrit.lang:90 [2] scratch
+script,2,6,"{""2"": 6}",lang/kannada.lang:42 [2] script; lang/odia.lang:42 [2] script; lang/sanskrit.lang:6 [2] script; lang/sanskrit.lang:8 [2] script; lang/tamil.lang:53 [2] script; lang/telugu.lang:42 [2] script
+second,3,6,"{""3"": 6}",examples/149_namespaced_colliding_imports.sm:3 [3] second; examples/149_namespaced_colliding_imports.sm:6 [3] second__clash; examples/149_namespaced_colliding_imports.sm:8 [3] second__helper; examples/23_grahan_input.sm:10 [3] Second; examples/26_calculator.sm:6 [3] second; examples/26_calculator.sm:34 [3] Second
+secret,3,12,"{""3"": 12}",examples/24_guess_game.sm:2 [3] secret; examples/24_guess_game.sm:3 [3] secret; examples/24_guess_game.sm:5 [3] secret; examples/24_guess_game.sm:11 [3] secret; examples/24_guess_game.sm:13 [3] secret; examples/24_guess_game.sm:17 [3] secret; examples/number_game.sm:3 [3] secret; examples/number_game.sm:6 [3] Secret; examples/number_game.sm:6 [3] secret; examples/number_game.sm:7 [3] secret; examples/number_game.sm:10 [3] secret; examples/number_game.sm:15 [3] secret
+semantics,2,1,"{""2"": 1}",lang/sanskrit.lang:49 [2] semantics
+sep,2,4,"{""2"": 4}",lib/khand.smlib:206 [2] sep; lib/khand.smlib:289 [2] sep; lib/varna.smlib:251 [2] sep; lib/varna.smlib:338 [2] sep
+sepn,2,4,"{""2"": 4}",lib/khand.smlib:206 [2] sepn; lib/khand.smlib:289 [2] sepn; lib/varna.smlib:251 [2] sepn; lib/varna.smlib:338 [2] sepn
+set,3,1,"{""3"": 1}",examples/16_advanced.sm:34 [3] set
+shared,3,8,"{""3"": 2, ""2"": 6}",examples/163_r40_transitive_diamond.sm:4 [3] r40_shared; examples/166_r41_optin_diamond.sm:5 [3] r40_shared; lang/hindi.lang:41 [2] Shared; lang/kannada.lang:41 [2] Shared; lang/marathi.lang:41 [2] Shared; lang/odia.lang:41 [2] Shared; lang/tamil.lang:52 [2] Shared; lang/telugu.lang:41 [2] Shared
+side,3,1,"{""3"": 1}",examples/202_brahmagupta_area.sm:10 [3] side
+sign,1,2,"{""2"": 1, ""1"": 1}",lib/roop.smlib:478 [2] always_sign; lib/roop.smlib:646 [1] roop_sign_akshar
+signch,2,1,"{""2"": 1}",lib/roop.smlib:646 [2] signch
+silently,2,1,"{""2"": 1}",lang/sanskrit.lang:80 [2] silently
+simple,3,1,"{""3"": 1}",examples/26_calculator.sm:2 [3] Simple
+skip,3,6,"{""3"": 6}",examples/216_r12_expr.sm:7 [3] skip_ws; examples/216_r12_expr.sm:18 [3] skip_ws; examples/216_r12_expr.sm:30 [3] skip_ws; examples/216_r12_expr.sm:35 [3] skip_ws; examples/216_r12_expr.sm:51 [3] skip_ws; examples/216_r12_expr.sm:72 [3] skip_ws
+slash,3,1,"{""3"": 1}",examples/35_comments.sm:4 [3] slash
+slot,2,2,"{""2"": 2}",lib/nighantu.smlib:47 [2] slot; lib/nighantu.smlib:62 [2] slot
+small,3,2,"{""3"": 2}",examples/12_elif.sm:28 [3] small; examples/46_language_reference.sm:12 [3] small
+so,2,3,"{""2"": 3}",lang/sanskrit.lang:6 [2] so; lang/sanskrit.lang:78 [2] so; lang/sanskrit.lang:80 [2] so
+sort,3,2,"{""3"": 2}",examples/215_r12_wordfreq.sm:9 [3] sort_keys; examples/215_r12_wordfreq.sm:71 [3] sort_keys
+sorted,1,6,"{""3"": 4, ""1"": 2}",examples/83_stdlib_sort.sm:12 [3] asti_sorted; examples/83_stdlib_sort.sm:22 [3] asti_sorted; examples/85_stdlib_shellsort.sm:14 [3] asti_sorted; examples/85_stdlib_shellsort.sm:24 [3] asti_sorted; lib/shreni.smlib:98 [1] asti_sorted; lib/suchi.smlib:267 [1] suchi_asti_sorted
+south,3,2,"{""3"": 2}",examples/150_namespaced_same_module_two_aliases.sm:3 [3] south; examples/150_namespaced_same_module_two_aliases.sm:6 [3] south__clash
+space,1,2,"{""1"": 2}",src/sutram_compiler.asm:638 [1] space; src/sutram_compiler.asm:639 [1] space
+spelling,2,3,"{""2"": 3}",lang/sanskrit.lang:71 [2] spelling; lang/sanskrit.lang:79 [2] spelling; lang/sanskrit.lang:90 [2] spelling
+spellings,2,1,"{""2"": 1}",lang/gujarati.lang:54 [2] spellings
+spill,3,2,"{""3"": 2}",examples/139_r30_float_mixed_fallback.sm:9 [3] spill; examples/139_r30_float_mixed_fallback.sm:14 [3] spill
+sqrt,3,1,"{""3"": 1}",examples/201_madhava_library.sm:10 [3] sqrt
+square,3,1,"{""3"": 1}",examples/202_brahmagupta_area.sm:10 [3] square
+squared,3,1,"{""3"": 1}",examples/34_incdec.sm:23 [3] squared
+squares,3,1,"{""3"": 1}",examples/34_incdec.sm:18 [3] Squares
+src,3,30,"{""3"": 2, ""2"": 28}",examples/269_r73_copy_out.sm:5 [3] src; examples/269_r73_copy_out.sm:11 [3] src; lib/anukram.smlib:88 [2] src; lib/brihat.smlib:83 [2] src; lib/khand.smlib:81 [2] src; lib/khand.smlib:142 [2] src; lib/khand.smlib:206 [2] src; lib/khand.smlib:327 [2] src; lib/khand.smlib:365 [2] src; lib/khand.smlib:388 [2] src; lib/khand.smlib:413 [2] src; lib/khand.smlib:429 [2] src; lib/khand.smlib:473 [2] src; lib/mala.smlib:49 [2] src; lib/nighantu.smlib:333 [2] src; lib/roop.smlib:252 [2] src; lib/roop.smlib:285 [2] src; lib/roop.smlib:319 [2] src; lib/roop.smlib:363 [2] src; lib/roop.smlib:438 [2] src; lib/roop.smlib:443 [2] src; lib/roop.smlib:450 [2] src; lib/varna.smlib:189 [2] src; lib/varna.smlib:251 [2] src; lib/varna.smlib:373 [2] src; lib/varna.smlib:409 [2] src; lib/varna.smlib:431 [2] src; lib/varna.smlib:455 [2] src; lib/varna.smlib:471 [2] src; lib/varna.smlib:510 [2] src
+start,3,4,"{""3"": 3, ""2"": 1}",examples/28_compound.sm:5 [3] Start; examples/317_r107_parimana.sm:5 [3] start; examples/318_r108_parimana_moves.sm:5 [3] start; lib/sadhan.smlib:14 [2] start
+state,2,1,"{""2"": 1}",lib/ganit.smlib:206 [2] state
+statements,2,6,"{""2"": 6}",lang/hindi.lang:41 [2] statements; lang/kannada.lang:41 [2] statements; lang/marathi.lang:41 [2] statements; lang/odia.lang:41 [2] statements; lang/tamil.lang:52 [2] statements; lang/telugu.lang:41 [2] statements
+stay,2,1,"{""2"": 1}",lang/sanskrit.lang:78 [2] stay
+stays,2,1,"{""2"": 1}",lang/gujarati.lang:40 [2] stays
+step,2,2,"{""2"": 2}",lib/roop.smlib:363 [2] step; lang/sanskrit.lang:90 [2] Step
+still,2,7,"{""2"": 7}",lang/hindi.lang:41 [2] still; lang/kannada.lang:41 [2] still; lang/marathi.lang:41 [2] still; lang/odia.lang:41 [2] still; lang/sanskrit.lang:7 [2] still; lang/tamil.lang:52 [2] still; lang/telugu.lang:41 [2] still
+stops,2,1,"{""2"": 1}",lang/sanskrit.lang:78 [2] stops
+store,3,1,"{""3"": 1}",examples/299_r94_nonfinite_kosh_mandapa.sm:31 [3] store
+strength,3,1,"{""3"": 1}",examples/full_demo.sm:26 [3] Strength
+string,3,5,"{""3"": 5}",examples/14_strings.sm:5 [3] String; examples/152_namespaced_comment_string_preservation.sm:4 [3] string; examples/31_strcat.sm:2 [3] String; examples/full_demo.sm:21 [3] String; examples/import_demo.sm:7 [3] String
+strings,3,2,"{""3"": 2}",examples/44_shabda.sm:11 [3] Strings; examples/full_demo.sm:5 [3] Strings
+such,3,1,"{""3"": 1}",examples/157_namespaced_missing_module.sm:1 [3] no_such_module_r34
+suf,2,2,"{""2"": 2}",lib/khand.smlib:429 [2] suf; lib/varna.smlib:471 [2] suf
+sum,3,11,"{""3"": 11}",examples/06_rachana.sm:11 [3] Sum; examples/11_forloop.sm:20 [3] Sum; examples/217_r12_report.sm:32 [3] Sum; examples/21_break_continue.sm:8 [3] Sum; examples/23_grahan_input.sm:5 [3] Sum; examples/26_calculator.sm:16 [3] Sum; examples/28_compound.sm:16 [3] Sum; examples/299_r94_nonfinite_kosh_mandapa.sm:39 [3] sum; examples/299_r94_nonfinite_kosh_mandapa.sm:40 [3] sum; examples/array_demo.sm:18 [3] Sum; examples/format_demo.sm:9 [3] Sum
+synonyms,2,2,"{""2"": 2}",lang/malayalam.lang:34 [2] synonyms; lang/tamil.lang:34 [2] synonyms
+syscall,3,1,"{""3"": 1}",examples/29_nishkriya.sm:5 [3] syscall
+tab,1,3,"{""3"": 1, ""1"": 2}",examples/14_strings.sm:11 [3] Tab; src/sutram_compiler.asm:638 [1] tab; src/sutram_compiler.asm:639 [1] tab
+table,3,6,"{""3"": 5, ""2"": 1}",examples/11_forloop.sm:23 [3] Table; examples/25_patterns.sm:9 [3] Table; examples/30_lkhb.sm:4 [3] table; examples/34_incdec.sm:18 [3] table; examples/36_descending.sm:16 [3] table; lang/sanskrit.lang:90 [2] table
+target,3,6,"{""3"": 3, ""2"": 3}",examples/82_b7_stack_spill.sm:1 [3] target; examples/82_b7_stack_spill.sm:6 [3] target; examples/82_b7_stack_spill.sm:7 [3] target; lib/shreni.smlib:77 [2] target; lib/shreni.smlib:87 [2] target; lib/shreni.smlib:108 [2] target
+temperature,3,1,"{""3"": 1}",examples/14_strings.sm:22 [3] Temperature
+term,3,9,"{""3"": 9}",examples/200_madhava_series.sm:17 [3] term; examples/200_madhava_series.sm:19 [3] term; examples/200_madhava_series.sm:21 [3] term; examples/216_r12_expr.sm:45 [3] parse_term; examples/216_r12_expr.sm:67 [3] parse_term; examples/216_r12_expr.sm:78 [3] parse_term; examples/95_t12_madhava_functions.sm:16 [3] term; examples/95_t12_madhava_functions.sm:18 [3] term; examples/95_t12_madhava_functions.sm:20 [3] term
+terminate,2,6,"{""2"": 6}",lang/hindi.lang:41 [2] terminate; lang/kannada.lang:41 [2] terminate; lang/marathi.lang:41 [2] terminate; lang/odia.lang:41 [2] terminate; lang/tamil.lang:52 [2] terminate; lang/telugu.lang:41 [2] terminate
+terminator,2,1,"{""2"": 1}",lang/sanskrit.lang:71 [2] terminator
+terminators,2,1,"{""2"": 1}",lang/sanskrit.lang:70 [2] terminators
+test,3,1,"{""3"": 1}",examples/217_r12_report.sm:29 [3] Test
+text,3,4,"{""3"": 4}",examples/215_r12_wordfreq.sm:36 [3] text; examples/215_r12_wordfreq.sm:37 [3] text; examples/215_r12_wordfreq.sm:39 [3] text; examples/306_r105_string_equal.sm:14 [3] text
+that,2,1,"{""2"": 1}",lang/sanskrit.lang:80 [2] That
+the,3,29,"{""3"": 10, ""2"": 19}",examples/14_strings.sm:20 [3] The; examples/215_r12_wordfreq.sm:36 [3] the; examples/215_r12_wordfreq.sm:36 [3] the; examples/215_r12_wordfreq.sm:36 [3] the; examples/24_guess_game.sm:2 [3] the; examples/306_r105_string_equal.sm:14 [3] the; examples/317_r107_parimana.sm:12 [3] the; examples/318_r108_parimana_moves.sm:18 [3] the; examples/31_strcat.sm:5 [3] The; examples/number_game.sm:15 [3] The; lang/gujarati.lang:41 [2] The; lang/hindi.lang:40 [2] the; lang/kannada.lang:40 [2] the; lang/marathi.lang:40 [2] the; lang/odia.lang:40 [2] the; lang/sanskrit.lang:5 [2] The; lang/sanskrit.lang:6 [2] the; lang/sanskrit.lang:7 [2] the; lang/sanskrit.lang:50 [2] the; lang/sanskrit.lang:71 [2] the; lang/sanskrit.lang:71 [2] the; lang/sanskrit.lang:77 [2] the; lang/sanskrit.lang:78 [2] the; lang/sanskrit.lang:79 [2] the; lang/sanskrit.lang:90 [2] the; lang/sanskrit.lang:90 [2] The; lang/sanskrit.lang:90 [2] the; lang/tamil.lang:51 [2] the; lang/telugu.lang:40 [2] the
+their,2,1,"{""2"": 1}",lang/sanskrit.lang:6 [2] their
+they,3,1,"{""3"": 1}",examples/23_grahan_input.sm:12 [3] They
+thing,3,1,"{""3"": 1}",examples/213_r41_v1_dupexp.sm:5 [3] dd__thing
+third,3,3,"{""3"": 3}",examples/92_t12_dasham_float.sm:16 [3] third; examples/92_t12_dasham_float.sm:17 [3] third; examples/92_t12_dasham_float.sm:18 [3] third
+this,3,9,"{""3"": 3, ""2"": 6}",examples/152_namespaced_comment_string_preservation.sm:4 [3] this; examples/29_nishkriya.sm:4 [3] This; examples/35_comments.sm:4 [3] This; lang/kannada.lang:42 [2] this; lang/odia.lang:42 [2] this; lang/sanskrit.lang:6 [2] This; lang/sanskrit.lang:90 [2] this; lang/tamil.lang:53 [2] this; lang/telugu.lang:42 [2] this
+threshold,3,5,"{""3"": 5}",examples/138_r30_float_comparison_index.sm:7 [3] threshold; examples/138_r30_float_comparison_index.sm:9 [3] threshold; examples/138_r30_float_comparison_index.sm:11 [3] threshold; examples/138_r30_float_comparison_index.sm:13 [3] threshold; examples/138_r30_float_comparison_index.sm:15 [3] threshold
+through,3,1,"{""3"": 1}",examples/44_shabda.sm:11 [3] through
+thursday,3,1,"{""3"": 1}",examples/18_guna_switch.sm:8 [3] Thursday
+times,3,2,"{""3"": 2}",examples/306_r105_string_equal.sm:20 [3] times; examples/36_descending.sm:16 [3] times
+tiny,3,1,"{""3"": 1}",examples/296_r93_float_e_notation.sm:12 [3] tiny
+tlen,3,2,"{""3"": 2}",examples/215_r12_wordfreq.sm:37 [3] tlen; examples/215_r12_wordfreq.sm:39 [3] tlen
+tmp,3,5,"{""3"": 4, ""2"": 1}",examples/215_r12_wordfreq.sm:72 [3] tmp; examples/269_r73_copy_out.sm:8 [3] tmp; examples/269_r73_copy_out.sm:11 [3] tmp; examples/269_r73_copy_out.sm:15 [3] tmp; lib/shreni.smlib:174 [2] tmp
+to,3,10,"{""3"": 7, ""2"": 3}",examples/16_advanced.sm:7 [3] to; examples/28_compound.sm:16 [3] to; examples/297_r94_whole_number_operators.sm:15 [3] to; examples/318_r108_parimana_moves.sm:11 [3] to; examples/33_unit_conversion.sm:4 [3] to; examples/33_unit_conversion.sm:12 [3] to; examples/33_unit_conversion.sm:20 [3] to; lang/sanskrit.lang:7 [2] to; lang/sanskrit.lang:50 [2] to; lang/sanskrit.lang:71 [2] to
+together,3,1,"{""3"": 1}",examples/312_r106_likha_string.sm:14 [3] together
+too,3,6,"{""3"": 6}",examples/106_rachana_field_capacity.sm:2 [3] TooWide; examples/24_guess_game.sm:12 [3] Too; examples/24_guess_game.sm:14 [3] Too; examples/44_shabda.sm:11 [3] too; examples/number_game.sm:11 [3] Too; examples/number_game.sm:13 [3] Too
+total,3,6,"{""3"": 5, ""2"": 1}",examples/268_r73_return_value.sm:22 [3] total; examples/268_r73_return_value.sm:24 [3] total; examples/268_r73_return_value.sm:24 [3] total; examples/268_r73_return_value.sm:26 [3] total; examples/28_compound.sm:21 [3] Total; lang/sanskrit.lang:49 [2] Total
+totl,3,3,"{""3"": 3}",examples/223_undefined_name.sm:5 [3] totl; examples/225_undeclared_array.sm:5 [3] totl; examples/227_assign_undeclared.sm:6 [3] totl
+trailing,3,1,"{""3"": 1}",examples/42_block_comments.sm:7 [3] trailing
+transliteration,2,1,"{""2"": 1}",lang/sanskrit.lang:5 [2] transliteration
+triangle,3,2,"{""3"": 2}",examples/202_brahmagupta_area.sm:7 [3] triangle; examples/202_brahmagupta_area.sm:8 [3] triangle
+true,3,6,"{""3"": 6}",examples/09_comparisons.sm:11 [3] true; examples/09_comparisons.sm:14 [3] true; examples/09_comparisons.sm:17 [3] true; examples/09_comparisons.sm:20 [3] true; examples/22_precedence.sm:7 [3] true; examples/full_demo.sm:12 [3] true
+truth,3,3,"{""3"": 3}",examples/133_perf_float_scalar_call_rhs.sm:25 [3] truth; examples/133_perf_float_scalar_call_rhs.sm:26 [3] truth; examples/133_perf_float_scalar_call_rhs.sm:27 [3] truth
+try,3,2,"{""3"": 2}",examples/24_guess_game.sm:12 [3] Try; examples/24_guess_game.sm:14 [3] Try
+tuesday,3,1,"{""3"": 1}",examples/18_guna_switch.sm:6 [3] Tuesday
+twice,3,4,"{""3"": 4}",examples/93_t12_float_functions.sm:5 [3] twice; examples/93_t12_float_functions.sm:8 [3] twice; examples/94_t12_float_functions.sm:5 [3] twice; examples/94_t12_float_functions.sm:8 [3] twice
+two,3,5,"{""3"": 5}",examples/133_perf_float_scalar_call_rhs.sm:22 [3] two; examples/133_perf_float_scalar_call_rhs.sm:23 [3] two; examples/23_grahan_input.sm:2 [3] two; examples/304_r103_parimita_within.sm:23 [3] two; examples/46_language_reference.sm:10 [3] two
+type,2,1,"{""2"": 1}",lang/gujarati.lang:41 [2] type
+ulens,3,5,"{""3"": 5}",examples/215_r12_wordfreq.sm:44 [3] ulens; examples/215_r12_wordfreq.sm:62 [3] ulens; examples/215_r12_wordfreq.sm:71 [3] ulens; examples/215_r12_wordfreq.sm:76 [3] ulens; examples/215_r12_wordfreq.sm:77 [3] ulens
+unchanged,3,2,"{""3"": 1, ""2"": 1}",examples/307_r105_string_join.sm:14 [3] unchanged; lang/gujarati.lang:54 [2] unchanged
+unequal,3,1,"{""3"": 1}",examples/306_r105_string_equal.sm:9 [3] unequal
+unfinished,3,1,"{""3"": 1}",examples/221_eof_location.sm:7 [3] unfinished
+unit,3,3,"{""3"": 3}",examples/152_namespaced_comment_string_preservation.sm:1 [3] unit; examples/152_namespaced_comment_string_preservation.sm:5 [3] unit__clash; examples/33_unit_conversion.sm:2 [3] Unit
+unknown,3,1,"{""3"": 1}",examples/19_srijana_enum.sm:11 [3] Unknown
+up,3,1,"{""3"": 1}",examples/16_advanced.sm:7 [3] up
+upper,1,7,"{""1"": 2, ""3"": 3, ""2"": 2}",examples/323_r111_old_names.sm:18 [1] char_upper; examples/char_ops.sm:9 [3] upper_a; examples/char_ops.sm:9 [1] char_upper; examples/char_ops.sm:10 [3] Upper; examples/char_ops.sm:10 [3] upper_a; lib/roop.smlib:73 [2] upper; lib/roop.smlib:239 [2] upper
+uptrs,3,5,"{""3"": 5}",examples/215_r12_wordfreq.sm:43 [3] uptrs; examples/215_r12_wordfreq.sm:61 [3] uptrs; examples/215_r12_wordfreq.sm:71 [3] uptrs; examples/215_r12_wordfreq.sm:76 [3] uptrs; examples/215_r12_wordfreq.sm:77 [3] uptrs
+usage,2,11,"{""2"": 11}",lang/bengali.lang:3 [2] Usage; lang/gujarati.lang:3 [2] Usage; lang/hindi.lang:3 [2] Usage; lang/kannada.lang:3 [2] Usage; lang/malayalam.lang:3 [2] Usage; lang/marathi.lang:3 [2] Usage; lang/odia.lang:3 [2] Usage; lang/punjabi.lang:3 [2] Usage; lang/sanskrit.lang:3 [2] Usage; lang/tamil.lang:3 [2] Usage; lang/telugu.lang:3 [2] Usage
+use,3,1,"{""3"": 1}",examples/35_comments.sm:8 [3] Use
+using,3,4,"{""3"": 4}",examples/28_compound.sm:16 [3] using; examples/28_compound.sm:22 [3] using; examples/29_nishkriya.sm:4 [3] using; examples/32_bank_interest.sm:19 [3] using
+util,2,1,"{""2"": 1}",lang/gujarati.lang:53 [2] util_chinha
+val,3,9,"{""3"": 3, ""2"": 6}",examples/15_sutra_const.sm:5 [3] MAX_VAL; examples/15_sutra_const.sm:9 [3] MAX_VAL; examples/15_sutra_const.sm:9 [3] MAX_VAL; lib/brihat.smlib:29 [2] val; lib/mala.smlib:20 [2] val; lib/mala.smlib:36 [2] val; lib/mala.smlib:75 [2] val; lib/nighantu.smlib:62 [2] val; lib/nighantu.smlib:132 [2] val
+values,3,4,"{""3"": 4}",examples/122_t18_kosh_param_devanagari.sm:7 [3] values; examples/122_t18_kosh_param_devanagari.sm:8 [3] values; examples/122_t18_kosh_param_devanagari.sm:9 [3] values; examples/array_demo.sm:10 [3] values
+variable,3,1,"{""3"": 1}",examples/289_r87_float_print.sm:7 [3] variable
+variant,2,1,"{""2"": 1}",lang/sanskrit.lang:8 [2] variant
+vec,3,7,"{""3"": 7}",examples/211_r41_v1_public.sm:3 [3] r41_vec; examples/211_r41_v1_public.sm:3 [3] vec; examples/211_r41_v1_public.sm:5 [3] vec__length; examples/212_r41_v1_private.sm:3 [3] r41_vec; examples/212_r41_v1_private.sm:3 [3] vec; examples/212_r41_v1_private.sm:5 [3] vec__helper; examples/214_r41_v1_noalias.sm:3 [3] r41_vec
+vector,2,1,"{""2"": 1}",lang/gujarati.lang:41 [2] vector
+version,4,1,"{""4"": 1}",src/sutram_compiler.asm:248 [4] version
+was,3,1,"{""3"": 1}",examples/number_game.sm:15 [3] was
+wbuf,3,6,"{""3"": 6}",examples/215_r12_wordfreq.sm:46 [3] wbuf; examples/215_r12_wordfreq.sm:57 [3] wbuf; examples/215_r12_wordfreq.sm:58 [3] wbuf; examples/215_r12_wordfreq.sm:60 [3] wbuf; examples/215_r12_wordfreq.sm:61 [3] wbuf; examples/215_r12_wordfreq.sm:66 [3] wbuf
+wednesday,3,1,"{""3"": 1}",examples/18_guna_switch.sm:7 [3] Wednesday
+weekend,3,1,"{""3"": 1}",examples/18_guna_switch.sm:10 [3] Weekend
+weight,3,5,"{""3"": 5}",examples/135_r30_float_index_scalar.sm:10 [3] weight; examples/135_r30_float_index_scalar.sm:12 [3] weight; examples/135_r30_float_index_scalar.sm:14 [3] weight; examples/135_r30_float_index_scalar.sm:16 [3] weight; examples/135_r30_float_index_scalar.sm:18 [3] weight
+whole,3,6,"{""3"": 6}",examples/295_r92_computed_fraction_into_vitti.sm:5 [3] whole; examples/295_r92_computed_fraction_into_vitti.sm:6 [3] whole; examples/93_t12_float_functions.sm:29 [3] whole; examples/93_t12_float_functions.sm:30 [3] whole; examples/94_t12_float_functions.sm:36 [3] whole; examples/94_t12_float_functions.sm:37 [3] whole
+whose,2,1,"{""2"": 1}",lang/sanskrit.lang:77 [2] whose
+wide,3,1,"{""3"": 1}",examples/106_rachana_field_capacity.sm:2 [3] TooWide
+width,2,4,"{""2"": 4}",lib/roop.smlib:252 [2] width; lib/roop.smlib:285 [2] width; lib/roop.smlib:319 [2] width; lib/vakyank.smlib:241 [2] width
+wins,2,1,"{""2"": 1}",lang/sanskrit.lang:80 [2] wins
+with,3,6,"{""3"": 6}",examples/09_comparisons.sm:24 [3] with; examples/09_comparisons.sm:34 [3] with; examples/29_nishkriya.sm:4 [3] with; examples/29_nishkriya.sm:9 [3] with; examples/34_incdec.sm:12 [3] with; examples/34_incdec.sm:18 [3] with
+wlen,3,9,"{""3"": 9}",examples/215_r12_wordfreq.sm:50 [3] wlen; examples/215_r12_wordfreq.sm:54 [3] wlen; examples/215_r12_wordfreq.sm:57 [3] wlen; examples/215_r12_wordfreq.sm:58 [3] wlen; examples/215_r12_wordfreq.sm:60 [3] wlen; examples/215_r12_wordfreq.sm:62 [3] wlen; examples/215_r12_wordfreq.sm:64 [3] wlen; examples/215_r12_wordfreq.sm:66 [3] wlen; examples/215_r12_wordfreq.sm:68 [3] wlen
+word,2,14,"{""2"": 14}",lang/bengali.lang:2 [2] word; lang/gujarati.lang:2 [2] word; lang/hindi.lang:2 [2] word; lang/kannada.lang:2 [2] word; lang/malayalam.lang:2 [2] word; lang/marathi.lang:2 [2] word; lang/odia.lang:2 [2] word; lang/punjabi.lang:2 [2] word; lang/sanskrit.lang:2 [2] word; lang/sanskrit.lang:50 [2] word; lang/sanskrit.lang:77 [2] WORD; lang/sanskrit.lang:90 [2] word; lang/tamil.lang:2 [2] word; lang/telugu.lang:2 [2] word
+words,2,7,"{""2"": 7}",lang/hindi.lang:41 [2] words; lang/kannada.lang:41 [2] words; lang/marathi.lang:41 [2] words; lang/odia.lang:41 [2] words; lang/sanskrit.lang:6 [2] words; lang/tamil.lang:52 [2] words; lang/telugu.lang:41 [2] words
+work,3,1,"{""3"": 1}",examples/44_shabda.sm:14 [3] work
+world,3,2,"{""3"": 2}",examples/14_strings.sm:8 [3] World; examples/31_strcat.sm:4 [3] World
+wpos,3,8,"{""3"": 8}",examples/215_r12_wordfreq.sm:47 [3] wpos; examples/215_r12_wordfreq.sm:57 [3] wpos; examples/215_r12_wordfreq.sm:58 [3] wpos; examples/215_r12_wordfreq.sm:60 [3] wpos; examples/215_r12_wordfreq.sm:61 [3] wpos; examples/215_r12_wordfreq.sm:64 [3] wpos; examples/215_r12_wordfreq.sm:64 [3] wpos; examples/215_r12_wordfreq.sm:66 [3] wpos
+wrapper,3,4,"{""3"": 4}",examples/93_t12_float_functions.sm:4 [3] wrapper; examples/93_t12_float_functions.sm:24 [3] wrapper; examples/94_t12_float_functions.sm:4 [3] wrapper; examples/94_t12_float_functions.sm:29 [3] wrapper
+written,2,2,"{""2"": 2}",lang/sanskrit.lang:5 [2] written; lang/sanskrit.lang:7 [2] written
+wrong,2,1,"{""2"": 1}",lang/sanskrit.lang:77 [2] WRONG
+ws,3,6,"{""3"": 6}",examples/216_r12_expr.sm:7 [3] skip_ws; examples/216_r12_expr.sm:18 [3] skip_ws; examples/216_r12_expr.sm:30 [3] skip_ws; examples/216_r12_expr.sm:35 [3] skip_ws; examples/216_r12_expr.sm:51 [3] skip_ws; examples/216_r12_expr.sm:72 [3] skip_ws
+year,3,5,"{""3"": 5}",examples/31_strcat.sm:7 [3] Year; examples/32_bank_interest.sm:10 [3] year; examples/32_bank_interest.sm:12 [3] year; examples/32_bank_interest.sm:15 [3] Year; examples/32_bank_interest.sm:16 [3] year
+years,3,1,"{""3"": 1}",examples/32_bank_interest.sm:11 [3] years
+yes,3,9,"{""3"": 9}",examples/138_r30_float_comparison_index.sm:8 [3] yes; examples/138_r30_float_comparison_index.sm:9 [3] yes; examples/138_r30_float_comparison_index.sm:10 [3] yes; examples/138_r30_float_comparison_index.sm:11 [3] yes; examples/138_r30_float_comparison_index.sm:12 [3] yes; examples/138_r30_float_comparison_index.sm:13 [3] yes; examples/138_r30_float_comparison_index.sm:14 [3] yes; examples/138_r30_float_comparison_index.sm:15 [3] yes; examples/138_r30_float_comparison_index.sm:16 [3] yes
+you,3,1,"{""3"": 1}",examples/24_guess_game.sm:18 [3] You
+your,3,1,"{""3"": 1}",examples/35_comments.sm:8 [3] your
+zero,3,1,"{""3"": 1}",examples/26_calculator.sm:28 [3] zero
