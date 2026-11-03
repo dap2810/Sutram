@@ -1,0 +1,56 @@
+PASS  kosh_push -> kosh_kship (bin): same bytes True, old warns True, new silent True
+PASS  kosh_push -> kosh_kship (exe): same bytes True, old warns True, new silent True
+PASS  kosh_pop -> kosh_hri (bin): same bytes True, old warns True, new silent True
+PASS  kosh_pop -> kosh_hri (exe): same bytes True, old warns True, new silent True
+PASS  kosh_len -> kosh_gan (bin): same bytes True, old warns True, new silent True
+PASS  kosh_len -> kosh_gan (exe): same bytes True, old warns True, new silent True
+PASS  kosh_cap -> kosh_ksham (bin): same bytes True, old warns True, new silent True
+PASS  kosh_cap -> kosh_ksham (exe): same bytes True, old warns True, new silent True
+PASS  kosh_peek -> kosh_iksh (bin): same bytes True, old warns True, new silent True
+PASS  kosh_peek -> kosh_iksh (exe): same bytes True, old warns True, new silent True
+PASS  kosh_empty -> kosh_rikt (bin): same bytes True, old warns True, new silent True
+PASS  kosh_empty -> kosh_rikt (exe): same bytes True, old warns True, new silent True
+PASS  kosh_clear -> kosh_shodh (bin): same bytes True, old warns True, new silent True
+PASS  kosh_clear -> kosh_shodh (exe): same bytes True, old warns True, new silent True
+PASS  kosh_enqueue -> kosh_yuj (bin): same bytes True, old warns True, new silent True
+PASS  kosh_enqueue -> kosh_yuj (exe): same bytes True, old warns True, new silent True
+PASS  kosh_dequeue -> kosh_apanay (bin): same bytes True, old warns True, new silent True
+PASS  kosh_dequeue -> kosh_apanay (exe): same bytes True, old warns True, new silent True
+PASS  pankti_len -> pankti_gan (bin): same bytes True, old warns True, new silent True
+PASS  pankti_len -> pankti_gan (exe): same bytes True, old warns True, new silent True
+PASS  netsock -> jala (bin): same bytes True, old warns True, new silent True
+PASS  netsock -> jala (exe): same bytes True, old warns True, new silent True
+PASS  netbind -> jala_bandh (bin): same bytes True, old warns True, new silent True
+PASS  netbind -> jala_bandh (exe): same bytes True, old warns True, new silent True
+PASS  netlisten -> jala_shru (bin): same bytes True, old warns True, new silent True
+PASS  netlisten -> jala_shru (exe): same bytes True, old warns True, new silent True
+PASS  netaccept -> jala_grah (bin): same bytes True, old warns True, new silent True
+PASS  netaccept -> jala_grah (exe): same bytes True, old warns True, new silent True
+PASS  char_lower -> akshar_laghu (bin): same bytes True, old warns True, new silent True
+PASS  char_lower -> akshar_laghu (exe): same bytes True, old warns True, new silent True
+PASS  char_upper -> akshar_guru (bin): same bytes True, old warns True, new silent True
+PASS  char_upper -> akshar_guru (exe): same bytes True, old warns True, new silent True
+PASS  char_from -> anka_akshar (bin): same bytes True, old warns True, new silent True
+PASS  char_from -> anka_akshar (exe): same bytes True, old warns True, new silent True
+PASS  vartani_cat -> vartani_sandhi (bin): same bytes True, old warns True, new silent True
+PASS  vartani_cat -> vartani_sandhi (exe): same bytes True, old warns True, new silent True
+PASS  lkhb -> likha_santat (bin): same bytes True, old warns True, new silent True
+PASS  lkhb -> likha_santat (exe): same bytes True, old warns True, new silent True
+PASS  likha_fmt -> likha_rup (bin): same bytes True, old warns True, new silent True
+PASS  likha_fmt -> likha_rup (exe): same bytes True, old warns True, new silent True
+PASS  sankhya_dot -> sankhya_bindu (bin): same bytes True, old warns True, new silent True
+PASS  sankhya_dot -> sankhya_bindu (exe): same bytes True, old warns True, new silent True
+PASS  smaran_cp -> smaran_pratilip (bin): same bytes True, old warns True, new silent True
+PASS  smaran_cp -> smaran_pratilip (exe): same bytes True, old warns True, new silent True
+PASS  asti / nasti / अस्ति / नास्ति compile to the bytes of == / !=
+PASS  asti true, asti false, nasti true, nasti false: ['1', '0', '1', '0']
+PASS  asti / nasti print no warning
+PASS  kosh_push twice and kosh_len once: 2 warnings (2)
+PASS  an old name inside a yoj'd module: no warning (exit 0, [])
+PASS  --lang gujarati કોશઉમેરો (kosh_push): no warning (exit 0)
+PASS  --lang hindi with the Latin kosh_push: no warning (exit 0)
+PASS  shell "tyaj": exit 0, warnings []
+PASS  shell "exit": exit 0, warnings ["Sutram suchana: 'exit' purana nama - 'tyaj' likhatu"]
+PASS  shell "quit": exit 0, warnings ["Sutram suchana: 'quit' purana nama - 'tyaj' likhatu"]
+PASS  shell "help": exit 0, warnings ["Sutram suchana: 'help' purana nama - 'sahayata' likhatu"]
+r111 vocabulary: 55 checks, 0 failed

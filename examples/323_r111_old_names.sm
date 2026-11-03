@@ -1,0 +1,25 @@
+# R111: the vocabulary change - the old names, which keep working (example 322 is the same program
+# with the new names). The same output and the same bytes; each old name prints one warning naming its
+# replacement, on stderr, when compiled.
+mukhya() {
+    kosh k[2]
+    kosh_push(k, 3)
+    kosh_push(k, 7)
+    kosh_enqueue(k, 11)
+    likha("gan ", kosh_len(k), " ksham ", kosh_cap(k), "\n")
+    likha("iksh ", kosh_peek(k), "\n")
+    likha("hri ", kosh_pop(k), "\n")
+    likha("apanay ", kosh_dequeue(k), "\n")
+    likha("rikt ", kosh_empty(k), "\n")
+    kosh_clear(k)
+    likha("rikt ", kosh_empty(k), "\n")
+    vitti m[5]
+    likha("pankti_gan ", pankti_len(m), "\n")
+    likha("laghu ", char_lower(65), " guru ", char_upper(97), "\n")
+    shabda(char_from(66))
+    lkhb(42)
+    likha("\n")
+    vitti s = vartani_cat("ab", "cd")
+    shabda(s)
+    likha("\n")
+}

@@ -119,7 +119,9 @@ Internal operator ids: `OP_ADD`=1, `OP_SUB`=2, `OP_MUL`=3, `OP_DIV`=4, `OP_EQ`=5
 
 ## 4. Built-in functions
 
-These are the **actual** builtin names the compiler accepts, taken from its table.
+These are the **actual** builtin names the compiler accepts, taken from its table. **From v292 (R111) the
+Sanskrit name is primary; the old name in brackets still works, compiles to the same bytes, and prints a
+warning naming the new one** (§4b).
 (Earlier editions of this file listed short aliases such as `vartlen`, `charat`,
 `memcpy` that the compiler does not recognise.)
 
@@ -131,12 +133,12 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `pad8` | read 8-bit value |
 | `likh8c` | print a character |
 | `pad8c` | read a character |
-| `pankti_len` | length of a constant-length `mala` mala |
+| `pankti_gan` (was `pankti_len`) | length of a constant-length `mala` mala |
 | `likha` | 1–6 arguments: value(s); see §4a (string literals do not append LF, numeric final values do). Three values always print (v287); raw writes are `dvaram_likha` |
 | `parimana` | `parimana()`: the bytes the program's `nirmmita` and `kosh` hold now (v289; section 19) |
 | `dvaram_likha` | `dvaram_likha(fd, buf, len)`: write `len` bytes of `buf` to file descriptor `fd`; returns the count written (v286; see §4a) |
-| `lkhb` | numeric output without LF; includes `dasham` numeric printing since R52 |
-| `likha_fmt` | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
+| `likha_santat` (was `lkhb`) | numeric output without LF; includes `dasham` numeric printing since R52 |
+| `likha_rup` (was `likha_fmt`) | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
 | `shabda` | print a string variable |
 | `grahan` | read a number from input |
 | `sthagita` | halt the program |
@@ -145,23 +147,56 @@ These are the **actual** builtin names the compiler accepts, taken from its tabl
 | `band` | close a handle |
 | `nirmmita` | allocate memory: `nirmmita(n)` gives `n` **bytes**, zeroed — `nirmmita(count * 8)` for `count` cells. Checked only when the size is a number and the name is never reassigned; otherwise writing past `n` bytes is your mistake, as in C (§6c) |
 | `smaran` | fill memory |
-| `smaran_cp` | copy memory |
+| `smaran_pratilip` (was `smaran_cp`) | copy memory |
 | `vartani_aayam` | varna length |
 | `vartani_tul` | varna compare |
-| `vartani_cat` | varna concatenate |
+| `vartani_sandhi` (was `vartani_cat`) | varna concatenate |
 | `vartani_pratilip` | varna copy |
 | `akshar` | character code at an index |
 | `aksharank` | character code (note: index currently ignored) |
-| `char_from` | character from a code |
-| `char_upper` | uppercase a character |
-| `char_lower` | lowercase a character |
+| `anka_akshar` (was `char_from`) | character from a code |
+| `akshar_guru` (was `char_upper`) | uppercase a character |
+| `akshar_laghu` (was `char_lower`) | lowercase a character |
 | `sankhya_yog` | integer add |
 | `sankhya_gunan` | integer multiply |
-| `sankhya_dot` | dot product |
-| `netsock` | create a socket |
-| `netbind` | bind a socket |
-| `netlisten` | listen |
-| `netaccept` | accept a connection |
+| `sankhya_bindu` (was `sankhya_dot`) | dot product |
+| `jala` (was `netsock`) | create a socket |
+| `jala_bandh` (was `netbind`) | bind a socket |
+| `jala_shru` (was `netlisten`) | listen |
+| `jala_grah` (was `netaccept`) | accept a connection |
+
+### 4b. The vocabulary change (v292, R111): new names, old ones still accepted
+
+Every builtin below has a Sanskrit name; the old one is an alias of the same builtin, so a program written either
+way compiles to **the same bytes**. An old name written in the program's own file prints one warning per name,
+on stderr, when it is compiled without `--lang` (not in a module it `yoj`s, and never in a pack run, which prints only
+its pack's language):
+
+```
+Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+```
+
+| new | old | new | old |
+|---|---|---|---|
+| `kosh_kship` | `kosh_push` | `pankti_gan` | `pankti_len` |
+| `kosh_hri` | `kosh_pop` | `jala` | `netsock` |
+| `kosh_gan` | `kosh_len` | `jala_bandh` | `netbind` |
+| `kosh_ksham` | `kosh_cap` | `jala_shru` | `netlisten` |
+| `kosh_iksh` | `kosh_peek` | `jala_grah` | `netaccept` |
+| `kosh_rikt` | `kosh_empty` | `akshar_laghu` | `char_lower` |
+| `kosh_shodh` | `kosh_clear` | `akshar_guru` | `char_upper` |
+| `kosh_yuj` | `kosh_enqueue` | `anka_akshar` | `char_from` |
+| `kosh_apanay` | `kosh_dequeue` | `vartani_sandhi` | `vartani_cat` |
+| `likha_santat` | `lkhb` | `likha_rup` | `likha_fmt` |
+| `sankhya_bindu` | `sankhya_dot` | `smaran_pratilip` | `smaran_cp` |
+
+**`asti` / अस्ति is `==` and `nasti` / नास्ति is `!=`** - the same token: `yadi (a asti b)` is `yadi (a == b)`, byte
+for byte (`examples/324`-`327`). `==` and `!=` remain. In the shell (`sutram -i`) **`tyaj`** leaves (`exit` and
+`quit` still do, with the warning) and `sahayata` is help (`help` still is, with the warning).
+
+Not changed (R111): `Sutram Error` stays in the messages - a program that stops at run time prints it from
+its own bytes, so changing it changes 443 of the guard's programs (R110-00, R111-00). `to` is not a word
+(`tak` is the loop's "up to"; `prati` stays the return alias).
 
 ### 4a. Output: print values, raw bytes, and formatting (compiler v257)
 
@@ -798,15 +833,15 @@ defaults to 4. Logical length starts at 0 and `a[index]` reads/writes against th
 
 | builtin | meaning |
 |---|---|
-| `kosh_push(k, v)` | append v; returns the new length |
-| `kosh_pop(k)` | remove and return the last element |
-| `kosh_len(k)` | logical length |
-| `kosh_cap(k)` | current capacity |
-| `kosh_clear(k)` | sangrah logical length to 0 (storage NOT erased); returns 0 |
-| `kosh_empty(k)` | 1 if length is zero, else 0 |
-| `kosh_peek(k)` | last element, not removed |
-| `kosh_enqueue(k, v)` | append v; returns the new length (alias of push) |
-| `kosh_dequeue(k)` | remove and return the first (oldest) element — FIFO, O(n) |
+| `kosh_kship(k, v)` | append v; returns the new length (was `kosh_push`, still accepted - §4b) |
+| `kosh_hri(k)` | remove and return the last element |
+| `kosh_gan(k)` | logical length |
+| `kosh_ksham(k)` | current capacity |
+| `kosh_shodh(k)` | sangrah logical length to 0 (storage NOT erased); returns 0 |
+| `kosh_rikt(k)` | 1 if length is zero, else 0 |
+| `kosh_iksh(k)` | last element, not removed |
+| `kosh_yuj(k, v)` | append v; returns the new length (alias of push) |
+| `kosh_apanay(k)` | remove and return the first (oldest) element — FIFO, O(n) |
 
 Full specification, measured behaviour, and the `kosh` vs `suchi`/`queue`
 comparison: `docs/reports/KOSH-BUILTINS.md`.

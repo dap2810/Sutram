@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v291) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v292) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -263,7 +263,7 @@ str_dot_exe  db ".exe", 0
     r52_msg_dvaram_arity db "Sutram Error: dvaram: 2 va 3 tark avashyak",10,0
     r52_msg_charat_arity db "Sutram Error: akshar: 2 tark avashyak",10,0
     r52_msg_charcode_arity db "Sutram Error: aksharank: 1 va 2 tark avashyak",10,0
-    r54_msg_arity db "Sutram Error: tark sankhya hastakshar se bhinn",10,0
+    r54_msg_arity db "Sutram Error: tark sankhya hastakshar nasti",10,0   ; R111: "se bhinn" -> "nasti" (no code prints it)
     ; R54 builtin signature min,max in declaration ID order.
 r54_builtin_arity_table:
     db 0,0               ; 0 reserved0
@@ -697,6 +697,7 @@ r54_builtin_arity_table:
     str_repl_out db "/tmp/.sutram_repl.bin", 0
 %endif
     str_exit1    db "nirgat", 0
+    str_tyaj     db "tyaj", 0          ; R111: the primary exit command
     str_exit2    db "exit", 0
     str_exit3    db "quit", 0
     str_help1    db "sahayata", 0
@@ -791,48 +792,125 @@ r54_builtin_arity_table:
         dq bn_paadh,    TOK_BUILTIN, BN_PAADH
         dq bn_likha,    TOK_BUILTIN, BN_LIKHA
         dq bn_band,     TOK_BUILTIN, BN_BAND
-        dq bn_netsock,  TOK_BUILTIN, BN_NETSOCK
-        dq bn_netbind,  TOK_BUILTIN, BN_NETBIND
-        dq bn_netlist,  TOK_BUILTIN, BN_NETLIST
-        dq bn_netacc,   TOK_BUILTIN, BN_NETACC
+        dq r111_netsock, TOK_BUILTIN, BN_NETSOCK   ; R111: the primary name (was netsock)
+        dq r111_netbind, TOK_BUILTIN, BN_NETBIND   ; R111: the primary name (was netbind)
+        dq r111_netlist, TOK_BUILTIN, BN_NETLIST   ; R111: the primary name (was netlisten)
+        dq r111_netacc, TOK_BUILTIN, BN_NETACC   ; R111: the primary name (was netaccept)
         dq bn_nirm,     TOK_BUILTIN, BN_NIRMRITA
         dq bn_likh8,    TOK_BUILTIN, BN_LIKH8
         dq bn_pad8,     TOK_BUILTIN, BN_PAD8
         dq bn_vartlen,  TOK_BUILTIN, BN_VARTLEN
         dq bn_vartcmp,  TOK_BUILTIN, BN_VARTCMP
-        dq bn_vartcat,  TOK_BUILTIN, BN_VARTCAT
+        dq r111_vartcat, TOK_BUILTIN, BN_VARTCAT   ; R111: the primary name (was vartani_cat)
         dq bn_vecadd,   TOK_BUILTIN, BN_VECADD
         dq bn_vecmul,   TOK_BUILTIN, BN_VECMUL
-        dq bn_vecdot,   TOK_BUILTIN, BN_VECDOT
-        dq bn_lkfmt,    TOK_BUILTIN, BN_LKFMT
+        dq r111_vecdot, TOK_BUILTIN, BN_VECDOT   ; R111: the primary name (was sankhya_dot)
+        dq r111_lkfmt, TOK_BUILTIN, BN_LKFMT   ; R111: the primary name (was likha_fmt)
         dq bn_charat,   TOK_BUILTIN, BN_CHARAT
         dq bn_charcd,   TOK_BUILTIN, BN_CHARCD
-        dq bn_charfr,   TOK_BUILTIN, BN_CHARFR
-        dq bn_charup,   TOK_BUILTIN, BN_CHARUP
-        dq bn_charlo,   TOK_BUILTIN, BN_CHARLO
+        dq r111_charfr, TOK_BUILTIN, BN_CHARFR   ; R111: the primary name (was char_from)
+        dq r111_charup, TOK_BUILTIN, BN_CHARUP   ; R111: the primary name (was char_upper)
+        dq r111_charlo, TOK_BUILTIN, BN_CHARLO   ; R111: the primary name (was char_lower)
         dq bn_likh8c,   TOK_BUILTIN, BN_LIKH8C
         dq bn_pad8c,    TOK_BUILTIN, BN_PAD8C
         dq bn_memset,   TOK_BUILTIN, BN_MEMSET
-        dq bn_memcpy,   TOK_BUILTIN, BN_MEMCPY
+        dq r111_memcpy, TOK_BUILTIN, BN_MEMCPY   ; R111: the primary name (was smaran_cp)
         dq bn_vartcp,   TOK_BUILTIN, BN_VARTCP
         dq bn_grahan,   TOK_BUILTIN, BN_GRAHAN
-        dq bn_lkhb,     TOK_BUILTIN, BN_LKHB
+        dq r111_lkhb, TOK_BUILTIN, BN_LKHB   ; R111: the primary name (was lkhb)
         dq bn_shabda,   TOK_BUILTIN, BN_SHABDA
+        dq r111_panktilen, TOK_BUILTIN, BN_PANKTILEN   ; R111: the primary name (was pankti_len)
+        dq r111_koshpush, TOK_BUILTIN, BN_KOSHPUSH   ; R111: the primary name (was kosh_push)
+        dq r111_koshpop, TOK_BUILTIN, BN_KOSHPOP   ; R111: the primary name (was kosh_pop)
+        dq r111_koshlen, TOK_BUILTIN, BN_KOSHLEN   ; R111: the primary name (was kosh_len)
+        dq r111_koshcap, TOK_BUILTIN, BN_KOSHCAP   ; R111: the primary name (was kosh_cap)
+        dq r111_koshclear, TOK_BUILTIN, BN_KOSHCLEAR   ; R111: the primary name (was kosh_clear)
+        dq r111_koshempty, TOK_BUILTIN, BN_KOSHEMPTY   ; R111: the primary name (was kosh_empty)
+        dq r111_koshpeek, TOK_BUILTIN, BN_KOSHPEEK   ; R111: the primary name (was kosh_peek)
+        dq r111_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH   ; R111: the primary name (was kosh_enqueue)
+        dq r111_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE   ; R111: the primary name (was kosh_dequeue)
+        dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
+        dq bn_dvarlikha, TOK_BUILTIN, BN_DVARLIKHA
+        dq bn_parimana, TOK_BUILTIN, BN_PARIMANA
+        dq bn_dev_parimana, TOK_BUILTIN, BN_PARIMANA
+    ; R111: the old names - still accepted, the same builtin; a program that writes one in its own file
+    ; gets a warning naming the replacement (r111_note_old). r111_old_repl is parallel to these rows.
+    r111_old_bn:
+        dq bn_netsock, TOK_BUILTIN, BN_NETSOCK
+        dq bn_netbind, TOK_BUILTIN, BN_NETBIND
+        dq bn_netlist, TOK_BUILTIN, BN_NETLIST
+        dq bn_netacc, TOK_BUILTIN, BN_NETACC
+        dq bn_vartcat, TOK_BUILTIN, BN_VARTCAT
+        dq bn_vecdot, TOK_BUILTIN, BN_VECDOT
+        dq bn_lkfmt, TOK_BUILTIN, BN_LKFMT
+        dq bn_charfr, TOK_BUILTIN, BN_CHARFR
+        dq bn_charup, TOK_BUILTIN, BN_CHARUP
+        dq bn_charlo, TOK_BUILTIN, BN_CHARLO
+        dq bn_memcpy, TOK_BUILTIN, BN_MEMCPY
+        dq bn_lkhb, TOK_BUILTIN, BN_LKHB
         dq bn_panktilen, TOK_BUILTIN, BN_PANKTILEN
         dq bn_koshpush, TOK_BUILTIN, BN_KOSHPUSH
-        dq bn_koshpop,  TOK_BUILTIN, BN_KOSHPOP
-        dq bn_koshlen,  TOK_BUILTIN, BN_KOSHLEN
-        dq bn_koshcap,  TOK_BUILTIN, BN_KOSHCAP
+        dq bn_koshpop, TOK_BUILTIN, BN_KOSHPOP
+        dq bn_koshlen, TOK_BUILTIN, BN_KOSHLEN
+        dq bn_koshcap, TOK_BUILTIN, BN_KOSHCAP
         dq bn_koshclear, TOK_BUILTIN, BN_KOSHCLEAR
         dq bn_koshempty, TOK_BUILTIN, BN_KOSHEMPTY
         dq bn_koshpeek, TOK_BUILTIN, BN_KOSHPEEK
         dq bn_koshenqueue, TOK_BUILTIN, BN_KOSHPUSH
         dq bn_koshdequeue, TOK_BUILTIN, BN_KOSHDEQUEUE
-        dq bn_setchar,  TOK_BUILTIN, BN_SETCHAR
-        dq bn_dvarlikha, TOK_BUILTIN, BN_DVARLIKHA
-        dq bn_parimana, TOK_BUILTIN, BN_PARIMANA
-        dq bn_dev_parimana, TOK_BUILTIN, BN_PARIMANA
     bn_table_end:
+    r111_w_asti db "asti", 0
+    r111_w_dasti db 0xE0,0xA4,0x85,0xE0,0xA4,0xB8,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0   ; अस्ति
+    r111_w_nasti db "nasti", 0
+    r111_w_dnasti db 0xE0,0xA4,0xA8,0xE0,0xA4,0xBE,0xE0,0xA4,0xB8,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0   ; नास्ति
+    r111_msg_a db "Sutram suchana: '", 0   ; R111: the deprecation warning (stderr)
+    r111_msg_b db "' purana nama - '", 0
+    r111_msg_c db "' likhatu", 10, 0
+    r111_old_repl:
+        dq r111_netsock
+        dq r111_netbind
+        dq r111_netlist
+        dq r111_netacc
+        dq r111_vartcat
+        dq r111_vecdot
+        dq r111_lkfmt
+        dq r111_charfr
+        dq r111_charup
+        dq r111_charlo
+        dq r111_memcpy
+        dq r111_lkhb
+        dq r111_panktilen
+        dq r111_koshpush
+        dq r111_koshpop
+        dq r111_koshlen
+        dq r111_koshcap
+        dq r111_koshclear
+        dq r111_koshempty
+        dq r111_koshpeek
+        dq r111_koshenqueue
+        dq r111_koshdequeue
+    r111_netsock db "jala", 0
+    r111_netbind db "jala_bandh", 0
+    r111_netlist db "jala_shru", 0
+    r111_netacc db "jala_grah", 0
+    r111_vartcat db "vartani_sandhi", 0
+    r111_vecdot db "sankhya_bindu", 0
+    r111_lkfmt db "likha_rup", 0
+    r111_charfr db "anka_akshar", 0
+    r111_charup db "akshar_guru", 0
+    r111_charlo db "akshar_laghu", 0
+    r111_memcpy db "smaran_pratilip", 0
+    r111_lkhb db "likha_santat", 0
+    r111_panktilen db "pankti_gan", 0
+    r111_koshpush db "kosh_kship", 0
+    r111_koshpop db "kosh_hri", 0
+    r111_koshlen db "kosh_gan", 0
+    r111_koshcap db "kosh_ksham", 0
+    r111_koshclear db "kosh_shodh", 0
+    r111_koshempty db "kosh_rikt", 0
+    r111_koshpeek db "kosh_iksh", 0
+    r111_koshenqueue db "kosh_yuj", 0
+    r111_koshdequeue db "kosh_apanay", 0
 
     ; grahan(): read one line from stdin, parse digits, return in rax.
     ; The read operation itself is emitted through emit_syscall.  Linux gets a
@@ -1345,6 +1423,8 @@ section .bss
     r108_cnt_all resq 1
     r108_cnt_ok resq 1
     r108_pname  resq 1
+    r111_old_hit resq 1                     ; R111: the old-name row the last lookup matched, or 0
+    r111_warned resb 32                     ; R111: an old name already warned about
     r108_ovf    resq 1                      ; R109: the walk's stack overflowed - count the parameter as keeping
     r107_used   resq 1                     ; R107: parimana() appears in the program
     r108_bk_name resq 256                   ; R108: kosh made in an open mandapa of this function:
@@ -2053,15 +2133,20 @@ shell_main:
     test rax, rax
     jz .shell_exit
     lea rdi, [rel repl_line]
-    lea rsi, [rel str_exit2]
+    lea rsi, [rel str_tyaj]        ; R111: tyaj, the primary word
     call strcmp
     test rax, rax
     jz .shell_exit
     lea rdi, [rel repl_line]
+    lea rsi, [rel str_exit2]
+    call strcmp
+    test rax, rax
+    jz .r111_old_exit
+    lea rdi, [rel repl_line]
     lea rsi, [rel str_exit3]
     call strcmp
     test rax, rax
-    jz .shell_exit
+    jz .r111_old_exit
     ; help commands
     lea rdi, [rel repl_line]
     lea rsi, [rel str_help1]
@@ -2072,7 +2157,7 @@ shell_main:
     lea rsi, [rel str_help2]
     call strcmp
     test rax, rax
-    jz .shell_help
+    jz .r111_old_help
     ; sarvam: show the session
     lea rdi, [rel repl_line]
     lea rsi, [rel str_sarvam]
@@ -2090,6 +2175,13 @@ shell_main:
     call repl_write_program
     call repl_compile_and_run
     jmp .shell_loop
+.r111_old_exit:                    ; R111: exit / quit still leave, with the warning
+    lea rsi, [rel str_tyaj]
+    call r111_warn_line
+    jmp .shell_exit
+.r111_old_help:                    ; R111: help still helps; sahayata is the word
+    lea rsi, [rel str_help1]
+    call r111_warn_line
 .shell_help:
     lea rdi, [rel msg_shell_help]
     call print_str_z
@@ -6830,6 +6922,29 @@ lex:
     inc rsi
     mov [rel str_ptr], rsi
 
+    ; R111: asti / अस्ति is the token `==`, nasti / नास्ति the token `!=` - the same token, so every
+    ; later stage (precedence, strings, the fast paths) treats `a asti b` exactly as `a == b`.
+    mov rdi, rbx
+    lea rsi, [rel r111_w_asti]
+    call strcmp
+    test rax, rax
+    jz .r111_eq
+    mov rdi, rbx
+    lea rsi, [rel r111_w_dasti]
+    call strcmp
+    test rax, rax
+    jz .r111_eq
+    mov rdi, rbx
+    lea rsi, [rel r111_w_nasti]
+    call strcmp
+    test rax, rax
+    jz .r111_ne
+    mov rdi, rbx
+    lea rsi, [rel r111_w_dnasti]
+    call strcmp
+    test rax, rax
+    jz .r111_ne
+
     ; Check keyword
     mov rdi, rbx
     call lookup_keyword        ; rax=1 if found, rdx=keyword_id
@@ -6851,6 +6966,7 @@ lex:
     call lookup_builtin         ; rax=1 if found, rdx=builtin_id
     test rax, rax
     jz .emit_ident
+    call r111_note_old          ; R111: an old name written in the program's own file is warned about
     mov qword [r15], TOK_BUILTIN
     mov [r15+8], rbx
     mov [r15+16], rdx
@@ -7314,6 +7430,12 @@ lex:
     add r13, 2
     jmp .emit_op2
 
+.r111_eq:
+    mov r8, 0x3D3D                 ; ==
+    jmp .emit_op2
+.r111_ne:
+    mov r8, 0x3D21                 ; !=
+    jmp .emit_op2
 .emit_op:
     inc r13
 .emit_op2:
@@ -30692,6 +30814,7 @@ lookup_builtin:
     push r12
     push r13
     mov r13, rdi
+    mov qword [rel r111_old_hit], 0   ; R111: set below when an old name matched
     lea rax, [rel bn_table_end]
     lea rcx, [rel bn_table]
     sub rax, rcx
@@ -30719,6 +30842,14 @@ lookup_builtin:
     jne .lb_found_r
     mov qword [rel r107_used], 1
 .lb_found_r:
+    lea rax, [rel r111_old_bn]     ; R111: an old name's row (a pack's word is in its own table)
+    cmp r12, rax
+    jb .lb_found_new
+    lea rax, [rel bn_table_end]
+    cmp r12, rax
+    jae .lb_found_new
+    mov [rel r111_old_hit], r12
+.lb_found_new:
     mov rax, 1
     pop r13
     pop r12
@@ -30749,6 +30880,101 @@ lookup_builtin:
     pop r13
     pop r12
     pop rbx
+    ret
+
+; r111_note_old (r12 = the token's source position; every register preserved). R111: when the lexer's
+; last lookup_builtin matched an old name (r111_old_hit) and the token is in the program's own file (the
+; R51 origin map; a yoj'd module's text is not warned about), print once per name, on stderr:
+;   Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+; The compiled program is unchanged - the old row carries the same builtin id.
+r111_note_old:
+    cmp qword [rel r111_old_hit], 0
+    je .r
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r11
+    mov rax, r12                   ; the token's file, from the origin map
+    lea rcx, [rel source_buf]
+    sub rax, rcx
+    cmp rax, IMPORT_BUF_CAP
+    jae .root
+    lea rcx, [rel r51_src_file]
+    mov rcx, [rcx+rax*8]
+    test rcx, rcx
+    jz .root
+    cmp rcx, [rel source_path_ptr]
+    jne .out                       ; a module's text: not the program's own words
+.root:
+    mov rax, [rel r111_old_hit]
+    lea rcx, [rel r111_old_bn]
+    sub rax, rcx
+    xor edx, edx
+    mov ecx, 24
+    div rcx                        ; rax = the old row's index
+    lea rcx, [rel r111_warned]
+    cmp byte [rcx+rax], 0
+    jne .out                       ; once per name
+    mov byte [rcx+rax], 1
+    push rax
+    lea rdi, [rel r111_msg_a]
+    call r111_err
+    mov rax, [rel r111_old_hit]
+    mov rdi, [rax]                 ; the old name
+    call r111_err
+    lea rdi, [rel r111_msg_b]
+    call r111_err
+    pop rax
+    lea rcx, [rel r111_old_repl]
+    mov rdi, [rcx+rax*8]           ; its replacement
+    call r111_err
+    lea rdi, [rel r111_msg_c]
+    call r111_err
+.out:
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+.r:
+    ret
+
+; r111_warn_line(rsi = the replacement; the old word is repl_line): the shell's form of the warning.
+r111_warn_line:
+    push rsi
+    lea rdi, [rel r111_msg_a]
+    call r111_err
+    lea rdi, [rel repl_line]
+    call r111_err
+    lea rdi, [rel r111_msg_b]
+    call r111_err
+    pop rdi
+    call r111_err
+    lea rdi, [rel r111_msg_c]
+    jmp r111_err
+
+; r111_err(rdi = NUL-terminated text): to stderr, untranslated (a code word and its replacement).
+; Only without --lang: the warning is romanised Sanskrit, and a pack run prints only its pack's language
+; (R11's rule, tests/sandesh); the ten frozen packs get no new message to translate it.
+r111_err:
+    cmp qword [rel cur_lang_id], 0
+    jne .r
+    push rdi
+    call strlen
+    pop rsi
+    mov rdx, rax
+    mov rdi, 2
+    jmp os_write
+.r:
     ret
 
 ; R28: pin the import template's alignment. Its `align 2` entries are

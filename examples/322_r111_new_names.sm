@@ -1,0 +1,24 @@
+# R111: the vocabulary change - the new names (primary from v292). Example 323 is the same program with
+# the old names: both print the same and compile to the same bytes; only 323 gets the warnings.
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 3)
+    kosh_kship(k, 7)
+    kosh_yuj(k, 11)
+    likha("gan ", kosh_gan(k), " ksham ", kosh_ksham(k), "\n")
+    likha("iksh ", kosh_iksh(k), "\n")
+    likha("hri ", kosh_hri(k), "\n")
+    likha("apanay ", kosh_apanay(k), "\n")
+    likha("rikt ", kosh_rikt(k), "\n")
+    kosh_shodh(k)
+    likha("rikt ", kosh_rikt(k), "\n")
+    vitti m[5]
+    likha("pankti_gan ", pankti_gan(m), "\n")
+    likha("laghu ", akshar_laghu(65), " guru ", akshar_guru(97), "\n")
+    shabda(anka_akshar(66))
+    likha_santat(42)
+    likha("\n")
+    vitti s = vartani_sandhi("ab", "cd")
+    shabda(s)
+    likha("\n")
+}

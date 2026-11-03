@@ -1,0 +1,10 @@
+diff --git a/tests/sandesh/expect/default/kosh_empty.out b/tests/sandesh/expect/default/kosh_empty.out
+index fcb3886..032c3b7 100644
+--- a/tests/sandesh/expect/default/kosh_empty.out
++++ b/tests/sandesh/expect/default/kosh_empty.out
+@@ -1,4 +1,5 @@
+ Siddh: 395 baait sankalit
++Sutram suchana: 'kosh_pop' purana nama - 'kosh_hri' likhatu
+ [compile exit 0]
+ Sutram Error: riktat koshat kosh_pop
+ [run exit 1]

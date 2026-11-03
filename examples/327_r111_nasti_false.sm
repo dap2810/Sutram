@@ -1,0 +1,14 @@
+# R111: `nasti` is `!=` - the same token, so `a nasti b` compiles to the same bytes as `a != b`.
+# नास्ति is the same word in Devanagari.
+mukhya() {
+    vitti a = 4
+    vitti b = 4
+    likha(a nasti b)
+    likha(a नास्ति b)
+    likha(a != b)
+    yadi (a nasti b) {
+        likha("satya\n")
+    } anya {
+        likha("asatya\n")
+    }
+}

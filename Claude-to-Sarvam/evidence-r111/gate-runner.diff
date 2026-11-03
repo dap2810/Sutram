@@ -1,0 +1,2 @@
+95a96
+>   printf '%s' "$out" > "/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r111/gout2/$(echo "$name" | tr ' /' '__').txt"

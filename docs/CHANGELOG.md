@@ -1,4 +1,16 @@
-> **The 20 newest entries.** Older ones, from "v432" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v434" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v292 (Claude, R111) - the vocabulary change, as aliases: 22 builtins get Sanskrit names, `asti` / `nasti` are `==` / `!=`, `tyaj` leaves the shell
+
+- **22 builtins have a new, primary name; the old one still works and compiles to the same bytes.** An old name
+  written in the program's own file prints one warning per name on stderr - `Sutram suchana: 'kosh_push' purana
+  nama - 'kosh_kship' likhatu` - and none from a `yoj`'d module or in a `--lang` run (a pack run prints only its
+  pack's language). Reference §4b has
+  the table. `tests/r111/test_vocabulary.py` (a gate): every pair byte-identical, ELF and PE.
+- **`asti` / अस्ति is `==`, `nasti` / नास्ति is `!=`** - the same token (examples 324-327).
+- **The shell:** `tyaj` leaves; `exit`, `quit`, `help` still work, with the warning; `sahayata` is help.
+- **Sarvam's decisions applied:** `to` dropped; `vartani_sandhi`, `kosh_apanay`, `anka_akshar`, `likha_santat`;
+  Muse's two: `smaran_pratilip` and `sahayata`. **Not changed:** `Sutram Error` (R111-00 says why).
 
 ## v291 (Claude, R109) - the outlives rule follows a second name and a chain of any length; the installer gate names the payload; the suite's summary is its last line
 
@@ -362,29 +374,3 @@
 **Integers: done. Floats: done, with a refusal where a fraction would be lost. Memory: done and measured. The boundary: done. Arithmetic: division by zero and literal overflow refused.**
 
 **Still open: the `kosh` alias (latent, documented), generics (deferred by design), threads (absent), Windows execution (the maintainer's), and the docs reorganisation.**
-
-## v434 - a float in a variable loses its fraction, and that is the release blocker
-
-### What I measured on v278
-
-**`likha("3.5 = ", 3.5)` -> `3.5 = 3.500000`** - a float LITERAL prints correctly.
-**`vitti f = 3.5` then `likha("f=", f)` -> `f=3`** - a float VARIABLE loses its fraction.
-**`likha(0.5)`, `likha(1.5)`, `likha(2.25)` -> correct to six decimals.**
-**`vitti a = 7; vitti b = 2; likha(a / b)` -> `3`** - integer division, as documented.
-
-**So the value survives parsing and dies at the store.** That is the diagnosis, and it came from running the two cases side by side rather than reasoning about the compiler.
-
-### Why it is the release blocker
-**A student computing an average, storing it, and printing it gets an integer.** They conclude their arithmetic is wrong. That is the same failure as the overflow I closed in v276 - correct-looking code, wrong answer, no message.
-
-**And it makes "arithmetic is done" too broad.** Integers are done. Floats are not.
-
-**ChatGPT chose this as the release blocker in R156 and was right.** It reported the symptom as "a positive float prints as negative"; I get truncation. Two symptoms, same area, and R157 asks it which program produced its negative.
-
-### And the docs are not current, which I am recording rather than hiding
-**The changelog stopped at v432.** The alias-is-real correction and this float finding were both missing. **README mentions floats but not the alias.** The reference is current on both.
-
-### Rounds issued
-**R87 Claude** - dump the emitted code for `vitti f = 3.5` and find where the fraction goes; then check whether any golden recorded the truncated output.
-**R157 ChatGPT** - why its symptom differs from mine, and does Sutram support float variables at all.
-**R85 Muse** - does the library compute through float variables, and were its earlier six-decimal comparisons valid or lucky.

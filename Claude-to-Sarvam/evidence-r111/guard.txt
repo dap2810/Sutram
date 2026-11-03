@@ -1,0 +1,37 @@
+# R111 guard: origin/main 097100d.. (v291) -> v292 (final build), every program compiled by both compilers, outputs compared byte for byte
+
+## elf
+NEW          examples/322_r111_new_names.sm
+NEW          examples/323_r111_old_names.sm
+NEW          examples/324_r111_asti_true.sm
+NEW          examples/325_r111_asti_false.sm
+NEW          examples/326_r111_nasti_true.sm
+NEW          examples/327_r111_nasti_false.sm
+source files whose text changed: 0
+705 programs: 558 byte-identical, 141 refused identically, 0 DIFFER, 6 new
+
+## pe
+NEW          examples/322_r111_new_names.sm
+NEW          examples/323_r111_old_names.sm
+NEW          examples/324_r111_asti_true.sm
+NEW          examples/325_r111_asti_false.sm
+NEW          examples/326_r111_nasti_true.sm
+NEW          examples/327_r111_nasti_false.sm
+source files whose text changed: 0
+705 programs: 558 byte-identical, 141 refused identically, 0 DIFFER, 6 new
+
+## wine
+NEW          examples/322_r111_new_names.sm
+NEW          examples/323_r111_old_names.sm
+NEW          examples/324_r111_asti_true.sm
+NEW          examples/325_r111_asti_false.sm
+NEW          examples/326_r111_nasti_true.sm
+NEW          examples/327_r111_nasti_false.sm
+source files whose text changed: 0
+705 programs: 558 byte-identical, 141 refused identically, 0 DIFFER, 6 new
+
+## diffrun (ELF DIFFERs run old and new)
+elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+
+## the Windows compiler under Wine against the Linux compiler's PE outputs
+compared 1116, differ 0

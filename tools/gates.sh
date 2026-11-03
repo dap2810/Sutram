@@ -111,6 +111,7 @@ run_gate() {                      # name, then the command
       case "$line" in *", 0 failed"*) ok "$name ($line)";; *) bad "$name" "${line:-no summary}";; esac ;;
     "stdlib inventory") case "$(tail -1 /tmp/g_out.$$)" in *"modules"*) ok "$name ($(tail -1 /tmp/g_out.$$))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$)";; esac ;;
     "R101 memory")      line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r101 memory: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R111 vocabulary")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r111 vocabulary: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R93 installer gate") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r93 installer gate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "installer version") case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS //; s/ (.*//'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-100)";; esac ;;
     "version string")   case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS version //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-90)";; esac ;;
@@ -216,6 +217,7 @@ run_gate "operator precedence" python3 tools/check_precedence.py --compiler ./su
 run_gate "formatted tree"    sh -c 'python3 tools/sutram_fmt.py --check --exclude-from tools/fmt-exclude.txt examples/*.sm examples/*/*.sm examples/lib/*.smlib lib/*.smlib tests/stdlib/*.sm tests/r*/*.sm tests/r*/*/*.sm tests/r*/lib/*.smlib tests/sandesh/cases/*.sm && echo FORMATTED'   # R19: sutram-fmt would change nothing
 run_gate "version string"    python3 tools/check_version.py --binary ./sutram_compiler   # R13: --version is the current version
 run_gate "R101 memory"       python3 -B tests/r101/test_memory_claims.py --compiler ./sutram_compiler   # R101: peak RSS from the kernel (wait4): a block keeps 10M nirmmita flat, kosh growth costs under 3x, a kosh made in a block is NOT reclaimed (pinned)
+run_gate "R111 vocabulary"   python3 -B tests/r111/test_vocabulary.py --compiler ./sutram_compiler   # R111: each old name = its new name byte for byte, ELF and PE; the warning on the old only; asti/nasti = ==/!=; no warning from a module or a pack word
 run_gate "R93 installer gate" python3 -B tests/r93/test_installer_version.py   # R93: the installer check passes a current installer and fails each stale shape
 run_gate "installer version" python3 tools/check_installer_version.py   # R93: Sutram-Setup.exe must embed the compiler of this version (bin/ and win/sutram.exe), and Sutram-Setup.sha256 must be its hash - the installer fell behind twice with nothing failing
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3

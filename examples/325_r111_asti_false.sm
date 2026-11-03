@@ -1,0 +1,14 @@
+# R111: `asti` is `==` - the same token, so `a asti b` compiles to the same bytes as `a == b`.
+# अस्ति is the same word in Devanagari.
+mukhya() {
+    vitti a = 4
+    vitti b = 5
+    likha(a asti b)
+    likha(a अस्ति b)
+    likha(a == b)
+    yadi (a asti b) {
+        likha("satya\n")
+    } anya {
+        likha("asatya\n")
+    }
+}
