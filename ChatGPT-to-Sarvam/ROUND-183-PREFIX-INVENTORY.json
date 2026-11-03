@@ -1,0 +1,4330 @@
+{
+  "base": "9ace6e95fc10e94d986be4dbc255d001daced30e",
+  "method": "Parse non-comment key TAB JSON-string entries; no pack edits. Proposed replacement is literal Sutram Error -> Sutram truti.",
+  "packs": [
+    {
+      "path": "lang/bengali.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: শব্দ '",
+          "after": ": Sutram truti [E_PARSE]: শব্দ '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3টি যুক্তি প্রয়োজন\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3টি যুক্তি প্রয়োজন\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 বা 3টি যুক্তি প্রয়োজন\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 বা 3টি যুক্তি প্রয়োজন\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2টি যুক্তি প্রয়োজন\n",
+          "after": "Sutram truti: {kw:akshar}: 2টি যুক্তি প্রয়োজন\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 বা 2টি যুক্তি প্রয়োজন\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 বা 2টি যুক্তি প্রয়োজন\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: অজানা ফলন '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: অজানা ফলন '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: অজানা নাম '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: অজানা নাম '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: অজানা ক্ষেত্র '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: অজানা ক্ষেত্র '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: পুনরায় ঘোষণা '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: পুনরায় ঘোষণা '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: ক্ষেত্র '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: ক্ষেত্র '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: অন্তর্ভুক্ত ফাইল পাওয়া যায়নি: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: অন্তর্ভুক্ত ফাইল পাওয়া যায়নি: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: ব্যাকরণ ত্রুটি, পংক্তি ",
+          "after": "\nSutram truti: ব্যাকরণ ত্রুটি, পংক্তি "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: ফলনের পুনরায় সংজ্ঞা: ",
+          "after": "Sutram truti: ফলনের পুনরায় সংজ্ঞা: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: অজানা ফলন: ",
+          "after": "Sutram truti: অজানা ফলন: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} সূচক সীমার বাইরে\n",
+          "after": "Sutram truti: {kw:mala} সূচক সীমার বাইরে\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} ফলনের জন্য {kw:kosh} চলক প্রয়োজন\n",
+          "after": "Sutram truti: {kw:kosh} ফলনের জন্য {kw:kosh} চলক প্রয়োজন\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: খালি কোশ থেকে {kw:kosh_pop}\n",
+          "after": "Sutram truti: খালি কোশ থেকে {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: খালি কোশ থেকে {kw:kosh_peek}\n",
+          "after": "Sutram truti: খালি কোশ থেকে {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: খালি কোশ থেকে {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: খালি কোশ থেকে {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: কোশ যুক্তি: উপাদানের প্রকার ভিন্ন\n",
+          "after": "Sutram truti: কোশ যুক্তি: উপাদানের প্রকার ভিন্ন\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: কোশ যুক্তিতে {kw:kosh_push} সমর্থিত নয়\n",
+          "after": "Sutram truti: কোশ যুক্তিতে {kw:kosh_push} সমর্থিত নয়\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} বা {kw:vibhag} প্রত্যাশিত\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} বা {kw:vibhag} প্রত্যাশিত\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} প্রক্রিয়া থেকে ফেরত দেওয়া যায় না\n",
+          "after": "Sutram truti: {kw:vibhag} প্রক্রিয়া থেকে ফেরত দেওয়া যায় না\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: ফল-{kw:prakriya}: প্রতিটি {kw:prati} {kw:siddhi} বা {kw:dosh} হতে হবে\n",
+          "after": "Sutram truti: ফল-{kw:prakriya}: প্রতিটি {kw:prati} {kw:siddhi} বা {kw:dosh} হতে হবে\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: ফল-{kw:prakriya} {kw:prasar} ছাড়া ডাকা হয়েছে\n",
+          "after": "Sutram truti: ফল-{kw:prakriya} {kw:prasar} ছাড়া ডাকা হয়েছে\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: ফল-{kw:prakriya} এর আহ্বান প্রত্যাশিত\n",
+          "after": "Sutram truti: {kw:prasar}: ফল-{kw:prakriya} এর আহ্বান প্রত্যাশিত\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} কেবল ফল-{kw:prakriya} বা {kw:mukhya} তে\n",
+          "after": "Sutram truti: {kw:prasar} কেবল ফল-{kw:prakriya} বা {kw:mukhya} তে\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: ফল-{kw:prakriya} এর আহ্বান প্রত্যাশিত\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: ফল-{kw:prakriya} এর আহ্বান প্রত্যাশিত\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: বস্তু-ফাইলে ঘটক-স্তরের {kw:vitti} সমর্থিত নয়\n",
+          "after": "Sutram truti: বস্তু-ফাইলে ঘটক-স্তরের {kw:vitti} সমর্থিত নয়\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: বিদেশি-ঘোষণা ফাইল ত্রুটিপূর্ণ, লাইন ",
+          "after": "Sutram truti: বিদেশি-ঘোষণা ফাইল ত্রুটিপূর্ণ, লাইন "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: বিদেশি {kw:prakriya} নাম অন্যত্রও: ",
+          "after": "Sutram truti: বিদেশি {kw:prakriya} নাম অন্যত্রও: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: বিদেশি {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: বিদেশি {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: উৎস ফাইল পাওয়া যায়নি\n",
+          "after": "Sutram truti: উৎস ফাইল পাওয়া যায়নি\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: অশুদ্ধ {kw:yoj} (রূপ: মডিউল@উপনাম, উপনাম 31 বাইট পর্যন্ত)\n",
+          "after": "Sutram truti: অশুদ্ধ {kw:yoj} (রূপ: মডিউল@উপনাম, উপনাম 31 বাইট পর্যন্ত)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: মডিউল ফাইল পাওয়া যায়নি\n",
+          "after": "Sutram truti: মডিউল ফাইল পাওয়া যায়নি\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: উপনাম আগেই ব্যবহৃত (অন্য মডিউলের জন্য)\n",
+          "after": "Sutram truti: উপনাম আগেই ব্যবহৃত (অন্য মডিউলের জন্য)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: উপনাম আগেই ব্যবহৃত (অন্য মডিউলের জন্য)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: উপনাম আগেই ব্যবহৃত (অন্য মডিউলের জন্য)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: মডিউলের ফলন-নামের সীমা অতিক্রম\n",
+          "after": "Sutram truti: মডিউলের ফলন-নামের সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: বিস্তৃত উৎসের সীমা অতিক্রম\n",
+          "after": "Sutram truti: বিস্তৃত উৎসের সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: বাক্য-বৃক্ষের সীমা অতিক্রম\n",
+          "after": "Sutram truti: বাক্য-বৃক্ষের সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: ফলনের যুক্তি-তালিকার সীমা অতিক্রম\n",
+          "after": "Sutram truti: ফলনের যুক্তি-তালিকার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: চলক-তালিকার সীমা অতিক্রম\n",
+          "after": "Sutram truti: চলক-তালিকার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: ফলন-তালিকার সীমা অতিক্রম\n",
+          "after": "Sutram truti: ফলন-তালিকার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: আহ্বান-তালিকার সীমা অতিক্রম\n",
+          "after": "Sutram truti: আহ্বান-তালিকার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: ফলন সংজ্ঞা-তালিকার সীমা অতিক্রম\n",
+          "after": "Sutram truti: ফলন সংজ্ঞা-তালিকার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} সীমা অতিক্রম (1024)\n",
+          "after": "Sutram truti: {kw:guna} সীমা অতিক্রম (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} এ {kw:krama} এর সীমা অতিক্রম\n",
+          "after": "Sutram truti: {kw:chakra} এ {kw:krama} এর সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} এ {kw:agrim} এর সীমা অতিক্রম\n",
+          "after": "Sutram truti: {kw:chakra} এ {kw:agrim} এর সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: যন্ত্র-ভাষার সীমা অতিক্রম\n",
+          "after": "Sutram truti: যন্ত্র-ভাষার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana}-তালিকার সীমা অতিক্রম\n",
+          "after": "Sutram truti: {kw:rachana}-তালিকার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} ক্ষেত্রের সীমা অতিক্রম\n",
+          "after": "Sutram truti: {kw:rachana} ক্ষেত্রের সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: খণ্ডের গভীরতার সীমা অতিক্রম\n",
+          "after": "Sutram truti: খণ্ডের গভীরতার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: খণ্ডে বিবৃতির সীমা অতিক্রম\n",
+          "after": "Sutram truti: খণ্ডে বিবৃতির সীমা অতিক্রম\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: ফলনের পুনরায় পূর্ব-ঘোষণা\n",
+          "after": "Sutram truti: ফলনের পুনরায় পূর্ব-ঘোষণা\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: ফলনের পূর্ব-ঘোষণা আছে কিন্তু সংজ্ঞা নেই\n",
+          "after": "Sutram truti: ফলনের পূর্ব-ঘোষণা আছে কিন্তু সংজ্ঞা নেই\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: ফলনের পূর্ব-ঘোষণা ও সংজ্ঞা ভিন্ন (যুক্তি/প্রকার)\n",
+          "after": "Sutram truti: ফলনের পূর্ব-ঘোষণা ও সংজ্ঞা ভিন্ন (যুক্তি/প্রকার)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: ফলন পূর্ব-ঘোষণার সীমা অতিক্রম\n",
+          "after": "Sutram truti: ফলন পূর্ব-ঘোষণার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: মডিউল-স্তরের চলকের সীমা অতিক্রম\n",
+          "after": "Sutram truti: মডিউল-স্তরের চলকের সীমা অতিক্রম\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: মডিউল-স্তরের চলকের নাম পুনরায়\n",
+          "after": "Sutram truti: মডিউল-স্তরের চলকের নাম পুনরায়\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: সার্বজনীন মান-সূত্রের সীমা অতিক্রম\n",
+          "after": "Sutram truti: সার্বজনীন মান-সূত্রের সীমা অতিক্রম\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: অন্তর্ভুক্তি চক্র: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: অন্তর্ভুক্তি চক্র: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: পুনরায় রপ্তানি '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: পুনরায় রপ্তানি '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: রপ্তানি '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: রপ্তানি '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: অজানা প্রতীক '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: অজানা প্রতীক '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: অন্তর্ভুক্তির গভীরতার সীমা অতিক্রম\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: অন্তর্ভুক্তির গভীরতার সীমা অতিক্রম\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 মডিউল '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 মডিউল '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: মডিউল/অন্তর্ভুক্তির সীমা অতিক্রম\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: মডিউল/অন্তর্ভুক্তির সীমা অতিক্রম\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: অশুদ্ধ বা খণ্ডিত ভারতীয় নাম\n",
+          "after": "Sutram truti [E_UTF8]: অশুদ্ধ বা খণ্ডিত ভারতীয় নাম\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/gujarati.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: શબ્દ '",
+          "after": ": Sutram truti [E_PARSE]: શબ્દ '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 દલીલ જરૂરી\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 દલીલ જરૂરી\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 અથવા 3 દલીલ જરૂરી\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 અથવા 3 દલીલ જરૂરી\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 દલીલ જરૂરી\n",
+          "after": "Sutram truti: {kw:akshar}: 2 દલીલ જરૂરી\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 અથવા 2 દલીલ જરૂરી\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 અથવા 2 દલીલ જરૂરી\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: અજ્ઞાત ફલન '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: અજ્ઞાત ફલન '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: અજ્ઞાત નામ '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: અજ્ઞાત નામ '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: અજ્ઞાત ક્ષેત્ર '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: અજ્ઞાત ક્ષેત્ર '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: ફરી ઘોષણા '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: ફરી ઘોષણા '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: ક્ષેત્ર '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: ક્ષેત્ર '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: સમાવેશ ફાઇલ મળી નથી: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: સમાવેશ ફાઇલ મળી નથી: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: વ્યાકરણ દોષ, પંક્તિ ",
+          "after": "\nSutram truti: વ્યાકરણ દોષ, પંક્તિ "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: ફલનની ફરી વ્યાખ્યા: ",
+          "after": "Sutram truti: ફલનની ફરી વ્યાખ્યા: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: અજ્ઞાત ફલન: ",
+          "after": "Sutram truti: અજ્ઞાત ફલન: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} અનુક્રમાંક સીમા બહાર\n",
+          "after": "Sutram truti: {kw:mala} અનુક્રમાંક સીમા બહાર\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} ફલન માટે {kw:kosh} ચલ જરૂરી\n",
+          "after": "Sutram truti: {kw:kosh} ફલન માટે {kw:kosh} ચલ જરૂરી\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: ખાલી કોશમાંથી {kw:kosh_pop}\n",
+          "after": "Sutram truti: ખાલી કોશમાંથી {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: ખાલી કોશમાંથી {kw:kosh_peek}\n",
+          "after": "Sutram truti: ખાલી કોશમાંથી {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: ખાલી કોશમાંથી {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: ખાલી કોશમાંથી {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: કોશ દલીલ: તત્ત્વનો પ્રકાર જુદો\n",
+          "after": "Sutram truti: કોશ દલીલ: તત્ત્વનો પ્રકાર જુદો\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: કોશ દલીલ પર {kw:kosh_push} સમર્થિત નથી\n",
+          "after": "Sutram truti: કોશ દલીલ પર {kw:kosh_push} સમર્થિત નથી\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} અથવા {kw:vibhag} અપેક્ષિત\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} અથવા {kw:vibhag} અપેક્ષિત\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} પ્રક્રિયામાંથી પાછો આપી શકાતો નથી\n",
+          "after": "Sutram truti: {kw:vibhag} પ્રક્રિયામાંથી પાછો આપી શકાતો નથી\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: ફળ-{kw:prakriya}: દરેક {kw:prati} {kw:siddhi} અથવા {kw:dosh} હોવું જોઈએ\n",
+          "after": "Sutram truti: ફળ-{kw:prakriya}: દરેક {kw:prati} {kw:siddhi} અથવા {kw:dosh} હોવું જોઈએ\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: ફળ-{kw:prakriya} {kw:prasar} વિના બોલાવાયું\n",
+          "after": "Sutram truti: ફળ-{kw:prakriya} {kw:prasar} વિના બોલાવાયું\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: ફળ-{kw:prakriya} નું આહ્વાન અપેક્ષિત\n",
+          "after": "Sutram truti: {kw:prasar}: ફળ-{kw:prakriya} નું આહ્વાન અપેક્ષિત\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} ફક્ત ફળ-{kw:prakriya} અથવા {kw:mukhya} માં\n",
+          "after": "Sutram truti: {kw:prasar} ફક્ત ફળ-{kw:prakriya} અથવા {kw:mukhya} માં\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: ફળ-{kw:prakriya} નું આહ્વાન અપેક્ષિત\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: ફળ-{kw:prakriya} નું આહ્વાન અપેક્ષિત\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: વસ્તુ-ફાઇલમાં ઘટક-સ્તરનો {kw:vitti} સમર્થિત નથી\n",
+          "after": "Sutram truti: વસ્તુ-ફાઇલમાં ઘટક-સ્તરનો {kw:vitti} સમર્થિત નથી\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: વિદેશી-ઘોષણા ફાઇલ ખામીયુક્ત, પંક્તિ ",
+          "after": "Sutram truti: વિદેશી-ઘોષણા ફાઇલ ખામીયુક્ત, પંક્તિ "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: વિદેશી {kw:prakriya} નામ અન્યત્ર પણ: ",
+          "after": "Sutram truti: વિદેશી {kw:prakriya} નામ અન્યત્ર પણ: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: વિદેશી {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: વિદેશી {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: સ્રોત ફાઇલ મળી નથી\n",
+          "after": "Sutram truti: સ્રોત ફાઇલ મળી નથી\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: અશુદ્ધ {kw:yoj} (રૂપ: ઘટક@ઉપનામ, ઉપનામ 31 બાઇટ સુધી)\n",
+          "after": "Sutram truti: અશુદ્ધ {kw:yoj} (રૂપ: ઘટક@ઉપનામ, ઉપનામ 31 બાઇટ સુધી)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: ઘટક ફાઇલ મળી નથી\n",
+          "after": "Sutram truti: ઘટક ફાઇલ મળી નથી\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: ઉપનામ પહેલેથી વપરાયેલું (બીજા ઘટક માટે)\n",
+          "after": "Sutram truti: ઉપનામ પહેલેથી વપરાયેલું (બીજા ઘટક માટે)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: ઉપનામ પહેલેથી વપરાયેલું (બીજા ઘટક માટે)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: ઉપનામ પહેલેથી વપરાયેલું (બીજા ઘટક માટે)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: ઘટક ફલન-નામોની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ઘટક ફલન-નામોની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: વિસ્તૃત સ્રોતની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: વિસ્તૃત સ્રોતની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: વાક્ય-વૃક્ષની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: વાક્ય-વૃક્ષની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: ફલન દલીલ-સૂચિની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ફલન દલીલ-સૂચિની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: ચલ-સૂચિની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ચલ-સૂચિની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: ફલન-સૂચિની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ફલન-સૂચિની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: આહ્વાન-સૂચિની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: આહ્વાન-સૂચિની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: ફલન વ્યાખ્યા-સૂચિની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ફલન વ્યાખ્યા-સૂચિની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} સીમા ઓળંગાઈ (1024)\n",
+          "after": "Sutram truti: {kw:guna} સીમા ઓળંગાઈ (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} માં {kw:krama} ની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: {kw:chakra} માં {kw:krama} ની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} માં {kw:agrim} ની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: {kw:chakra} માં {kw:agrim} ની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: યંત્ર-ભાષાની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: યંત્ર-ભાષાની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana}-સૂચિની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: {kw:rachana}-સૂચિની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} ક્ષેત્રોની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: {kw:rachana} ક્ષેત્રોની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: ખંડ ઊંડાઈની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ખંડ ઊંડાઈની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: ખંડમાં વિધાનોની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ખંડમાં વિધાનોની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: ફલનની ફરી પૂર્વ-ઘોષણા\n",
+          "after": "Sutram truti: ફલનની ફરી પૂર્વ-ઘોષણા\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: ફલનની પૂર્વ-ઘોષણા છે પણ વ્યાખ્યા નથી\n",
+          "after": "Sutram truti: ફલનની પૂર્વ-ઘોષણા છે પણ વ્યાખ્યા નથી\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: ફલનની પૂર્વ-ઘોષણા અને વ્યાખ્યા જુદી (દલીલ/પ્રકાર)\n",
+          "after": "Sutram truti: ફલનની પૂર્વ-ઘોષણા અને વ્યાખ્યા જુદી (દલીલ/પ્રકાર)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: ફલન પૂર્વ-ઘોષણાઓની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ફલન પૂર્વ-ઘોષણાઓની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: ઘટક-સ્તરના ચલોની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: ઘટક-સ્તરના ચલોની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: ઘટક-સ્તરના ચલનું નામ ફરી\n",
+          "after": "Sutram truti: ઘટક-સ્તરના ચલનું નામ ફરી\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: સાર્વત્રિક મૂલ્ય સંદર્ભોની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti: સાર્વત્રિક મૂલ્ય સંદર્ભોની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: સમાવેશ ચક્ર: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: સમાવેશ ચક્ર: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: ફરી નિર્યાત '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: ફરી નિર્યાત '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: નિર્યાત '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: નિર્યાત '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: અજ્ઞાત ચિહ્ન '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: અજ્ઞાત ચિહ્ન '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: સમાવેશ ઊંડાઈની સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: સમાવેશ ઊંડાઈની સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 ઘટક '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 ઘટક '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: ઘટક/સમાવેશ સીમા ઓળંગાઈ\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: ઘટક/સમાવેશ સીમા ઓળંગાઈ\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: અશુદ્ધ અથવા ખંડિત ભારતીય નામ\n",
+          "after": "Sutram truti [E_UTF8]: અશુદ્ધ અથવા ખંડિત ભારતીય નામ\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/hindi.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: शब्द '",
+          "after": ": Sutram truti [E_PARSE]: शब्द '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 तर्क आवश्यक\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 तर्क आवश्यक\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 या 3 तर्क आवश्यक\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 या 3 तर्क आवश्यक\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 तर्क आवश्यक\n",
+          "after": "Sutram truti: {kw:akshar}: 2 तर्क आवश्यक\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 या 2 तर्क आवश्यक\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 या 2 तर्क आवश्यक\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: अज्ञात फलन '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: अज्ञात फलन '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: अज्ञात नाम '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: अज्ञात क्षेत्र '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: अज्ञात क्षेत्र '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: दोबारा घोषणा '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: दोबारा घोषणा '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: क्षेत्र '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: क्षेत्र '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: समावेश फ़ाइल नहीं मिली: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: समावेश फ़ाइल नहीं मिली: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: व्याकरण दोष, पंक्ति ",
+          "after": "\nSutram truti: व्याकरण दोष, पंक्ति "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: फलन की दोबारा परिभाषा: ",
+          "after": "Sutram truti: फलन की दोबारा परिभाषा: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: अज्ञात फलन: ",
+          "after": "Sutram truti: अज्ञात फलन: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} सूचकांक सीमा से बाहर\n",
+          "after": "Sutram truti: {kw:mala} सूचकांक सीमा से बाहर\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} फलन के लिए {kw:kosh} चर आवश्यक\n",
+          "after": "Sutram truti: {kw:kosh} फलन के लिए {kw:kosh} चर आवश्यक\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: खाली कोश से {kw:kosh_pop}\n",
+          "after": "Sutram truti: खाली कोश से {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: खाली कोश से {kw:kosh_peek}\n",
+          "after": "Sutram truti: खाली कोश से {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: खाली कोश से {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: खाली कोश से {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: कोश तर्क: तत्व का प्रकार भिन्न\n",
+          "after": "Sutram truti: कोश तर्क: तत्व का प्रकार भिन्न\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: कोश तर्क पर {kw:kosh_push} समर्थित नहीं\n",
+          "after": "Sutram truti: कोश तर्क पर {kw:kosh_push} समर्थित नहीं\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} या {kw:vibhag} अपेक्षित\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} या {kw:vibhag} अपेक्षित\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} को प्रक्रिया से लौटाया नहीं जा सकता\n",
+          "after": "Sutram truti: {kw:vibhag} को प्रक्रिया से लौटाया नहीं जा सकता\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: फल-{kw:prakriya}: हर {kw:prati} {kw:siddhi} या {kw:dosh} होना चाहिए\n",
+          "after": "Sutram truti: फल-{kw:prakriya}: हर {kw:prati} {kw:siddhi} या {kw:dosh} होना चाहिए\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: फल-{kw:prakriya} को {kw:prasar} के बिना बुलाया गया\n",
+          "after": "Sutram truti: फल-{kw:prakriya} को {kw:prasar} के बिना बुलाया गया\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: फल-{kw:prakriya} का आह्वान अपेक्षित\n",
+          "after": "Sutram truti: {kw:prasar}: फल-{kw:prakriya} का आह्वान अपेक्षित\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} केवल फल-{kw:prakriya} या {kw:mukhya} में\n",
+          "after": "Sutram truti: {kw:prasar} केवल फल-{kw:prakriya} या {kw:mukhya} में\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: फल-{kw:prakriya} का आह्वान अपेक्षित\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: फल-{kw:prakriya} का आह्वान अपेक्षित\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: वस्तु-फ़ाइल में घटक-स्तर का {kw:vitti} समर्थित नहीं\n",
+          "after": "Sutram truti: वस्तु-फ़ाइल में घटक-स्तर का {kw:vitti} समर्थित नहीं\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: विदेशी-घोषणा फ़ाइल दोषपूर्ण, पंक्ति ",
+          "after": "Sutram truti: विदेशी-घोषणा फ़ाइल दोषपूर्ण, पंक्ति "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: विदेशी {kw:prakriya} का नाम अन्यत्र भी: ",
+          "after": "Sutram truti: विदेशी {kw:prakriya} का नाम अन्यत्र भी: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: विदेशी {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: विदेशी {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: स्रोत फ़ाइल नहीं मिली\n",
+          "after": "Sutram truti: स्रोत फ़ाइल नहीं मिली\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: अशुद्ध {kw:yoj} (रूप: मॉड्यूल@उपनाम, उपनाम 31 बाइट तक)\n",
+          "after": "Sutram truti: अशुद्ध {kw:yoj} (रूप: मॉड्यूल@उपनाम, उपनाम 31 बाइट तक)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: मॉड्यूल फ़ाइल नहीं मिली\n",
+          "after": "Sutram truti: मॉड्यूल फ़ाइल नहीं मिली\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: उपनाम पहले से प्रयुक्त (दूसरे मॉड्यूल के लिए)\n",
+          "after": "Sutram truti: उपनाम पहले से प्रयुक्त (दूसरे मॉड्यूल के लिए)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: उपनाम पहले से प्रयुक्त (दूसरे मॉड्यूल के लिए)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: उपनाम पहले से प्रयुक्त (दूसरे मॉड्यूल के लिए)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: मॉड्यूल फलन-नाम की सीमा पार\n",
+          "after": "Sutram truti: मॉड्यूल फलन-नाम की सीमा पार\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: विस्तारित स्रोत की सीमा पार\n",
+          "after": "Sutram truti: विस्तारित स्रोत की सीमा पार\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: वाक्य-वृक्ष की सीमा पार\n",
+          "after": "Sutram truti: वाक्य-वृक्ष की सीमा पार\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: फलन तर्क-सूची की सीमा पार\n",
+          "after": "Sutram truti: फलन तर्क-सूची की सीमा पार\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: चर-सूची की सीमा पार\n",
+          "after": "Sutram truti: चर-सूची की सीमा पार\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: फलन-सूची की सीमा पार\n",
+          "after": "Sutram truti: फलन-सूची की सीमा पार\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: आह्वान-सूची की सीमा पार\n",
+          "after": "Sutram truti: आह्वान-सूची की सीमा पार\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: फलन परिभाषा-सूची की सीमा पार\n",
+          "after": "Sutram truti: फलन परिभाषा-सूची की सीमा पार\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} की सीमा पार (1024)\n",
+          "after": "Sutram truti: {kw:guna} की सीमा पार (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} में {kw:krama} की सीमा पार\n",
+          "after": "Sutram truti: {kw:chakra} में {kw:krama} की सीमा पार\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} में {kw:agrim} की सीमा पार\n",
+          "after": "Sutram truti: {kw:chakra} में {kw:agrim} की सीमा पार\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: यंत्र-भाषा की सीमा पार\n",
+          "after": "Sutram truti: यंत्र-भाषा की सीमा पार\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana}-सूची की सीमा पार\n",
+          "after": "Sutram truti: {kw:rachana}-सूची की सीमा पार\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} क्षेत्रों की सीमा पार\n",
+          "after": "Sutram truti: {kw:rachana} क्षेत्रों की सीमा पार\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: खंड गहराई की सीमा पार\n",
+          "after": "Sutram truti: खंड गहराई की सीमा पार\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: खंड में कथनों की सीमा पार\n",
+          "after": "Sutram truti: खंड में कथनों की सीमा पार\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: फलन की दोबारा पूर्व-घोषणा\n",
+          "after": "Sutram truti: फलन की दोबारा पूर्व-घोषणा\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: फलन की पूर्व-घोषणा है पर परिभाषा नहीं\n",
+          "after": "Sutram truti: फलन की पूर्व-घोषणा है पर परिभाषा नहीं\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: फलन की पूर्व-घोषणा और परिभाषा भिन्न (तर्क/प्रकार)\n",
+          "after": "Sutram truti: फलन की पूर्व-घोषणा और परिभाषा भिन्न (तर्क/प्रकार)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: फलन पूर्व-घोषणाओं की सीमा पार\n",
+          "after": "Sutram truti: फलन पूर्व-घोषणाओं की सीमा पार\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: मॉड्यूल-स्तर चरों की सीमा पार\n",
+          "after": "Sutram truti: मॉड्यूल-स्तर चरों की सीमा पार\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: मॉड्यूल-स्तर चर का नाम दोबारा\n",
+          "after": "Sutram truti: मॉड्यूल-स्तर चर का नाम दोबारा\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: सार्वत्रिक मान संदर्भों की सीमा पार\n",
+          "after": "Sutram truti: सार्वत्रिक मान संदर्भों की सीमा पार\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: समावेश चक्र: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: समावेश चक्र: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: दोबारा निर्यात '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: दोबारा निर्यात '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: निर्यात '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: निर्यात '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: अज्ञात प्रतीक '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: अज्ञात प्रतीक '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: समावेश गहराई की सीमा पार\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: समावेश गहराई की सीमा पार\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 मॉड्यूल '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 मॉड्यूल '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: मॉड्यूल/समावेश की सीमा पार\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: मॉड्यूल/समावेश की सीमा पार\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: अशुद्ध या खंडित भारतीय नाम\n",
+          "after": "Sutram truti [E_UTF8]: अशुद्ध या खंडित भारतीय नाम\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/kannada.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: ಪದ '",
+          "after": ": Sutram truti [E_PARSE]: ಪದ '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 ಪ್ರಮಾಣಗಳು ಬೇಕು\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 ಪ್ರಮಾಣಗಳು ಬೇಕು\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 ಅಥವಾ 3 ಪ್ರಮಾಣಗಳು ಬೇಕು\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 ಅಥವಾ 3 ಪ್ರಮಾಣಗಳು ಬೇಕು\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 ಪ್ರಮಾಣಗಳು ಬೇಕು\n",
+          "after": "Sutram truti: {kw:akshar}: 2 ಪ್ರಮಾಣಗಳು ಬೇಕು\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 ಅಥವಾ 2 ಪ್ರಮಾಣಗಳು ಬೇಕು\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 ಅಥವಾ 2 ಪ್ರಮಾಣಗಳು ಬೇಕು\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: ಅಜ್ಞಾತ ಕ್ರಿಯೆ '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: ಅಜ್ಞಾತ ಕ್ರಿಯೆ '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: ಅಜ್ಞಾತ ಹೆಸರು '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: ಅಜ್ಞಾತ ಹೆಸರು '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: ಅಜ್ಞಾತ ಕ್ಷೇತ್ರ '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: ಅಜ್ಞಾತ ಕ್ಷೇತ್ರ '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: ಮರು-ಘೋಷಣೆ '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: ಮರು-ಘೋಷಣೆ '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: ಕ್ಷೇತ್ರ '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: ಕ್ಷೇತ್ರ '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: ಸೇರ್ಪಡೆ ಕಡತ ಸಿಗಲಿಲ್ಲ: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: ಸೇರ್ಪಡೆ ಕಡತ ಸಿಗಲಿಲ್ಲ: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: ವ್ಯಾಕರಣ ದೋಷ, ಸಾಲು ",
+          "after": "\nSutram truti: ವ್ಯಾಕರಣ ದೋಷ, ಸಾಲು "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: ಕ್ರಿಯೆಯ ಮರು-ವ್ಯಾಖ್ಯಾನ: ",
+          "after": "Sutram truti: ಕ್ರಿಯೆಯ ಮರು-ವ್ಯಾಖ್ಯಾನ: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: ಅಜ್ಞಾತ ಕ್ರಿಯೆ: ",
+          "after": "Sutram truti: ಅಜ್ಞಾತ ಕ್ರಿಯೆ: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} ಸೂಚ್ಯಂಕ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: {kw:mala} ಸೂಚ್ಯಂಕ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} ಕ್ರಿಯೆಗೆ {kw:kosh} {kw:vitti} ಬೇಕು\n",
+          "after": "Sutram truti: {kw:kosh} ಕ್ರಿಯೆಗೆ {kw:kosh} {kw:vitti} ಬೇಕು\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: ಖಾಲಿ ಕೋಶದಿಂದ {kw:kosh_pop}\n",
+          "after": "Sutram truti: ಖಾಲಿ ಕೋಶದಿಂದ {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: ಖಾಲಿ ಕೋಶದಿಂದ {kw:kosh_peek}\n",
+          "after": "Sutram truti: ಖಾಲಿ ಕೋಶದಿಂದ {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: ಖಾಲಿ ಕೋಶದಿಂದ {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: ಖಾಲಿ ಕೋಶದಿಂದ {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: ಕೋಶ ಪ್ರಮಾಣ: ಅಂಶದ ಪ್ರಕಾರ ಬೇರೆ\n",
+          "after": "Sutram truti: ಕೋಶ ಪ್ರಮಾಣ: ಅಂಶದ ಪ್ರಕಾರ ಬೇರೆ\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: ಕೋಶ ಪ್ರಮಾಣದ ಮೇಲೆ {kw:kosh_push} ಬೆಂಬಲವಿಲ್ಲ\n",
+          "after": "Sutram truti: ಕೋಶ ಪ್ರಮಾಣದ ಮೇಲೆ {kw:kosh_push} ಬೆಂಬಲವಿಲ್ಲ\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} ಅಥವಾ {kw:vibhag} ಬೇಕು\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} ಅಥವಾ {kw:vibhag} ಬೇಕು\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} ಅನ್ನು ಕ್ರಿಯೆಯಿಂದ ಹಿಂದಿರುಗಿಸಲಾಗದು\n",
+          "after": "Sutram truti: {kw:vibhag} ಅನ್ನು ಕ್ರಿಯೆಯಿಂದ ಹಿಂದಿರುಗಿಸಲಾಗದು\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: ಫಲಿತ-{kw:prakriya}: ಪ್ರತಿ {kw:prati} {kw:siddhi} ಅಥವಾ {kw:dosh} ಆಗಿರಬೇಕು\n",
+          "after": "Sutram truti: ಫಲಿತ-{kw:prakriya}: ಪ್ರತಿ {kw:prati} {kw:siddhi} ಅಥವಾ {kw:dosh} ಆಗಿರಬೇಕು\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: ಫಲಿತ-{kw:prakriya} {kw:prasar} ಇಲ್ಲದೆ ಕರೆಯಲಾಗಿದೆ\n",
+          "after": "Sutram truti: ಫಲಿತ-{kw:prakriya} {kw:prasar} ಇಲ್ಲದೆ ಕರೆಯಲಾಗಿದೆ\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: ಫಲಿತ-{kw:prakriya} ಕರೆ ಬೇಕು\n",
+          "after": "Sutram truti: {kw:prasar}: ಫಲಿತ-{kw:prakriya} ಕರೆ ಬೇಕು\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} ಫಲಿತ-{kw:prakriya} ಅಥವಾ {kw:mukhya} ದಲ್ಲಿ ಮಾತ್ರ\n",
+          "after": "Sutram truti: {kw:prasar} ಫಲಿತ-{kw:prakriya} ಅಥವಾ {kw:mukhya} ದಲ್ಲಿ ಮಾತ್ರ\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: ಫಲಿತ-{kw:prakriya} ಕರೆ ಬೇಕು\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: ಫಲಿತ-{kw:prakriya} ಕರೆ ಬೇಕು\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: ವಸ್ತು-ಕಡತದಲ್ಲಿ ಘಟಕ-ಮಟ್ಟದ {kw:vitti} ಬೆಂಬಲವಿಲ್ಲ\n",
+          "after": "Sutram truti: ವಸ್ತು-ಕಡತದಲ್ಲಿ ಘಟಕ-ಮಟ್ಟದ {kw:vitti} ಬೆಂಬಲವಿಲ್ಲ\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: ವಿದೇಶಿ-ಘೋಷಣೆ ಫೈಲ್ ದೋಷಪೂರ್ಣ, ಸಾಲು ",
+          "after": "Sutram truti: ವಿದೇಶಿ-ಘೋಷಣೆ ಫೈಲ್ ದೋಷಪೂರ್ಣ, ಸಾಲು "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: ವಿದೇಶಿ {kw:prakriya} ಹೆಸರು ಬೇರೆಡೆಯೂ: ",
+          "after": "Sutram truti: ವಿದೇಶಿ {kw:prakriya} ಹೆಸರು ಬೇರೆಡೆಯೂ: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: ವಿದೇಶಿ {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: ವಿದೇಶಿ {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: ಮೂಲ ಕಡತ ಸಿಗಲಿಲ್ಲ\n",
+          "after": "Sutram truti: ಮೂಲ ಕಡತ ಸಿಗಲಿಲ್ಲ\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: ಅಶುದ್ಧ {kw:yoj} (ರೂಪ: ಘಟಕ@ಉಪನಾಮ, ಉಪನಾಮ 31 ಬೈಟ್‌ವರೆಗೆ)\n",
+          "after": "Sutram truti: ಅಶುದ್ಧ {kw:yoj} (ರೂಪ: ಘಟಕ@ಉಪನಾಮ, ಉಪನಾಮ 31 ಬೈಟ್‌ವರೆಗೆ)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: ಘಟಕ ಕಡತ ಸಿಗಲಿಲ್ಲ\n",
+          "after": "Sutram truti: ಘಟಕ ಕಡತ ಸಿಗಲಿಲ್ಲ\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: ಉಪನಾಮ ಈಗಾಗಲೇ ಬಳಕೆಯಲ್ಲಿದೆ (ಬೇರೆ ಘಟಕಕ್ಕೆ)\n",
+          "after": "Sutram truti: ಉಪನಾಮ ಈಗಾಗಲೇ ಬಳಕೆಯಲ್ಲಿದೆ (ಬೇರೆ ಘಟಕಕ್ಕೆ)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: ಉಪನಾಮ ಈಗಾಗಲೇ ಬಳಕೆಯಲ್ಲಿದೆ (ಬೇರೆ ಘಟಕಕ್ಕೆ)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: ಉಪನಾಮ ಈಗಾಗಲೇ ಬಳಕೆಯಲ್ಲಿದೆ (ಬೇರೆ ಘಟಕಕ್ಕೆ)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: ಘಟಕದ ಕ್ರಿಯೆ-ಹೆಸರುಗಳ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಘಟಕದ ಕ್ರಿಯೆ-ಹೆಸರುಗಳ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: ವಿಸ್ತರಿತ ಮೂಲದ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ವಿಸ್ತರಿತ ಮೂಲದ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: ವಾಕ್ಯ-ವೃಕ್ಷದ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ವಾಕ್ಯ-ವೃಕ್ಷದ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: ಕ್ರಿಯೆಯ ಪ್ರಮಾಣ-ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಕ್ರಿಯೆಯ ಪ್ರಮಾಣ-ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: {kw:vitti} ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: {kw:vitti} ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: ಕ್ರಿಯೆ ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಕ್ರಿಯೆ ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: ಕರೆ ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಕರೆ ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: ಕ್ರಿಯೆ ವ್ಯಾಖ್ಯಾನ-ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಕ್ರಿಯೆ ವ್ಯಾಖ್ಯಾನ-ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} ಮಿತಿ ಮೀರಿದೆ (1024)\n",
+          "after": "Sutram truti: {kw:guna} ಮಿತಿ ಮೀರಿದೆ (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ಒಳಗೆ {kw:krama} ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: {kw:chakra} ಒಳಗೆ {kw:krama} ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ಒಳಗೆ {kw:agrim} ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: {kw:chakra} ಒಳಗೆ {kw:agrim} ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: ಯಂತ್ರ ಭಾಷೆಯ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಯಂತ್ರ ಭಾಷೆಯ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana} ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: {kw:rachana} ಪಟ್ಟಿಯ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} ಕ್ಷೇತ್ರಗಳ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: {kw:rachana} ಕ್ಷೇತ್ರಗಳ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: ಖಂಡದ ಆಳದ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಖಂಡದ ಆಳದ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: ಖಂಡದಲ್ಲಿ ವಾಕ್ಯಗಳ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಖಂಡದಲ್ಲಿ ವಾಕ್ಯಗಳ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: ಕ್ರಿಯೆಯ ಮರು ಪೂರ್ವ-ಘೋಷಣೆ\n",
+          "after": "Sutram truti: ಕ್ರಿಯೆಯ ಮರು ಪೂರ್ವ-ಘೋಷಣೆ\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: ಕ್ರಿಯೆಯ ಪೂರ್ವ-ಘೋಷಣೆ ಇದೆ, ವ್ಯಾಖ್ಯಾನ ಇಲ್ಲ\n",
+          "after": "Sutram truti: ಕ್ರಿಯೆಯ ಪೂರ್ವ-ಘೋಷಣೆ ಇದೆ, ವ್ಯಾಖ್ಯಾನ ಇಲ್ಲ\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: ಕ್ರಿಯೆಯ ಪೂರ್ವ-ಘೋಷಣೆ ಮತ್ತು ವ್ಯಾಖ್ಯಾನ ಬೇರೆ (ಪ್ರಮಾಣ/ಪ್ರಕಾರ)\n",
+          "after": "Sutram truti: ಕ್ರಿಯೆಯ ಪೂರ್ವ-ಘೋಷಣೆ ಮತ್ತು ವ್ಯಾಖ್ಯಾನ ಬೇರೆ (ಪ್ರಮಾಣ/ಪ್ರಕಾರ)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: ಕ್ರಿಯೆ ಪೂರ್ವ-ಘೋಷಣೆಗಳ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಕ್ರಿಯೆ ಪೂರ್ವ-ಘೋಷಣೆಗಳ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: ಘಟಕ-ಮಟ್ಟದ {kw:vitti} ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಘಟಕ-ಮಟ್ಟದ {kw:vitti} ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: ಘಟಕ-ಮಟ್ಟದ {kw:vitti} ಹೆಸರು ಮತ್ತೆ\n",
+          "after": "Sutram truti: ಘಟಕ-ಮಟ್ಟದ {kw:vitti} ಹೆಸರು ಮತ್ತೆ\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: ಸಾರ್ವತ್ರಿಕ ಮೌಲ್ಯ ಉಲ್ಲೇಖಗಳ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti: ಸಾರ್ವತ್ರಿಕ ಮೌಲ್ಯ ಉಲ್ಲೇಖಗಳ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: ಸೇರ್ಪಡೆ ಚಕ್ರ: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: ಸೇರ್ಪಡೆ ಚಕ್ರ: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: ಮರು ರಫ್ತು '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: ಮರು ರಫ್ತು '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ರಫ್ತು '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ರಫ್ತು '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ಅಜ್ಞಾತ ಚಿಹ್ನೆ '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ಅಜ್ಞಾತ ಚಿಹ್ನೆ '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: ಸೇರ್ಪಡೆ ಆಳದ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: ಸೇರ್ಪಡೆ ಆಳದ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 ಘಟಕ '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 ಘಟಕ '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: ಘಟಕ/ಸೇರ್ಪಡೆ ಮಿತಿ ಮೀರಿದೆ\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: ಘಟಕ/ಸೇರ್ಪಡೆ ಮಿತಿ ಮೀರಿದೆ\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: ಅಶುದ್ಧ ಅಥವಾ ತುಂಡಾದ ಭಾರತೀಯ ಹೆಸರು\n",
+          "after": "Sutram truti [E_UTF8]: ಅಶುದ್ಧ ಅಥವಾ ತುಂಡಾದ ಭಾರತೀಯ ಹೆಸರು\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/malayalam.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: വാക്ക് '",
+          "after": ": Sutram truti [E_PARSE]: വാക്ക് '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 പ്രമാണങ്ങൾ ആവശ്യം\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 പ്രമാണങ്ങൾ ആവശ്യം\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 അല്ലെങ്കിൽ 3 പ്രമാണങ്ങൾ ആവശ്യം\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 അല്ലെങ്കിൽ 3 പ്രമാണങ്ങൾ ആവശ്യം\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 പ്രമാണങ്ങൾ ആവശ്യം\n",
+          "after": "Sutram truti: {kw:akshar}: 2 പ്രമാണങ്ങൾ ആവശ്യം\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 അല്ലെങ്കിൽ 2 പ്രമാണങ്ങൾ ആവശ്യം\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 അല്ലെങ്കിൽ 2 പ്രമാണങ്ങൾ ആവശ്യം\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: അജ്ഞാത ക്രിയ '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: അജ്ഞാത ക്രിയ '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: അജ്ഞാത പേര് '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: അജ്ഞാത പേര് '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: അജ്ഞാത മണ്ഡലം '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: അജ്ഞാത മണ്ഡലം '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: വീണ്ടും പ്രഖ്യാപനം '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: വീണ്ടും പ്രഖ്യാപനം '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: മണ്ഡലം '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: മണ്ഡലം '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: ഉൾപ്പെടുത്തൽ ഫയൽ കണ്ടില്ല: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: ഉൾപ്പെടുത്തൽ ഫയൽ കണ്ടില്ല: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: വ്യാകരണ പിശക്, വരി ",
+          "after": "\nSutram truti: വ്യാകരണ പിശക്, വരി "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: ക്രിയയ്ക്ക് വീണ്ടും നിർവചനം: ",
+          "after": "Sutram truti: ക്രിയയ്ക്ക് വീണ്ടും നിർവചനം: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: അജ്ഞാത ക്രിയ: ",
+          "after": "Sutram truti: അജ്ഞാത ക്രിയ: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} സൂചിക പരിധിക്ക് പുറത്ത്\n",
+          "after": "Sutram truti: {kw:mala} സൂചിക പരിധിക്ക് പുറത്ത്\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} ക്രിയയ്ക്ക് {kw:kosh} {kw:vitti} ആവശ്യം\n",
+          "after": "Sutram truti: {kw:kosh} ക്രിയയ്ക്ക് {kw:kosh} {kw:vitti} ആവശ്യം\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: ശൂന്യമായ കോശത്തിൽ നിന്ന് {kw:kosh_pop}\n",
+          "after": "Sutram truti: ശൂന്യമായ കോശത്തിൽ നിന്ന് {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: ശൂന്യമായ കോശത്തിൽ നിന്ന് {kw:kosh_peek}\n",
+          "after": "Sutram truti: ശൂന്യമായ കോശത്തിൽ നിന്ന് {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: ശൂന്യമായ കോശത്തിൽ നിന്ന് {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: ശൂന്യമായ കോശത്തിൽ നിന്ന് {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: കോശ പ്രമാണം: ഘടകത്തിന്റെ തരം വ്യത്യസ്തം\n",
+          "after": "Sutram truti: കോശ പ്രമാണം: ഘടകത്തിന്റെ തരം വ്യത്യസ്തം\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: കോശ പ്രമാണത്തിൽ {kw:kosh_push} പിന്തുണയില്ല\n",
+          "after": "Sutram truti: കോശ പ്രമാണത്തിൽ {kw:kosh_push} പിന്തുണയില്ല\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} അല്ലെങ്കിൽ {kw:vibhag} ആവശ്യം\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} അല്ലെങ്കിൽ {kw:vibhag} ആവശ്യം\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} ക്രിയയിൽ നിന്ന് തിരികെ നൽകാനാവില്ല\n",
+          "after": "Sutram truti: {kw:vibhag} ക്രിയയിൽ നിന്ന് തിരികെ നൽകാനാവില്ല\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: ഫല-{kw:prakriya}: ഓരോ {kw:prati} യും {kw:siddhi} അല്ലെങ്കിൽ {kw:dosh} ആയിരിക്കണം\n",
+          "after": "Sutram truti: ഫല-{kw:prakriya}: ഓരോ {kw:prati} യും {kw:siddhi} അല്ലെങ്കിൽ {kw:dosh} ആയിരിക്കണം\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: ഫല-{kw:prakriya} {kw:prasar} ഇല്ലാതെ വിളിച്ചു\n",
+          "after": "Sutram truti: ഫല-{kw:prakriya} {kw:prasar} ഇല്ലാതെ വിളിച്ചു\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: ഫല-{kw:prakriya} വിളി ആവശ്യം\n",
+          "after": "Sutram truti: {kw:prasar}: ഫല-{kw:prakriya} വിളി ആവശ്യം\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} ഫല-{kw:prakriya} യിലോ {kw:mukhya} യിലോ മാത്രം\n",
+          "after": "Sutram truti: {kw:prasar} ഫല-{kw:prakriya} യിലോ {kw:mukhya} യിലോ മാത്രം\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: ഫല-{kw:prakriya} വിളി ആവശ്യം\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: ഫല-{kw:prakriya} വിളി ആവശ്യം\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: വസ്തു-ഫയലിൽ ഘടക-തല {kw:vitti} പിന്തുണയില്ല\n",
+          "after": "Sutram truti: വസ്തു-ഫയലിൽ ഘടക-തല {kw:vitti} പിന്തുണയില്ല\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: വിദേശ-പ്രഖ്യാപന ഫയൽ തകരാറുള്ളത്, വരി ",
+          "after": "Sutram truti: വിദേശ-പ്രഖ്യാപന ഫയൽ തകരാറുള്ളത്, വരി "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: വിദേശ {kw:prakriya} പേര് മറ്റിടത്തും: ",
+          "after": "Sutram truti: വിദേശ {kw:prakriya} പേര് മറ്റിടത്തും: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: വിദേശ {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: വിദേശ {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: ഉറവിട ഫയൽ കണ്ടില്ല\n",
+          "after": "Sutram truti: ഉറവിട ഫയൽ കണ്ടില്ല\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: അശുദ്ധ {kw:yoj} (രൂപം: ഘടകം@ഉപനാമം, ഉപനാമം 31 ബൈറ്റ് വരെ)\n",
+          "after": "Sutram truti: അശുദ്ധ {kw:yoj} (രൂപം: ഘടകം@ഉപനാമം, ഉപനാമം 31 ബൈറ്റ് വരെ)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: ഘടക ഫയൽ കണ്ടില്ല\n",
+          "after": "Sutram truti: ഘടക ഫയൽ കണ്ടില്ല\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: ഉപനാമം ഇതിനകം ഉപയോഗത്തിലാണ് (മറ്റൊരു ഘടകത്തിന്)\n",
+          "after": "Sutram truti: ഉപനാമം ഇതിനകം ഉപയോഗത്തിലാണ് (മറ്റൊരു ഘടകത്തിന്)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: ഉപനാമം ഇതിനകം ഉപയോഗത്തിലാണ് (മറ്റൊരു ഘടകത്തിന്)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: ഉപനാമം ഇതിനകം ഉപയോഗത്തിലാണ് (മറ്റൊരു ഘടകത്തിന്)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: ഘടകത്തിന്റെ ക്രിയ-നാമ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ഘടകത്തിന്റെ ക്രിയ-നാമ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: വികസിപ്പിച്ച ഉറവിട പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: വികസിപ്പിച്ച ഉറവിട പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: വാക്യവൃക്ഷ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: വാക്യവൃക്ഷ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: ക്രിയ പ്രമാണം-പട്ടിക പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ക്രിയ പ്രമാണം-പട്ടിക പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: {kw:vitti} പട്ടിക പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: {kw:vitti} പട്ടിക പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: ക്രിയ പട്ടിക പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ക്രിയ പട്ടിക പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: വിളി പട്ടിക പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: വിളി പട്ടിക പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: ക്രിയ നിർവചന-പട്ടിക പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ക്രിയ നിർവചന-പട്ടിക പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} പരിധി കവിഞ്ഞു (1024)\n",
+          "after": "Sutram truti: {kw:guna} പരിധി കവിഞ്ഞു (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ഉള്ളിൽ {kw:krama} പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: {kw:chakra} ഉള്ളിൽ {kw:krama} പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ഉള്ളിൽ {kw:agrim} പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: {kw:chakra} ഉള്ളിൽ {kw:agrim} പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: യന്ത്രഭാഷ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: യന്ത്രഭാഷ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana} പട്ടിക പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: {kw:rachana} പട്ടിക പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} മണ്ഡല പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: {kw:rachana} മണ്ഡല പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: ഖണ്ഡ ആഴ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ഖണ്ഡ ആഴ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: ഖണ്ഡത്തിലെ വാക്യ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ഖണ്ഡത്തിലെ വാക്യ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: ക്രിയയ്ക്ക് വീണ്ടും മുൻ-പ്രഖ്യാപനം\n",
+          "after": "Sutram truti: ക്രിയയ്ക്ക് വീണ്ടും മുൻ-പ്രഖ്യാപനം\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: ക്രിയയ്ക്ക് മുൻ-പ്രഖ്യാപനം ഉണ്ട്, നിർവചനം ഇല്ല\n",
+          "after": "Sutram truti: ക്രിയയ്ക്ക് മുൻ-പ്രഖ്യാപനം ഉണ്ട്, നിർവചനം ഇല്ല\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: ക്രിയയുടെ മുൻ-പ്രഖ്യാപനവും നിർവചനവും വ്യത്യസ്തം (പ്രമാണം/തരം)\n",
+          "after": "Sutram truti: ക്രിയയുടെ മുൻ-പ്രഖ്യാപനവും നിർവചനവും വ്യത്യസ്തം (പ്രമാണം/തരം)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: ക്രിയ മുൻ-പ്രഖ്യാപന പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ക്രിയ മുൻ-പ്രഖ്യാപന പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: ഘടക-തല {kw:vitti} പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: ഘടക-തല {kw:vitti} പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: ഘടക-തല {kw:vitti} പേര് വീണ്ടും\n",
+          "after": "Sutram truti: ഘടക-തല {kw:vitti} പേര് വീണ്ടും\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: സാർവത്രിക മൂല്യ പരാമർശ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti: സാർവത്രിക മൂല്യ പരാമർശ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: ഉൾപ്പെടുത്തൽ ചക്രം: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: ഉൾപ്പെടുത്തൽ ചക്രം: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: വീണ്ടും കയറ്റുമതി '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: വീണ്ടും കയറ്റുമതി '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: കയറ്റുമതി '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: കയറ്റുമതി '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: അജ്ഞാത ചിഹ്നം '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: അജ്ഞാത ചിഹ്നം '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: ഉൾപ്പെടുത്തൽ ആഴ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: ഉൾപ്പെടുത്തൽ ആഴ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 ഘടകം '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 ഘടകം '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: ഘടകം/ഉൾപ്പെടുത്തൽ പരിധി കവിഞ്ഞു\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: ഘടകം/ഉൾപ്പെടുത്തൽ പരിധി കവിഞ്ഞു\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: അശുദ്ധമോ മുറിഞ്ഞതോ ആയ ഭാരതീയ നാമം\n",
+          "after": "Sutram truti [E_UTF8]: അശുദ്ധമോ മുറിഞ്ഞതോ ആയ ഭാരതീയ നാമം\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/marathi.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: शब्द '",
+          "after": ": Sutram truti [E_PARSE]: शब्द '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 युक्तिवाद आवश्यक\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 युक्तिवाद आवश्यक\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 किंवा 3 युक्तिवाद आवश्यक\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 किंवा 3 युक्तिवाद आवश्यक\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 युक्तिवाद आवश्यक\n",
+          "after": "Sutram truti: {kw:akshar}: 2 युक्तिवाद आवश्यक\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 किंवा 2 युक्तिवाद आवश्यक\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 किंवा 2 युक्तिवाद आवश्यक\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: अज्ञात कार्य '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: अज्ञात कार्य '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाव '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: अज्ञात नाव '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: अज्ञात क्षेत्र '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: अज्ञात क्षेत्र '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: पुन्हा घोषणा '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: पुन्हा घोषणा '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: क्षेत्र '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: क्षेत्र '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: समावेश फाइल सापडली नाही: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: समावेश फाइल सापडली नाही: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: व्याकरण दोष, ओळ ",
+          "after": "\nSutram truti: व्याकरण दोष, ओळ "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: कार्याची पुन्हा व्याख्या: ",
+          "after": "Sutram truti: कार्याची पुन्हा व्याख्या: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: अज्ञात कार्य: ",
+          "after": "Sutram truti: अज्ञात कार्य: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} निर्देशांक मर्यादेबाहेर\n",
+          "after": "Sutram truti: {kw:mala} निर्देशांक मर्यादेबाहेर\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} कार्यासाठी {kw:kosh} चल आवश्यक\n",
+          "after": "Sutram truti: {kw:kosh} कार्यासाठी {kw:kosh} चल आवश्यक\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: रिकाम्या कोशातून {kw:kosh_pop}\n",
+          "after": "Sutram truti: रिकाम्या कोशातून {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: रिकाम्या कोशातून {kw:kosh_peek}\n",
+          "after": "Sutram truti: रिकाम्या कोशातून {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: रिकाम्या कोशातून {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: रिकाम्या कोशातून {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: कोश युक्तिवाद: घटकाचा प्रकार वेगळा\n",
+          "after": "Sutram truti: कोश युक्तिवाद: घटकाचा प्रकार वेगळा\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: कोश युक्तिवादावर {kw:kosh_push} समर्थित नाही\n",
+          "after": "Sutram truti: कोश युक्तिवादावर {kw:kosh_push} समर्थित नाही\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} किंवा {kw:vibhag} अपेक्षित\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} किंवा {kw:vibhag} अपेक्षित\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} प्रक्रियेतून परत करता येत नाही\n",
+          "after": "Sutram truti: {kw:vibhag} प्रक्रियेतून परत करता येत नाही\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: फल-{kw:prakriya}: प्रत्येक {kw:prati} {kw:siddhi} किंवा {kw:dosh} असावे\n",
+          "after": "Sutram truti: फल-{kw:prakriya}: प्रत्येक {kw:prati} {kw:siddhi} किंवा {kw:dosh} असावे\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: फल-{kw:prakriya} {kw:prasar} शिवाय बोलावले\n",
+          "after": "Sutram truti: फल-{kw:prakriya} {kw:prasar} शिवाय बोलावले\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: फल-{kw:prakriya} चे आवाहन अपेक्षित\n",
+          "after": "Sutram truti: {kw:prasar}: फल-{kw:prakriya} चे आवाहन अपेक्षित\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} फक्त फल-{kw:prakriya} किंवा {kw:mukhya} मध्ये\n",
+          "after": "Sutram truti: {kw:prasar} फक्त फल-{kw:prakriya} किंवा {kw:mukhya} मध्ये\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: फल-{kw:prakriya} चे आवाहन अपेक्षित\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: फल-{kw:prakriya} चे आवाहन अपेक्षित\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: वस्तु-फाइलमध्ये घटक-स्तरीय {kw:vitti} समर्थित नाही\n",
+          "after": "Sutram truti: वस्तु-फाइलमध्ये घटक-स्तरीय {kw:vitti} समर्थित नाही\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: परकीय-घोषणा फाइल सदोष, ओळ ",
+          "after": "Sutram truti: परकीय-घोषणा फाइल सदोष, ओळ "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: परकीय {kw:prakriya} नाव इतरत्रही: ",
+          "after": "Sutram truti: परकीय {kw:prakriya} नाव इतरत्रही: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: परकीय {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: परकीय {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: स्रोत फाइल सापडली नाही\n",
+          "after": "Sutram truti: स्रोत फाइल सापडली नाही\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: अशुद्ध {kw:yoj} (रूप: घटक@उपनाव, उपनाव 31 बाइटपर्यंत)\n",
+          "after": "Sutram truti: अशुद्ध {kw:yoj} (रूप: घटक@उपनाव, उपनाव 31 बाइटपर्यंत)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: घटक फाइल सापडली नाही\n",
+          "after": "Sutram truti: घटक फाइल सापडली नाही\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: उपनाव आधीच वापरलेले (दुसऱ्या घटकासाठी)\n",
+          "after": "Sutram truti: उपनाव आधीच वापरलेले (दुसऱ्या घटकासाठी)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: उपनाव आधीच वापरलेले (दुसऱ्या घटकासाठी)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: उपनाव आधीच वापरलेले (दुसऱ्या घटकासाठी)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: घटक कार्य-नावांची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: घटक कार्य-नावांची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: विस्तारित स्रोताची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: विस्तारित स्रोताची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: वाक्य-वृक्षाची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: वाक्य-वृक्षाची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: कार्य युक्तिवाद-सूचीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: कार्य युक्तिवाद-सूचीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: चल-सूचीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: चल-सूचीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: कार्य-सूचीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: कार्य-सूचीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: आवाहन-सूचीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: आवाहन-सूचीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: कार्य व्याख्या-सूचीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: कार्य व्याख्या-सूचीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} मर्यादा ओलांडली (1024)\n",
+          "after": "Sutram truti: {kw:guna} मर्यादा ओलांडली (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} मध्ये {kw:krama} ची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: {kw:chakra} मध्ये {kw:krama} ची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} मध्ये {kw:agrim} ची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: {kw:chakra} मध्ये {kw:agrim} ची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: यंत्र-भाषेची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: यंत्र-भाषेची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana}-सूचीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: {kw:rachana}-सूचीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} क्षेत्रांची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: {kw:rachana} क्षेत्रांची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: खंड खोलीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: खंड खोलीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: खंडातील विधानांची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: खंडातील विधानांची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: कार्याची पुन्हा पूर्व-घोषणा\n",
+          "after": "Sutram truti: कार्याची पुन्हा पूर्व-घोषणा\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: कार्याची पूर्व-घोषणा आहे पण व्याख्या नाही\n",
+          "after": "Sutram truti: कार्याची पूर्व-घोषणा आहे पण व्याख्या नाही\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: कार्याची पूर्व-घोषणा आणि व्याख्या वेगळी (युक्तिवाद/प्रकार)\n",
+          "after": "Sutram truti: कार्याची पूर्व-घोषणा आणि व्याख्या वेगळी (युक्तिवाद/प्रकार)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: कार्य पूर्व-घोषणांची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: कार्य पूर्व-घोषणांची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: घटक-स्तरीय चलांची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: घटक-स्तरीय चलांची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: घटक-स्तरीय चलाचे नाव पुन्हा\n",
+          "after": "Sutram truti: घटक-स्तरीय चलाचे नाव पुन्हा\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: सार्वत्रिक मूल्य संदर्भांची मर्यादा ओलांडली\n",
+          "after": "Sutram truti: सार्वत्रिक मूल्य संदर्भांची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: समावेश चक्र: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: समावेश चक्र: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: पुन्हा निर्यात '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: पुन्हा निर्यात '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: निर्यात '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: निर्यात '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: अज्ञात चिन्ह '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: अज्ञात चिन्ह '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: समावेश खोलीची मर्यादा ओलांडली\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: समावेश खोलीची मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 घटक '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 घटक '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: घटक/समावेश मर्यादा ओलांडली\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: घटक/समावेश मर्यादा ओलांडली\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: अशुद्ध किंवा खंडित भारतीय नाव\n",
+          "after": "Sutram truti [E_UTF8]: अशुद्ध किंवा खंडित भारतीय नाव\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/odia.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: ଶବ୍ଦ '",
+          "after": ": Sutram truti [E_PARSE]: ଶବ୍ଦ '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 କିମ୍ବା 3ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 କିମ୍ବା 3ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:akshar}: 2ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 କିମ୍ବା 2ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 କିମ୍ବା 2ଟି ଯୁକ୍ତି ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: ଅଜଣା କାର୍ଯ୍ୟ '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: ଅଜଣା କାର୍ଯ୍ୟ '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: ଅଜଣା ନାମ '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: ଅଜଣା ନାମ '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: ଅଜଣା କ୍ଷେତ୍ର '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: ଅଜଣା କ୍ଷେତ୍ର '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: ପୁନର୍ବାର ଘୋଷଣା '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: ପୁନର୍ବାର ଘୋଷଣା '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: କ୍ଷେତ୍ର '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: କ୍ଷେତ୍ର '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: ସମାବେଶ ଫାଇଲ ମିଳିଲା ନାହିଁ: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: ସମାବେଶ ଫାଇଲ ମିଳିଲା ନାହିଁ: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: ବ୍ୟାକରଣ ତ୍ରୁଟି, ଧାଡ଼ି ",
+          "after": "\nSutram truti: ବ୍ୟାକରଣ ତ୍ରୁଟି, ଧାଡ଼ି "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: କାର୍ଯ୍ୟର ପୁନର୍ବାର ପରିଭାଷା: ",
+          "after": "Sutram truti: କାର୍ଯ୍ୟର ପୁନର୍ବାର ପରିଭାଷା: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: ଅଜଣା କାର୍ଯ୍ୟ: ",
+          "after": "Sutram truti: ଅଜଣା କାର୍ଯ୍ୟ: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} ସୂଚକ ସୀମା ବାହାରେ\n",
+          "after": "Sutram truti: {kw:mala} ସୂଚକ ସୀମା ବାହାରେ\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} କାର୍ଯ୍ୟ ପାଇଁ {kw:kosh} {kw:vitti} ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:kosh} କାର୍ଯ୍ୟ ପାଇଁ {kw:kosh} {kw:vitti} ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: ଖାଲି କୋଶରୁ {kw:kosh_pop}\n",
+          "after": "Sutram truti: ଖାଲି କୋଶରୁ {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: ଖାଲି କୋଶରୁ {kw:kosh_peek}\n",
+          "after": "Sutram truti: ଖାଲି କୋଶରୁ {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: ଖାଲି କୋଶରୁ {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: ଖାଲି କୋଶରୁ {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: କୋଶ ଯୁକ୍ତି: ଉପାଦାନର ପ୍ରକାର ଭିନ୍ନ\n",
+          "after": "Sutram truti: କୋଶ ଯୁକ୍ତି: ଉପାଦାନର ପ୍ରକାର ଭିନ୍ନ\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: କୋଶ ଯୁକ୍ତିରେ {kw:kosh_push} ସମର୍ଥିତ ନୁହେଁ\n",
+          "after": "Sutram truti: କୋଶ ଯୁକ୍ତିରେ {kw:kosh_push} ସମର୍ଥିତ ନୁହେଁ\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} କିମ୍ବା {kw:vibhag} ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} କିମ୍ବା {kw:vibhag} ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag}କୁ ପ୍ରକ୍ରିୟାରୁ ଫେରାଇ ହେବ ନାହିଁ\n",
+          "after": "Sutram truti: {kw:vibhag}କୁ ପ୍ରକ୍ରିୟାରୁ ଫେରାଇ ହେବ ନାହିଁ\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: ଫଳ-{kw:prakriya}: ପ୍ରତ୍ୟେକ {kw:prati} {kw:siddhi} କିମ୍ବା {kw:dosh} ହେବା ଉଚିତ\n",
+          "after": "Sutram truti: ଫଳ-{kw:prakriya}: ପ୍ରତ୍ୟେକ {kw:prati} {kw:siddhi} କିମ୍ବା {kw:dosh} ହେବା ଉଚିତ\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: ଫଳ-{kw:prakriya} {kw:prasar} ବିନା ଡକାଯାଇଛି\n",
+          "after": "Sutram truti: ଫଳ-{kw:prakriya} {kw:prasar} ବିନା ଡକାଯାଇଛି\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: ଫଳ-{kw:prakriya} ର ଆହ୍ୱାନ ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:prasar}: ଫଳ-{kw:prakriya} ର ଆହ୍ୱାନ ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} କେବଳ ଫଳ-{kw:prakriya} କିମ୍ବା {kw:mukhya} ରେ\n",
+          "after": "Sutram truti: {kw:prasar} କେବଳ ଫଳ-{kw:prakriya} କିମ୍ବା {kw:mukhya} ରେ\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: ଫଳ-{kw:prakriya} ର ଆହ୍ୱାନ ଆବଶ୍ୟକ\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: ଫଳ-{kw:prakriya} ର ଆହ୍ୱାନ ଆବଶ୍ୟକ\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: ବସ୍ତୁ-ଫାଇଲରେ ଘଟକ-ସ୍ତରର {kw:vitti} ସମର୍ଥିତ ନୁହେଁ\n",
+          "after": "Sutram truti: ବସ୍ତୁ-ଫାଇଲରେ ଘଟକ-ସ୍ତରର {kw:vitti} ସମର୍ଥିତ ନୁହେଁ\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: ବିଦେଶୀ-ଘୋଷଣା ଫାଇଲ ତ୍ରୁଟିପୂର୍ଣ୍ଣ, ଧାଡ଼ି ",
+          "after": "Sutram truti: ବିଦେଶୀ-ଘୋଷଣା ଫାଇଲ ତ୍ରୁଟିପୂର୍ଣ୍ଣ, ଧାଡ଼ି "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: ବିଦେଶୀ {kw:prakriya} ନାମ ଅନ୍ୟତ୍ର ମଧ୍ୟ: ",
+          "after": "Sutram truti: ବିଦେଶୀ {kw:prakriya} ନାମ ଅନ୍ୟତ୍ର ମଧ୍ୟ: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: ବିଦେଶୀ {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: ବିଦେଶୀ {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: ଉତ୍ସ ଫାଇଲ ମିଳିଲା ନାହିଁ\n",
+          "after": "Sutram truti: ଉତ୍ସ ଫାଇଲ ମିଳିଲା ନାହିଁ\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: ଅଶୁଦ୍ଧ {kw:yoj} (ରୂପ: ମଡ୍ୟୁଲ୍@ଉପନାମ, ଉପନାମ 31 ବାଇଟ୍ ପର୍ଯ୍ୟନ୍ତ)\n",
+          "after": "Sutram truti: ଅଶୁଦ୍ଧ {kw:yoj} (ରୂପ: ମଡ୍ୟୁଲ୍@ଉପନାମ, ଉପନାମ 31 ବାଇଟ୍ ପର୍ଯ୍ୟନ୍ତ)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: ମଡ୍ୟୁଲ୍ ଫାଇଲ ମିଳିଲା ନାହିଁ\n",
+          "after": "Sutram truti: ମଡ୍ୟୁଲ୍ ଫାଇଲ ମିଳିଲା ନାହିଁ\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: ଉପନାମ ପୂର୍ବରୁ ବ୍ୟବହୃତ (ଅନ୍ୟ ମଡ୍ୟୁଲ୍ ପାଇଁ)\n",
+          "after": "Sutram truti: ଉପନାମ ପୂର୍ବରୁ ବ୍ୟବହୃତ (ଅନ୍ୟ ମଡ୍ୟୁଲ୍ ପାଇଁ)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: ଉପନାମ ପୂର୍ବରୁ ବ୍ୟବହୃତ (ଅନ୍ୟ ମଡ୍ୟୁଲ୍ ପାଇଁ)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: ଉପନାମ ପୂର୍ବରୁ ବ୍ୟବହୃତ (ଅନ୍ୟ ମଡ୍ୟୁଲ୍ ପାଇଁ)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: ମଡ୍ୟୁଲ୍ କାର୍ଯ୍ୟ-ନାମର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ମଡ୍ୟୁଲ୍ କାର୍ଯ୍ୟ-ନାମର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: ବିସ୍ତାରିତ ଉତ୍ସର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ବିସ୍ତାରିତ ଉତ୍ସର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: ବାକ୍ୟ-ବୃକ୍ଷର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ବାକ୍ୟ-ବୃକ୍ଷର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: କାର୍ଯ୍ୟ ଯୁକ୍ତି-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: କାର୍ଯ୍ୟ ଯୁକ୍ତି-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: {kw:vitti}-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: {kw:vitti}-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: କାର୍ଯ୍ୟ-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: କାର୍ଯ୍ୟ-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: ଆହ୍ୱାନ-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ଆହ୍ୱାନ-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: କାର୍ଯ୍ୟ ପରିଭାଷା-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: କାର୍ଯ୍ୟ ପରିଭାଷା-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} ସୀମା ଅତିକ୍ରମ (1024)\n",
+          "after": "Sutram truti: {kw:guna} ସୀମା ଅତିକ୍ରମ (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ରେ {kw:krama} ର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: {kw:chakra} ରେ {kw:krama} ର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ରେ {kw:agrim} ର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: {kw:chakra} ରେ {kw:agrim} ର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: ଯନ୍ତ୍ର-ଭାଷାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ଯନ୍ତ୍ର-ଭାଷାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana}-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: {kw:rachana}-ତାଲିକାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} କ୍ଷେତ୍ରର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: {kw:rachana} କ୍ଷେତ୍ରର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: ଖଣ୍ଡ ଗଭୀରତାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ଖଣ୍ଡ ଗଭୀରତାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: ଖଣ୍ଡରେ ବାକ୍ୟର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ଖଣ୍ଡରେ ବାକ୍ୟର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: କାର୍ଯ୍ୟର ପୁନର୍ବାର ପୂର୍ବ-ଘୋଷଣା\n",
+          "after": "Sutram truti: କାର୍ଯ୍ୟର ପୁନର୍ବାର ପୂର୍ବ-ଘୋଷଣା\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: କାର୍ଯ୍ୟର ପୂର୍ବ-ଘୋଷଣା ଅଛି କିନ୍ତୁ ପରିଭାଷା ନାହିଁ\n",
+          "after": "Sutram truti: କାର୍ଯ୍ୟର ପୂର୍ବ-ଘୋଷଣା ଅଛି କିନ୍ତୁ ପରିଭାଷା ନାହିଁ\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: କାର୍ଯ୍ୟର ପୂର୍ବ-ଘୋଷଣା ଓ ପରିଭାଷା ଭିନ୍ନ (ଯୁକ୍ତି/ପ୍ରକାର)\n",
+          "after": "Sutram truti: କାର୍ଯ୍ୟର ପୂର୍ବ-ଘୋଷଣା ଓ ପରିଭାଷା ଭିନ୍ନ (ଯୁକ୍ତି/ପ୍ରକାର)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: କାର୍ଯ୍ୟ ପୂର୍ବ-ଘୋଷଣାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: କାର୍ଯ୍ୟ ପୂର୍ବ-ଘୋଷଣାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: ମଡ୍ୟୁଲ୍-ସ୍ତରୀୟ {kw:vitti} ର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ମଡ୍ୟୁଲ୍-ସ୍ତରୀୟ {kw:vitti} ର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: ମଡ୍ୟୁଲ୍-ସ୍ତରୀୟ {kw:vitti} ନାମ ପୁନର୍ବାର\n",
+          "after": "Sutram truti: ମଡ୍ୟୁଲ୍-ସ୍ତରୀୟ {kw:vitti} ନାମ ପୁନର୍ବାର\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: ସାର୍ବଜନୀନ ମୂଲ୍ୟ ସନ୍ଦର୍ଭର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti: ସାର୍ବଜନୀନ ମୂଲ୍ୟ ସନ୍ଦର୍ଭର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: ସମାବେଶ ଚକ୍ର: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: ସମାବେଶ ଚକ୍ର: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: ପୁନର୍ବାର ରପ୍ତାନି '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: ପୁନର୍ବାର ରପ୍ତାନି '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ରପ୍ତାନି '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ରପ୍ତାନି '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ଅଜଣା ପ୍ରତୀକ '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ଅଜଣା ପ୍ରତୀକ '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: ସମାବେଶ ଗଭୀରତାର ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: ସମାବେଶ ଗଭୀରତାର ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 ମଡ୍ୟୁଲ୍ '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 ମଡ୍ୟୁଲ୍ '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: ମଡ୍ୟୁଲ୍/ସମାବେଶ ସୀମା ଅତିକ୍ରମ\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: ମଡ୍ୟୁଲ୍/ସମାବେଶ ସୀମା ଅତିକ୍ରମ\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: ଅଶୁଦ୍ଧ କିମ୍ବା ଖଣ୍ଡିତ ଭାରତୀୟ ନାମ\n",
+          "after": "Sutram truti [E_UTF8]: ଅଶୁଦ୍ଧ କିମ୍ବା ଖଣ୍ଡିତ ଭାରତୀୟ ନାମ\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/punjabi.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: ਸ਼ਬਦ '",
+          "after": ": Sutram truti [E_PARSE]: ਸ਼ਬਦ '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 ਤਰਕ ਲੋੜੀਂਦੇ\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 ਤਰਕ ਲੋੜੀਂਦੇ\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 ਜਾਂ 3 ਤਰਕ ਲੋੜੀਂਦੇ\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 ਜਾਂ 3 ਤਰਕ ਲੋੜੀਂਦੇ\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 ਤਰਕ ਲੋੜੀਂਦੇ\n",
+          "after": "Sutram truti: {kw:akshar}: 2 ਤਰਕ ਲੋੜੀਂਦੇ\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 ਜਾਂ 2 ਤਰਕ ਲੋੜੀਂਦੇ\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 ਜਾਂ 2 ਤਰਕ ਲੋੜੀਂਦੇ\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: ਅਣਜਾਣ ਕਾਰਜ '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: ਅਣਜਾਣ ਕਾਰਜ '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: ਅਣਜਾਣ ਨਾਮ '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: ਅਣਜਾਣ ਨਾਮ '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: ਅਣਜਾਣ ਖੇਤਰ '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: ਅਣਜਾਣ ਖੇਤਰ '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: ਦੁਬਾਰਾ ਘੋਸ਼ਣਾ '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: ਦੁਬਾਰਾ ਘੋਸ਼ਣਾ '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: ਖੇਤਰ '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: ਖੇਤਰ '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: ਸ਼ਾਮਲ ਫ਼ਾਈਲ ਨਹੀਂ ਮਿਲੀ: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: ਸ਼ਾਮਲ ਫ਼ਾਈਲ ਨਹੀਂ ਮਿਲੀ: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: ਵਿਆਕਰਨ ਦੋਸ਼, ਪੰਕਤੀ ",
+          "after": "\nSutram truti: ਵਿਆਕਰਨ ਦੋਸ਼, ਪੰਕਤੀ "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: ਕਾਰਜ ਦੀ ਦੁਬਾਰਾ ਪਰਿਭਾਸ਼ਾ: ",
+          "after": "Sutram truti: ਕਾਰਜ ਦੀ ਦੁਬਾਰਾ ਪਰਿਭਾਸ਼ਾ: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: ਅਣਜਾਣ ਕਾਰਜ: ",
+          "after": "Sutram truti: ਅਣਜਾਣ ਕਾਰਜ: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} ਸੂਚਕ ਸੀਮਾ ਤੋਂ ਬਾਹਰ\n",
+          "after": "Sutram truti: {kw:mala} ਸੂਚਕ ਸੀਮਾ ਤੋਂ ਬਾਹਰ\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} ਕਾਰਜ ਲਈ {kw:kosh} {kw:vitti} ਲੋੜੀਂਦਾ\n",
+          "after": "Sutram truti: {kw:kosh} ਕਾਰਜ ਲਈ {kw:kosh} {kw:vitti} ਲੋੜੀਂਦਾ\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: ਖ਼ਾਲੀ ਕੋਸ਼ ਤੋਂ {kw:kosh_pop}\n",
+          "after": "Sutram truti: ਖ਼ਾਲੀ ਕੋਸ਼ ਤੋਂ {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: ਖ਼ਾਲੀ ਕੋਸ਼ ਤੋਂ {kw:kosh_peek}\n",
+          "after": "Sutram truti: ਖ਼ਾਲੀ ਕੋਸ਼ ਤੋਂ {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: ਖ਼ਾਲੀ ਕੋਸ਼ ਤੋਂ {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: ਖ਼ਾਲੀ ਕੋਸ਼ ਤੋਂ {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: ਕੋਸ਼ ਤਰਕ: ਤੱਤ ਦੀ ਕਿਸਮ ਵੱਖਰੀ\n",
+          "after": "Sutram truti: ਕੋਸ਼ ਤਰਕ: ਤੱਤ ਦੀ ਕਿਸਮ ਵੱਖਰੀ\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: ਕੋਸ਼ ਤਰਕ ਉੱਤੇ {kw:kosh_push} ਸਮਰਥਿਤ ਨਹੀਂ\n",
+          "after": "Sutram truti: ਕੋਸ਼ ਤਰਕ ਉੱਤੇ {kw:kosh_push} ਸਮਰਥਿਤ ਨਹੀਂ\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} ਜਾਂ {kw:vibhag} ਲੋੜੀਂਦਾ\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} ਜਾਂ {kw:vibhag} ਲੋੜੀਂਦਾ\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} ਨੂੰ ਪ੍ਰਕਿਰਿਆ ਤੋਂ ਵਾਪਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ\n",
+          "after": "Sutram truti: {kw:vibhag} ਨੂੰ ਪ੍ਰਕਿਰਿਆ ਤੋਂ ਵਾਪਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: ਨਤੀਜਾ-{kw:prakriya}: ਹਰ {kw:prati} {kw:siddhi} ਜਾਂ {kw:dosh} ਹੋਣਾ ਚਾਹੀਦਾ\n",
+          "after": "Sutram truti: ਨਤੀਜਾ-{kw:prakriya}: ਹਰ {kw:prati} {kw:siddhi} ਜਾਂ {kw:dosh} ਹੋਣਾ ਚਾਹੀਦਾ\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: ਨਤੀਜਾ-{kw:prakriya} ਨੂੰ {kw:prasar} ਤੋਂ ਬਿਨਾਂ ਬੁਲਾਇਆ ਗਿਆ\n",
+          "after": "Sutram truti: ਨਤੀਜਾ-{kw:prakriya} ਨੂੰ {kw:prasar} ਤੋਂ ਬਿਨਾਂ ਬੁਲਾਇਆ ਗਿਆ\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: ਨਤੀਜਾ-{kw:prakriya} ਦਾ ਸੱਦਾ ਲੋੜੀਂਦਾ\n",
+          "after": "Sutram truti: {kw:prasar}: ਨਤੀਜਾ-{kw:prakriya} ਦਾ ਸੱਦਾ ਲੋੜੀਂਦਾ\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} ਸਿਰਫ਼ ਨਤੀਜਾ-{kw:prakriya} ਜਾਂ {kw:mukhya} ਵਿੱਚ\n",
+          "after": "Sutram truti: {kw:prasar} ਸਿਰਫ਼ ਨਤੀਜਾ-{kw:prakriya} ਜਾਂ {kw:mukhya} ਵਿੱਚ\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: ਨਤੀਜਾ-{kw:prakriya} ਦਾ ਸੱਦਾ ਲੋੜੀਂਦਾ\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: ਨਤੀਜਾ-{kw:prakriya} ਦਾ ਸੱਦਾ ਲੋੜੀਂਦਾ\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: ਵਸਤੂ-ਫ਼ਾਈਲ ਵਿੱਚ ਘਟਕ-ਪੱਧਰ ਦਾ {kw:vitti} ਸਮਰਥਿਤ ਨਹੀਂ\n",
+          "after": "Sutram truti: ਵਸਤੂ-ਫ਼ਾਈਲ ਵਿੱਚ ਘਟਕ-ਪੱਧਰ ਦਾ {kw:vitti} ਸਮਰਥਿਤ ਨਹੀਂ\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: ਵਿਦੇਸ਼ੀ-ਘੋਸ਼ਣਾ ਫ਼ਾਈਲ ਨੁਕਸਦਾਰ, ਪੰਕਤੀ ",
+          "after": "Sutram truti: ਵਿਦੇਸ਼ੀ-ਘੋਸ਼ਣਾ ਫ਼ਾਈਲ ਨੁਕਸਦਾਰ, ਪੰਕਤੀ "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: ਵਿਦੇਸ਼ੀ {kw:prakriya} ਨਾਮ ਹੋਰ ਥਾਂ ਵੀ: ",
+          "after": "Sutram truti: ਵਿਦੇਸ਼ੀ {kw:prakriya} ਨਾਮ ਹੋਰ ਥਾਂ ਵੀ: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: ਵਿਦੇਸ਼ੀ {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: ਵਿਦੇਸ਼ੀ {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: ਸਰੋਤ ਫ਼ਾਈਲ ਨਹੀਂ ਮਿਲੀ\n",
+          "after": "Sutram truti: ਸਰੋਤ ਫ਼ਾਈਲ ਨਹੀਂ ਮਿਲੀ\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: ਅਸ਼ੁੱਧ {kw:yoj} (ਰੂਪ: ਮੌਡਿਊਲ@ਉਪਨਾਮ, ਉਪਨਾਮ 31 ਬਾਈਟ ਤੱਕ)\n",
+          "after": "Sutram truti: ਅਸ਼ੁੱਧ {kw:yoj} (ਰੂਪ: ਮੌਡਿਊਲ@ਉਪਨਾਮ, ਉਪਨਾਮ 31 ਬਾਈਟ ਤੱਕ)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: ਮੌਡਿਊਲ ਫ਼ਾਈਲ ਨਹੀਂ ਮਿਲੀ\n",
+          "after": "Sutram truti: ਮੌਡਿਊਲ ਫ਼ਾਈਲ ਨਹੀਂ ਮਿਲੀ\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: ਉਪਨਾਮ ਪਹਿਲਾਂ ਹੀ ਵਰਤਿਆ (ਹੋਰ ਮੌਡਿਊਲ ਲਈ)\n",
+          "after": "Sutram truti: ਉਪਨਾਮ ਪਹਿਲਾਂ ਹੀ ਵਰਤਿਆ (ਹੋਰ ਮੌਡਿਊਲ ਲਈ)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: ਉਪਨਾਮ ਪਹਿਲਾਂ ਹੀ ਵਰਤਿਆ (ਹੋਰ ਮੌਡਿਊਲ ਲਈ)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: ਉਪਨਾਮ ਪਹਿਲਾਂ ਹੀ ਵਰਤਿਆ (ਹੋਰ ਮੌਡਿਊਲ ਲਈ)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: ਮੌਡਿਊਲ ਕਾਰਜ-ਨਾਮਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਮੌਡਿਊਲ ਕਾਰਜ-ਨਾਮਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: ਵਿਸਤ੍ਰਿਤ ਸਰੋਤ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਵਿਸਤ੍ਰਿਤ ਸਰੋਤ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: ਵਾਕ-ਰੁੱਖ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਵਾਕ-ਰੁੱਖ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: ਕਾਰਜ ਤਰਕ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਕਾਰਜ ਤਰਕ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: {kw:vitti}-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: {kw:vitti}-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: ਕਾਰਜ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਕਾਰਜ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: ਸੱਦਾ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਸੱਦਾ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: ਕਾਰਜ ਪਰਿਭਾਸ਼ਾ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਕਾਰਜ ਪਰਿਭਾਸ਼ਾ-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} ਸੀਮਾ ਪਾਰ (1024)\n",
+          "after": "Sutram truti: {kw:guna} ਸੀਮਾ ਪਾਰ (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ਵਿੱਚ {kw:krama} ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: {kw:chakra} ਵਿੱਚ {kw:krama} ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} ਵਿੱਚ {kw:agrim} ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: {kw:chakra} ਵਿੱਚ {kw:agrim} ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: ਯੰਤਰ ਭਾਸ਼ਾ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਯੰਤਰ ਭਾਸ਼ਾ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana}-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: {kw:rachana}-ਸੂਚੀ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} ਖੇਤਰਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: {kw:rachana} ਖੇਤਰਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: ਖੰਡ ਡੂੰਘਾਈ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਖੰਡ ਡੂੰਘਾਈ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: ਖੰਡ ਵਿੱਚ ਕਥਨਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਖੰਡ ਵਿੱਚ ਕਥਨਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: ਕਾਰਜ ਦੀ ਦੁਬਾਰਾ ਅਗਾਊਂ-ਘੋਸ਼ਣਾ\n",
+          "after": "Sutram truti: ਕਾਰਜ ਦੀ ਦੁਬਾਰਾ ਅਗਾਊਂ-ਘੋਸ਼ਣਾ\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: ਕਾਰਜ ਦੀ ਅਗਾਊਂ-ਘੋਸ਼ਣਾ ਹੈ ਪਰ ਪਰਿਭਾਸ਼ਾ ਨਹੀਂ\n",
+          "after": "Sutram truti: ਕਾਰਜ ਦੀ ਅਗਾਊਂ-ਘੋਸ਼ਣਾ ਹੈ ਪਰ ਪਰਿਭਾਸ਼ਾ ਨਹੀਂ\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: ਕਾਰਜ ਦੀ ਅਗਾਊਂ-ਘੋਸ਼ਣਾ ਅਤੇ ਪਰਿਭਾਸ਼ਾ ਵੱਖਰੀ (ਤਰਕ/ਕਿਸਮ)\n",
+          "after": "Sutram truti: ਕਾਰਜ ਦੀ ਅਗਾਊਂ-ਘੋਸ਼ਣਾ ਅਤੇ ਪਰਿਭਾਸ਼ਾ ਵੱਖਰੀ (ਤਰਕ/ਕਿਸਮ)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: ਕਾਰਜ ਅਗਾਊਂ-ਘੋਸ਼ਣਾਵਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਕਾਰਜ ਅਗਾਊਂ-ਘੋਸ਼ਣਾਵਾਂ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: ਮੌਡਿਊਲ-ਪੱਧਰ {kw:vitti} ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਮੌਡਿਊਲ-ਪੱਧਰ {kw:vitti} ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: ਮੌਡਿਊਲ-ਪੱਧਰ {kw:vitti} ਦਾ ਨਾਮ ਦੁਬਾਰਾ\n",
+          "after": "Sutram truti: ਮੌਡਿਊਲ-ਪੱਧਰ {kw:vitti} ਦਾ ਨਾਮ ਦੁਬਾਰਾ\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: ਸਰਬ-ਵਿਆਪਕ ਮੁੱਲ ਹਵਾਲਿਆਂ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti: ਸਰਬ-ਵਿਆਪਕ ਮੁੱਲ ਹਵਾਲਿਆਂ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: ਸ਼ਾਮਲ ਚੱਕਰ: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: ਸ਼ਾਮਲ ਚੱਕਰ: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: ਦੁਬਾਰਾ ਨਿਰਯਾਤ '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: ਦੁਬਾਰਾ ਨਿਰਯਾਤ '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ਨਿਰਯਾਤ '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ਨਿਰਯਾਤ '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ਅਣਜਾਣ ਚਿੰਨ੍ਹ '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ਅਣਜਾਣ ਚਿੰਨ੍ਹ '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: ਸ਼ਾਮਲ ਡੂੰਘਾਈ ਦੀ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: ਸ਼ਾਮਲ ਡੂੰਘਾਈ ਦੀ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 ਮੌਡਿਊਲ '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 ਮੌਡਿਊਲ '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: ਮੌਡਿਊਲ/ਸ਼ਾਮਲ ਸੀਮਾ ਪਾਰ\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: ਮੌਡਿਊਲ/ਸ਼ਾਮਲ ਸੀਮਾ ਪਾਰ\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: ਅਸ਼ੁੱਧ ਜਾਂ ਖੰਡਿਤ ਭਾਰਤੀ ਨਾਮ\n",
+          "after": "Sutram truti [E_UTF8]: ਅਸ਼ੁੱਧ ਜਾਂ ਖੰਡਿਤ ਭਾਰਤੀ ਨਾਮ\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/sanskrit.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: शब्दः '",
+          "after": ": Sutram truti [E_PARSE]: शब्दः '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 तर्काः आवश्यकाः\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 तर्काः आवश्यकाः\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 वा 3 तर्काः आवश्यकाः\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 वा 3 तर्काः आवश्यकाः\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 तर्कौ आवश्यकौ\n",
+          "after": "Sutram truti: {kw:akshar}: 2 तर्कौ आवश्यकौ\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 वा 2 तर्कौ आवश्यकौ\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 वा 2 तर्कौ आवश्यकौ\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: अज्ञाता प्रक्रिया '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: अज्ञाता प्रक्रिया '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: अज्ञातं नाम '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: अज्ञातं नाम '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: अज्ञातः अवयवः '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: अज्ञातः अवयवः '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: पुनर्घोषणा '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: पुनर्घोषणा '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: अवयवः '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: अवयवः '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: आयोजन-पत्रम् अप्राप्तम्: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: आयोजन-पत्रम् अप्राप्तम्: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: व्याकरण-दोषः, पङ्क्तिः ",
+          "after": "\nSutram truti: व्याकरण-दोषः, पङ्क्तिः "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: प्रक्रियायाः पुनःपरिभाषा: ",
+          "after": "Sutram truti: प्रक्रियायाः पुनःपरिभाषा: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: अज्ञाता प्रक्रिया: ",
+          "after": "Sutram truti: अज्ञाता प्रक्रिया: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala}-अङ्कः सीमाम् अतिक्रान्तः\n",
+          "after": "Sutram truti: {kw:mala}-अङ्कः सीमाम् अतिक्रान्तः\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh}-प्रक्रियायै {kw:kosh}-वित्तिः आवश्यकी\n",
+          "after": "Sutram truti: {kw:kosh}-प्रक्रियायै {kw:kosh}-वित्तिः आवश्यकी\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: रिक्तात् कोशात् {kw:kosh_pop}\n",
+          "after": "Sutram truti: रिक्तात् कोशात् {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: रिक्तात् कोशात् {kw:kosh_peek}\n",
+          "after": "Sutram truti: रिक्तात् कोशात् {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: रिक्तात् कोशात् {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: रिक्तात् कोशात् {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: कोश-तर्कः: तत्त्व-प्रकारः भिन्नः\n",
+          "after": "Sutram truti: कोश-तर्कः: तत्त्व-प्रकारः भिन्नः\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: कोश-तर्के {kw:kosh_push} असमर्थितम्\n",
+          "after": "Sutram truti: कोश-तर्के {kw:kosh_push} असमर्थितम्\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} वा {kw:vibhag} अपेक्षितः\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} वा {kw:vibhag} अपेक्षितः\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} प्रक्रियायाः न प्रत्यर्पणीयः\n",
+          "after": "Sutram truti: {kw:vibhag} प्रक्रियायाः न प्रत्यर्पणीयः\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: फल-{kw:prakriya}: {kw:prati} {kw:siddhi} वा {kw:dosh} भवेत्\n",
+          "after": "Sutram truti: फल-{kw:prakriya}: {kw:prati} {kw:siddhi} वा {kw:dosh} भवेत्\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: फल-{kw:prakriya} {kw:prasar} विना आहूता\n",
+          "after": "Sutram truti: फल-{kw:prakriya} {kw:prasar} विना आहूता\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: फल-{kw:prakriya}-आह्वानम् अपेक्षितम्\n",
+          "after": "Sutram truti: {kw:prasar}: फल-{kw:prakriya}-आह्वानम् अपेक्षितम्\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} केवलं फल-{kw:prakriya}-मध्ये {kw:mukhya}-मध्ये वा\n",
+          "after": "Sutram truti: {kw:prasar} केवलं फल-{kw:prakriya}-मध्ये {kw:mukhya}-मध्ये वा\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: फल-{kw:prakriya}-आह्वानम् अपेक्षितम्\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: फल-{kw:prakriya}-आह्वानम् अपेक्षितम्\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: वस्तु-पत्रे घटक-स्तरीय-{kw:vitti} असमर्थिता\n",
+          "after": "Sutram truti: वस्तु-पत्रे घटक-स्तरीय-{kw:vitti} असमर्थिता\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: विदेशि-घोषणा-पत्रं दुष्टम्, पङ्क्तिः ",
+          "after": "Sutram truti: विदेशि-घोषणा-पत्रं दुष्टम्, पङ्क्तिः "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: विदेशि-{kw:prakriya}-नाम अन्यत्र अपि: ",
+          "after": "Sutram truti: विदेशि-{kw:prakriya}-नाम अन्यत्र अपि: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: विदेशि-{kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: विदेशि-{kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: निवेश-पत्रम् अप्राप्तम्\n",
+          "after": "Sutram truti: निवेश-पत्रम् अप्राप्तम्\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: अशुद्धः {kw:yoj} (रूपम्: घटकः@उपनाम, उपनाम 31 बाइट् यावत्)\n",
+          "after": "Sutram truti: अशुद्धः {kw:yoj} (रूपम्: घटकः@उपनाम, उपनाम 31 बाइट् यावत्)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: घटक-पत्रम् अप्राप्तम्\n",
+          "after": "Sutram truti: घटक-पत्रम् अप्राप्तम्\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: उपनाम पूर्वमेव नियुक्तम् (अन्यस्मै घटकाय)\n",
+          "after": "Sutram truti: उपनाम पूर्वमेव नियुक्तम् (अन्यस्मै घटकाय)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: उपनाम पूर्वमेव नियुक्तम् (अन्यस्मै घटकाय)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: उपनाम पूर्वमेव नियुक्तम् (अन्यस्मै घटकाय)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: घटक-प्रक्रिया-नाम-सीमातिक्रमः\n",
+          "after": "Sutram truti: घटक-प्रक्रिया-नाम-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: विस्तारित-स्रोत-सीमातिक्रमः\n",
+          "after": "Sutram truti: विस्तारित-स्रोत-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: वाक्य-वृक्ष-सीमातिक्रमः\n",
+          "after": "Sutram truti: वाक्य-वृक्ष-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: प्रक्रिया-तर्क-सूची-सीमातिक्रमः\n",
+          "after": "Sutram truti: प्रक्रिया-तर्क-सूची-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: वित्ति-सूची-सीमातिक्रमः\n",
+          "after": "Sutram truti: वित्ति-सूची-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: प्रक्रिया-सूची-सीमातिक्रमः\n",
+          "after": "Sutram truti: प्रक्रिया-सूची-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: आह्वान-सूची-सीमातिक्रमः\n",
+          "after": "Sutram truti: आह्वान-सूची-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: प्रक्रिया-परिभाषा-सूची-सीमातिक्रमः\n",
+          "after": "Sutram truti: प्रक्रिया-परिभाषा-सूची-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna}-सीमातिक्रमः (1024)\n",
+          "after": "Sutram truti: {kw:guna}-सीमातिक्रमः (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra}-मध्ये {kw:krama}-सीमातिक्रमः\n",
+          "after": "Sutram truti: {kw:chakra}-मध्ये {kw:krama}-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra}-मध्ये {kw:agrim}-सीमातिक्रमः\n",
+          "after": "Sutram truti: {kw:chakra}-मध्ये {kw:agrim}-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: यन्त्र-भाषा-सीमातिक्रमः\n",
+          "after": "Sutram truti: यन्त्र-भाषा-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana}-सूची-सीमातिक्रमः\n",
+          "after": "Sutram truti: {kw:rachana}-सूची-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana}-अवयव-सीमातिक्रमः\n",
+          "after": "Sutram truti: {kw:rachana}-अवयव-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: खण्ड-गभीरता-सीमातिक्रमः\n",
+          "after": "Sutram truti: खण्ड-गभीरता-सीमातिक्रमः\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: खण्ड-कथन-सीमातिक्रमः\n",
+          "after": "Sutram truti: खण्ड-कथन-सीमातिक्रमः\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: प्रक्रियायाः पुनः पूर्वघोषणा\n",
+          "after": "Sutram truti: प्रक्रियायाः पुनः पूर्वघोषणा\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: प्रक्रियायाः पूर्वघोषणा परिभाषा-रहिता\n",
+          "after": "Sutram truti: प्रक्रियायाः पूर्वघोषणा परिभाषा-रहिता\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: प्रक्रियायाः पूर्वघोषणा परिभाषा च भिन्ने (तर्काः/प्रकारः)\n",
+          "after": "Sutram truti: प्रक्रियायाः पूर्वघोषणा परिभाषा च भिन्ने (तर्काः/प्रकारः)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: प्रक्रिया-पूर्वघोषणा-सीमातिक्रमः\n",
+          "after": "Sutram truti: प्रक्रिया-पूर्वघोषणा-सीमातिक्रमः\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: घटक-स्तरीय-वित्ति-सीमातिक्रमः\n",
+          "after": "Sutram truti: घटक-स्तरीय-वित्ति-सीमातिक्रमः\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: घटक-स्तरीय-वित्ति-नाम्नः पुनर्घोषणा\n",
+          "after": "Sutram truti: घटक-स्तरीय-वित्ति-नाम्नः पुनर्घोषणा\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: सार्वत्रिक-मूल्य-सन्दर्भ-सीमातिक्रमः\n",
+          "after": "Sutram truti: सार्वत्रिक-मूल्य-सन्दर्भ-सीमातिक्रमः\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: आयोजन-चक्रम्: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: आयोजन-चक्रम्: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: पुनर्निर्यातम् '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: पुनर्निर्यातम् '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: निर्यातम् '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: निर्यातम् '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: अज्ञातं चिह्नम् '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: अज्ञातं चिह्नम् '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: आयोजन-गभीरता-सीमातिक्रमः\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: आयोजन-गभीरता-सीमातिक्रमः\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 घटकः '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 घटकः '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: घटक/आयोजन-सीमातिक्रमः\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: घटक/आयोजन-सीमातिक्रमः\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: अशुद्धं खण्डितं वा भारतीयं नाम\n",
+          "after": "Sutram truti [E_UTF8]: अशुद्धं खण्डितं वा भारतीयं नाम\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/tamil.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: சொல் '",
+          "after": ": Sutram truti [E_PARSE]: சொல் '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 அளவுருக்கள் தேவை\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 அளவுருக்கள் தேவை\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 அல்லது 3 அளவுருக்கள் தேவை\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 அல்லது 3 அளவுருக்கள் தேவை\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 அளவுருக்கள் தேவை\n",
+          "after": "Sutram truti: {kw:akshar}: 2 அளவுருக்கள் தேவை\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 அல்லது 2 அளவுருக்கள் தேவை\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 அல்லது 2 அளவுருக்கள் தேவை\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: அறியாத செயல் '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: அறியாத செயல் '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: அறியாத பெயர் '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: அறியாத பெயர் '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: அறியாத புலம் '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: அறியாத புலம் '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: மீண்டும் அறிவிப்பு '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: மீண்டும் அறிவிப்பு '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: புலம் '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: புலம் '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: இணைப்புக் கோப்பு கிடைக்கவில்லை: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: இணைப்புக் கோப்பு கிடைக்கவில்லை: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: இலக்கணப் பிழை, வரி ",
+          "after": "\nSutram truti: இலக்கணப் பிழை, வரி "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: செயலுக்கு மீண்டும் வரையறை: ",
+          "after": "Sutram truti: செயலுக்கு மீண்டும் வரையறை: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: அறியாத செயல்: ",
+          "after": "Sutram truti: அறியாத செயல்: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} சுட்டெண் வரம்புக்கு வெளியே\n",
+          "after": "Sutram truti: {kw:mala} சுட்டெண் வரம்புக்கு வெளியே\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} செயலுக்கு {kw:kosh} {kw:vitti} தேவை\n",
+          "after": "Sutram truti: {kw:kosh} செயலுக்கு {kw:kosh} {kw:vitti} தேவை\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: காலி கோசத்திலிருந்து {kw:kosh_pop}\n",
+          "after": "Sutram truti: காலி கோசத்திலிருந்து {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: காலி கோசத்திலிருந்து {kw:kosh_peek}\n",
+          "after": "Sutram truti: காலி கோசத்திலிருந்து {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: காலி கோசத்திலிருந்து {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: காலி கோசத்திலிருந்து {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: கோச அளவுரு: உறுப்பு வகை வேறு\n",
+          "after": "Sutram truti: கோச அளவுரு: உறுப்பு வகை வேறு\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: கோச அளவுருவில் {kw:kosh_push} ஆதரிக்கப்படவில்லை\n",
+          "after": "Sutram truti: கோச அளவுருவில் {kw:kosh_push} ஆதரிக்கப்படவில்லை\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} அல்லது {kw:vibhag} தேவை\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} அல்லது {kw:vibhag} தேவை\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag} செயல்முறையிலிருந்து திருப்பித் தர முடியாது\n",
+          "after": "Sutram truti: {kw:vibhag} செயல்முறையிலிருந்து திருப்பித் தர முடியாது\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: முடிவு-{kw:prakriya}: ஒவ்வொரு {kw:prati} உம் {kw:siddhi} அல்லது {kw:dosh} ஆக வேண்டும்\n",
+          "after": "Sutram truti: முடிவு-{kw:prakriya}: ஒவ்வொரு {kw:prati} உம் {kw:siddhi} அல்லது {kw:dosh} ஆக வேண்டும்\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: முடிவு-{kw:prakriya} {kw:prasar} இல்லாமல் அழைக்கப்பட்டது\n",
+          "after": "Sutram truti: முடிவு-{kw:prakriya} {kw:prasar} இல்லாமல் அழைக்கப்பட்டது\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: முடிவு-{kw:prakriya} அழைப்பு தேவை\n",
+          "after": "Sutram truti: {kw:prasar}: முடிவு-{kw:prakriya} அழைப்பு தேவை\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} முடிவு-{kw:prakriya} அல்லது {kw:mukhya} இல் மட்டும்\n",
+          "after": "Sutram truti: {kw:prasar} முடிவு-{kw:prakriya} அல்லது {kw:mukhya} இல் மட்டும்\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: முடிவு-{kw:prakriya} அழைப்பு தேவை\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: முடிவு-{kw:prakriya} அழைப்பு தேவை\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: பொருள்-கோப்பில் தொகுதி-நிலை {kw:vitti} ஆதரிக்கப்படவில்லை\n",
+          "after": "Sutram truti: பொருள்-கோப்பில் தொகுதி-நிலை {kw:vitti} ஆதரிக்கப்படவில்லை\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: அயல்-அறிவிப்புக் கோப்பு பிழையானது, வரி ",
+          "after": "Sutram truti: அயல்-அறிவிப்புக் கோப்பு பிழையானது, வரி "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: அயல் {kw:prakriya} பெயர் வேறிடத்திலும்: ",
+          "after": "Sutram truti: அயல் {kw:prakriya} பெயர் வேறிடத்திலும்: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: அயல் {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: அயல் {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: மூலக் கோப்பு கிடைக்கவில்லை\n",
+          "after": "Sutram truti: மூலக் கோப்பு கிடைக்கவில்லை\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: தவறான {kw:yoj} (வடிவம்: கூறு@மாற்றுப்பெயர், மாற்றுப்பெயர் 31 பைட் வரை)\n",
+          "after": "Sutram truti: தவறான {kw:yoj} (வடிவம்: கூறு@மாற்றுப்பெயர், மாற்றுப்பெயர் 31 பைட் வரை)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: கூறுக் கோப்பு கிடைக்கவில்லை\n",
+          "after": "Sutram truti: கூறுக் கோப்பு கிடைக்கவில்லை\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: மாற்றுப்பெயர் ஏற்கனவே பயன்பாட்டில் (வேறு கூறுக்கு)\n",
+          "after": "Sutram truti: மாற்றுப்பெயர் ஏற்கனவே பயன்பாட்டில் (வேறு கூறுக்கு)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: மாற்றுப்பெயர் ஏற்கனவே பயன்பாட்டில் (வேறு கூறுக்கு)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: மாற்றுப்பெயர் ஏற்கனவே பயன்பாட்டில் (வேறு கூறுக்கு)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: கூறின் செயல்-பெயர் வரம்பு மீறல்\n",
+          "after": "Sutram truti: கூறின் செயல்-பெயர் வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: விரிவாக்கப்பட்ட மூல வரம்பு மீறல்\n",
+          "after": "Sutram truti: விரிவாக்கப்பட்ட மூல வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: தொடரியல் மர வரம்பு மீறல்\n",
+          "after": "Sutram truti: தொடரியல் மர வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: செயல் அளவுருப் பட்டியல் வரம்பு மீறல்\n",
+          "after": "Sutram truti: செயல் அளவுருப் பட்டியல் வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: {kw:vitti} பட்டியல் வரம்பு மீறல்\n",
+          "after": "Sutram truti: {kw:vitti} பட்டியல் வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: செயல் பட்டியல் வரம்பு மீறல்\n",
+          "after": "Sutram truti: செயல் பட்டியல் வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: அழைப்புப் பட்டியல் வரம்பு மீறல்\n",
+          "after": "Sutram truti: அழைப்புப் பட்டியல் வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: செயல் வரையறைப் பட்டியல் வரம்பு மீறல்\n",
+          "after": "Sutram truti: செயல் வரையறைப் பட்டியல் வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} வரம்பு மீறல் (1024)\n",
+          "after": "Sutram truti: {kw:guna} வரம்பு மீறல் (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} இல் {kw:krama} வரம்பு மீறல்\n",
+          "after": "Sutram truti: {kw:chakra} இல் {kw:krama} வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} இல் {kw:agrim} வரம்பு மீறல்\n",
+          "after": "Sutram truti: {kw:chakra} இல் {kw:agrim} வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: இயந்திர மொழி வரம்பு மீறல்\n",
+          "after": "Sutram truti: இயந்திர மொழி வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana} பட்டியல் வரம்பு மீறல்\n",
+          "after": "Sutram truti: {kw:rachana} பட்டியல் வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} புல வரம்பு மீறல்\n",
+          "after": "Sutram truti: {kw:rachana} புல வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: தொகுதி ஆழ வரம்பு மீறல்\n",
+          "after": "Sutram truti: தொகுதி ஆழ வரம்பு மீறல்\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: தொகுதியில் கூற்று வரம்பு மீறல்\n",
+          "after": "Sutram truti: தொகுதியில் கூற்று வரம்பு மீறல்\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: செயலுக்கு மீண்டும் முன்-அறிவிப்பு\n",
+          "after": "Sutram truti: செயலுக்கு மீண்டும் முன்-அறிவிப்பு\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: செயலுக்கு முன்-அறிவிப்பு உள்ளது, வரையறை இல்லை\n",
+          "after": "Sutram truti: செயலுக்கு முன்-அறிவிப்பு உள்ளது, வரையறை இல்லை\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: செயலின் முன்-அறிவிப்பும் வரையறையும் வேறுபடுகின்றன (அளவுரு/வகை)\n",
+          "after": "Sutram truti: செயலின் முன்-அறிவிப்பும் வரையறையும் வேறுபடுகின்றன (அளவுரு/வகை)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: செயல் முன்-அறிவிப்பு வரம்பு மீறல்\n",
+          "after": "Sutram truti: செயல் முன்-அறிவிப்பு வரம்பு மீறல்\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: கூறு-நிலை {kw:vitti} வரம்பு மீறல்\n",
+          "after": "Sutram truti: கூறு-நிலை {kw:vitti} வரம்பு மீறல்\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: கூறு-நிலை {kw:vitti} பெயர் மீண்டும்\n",
+          "after": "Sutram truti: கூறு-நிலை {kw:vitti} பெயர் மீண்டும்\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: பொது மதிப்புக் குறிப்பு வரம்பு மீறல்\n",
+          "after": "Sutram truti: பொது மதிப்புக் குறிப்பு வரம்பு மீறல்\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: இணைப்புச் சுழற்சி: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: இணைப்புச் சுழற்சி: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: மீண்டும் ஏற்றுமதி '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: மீண்டும் ஏற்றுமதி '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ஏற்றுமதி '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ஏற்றுமதி '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: அறியாத குறியீடு '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: அறியாத குறியீடு '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: இணைப்பு ஆழ வரம்பு மீறல்\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: இணைப்பு ஆழ வரம்பு மீறல்\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 கூறு '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 கூறு '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: கூறு/இணைப்பு வரம்பு மீறல்\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: கூறு/இணைப்பு வரம்பு மீறல்\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: தவறான அல்லது உடைந்த இந்தியப் பெயர்\n",
+          "after": "Sutram truti [E_UTF8]: தவறான அல்லது உடைந்த இந்தியப் பெயர்\n"
+        }
+      ]
+    },
+    {
+      "path": "lang/telugu.sandesh",
+      "total_entries": 142,
+      "prefix_entries": 68,
+      "messages": [
+        {
+          "key": "r48_msg_near",
+          "before": ": Sutram Error [E_PARSE]: పదం '",
+          "after": ": Sutram truti [E_PARSE]: పదం '"
+        },
+        {
+          "key": "r50_msg_setchar_arity",
+          "before": "Sutram Error: {kw:akshar_rakh}: 3 ప్రమాణాలు అవసరం\n",
+          "after": "Sutram truti: {kw:akshar_rakh}: 3 ప్రమాణాలు అవసరం\n"
+        },
+        {
+          "key": "r52_msg_dvaram_arity",
+          "before": "Sutram Error: {kw:dvaram}: 2 లేదా 3 ప్రమాణాలు అవసరం\n",
+          "after": "Sutram truti: {kw:dvaram}: 2 లేదా 3 ప్రమాణాలు అవసరం\n"
+        },
+        {
+          "key": "r52_msg_charat_arity",
+          "before": "Sutram Error: {kw:akshar}: 2 ప్రమాణాలు అవసరం\n",
+          "after": "Sutram truti: {kw:akshar}: 2 ప్రమాణాలు అవసరం\n"
+        },
+        {
+          "key": "r52_msg_charcode_arity",
+          "before": "Sutram Error: {kw:aksharank}: 1 లేదా 2 ప్రమాణాలు అవసరం\n",
+          "after": "Sutram truti: {kw:aksharank}: 1 లేదా 2 ప్రమాణాలు అవసరం\n"
+        },
+        {
+          "key": "r48_msg_undefined",
+          "before": ": Sutram Error [E_UNDEFINED_FUNCTION]: తెలియని ప్రక్రియ '",
+          "after": ": Sutram truti [E_UNDEFINED_FUNCTION]: తెలియని ప్రక్రియ '"
+        },
+        {
+          "key": "r4_msg_undef",
+          "before": ": Sutram Error [E_UNDEFINED_NAME]: తెలియని పేరు '",
+          "after": ": Sutram truti [E_UNDEFINED_NAME]: తెలియని పేరు '"
+        },
+        {
+          "key": "r5_msg_field",
+          "before": ": Sutram Error [E_UNKNOWN_FIELD]: తెలియని క్షేత్రం '",
+          "after": ": Sutram truti [E_UNKNOWN_FIELD]: తెలియని క్షేత్రం '"
+        },
+        {
+          "key": "r7_msg_dup",
+          "before": ": Sutram Error [E_DUPLICATE_NAME]: మళ్ళీ ప్రకటన '",
+          "after": ": Sutram truti [E_DUPLICATE_NAME]: మళ్ళీ ప్రకటన '"
+        },
+        {
+          "key": "r7_msg_field_amb",
+          "before": ": Sutram Error [E_AMBIGUOUS_FIELD]: క్షేత్రం '",
+          "after": ": Sutram truti [E_AMBIGUOUS_FIELD]: క్షేత్రం '"
+        },
+        {
+          "key": "r7_msg_mod_missing",
+          "before": "Sutram Error [E_MODULE_MISSING]: చేర్పు దస్త్రం దొరకలేదు: ",
+          "after": "Sutram truti [E_MODULE_MISSING]: చేర్పు దస్త్రం దొరకలేదు: "
+        },
+        {
+          "key": "msg_err_line",
+          "before": "\nSutram Error: వ్యాకరణ దోషం, వరుస ",
+          "after": "\nSutram truti: వ్యాకరణ దోషం, వరుస "
+        },
+        {
+          "key": "msg_duplicate_func",
+          "before": "Sutram Error: ప్రక్రియకు మళ్ళీ నిర్వచనం: ",
+          "after": "Sutram truti: ప్రక్రియకు మళ్ళీ నిర్వచనం: "
+        },
+        {
+          "key": "msg_undefined_func",
+          "before": "Sutram Error: తెలియని ప్రక్రియ: ",
+          "after": "Sutram truti: తెలియని ప్రక్రియ: "
+        },
+        {
+          "key": "msg_array_oob",
+          "before": "Sutram Error: {kw:mala} సూచిక పరిమితి దాటింది\n",
+          "after": "Sutram truti: {kw:mala} సూచిక పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_kosh_required",
+          "before": "Sutram Error: {kw:kosh} ప్రక్రియకు {kw:kosh} {kw:vitti} అవసరం\n",
+          "after": "Sutram truti: {kw:kosh} ప్రక్రియకు {kw:kosh} {kw:vitti} అవసరం\n"
+        },
+        {
+          "key": "msg_kosh_empty",
+          "before": "Sutram Error: ఖాళీ కోశం నుండి {kw:kosh_pop}\n",
+          "after": "Sutram truti: ఖాళీ కోశం నుండి {kw:kosh_pop}\n"
+        },
+        {
+          "key": "msg_kosh_peek_empty",
+          "before": "Sutram Error: ఖాళీ కోశం నుండి {kw:kosh_peek}\n",
+          "after": "Sutram truti: ఖాళీ కోశం నుండి {kw:kosh_peek}\n"
+        },
+        {
+          "key": "msg_kosh_dequeue_empty",
+          "before": "Sutram Error: ఖాళీ కోశం నుండి {kw:kosh_dequeue}\n",
+          "after": "Sutram truti: ఖాళీ కోశం నుండి {kw:kosh_dequeue}\n"
+        },
+        {
+          "key": "msg_kosh_param_type",
+          "before": "Sutram Error: కోశ ప్రమాణం: మూలకం రకం వేరు\n",
+          "after": "Sutram truti: కోశ ప్రమాణం: మూలకం రకం వేరు\n"
+        },
+        {
+          "key": "msg_kosh_param_push",
+          "before": "Sutram Error: కోశ ప్రమాణంపై {kw:kosh_push} మద్దతు లేదు\n",
+          "after": "Sutram truti: కోశ ప్రమాణంపై {kw:kosh_push} మద్దతు లేదు\n"
+        },
+        {
+          "key": "r23_msg_slice_base",
+          "before": "Sutram Error: {kw:vibhag}: {kw:mala}, {kw:kosh} లేదా {kw:vibhag} అవసరం\n",
+          "after": "Sutram truti: {kw:vibhag}: {kw:mala}, {kw:kosh} లేదా {kw:vibhag} అవసరం\n"
+        },
+        {
+          "key": "r23_msg_slice_return",
+          "before": "Sutram Error: {kw:vibhag}ను ప్రక్రియ నుండి తిరిగి ఇవ్వలేము\n",
+          "after": "Sutram truti: {kw:vibhag}ను ప్రక్రియ నుండి తిరిగి ఇవ్వలేము\n"
+        },
+        {
+          "key": "r25_msg_phal_return",
+          "before": "Sutram Error: ఫలిత-{kw:prakriya}: ప్రతి {kw:prati} {kw:siddhi} లేదా {kw:dosh} కావాలి\n",
+          "after": "Sutram truti: ఫలిత-{kw:prakriya}: ప్రతి {kw:prati} {kw:siddhi} లేదా {kw:dosh} కావాలి\n"
+        },
+        {
+          "key": "r25_msg_phal_unused",
+          "before": "Sutram Error: ఫలిత-{kw:prakriya} {kw:prasar} లేకుండా పిలవబడింది\n",
+          "after": "Sutram truti: ఫలిత-{kw:prakriya} {kw:prasar} లేకుండా పిలవబడింది\n"
+        },
+        {
+          "key": "r25_msg_prasar_call",
+          "before": "Sutram Error: {kw:prasar}: ఫలిత-{kw:prakriya} పిలుపు అవసరం\n",
+          "after": "Sutram truti: {kw:prasar}: ఫలిత-{kw:prakriya} పిలుపు అవసరం\n"
+        },
+        {
+          "key": "r25_msg_prasar_where",
+          "before": "Sutram Error: {kw:prasar} ఫలిత-{kw:prakriya} లేదా {kw:mukhya} లో మాత్రమే\n",
+          "after": "Sutram truti: {kw:prasar} ఫలిత-{kw:prakriya} లేదా {kw:mukhya} లో మాత్రమే\n"
+        },
+        {
+          "key": "r26_msg_handle_call",
+          "before": "Sutram Error: {kw:yadi} {kw:dosh}: ఫలిత-{kw:prakriya} పిలుపు అవసరం\n",
+          "after": "Sutram truti: {kw:yadi} {kw:dosh}: ఫలిత-{kw:prakriya} పిలుపు అవసరం\n"
+        },
+        {
+          "key": "r28_msg_object_globals",
+          "before": "Sutram Error: వస్తు-ఫైల్‌లో ఘటక-స్థాయి {kw:vitti} మద్దతు లేదు\n",
+          "after": "Sutram truti: వస్తు-ఫైల్‌లో ఘటక-స్థాయి {kw:vitti} మద్దతు లేదు\n"
+        },
+        {
+          "key": "r32_msg_ffi_bad",
+          "before": "Sutram Error: విదేశీ-ప్రకటన ఫైల్ లోపభూయిష్టం, పంక్తి ",
+          "after": "Sutram truti: విదేశీ-ప్రకటన ఫైల్ లోపభూయిష్టం, పంక్తి "
+        },
+        {
+          "key": "r32_msg_ffi_clash",
+          "before": "Sutram Error: విదేశీ {kw:prakriya} పేరు ఇతరచోట కూడా: ",
+          "after": "Sutram truti: విదేశీ {kw:prakriya} పేరు ఇతరచోట కూడా: "
+        },
+        {
+          "key": "r33_msg_ffi_kind",
+          "before": "Sutram Error [E_FFI_KIND]: విదేశీ {kw:prakriya} ",
+          "after": "Sutram truti [E_FFI_KIND]: విదేశీ {kw:prakriya} "
+        },
+        {
+          "key": "msg_open_err",
+          "before": "Sutram Error: మూల దస్త్రం దొరకలేదు\n",
+          "after": "Sutram truti: మూల దస్త్రం దొరకలేదు\n"
+        },
+        {
+          "key": "msg_namespace_error",
+          "before": "Sutram Error: అశుద్ధ {kw:yoj} (రూపం: భాగం@మారుపేరు, మారుపేరు 31 బైట్ల వరకు)\n",
+          "after": "Sutram truti: అశుద్ధ {kw:yoj} (రూపం: భాగం@మారుపేరు, మారుపేరు 31 బైట్ల వరకు)\n"
+        },
+        {
+          "key": "msg_namespace_module_missing",
+          "before": "Sutram Error: భాగ దస్త్రం దొరకలేదు\n",
+          "after": "Sutram truti: భాగ దస్త్రం దొరకలేదు\n"
+        },
+        {
+          "key": "msg_namespace_alias_reuse",
+          "before": "Sutram Error: మారుపేరు ఇప్పటికే వాడబడింది (వేరే భాగానికి)\n",
+          "after": "Sutram truti: మారుపేరు ఇప్పటికే వాడబడింది (వేరే భాగానికి)\n"
+        },
+        {
+          "key": "r51_alias_conflict",
+          "before": ": Sutram Error [E_MODULE_ALIAS_REUSE]: మారుపేరు ఇప్పటికే వాడబడింది (వేరే భాగానికి)\n",
+          "after": ": Sutram truti [E_MODULE_ALIAS_REUSE]: మారుపేరు ఇప్పటికే వాడబడింది (వేరే భాగానికి)\n"
+        },
+        {
+          "key": "msg_namespace_func_limit",
+          "before": "Sutram Error: భాగ ప్రక్రియ-పేర్ల పరిమితి దాటింది\n",
+          "after": "Sutram truti: భాగ ప్రక్రియ-పేర్ల పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_import_overflow",
+          "before": "Sutram Error: విస్తరించిన మూలం పరిమితి దాటింది\n",
+          "after": "Sutram truti: విస్తరించిన మూలం పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_ast_overflow",
+          "before": "Sutram Error: వాక్య-వృక్షం పరిమితి దాటింది\n",
+          "after": "Sutram truti: వాక్య-వృక్షం పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_func_params_overflow",
+          "before": "Sutram Error: ప్రక్రియ ప్రమాణ-జాబితా పరిమితి దాటింది\n",
+          "after": "Sutram truti: ప్రక్రియ ప్రమాణ-జాబితా పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_var_table_overflow",
+          "before": "Sutram Error: {kw:vitti} జాబితా పరిమితి దాటింది\n",
+          "after": "Sutram truti: {kw:vitti} జాబితా పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_func_table_overflow",
+          "before": "Sutram Error: ప్రక్రియ జాబితా పరిమితి దాటింది\n",
+          "after": "Sutram truti: ప్రక్రియ జాబితా పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_patch_overflow",
+          "before": "Sutram Error: పిలుపు జాబితా పరిమితి దాటింది\n",
+          "after": "Sutram truti: పిలుపు జాబితా పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_func_defs_overflow",
+          "before": "Sutram Error: ప్రక్రియ నిర్వచన-జాబితా పరిమితి దాటింది\n",
+          "after": "Sutram truti: ప్రక్రియ నిర్వచన-జాబితా పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_r9_guna_overflow",
+          "before": "Sutram Error: {kw:guna} పరిమితి దాటింది (1024)\n",
+          "after": "Sutram truti: {kw:guna} పరిమితి దాటింది (1024)\n"
+        },
+        {
+          "key": "msg_break_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} లో {kw:krama} పరిమితి దాటింది\n",
+          "after": "Sutram truti: {kw:chakra} లో {kw:krama} పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_continue_patch_overflow",
+          "before": "Sutram Error: {kw:chakra} లో {kw:agrim} పరిమితి దాటింది\n",
+          "after": "Sutram truti: {kw:chakra} లో {kw:agrim} పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_code_overflow",
+          "before": "Sutram Error: యంత్ర భాష పరిమితి దాటింది\n",
+          "after": "Sutram truti: యంత్ర భాష పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_rachana_overflow",
+          "before": "Sutram Error: {kw:rachana} జాబితా పరిమితి దాటింది\n",
+          "after": "Sutram truti: {kw:rachana} జాబితా పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_rachana_fields_overflow",
+          "before": "Sutram Error: {kw:rachana} క్షేత్రాల పరిమితి దాటింది\n",
+          "after": "Sutram truti: {kw:rachana} క్షేత్రాల పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_block_nesting_overflow",
+          "before": "Sutram Error: ఖండ లోతు పరిమితి దాటింది\n",
+          "after": "Sutram truti: ఖండ లోతు పరిమితి దాటింది\n"
+        },
+        {
+          "key": "msg_block_stmt_overflow",
+          "before": "Sutram Error: ఖండంలో వాక్యాల పరిమితి దాటింది\n",
+          "after": "Sutram truti: ఖండంలో వాక్యాల పరిమితి దాటింది\n"
+        },
+        {
+          "key": "r55_msg_proto_duplicate",
+          "before": "Sutram Error: ప్రక్రియకు మళ్ళీ ముందస్తు ప్రకటన\n",
+          "after": "Sutram truti: ప్రక్రియకు మళ్ళీ ముందస్తు ప్రకటన\n"
+        },
+        {
+          "key": "r55_msg_proto_missing",
+          "before": "Sutram Error: ప్రక్రియకు ముందస్తు ప్రకటన ఉంది, నిర్వచనం లేదు\n",
+          "after": "Sutram truti: ప్రక్రియకు ముందస్తు ప్రకటన ఉంది, నిర్వచనం లేదు\n"
+        },
+        {
+          "key": "r55_msg_proto_signature",
+          "before": "Sutram Error: ప్రక్రియ ముందస్తు ప్రకటన మరియు నిర్వచనం వేరు (ప్రమాణాలు/రకం)\n",
+          "after": "Sutram truti: ప్రక్రియ ముందస్తు ప్రకటన మరియు నిర్వచనం వేరు (ప్రమాణాలు/రకం)\n"
+        },
+        {
+          "key": "r55_msg_proto_capacity",
+          "before": "Sutram Error: ప్రక్రియ ముందస్తు ప్రకటనల పరిమితి దాటింది\n",
+          "after": "Sutram truti: ప్రక్రియ ముందస్తు ప్రకటనల పరిమితి దాటింది\n"
+        },
+        {
+          "key": "r56_msg_global_capacity",
+          "before": "Sutram Error: భాగ-స్థాయి {kw:vitti} పరిమితి దాటింది\n",
+          "after": "Sutram truti: భాగ-స్థాయి {kw:vitti} పరిమితి దాటింది\n"
+        },
+        {
+          "key": "r56_msg_global_duplicate",
+          "before": "Sutram Error: భాగ-స్థాయి {kw:vitti} పేరు మళ్ళీ\n",
+          "after": "Sutram truti: భాగ-స్థాయి {kw:vitti} పేరు మళ్ళీ\n"
+        },
+        {
+          "key": "r56_msg_patch_capacity",
+          "before": "Sutram Error: సార్వత్రిక విలువ సూచనల పరిమితి దాటింది\n",
+          "after": "Sutram truti: సార్వత్రిక విలువ సూచనల పరిమితి దాటింది\n"
+        },
+        {
+          "key": "mg_e_cycle",
+          "before": "Sutram Error [E_MODULE_CYCLE]: చేర్పు చక్రం: ",
+          "after": "Sutram truti [E_MODULE_CYCLE]: చేర్పు చక్రం: "
+        },
+        {
+          "key": "mg_e_dupexp1",
+          "before": "Sutram Error [E_MODULE_DUP_EXPORT]: మళ్ళీ ఎగుమతి '",
+          "after": "Sutram truti [E_MODULE_DUP_EXPORT]: మళ్ళీ ఎగుమతి '"
+        },
+        {
+          "key": "mg_e_undef1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: ఎగుమతి '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: ఎగుమతి '"
+        },
+        {
+          "key": "mg_e_unknown1",
+          "before": "Sutram Error [E_EXPORT_UNDEFINED]: తెలియని చిహ్నం '",
+          "after": "Sutram truti [E_EXPORT_UNDEFINED]: తెలియని చిహ్నం '"
+        },
+        {
+          "key": "mg_e_depth",
+          "before": "Sutram Error [E_MODULE_DEPTH]: చేర్పు లోతు పరిమితి దాటింది\n",
+          "after": "Sutram truti [E_MODULE_DEPTH]: చేర్పు లోతు పరిమితి దాటింది\n"
+        },
+        {
+          "key": "mg_e_valias1",
+          "before": "Sutram Error [E_MODULE_V1_ALIAS]: v1 భాగం '",
+          "after": "Sutram truti [E_MODULE_V1_ALIAS]: v1 భాగం '"
+        },
+        {
+          "key": "mg_e_limit",
+          "before": "Sutram Error [E_MODULE_LIMIT]: భాగం/చేర్పు పరిమితి దాటింది\n",
+          "after": "Sutram truti [E_MODULE_LIMIT]: భాగం/చేర్పు పరిమితి దాటింది\n"
+        },
+        {
+          "key": "r66_msg_bad_utf8",
+          "before": "Sutram Error [E_UTF8]: అశుద్ధమైన లేదా విరిగిన భారతీయ పేరు\n",
+          "after": "Sutram truti [E_UTF8]: అశుద్ధమైన లేదా విరిగిన భారతీయ పేరు\n"
+        }
+      ]
+    }
+  ],
+  "source_scan": [
+    {
+      "path": "src/r52_yoj_hint.inc",
+      "hits": [
+        {
+          "line": 8,
+          "text": ";   Sutram Error: agyat prakriya: brihat_yuj"
+        }
+      ]
+    },
+    {
+      "path": "src/r66_indic_lexer.inc",
+      "hits": [
+        {
+          "line": 12,
+          "text": "db \"Sutram Error [E_UTF8]: ashuddh ya khandit bharatiya naam\", 10, 0"
+        }
+      ]
+    },
+    {
+      "path": "src/r68_diagnostics.inc",
+      "hits": [
+        {
+          "line": 8,
+          "text": "db \"Sutram Error [E_UTF8]: \",0"
+        },
+        {
+          "line": 12,
+          "text": "db \"Sutram Error [E_ABBREVIATION_VALUE]: \",0"
+        }
+      ]
+    },
+    {
+      "path": "src/r71_unsafe_integration.inc",
+      "hits": [
+        {
+          "line": 5,
+          "text": "db \"Sutram Error [E_UNSAFE_BOUNDARY]: \",0"
+        }
+      ]
+    },
+    {
+      "path": "src/sutram_compiler.asm",
+      "hits": [
+        {
+          "line": 257,
+          "text": "r48_msg_near db \": Sutram Error [E_PARSE]: shabd '\",0"
+        },
+        {
+          "line": 262,
+          "text": "r50_msg_setchar_arity db \"Sutram Error: akshar_rakh: 3 tark avashyak\",10,0"
+        },
+        {
+          "line": 263,
+          "text": "r52_msg_dvaram_arity db \"Sutram Error: dvaram: 2 va 3 tark avashyak\",10,0"
+        },
+        {
+          "line": 264,
+          "text": "r52_msg_charat_arity db \"Sutram Error: akshar: 2 tark avashyak\",10,0"
+        },
+        {
+          "line": 265,
+          "text": "r52_msg_charcode_arity db \"Sutram Error: aksharank: 1 va 2 tark avashyak\",10,0"
+        },
+        {
+          "line": 266,
+          "text": "r54_msg_arity db \"Sutram Error: tark sankhya hastakshar nasti\",10,0   ; R111: \"se bhinn\" -> \"nasti\" (no code prints it)"
+        },
+        {
+          "line": 318,
+          "text": "r48_msg_undefined db \": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '\",0"
+        },
+        {
+          "line": 321,
+          "text": "r4_msg_undef db \": Sutram Error [E_UNDEFINED_NAME]: agyat naam '\",0"
+        },
+        {
+          "line": 327,
+          "text": "r5_msg_field db \": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '\",0"
+        },
+        {
+          "line": 328,
+          "text": "r7_msg_dup db \": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '\",0"
+        },
+        {
+          "line": 331,
+          "text": "r7_msg_field_amb db \": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '\",0"
+        },
+        {
+          "line": 334,
+          "text": "r7_msg_arity db \": Sutram Error [E_ARITY]: '\",0"
+        },
+        {
+          "line": 338,
+          "text": "r7_msg_mod_missing db \"Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: \",0"
+        },
+        {
+          "line": 359,
+          "text": "msg_err_line db 10, \"Sutram Error: vyakaran dosh, pankti \", 0"
+        },
+        {
+          "line": 372,
+          "text": "msg_duplicate_func db \"Sutram Error: punah prakriya paribhasha: \", 0"
+        },
+        {
+          "line": 373,
+          "text": "msg_undefined_func db \"Sutram Error: agyat prakriya: \", 0"
+        },
+        {
+          "line": 374,
+          "text": "msg_array_oob db \"Sutram Error: mala ank seema atikram\", 10, 0"
+        },
+        {
+          "line": 379,
+          "text": "r80_msg_div_a db \"Sutram Error [E_SHUNYA_BHAJAN]: pankti \", 0"
+        },
+        {
+          "line": 386,
+          "text": "r80_hdr_div   db \": Sutram Error [E_SHUNYA_BHAJAN]: \", 0"
+        },
+        {
+          "line": 390,
+          "text": "r80_hdr_ovf   db \": Sutram Error [E_ATIPRAVAH]: \", 0"
+        },
+        {
+          "line": 400,
+          "text": "r81_hdr_call  db \": Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya '\", 0"
+        },
+        {
+          "line": 401,
+          "text": "r81_hdr_karya db \": Sutram Error [E_APARIKSHITA_KARYA]: parikshita prakriya '\", 0"
+        },
+        {
+          "line": 402,
+          "text": "r81_hdr_smriti db \": Sutram Error [E_APARIKSHITA_SMRITI]: parikshita prakriya '\", 0"
+        },
+        {
+          "line": 403,
+          "text": "r81_hdr_sthan db \": Sutram Error [E_PARIKSHITA_STHAN]: \", 0"
+        },
+        {
+          "line": 427,
+          "text": "r82_m1 db \"Sutram Error [E_KOSH_MANDAPA]: prakriya '\", 0"
+        },
+        {
+          "line": 434,
+          "text": "r87_hdr db \": Sutram Error [E_DASHAM_VITTI]: \", 0"
+        },
+        {
+          "line": 437,
+          "text": "r161_narrow_msg db \"Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati\",10,0"
+        },
+        {
+          "line": 473,
+          "text": "r96_hdr db \": Sutram Error [E_CHAKRA_DASHAM]: \", 0"
+        },
+        {
+          "line": 476,
+          "text": "r94_hdr db \": Sutram Error [E_DASHAM_KRIYA]: \", 0"
+        },
+        {
+          "line": 480,
+          "text": "rfx_hdr db \": Sutram Error [E_MULYA_VINA]: \", 0"
+        },
+        {
+          "line": 492,
+          "text": "rfx_lk_hdr db \": Sutram Error [E_LIKHA_TRAYA]: \", 0"
+        },
+        {
+          "line": 498,
+          "text": "rfx_bc_hdr_tul db \": Sutram Error [E_VARTANI_TUL]: \", 0"
+        },
+        {
+          "line": 504,
+          "text": "rfx_bc_hdr_cat db \": Sutram Error [E_VARTANI_CAT]: \", 0"
+        },
+        {
+          "line": 527,
+          "text": "rfx_bc_hdr_gan db \": Sutram Error [E_VARTANI_GANIT]: \", 0"
+        },
+        {
+          "line": 536,
+          "text": "rfx_bc_hdr_sat db \": Sutram Error [E_VARTANI_SATYA]: \", 0"
+        },
+        {
+          "line": 539,
+          "text": "rfx_bc_hdr_kosh db \": Sutram Error [E_KOSH_GANIT]: \", 0"
+        },
+        {
+          "line": 546,
+          "text": "r107_msg_var db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate\", 10"
+        },
+        {
+          "line": 548,
+          "text": "r107_msg_mem db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - smritau na likhyate\", 10"
+        },
+        {
+          "line": 550,
+          "text": "r107_msg_ret db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - nivartanam na shakyate\", 10"
+        },
+        {
+          "line": 558,
+          "text": "r108_msg_keep db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)\", 10"
+        },
+        {
+          "line": 560,
+          "text": "r108_msg_full db \"Sutram Error: mandapa-kosh-suchi seema atikram\", 10, 0   ; R109: refused, not unchecked"
+        },
+        {
+          "line": 561,
+          "text": "rfx_bc_hdr_mala db \": Sutram Error [E_MALA_GANIT]: \", 0"
+        },
+        {
+          "line": 564,
+          "text": "rfx2_msg_cap db \"Sutram Error: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)\", 10, 0"
+        },
+        {
+          "line": 565,
+          "text": "rfx2_msg_nomem db \"Sutram Error [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha\", 10"
+        },
+        {
+          "line": 571,
+          "text": "rfx_rec_msg db \"Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram\", 10"
+        },
+        {
+          "line": 583,
+          "text": "msg_kosh_required db \"Sutram Error: kosh prakriya hetu kosh-vitti avashyak\", 10, 0"
+        },
+        {
+          "line": 585,
+          "text": "r65_msg_prefix db \"Sutram Error [E_INTEGER_TRAP] \",0"
+        },
+        {
+          "line": 595,
+          "text": "msg_kosh_empty db \"Sutram Error: riktat koshat kosh_pop\", 10, 0"
+        },
+        {
+          "line": 596,
+          "text": "msg_kosh_peek_empty db \"Sutram Error: riktat koshat kosh_peek\", 10, 0"
+        },
+        {
+          "line": 597,
+          "text": "msg_kosh_dequeue_empty db \"Sutram Error: riktat koshat kosh_dequeue\", 10, 0"
+        },
+        {
+          "line": 598,
+          "text": "msg_kosh_param_type db \"Sutram Error: kosh tark: tatv prakar bhinn\", 10, 0"
+        },
+        {
+          "line": 599,
+          "text": "msg_kosh_param_push db \"Sutram Error: kosh-tarke kosh_push asamarthitam\", 10, 0"
+        },
+        {
+          "line": 600,
+          "text": "r23_msg_slice_base db \"Sutram Error: vibhag: mala, kosh va vibhag apekshita\", 10, 0"
+        },
+        {
+          "line": 601,
+          "text": "r23_msg_slice_return db \"Sutram Error: vibhag prakriyayah na pratyarpaniyah\", 10, 0"
+        },
+        {
+          "line": 603,
+          "text": "r25_msg_phal_return db \"Sutram Error: phal-prakriya: prati siddhi va dosh bhavet\", 10, 0"
+        },
+        {
+          "line": 604,
+          "text": "r25_msg_phal_unused db \"Sutram Error: phal-prakriya prasar vina ahuta\", 10, 0"
+        },
+        {
+          "line": 605,
+          "text": "r25_msg_prasar_call db \"Sutram Error: prasar: phal-prakriya-ahvanam apekshitam\", 10, 0"
+        },
+        {
+          "line": 606,
+          "text": "r25_msg_prasar_where db \"Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va\", 10, 0"
+        },
+        {
+          "line": 607,
+          "text": "r26_msg_handle_call db \"Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam\", 10, 0"
+        },
+        {
+          "line": 608,
+          "text": "r72_msg_escape db \"Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate\", 10"
+        },
+        {
+          "line": 610,
+          "text": "r73_msg_escape_var db \"Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate\", 10"
+        },
+        {
+          "line": 612,
+          "text": "r73_msg_escape_mem db \"Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate\", 10"
+        },
+        {
+          "line": 614,
+          "text": "r73_msg_full db \"Sutram Error: kshetra purnam - mandapa-smritih samapta\", 10, 0"
+        },
+        {
+          "line": 617,
+          "text": "r75_msg_neg_lit db \"Sutram Error [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati\", 10"
+        },
+        {
+          "line": 619,
+          "text": "r75_msg_neg_run db \"Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati\", 10, 0"
+        },
+        {
+          "line": 621,
+          "text": "r78_msg_a db \"Sutram Error [E_NIRMMITA_SEEMA]: pankti \", 0"
+        },
+        {
+          "line": 631,
+          "text": "r77_msg_mix_a db \"Sutram Error [E_ANTARAL_MISHRA]: pankti \", 0"
+        },
+        {
+          "line": 642,
+          "text": "r28_msg_object_globals db \"Sutram Error: vastu-patre ghatak-star vitti asamarthita\", 10, 0"
+        },
+        {
+          "line": 643,
+          "text": "r32_msg_ffi_bad db \"Sutram Error: videshi-ghoshana-patram dushtam, pankti \", 0"
+        },
+        {
+          "line": 644,
+          "text": "r32_msg_ffi_clash db \"Sutram Error: videshi prakriya-nama anyatra api: \", 0"
+        },
+        {
+          "line": 645,
+          "text": "r33_msg_ffi_kind db \"Sutram Error [E_FFI_KIND]: videshi prakriya \", 0"
+        },
+        {
+          "line": 721,
+          "text": "msg_open_err  db \"Sutram Error: nivesh patra aprapt\", 10, 0"
+        },
+        {
+          "line": 1273,
+          "text": "msg_namespace_error db \"Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)\", 10, 0"
+        },
+        {
+          "line": 1274,
+          "text": "msg_namespace_module_missing db \"Sutram Error: ghatak patra aprapt\", 10, 0"
+        },
+        {
+          "line": 1275,
+          "text": "msg_namespace_alias_reuse db \"Sutram Error: upanaam purv-niyukt (anya ghatak)\", 10, 0"
+        },
+        {
+          "line": 1276,
+          "text": "r51_alias_conflict db \": Sutram Error [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya ghatak)\",10,0"
+        },
+        {
+          "line": 1277,
+          "text": "msg_namespace_func_limit db \"Sutram Error: ghatak prakriya-naam seema atikram\", 10, 0"
+        },
+        {
+          "line": 1278,
+          "text": "msg_import_overflow db \"Sutram Error: vistarit srot seema atikram\", 10, 0"
+        },
+        {
+          "line": 1284,
+          "text": "graph_prefix db ': Sutram Error [', 0"
+        },
+        {
+          "line": 1295,
+          "text": "msg_ast_overflow db \"Sutram Error: vakya-vriksh seema atikram\", 10, 0"
+        },
+        {
+          "line": 1296,
+          "text": "msg_func_params_overflow db \"Sutram Error: prakriya tark-suchi seema atikram\", 10, 0"
+        },
+        {
+          "line": 1297,
+          "text": "msg_var_table_overflow db \"Sutram Error: vitti-suchi seema atikram\", 10, 0"
+        },
+        {
+          "line": 1298,
+          "text": "msg_func_table_overflow db \"Sutram Error: prakriya-suchi seema atikram\", 10, 0"
+        },
+        {
+          "line": 1299,
+          "text": "msg_patch_overflow db \"Sutram Error: aahvan-suchi seema atikram\", 10, 0"
+        },
+        {
+          "line": 1300,
+          "text": "msg_func_defs_overflow db \"Sutram Error: prakriya paribhasha-suchi seema atikram\", 10, 0"
+        },
+        {
+          "line": 1301,
+          "text": "msg_r9_guna_overflow db \"Sutram Error: guna seema atikram (1024)\", 10, 0"
+        },
+        {
+          "line": 1302,
+          "text": "msg_break_patch_overflow db \"Sutram Error: chakra-madhye krama seema atikram\", 10, 0"
+        },
+        {
+          "line": 1303,
+          "text": "msg_continue_patch_overflow db \"Sutram Error: chakra-madhye agrim seema atikram\", 10, 0"
+        },
+        {
+          "line": 1304,
+          "text": "msg_code_overflow db \"Sutram Error: yantra-bhasha seema atikram\", 10, 0"
+        },
+        {
+          "line": 1305,
+          "text": "msg_rachana_overflow db \"Sutram Error: rachana-suchi seema atikram\", 10, 0"
+        },
+        {
+          "line": 1306,
+          "text": "msg_rachana_fields_overflow db \"Sutram Error: rachana avayava seema atikram\", 10, 0"
+        },
+        {
+          "line": 1307,
+          "text": "msg_block_nesting_overflow db \"Sutram Error: khand gahrai seema atikram\", 10, 0"
+        },
+        {
+          "line": 1308,
+          "text": "msg_block_stmt_overflow db \"Sutram Error: khand kathan seema atikram\", 10, 0"
+        },
+        {
+          "line": 1309,
+          "text": "r55_msg_proto_duplicate db \"Sutram Error: punah prakriya purv-ghoshana\",10,0"
+        },
+        {
+          "line": 1310,
+          "text": "r55_msg_proto_missing db \"Sutram Error: prakriya purv-ghoshana paribhasha-rahit\",10,0"
+        },
+        {
+          "line": 1311,
+          "text": "r55_msg_proto_signature db \"Sutram Error: prakriya purv-ghoshana va paribhasha bhinn (tark/prakar)\",10,0"
+        },
+        {
+          "line": 1312,
+          "text": "r55_msg_proto_capacity db \"Sutram Error: prakriya purv-ghoshana seema atikram\",10,0"
+        },
+        {
+          "line": 1313,
+          "text": "r56_msg_global_capacity db \"Sutram Error: ghatak-star vitti seema atikram\",10,0"
+        },
+        {
+          "line": 1314,
+          "text": "r56_msg_global_duplicate db \"Sutram Error: punah ghatak-star vitti naam\",10,0"
+        },
+        {
+          "line": 1315,
+          "text": "r56_msg_patch_capacity db \"Sutram Error: sarvatrik mulya sandarbh seema atikram\",10,0"
+        },
+        {
+          "line": 3945,
+          "text": "mg_e_cycle:   db \"Sutram Error [E_MODULE_CYCLE]: yoj chakra: \", 0"
+        },
+        {
+          "line": 3946,
+          "text": "mg_e_noexp1:  db \"Sutram Error [E_MODULE_NOT_EXPORTED]: '\", 0"
+        },
+        {
+          "line": 3949,
+          "text": "mg_e_dupexp1: db \"Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat '\", 0"
+        },
+        {
+          "line": 3952,
+          "text": "mg_e_undef1:  db \"Sutram Error [E_EXPORT_UNDEFINED]: niryat '\", 0"
+        },
+        {
+          "line": 3955,
+          "text": "mg_e_unknown1: db \"Sutram Error [E_EXPORT_UNDEFINED]: agyat sanket '\", 0"
+        },
+        {
+          "line": 3959,
+          "text": "mg_e_depth:   db \"Sutram Error [E_MODULE_DEPTH]: yoj gahrai seema atikram\", 10, 0"
+        },
+        {
+          "line": 3961,
+          "text": "mg_e_valias1: db \"Sutram Error [E_MODULE_V1_ALIAS]: v1 ghatak '\", 0"
+        },
+        {
+          "line": 3964,
+          "text": "mg_e_limit:   db \"Sutram Error [E_MODULE_LIMIT]: ghatak/yoj seema atikram\", 10, 0"
+        },
+        {
+          "line": 8684,
+          "text": ";;   Sutram Error [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)"
+        },
+        {
+          "line": 8692,
+          "text": "r103_msg_a db \"Sutram Error [E_PARIMITA]: pankti \", 0"
+        },
+        {
+          "line": 8695,
+          "text": "r103_hdr_bad db \": Sutram Error [E_PARIMITA]: \", 0"
+        },
+        {
+          "line": 11342,
+          "text": "; r80_compile_error(rdi = position in source_buf, rsi = \": Sutram Error [..]: \", rdx = text,"
+        },
+        {
+          "line": 11343,
+          "text": "; rcx = Sanket line or 0): file:line:col: Sutram Error [..]: text / the source line / a caret /"
+        },
+        {
+          "line": 13055,
+          "text": "; Sutram Error: parse error at line N near token 'X'"
+        },
+        {
+          "line": 13669,
+          "text": "; report: file:L:C: Sutram Error [E_ARITY]: 'f' ko N tark diye; hastakshar me M"
+        }
+      ]
+    }
+  ]
+}
