@@ -1,0 +1,9 @@
+# vardh: MAX - 1 becomes MAX; MAX itself is refused (R116, R189 row 3).
+yoj ganit
+
+mukhya() {
+    likha(vardh(9223372036854775806))
+    likha(vardh(((0 - 9223372036854775807) - 1)))
+    likha(vardh(9223372036854775807))
+    likha(1)
+}

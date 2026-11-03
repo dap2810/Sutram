@@ -86,6 +86,39 @@ def run_sm(compiler, name, code):
     return True, r.stdout.strip()
 
 
+def run_refusal(compiler, name, yoj, setup, expr, code, func):
+    """R116: a one-call program that must stop with the library's diagnostic - empty stdout, stderr
+    "Sutram truti [code]: func: ...", exit 1 (R189's fatal channel). Returns (ok, detail)."""
+    src = "\n".join([f"yoj {m}" for m in yoj] + ["mukhya() {",
+                     "    vitti minv = (0 - 9223372036854775807) - 1"] + setup + [f"    likha({expr})", "}"])
+    sm_path = os.path.join("/tmp", f"prop_{name}.sm")
+    bin_path = sm_path + ".bin"
+    with open(sm_path, "w") as f:
+        f.write(src)
+    r = subprocess.run([compiler, sm_path, bin_path], capture_output=True, text=True, cwd=REPO)
+    if r.returncode != 0:
+        return False, f"{expr}: compile failed: {r.stdout.strip()}"
+    r = subprocess.run([bin_path], capture_output=True, text=True, cwd=REPO, timeout=30)
+    for x in (bin_path, sm_path):
+        try:
+            os.remove(x)
+        except OSError:
+            pass
+    want = f"Sutram truti [{code}]: {func}: "
+    if r.returncode == 1 and r.stdout == "" and r.stderr.startswith(want) and r.stderr.count("\n") == 1:
+        return True, ""
+    return False, f"{expr}: want exit 1 and {want!r}, got exit {r.returncode} {r.stdout.strip()!r} {r.stderr.strip()!r}"
+
+
+def all_refuse(compiler, name, yoj, cases):
+    """cases: (setup lines, expr, code, func). First failure, or (True, "")."""
+    for i, (setup, expr, code, func) in enumerate(cases):
+        ok, why = run_refusal(compiler, f"{name}_r{i}", yoj, setup, expr, code, func)
+        if not ok:
+            return False, why
+    return True, ""
+
+
 def prop_bigint_add_sub(compiler, rng):
     """add(a,b) then sub(result,a) == b"""
     cases = []
@@ -4070,9 +4103,10 @@ def prop_numeric28(compiler, rng):
     check("kramgun(0)", 1, "kramgun 0")
     check("kramgun(20)", 2432902008176640000, "kramgun 20")
     check("ghat(2, 10)", 1024, "ghat 2 10")
-    # plain abs wraps at MIN (checked form exists for the safe case)
-    check("nirapeksh_mulya(minv)", "minv", "nirapeksh_mulya MIN wraps")
-    check("ganita_nirapeksh(minv)", "minv", "ganita_nirapeksh MIN wraps")
+    # abs: |MIN| does not fit. v295 pinned the wrap (MIN); since R116 (R189 rows 4, 7) it stops the
+    # program with E_PHALA_SEEMA - checked below as separate programs. The largest that fits:
+    check("nirapeksh_mulya(minv + 1)", 9223372036854775807, "nirapeksh_mulya MIN+1")
+    check("ganita_nirapeksh(minv + 1)", 9223372036854775807, "ganita_nirapeksh MIN+1")
     # bit_gan: defined for n >= 0; negative returns 0
     check("bit_gan(7)", 3, "bit_gan 7")
     check("bit_gan(0)", 0, "bit_gan 0")
@@ -4114,7 +4148,11 @@ def prop_numeric28(compiler, rng):
     lines.append('    likha("PASS\\n")')
     lines.append("}")
     ok, out = run_sm(compiler, "numeric28", "\n".join(lines))
-    return ok and out == "PASS", out
+    if not (ok and out == "PASS"):
+        return False, out
+    return all_refuse(compiler, "numeric28", ["ganit", "ganita"], [
+        ([], "nirapeksh_mulya(minv)", "E_PHALA_SEEMA", "nirapeksh_mulya"),
+        ([], "ganita_nirapeksh(minv)", "E_PHALA_SEEMA", "ganita_nirapeksh")])
 
 
 def prop_result29(compiler, rng):
@@ -4246,9 +4284,9 @@ def prop_serial29(compiler, rng):
 
 def prop_numeric29(compiler, rng):
     """R29 WS4: pin the numeric contract gaps — ganita classical
-    wrapping (kuttaka/samasa/brahmagupta), math plain wrapping
-    (varg/vargit/ghan/dvigun/trigun/vardh/ghat/kramgun), num fib and
-    viparyay_ank wrapping, roop_sthir overflow -> 0, and the
+    wrapping (kuttaka/samasa), math (varg/vargit/ghan/ghat/kramgun),
+    num fib; dvigun/trigun/vardh/viparyay_ank/brahmagupta refuse past
+    the range since R116; roop_sthir overflow -> 0, and the
     chakravala fixes (perfect vargit, small Pell solutions,
     MAX -> 0 instead of hanging)."""
     lines = ["yoj ganit", "yoj ganita", "yoj roop", "yoj ank",
@@ -4273,10 +4311,10 @@ def prop_numeric29(compiler, rng):
     lines.append("    samasa(out, 1099511627776, 0, 1099511627776, 0, 0)")
     check("out[0]", 0, "samasa wrap 0")
     check("out[1]", 0, "samasa wrap 1")
-    # brahmagupta_kshetr: (a+b+c+d) overflows (2^64 wraps to 0)
-    check("brahmagupta_kshetr(4611686018427387904, "
-          "4611686018427387904, 4611686018427387904, "
-          "4611686018427387904)", 0, "brahmagupta wrap")
+    # brahmagupta_kshetr: v295 wrapped (a+b+c+d = 2^64 -> 0) and pinned 0; since R116 (R189 row 8) it is
+    # exact - the largest square that fits is exact here, four 2^62 sides are refused (below)
+    check("brahmagupta_kshetr(3037000499, 3037000499, 3037000499, 3037000499)",
+          9223372030926249001, "brahmagupta largest square")
     # math: R80 closed the wraps a student could reach - squares that do not fit are -1, cubes and
     # powers saturate (they used to wrap: varg(4294967296) was 0, ghan(2097152) MIN, kramgun(21)
     # and fib(93) negative). dvigun/trigun/vardh still wrap like the operators (inputs near MAX only).
@@ -4287,10 +4325,11 @@ def prop_numeric29(compiler, rng):
     check("ghan(2097153)", 9223372036854775807, "ghan saturates")
     check("ghan(0 - 2097152)", "minv", "ghan -2^63 exact")
     check("ghan(2097151)", 9223358842721533951, "ghan largest")
-    check("dvigun(9223372036854775807)", "0 - 2", "dvigun wrap")
-    check("trigun(9223372036854775807)", 9223372036854775805,
-          "trigun wrap")
-    check("vardh(9223372036854775807)", "minv", "vardh wrap")
+    # dvigun / trigun / vardh: v295 wrapped like the operators; since R116 (R189 rows 1-3) a result past
+    # the range stops the program (E_ATIPRAVAH, below). The bounds still give exact answers:
+    check("dvigun(4611686018427387903)", 9223372036854775806, "dvigun bound")
+    check("trigun(3074457345618258602)", 9223372036854775806, "trigun bound")
+    check("vardh(9223372036854775806)", 9223372036854775807, "vardh bound")
     check("ghat(2, 63)", 9223372036854775807, "ghat 2 63 saturates")
     check("ghat(2, 62)", 4611686018427387904, "ghat 2 62 exact")
     check("ghat(3, 40)", 9223372036854775807, "ghat 3 40 saturates")
@@ -4301,8 +4340,8 @@ def prop_numeric29(compiler, rng):
     check("kramgun(20)", 2432902008176640000, "kramgun 20 exact")
     check("fib(93)", "0 - 1", "fib 93 -> -1")
     check("fib(92)", 7540113804746346429, "fib 92 exact")
-    check("viparyay_ank(1234567890123456789)",
-          "0 - 8570200862721897295", "viparyay_ank wrap")
+    # viparyay_ank: 9876543210987654321 does not fit - refused since R116 (row 6, below); v295 wrapped
+    check("viparyay_ank(7085774586302733229)", 9223372036854775807, "viparyay_ank reverse is MAX")
     # roop_sthir overflow -> 0 (empty); the largest fixed output is
     # 9223372036854774784 (2^63 - 1024), 19 chars
     check("roop_sthir(1000000000000000000.0, 2, buf)", 0, "roop_sthir ovf")
@@ -4332,7 +4371,15 @@ def prop_numeric29(compiler, rng):
     lines.append('    likha("PASS\\n")')
     lines.append("}")
     ok, out = run_sm(compiler, "numeric29", "\n".join(lines))
-    return ok and out == "PASS", out
+    if not (ok and out == "PASS"):
+        return False, out
+    return all_refuse(compiler, "numeric29", ["ganit", "ganita", "ank"], [
+        ([], "brahmagupta_kshetr(4611686018427387904, 4611686018427387904, 4611686018427387904, "
+             "4611686018427387904)", "E_ATIPRAVAH", "brahmagupta_kshetr"),
+        ([], "dvigun(9223372036854775807)", "E_ATIPRAVAH", "dvigun"),
+        ([], "trigun(9223372036854775807)", "E_ATIPRAVAH", "trigun"),
+        ([], "vardh(9223372036854775807)", "E_ATIPRAVAH", "vardh"),
+        ([], "viparyay_ank(1234567890123456789)", "E_PHALA_SEEMA", "viparyay_ank")])
 
 
 def prop_edge30_int(compiler, rng):
@@ -4513,12 +4560,16 @@ def prop_edge30_conv(compiler, rng):
     check("arr[0]", 8, "MIN digit 0")
     check("arr[18]", 9, "MIN digit 18")
     check("brihat_tul(arr, zero, 19)", 1, "MIN magnitude > 0")
-    check("brihat_ank_tak_laghu(arr, 19)", "minv", "MIN to_int wraps")
+    # the 19 digits of |MIN| = 2^63 do not fit back: v295 wrapped to MIN, since R116 (R189 row 10) the
+    # program stops with E_PHALA_SEEMA (below)
     check("brihat_ank_se_laghu(minv, arr, 18)", 0, "from_int MIN trunc")
     lines.append('    likha("PASS\\n")')
     lines.append("}")
     ok, out = run_sm(compiler, "edge30_conv", "\n".join(lines))
-    return ok and out == "PASS", out
+    if not (ok and out == "PASS"):
+        return False, out
+    return all_refuse(compiler, "edge30_conv", ["brihat"], [
+        (['    vitti arr = nirmmita(32 * 8)', '    arr[0] = 8', '    arr[1] = 0', '    arr[2] = 8', '    arr[3] = 5', '    arr[4] = 7', '    arr[5] = 7', '    arr[6] = 4', '    arr[7] = 5', '    arr[8] = 8', '    arr[9] = 6', '    arr[10] = 3', '    arr[11] = 0', '    arr[12] = 2', '    arr[13] = 7', '    arr[14] = 3', '    arr[15] = 3', '    arr[16] = 2', '    arr[17] = 2', '    arr[18] = 9'], "brihat_ank_tak_laghu(arr, 19)", "E_PHALA_SEEMA", "brihat_ank_tak_laghu")])
 
 
 def prop_edge30_cont(compiler, rng):

@@ -1,0 +1,10 @@
+# yog_seema: the exact sum when it fits - (2^62, 2^62) is 2^62 (v295 saturated it to 2^63 - 1); a sum past int64 still saturates; never refuses (R116, R189 row 12).
+yoj sadhan
+
+mukhya() {
+    likha(yog_seema(4611686018427387904, 4611686018427387904))
+    likha(yog_seema(((0 - 9223372036854775807) - 1), 9223372036854775807))
+    likha(yog_seema(0, 9223372036854775807))
+    likha(yog_seema(5, 4))
+    likha(yog_seema(1, 100))
+}

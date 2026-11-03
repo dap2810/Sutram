@@ -1,0 +1,9 @@
+# nirapeksh_mulya: |MIN + 1| is MAX; |MIN| = 2^63 does not fit and is refused (R116, R189 row 4).
+yoj ganit
+
+mukhya() {
+    likha(nirapeksh_mulya(((0 - 9223372036854775807) - 1) + 1))
+    likha(nirapeksh_mulya(0 - 1))
+    likha(nirapeksh_mulya(((0 - 9223372036854775807) - 1)))
+    likha(1)
+}

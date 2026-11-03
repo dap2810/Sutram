@@ -24,8 +24,9 @@ mukhya() {
     likha(ank_gan(0 - 9), " ", ank_gan(0 - 10), " ", ank_gan(9), "\n")
     # seemit / ganit_seemit with lo > hi: hi when n >= lo (documented)
     likha(seemit(3037000499, 3037000499, 0 - 1), " ", ganit_seemit(3037000499, 3037000499, 0 - 1), "\n")
-    # Brahmagupta: no quadrilateral with sides 16, 5, 4, 1000 -> 0; a 3-4-5 triangle -> 6
-    likha(brahmagupta_kshetr(16, 5, 4, 1000), " ", brahmagupta_kshetr(3, 4, 5, 0), "\n")
+    # Brahmagupta: sides 1, 1, 2, 3 -> floor(sqrt(5)) = 2 (v295 wrongly gave 0); a 3-4-5 triangle -> 6.
+    # No quadrilateral with sides 16, 5, 4, 1000 used to give 0; since R116 it stops the program (E_MULYA_AYOGYA)
+    likha(brahmagupta_kshetr(1, 1, 2, 3), " ", brahmagupta_kshetr(3, 4, 5, 0), "\n")
     # n! saturates at 2^63 - 1
     likha(ganita_paripurna_kramgun(1000000000), " ", ganita_paripurna_kramgun(20), "\n")
     # Madhava's series against exact values: sin(pi/6) = 0.5, sin(pi/2) = 1, sin(-pi/2) = -1,

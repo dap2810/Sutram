@@ -1,0 +1,29 @@
+# brihat_ank_tak_laghu: the digits of 2^63 - 1 give it back; the digits of 2^63 are refused (R116, R189 row 10).
+yoj brihat
+
+mukhya() {
+    vitti a = nirmmita(160)
+    a[0] = 7
+    a[1] = 0
+    a[2] = 8
+    a[3] = 5
+    a[4] = 7
+    a[5] = 7
+    a[6] = 4
+    a[7] = 5
+    a[8] = 8
+    a[9] = 6
+    a[10] = 3
+    a[11] = 0
+    a[12] = 2
+    a[13] = 7
+    a[14] = 3
+    a[15] = 3
+    a[16] = 2
+    a[17] = 2
+    a[18] = 9
+    likha(brihat_ank_tak_laghu(a, 19))
+    a[0] = 8
+    likha(brihat_ank_tak_laghu(a, 19))
+    likha(1)
+}

@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v295) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v296) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -560,6 +560,10 @@ r54_builtin_arity_table:
     r108_msg_full db "Sutram truti: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
     rfx_bc_hdr_mala db ": Sutram truti [E_MALA_GANIT]: ", 0
     r113_hdr db ": Sutram truti [E_RACHANA_GANIT]: ", 0
+    ; R116: nishedha(cond, msg)'s message write: rsi = msg, rdx = its length, edi = 2, eax = 1
+    r116_strlen db 0x48,0x89,0xC6, 0x31,0xD2, 0x80,0x3C,0x16,0x00, 0x74,0x05, 0x48,0xFF,0xC2, 0xEB,0xF5
+    db 0xBF,0x02,0x00,0x00,0x00, 0xB8,0x01,0x00,0x00,0x00
+    r116_strlen_len equ $ - r116_strlen
     r115_hdr db ": Sutram truti [E_PRATYAHRITA]: ", 0
     r115_txt db "sankhya_bindu (sankhya_dot) pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate", 10, 0
     r115_hint db "Sanket: dvayoh kosh dasham bindu-gunanaya: yoj sankhyiki, bindu_gunan(a, b) - laghutara dirghata eva pathyate", 10, 0
@@ -15355,19 +15359,33 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
     call advance_tok           ; consume '('
     call parse_expr            ; rax = condition
     push rax                  ; save condition
+    push qword 0              ; R116: the optional message
     call cur_tok
     mov rcx, [rax+8]
+    cmp rcx, ','               ; R116: nishedha(cond, "message") - the library's fatal channel
+    jne .r116_no_msg
+    call advance_tok
+    call parse_expr
+    cmp qword [rax], AST_STR   ; a string literal only
+    jne parse_error
+    mov [rsp], rax
+    call cur_tok
+    mov rcx, [rax+8]
+.r116_no_msg:
     cmp rcx, ')'
     jne parse_error
     call advance_tok           ; consume ')'
     call maybe_semi
+    pop rdx                   ; the message or 0
     pop rcx                   ; restore condition
+    push rdx
     push rcx
     call alloc_ast
     pop rcx
+    pop rdx
     mov qword [rax], AST_ASSERT
     mov [rax+8], rcx          ; condition
-    mov qword [rax+16], 0
+    mov [rax+16], rdx         ; R116: message (AST_STR) or 0
     pop rbx
     ret
 
@@ -17724,6 +17742,48 @@ emit_rbp_modrm_disp:
     call emit_u32
 .erd_done:
     pop r12
+    pop rbx
+    ret
+
+; r116_str_jump(rdi = the short form's jump distance, rsi = the bytes that follow it): emits the address of the
+; inline string into rax and a jump over it. Up to 127: `lea rax,[rip+2]; jmp rel8` - the bytes every program
+; has always had. Beyond: `lea rax,[rip+5]; jmp rel32`. Up to v295 the rel8 was emitted whatever the length, so
+; a string literal of 127 bytes or more made the jump wrap backwards into the code: the program crashed or
+; printed nothing or the wrong text (R116).
+; Preserves r12, r13.
+r116_str_jump:
+    push rbx
+    push r14
+    mov rbx, rdi
+    mov r14, rsi
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x05
+    call emit_byte
+    cmp rbx, 127
+    ja .long
+    mov dil, 0x02
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    call emit_byte
+    call emit_byte
+    mov dil, 0xEB
+    call emit_byte
+    mov edi, ebx
+    call emit_byte
+    jmp .out
+.long:
+    mov edi, 5
+    call emit_u32
+    mov dil, 0xE9
+    call emit_byte
+    mov edi, r14d
+    call emit_u32
+.out:
+    pop r14
     pop rbx
     ret
 
@@ -20256,6 +20316,8 @@ gen_stmt:
     call emit_byte
     mov dil, 0xC0
     call emit_byte
+    cmp qword [rbx+16], 0          ; R116: with a message - write it to stderr, then exit 1
+    jne .r116_assert_msg
     ; jnz +12 (skip exit, continue)
     mov dil, 0x75
     call emit_byte
@@ -20285,6 +20347,48 @@ gen_stmt:
     call emit_byte
     ; syscall
     call emit_syscall
+    pop rbx
+    ret
+
+.r116_assert_msg:
+    ; jnz rel32 over: the message's address, its length (counted here), write(2, ...), exit(1)
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    push qword [rel code_sz]        ; where the rel32 goes
+    xor edi, edi
+    call emit_u32
+    mov rax, [rbx+16]
+    call gen_expr                   ; rax = the message
+    lea rsi, [rel r116_strlen]
+    mov ecx, r116_strlen_len
+.r116_sl:
+    movzx edi, byte [rsi]
+    push rsi
+    push rcx
+    call emit_byte
+    pop rcx
+    pop rsi
+    inc rsi
+    dec ecx
+    jnz .r116_sl
+    call emit_syscall               ; write(2, msg, len)
+    mov dil, 0xB8                   ; mov eax, 60
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF                   ; mov edi, 1
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall               ; exit(1)
+    pop rcx                         ; patch the jnz
+    mov rax, [rel code_sz]
+    sub rax, rcx
+    sub rax, 4
+    lea rdx, [rel code_buf]
+    mov [rdx+rcx], eax
     pop rbx
     ret
 
@@ -22566,31 +22670,12 @@ gen_expr:
     push r12
     push r13
     mov r12, [rax+8]
-    ; lea rax,[rip+2]: 48 8D 05 02 00 00 00
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x8D
-    call emit_byte
-    mov dil, 0x05
-    call emit_byte
-    mov dil, 0x02
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    ; strlen to get length
     mov rdi, r12
     call strlen
     mov r13, rax
-    ; jmp rel8 = EB (len+1)
-    mov dil, 0xEB
-    call emit_byte
-    mov edi, r13d
-    add edi, 1
-    call emit_byte
+    lea rdi, [r13+1]          ; R116: the short form as before (it lands one byte into the next
+    mov rsi, r13              ; instruction, which still decodes); the long form lands exactly
+    call r116_str_jump
     ; emit string bytes
 .ge_lk_sl:
     test r13, r13
@@ -22632,14 +22717,8 @@ gen_expr:
     push r12
     mov rdi, rax
     call strlen
-    mov edi, eax
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
+    mov edi, eax              ; R116: all four bytes of the length (up to v295 only the low byte, so a
+    call emit_u32             ; literal of 256 bytes or more printed its length modulo 256)
     pop r12
     ; mov eax, 1 = B8 01 00 00 00
     mov dil, 0xB8
@@ -24428,31 +24507,12 @@ gen_expr:
     push r12
     push r13
     mov r12, [rax+8]         ; r12 = format string pointer
-    ; Emit lea rax,[rip+2] for the format string
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x8D
-    call emit_byte
-    mov dil, 0x05
-    call emit_byte
-    mov dil, 0x02
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    ; strlen for jmp offset
     mov rdi, r12
     call strlen
     mov r13, rax
-    ; jmp rel8
-    mov dil, 0xEB
-    call emit_byte
-    mov edi, r13d
-    add edi, 1
-    call emit_byte
+    lea rdi, [r13+1]          ; R116: as the likha literal above
+    mov rsi, r13
+    call r116_str_jump
     ; emit string bytes
 .ge_lf_sl:
     test r13, r13
@@ -24491,14 +24551,8 @@ gen_expr:
     push r12
     mov rdi, rax
     call strlen
-    mov edi, eax
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
+    mov edi, eax              ; R116: all four bytes of the length (v295: the low byte only)
+    call emit_u32
     pop r12
     mov dil, 0xB8
     call emit_byte
@@ -24882,31 +24936,12 @@ gen_expr:
     push r12
     push r13
     mov r12, [rbx+8]          ; r12 = string pointer (preserved by emit_byte)
-    ; Emit lea rax,[rip+2]: 48 8D 05 02 00 00 00
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x8D
-    call emit_byte
-    mov dil, 0x05
-    call emit_byte
-    mov dil, 0x02
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    ; Compute string length for jmp offset
     mov rdi, r12
     call strlen               ; rax = length
     mov r13, rax              ; r13 = length (preserved by emit_byte)
-    ; Emit jmp rel8 = EB (length+1)
-    mov dil, 0xEB
-    call emit_byte
-    mov edi, r13d
-    add edi, 1
-    call emit_byte
+    lea rdi, [r13+1]          ; R116: lea rax,[rip+..] and the jump over the string and its NUL
+    lea rsi, [r13+1]
+    call r116_str_jump
     ; Emit string bytes + null terminator
 .ge_str_loop:
     test r13, r13

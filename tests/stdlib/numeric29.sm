@@ -1,7 +1,8 @@
 # numeric29: the library's behaviour past int64. R80: these lines used to pin WRAPPED values (varg,
 # vargit, ghan, ghat, kramgun, fib gave negative or zero answers); they now pin the contracts:
 # -1 when a square, factorial or Fibonacci number does not fit; cubes and powers saturate.
-# dvigun / trigun / vardh / viparyay_ank still wrap like the operators (inputs near 2^63 only).
+# dvigun / trigun / vardh / viparyay_ank / brahmagupta_kshetr wrapped here up to v295; since R116 a result
+# past the range stops the program (tests/r116, tools/proof_props.py), so these lines pin the exact bounds.
 yoj ganita
 yoj ganit
 yoj ank
@@ -15,7 +16,7 @@ mukhya() {
     likha("\n")
     likha(out[1])
     likha("\n")
-    likha(brahmagupta_kshetr(4611686018427387904, 4611686018427387904, 4611686018427387904, 4611686018427387904))
+    likha(brahmagupta_kshetr(3037000499, 3037000499, 3037000499, 3037000499))
     likha("\n")
     likha(varg(4294967296))
     likha("\n")
@@ -25,11 +26,11 @@ mukhya() {
     likha("\n")
     likha(ghan(2097153))
     likha("\n")
-    likha(dvigun(9223372036854775807))
+    likha(dvigun(4611686018427387903))
     likha("\n")
-    likha(trigun(9223372036854775807))
+    likha(trigun(3074457345618258602))
     likha("\n")
-    likha(vardh(9223372036854775807))
+    likha(vardh(9223372036854775806))
     likha("\n")
     likha(ghat(2, 63))
     likha("\n")
@@ -39,7 +40,7 @@ mukhya() {
     likha("\n")
     likha(fib(93))
     likha("\n")
-    likha(viparyay_ank(1234567890123456789))
+    likha(viparyay_ank(7085774586302733229))
     likha("\n")
     vitti buf = nirmmita(40 * 8)
     likha(roop_sthir(1000000000000000000.0, 2, buf))

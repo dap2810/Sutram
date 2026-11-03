@@ -1,7 +1,8 @@
 # Dot product and Euclidean norm over typed float arrays.
 # a = (3, 4)  -> norm 5 (the 3-4-5 triangle)
 # b = (1, 2)  -> dot(a,b) = 3*1 + 4*2 = 11
-# mismatched lengths use the shorter one.
+# c has three numbers against a's two: since R116 (R189 row 14) that is refused -
+# E_AKARA_ASAMYA on stderr, exit 1 - where v295 silently used the shorter length (7).
 yoj sankhyiki
 
 mukhya() {

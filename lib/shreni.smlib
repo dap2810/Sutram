@@ -226,4 +226,5 @@ prakriya mil_shreni(a, n) {
     vitti tmp = nirmmita(n * 8)
     yadi (tmp == 0 && n > 0) { nivartanam 0 - 1 }
     mil_shreni_punar(a, tmp, 0, n)
+    nivartanam 0   # R116: the success return is explicit, not the last call's value
 }

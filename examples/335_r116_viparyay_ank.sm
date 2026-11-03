@@ -1,0 +1,9 @@
+# viparyay_ank: MIN reversed fits; 1999999999999999999 reversed (9999999999999999991) does not - refused (R116, R189 row 6).
+yoj ank
+
+mukhya() {
+    likha(viparyay_ank(((0 - 9223372036854775807) - 1)))
+    likha(viparyay_ank(0 - 120))
+    likha(viparyay_ank(1999999999999999999))
+    likha(1)
+}

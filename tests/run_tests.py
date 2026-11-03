@@ -113,9 +113,9 @@ def run_one(name, record=False):
     try:
         r = subprocess.run([out_bin], input=STDIN.get(name, ""), capture_output=True,
                            text=True, timeout=TIMEOUT)
-        stdout, code = r.stdout, r.returncode
+        stdout, code, stderr = r.stdout, r.returncode, r.stderr
     except subprocess.TimeoutExpired:
-        stdout, code = "", "TIMEOUT"
+        stdout, code, stderr = "", "TIMEOUT", ""
 
     exp_out = os.path.join(EXPECT, name + ".out")
     exp_exit = os.path.join(EXPECT, name + ".exit")
@@ -130,6 +130,11 @@ def run_one(name, record=False):
         return ("NO-EXPECTATION", stdout, code, None)
     want_out = open(exp_out).read()
     want_code = open(exp_exit).read().strip()
+    # R116: a program that stops with a run-time diagnostic records it in <name>.err (stderr); when the
+    # file exists it must match too. Without it stderr is not checked, as before.
+    exp_err = os.path.join(EXPECT, name + ".err")
+    if os.path.exists(exp_err) and stderr != open(exp_err).read():
+        return ("FAIL", stdout, code, f"expected stderr\n{open(exp_err).read()}\n--- actual stderr ---\n{stderr}")
     if stdout == want_out and str(code) == want_code:
         return ("PASS", stdout, code, None)
     return ("FAIL", stdout, code, f"expected exit {want_code}, got {code}\n"

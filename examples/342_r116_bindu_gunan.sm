@@ -1,0 +1,19 @@
+# bindu_gunan: equal lengths multiply; three numbers against two is refused, not cut to two (R116, R189 row 14).
+yoj sankhyiki
+
+mukhya() {
+    kosh dasham u[3]
+    kosh_kship(u, 1.0)
+    kosh_kship(u, 2.0)
+    kosh_kship(u, 3.0)
+    kosh dasham v[3]
+    kosh_kship(v, 4.0)
+    kosh_kship(v, 5.0)
+    kosh_kship(v, 6.0)
+    likha(bindu_gunan(u, v))
+    kosh dasham w[2]
+    kosh_kship(w, 4.0)
+    kosh_kship(w, 5.0)
+    likha(bindu_gunan(u, w))
+    likha(1)
+}

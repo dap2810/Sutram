@@ -44,7 +44,7 @@ language has a pack of native words (see the `lang/` table at the end).
 | `krama` | break |
 | `kuru` | do-while (with `yavat`) |
 | `mukhya` | main / entry point |
-| `abhava` | negation |
+| `abhava` | assertion: `abhava(cond)` stops the program, exit 1, when `cond` is 0; `abhava(cond, "text")` (v296) first writes the text to stderr |
 | `yantra` | inline asm |
 | `mala` | mala |
 | `satya` | boolean type |
@@ -90,8 +90,7 @@ Loosest to tightest (C-style ordering):
 ### 3a. Integer arithmetic: what happens at the edges (v276)
 
 **A `vitti` holds a whole number from −9223372036854775808 to 9223372036854775807. If `+`, `-` or `*` goes past
-that while the program runs, the answer wraps around to the other end without any warning — as in C or Java —
-so `x * x` with `x = 4000000000` prints `-2446744073709551616`. Dividing by zero stops the program with an
+that while the program runs, the answer wraps around to the other end without any warning, so `x * x` with `x = 4000000000` prints `-2446744073709551616`. Dividing by zero stops the program with an
 error.** In detail:
 
 | | what happens |
@@ -109,6 +108,33 @@ The library's number functions do not wrap on ordinary inputs (v276): `kramgun` 
 `varg`, `vargit`, `dwi_ghat`, `yog_tak`, `meru`, `laghuttam_samapavartya` (lcm) and `purna_prasaran` (integer
 variance) return **−1** when the answer is too large to fit; `ghat` (power), `ghan` (cube) and `yog_seema` (range
 sum) return the largest or smallest `vitti`.
+
+**The policy (ChatGPT R189 WS3, accepted in R116; implemented in v296):**
+
+> `vitti` stores a signed 64-bit integer from -9223372036854775808 to 9223372036854775807. In the default compiler build, ordinary runtime `+` and `*` keep the low 64 bits of the result and interpret them as a signed value: for example, adding 1 to the maximum produces the minimum, and multiplying the maximum by 2 produces -2. This is wrapping, not a mathematical answer, and it can happen even when you did not intend it; plain runtime operators do not report it. Written integer literals and constant expressions outside the supported range may instead be rejected during compilation, and the optional trapping compiler configuration has different behavior. Mathematical library functions must follow their individual documented contracts—exact result or declared failure, or explicit saturation where specified—so use the checked/status form when your program must detect a failure and continue. Neither a function's Sanskrit name nor a zero return value by itself proves that the computation succeeded.
+
+**Where the sixteen library functions R188 found stand (v296).** *Stops* means one line on stderr,
+`Sutram truti [CODE]: function: ...`, exit 1, nothing more printed, and `yadi dosh` cannot catch it. *Status*
+means a return value says it failed and nothing is printed.
+
+| function | when it fails | how | code |
+|---|---|---|---|
+| `dvigun`, `trigun`, `vardh` (`ganit`) | the result is past the range | stops | `E_ATIPRAVAH` |
+| `nirapeksh_mulya` (`ganit`), `ganita_nirapeksh` (`ganita`) | `n` is −9223372036854775808 | stops | `E_PHALA_SEEMA` |
+| `mahattam_samapavartak` (`ganit`) | the gcd is 2^63: `(MIN, 0)`, `(0, MIN)`, `(MIN, MIN)` only | stops | `E_PHALA_SEEMA` |
+| `viparyay_ank` (`ank`) | the reversed number does not fit | stops | `E_PHALA_SEEMA` |
+| `brahmagupta_kshetr` (`ganita`) | not the sides of a quadrilateral (or triangle, `d = 0`) / the area is past the range | stops | `E_MULYA_AYOGYA` / `E_ATIPRAVAH` |
+| `brihat_ank_se` (`aadhar`) | a bad digit or base, or the number needs more than `n` digits | status 0, the digits cleared | — |
+| `brihat_ank_tak_laghu` (`brihat`) | a digit outside 0..9, `n < 0` / the value is past the range | stops | `E_MULYA_AYOGYA` / `E_PHALA_SEEMA` |
+| `patra_asti` (`patra`) | **not changed in v296** - the contract needs a new operating-system query (R116 report) | — | — |
+| `yog_seema` (`sadhan`) | never: the exact sum, saturated only when the sum itself is past the range | — | — |
+| `adish_gunan` (`samanvaya`), `bindu_gunan` (`sankhyiki`) | the two lengths differ (v295 used the shorter) | stops | `E_AKARA_ASAMYA` |
+| `suchi_shreni` (`suchi`) | the sort's scratch cannot be had | status 0, the list unchanged | — |
+| `varna_tak_dashm` (`vakyank`) | malformed text / past the `dasham` range (leading zeros never fail) | status: 0.0 and `ok[0] = 0` | — |
+
+The exact messages are in `ChatGPT-to-Sarvam/ROUND-189-IMPLEMENTATION-MATRIX.json`; `tests/r116/test_contracts.py` checks
+each at its boundaries. `E_PHALA_SEEMA`, `E_MULYA_AYOGYA` and `E_AKARA_ASAMYA` are new in v296 and their Sanskrit needs
+native-speaker review.
 
 **Printing a large `dasham` (fixed in v279).** Up to v278, `likha` of a `dasham` of 9.2×10¹² or more (either
 sign), and of `inf` and `nan`, printed `-9223372036854.775808`, and from 9.0×10⁹ the last digits could be

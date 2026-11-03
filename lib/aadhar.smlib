@@ -72,23 +72,26 @@ prakriya brihat_ank_tak(x, n, base, out) {
 
 # brihat_ank_se(d, count, base, x, n) — parse `count` digit values
 # from mala `d` (MSB first) in `base` into n-digit bigint x.
-# Returns 1 on success, 0 if a digit >= base. Base outside 2..16
-# returns 0 (the old code accepted any base, so base 0/1/negative
-# silently mis-parsed).
+# Returns 1 on success, 0 on failure, and prints nothing (R116, R189 row 9):
+#   * a bad descriptor (count < 0, n < 1, base outside 2..16) - 0, x not written;
+#   * a digit outside 0..base-1, or a value that needs more than n decimal digits (a carry left
+#     over) - 0, and all n digits of x cleared to zero (not left half-written).
+# count 0 is zero, successfully.
 prakriya brihat_ank_se(d, count, base, x, n) {
     vitti src = d
     vitti cnt = count
     vitti b = base
     vitti dst = x
     vitti c = n
-    yadi (b < 2) { nivartanam 0 }
-    yadi (b > 16) { nivartanam 0 }
+    yadi (b < 2 || b > 16 || cnt < 0 || c < 1) { nivartanam 0 }
     brihat_shunyank(dst, c)
     vitti p = 0
     yavat (p < cnt) {
         vitti dv = src[p]
-        yadi (dv < 0) { nivartanam 0 }
-        yadi (dv >= b) { nivartanam 0 }
+        yadi (dv < 0 || dv >= b) {
+            brihat_shunyank(dst, c)
+            nivartanam 0
+        }
         # dst = dst * b + dv
         vitti carry = dv
         vitti k = 0
@@ -97,6 +100,10 @@ prakriya brihat_ank_se(d, count, base, x, n) {
             dst[k] = cur % 10
             carry = cur / 10
             k = k + 1
+        }
+        yadi (carry != 0) {
+            brihat_shunyank(dst, c)
+            nivartanam 0
         }
         p = p + 1
     }

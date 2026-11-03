@@ -131,10 +131,12 @@ prakriya saranik3(kosh dasham a) {
     nivartanam t1 - t2 + t3
 }
 
-# dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.
+# adish_gunan(u, v) — dot product of flat vectors u and v. Unequal lengths stop the program with
+# E_AKARA_ASAMYA (R116, R189 row 13 - v295 used the shorter length). Two empty vectors give 0.0.
 prakriya adish_gunan(kosh dasham u, kosh dasham v) {
+    # R116 (ChatGPT R189 row 13): the two lengths must be equal (it read the shorter one up to v295)
+    abhava(kosh_len(u) == kosh_len(v), "Sutram truti [E_AKARA_ASAMYA]: adish_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite.\n")
     vitti n = kosh_len(u)
-    yadi (kosh_len(v) < n) { n = kosh_len(v) }
     dasham s = 0.0
     vitti i = 0
     yavat (i < n) {

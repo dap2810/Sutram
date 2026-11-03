@@ -95,12 +95,12 @@ prakriya vichalan(kosh dasham xs) {
     nivartanam sankhyiki_vargmool(prasaran(xs))
 }
 
-# --- dot product of two float arrays (बिंदु गुणनफल) ---
+# bindu_gunan(a, b) — dot product of two float arrays (बिंदु गुणनफल). Unequal lengths stop the program
+# with E_AKARA_ASAMYA (R116, R189 row 14 - v295 used the shorter length). Two empty arrays give 0.0.
 prakriya bindu_gunan(kosh dasham a, kosh dasham b) {
-    vitti na = kosh_len(a)
-    vitti nb = kosh_len(b)
-    vitti n = na
-    yadi (nb < n) { n = nb }
+    # R116 (ChatGPT R189 row 14): the two lengths must be equal (it read the shorter one up to v295)
+    abhava(kosh_len(a) == kosh_len(b), "Sutram truti [E_AKARA_ASAMYA]: bindu_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite.\n")
+    vitti n = kosh_len(a)
     dasham s = 0.0
     vitti i = 0
     yavat (i < n) {

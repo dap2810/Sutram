@@ -1,0 +1,8 @@
+# dvigun: the largest n that doubles, then one more - refused (R116, R189 row 1).
+yoj ganit
+
+mukhya() {
+    likha(dvigun(4611686018427387903))
+    likha(dvigun(4611686018427387904))
+    likha(1)
+}

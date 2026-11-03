@@ -29,8 +29,11 @@ prakriya ghan(n) {
     nivartanam x * x * x
 }
 
-# nirapeksh_mulya(n) — absolute value of n (MIN wraps to MIN, as it cannot be negated).
+# nirapeksh_mulya(n) — absolute value of n. |-2^63| = 2^63 does not fit: the program stops with
+# E_PHALA_SEEMA (R116, R189 row 4 - v295 returned -2^63).
 prakriya nirapeksh_mulya(n) {
+    # R116 (ChatGPT R189 row 4): |MIN| = 2^63 does not fit - refused before the negation
+    abhava(n != ((0 - 9223372036854775807) - 1), "Sutram truti [E_PHALA_SEEMA]: nirapeksh_mulya: nirapeksha-mulyam 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.\n")
     vitti x = n
     yadi (x < 0) {
         x = 0 - x
@@ -55,20 +58,27 @@ prakriya adhik2(a, b) {
 }
 
 # mahattam_samapavartak(a, b) — greatest common divisor of a and b, always non-negative (mahattam_samapavartak(0, 0) = 0).
+# Every -2^63 case works except a gcd of 2^63 - (MIN, 0), (0, MIN), (MIN, MIN) - which stops the program
+# with E_PHALA_SEEMA (R116, R189 row 5).
 prakriya mahattam_samapavartak(a, b) {
+    # R116 (ChatGPT R189 row 5): Euclid on non-positive operands, so MIN is never negated; the gcd's magnitude
+    # is 2^63 only for (MIN, 0), (0, MIN), (MIN, MIN), which are refused. Every other MIN case works.
     vitti x = a
     vitti y = b
+    yadi (x > 0) { x = 0 - x }
+    yadi (y > 0) { y = 0 - y }
     yavat (y != 0) {
-        vitti t = y
-        y = x % y
-        x = t
+        yadi (y == 0 - 1) {
+            x = 0 - 1
+            y = 0
+        } anya {
+            vitti t = y
+            y = x % y
+            x = t
+        }
     }
-    # mahattam_samapavartak is non-negative by definition. The loop above can return a
-    # negative value when the first argument is negative (e.g.
-    # mahattam_samapavartak(-6, 4) was -2), so take the absolute value. mahattam_samapavartak(MIN, 0)
-    # still returns MIN: |MIN| does not fit (wrapping, as nirapeksh_mulya).
-    yadi (x < 0) { x = 0 - x }
-    nivartanam x
+    abhava(x != ((0 - 9223372036854775807) - 1), "Sutram truti [E_PHALA_SEEMA]: mahattam_samapavartak: mahattama-samapavartakah 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.\n")
+    nivartanam 0 - x
 }
 
 # laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0);
@@ -171,17 +181,29 @@ prakriya yog_tak(n) {
     nivartanam x * (x / 2 + 1)
 }
 
-# dvigun(n) — n doubled (n * 2).
-prakriya dvigun(n)
+# dvigun(n) — n doubled (n * 2). n must be in -4611686018427387904 .. 4611686018427387903; outside, the
+# program stops with E_ATIPRAVAH (R116, R189 row 1 - v295 wrapped).
+prakriya dvigun(n) {
+    # R116 (ChatGPT R189 row 1): the result must be an integer - refused before n * 2 can overflow
+    abhava(n >= (0 - 4611686018427387903) - 1 && n <= 4611686018427387903, "Sutram truti [E_ATIPRAVAH]: dvigun: dvigunitam phalam purnanka-seemam atikramati; n -4611686018427387904 tah 4611686018427387903 paryantam bhavet.\n")
     nivartanam n * 2
+}
 
-# trigun(n) — n tripled (n * 3).
-prakriya trigun(n)
+# trigun(n) — n tripled (n * 3). n must be in -3074457345618258602 .. 3074457345618258602; outside, the
+# program stops with E_ATIPRAVAH (R116, R189 row 2 - v295 wrapped).
+prakriya trigun(n) {
+    # R116 (ChatGPT R189 row 2): refused before n * 3 can overflow
+    abhava(n >= 0 - 3074457345618258602 && n <= 3074457345618258602, "Sutram truti [E_ATIPRAVAH]: trigun: trigunitam phalam purnanka-seemam atikramati; n -3074457345618258602 tah 3074457345618258602 paryantam bhavet.\n")
     nivartanam n * 3
+}
 
-# vardh(n) — n incremented by 1 (n + 1).
-prakriya vardh(n)
+# vardh(n) — n incremented by 1 (n + 1). vardh(2^63 - 1) stops the program with E_ATIPRAVAH (R116,
+# R189 row 3 - v295 wrapped to -2^63).
+prakriya vardh(n) {
+    # R116 (ChatGPT R189 row 3): MAX + 1 does not exist
+    abhava(n != 9223372036854775807, "Sutram truti [E_ATIPRAVAH]: vardh: ekena vardhitam phalam purnanka-seemam atikramati; n 9223372036854775807 tah nyunam bhavet.\n")
     nivartanam n + 1
+}
 
 # bit_gan(n) — count of set bits in n; negatives return 0.
 prakriya bit_gan(n) {

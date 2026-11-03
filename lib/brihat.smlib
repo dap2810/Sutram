@@ -65,15 +65,20 @@ prakriya brihat_ank_se_laghu(val, arr, n) {
     nivartanam 1
 }
 
-# brihat_ank_tak_laghu(arr, n) — convert digit array back to int (for verification)
-# Only correct if the value fits in an int.
+# brihat_ank_tak_laghu(arr, n) — convert digit array back to int (for verification).
+# A value past 2^63 - 1 stops the program with E_PHALA_SEEMA; a digit outside 0..9 or n < 0 with
+# E_MULYA_AYOGYA (R116, R189 row 10 - v295 wrapped). n = 0 is 0; leading zero digits are allowed.
 prakriya brihat_ank_tak_laghu(arr, n) {
+    # R116 (ChatGPT R189 row 10): every digit 0..9 and n >= 0 (E_MULYA_AYOGYA); refused before r * 10 + d passes MAX
+    abhava(n >= 0, "Sutram truti [E_MULYA_AYOGYA]: brihat_ank_tak_laghu: dattam mulyam ayogyam; kriyayah niyaman parikshatam.\n")
     vitti a = arr
-    vitti c = n
     vitti r = 0
-    vitti i = c - 1
+    vitti i = n - 1
     yavat (i >= 0) {
-        r = r * 10 + pad8(a + i * 8)
+        vitti d = pad8(a + i * 8)
+        abhava(d <= 9, "Sutram truti [E_MULYA_AYOGYA]: brihat_ank_tak_laghu: dattam mulyam ayogyam; kriyayah niyaman parikshatam.\n")
+        abhava(r < 922337203685477580 || (r == 922337203685477580 && d <= 7), "Sutram truti [E_PHALA_SEEMA]: brihat_ank_tak_laghu: ankasya mulyam purnanke na dharyate; adhikatamam mulyam 9223372036854775807.\n")
+        r = r * 10 + d
         i = i - 1
     }
     nivartanam r

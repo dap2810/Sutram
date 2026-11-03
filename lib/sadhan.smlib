@@ -10,39 +10,83 @@ prakriya antarveshan(a, b, t)
     nivartanam a + (b - a) * t / 100
 
 # yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end < start.
-# Past int64 it saturates: 2^63 - 1 for a positive sum, -2^63 for a negative one (R80).
+# The exact sum when it fits in int64; past int64 it saturates: 2^63 - 1 for a positive sum, -2^63 for
+# a negative one (R80). R116 (R189 row 12): only the final sum saturates - v295 saturated when start + end
+# did not fit, so yog_seema(2^62, 2^62) gave 2^63 - 1 instead of 2^62. Never refuses.
 prakriya yog_seema(start, end) {
     yadi (end < start) { nivartanam 0 }
-    # R80: the old (start + end) * (end - start + 1) / 2 wrapped in the product before halving -
-    # yog_seema(0, 4294967296) was 2147483648. Halve the even factor first, then multiply checked.
     vitti maxv = 9223372036854775807
     vitti minv = (0 - 9223372036854775807) - 1
     vitti a = start
     vitti b = end
-    yadi (a > 0) {
-        yadi (b > maxv - a) { nivartanam maxv }   # start + end itself does not fit
-    }
+    # sum = s * n / 2 with s = a + b and n = b - a + 1; one of s, n is even. Neither is formed if it does
+    # not fit. The sign of the sum is the sign of s.
+    vitti nfit = 1                                  # n = b - a + 1 fits iff b - a < maxv
     yadi (a < 0) {
-        yadi (b < minv - a) { nivartanam minv }
+        yadi (b >= maxv + a) { nfit = 0 }
+    } anya {
+        yadi (b - a >= maxv) { nfit = 0 }
     }
-    vitti s = a + b
-    yadi (s == 0) { nivartanam 0 }
-    vitti n = 0
-    yadi (b - maxv + 1 > a) {                      # end - start + 1 does not fit: the sum cannot
-        yadi (s > 0) { nivartanam maxv }           # (more than 2^63 terms, s != 0)
-        nivartanam minv
+    vitti sfit = 1
+    yadi (a > 0 && b > maxv - a) { sfit = 0 }
+    yadi (a < 0 && b < minv - a) { sfit = 0 }
+    vitti qa = a / 2
+    vitti qb = b / 2
+    vitti ra = a - 2 * qa                           # -1, 0 or 1
+    vitti rb = b - 2 * qb
+    vitti f = 0                                     # the factor that is not halved
+    vitti g = 0                                     # the halved factor
+    yadi ((ra + rb) % 2 == 0) {
+        # s even: g = s / 2 exactly (it always fits), f = n
+        g = qa + qb + (ra + rb) / 2
+        yadi (g == 0) { nivartanam 0 }
+        yadi (nfit == 0) {                          # n > 2^63 and |g| >= 1: past int64
+            yadi (g > 0) { nivartanam maxv }
+            nivartanam minv
+        }
+        f = b - a + 1
+    } anya {
+        # s odd, n even: f = s, g = n / 2
+        yadi (sfit == 0) {                          # |s| > 2^63 and n / 2 >= 1
+            yadi (a > 0) { nivartanam maxv }
+            nivartanam minv
+        }
+        f = a + b
+        yadi (nfit == 1) {
+            g = (b - a + 1) / 2
+        } anya {
+            # n / 2 from floor halves: b - a + 1 = 2 (fb - fa) + (pb - pa + 1)
+            vitti fa = qa
+            yadi (ra < 0) { fa = fa - 1 }
+            vitti fb = qb
+            yadi (rb < 0) { fb = fb - 1 }
+            vitti pa = a - 2 * fa                   # 0 or 1
+            vitti pb = b - 2 * fb
+            vitti d = fb - fa                       # fits: at most 2^63 - 1
+            yadi (pb - pa + 1 == 2) {
+                yadi (d == maxv) {                  # n / 2 = 2^63 (start MIN, end MAX): |s| >= 1
+                    yadi (f > 0) { nivartanam maxv }
+                    nivartanam minv
+                }
+                d = d + 1
+            }
+            g = d
+        }
     }
-    n = b - a + 1
-    vitti x = s
-    vitti y = n
-    yadi (x % 2 == 0) { x = x / 2 } anya { y = y / 2 }   # s and n have opposite parity
-    vitti ax = x
-    yadi (ax < 0) { ax = 0 - ax }
-    yadi (ax > maxv / y) {
-        yadi (x > 0) { nivartanam maxv }
-        nivartanam minv
+    # the sum is f * g with g > 0 or f > 0 not both known; make the positive one the divisor
+    vitti p = f
+    vitti q = g
+    yadi (q < 0) {
+        p = g
+        q = f
     }
-    nivartanam x * y
+    # now q > 0 (n and n / 2 are positive; when g = s / 2 < 0, f = n > 0)
+    yadi (p > 0) {
+        yadi (p > maxv / q) { nivartanam maxv }
+    } anya {
+        yadi (p < minv / q) { nivartanam minv }
+    }
+    nivartanam p * q
 }
 
 # shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.

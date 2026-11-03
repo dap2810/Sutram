@@ -1,0 +1,16 @@
+# suchi_shreni: a sorted list (1); a list whose length cannot have scratch (2^60 cells) - status 0, nothing printed, the cells unchanged (R116, R189 row 15).
+yoj suchi
+
+mukhya() {
+    vitti l = suchi_srij(4)
+    suchi_khip(l, 3)
+    suchi_khip(l, 1)
+    suchi_khip(l, 2)
+    likha(suchi_shreni(l))
+    likha(suchi_grah(l, 0), suchi_grah(l, 1), suchi_grah(l, 2))
+    vitti cells = l[2]
+    cells[0] = 9
+    l[0] = 1152921504606846976
+    likha(suchi_shreni(l))
+    likha(cells[0], cells[1], cells[2])
+}

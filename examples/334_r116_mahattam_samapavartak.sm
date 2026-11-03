@@ -1,0 +1,10 @@
+# mahattam_samapavartak: gcd(MIN, 2) is 2 and gcd(MIN, -1) is 1; gcd(MIN, 0) is 2^63 - refused (R116, R189 row 5).
+yoj ganit
+
+mukhya() {
+    likha(mahattam_samapavartak(((0 - 9223372036854775807) - 1), 2))
+    likha(mahattam_samapavartak(((0 - 9223372036854775807) - 1), 0 - 1))
+    likha(mahattam_samapavartak(0, 0))
+    likha(mahattam_samapavartak(((0 - 9223372036854775807) - 1), 0))
+    likha(1)
+}

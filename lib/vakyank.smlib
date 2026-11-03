@@ -268,9 +268,12 @@ prakriya pad_vam(out, count, width, fill) {
 # '+', no "inf"/"nan" — those are ok = 0 (same conventions as
 # varna_tak_ank). On success ok[0] = 1 and the dasham value is returned.
 # On malformed input or overflow (|value| > ~1.8e308) ok[0] = 0 and the
-# return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as
+# return is 0.0; nothing is printed (E_MULYA_AYOGYA / E_PHALA_SEEMA for a
+# reporter that asks). Extreme underflow returns 0.0 with ok[0] = 1 (as
 # strtod does). Mantissa is accumulated in int64 (up to 18 significant
-# digits); further digits only move the decimal exponent.
+# digits, truncated, not correctly rounded); further integer digits only
+# move the decimal exponent. Leading zeros never spend a digit and never
+# fail (R116, R189 row 16): 0000000000000000000001 is 1, ok 1.
 prakriya varna_tak_dashm(buf, n, ok) {
     vitti src = buf
     vitti cnt = n
@@ -309,8 +312,10 @@ prakriya varna_tak_dashm(buf, n, ok) {
                 nivartanam 0.0
             }
             yadi (ndig < 18) {
-                mant = mant * 10 + (c1 - 48)
-                ndig = ndig + 1
+                yadi ((ndig > 0) || (c1 != 48)) {     # R116: a leading zero spends no digit
+                    mant = mant * 10 + (c1 - 48)
+                    ndig = ndig + 1
+                }
             } anya {
                 exp10 = exp10 + 1
             }
@@ -335,10 +340,14 @@ prakriya varna_tak_dashm(buf, n, ok) {
                         okp[0] = 0
                         nivartanam 0.0
                     }
-                    yadi (ndig < 18) {
-                        mant = mant * 10 + (c2 - 48)
-                        ndig = ndig + 1
-                        exp10 = exp10 - 1
+                    yadi ((ndig == 0) && (c2 == 48)) {
+                        exp10 = exp10 - 1              # R116: a leading fraction zero only scales
+                    } anya {
+                        yadi (ndig < 18) {
+                            mant = mant * 10 + (c2 - 48)
+                            ndig = ndig + 1
+                            exp10 = exp10 - 1
+                        }
                     }
                     seen = seen + 1
                     p = p + 1
@@ -384,7 +393,7 @@ prakriya varna_tak_dashm(buf, n, ok) {
                 okp[0] = 0
                 nivartanam 0.0
             }
-            yadi (e < 1000) {
+            yadi (e < 100000000) {                     # R116: saturates near 10^9, cannot wrap
                 e = e * 10 + (c3 - 48)
             }
             eseen = eseen + 1
@@ -407,11 +416,13 @@ prakriya varna_tak_dashm(buf, n, ok) {
     yadi (mant == 0) {
         nivartanam 0.0
     }
-    yadi (exp10 > 308) {
+    # R116: the value is in [10^(ndig-1+exp10), 10^(ndig+exp10)) - mant's first digit is not 0. v295
+    # compared exp10 alone, so 12345e-310 (1.2e-306, finite) read as 0.
+    yadi (ndig - 1 + exp10 > 308) {
         okp[0] = 0
         nivartanam 0.0
     }
-    yadi (exp10 < -308) {
+    yadi (ndig + exp10 < 0 - 323) {
         nivartanam 0.0
     }
     dasham val = mant

@@ -1,0 +1,18 @@
+# brihat_ank_se: 99 fits in two decimal digits (1); 100 does not - status 0, nothing printed, the destination cleared (R116, R189 row 9).
+yoj aadhar
+
+mukhya() {
+    vitti d = nirmmita(24)
+    vitti x = nirmmita(16)
+    d[0] = 9
+    d[1] = 9
+    likha(brihat_ank_se(d, 2, 10, x, 2))
+    likha(x[1], x[0])
+    d[0] = 1
+    d[1] = 0
+    d[2] = 0
+    likha(brihat_ank_se(d, 3, 10, x, 2))
+    likha(x[1], x[0])
+    d[1] = 12
+    likha(brihat_ank_se(d, 2, 10, x, 2))
+}

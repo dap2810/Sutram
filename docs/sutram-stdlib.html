@@ -27,7 +27,7 @@ Do not edit by hand.</p>
 <li><a href="#brihat"><code>brihat</code></a> — 13 functions</li>
 <li><a href="#chandas"><code>chandas</code></a> — 6 functions</li>
 <li><a href="#ganit"><code>ganit</code></a> — 18 functions</li>
-<li><a href="#ganita"><code>ganita</code></a> — 23 functions</li>
+<li><a href="#ganita"><code>ganita</code></a> — 27 functions</li>
 <li><a href="#gudh"><code>gudh</code></a> — 2 functions</li>
 <li><a href="#kalana"><code>kalana</code></a> — 6 functions</li>
 <li><a href="#khand"><code>khand</code></a> — 22 functions</li>
@@ -51,7 +51,7 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>brihat_ank_tak(x, n, base, out)</code></td><td>brihat_ank_tak(x, n, base, out) — render n-digit bigint x in `base` into mala `out` as digit values (MSB first). Returns digit count. Caller provides at least 1 writable output cell when n &lt;= 0, or at least 4*n cells when n &gt; 0 (base-2 worst case). Base outside 2..16 returns 0 without dividing (older code could trap). -1 (out unchanged) if its scratch cannot be allocated (R38).</td></tr>
-<tr><td><code>brihat_ank_se(d, count, base, x, n)</code></td><td>brihat_ank_se(d, count, base, x, n) — parse `count` digit values from mala `d` (MSB first) in `base` into n-digit bigint x. Returns 1 on success, 0 if a digit &gt;= base. Base outside 2..16 returns 0 (the old code accepted any base, so base 0/1/negative silently mis-parsed).</td></tr>
+<tr><td><code>brihat_ank_se(d, count, base, x, n)</code></td><td>brihat_ank_se(d, count, base, x, n) — parse `count` digit values from mala `d` (MSB first) in `base` into n-digit bigint x. Returns 1 on success, 0 on failure, and prints nothing (R116, R189 row 9): * a bad descriptor (count &lt; 0, n &lt; 1, base outside 2..16) - 0, x not written; * a digit outside 0..base-1, or a value that needs more than n decimal digits (a carry left over) - 0, and all n digits of x cleared to zero (not left half-written). count 0 is zero, successfully.</td></tr>
 </table>
 <h2 id="ank"><code>ank</code></h2>
 <p class="shesh-desc">layer: core Parameters are copied into locals before mutation (compiler fault workaround).</p>
@@ -61,7 +61,7 @@ Do not edit by hand.</p>
 <tr><td><code>asti_visham(n)</code></td><td>asti_visham(n) — 1 if n is odd, 0 if even.</td></tr>
 <tr><td><code>ank_gan(n)</code></td><td>ank_gan(n) — number of decimal digits in n (sign ignored; MIN counts as 19).</td></tr>
 <tr><td><code>ank_yog(n)</code></td><td>ank_yog(n) — sum of the decimal digits of n (sign ignored; MIN counts as 89).</td></tr>
-<tr><td><code>viparyay_ank(n)</code></td><td>viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -&gt; -321).</td></tr>
+<tr><td><code>viparyay_ank(n)</code></td><td>viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -&gt; -321). A reverse that does not fit in int64 (1999999999999999999) stops the program with E_PHALA_SEEMA (R116, R189 row 6 - v295 wrapped); -2^63 reverses to -8085774586302733229.</td></tr>
 <tr><td><code>asti_viparyay_sam(n)</code></td><td>asti_viparyay_sam(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.</td></tr>
 <tr><td><code>seemit(n, lo, hi)</code></td><td>seemit(n, lo, hi) — n clamped into [lo, hi]: lo if n &lt; lo, hi if n &gt; hi, else n.</td></tr>
 <tr><td><code>fib(n)</code></td><td>fib(n) — the nth Fibonacci number (fib(0) = 0, fib(1) = 1), iterative; -1 for n &gt;= 93, whose Fibonacci number is larger than 2^63 - 1 (R80: it used to wrap - fib(93) was negative).</td></tr>
@@ -84,7 +84,7 @@ Do not edit by hand.</p>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>brihat_shunyank(arr, n)</code></td><td></td></tr>
 <tr><td><code>brihat_ank_se_laghu(val, arr, n)</code></td><td>brihat_ank_se_laghu(val, arr, n) — convert int to digit array (LSB first) Returns 1 if val fit in n digits, 0 if truncated. The digits are of |val|: the sign is not stored. MIN: |MIN| does not fit in int64, so plain negation wraps and emits negative digits. Convert MAX and add 1 instead.</td></tr>
-<tr><td><code>brihat_ank_tak_laghu(arr, n)</code></td><td>brihat_ank_tak_laghu(arr, n) — convert digit array back to int (for verification) Only correct if the value fits in an int.</td></tr>
+<tr><td><code>brihat_ank_tak_laghu(arr, n)</code></td><td>brihat_ank_tak_laghu(arr, n) — convert digit array back to int (for verification). A value past 2^63 - 1 stops the program with E_PHALA_SEEMA; a digit outside 0..9 or n &lt; 0 with E_MULYA_AYOGYA (R116, R189 row 10 - v295 wrapped). n = 0 is 0; leading zero digits are allowed.</td></tr>
 <tr><td><code>brihat_pratilip(dst, src, n)</code></td><td>brihat_pratilip(dst, src, n) — copy n digits</td></tr>
 <tr><td><code>brihat_tul(a, b, n)</code></td><td>brihat_tul(a, b, n) — compare: 1 if a &gt; b, -1 if a &lt; b, 0 if equal</td></tr>
 <tr><td><code>brihat_yuj(a, b, res, n)</code></td><td>brihat_yuj(a, b, res, n) — res = a + b; returns final carry (0 or 1)</td></tr>
@@ -114,18 +114,18 @@ Do not edit by hand.</p>
 <tr><td><code>varg(n)</code></td><td></td></tr>
 <tr><td><code>vargit(n)</code></td><td>vargit(n) — n squared (n * n); -1 when the square is larger than 2^63 - 1 (R80).</td></tr>
 <tr><td><code>ghan(n)</code></td><td>ghan(n) — n cubed (n * n * n); saturates at 2^63 - 1 / -2^63 past int64 (R80).</td></tr>
-<tr><td><code>nirapeksh_mulya(n)</code></td><td>nirapeksh_mulya(n) — absolute value of n (MIN wraps to MIN, as it cannot be negated).</td></tr>
+<tr><td><code>nirapeksh_mulya(n)</code></td><td>nirapeksh_mulya(n) — absolute value of n. |-2^63| = 2^63 does not fit: the program stops with E_PHALA_SEEMA (R116, R189 row 4 - v295 returned -2^63).</td></tr>
 <tr><td><code>laghu2(a, b)</code></td><td>laghu2(a, b) — the smaller of a and b.</td></tr>
 <tr><td><code>adhik2(a, b)</code></td><td>adhik2(a, b) — the larger of a and b.</td></tr>
-<tr><td><code>mahattam_samapavartak(a, b)</code></td><td>mahattam_samapavartak(a, b) — greatest common divisor of a and b, always non-negative (mahattam_samapavartak(0, 0) = 0).</td></tr>
+<tr><td><code>mahattam_samapavartak(a, b)</code></td><td>mahattam_samapavartak(a, b) — greatest common divisor of a and b, always non-negative (mahattam_samapavartak(0, 0) = 0). Every -2^63 case works except a gcd of 2^63 - (MIN, 0), (0, MIN), (MIN, MIN) - which stops the program with E_PHALA_SEEMA (R116, R189 row 5).</td></tr>
 <tr><td><code>laghuttam_samapavartya(a, b)</code></td><td>laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0); -1 when it is larger than 2^63 - 1 (R80).</td></tr>
 <tr><td><code>ghat(base, e)</code></td><td>ghat(base, e) — base raised to the power e (e &gt;= 0; negative e returns 1, as the loop never runs); saturates at 2^63 - 1 / -2^63 past int64 (R80), as ganita_paripurna_ghat.</td></tr>
 <tr><td><code>kramgun(n)</code></td><td>kramgun(n) — n factorial (n!); 1 for n &lt; 2; -1 for n &gt;= 21, whose factorial is larger than 2^63 - 1 (R80: it used to wrap - kramgun(21) was negative). ganita_paripurna_kramgun saturates instead.</td></tr>
 <tr><td><code>asti_abhajya(n)</code></td><td>asti_abhajya(n) — 1 if n is prime, 0 otherwise (n &lt; 2 is not prime).</td></tr>
 <tr><td><code>yog_tak(n)</code></td><td>yog_tak(n) — sum 1 + 2 + ... + n, closed form n*(n+1)/2; 0 for n &lt;= 0; -1 when the sum is larger than 2^63 - 1 (n &gt; 4294967295; R80).</td></tr>
-<tr><td><code>dvigun(n)</code></td><td>dvigun(n) — n doubled (n * 2).</td></tr>
-<tr><td><code>trigun(n)</code></td><td>trigun(n) — n tripled (n * 3).</td></tr>
-<tr><td><code>vardh(n)</code></td><td>vardh(n) — n incremented by 1 (n + 1).</td></tr>
+<tr><td><code>dvigun(n)</code></td><td>dvigun(n) — n doubled (n * 2). n must be in -4611686018427387904 .. 4611686018427387903; outside, the program stops with E_ATIPRAVAH (R116, R189 row 1 - v295 wrapped).</td></tr>
+<tr><td><code>trigun(n)</code></td><td>trigun(n) — n tripled (n * 3). n must be in -3074457345618258602 .. 3074457345618258602; outside, the program stops with E_ATIPRAVAH (R116, R189 row 2 - v295 wrapped).</td></tr>
+<tr><td><code>vardh(n)</code></td><td>vardh(n) — n incremented by 1 (n + 1). vardh(2^63 - 1) stops the program with E_ATIPRAVAH (R116, R189 row 3 - v295 wrapped to -2^63).</td></tr>
 <tr><td><code>bit_gan(n)</code></td><td>bit_gan(n) — count of set bits in n; negatives return 0.</td></tr>
 <tr><td><code>ganit_yadricch(state)</code></td><td>ganit_yadricch(state): Knuth MMIX LCG — state = state * 6364136223846793005 + 1442695040888963407 (shesh 2^64, plain wrapping arithmetic). `state` is a 1-cell array holding the seed; it is updated in place and the new state is returned. The full 64-bit state is returned (it may be negative); use nirapeksh_mulya or a modulo to map it to a range. Any seed works, including 0. Deterministic: the same seed always yields the same sequence. There is no entropy source in the language, so the caller owns the seed. Not secure randomness: never use it for keys or tokens.</td></tr>
 <tr><td><code>ganit_seemit(v, lo, hi)</code></td><td>ganit_seemit(v, lo, hi): lo if v &lt; lo, hi if v &gt; hi, else v. Requires lo &lt;= hi. If lo &gt; hi: lo when v &lt; lo, otherwise hi (R9, F4: the old comment said lo always; ganit_seemit(4, 4, -2) is -2).</td></tr>
@@ -137,10 +137,14 @@ Do not edit by hand.</p>
 <tr><td><code>kuttaka(a, b, c)</code></td><td></td></tr>
 <tr><td><code>kuttaka_gun_shesh(x, y, m)</code></td><td>kuttaka_gun_shesh(x, y, m) — (x * y) shesh m for 0 &lt;= x, y &lt; m, m &gt; 0, with no intermediate value above m: double-and-add, one bit of y at a time (R76).</td></tr>
 <tr><td><code>ganita_vargmool(n)</code></td><td>integer vargit root (floor)</td></tr>
-<tr><td><code>ganita_nirapeksh(n)</code></td><td>ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya).</td></tr>
+<tr><td><code>ganita_nirapeksh(n)</code></td><td>ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya); |-2^63| stops the program with E_PHALA_SEEMA (R116, R189 row 7).</td></tr>
 <tr><td><code>chakravala(out, n)</code></td><td>chakravala(out, n): solves x^2 - n*y^2 = 1 for least positive x, y. Writes out[0] = x and out[1] = y; caller must supply at least 2 writable qword cells.</td></tr>
 <tr><td><code>samasa(out, a, b, c, d, n)</code></td><td>samasa(out, a, b, c, d, n): Brahmagupta&#x27;s composition law (bhavana / samasa). Given a^2 - n*b^2 = k1 and c^2 - n*d^2 = k2, composes them into a third: (a^2 - n*b^2)(c^2 - n*d^2) = (a*c + n*b*d)^2 - n*(a*d + b*c)^2 Writes out[0] = a*c + n*b*d and out[1] = a*d + b*c; requires 2 writable qword cells.</td></tr>
-<tr><td><code>brahmagupta_kshetr(a, b, c, d)</code></td><td>brahmagupta_kshetr(a, b, c, d): Brahmagupta&#x27;s formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part.</td></tr>
+<tr><td><code>brahmagupta_kshetr(a, b, c, d)</code></td><td>brahmagupta_kshetr(a, b, c, d): Brahmagupta&#x27;s formula for the area of a cyclic quadrilateral (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2. With d = 0 this is Brahmagupta&#x27;s triangle (Heron&#x27;s) formula. Returns the integer part. R116 (R189 row 8): exact. With T = a + b + c + d, P = (T-2a)(T-2b)(T-2c)(T-2d) = 16 area^2 is formed exactly in base-2^30 limbs and the result is isqrt(P) / 4, so no intermediate wraps and no float rounding decides the integer part. Four sides &gt; 0, or a, b, c &gt; 0 and d = 0 (a triangle); the longest no longer than the others together (equal: degenerate, area 0). Anything else stops the program with E_MULYA_AYOGYA; an area past 2^63 - 1 stops it with E_ATIPRAVAH. (v295 wrapped in the side sum and the product, and returned 0 for a too-long side.)</td></tr>
+<tr><td><code>bk_khand(v, out, o)</code></td><td>R116 helpers for brahmagupta_kshetr: numbers as little-endian base-2^30 limbs, one per cell. bk_khand(v, out, o): v &gt;= 0 into out[o], out[o + 1], out[o + 2].</td></tr>
+<tr><td><code>bk_kaarak(S, k, f)</code></td><td>bk_kaarak(S, k, f): f[0..2] = (the other three sides) - side k, sides at S[3j..3j+2]; 1 if negative.</td></tr>
+<tr><td><code>bk_gunan(x, nx, y, ny, z)</code></td><td>bk_gunan(x, nx, y, ny, z): z[0..nx+ny-1] = x * y (z distinct from x and y).</td></tr>
+<tr><td><code>bk_na_adhik(q, p, n)</code></td><td>bk_na_adhik(q, p, n): 1 if q[0..n-1] &lt;= p[0..n-1], else 0.</td></tr>
 <tr><td><code>ganita_janchit_yuj(a, b, ok)</code></td><td>ganita_janchit_yuj(a, b, ok) — a + b; ok[0] 1, or 0 on overflow (returns 0 then).</td></tr>
 <tr><td><code>ganita_janchit_nyun(a, b, ok)</code></td><td>ganita_janchit_nyun(a, b, ok) — a - b; ok[0] 1, or 0 on overflow (returns 0 then).</td></tr>
 <tr><td><code>ganita_janchit_gun(a, b, ok)</code></td><td>ganita_janchit_gun(a, b, ok) — a * b; ok[0] 1, or 0 on overflow (returns 0 then). The check is m / a == b, with the INT64_MIN * -1 case handled explicitly (the division itself would SIGFPE there).</td></tr>
@@ -308,7 +312,7 @@ Do not edit by hand.</p>
 <table>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>antarveshan(a, b, t)</code></td><td></td></tr>
-<tr><td><code>yog_seema(start, end)</code></td><td>yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end &lt; start. Past int64 it saturates: 2^63 - 1 for a positive sum, -2^63 for a negative one (R80).</td></tr>
+<tr><td><code>yog_seema(start, end)</code></td><td>yog_seema(start, end) — sum of the integers from start to end inclusive; 0 if end &lt; start. The exact sum when it fits in int64; past int64 it saturates: 2^63 - 1 for a positive sum, -2^63 for a negative one (R80). R116 (R189 row 12): only the final sum saturates - v295 saturated when start + end did not fit, so yog_seema(2^62, 2^62) gave 2^63 - 1 instead of 2^62. Never refuses.</td></tr>
 <tr><td><code>shesh(a, b)</code></td><td>shesh(a, b) — remainder a % b computed as a - (a / b) * b; 0 if b == 0.</td></tr>
 <tr><td><code>bhaj_urdhva(a, b)</code></td><td>bhaj_urdhva(a, b) — ceiling division of a by b (rounds up when the remainder is nonzero); 0 if b == 0. That 0 cannot be told apart from a real quotient of 0: check b first.</td></tr>
 <tr><td><code>ank_chihna(n)</code></td><td>ank_chihna(n) — sign of n: 1 if n &gt; 0, -1 if n &lt; 0, 0 if n == 0.</td></tr>
@@ -328,7 +332,7 @@ Do not edit by hand.</p>
 <tr><td><code>karna_yog(kosh dasham a, n)</code></td><td>trace of an n x n matrix</td></tr>
 <tr><td><code>saranik2(kosh dasham a)</code></td><td>determinant of a 2 x 2 matrix (a holds 4 elements)</td></tr>
 <tr><td><code>saranik3(kosh dasham a)</code></td><td>determinant of a 3 x 3 matrix (a holds 9 elements), by cofactor expansion</td></tr>
-<tr><td><code>adish_gunan(kosh dasham u, kosh dasham v)</code></td><td>dot product of flat vectors u and v over min(kosh_len(u), kosh_len(v)) entries.</td></tr>
+<tr><td><code>adish_gunan(kosh dasham u, kosh dasham v)</code></td><td>adish_gunan(u, v) — dot product of flat vectors u and v. Unequal lengths stop the program with E_AKARA_ASAMYA (R116, R189 row 13 - v295 used the shorter length). Two empty vectors give 0.0.</td></tr>
 <tr><td><code>rekha_manak(kosh dasham a, m, n)</code></td><td>largest absolute row sum (a cheap norm, useful for conditioning checks)</td></tr>
 </table>
 <h2 id="sangrah"><code>sangrah</code></h2>
@@ -362,7 +366,7 @@ Do not edit by hand.</p>
 <tr><td><code>prasaran(kosh dasham xs)</code></td><td>--- population variance (प्रसरण) ---</td></tr>
 <tr><td><code>sankhyiki_vargmool(dasham v)</code></td><td>--- vargit root, Newton&#x27;s method (private to this module: distinct name so it never collides with madhava_vargmool or a user function) --- 1000 iterations, as madhava_vargmool (20 gave 1279996 for sqrt(1e12)).</td></tr>
 <tr><td><code>vichalan(kosh dasham xs)</code></td><td>--- population standard deviation (मानक विचलन) ---</td></tr>
-<tr><td><code>bindu_gunan(kosh dasham a, kosh dasham b)</code></td><td>--- dot product of two float arrays (बिंदु गुणनफल) ---</td></tr>
+<tr><td><code>bindu_gunan(kosh dasham a, kosh dasham b)</code></td><td>bindu_gunan(a, b) — dot product of two float arrays (बिंदु गुणनफल). Unequal lengths stop the program with E_AKARA_ASAMYA (R116, R189 row 14 - v295 used the shorter length). Two empty arrays give 0.0.</td></tr>
 <tr><td><code>manak(kosh dasham a)</code></td><td>--- Euclidean norm (magnitude) of a vector ---</td></tr>
 <tr><td><code>purna_yoga(xs, n)</code></td><td>--- integer sum ---</td></tr>
 <tr><td><code>purna_madhya(xs, n)</code></td><td>--- integer mean (truncated toward zero) ---</td></tr>
@@ -404,7 +408,7 @@ Do not edit by hand.</p>
 <tr><td><code>suchi_apanay(l, i)</code></td><td>suchi_apanay(l, i) — remove element i, shifting the rest left. Returns 1 ok / 0 out of bounds.</td></tr>
 <tr><td><code>suchi_vinimay(l, i, j)</code></td><td>suchi_vinimay(l, i, j) — vinimay elements i and j (WS2, R20). Returns 1 ok / 0 if either index is out of bounds (then nothing changes). Before this, swapping meant a temp variable plus two suchi_sangrah calls at every call site.</td></tr>
 <tr><td><code>suchi_viparyay(l)</code></td><td>suchi_viparyay(l) — reverse the list in place (WS3, R20). Two-pointer vinimay, same shape as khand_viparyay. Returns 1. Before this, reversing a list meant a hand-written two-index loop at every call site.</td></tr>
-<tr><td><code>suchi_shreni(l)</code></td><td>suchi_shreni(l) — sort the list in place, ascending (WS2, R21). Merge sort (O(n log n)) over the list&#x27;s data array. Before this, sorting a list meant `yoj shreni` plus a hand-written `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1.</td></tr>
+<tr><td><code>suchi_shreni(l)</code></td><td>suchi_shreni(l) — sort the list in place, ascending (WS2, R21). Merge sort (O(n log n)) over the list&#x27;s data array. Before this, sorting a list meant `yoj shreni` plus a hand-written `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1, or 0 (list unchanged, nothing printed) when the sort&#x27;s scratch is refused (R116).</td></tr>
 <tr><td><code>suchi_laghu(l, ok)</code></td><td>suchi_laghu(l, ok) — smallest element (WS2, R21); ok[0] 1, or 0 if the list is empty (returns 0 then). Before this, the caller wrote the min loop by hand or called shreni.smlib&#x27;s laghu on l[2] — which reads a stale cell on an empty list. The empty check here is the point.</td></tr>
 <tr><td><code>suchi_adhik(l, ok)</code></td><td>suchi_adhik(l, ok) — largest element (WS2, R21); ok[0] 1, or 0 if the list is empty (returns 0 then). See suchi_laghu.</td></tr>
 <tr><td><code>suchi_yog(l)</code></td><td>suchi_yog(l) — sum of the elements (WS2, R21); 0 for an empty list (well-defined, no ok channel needed). Before this, the caller wrote the sum loop by hand or called shreni.smlib&#x27;s yog on l[2].</td></tr>
@@ -438,7 +442,7 @@ Do not edit by hand.</p>
 <tr><td><code>ank_tak_aadhar_varna(n, base, out)</code></td><td>ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out as character codes (0-9, a-z). Returns count. No util_chinha handling; n &gt;= 0. Base outside 2..36: terminator only, returns 0 (base 0 trapped with SIGFPE, base 1 looped forever past the buffer).</td></tr>
 <tr><td><code>varna_tak_ank_aadhar(buf, n, base, ok)</code></td><td>varna_tak_ank_aadhar(buf, n, base, ok) — parse first n char codes of buf in `base` (2/8/10/16). Sets ok[0]. Returns value.</td></tr>
 <tr><td><code>pad_vam(out, count, width, fill)</code></td><td>pad_vam(out, count, width, fill) — left-pad the `count` character codes in mala `out` to `width` using fill character code `fill`, in place. Returns the new count (width if width &gt; count, else count). When it pads it writes cells 0 .. width - 1 and then out[ width ] = 0, the terminator every writer in this module leaves (as ank_tak_varna does at out[ count ]); when width &lt;= count it writes nothing. Caller must allocate &gt;= width + 1 cells (R68: the contract said `width`; the body was right).</td></tr>
-<tr><td><code>varna_tak_dashm(buf, n, ok)</code></td><td>varna_tak_dashm(buf, n, ok): parse a decimal float from the first n character codes of mala buf, one code per cell (as varna_tak_ank; not a packed byte string). Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit in the integer or fraction part. No leading/trailing whitespace, no &#x27;+&#x27;, no &quot;inf&quot;/&quot;nan&quot; — those are ok = 0 (same conventions as varna_tak_ank). On success ok[0] = 1 and the dasham value is returned. On malformed input or overflow (|value| &gt; ~1.8e308) ok[0] = 0 and the return is 0.0. Extreme underflow returns 0.0 with ok[0] = 1 (as strtod does). Mantissa is accumulated in int64 (up to 18 significant digits); further digits only move the decimal exponent.</td></tr>
+<tr><td><code>varna_tak_dashm(buf, n, ok)</code></td><td>varna_tak_dashm(buf, n, ok): parse a decimal float from the first n character codes of mala buf, one code per cell (as varna_tak_ank; not a packed byte string). Grammar: [-] digits [. digits] [(e|E) [-] digits]; at least one digit in the integer or fraction part. No leading/trailing whitespace, no &#x27;+&#x27;, no &quot;inf&quot;/&quot;nan&quot; — those are ok = 0 (same conventions as varna_tak_ank). On success ok[0] = 1 and the dasham value is returned. On malformed input or overflow (|value| &gt; ~1.8e308) ok[0] = 0 and the return is 0.0; nothing is printed (E_MULYA_AYOGYA / E_PHALA_SEEMA for a reporter that asks). Extreme underflow returns 0.0 with ok[0] = 1 (as strtod does). Mantissa is accumulated in int64 (up to 18 significant digits, truncated, not correctly rounded); further integer digits only move the decimal exponent. Leading zeros never spend a digit and never fail (R116, R189 row 16): 0000000000000000000001 is 1, ok 1.</td></tr>
 </table>
 <h2 id="varna"><code>varna</code></h2>
 <p class="shesh-desc">layer: core Built on `vartani_aayam` and `akshar`, both verified to honour their arguments. R52 audit: `aksharank(s, i)` already honours i in the compiler; a one-argument `aksharank(s)` remains a compatible alias for the first byte. This library continues to call `akshar(s, i)` as before, without changing its API. ASCII only for the character predicates; multi-byte UTF-8 is not split. SLICE-BOUNDARY RULES (WS4, R23 audit): the older byte-string functions below (varna_maap, gan_swar, gan_akshar, anwesh_akshar, asti_sarv_ank, varna_sam) scan to the NUL terminator and are WRONG on slices — a slice has no terminator at its end. Use the explicit-length khand_* forms on slices. varna_pratisthap&#x27;s repl is 0-terminated; see the strb.smlib header for why and for the khand_pratilip workaround. The (s, i) char predicates take no length: the caller keeps i in bounds. varna_maap(s) — length of the NUL-terminated packed string s in BYTES, not in characters: a multi-byte UTF-8 letter counts as several.</p>
@@ -472,6 +476,6 @@ Do not edit by hand.</p>
 <tr><td><code>varna_viparyay(src, sn, out)</code></td><td>varna_viparyay(src, sn, out) — copy the cell array reversed into out (WS1, R20). Cell-array form of khand_viparyay: the same two-pointer vinimay, so it is safe in place (src == out works). Writes a 0 terminator cell at out[sn]. Returns sn. sn &lt;= 0 writes only the terminator, returns 0.</td></tr>
 <tr><td><code>varna_gan(hay, hn, needle, nn)</code></td><td>varna_gan(hay, hn, needle, nn) — count non-overlapping occurrences of needle in hay, over cell arrays (WS1, R20). Cell-array form of khand_gan. Empty needle returns 0. (Pointer arithmetic is in bytes: the suffix at cell pos is hay + pos * 8.)</td></tr>
 </table>
-<footer>24 modules, 306 functions. Generated from library sources.</footer>
+<footer>24 modules, 310 functions. Generated from library sources.</footer>
 </body>
 </html>

@@ -1,0 +1,8 @@
+# ganita_nirapeksh: as nirapeksh_mulya - |MIN| is refused (R116, R189 row 7).
+yoj ganita
+
+mukhya() {
+    likha(ganita_nirapeksh(((0 - 9223372036854775807) - 1) + 1))
+    likha(ganita_nirapeksh(((0 - 9223372036854775807) - 1)))
+    likha(1)
+}

@@ -1,5 +1,13 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v281, unchanged (Claude, R93) - the installer is a release gate; `e+N` explained
+
+- **New gate `installer version`** (`tools/check_installer_version.py`): opens `Sutram-Setup.exe`, reads the
+  version of `bin/sutram.exe` and `win/sutram.exe` in its embedded payload, and FAILS unless both equal the
+  compiler's; `Sutram-Setup.sha256` must be the file's hash. **It FAILS today: the installer ships v243.**
+  Gate `R93 installer gate` proves the checker on eight stand-in installers.
+- **Reference §15:** how to read `1.000000e+80`, with a table of what prints; golden **296** pins it.
+
 ## v281 (Claude, R91-R92) - a computed `dasham` stored as a whole number must be whole
 
 - **Integrated ChatGPT's R161 patch** (`ROUND-161-EXACT-FLOAT-TO-INT.patch`, unchanged): every statically

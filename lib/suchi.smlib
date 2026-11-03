@@ -209,9 +209,12 @@ prakriya suchi_viparyay(l) {
 # suchi_shreni(l) — sort the list in place, ascending (WS2, R21).
 # Merge sort (O(n log n)) over the list's data array. Before this,
 # sorting a list meant `yoj shreni` plus a hand-written
-# `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1.
+# `mil_shreni(l[2], suchi_maap(l))` at every call site. Returns 1, or 0
+# (list unchanged, nothing printed) when the sort's scratch is refused (R116).
 prakriya suchi_shreni(l) {
-    mil_shreni(l[2], l[0])
+    # R116 (R189 row 15): 1 when sorted; 0 when mil_shreni refuses its scratch (too long, or no memory) -
+    # the list is then unchanged, and nothing is printed (E_SMRITI_ABHAVA for a reporter that asks)
+    yadi (mil_shreni(l[2], l[0]) == 0 - 1) { nivartanam 0 }
     nivartanam 1
 }
 

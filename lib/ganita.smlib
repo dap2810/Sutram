@@ -87,8 +87,11 @@ prakriya ganita_vargmool(n) {
     nivartanam ans
 }
 
-# ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya).
+# ganita_nirapeksh(n) — absolute value of n (the ganita-module spelling of nirapeksh_mulya); |-2^63|
+# stops the program with E_PHALA_SEEMA (R116, R189 row 7).
 prakriya ganita_nirapeksh(n) {
+    # R116 (ChatGPT R189 row 7): |MIN| = 2^63 does not fit - refused before the negation
+    abhava(n != ((0 - 9223372036854775807) - 1), "Sutram truti [E_PHALA_SEEMA]: ganita_nirapeksh: nirapeksha-mulyam 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.\n")
     vitti x = n
     yadi (x < 0) { nivartanam 0 - x }
     nivartanam x
@@ -193,11 +196,132 @@ prakriya samasa(out, a, b, c, d, n) {
 # brahmagupta_kshetr(a, b, c, d): Brahmagupta's formula for the area of a cyclic quadrilateral
 # (Brahma-sphuta-siddhanta, 628 CE):  area = sqrt((s-a)(s-b)(s-c)(s-d)),  s = (a+b+c+d)/2.
 # With d = 0 this is Brahmagupta's triangle (Heron's) formula. Returns the integer part.
+# R116 (R189 row 8): exact. With T = a + b + c + d, P = (T-2a)(T-2b)(T-2c)(T-2d) = 16 area^2 is formed
+# exactly in base-2^30 limbs and the result is isqrt(P) / 4, so no intermediate wraps and no float
+# rounding decides the integer part. Four sides > 0, or a, b, c > 0 and d = 0 (a triangle); the longest
+# no longer than the others together (equal: degenerate, area 0). Anything else stops the program with
+# E_MULYA_AYOGYA; an area past 2^63 - 1 stops it with E_ATIPRAVAH. (v295 wrapped in the side sum and
+# the product, and returned 0 for a too-long side.)
 prakriya brahmagupta_kshetr(a, b, c, d) {
-    vitti s = (a + b + c + d) / 2
-    vitti p = (s - a) * (s - b) * (s - c) * (s - d)
-    yadi (p < 0) { nivartanam 0 }
-    nivartanam ganita_vargmool(p)
+    abhava(a > 0 && b > 0 && c > 0 && d >= 0, "Sutram truti [E_MULYA_AYOGYA]: brahmagupta_kshetr: dattam mulyam ayogyam; kriyayah niyaman parikshatam.\n")
+    vitti S[12]
+    bk_khand(a, S, 0)
+    bk_khand(b, S, 3)
+    bk_khand(c, S, 6)
+    bk_khand(d, S, 9)
+    vitti f1[3]
+    vitti f2[3]
+    vitti f3[3]
+    vitti f4[3]
+    vitti neg = bk_kaarak(S, 0, f1) + bk_kaarak(S, 1, f2) + bk_kaarak(S, 2, f3) + bk_kaarak(S, 3, f4)
+    abhava(neg == 0, "Sutram truti [E_MULYA_AYOGYA]: brahmagupta_kshetr: dattam mulyam ayogyam; kriyayah niyaman parikshatam.\n")
+    vitti x[6]
+    vitti y[6]
+    vitti P[12]
+    bk_gunan(f1, 3, f2, 3, x)
+    bk_gunan(f3, 3, f4, 3, y)
+    bk_gunan(x, 6, y, 6, P)
+    # area > 2^63 - 1  iff  isqrt(P) >= 2^65  iff  P >= 2^130 = 1024 * (2^30)^4
+    vitti big = 0
+    yadi (P[4] >= 1024) { big = 1 }
+    vitti h = 5
+    yavat (h < 12) {
+        yadi (P[h] != 0) { big = 1 }
+        h = h + 1
+    }
+    abhava(big == 0, "Sutram truti [E_ATIPRAVAH]: brahmagupta_kshetr: kshetraphalam purnanka-seemam atikramati; adhikatamam mulyam 9223372036854775807.\n")
+    # isqrt(P) < 2^65, one bit at a time from bit 64
+    vitti r[3]
+    r[0] = 0
+    r[1] = 0
+    r[2] = 0
+    vitti t[3]
+    vitti q[6]
+    vitti k = 64
+    yavat (k >= 0) {
+        t[0] = r[0]
+        t[1] = r[1]
+        t[2] = r[2]
+        vitti pw = 1
+        vitti e = k % 30
+        yavat (e > 0) {
+            pw = pw * 2
+            e = e - 1
+        }
+        t[k / 30] = t[k / 30] + pw
+        bk_gunan(t, 3, t, 3, q)
+        yadi (bk_na_adhik(q, P, 6) == 1) {
+            r[0] = t[0]
+            r[1] = t[1]
+            r[2] = t[2]
+        }
+        k = k - 1
+    }
+    nivartanam r[0] / 4 + r[1] * 268435456 + r[2] * 288230376151711744
+}
+
+# R116 helpers for brahmagupta_kshetr: numbers as little-endian base-2^30 limbs, one per cell.
+# bk_khand(v, out, o): v >= 0 into out[o], out[o + 1], out[o + 2].
+prakriya bk_khand(v, out, o) {
+    out[o] = v % 1073741824
+    out[o + 1] = (v / 1073741824) % 1073741824
+    out[o + 2] = v / 1152921504606846976
+    nivartanam 0
+}
+
+# bk_kaarak(S, k, f): f[0..2] = (the other three sides) - side k, sides at S[3j..3j+2]; 1 if negative.
+prakriya bk_kaarak(S, k, f) {
+    vitti carry = 0
+    vitti i = 0
+    yavat (i < 3) {
+        vitti v = carry - S[k * 3 + i]
+        vitti j = 0
+        yavat (j < 4) {
+            yadi (j != k) { v = v + S[j * 3 + i] }
+            j = j + 1
+        }
+        vitti qq = v / 1073741824
+        yadi (v % 1073741824 < 0) { qq = qq - 1 }
+        f[i] = v - qq * 1073741824
+        carry = qq
+        i = i + 1
+    }
+    yadi (carry < 0) { nivartanam 1 }
+    nivartanam 0
+}
+
+# bk_gunan(x, nx, y, ny, z): z[0..nx+ny-1] = x * y (z distinct from x and y).
+prakriya bk_gunan(x, nx, y, ny, z) {
+    vitti i = 0
+    yavat (i < nx + ny) {
+        z[i] = 0
+        i = i + 1
+    }
+    i = 0
+    yavat (i < nx) {
+        vitti carry = 0
+        vitti j = 0
+        yavat (j < ny) {
+            vitti tt = z[i + j] + x[i] * y[j] + carry
+            z[i + j] = tt % 1073741824
+            carry = tt / 1073741824
+            j = j + 1
+        }
+        z[i + ny] = carry
+        i = i + 1
+    }
+    nivartanam 0
+}
+
+# bk_na_adhik(q, p, n): 1 if q[0..n-1] <= p[0..n-1], else 0.
+prakriya bk_na_adhik(q, p, n) {
+    vitti i = n - 1
+    yavat (i >= 0) {
+        yadi (q[i] < p[i]) { nivartanam 1 }
+        yadi (q[i] > p[i]) { nivartanam 0 }
+        i = i - 1
+    }
+    nivartanam 1
 }
 
 # --- checked / saturating integer arithmetic (R18) ---

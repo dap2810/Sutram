@@ -1,0 +1,8 @@
+# trigun: the bound, then one past it - refused (R116, R189 row 2).
+yoj ganit
+
+mukhya() {
+    likha(trigun(0 - 3074457345618258602))
+    likha(trigun(3074457345618258603))
+    likha(1)
+}

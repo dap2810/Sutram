@@ -38,20 +38,32 @@ prakriya ank_yog(n) {
     nivartanam s
 }
 
-# viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -> -321).
+# viparyay_ank(n) — n with its decimal digits reversed, sign kept (e.g. -123 -> -321). A reverse that does
+# not fit in int64 (1999999999999999999) stops the program with E_PHALA_SEEMA (R116, R189 row 6 - v295
+# wrapped); -2^63 reverses to -8085774586302733229.
 prakriya viparyay_ank(n) {
+    # R116 (ChatGPT R189 row 6): checked: the reversed digits accumulate in a non-positive number (MIN fits there),
+    # each step checked against the result's limit - MIN for a negative n, -MAX for a positive one.
     vitti x = n
-    vitti r = 0
-    vitti minv = (0 - 9223372036854775807) - 1
-    # Negatives reverse with the util_chinha: viparyay_ank(-123) = -321.
-    # MIN: reverse of 9223372036854775808, negated.
-    yadi (x == minv) { nivartanam 0 - 8085774586302733229 }
-    yadi (x < 0) { nivartanam 0 - viparyay_ank(0 - x) }
-    yavat (x > 0) {
-        r = r * 10 + (x % 10)
-        x = x / 10
+    vitti neg = 0
+    yadi (x < 0) { neg = 1 }
+    yadi (x > 0) { x = 0 - x }
+    vitti lim = 0 - 9223372036854775807
+    vitti last = 7
+    yadi (neg == 1) {
+        lim = ((0 - 9223372036854775807) - 1)
+        last = 8
     }
-    nivartanam r
+    vitti limdiv = lim / 10
+    vitti acc = 0
+    yavat (x != 0) {
+        vitti d = 0 - (x % 10)
+        x = x / 10
+        abhava(acc > limdiv || (acc == limdiv && d <= last), "Sutram truti [E_PHALA_SEEMA]: viparyay_ank: viparita-ankasya mulyam purnanke na dharyate; seema -9223372036854775808 tah 9223372036854775807 paryantam.\n")
+        acc = acc * 10 - d
+    }
+    yadi (neg == 1) { nivartanam acc }
+    nivartanam 0 - acc
 }
 
 # asti_viparyay_sam(n) — 1 if n reads the same backwards (a palindrome); negatives are never palindromes.
