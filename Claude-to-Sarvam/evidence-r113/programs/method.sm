@@ -1,0 +1,11 @@
+rachana Bindu = { x, y }
+
+prakriya Bindu.barabar(swa, o) {
+    nivartanam swa == o
+}
+
+mukhya() {
+    vitti p = nirmmita(16)
+    p.x = 1
+    likha(p.barabar(p))
+}

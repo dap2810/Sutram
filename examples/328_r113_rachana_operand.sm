@@ -1,0 +1,14 @@
+# R113: a rachana reference beside an operator is refused - E_RACHANA_GANIT. Up to v292 `p == q`
+# compared two addresses (0 here, though both records hold 3), `p < q` ordered them and `p + q` added them.
+# Compare the fields: `p.x == q.x`. What `p == q` will mean is the same record (identity); until then it is
+# refused, as a kosh (E_KOSH_GANIT) and a mala (E_MALA_GANIT) are.
+rachana Bindu = { x, y }
+
+mukhya() {
+    vitti p = nirmmita(16)
+    vitti q = nirmmita(16)
+    p.x = 3
+    q.x = 3
+    likha(p.x == q.x)
+    likha(p == q)
+}

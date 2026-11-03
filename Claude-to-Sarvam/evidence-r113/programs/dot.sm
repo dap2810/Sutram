@@ -1,0 +1,22 @@
+mukhya() {
+    vitti a[3]
+    vitti b[3]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    b[0] = 4
+    b[1] = 5
+    b[2] = 6
+    likha("mala ", sankhya_bindu(a, b, 3), "\n")
+    likha("first two ", sankhya_bindu(a, b, 2), "\n")
+    likha("n 0 ", sankhya_bindu(a, b, 0), "\n")
+    kosh k[2]
+    kosh_kship(k, 7)
+    kosh_kship(k, 8)
+    likha("kosh ", sankhya_bindu(k, k, 2), "\n")
+    vitti r = nirmmita(16)
+    likh(r, 10)
+    likh(r + 8, 0 - 3)
+    likha("raw ", sankhya_bindu(r, r, 2), "\n")
+    likha("old name ", sankhya_dot(a, a, 3), "\n")
+}

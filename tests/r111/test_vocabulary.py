@@ -41,7 +41,7 @@ PAIRS = [
     ('vartani_cat', 'vartani_sandhi', 'vitti c = vartani_cat(S, "!")'),
     ('lkhb', 'likha_santat', 'lkhb(7)'),
     ('likha_fmt', 'likha_rup', 'likha_fmt("x=", 42)'),
-    ('sankhya_dot', 'sankhya_bindu', 'vitti dp = sankhya_dot(B, B)'),
+    ('sankhya_dot', 'sankhya_bindu', 'vitti dp = sankhya_dot(B, B, 2)'),
     ('smaran_cp', 'smaran_pratilip', 'smaran_cp(B, "OK", 3)'),
 ]
 BODY = '''mukhya() {{

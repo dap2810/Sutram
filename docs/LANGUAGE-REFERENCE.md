@@ -157,9 +157,9 @@ warning naming the new one** (§4b).
 | `anka_akshar` (was `char_from`) | character from a code |
 | `akshar_guru` (was `char_upper`) | uppercase a character |
 | `akshar_laghu` (was `char_lower`) | lowercase a character |
-| `sankhya_yog` | integer add |
-| `sankhya_gunan` | integer multiply |
-| `sankhya_bindu` (was `sankhya_dot`) | dot product |
+| `sankhya_yog` | four 32-bit **float** lanes in raw memory, added: `sankhya_yog(dst, a, b)` (`addps`). No Sutram value holds 32-bit floats - see `sankhya_bindu` (R113) |
+| `sankhya_gunan` | four 32-bit **float** lanes in raw memory, multiplied: `sankhya_gunan(dst, a, b)` (`mulps`); the same limit |
+| `sankhya_bindu` (was `sankhya_dot`) | **integer dot product, v293:** `sankhya_bindu(a, b, n)` = a[0]·b[0] + … + a[n-1]·b[n-1] over 8-byte cells (a `mala`, a `kosh`, a `nirmmita` buffer); wraps like every integer; n ≤ 0 gives 0; n is not checked against the buffers (like `smaran_pratilip`). Up to v292 it took two arguments and returned the bits of four 32-bit float products, which no Sutram value could feed (Muse R108) |
 | `jala` (was `netsock`) | create a socket |
 | `jala_bandh` (was `netbind`) | bind a socket |
 | `jala_shru` (was `netlisten`) | listen |
@@ -204,6 +204,11 @@ for byte (`examples/324`-`327`). `==` and `!=` remain. In the shell (`sutram -i`
   Sanskrit default would split one token into two.
 - **Programs carry it.** A program that stops at run time (`E_GAHANATA`, a `mala` bound, an empty `kosh`...)
   prints the message from its own bytes; 443 of the guard's 705 programs contain one. Renaming it changes them all.
+
+**What would remove it:** two decisions together - an owner exception to the pack freeze for this one token
+(`Sutram Error` → `Sutram truti` in all eleven `.sandesh` files, nothing else in them), and accepting that every
+program carrying a run-time message changes, in those bytes only. ChatGPT R183 counts 68 per pack (748) and the
+compiler's own lines. Until both are given, `Error` is the one English word a program can print.
 
 `to` is not a word either (`tak` is the loop's "up to"; `prati` stays the return alias).
 
@@ -396,6 +401,21 @@ A program with no string comparison compiles to the same bytes as before (the gu
 | a string as a whole condition: `yadi (s)`, `yavat (s)`, `s && x`, `s ? a : b` - every string, even `""`, was true | **`E_VARTANI_SATYA`** `vartani satyam asatyam va na bhavati` - write `yadi (s != "")` |
 | a `kosh` as an operand: `a == b` on two koshes (0 for two equal ones), `k + 1` | **`E_KOSH_GANIT`** `kosh-upari ganitam tulana va na sambhavati` - compare `k[i]` or `kosh_len(k)` |
 | a `mala` as an operand (v290): `a == b` on two mala, `a + 1` | **`E_MALA_GANIT`** `mala-upari ganitam tulana va na sambhavati` - compare `a[i]` (`examples/319`) |
+| a `rachana` reference as an operand (v293): `p == q`, `p != q`, `p < q`, `p + q`, `p asti q` - a name whose field the `prakriya` reads or writes (`p.x`), or a method's first parameter | **`E_RACHANA_GANIT`** `rachana-upari ganitam tulana va na sambhavati` - compare `p.x` (`examples/328`) |
+
+**What `==` on a `kosh`, a `mala` or a `rachana` will mean: the same object (R113, ChatGPT R182).** Two names
+for one `kosh`, `mala` or record are equal; two that were made separately are not, even when every element or
+field matches. Ordering (`<`, `<=`, `>`, `>=`) and arithmetic (`+` and the rest) will stay refused: an address
+order is not an order of collections, and adding two references means nothing. **Today all of them are refused**
+- `E_KOSH_GANIT`, `E_MALA_GANIT`, `E_RACHANA_GANIT` - because identity needs a stable identity for a `kosh` that
+grows (R178's descriptor), and a refusal is safe until then. To compare contents, compare the elements or fields.
+
+**How a `rachana` reference is recognised (v293).** Variables carry no type: `vitti p = nirmmita(24)` is an address
+in an ordinary `vitti`, and `p.x` finds `x` by its name. So the compiler knows `p` is a record by its use: **a name
+whose field the `prakriya` reads or writes, anywhere in its body, or the first parameter of a method
+(`prakriya Bindu.chal(swa, ...)`)**. Such a name beside an operator is refused. A copy that never touches a field
+(`vitti q = p`, then `q == r`) is not recognised - the same limit as a `kosh` or `mala` given a second name.
+Up to v292 `p == q` compared the two addresses (1 only for one record), `p < q` ordered them and `p + q` added them.
 
 **Not known to be strings, and so not handled:** module-level variables, `kosh` and `mala` elements, and a
 `prakriya` used as a value (`vitti g = f`). Compared with a string they are refused, not guessed. Two of them

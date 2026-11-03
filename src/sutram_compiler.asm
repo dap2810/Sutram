@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v292) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v293) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -287,7 +287,7 @@ r54_builtin_arity_table:
     db 2,2               ; 18 vartani_cat
     db 3,3               ; 19 sankhya_yog
     db 3,3               ; 20 sankhya_gunan
-    db 2,2               ; 21 sankhya_dot
+    db 3,3               ; 21 sankhya_bindu / sankhya_dot (R113: a, b, n)
     db 2,2               ; 22 likha_fmt
     db 2,2               ; 23 char_at
     db 1,2               ; 24 char_code
@@ -559,6 +559,9 @@ r54_builtin_arity_table:
     db "Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
     r108_msg_full db "Sutram Error: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
     rfx_bc_hdr_mala db ": Sutram Error [E_MALA_GANIT]: ", 0
+    r113_hdr db ": Sutram Error [E_RACHANA_GANIT]: ", 0
+    r113_txt db "rachana-upari ganitam tulana va na sambhavati - rachana sankhya na", 10, 0
+    r113_hint db "Sanket: p.x tasya avayavasya mulyam - tani tulyantam", 10, 0
     rfx_bc_txt_mala db "mala-upari ganitam tulana va na sambhavati - mala sankhya na", 10, 0
     rfx_bc_hint_mala db "Sanket: a[i] tasyah mulyam - tani tulyantam", 10, 0
     rfx2_msg_cap db "Sutram Error: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
@@ -1423,6 +1426,8 @@ section .bss
     r108_cnt_all resq 1
     r108_cnt_ok resq 1
     r108_pname  resq 1
+    r113_rn     resq VAR_TABLE_CAP              ; R113: names used as a rachana (p.x) in this function
+    r113_rn_n   resq 1
     r111_old_hit resq 1                     ; R111: the old-name row the last lookup matched, or 0
     r111_warned resb 32                     ; R111: an old name already warned about
     r108_ovf    resq 1                      ; R109: the walk's stack overflowed - count the parameter as keeping
@@ -9106,6 +9111,113 @@ expr_is_str:
     movzx eax, al
     ret
 
+;---------------------------------------------------------------- R113: rachana references
+; Variables carry no type, so a rachana reference is known by its use: a name whose field the function reads or
+; writes (p.x). rfx2_analyse records those names before the function is generated; a binop with such a bare name
+; as an operand is E_RACHANA_GANIT (as a bare kosh or mala is E_KOSH_GANIT / E_MALA_GANIT).
+; r113_note_rname(rdi = a name): remember it (once). Preserves every register but rax.
+r113_note_rname:
+    push rcx
+    push rsi
+    push rdi
+    mov rcx, [rel r113_rn_n]
+.l:
+    test rcx, rcx
+    jz .add
+    dec rcx
+    lea rax, [rel r113_rn]
+    mov rsi, [rax+rcx*8]
+    mov rdi, [rsp]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .out
+    jmp .l
+.add:
+    mov rcx, [rel r113_rn_n]
+    cmp rcx, VAR_TABLE_CAP
+    jae .out                       ; every name is a variable: the table cannot fill
+    lea rax, [rel r113_rn]
+    mov rdi, [rsp]
+    mov [rax+rcx*8], rdi
+    inc qword [rel r113_rn_n]
+.out:
+    pop rdi
+    pop rsi
+    pop rcx
+    ret
+
+; r113_method_self(rbx = a FUNCDEF being generated): for `prakriya Rachana.naam(swa, ...)` - a name with a
+; '.' - the first parameter is the receiver, a rachana reference, whether or not the body reads a field of it.
+; Every register preserved.
+r113_method_self:
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rsi, [rbx+8]
+    test rsi, rsi
+    jz .out
+.dot:
+    movzx eax, byte [rsi]
+    test eax, eax
+    jz .out
+    cmp eax, '.'
+    je .method
+    inc rsi
+    jmp .dot
+.method:
+    cmp qword [rbx+16], 0
+    je .out
+    mov rdi, rbx
+    call rfx3_params_of
+    mov rdi, [rsi]
+    call r113_note_rname
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+; r113_is_rname(rdi = AST node) -> rax = 1 if it is a bare name recorded above.
+r113_is_rname:
+    xor eax, eax
+    test rdi, rdi
+    jz .r
+    cmp qword [rdi], AST_VAR
+    jne .r
+    push rcx
+    push rsi
+    push rdi
+    mov rcx, [rel r113_rn_n]
+.l:
+    test rcx, rcx
+    jz .no
+    dec rcx
+    lea rax, [rel r113_rn]
+    mov rsi, [rax+rcx*8]
+    mov rdi, [rsp]
+    mov rdi, [rdi+8]
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jnz .l
+    mov eax, 1
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop rdi
+    pop rsi
+    pop rcx
+.r:
+    ret
+
 rfx_is_mala_operand:
     ; R108: rdi = AST node -> rax = 1 when it is a bare mala variable (not a[i]).
     test rdi, rdi
@@ -9368,6 +9480,14 @@ rfx_check_str_binop:
     call rfx_is_mala_operand
     test rax, rax
     jnz .rfx_csb_mala
+    mov rdi, [rbx+16]              ; R113: a rachana reference likewise (R182: its == compared
+    call r113_is_rname             ; two addresses, < ordered them, + added them)
+    test rax, rax
+    jnz .rfx_csb_rach
+    mov rdi, [rbx+24]
+    call r113_is_rname
+    test rax, rax
+    jnz .rfx_csb_rach
     mov rax, [rbx+8]
     cmp rax, OP_LAND               ; R106: && / || on a string: a string is no condition
     je .rfx_csb_truth
@@ -9417,6 +9537,12 @@ rfx_check_str_binop:
     lea rsi, [rel rfx_bc_hdr_mala]
     lea rdx, [rel rfx_bc_txt_mala]
     lea rcx, [rel rfx_bc_hint_mala]
+    jmp r80_compile_error
+.rfx_csb_rach:
+    mov rdi, [rbx+32]
+    lea rsi, [rel r113_hdr]
+    lea rdx, [rel r113_txt]
+    lea rcx, [rel r113_hint]
     jmp r80_compile_error
 .rfx_csb_truth:
     mov rdi, [rbx+16]
@@ -10011,6 +10137,7 @@ rfx2_analyse:
     mov qword [rel rfx2_calls_n], 0
     mov qword [rel rfx2_rets_n], 0
     mov qword [rel rfx2_refs_n], 0
+    mov qword [rel r113_rn_n], 0       ; R113: this function's rachana references, found below
     lea rdi, [rel rfx2_seen]
     xor eax, eax
     mov ecx, AST_HEAP_CAP / 64
@@ -10091,6 +10218,11 @@ rfx2_analyse:
     je .ret
     cmp rax, AST_FUNCREF
     je .fref
+    cmp rax, AST_FIELD
+    jne .gen
+    mov rdi, [rbx+8]                   ; R113: p.x (read or written) - p is a rachana reference here
+    call r113_note_rname
+    jmp .walk
 .gen:
     mov r9d, 8
 .gl:
@@ -18051,6 +18183,7 @@ gen_all_functions:
     call rfx3_params_of
     mov rdi, [rbx+24]
     call rfx2_analyse
+    call r113_method_self          ; R113: a method's first parameter is a rachana reference
     ; Emit function prologue: push rbp; mov rbp, rsp; push rbx
     mov dil, 0x55             ; push rbp
     call emit_byte
@@ -23717,75 +23850,92 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_vecdot:
-    ; sankhya_dot(src1, src2) — dot product via dpps
-    ; Returns scalar float in xmm0 (low 32 bits)
+    ; R113: sankhya_bindu(a, b, n) / sankhya_dot - the integer dot product of the first n 8-byte cells of a
+    ; and b: sum of a[i] * b[i], wrapping like every Sutram integer. A mala or kosh cell holds an integer (a
+    ; dasham stored into one is converted or refused), so that is what is multiplied. Up to v292 it read 16
+    ; bytes from each pointer as four 32-bit floats (mulps, haddps) and returned their bits - no Sutram value
+    ; holds that (Muse R108). n <= 0 gives 0. Like smaran_pratilip, n is not checked against the buffers.
     mov rax, [rbx+24]
     call gen_expr
-    mov dil, 0x50
+    mov dil, 0x50              ; push rax (a)
     call emit_byte
     mov rax, [rbx+32]
     call gen_expr
-    ; mov rdx, rax (src2) = 48 89 C2
-    mov dil, 0x48
+    mov dil, 0x50              ; push rax (b)
+    call emit_byte
+    mov rax, [rbx+40]
+    call gen_expr              ; rax = n
+    mov dil, 0x48           ; mov rcx, rax (n)
     call emit_byte
     mov dil, 0x89
     call emit_byte
-    mov dil, 0xC2
-    call emit_byte
-    ; pop rsi (src1) = 5E
-    mov dil, 0x5E
-    call emit_byte
-    ; movups xmm0, [rsi] = 0F 10 06
-    mov dil, 0x0F
-    call emit_byte
-    mov dil, 0x10
-    call emit_byte
-    mov dil, 0x06
-    call emit_byte
-    ; movups xmm1, [rdx] = 0F 10 0A
-    mov dil, 0x0F
-    call emit_byte
-    mov dil, 0x10
-    call emit_byte
-    mov dil, 0x0A
-    call emit_byte
-    ; mulps xmm0, xmm1 = 0F 59 C1
-    mov dil, 0x0F
-    call emit_byte
-    mov dil, 0x59
-    call emit_byte
     mov dil, 0xC1
     call emit_byte
-    ; haddps xmm0, xmm0 = 66 0F 7C C0
-    mov dil, 0x66
+    mov dil, 0x5E           ; pop rsi (b)
     call emit_byte
-    mov dil, 0x0F
+    mov dil, 0x5F           ; pop rdi (a)
     call emit_byte
-    mov dil, 0x7C
-    call emit_byte
-    mov dil, 0xC0
-    call emit_byte
-    ; haddps xmm0, xmm0 = 66 0F 7C C0
-    mov dil, 0x66
-    call emit_byte
-    mov dil, 0x0F
-    call emit_byte
-    mov dil, 0x7C
+    mov dil, 0x31           ; xor eax, eax
     call emit_byte
     mov dil, 0xC0
     call emit_byte
-    ; movd eax, xmm0 = 66 0F 7E C0
-    mov dil, 0x66
+    mov dil, 0x48           ; test rcx, rcx
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    mov dil, 0x7E           ; jle done (+23)
+    call emit_byte
+    mov dil, 0x17
+    call emit_byte
+    mov dil, 0x48           ; L: mov rdx, [rdi]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x17
+    call emit_byte
+    mov dil, 0x48           ; imul rdx, [rsi] ...
     call emit_byte
     mov dil, 0x0F
     call emit_byte
-    mov dil, 0x7E
+    mov dil, 0xAF
     call emit_byte
-    mov dil, 0xC0
+    mov dil, 0x16           ; ... (modrm)
     call emit_byte
-    ; Return float bits in rax (as integer representation)
+    mov dil, 0x48           ; add rax, rdx
+    call emit_byte
+    mov dil, 0x01
+    call emit_byte
+    mov dil, 0xD0
+    call emit_byte
+    mov dil, 0x48           ; add rdi, 8 ...
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    mov dil, 0x08           ; ...
+    call emit_byte
+    mov dil, 0x48           ; add rsi, 8 ...
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    mov dil, 0xC6
+    call emit_byte
+    mov dil, 0x08           ; ...
+    call emit_byte
+    mov dil, 0x48           ; dec rcx
+    call emit_byte
+    mov dil, 0xFF
+    call emit_byte
+    mov dil, 0xC9
+    call emit_byte
+    mov dil, 0x75           ; jnz L (-23)
+    call emit_byte
+    mov dil, 0xE9
+    call emit_byte
     jmp .ge_call_done
-
 .ge_call_setchar:
     ; R50 set_char(buffer, byte_index, integer_value).
     ; Evaluate each argument exactly once, left-to-right.

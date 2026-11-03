@@ -1,4 +1,17 @@
-> **The 20 newest entries.** Older ones, from "v434" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v435" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v293 (Claude, R113) - a `rachana` reference beside an operator is refused; `sankhya_bindu` is an integer dot product
+
+- **`E_RACHANA_GANIT`:** `p == q`, `p < q`, `p + q` (and every operator) on a `rachana` reference - a name whose
+  field the `prakriya` reads or writes, or a method's first parameter - is refused, as a bare `kosh` or `mala`
+  is. Up to v292 they compared, ordered and added two addresses. The reference states the meaning `==` will have
+  on all three - the same object - and why it is refused until a `kosh` has a stable identity (ChatGPT R182).
+  Example 328. No program in the tree changed (705 compiled, 0 differ).
+- **`sankhya_bindu(a, b, n)`** (was `sankhya_dot`, Muse R108's one alias whose body was wrong): the integer dot
+  product of n 8-byte cells. Up to v292 it took two pointers and returned the bits of four 32-bit float products,
+  which no Sutram value holds. Example 329. `sankhya_yog` / `sankhya_gunan` are documented as what they are
+  (four 32-bit float lanes), not fixed.
+- The reference says what would remove `Sutram Error`, the one English word left.
 
 ## v292 (Claude, R111) - the vocabulary change, as aliases: 22 builtins get Sanskrit names, `asti` / `nasti` are `==` / `!=`, `tyaj` leaves the shell
 
@@ -341,36 +354,3 @@
   `madhava` or `roop`, at a file-level position inside the library.
 - **Goldens:** 291 (NaN, six operators), 292 (likha after a division), 293 (float division by zero); 289 and
   ChatGPT's NaN oracle now make inf and NaN by overflow, not by dividing by zero.
-
-## v435 - the float blocker is closed, and it was my test that was wrong
-
-### The answer: `dasham` is the float declaration, `vitti` is integer
-
-**All three partners found it independently.** ChatGPT: *"Sutram supports float variables: declare them with `dasham`, not `vitti`."* Muse: *"`vitti` is integer storage; `dasham` is float storage."*
-
-**I wrote `vitti f = 3.5` and concluded floats were broken. The language has a float declaration and I did not use it.** That is the seventh false claim of this session and the same shape as the other six: I tested what I assumed the syntax was.
-
-### Verified by me on v279
-
-| Test | Result |
-|---|---|
-| `dasham f = 3.5` | `3.500000` |
-| `vitti f = 3.5` | **REFUSED - `E_DASHAM_VITTI`: dashamah sankhya purnanka-vittau na ...** |
-| `dasham a = 1.5; dasham b = 2.0; likha(a + b * 0.5)` | `2.500000` |
-
-**And Claude's v279 fix is the right one: not "make `vitti` hold floats", but "stop `vitti f = 3.5` from lying".** A written fraction in integer storage is now refused with a named error instead of being silently truncated.
-
-**Suite 258, two new goldens (289, 290). 80 DIFFER programs, every one run: 79 print the same bytes with the same exit code.**
-
-### And the two symptoms were never one bug
-**ChatGPT: *"The earlier negative result used the much larger literal `10000000000000.0`... The two observations exercise different operations and are not evidence of one platform-specific bug."***
-
-**So its negative came from a large float, mine from the wrong keyword. Neither was a platform difference.** I asked it to settle a discrepancy that did not exist.
-
-### The library is fine
-**34 of 260 example files declare `dasham`.** So the library does use floats properly, and Muse's earlier Madhava verification at six decimals stands.
-
-### What this leaves
-**Integers: done. Floats: done, with a refusal where a fraction would be lost. Memory: done and measured. The boundary: done. Arithmetic: division by zero and literal overflow refused.**
-
-**Still open: the `kosh` alias (latent, documented), generics (deferred by design), threads (absent), Windows execution (the maintainer's), and the docs reorganisation.**

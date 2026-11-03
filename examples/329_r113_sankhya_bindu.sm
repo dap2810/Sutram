@@ -1,0 +1,19 @@
+# R113: sankhya_bindu(a, b, n) - the integer dot product of the first n cells of a and b. Up to v292 it
+# took two arguments and read each as four 32-bit floats, which no Sutram value holds (Muse R108).
+mukhya() {
+    vitti a[3]
+    vitti b[3]
+    a[0] = 1
+    a[1] = 2
+    a[2] = 3
+    b[0] = 4
+    b[1] = 5
+    b[2] = 6
+    likha("1*4 + 2*5 + 3*6 = ", sankhya_bindu(a, b, 3), "\n")
+    likha("the first two: ", sankhya_bindu(a, b, 2), "\n")
+    likha("none: ", sankhya_bindu(a, b, 0), "\n")
+    kosh k[2]
+    kosh_kship(k, 7)
+    kosh_kship(k, 8)
+    likha("a kosh with itself: ", sankhya_bindu(k, k, 2), "\n")
+}

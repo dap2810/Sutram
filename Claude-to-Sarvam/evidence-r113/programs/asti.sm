@@ -1,0 +1,7 @@
+rachana Bindu = { x, y }
+
+mukhya() {
+    vitti p = nirmmita(16)
+    p.x = 3
+    likha(p asti p)
+}

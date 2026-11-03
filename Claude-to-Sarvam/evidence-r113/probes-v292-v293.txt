@@ -1,0 +1,23 @@
+# R113 probes: v292 against v293
+eq.sm v292: Siddh: 697 baait sankalit | runs: 0 
+eq.sm v293: eq.sm: Sutram Error [E_RACHANA_GANIT]: rachana-upari ganitam tulana va na sambhavati - rachana sankhya na
+ne.sm v292: Siddh: 697 baait sankalit | runs: 1 
+ne.sm v293: ne.sm: Sutram Error [E_RACHANA_GANIT]: rachana-upari ganitam tulana va na sambhavati - rachana sankhya na
+lt.sm v292: Siddh: 697 baait sankalit | runs: 1 
+lt.sm v293: lt.sm: Sutram Error [E_RACHANA_GANIT]: rachana-upari ganitam tulana va na sambhavati - rachana sankhya na
+add.sm v292: Siddh: 685 baait sankalit | runs: 279922035654672 
+add.sm v293: add.sm:8:13: Sutram Error [E_RACHANA_GANIT]: rachana-upari ganitam tulana va na sambhavati - rachana sankhya na
+asti.sm v292: Siddh: 466 baait sankalit | runs: 1 
+asti.sm v293: asti.sm: Sutram Error [E_RACHANA_GANIT]: rachana-upari ganitam tulana va na sambhavati - rachana sankhya na
+fields_ok.sm v292: Siddh: 1076 baait sankalit | runs: 7 1 1 
+fields_ok.sm v293: Siddh: 1076 baait sankalit | runs: 7 1 1 
+method.sm v292: Siddh: 626 baait sankalit | runs: 1 
+method.sm v293: method.sm: Sutram Error [E_RACHANA_GANIT]: rachana-upari ganitam tulana va na sambhavati - rachana sankhya na
+dot.sm v292: Sutram Error: vyakaran dosh, pankti 10:41, shabd ')'
+dot.sm v293: Siddh: 3782 baait sankalit | runs: mala 32 first two 14 n 0 0 kosh 113 raw 109 old name 14 
+dot2.sm v292: Siddh: 466 baait sankalit | runs: 0 
+dot2.sm v293: Sutram Error: vyakaran dosh, pankti 3:29, shabd ')'
+mala_eq.sm v292: mala_eq.sm: Sutram Error [E_MALA_GANIT]: mala-upari ganitam tulana va na sambhavati - mala sankhya na
+mala_eq.sm v293: mala_eq.sm: Sutram Error [E_MALA_GANIT]: mala-upari ganitam tulana va na sambhavati - mala sankhya na
+mala_add.sm v292: mala_add.sm:4:13: Sutram Error [E_MALA_GANIT]: mala-upari ganitam tulana va na sambhavati - mala sankhya na
+mala_add.sm v293: mala_add.sm:4:13: Sutram Error [E_MALA_GANIT]: mala-upari ganitam tulana va na sambhavati - mala sankhya na
