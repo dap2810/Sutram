@@ -1,0 +1,290 @@
+{
+  "base": "f69b469e88af9cb490ec20076716a7f8e7c1d21f",
+  "compiler": "v294",
+  "status": "proposed implementation specification; no native tests run",
+  "MIN": -9223372036854775808,
+  "MAX": 9223372036854775807,
+  "messages": "Exact proposed Romanized Sanskrit literals, newline appended; human linguistic review not run. For status-only functions these are opt-in diagnostic catalog strings, NOT automatic output.",
+  "invalid_input_message": "Sutram truti [E_MULYA_AYOGYA]: {function}: dattam mulyam ayogyam; kriyayah niyaman parikshatam.",
+  "rows": [
+    {
+      "id": 1,
+      "module": "ganit",
+      "function": "dvigun",
+      "refuse_when": "n < -4611686018427387904 or n > 4611686018427387903",
+      "code": "E_ATIPRAVAH",
+      "message": "Sutram truti [E_ATIPRAVAH]: dvigun: dvigunitam phalam purnanka-seemam atikramati; n -4611686018427387904 tah 4611686018427387903 paryantam bhavet.",
+      "change": "two bounds checks",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "lower and upper bounds succeed",
+        "one below/above refuses",
+        "MAX refuses"
+      ]
+    },
+    {
+      "id": 2,
+      "module": "ganit",
+      "function": "trigun",
+      "refuse_when": "n < -3074457345618258602 or n > 3074457345618258602",
+      "code": "E_ATIPRAVAH",
+      "message": "Sutram truti [E_ATIPRAVAH]: trigun: trigunitam phalam purnanka-seemam atikramati; n -3074457345618258602 tah 3074457345618258602 paryantam bhavet.",
+      "change": "two bounds checks",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "bounds succeed",
+        "both adjacent out-of-range values refuse"
+      ]
+    },
+    {
+      "id": 3,
+      "module": "ganit",
+      "function": "vardh",
+      "refuse_when": "n == 9223372036854775807",
+      "code": "E_ATIPRAVAH",
+      "message": "Sutram truti [E_ATIPRAVAH]: vardh: ekena vardhitam phalam purnanka-seemam atikramati; n 9223372036854775807 tah nyunam bhavet.",
+      "change": "one guard",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "MAX-1 -> MAX",
+        "MAX refuses",
+        "MIN -> MIN+1"
+      ]
+    },
+    {
+      "id": 4,
+      "module": "ganit",
+      "function": "nirapeksh_mulya",
+      "refuse_when": "n == -9223372036854775808",
+      "code": "E_PHALA_SEEMA",
+      "message": "Sutram truti [E_PHALA_SEEMA]: nirapeksh_mulya: nirapeksha-mulyam 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.",
+      "change": "one guard before negation",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "MIN refuses",
+        "MIN+1 -> MAX",
+        "0 -> 0",
+        "-1 -> 1"
+      ]
+    },
+    {
+      "id": 5,
+      "module": "ganit",
+      "function": "mahattam_samapavartak",
+      "refuse_when": "mathematical gcd magnitude == 9223372036854775808",
+      "code": "E_PHALA_SEEMA",
+      "message": "Sutram truti [E_PHALA_SEEMA]: mahattam_samapavartak: mahattama-samapavartakah 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.",
+      "change": "MIN-aware gcd rewrite",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "(MIN,0),(0,MIN),(MIN,MIN) refuse",
+        "(MIN,2) -> 2",
+        "(MIN,-1) -> 1",
+        "(0,0) -> 0"
+      ]
+    },
+    {
+      "id": 6,
+      "module": "ank",
+      "function": "viparyay_ank",
+      "refuse_when": "sign-preserving reversed decimal integer outside [MIN,MAX]",
+      "code": "E_PHALA_SEEMA",
+      "message": "Sutram truti [E_PHALA_SEEMA]: viparyay_ank: viparita-ankasya mulyam purnanke na dharyate; seema -9223372036854775808 tah 9223372036854775807 paryantam.",
+      "change": "checked digit-accumulation rewrite",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "1999999999999999999 refuses",
+        "MIN -> -8085774586302733229",
+        "-120 -> -21",
+        "0 -> 0"
+      ]
+    },
+    {
+      "id": 7,
+      "module": "ganita",
+      "function": "ganita_nirapeksh",
+      "refuse_when": "n == -9223372036854775808",
+      "code": "E_PHALA_SEEMA",
+      "message": "Sutram truti [E_PHALA_SEEMA]: ganita_nirapeksh: nirapeksha-mulyam 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.",
+      "change": "one guard before negation",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "MIN refuses",
+        "MIN+1 -> MAX",
+        "0 -> 0",
+        "-1 -> 1"
+      ]
+    },
+    {
+      "id": 8,
+      "module": "ganita",
+      "function": "brahmagupta_kshetr",
+      "refuse_when": "invalid geometric domain; or floor(exact area) > MAX",
+      "code": "E_ATIPRAVAH",
+      "message": "Sutram truti [E_ATIPRAVAH]: brahmagupta_kshetr: kshetraphalam purnanka-seemam atikramati; adhikatamam mulyam 9223372036854775807.",
+      "change": "exact formula/domain rewrite",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "(1,1,2,3) -> 2",
+        "(2,3,4,0) -> 2",
+        "(3,3,3,3) -> 9",
+        "(1,1,1,3) -> 0 degenerate",
+        "negative side refuses"
+      ],
+      "invalid_input_message": "Sutram truti [E_MULYA_AYOGYA]: brahmagupta_kshetr: dattam mulyam ayogyam; kriyayah niyaman parikshatam."
+    },
+    {
+      "id": 9,
+      "module": "aadhar",
+      "function": "brihat_ank_se",
+      "refuse_when": "invalid descriptor/digit/base; or nonzero carry past n decimal digits",
+      "code": "E_PHALA_SEEMA",
+      "message": "Sutram truti [E_PHALA_SEEMA]: brihat_ank_se: ankasya mulyam dattasu n ankasthaneshu na dharyate.",
+      "change": "carry detection and failure-state rewrite",
+      "phase": "runtime",
+      "channel": "return 0, no automatic output; clear valid destination on conversion failure",
+      "acceptance": [
+        "[9,9] base10 n2 -> success99",
+        "[1,0,0] base10 n2 -> failure, zero destination",
+        "invalid digit -> failure",
+        "leading zeros fit"
+      ],
+      "invalid_input_message": "Sutram truti [E_MULYA_AYOGYA]: brihat_ank_se: dattam mulyam ayogyam; kriyayah niyaman parikshatam."
+    },
+    {
+      "id": 10,
+      "module": "brihat",
+      "function": "brihat_ank_tak_laghu",
+      "refuse_when": "non-decimal digit/negative length; or nonnegative value exceeds MAX",
+      "code": "E_PHALA_SEEMA",
+      "message": "Sutram truti [E_PHALA_SEEMA]: brihat_ank_tak_laghu: ankasya mulyam purnanke na dharyate; adhikatamam mulyam 9223372036854775807.",
+      "change": "guard each multiply/add",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "MAX digits -> MAX",
+        "MAX+1 digits refuse",
+        "19 nines refuse",
+        "n0 -> 0"
+      ],
+      "invalid_input_message": "Sutram truti [E_MULYA_AYOGYA]: brihat_ank_tak_laghu: dattam mulyam ayogyam; kriyayah niyaman parikshatam."
+    },
+    {
+      "id": 11,
+      "module": "patra",
+      "function": "patra_asti",
+      "refuse_when": "OS cannot determine existence of the followed path target (permission, loop, I/O or other non-absence error)",
+      "code": "E_PATRA_PARIKSHA",
+      "message": "Sutram truti [E_PATRA_PARIKSHA]: patra_asti: patrasya astitvam nishchetum na shakyate; anumati-marga-avastham parikshatam.",
+      "change": "OS metadata-query rewrite",
+      "phase": "runtime",
+      "channel": "fatal; 0 only for ENOENT/ENOTDIR equivalents, 1 on query success",
+      "acceptance": [
+        "regular file and directory ->1",
+        "missing target ->0",
+        "dangling symlink ->0",
+        "loop and access-denied -> refusal",
+        "no open/read side effects"
+      ]
+    },
+    {
+      "id": 12,
+      "module": "sadhan",
+      "function": "yog_seema",
+      "refuse_when": "none for valid i64 endpoints: exact sum when it fits, final-result saturation otherwise",
+      "code": null,
+      "message": null,
+      "change": "wide/exact range-sum rewrite",
+      "phase": "runtime",
+      "channel": "no error; retain saturating result",
+      "acceptance": [
+        "(2^62,2^62) ->2^62",
+        "(MIN,MIN) ->MIN",
+        "(MIN,MAX) ->MIN",
+        "end<start ->0",
+        "out-of-range final sums saturate"
+      ]
+    },
+    {
+      "id": 13,
+      "module": "samanvaya",
+      "function": "adish_gunan",
+      "refuse_when": "logical input lengths differ",
+      "code": "E_AKARA_ASAMYA",
+      "message": "Sutram truti [E_AKARA_ASAMYA]: adish_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite.",
+      "change": "one length comparison, deliberate contract migration",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "[1,2,3],[4,5] refuses",
+        "empty/empty ->0.0",
+        "empty/nonempty refuses",
+        "[1,2,3],[4,5,6] ->32.0"
+      ]
+    },
+    {
+      "id": 14,
+      "module": "sankhyiki",
+      "function": "bindu_gunan",
+      "refuse_when": "logical input lengths differ",
+      "code": "E_AKARA_ASAMYA",
+      "message": "Sutram truti [E_AKARA_ASAMYA]: bindu_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite.",
+      "change": "one length comparison, deliberate contract migration",
+      "phase": "runtime",
+      "channel": "fatal",
+      "acceptance": [
+        "same cases as adish_gunan",
+        "example207 mismatch becomes explicit negative, not silent golden overwrite"
+      ]
+    },
+    {
+      "id": 15,
+      "module": "suchi",
+      "function": "suchi_shreni",
+      "refuse_when": "mil_shreni returns -1 (scratch allocation/size refusal)",
+      "code": "E_SMRITI_ABHAVA",
+      "message": "Sutram truti [E_SMRITI_ABHAVA]: suchi_shreni: shrenikaranaya avashyaka smritih na labdha; suchi aparivartita.",
+      "change": "capture status and branch; define helper success return",
+      "phase": "runtime",
+      "channel": "return 0, no automatic output; preserve list on current pre-sort allocation failure",
+      "acceptance": [
+        "injected allocation failure ->0, identical list",
+        "success ->1 sorted",
+        "empty/singleton ->1"
+      ]
+    },
+    {
+      "id": 16,
+      "module": "vakyank",
+      "function": "varna_tak_dashm",
+      "refuse_when": "malformed grammar or mathematical magnitude exceeds finite binary64; leading zeros alone NEVER fail",
+      "code": "E_PHALA_SEEMA",
+      "message": "Sutram truti [E_PHALA_SEEMA]: varna_tak_dashm: dashama-mulyam dharana-seemam atikramati.",
+      "change": "significant-digit/exponent parser rewrite",
+      "phase": "runtime",
+      "channel": "return 0.0 and ok[0]=0, no automatic output; valid underflow keeps ok=1",
+      "acceptance": [
+        "00000000000000000001 ->1.0 ok1",
+        "0.00000000000000000001 -> positive value near 1e-20 ok1",
+        "all zeros ->0 ok1",
+        "malformed ->ok0",
+        "overflow ->ok0",
+        "underflow ->0 ok1"
+      ],
+      "invalid_input_message": "Sutram truti [E_MULYA_AYOGYA]: varna_tak_dashm: dattam mulyam ayogyam; kriyayah niyaman parikshatam."
+    }
+  ],
+  "validation": {
+    "kind": "exact Python integer algebra, not Sutram execution",
+    "boundary_and_gcd_checks": 86,
+    "status": "PASS"
+  }
+}
