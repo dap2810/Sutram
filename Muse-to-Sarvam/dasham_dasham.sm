@@ -1,0 +1,5 @@
+mukhya() {
+    dasham a = 5.0
+    dasham b = 6.0
+    likha(sankhya_bindu(a, b), "\n")
+}

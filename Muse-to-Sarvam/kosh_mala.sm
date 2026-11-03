@@ -1,0 +1,11 @@
+mukhya() {
+    kosh dasham a[4]
+    mala b[4]
+    kosh_kship(a, 5.0)
+    kosh_kship(a, 6.0)
+    kosh_kship(a, 7.0)
+    b[0] = 5
+    b[1] = 6
+    b[2] = 7
+    likha(sankhya_bindu(a, b), "\n")
+}
