@@ -1,0 +1,73 @@
+{
+  "base": "1ea8220426c9a6377d90ee8860a969f8b99bb3a0",
+  "method": "Python representation/arithmetic models of source; NOT native Sutram execution",
+  "cases": [
+    {
+      "case": "integer cells",
+      "lanes": [
+        7.006492321624085e-45,
+        0.0,
+        8.407790785948902e-45,
+        0.0
+      ],
+      "float32_dot": 0.0,
+      "rax_bits": 0,
+      "correct_numeric_dot": 61
+    },
+    {
+      "case": "binary64 cells",
+      "lanes": [
+        0.0,
+        2.3125,
+        0.0,
+        2.375
+      ],
+      "float32_dot": 10.98828125,
+      "rax_bits": 1093652480,
+      "correct_numeric_dot": 61
+    },
+    {
+      "case": "purna_madhya([MAX,MAX],2)",
+      "wrapped_sum": -2,
+      "model_result": -1,
+      "correct_mean": 9223372036854775807,
+      "purna_prasaran_consequence": "guard rejects with -1; true variance is zero"
+    },
+    {
+      "case": "vivartana(a,2,2,a)",
+      "model_result": [
+        1.0,
+        2.0,
+        2.0,
+        4.0
+      ],
+      "correct_transpose": [
+        1.0,
+        3.0,
+        2.0,
+        4.0
+      ]
+    },
+    {
+      "case": "matrika_gunana(a,I,2,2,2,I)",
+      "model_result": [
+        1.0,
+        2.0,
+        3.0,
+        10.0
+      ],
+      "correct_product": [
+        1.0,
+        2.0,
+        3.0,
+        4.0
+      ]
+    },
+    {
+      "case": "manak([1e-200])",
+      "squared_model": 0.0,
+      "model_result": 0.0,
+      "correct_norm": 1e-200
+    }
+  ]
+}
