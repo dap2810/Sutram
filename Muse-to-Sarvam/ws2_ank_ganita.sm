@@ -1,0 +1,9 @@
+yoj ank
+yoj ganita
+mukhya() {
+    likha(viparyay_ank(1999999999999999999))
+    vitti mn = 0 - 9223372036854775807 - 1
+    likha(ganita_nirapeksh(mn))
+    likha(brahmagupta_kshetr(1, 1, 2, 3))
+    likha(brahmagupta_kshetr(2, 3, 4, 0))
+}

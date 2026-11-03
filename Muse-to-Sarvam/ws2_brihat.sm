@@ -1,0 +1,21 @@
+yoj aadhar
+yoj brihat
+mukhya() {
+    mala d[5]
+    d[0] = 9
+    d[1] = 9
+    d[2] = 9
+    d[3] = 9
+    d[4] = 9
+    mala x[2]
+    likha(brihat_ank_se(d, 5, 10, x, 2))
+    likha(x[0])
+    likha(x[1])
+    mala a[19]
+    vitti i = 0
+    yavat (i < 19) {
+        a[i] = 9
+        i = i + 1
+    }
+    likha(brihat_ank_tak_laghu(a, 19))
+}

@@ -1,0 +1,9 @@
+rachana Point = { x, y, z }
+mukhya() {
+    vitti p = nirmmita(24)
+    p.x = 3
+    vitti q = nirmmita(24)
+    q.x = 4
+    likha(p.x + q.x)
+    yadi (p.x == 3) { likha(1) }
+}
