@@ -1,0 +1,5 @@
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 3)
+    likha(kosh_iksh(k, 0))
+}

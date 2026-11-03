@@ -1,0 +1,14 @@
+# R112: what kosh_iksh (kosh_peek) returns - the last element, not removed; k[i] reads any index.
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 3)
+    kosh_kship(k, 7)
+    kosh_kship(k, 11)
+    likha("iksh ", kosh_iksh(k), " gan ", kosh_gan(k), "\n")
+    likha("k[0] ", k[0], " k[1] ", k[1], "\n")
+    likha("k[2] ", k[2], "\n")
+    likha("hri ", kosh_hri(k), "\n")
+    likha("iksh ", kosh_iksh(k), " gan ", kosh_gan(k), "\n")
+    likha("apanay ", kosh_apanay(k), "\n")
+    likha("iksh ", kosh_iksh(k), " gan ", kosh_gan(k), "\n")
+}

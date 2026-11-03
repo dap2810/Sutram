@@ -1,0 +1,26 @@
+# R112: the tree's spelling of one root, and its words for 'length' (grep on lib/ and the builtin table, v292)
+
+## the root ksip (to throw, put in)
+  lib: anukram_khip_i
+  lib: anukram_khip_aayam_purva
+  lib: suchi_khip
+  lib: chay_khip
+  lib: nighantu_khip
+  builtin: kosh_kship (v292)
+
+## ksh for the letter ksha elsewhere in the tree's names
+  akshar
+  akshar_guru
+  akshar_laghu
+  akshar_rakh
+  aksharank
+  kosh_iksh
+  kosh_ksham
+  kshetra
+
+## length
+  builtin vartani_aayam (string length)
+  builtins kosh_gan, pankti_gan (v292)
+  lib: anukram_maap_aayam_purva
+  lib: anukram_khip_aayam_purva
+  lib: anukram_grah_aayam_purva

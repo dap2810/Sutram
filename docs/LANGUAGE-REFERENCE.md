@@ -194,9 +194,18 @@ Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
 for byte (`examples/324`-`327`). `==` and `!=` remain. In the shell (`sutram -i`) **`tyaj`** leaves (`exit` and
 `quit` still do, with the warning) and `sahayata` is help (`help` still is, with the warning).
 
-Not changed (R111): `Sutram Error` stays in the messages - a program that stops at run time prints it from
-its own bytes, so changing it changes 443 of the guard's programs (R110-00, R111-00). `to` is not a word
-(`tak` is the loop's "up to"; `prati` stays the return alias).
+**Why one English word remains: `Sutram Error`.** Every message begins `Sutram Error` (and many carry an
+`[E_CODE]` tag). It stays, for two reasons (R110-00, R111-00, R112-00):
+
+- **It is an identifier, kept the same in every language pack.** The owner's R11 rule makes `Sutram Error` and
+  the `[E_CODE]` tags fixed tokens, not prose: each of the eleven packs (`lang/<pack>.sandesh`) translates the
+  message around them and keeps them word for word, so an error looks the same and can be searched for in any
+  language. Ten of those packs are frozen, so the token cannot change in them - and changing it only in the
+  Sanskrit default would split one token into two.
+- **Programs carry it.** A program that stops at run time (`E_GAHANATA`, a `mala` bound, an empty `kosh`...)
+  prints the message from its own bytes; 443 of the guard's 705 programs contain one. Renaming it changes them all.
+
+`to` is not a word either (`tak` is the loop's "up to"; `prati` stays the return alias).
 
 ### 4a. Output: print values, raw bytes, and formatting (compiler v257)
 
@@ -833,15 +842,22 @@ defaults to 4. Logical length starts at 0 and `a[index]` reads/writes against th
 
 | builtin | meaning |
 |---|---|
-| `kosh_kship(k, v)` | append v; returns the new length (was `kosh_push`, still accepted - §4b) |
-| `kosh_hri(k)` | remove and return the last element |
-| `kosh_gan(k)` | logical length |
-| `kosh_ksham(k)` | current capacity |
-| `kosh_shodh(k)` | sangrah logical length to 0 (storage NOT erased); returns 0 |
-| `kosh_rikt(k)` | 1 if length is zero, else 0 |
-| `kosh_iksh(k)` | last element, not removed |
-| `kosh_yuj(k, v)` | append v; returns the new length (alias of push) |
-| `kosh_apanay(k)` | remove and return the first (oldest) element — FIFO, O(n) |
+| `kosh_kship(k, v)` (was `kosh_push`) | append v; returns the new length |
+| `kosh_hri(k)` (was `kosh_pop`) | remove and return the last element |
+| `kosh_gan(k)` (was `kosh_len`) | logical length |
+| `kosh_ksham(k)` (was `kosh_cap`) | current capacity |
+| `kosh_shodh(k)` (was `kosh_clear`) | set the logical length to 0 (storage NOT erased); returns 0 |
+| `kosh_rikt(k)` (was `kosh_empty`) | 1 if length is zero, else 0 |
+| `kosh_iksh(k)` (was `kosh_peek`) | **one argument:** the last element - the one `kosh_hri` would take next - **not removed**. A stack's *peek*: the top |
+| `kosh_yuj(k, v)` (was `kosh_enqueue`) | append v; returns the new length (the same builtin as `kosh_kship`) |
+| `kosh_apanay(k)` (was `kosh_dequeue`) | remove and return the first (oldest) element — FIFO, O(n) |
+
+The old names still work and compile to the same bytes (§4b). **`kosh_iksh` takes no index** (`kosh_iksh(k, 0)` is a
+grammar error, `vyakaran dosh`): **the element at any position is `k[i]`**, bounds-checked like every `kosh` read
+(past the length it stops with `mala ank seema atikram`). So the top of a stack is `kosh_iksh(k)` and the front of a
+queue - what `kosh_apanay` would take - is `k[0]`. On an empty `kosh`, `kosh_iksh` stops the program with
+`Sutram Error: riktat koshat kosh_peek` (that run-time message still names the old spelling: it is compiled into
+the program, R111-00). Measured on v292: `evidence-r112/kosh-iksh-v292.txt`.
 
 Full specification, measured behaviour, and the `kosh` vs `suchi`/`queue`
 comparison: `docs/reports/KOSH-BUILTINS.md`.

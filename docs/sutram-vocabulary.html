@@ -94,6 +94,37 @@ Marathi, Gujarati, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada and Malayalam.
 <tr><td><code>akshar_rakh</code></td><td><code>akshar_rakh</code></td><td><b>akshar_rakh</b></td><td>अक्षररख</td></tr></tbody></table>
 <p><b>Kept unchanged</b> — already Sanskrit and distinctive: <code>mukhya</code> · <code>vitti</code> · <code>anka</code> · <code>yadi</code> · <code>yavat</code> · <code>purna</code> · <code>shunya</code> · <code>sutra</code> · <code>krama</code> · <code>guna</code> · <code>bhavana</code> · <code>likha</code> · <code>grahan</code> · <code>shabda</code> · <code>dasham</code> · <code>kosh</code> · <code>kuru</code> · <code>prakriya</code> · <code>rachana</code></p>
 
+<h2>Builtins renamed in v292 (R111) — the old names still work</h2>
+<p>Each builtin below has a Sanskrit name, which is primary from compiler v292. <b>The old name is an alias of the same builtin:</b> a program written either way compiles to the same bytes, and the old name prints one warning naming the new one (<code>Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu</code>; without <code>--lang</code>). The compiler accepts the Latin spellings only; the Devanagari column is the word, not a spelling the compiler takes. Native-speaker review of these words and glosses: not run.</p>
+<table><thead><tr><th>Concept</th><th>Was (still accepted)</th><th>Becomes</th><th>Devanagari</th><th>Meaning</th></tr></thead>
+<tbody><tr><td>push</td><td><code>kosh_push</code></td><td><b>kosh_kship</b></td><td>क्षिप्</td><td>throw in</td></tr>
+<tr><td>pop</td><td><code>kosh_pop</code></td><td><b>kosh_hri</b></td><td>हृ</td><td>take away</td></tr>
+<tr><td>length</td><td><code>kosh_len</code></td><td><b>kosh_gan</b></td><td>गण्</td><td>count</td></tr>
+<tr><td>capacity</td><td><code>kosh_cap</code></td><td><b>kosh_ksham</b></td><td>क्षम</td><td>able, capacity</td></tr>
+<tr><td>peek (the last element)</td><td><code>kosh_peek</code></td><td><b>kosh_iksh</b></td><td>ईक्ष्</td><td>look</td></tr>
+<tr><td>is empty</td><td><code>kosh_empty</code></td><td><b>kosh_rikt</b></td><td>रिक्त</td><td>empty</td></tr>
+<tr><td>clear</td><td><code>kosh_clear</code></td><td><b>kosh_shodh</b></td><td>शोध</td><td>cleanse</td></tr>
+<tr><td>enqueue</td><td><code>kosh_enqueue</code></td><td><b>kosh_yuj</b></td><td>युज्</td><td>join</td></tr>
+<tr><td>dequeue</td><td><code>kosh_dequeue</code></td><td><b>kosh_apanay</b></td><td>अपनय</td><td>take away (from the front)</td></tr>
+<tr><td>array length</td><td><code>pankti_len</code></td><td><b>pankti_gan</b></td><td>गण्</td><td>count</td></tr>
+<tr><td>socket</td><td><code>netsock</code></td><td><b>jala</b></td><td>जाल</td><td>net</td></tr>
+<tr><td>bind</td><td><code>netbind</code></td><td><b>jala_bandh</b></td><td>बन्ध्</td><td>bind</td></tr>
+<tr><td>listen</td><td><code>netlisten</code></td><td><b>jala_shru</b></td><td>श्रु</td><td>hear</td></tr>
+<tr><td>accept</td><td><code>netaccept</code></td><td><b>jala_grah</b></td><td>ग्रह्</td><td>take</td></tr>
+<tr><td>lowercase</td><td><code>char_lower</code></td><td><b>akshar_laghu</b></td><td>लघु</td><td>small</td></tr>
+<tr><td>uppercase</td><td><code>char_upper</code></td><td><b>akshar_guru</b></td><td>गुरु</td><td>great</td></tr>
+<tr><td>character from a code</td><td><code>char_from</code></td><td><b>anka_akshar</b></td><td>अङ्क अक्षर</td><td>number to letter</td></tr>
+<tr><td>string concatenate</td><td><code>vartani_cat</code></td><td><b>vartani_sandhi</b></td><td>सन्धि</td><td>junction</td></tr>
+<tr><td>print a number, no newline</td><td><code>lkhb</code></td><td><b>likha_santat</b></td><td>सन्तत</td><td>continuous</td></tr>
+<tr><td>print prefix and number</td><td><code>likha_fmt</code></td><td><b>likha_rup</b></td><td>रूप</td><td>form</td></tr>
+<tr><td>dot product</td><td><code>sankhya_dot</code></td><td><b>sankhya_bindu</b></td><td>बिन्दु</td><td>point</td></tr>
+<tr><td>copy memory</td><td><code>smaran_cp</code></td><td><b>smaran_pratilip</b></td><td>प्रतिलिपि</td><td>copy</td></tr>
+<tr><td>equal</td><td><code>==</code></td><td><b>asti</b></td><td>अस्ति</td><td>is (also written अस्ति)</td></tr>
+<tr><td>not equal</td><td><code>!=</code></td><td><b>nasti</b></td><td>नास्ति</td><td>is not (also written नास्ति)</td></tr>
+<tr><td>leave the shell</td><td><code>exit</code>, <code>quit</code></td><td><b>tyaj</b></td><td>त्यज्</td><td>abandon (<code>nirgat</code> also works)</td></tr>
+<tr><td>shell help</td><td><code>help</code></td><td><b>sahayata</b></td><td>सहायता</td><td>help (already the shell's word)</td></tr></tbody></table>
+<p><b>Not renamed:</b> <code>Sutram Error</code> - an identifier every language pack keeps word for word, and one that 443 compiled programs carry in their own bytes (Language Reference §4b). <code>to</code> is not a word (<code>tak</code> is "up to"; <code>prati</code> is return).</p>
+
 <h2>Error codes and CLI flags</h2>
 <table><thead><tr><th>Was</th><th>Becomes</th><th>Devanagari</th></tr></thead><tbody><tr><td><code>E_PARSE</code></td><td><b>E_VYAKARAN</b></td><td>व्याकरण</td></tr>
 <tr><td><code>E_UTF8</code></td><td><b>E_LIPI</b></td><td>लिपि</td></tr>
@@ -104,6 +135,8 @@ Marathi, Gujarati, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada and Malayalam.
 <table><thead><tr><th>Was</th><th>Becomes</th><th>Devanagari</th></tr></thead><tbody><tr><td><code>--check</code></td><td><b>--janch</b></td><td>जाँच</td></tr>
 <tr><td><code>--lang</code></td><td><b>--bhasha</b></td><td>भाषा</td></tr>
 <tr><td><code>--version</code></td><td><b>--sanskaran</b></td><td>संस्करण</td></tr></tbody></table>
+
+<div class="note"><b>Not in the compiler (checked on v292, R112):</b> the two tables above are the decided vocabulary, not what the compiler does. It still prints <code>E_PARSE</code>, <code>E_UTF8</code>, <code>E_UNDEFINED_FUNCTION</code>, <code>E_MODULE_CYCLE</code>, … and accepts <code style="white-space:nowrap">--check</code>, <code style="white-space:nowrap">--lang</code>, <code style="white-space:nowrap">--version</code>; <code>E_VYAKARAN</code>, <code>E_LIPI</code>, <code>E_AGYAT</code>, <code>E_SEEMA</code>, <code>E_ANK_DOSH</code> appear nowhere in its source, and <code style="white-space:nowrap">--janch</code> is not a flag.</div>
 
 <h2>The collision check <span class="ok">CLEAN</span></h2>
 <div class="note"><ul>

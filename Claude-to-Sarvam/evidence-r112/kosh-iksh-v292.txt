@@ -1,0 +1,21 @@
+== iksh.sm
+Siddh: 4201 baait sankalit
+iksh 11 gan 3
+k[0] 3 k[1] 7
+k[2] 11
+hri 11
+iksh 7 gan 2
+apanay 3
+iksh 7 gan 1
+[exit 0]
+== empty.sm
+Siddh: 392 baait sankalit
+Sutram Error: riktat koshat kosh_peek
+[exit 1]
+== two.sm
+
+Sutram Error: vyakaran dosh, pankti 4:25, shabd ')'
+== idx.sm
+Siddh: 775 baait sankalit
+Sutram Error: mala ank seema atikram
+[exit 1]
