@@ -1,0 +1,6 @@
+mukhya() {
+    dasham d = 0.0 - 7.0
+    mala m[4]
+    m[0] = d
+    likha(m[0])
+}

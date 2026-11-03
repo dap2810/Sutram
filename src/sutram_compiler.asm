@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v294) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v295) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -560,6 +560,9 @@ r54_builtin_arity_table:
     r108_msg_full db "Sutram truti: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
     rfx_bc_hdr_mala db ": Sutram truti [E_MALA_GANIT]: ", 0
     r113_hdr db ": Sutram truti [E_RACHANA_GANIT]: ", 0
+    r115_hdr db ": Sutram truti [E_PRATYAHRITA]: ", 0
+    r115_txt db "sankhya_bindu (sankhya_dot) pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate", 10, 0
+    r115_hint db "Sanket: dvayoh kosh dasham bindu-gunanaya: yoj sankhyiki, bindu_gunan(a, b) - laghutara dirghata eva pathyate", 10, 0
     r113_txt db "rachana-upari ganitam tulana va na sambhavati - rachana sankhya na", 10, 0
     r113_hint db "Sanket: p.x tasya avayavasya mulyam - tani tulyantam", 10, 0
     rfx_bc_txt_mala db "mala-upari ganitam tulana va na sambhavati - mala sankhya na", 10, 0
@@ -6971,6 +6974,8 @@ lex:
     call lookup_builtin         ; rax=1 if found, rdx=builtin_id
     test rax, rax
     jz .emit_ident
+    cmp rdx, BN_VECDOT          ; R115: sankhya_bindu / sankhya_dot are withdrawn - refused wherever named,
+    je .r115_withdrawn          ; before the old-name warning, so no one is told to switch to it
     call r111_note_old          ; R111: an old name written in the program's own file is warned about
     mov qword [r15], TOK_BUILTIN
     mov [r15+8], rbx
@@ -7435,6 +7440,12 @@ lex:
     add r13, 2
     jmp .emit_op2
 
+.r115_withdrawn:                   ; R115 (ChatGPT R187: a reserved name, refused - not a missing one)
+    mov rdi, r12
+    lea rsi, [rel r115_hdr]
+    lea rdx, [rel r115_txt]
+    lea rcx, [rel r115_hint]
+    jmp r80_compile_error
 .r111_eq:
     mov r8, 0x3D3D                 ; ==
     jmp .emit_op2

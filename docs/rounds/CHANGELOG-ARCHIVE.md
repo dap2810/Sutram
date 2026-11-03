@@ -1,4 +1,19 @@
-> **Older changelog entries**, "v280" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+> **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+
+## v281 (Claude, R91-R92) - a computed `dasham` stored as a whole number must be whole
+
+- **Integrated ChatGPT's R161 patch** (`ROUND-161-EXACT-FLOAT-TO-INT.patch`, unchanged): every statically
+  typed float-to-integer conversion (declaration, assignment, `kosh_push`, integer-`kosh` store, integer
+  argument, `mukhya`'s return) checks the value at run time: exact whole numbers in range convert; a fraction,
+  inf, NaN or out of range stops with `E_DASHAM_VITTI`, exit 1. Its 13-case oracle: v280 4/13, v281 13/13.
+- **The library relied on truncation in three places - rewritten, same results:** `madhava_sin`, `madhava_cos`
+  (`k = trunc(x / 2PI)`) and `roop_sthir` (`rounded = scaled`) now take the whole part as a `dasham` with
+  `(m + 2^52) - 2^52`, then convert exactly.
+- **Four programs pinned truncation:** 93 and 94 now convert `blend(1.0, 3.0)` = 2.0 (same output); r71
+  conversion converts 2.0 (same output); 112 shows 2.0 stored and 4.8 refused (golden changed - the intended
+  rule).
+- **Goldens:** 294 (ChatGPT's R160 six-operator NaN fixture, unchanged, renumbered: prints 0 1 0 0 0 0), 295
+  (3.0 converts, 3.7 stops).
 
 ## v280 (Claude, R90) - NaN compares as IEEE says, a `dasham` divided by zero stops, `likha` keeps one line after a division
 

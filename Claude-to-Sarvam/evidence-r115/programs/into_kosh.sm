@@ -1,0 +1,6 @@
+mukhya() {
+    dasham d = 3.0
+    kosh k[2]
+    kosh_kship(k, d)
+    likha(k[0])
+}

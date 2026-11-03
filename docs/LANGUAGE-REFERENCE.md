@@ -157,9 +157,9 @@ warning naming the new one** (§4b).
 | `anka_akshar` (was `char_from`) | character from a code |
 | `akshar_guru` (was `char_upper`) | uppercase a character |
 | `akshar_laghu` (was `char_lower`) | lowercase a character |
-| `sankhya_yog` | four 32-bit **float** lanes in raw memory, added: `sankhya_yog(dst, a, b)` (`addps`). No Sutram value holds 32-bit floats - see `sankhya_bindu` (R113) |
+| `sankhya_yog` | four 32-bit **float** lanes in raw memory, added: `sankhya_yog(dst, a, b)` (`addps`). No Sutram value holds 32-bit floats - `sankhya_bindu`, their dot-product sibling, is withdrawn (v295) |
 | `sankhya_gunan` | four 32-bit **float** lanes in raw memory, multiplied: `sankhya_gunan(dst, a, b)` (`mulps`); the same limit |
-| `sankhya_bindu` (was `sankhya_dot`) | **integer dot product, v293:** `sankhya_bindu(a, b, n)` = a[0]·b[0] + … + a[n-1]·b[n-1] over 8-byte cells (a `mala`, a `kosh`, a `nirmmita` buffer); wraps like every integer; n ≤ 0 gives 0; n is not checked against the buffers (like `smaran_pratilip`). Up to v292 it took two arguments and returned the bits of four 32-bit float products, which no Sutram value could feed (Muse R108) |
+| `sankhya_bindu` (was `sankhya_dot`) | **withdrawn (v295, R115):** refused when compiled - `E_PRATYAHRITA`, *"pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate"* (withdrawn: its result was wrong; awaiting repair). v292 read four 32-bit floats from each argument; v293 multiplied 8-byte cells as integers, which is wrong for a `kosh dasham`. **For two `kosh dasham`: `yoj sankhyiki`, then `bindu_gunan(a, b)`** (a `dasham`; it reads the shorter length - check the lengths yourself if they must match). |
 | `jala` (was `netsock`) | create a socket |
 | `jala_bandh` (was `netbind`) | bind a socket |
 | `jala_shru` (was `netlisten`) | listen |
@@ -188,7 +188,7 @@ Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
 | `kosh_yuj` | `kosh_enqueue` | `anka_akshar` | `char_from` |
 | `kosh_apanay` | `kosh_dequeue` | `vartani_sandhi` | `vartani_cat` |
 | `likha_santat` | `lkhb` | `likha_rup` | `likha_fmt` |
-| `sankhya_bindu` | `sankhya_dot` | `smaran_pratilip` | `smaran_cp` |
+| ~~`sankhya_bindu`~~ | ~~`sankhya_dot`~~ (both withdrawn, v295) | `smaran_pratilip` | `smaran_cp` |
 
 **`asti` / अस्ति is `==` and `nasti` / नास्ति is `!=`** - the same token: `yadi (a asti b)` is `yadi (a == b)`, byte
 for byte (`examples/324`-`327`). `==` and `!=` remain. In the shell (`sutram -i`) **`tyaj`** leaves (`exit` and

@@ -1,19 +1,9 @@
-# R113: sankhya_bindu(a, b, n) - the integer dot product of the first n cells of a and b. Up to v292 it
-# took two arguments and read each as four 32-bit floats, which no Sutram value holds (Muse R108).
+# R115: sankhya_bindu (and the old sankhya_dot) is withdrawn - refused when compiled, E_PRATYAHRITA.
+# v292 read four 32-bit floats; v293's integer loop was wrong for a kosh dasham (it multiplied the float
+# bits). Two kosh dasham are dotted by the library: yoj sankhyiki, then bindu_gunan(a, b).
 mukhya() {
-    vitti a[3]
-    vitti b[3]
-    a[0] = 1
-    a[1] = 2
-    a[2] = 3
-    b[0] = 4
-    b[1] = 5
-    b[2] = 6
-    likha("1*4 + 2*5 + 3*6 = ", sankhya_bindu(a, b, 3), "\n")
-    likha("the first two: ", sankhya_bindu(a, b, 2), "\n")
-    likha("none: ", sankhya_bindu(a, b, 0), "\n")
-    kosh k[2]
-    kosh_kship(k, 7)
-    kosh_kship(k, 8)
-    likha("a kosh with itself: ", sankhya_bindu(k, k, 2), "\n")
+    kosh dasham a[4]
+    kosh_kship(a, 2.5)
+    kosh_kship(a, 1.5)
+    likha(sankhya_bindu(a, a, 2))
 }

@@ -1,4 +1,15 @@
-> **The 20 newest entries.** Older ones, from "v280" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v281" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v295 (Claude, R115) - `sankhya_bindu` / `sankhya_dot` withdrawn; the arena branch's silent wrong answer found and fixed there
+
+- **Withdrawn, not missing:** a call to `sankhya_bindu` or `sankhya_dot` is refused when compiled -
+  `E_PRATYAHRITA`, with the name, the line and the library's working float dot product (`yoj sankhyiki`,
+  `bindu_gunan(a, b)`). v293's integer loop was right for integer cells and **wrong for a `kosh dasham`**
+  (it multiplied float bits: 2.5·2.5 + 1.5·1.5 gave 0) - my mistake in R113, found against Muse R111's shapes.
+  No old-name warning first (ChatGPT R187). Example 329 is now that refusal.
+- **The arena branch** (`claude/r108-arena-review`, not merged): its silent wrong answer - `chain40_reuse.sm`
+  printing another block's 99 - was the outlives analysis stopping after 32 rounds; fixed on the branch (`3a6292e`)
+  with main's v291 fix. Main changes only by the withdrawal.
 
 ## v294 (Claude, R114) - `Sutram Error` becomes `Sutram truti`, in the compiler and all eleven packs
 
@@ -336,18 +347,3 @@
   compiler's; `Sutram-Setup.sha256` must be the file's hash. **It FAILS today: the installer ships v243.**
   Gate `R93 installer gate` proves the checker on eight stand-in installers.
 - **Reference §15:** how to read `1.000000e+80`, with a table of what prints; golden **296** pins it.
-
-## v281 (Claude, R91-R92) - a computed `dasham` stored as a whole number must be whole
-
-- **Integrated ChatGPT's R161 patch** (`ROUND-161-EXACT-FLOAT-TO-INT.patch`, unchanged): every statically
-  typed float-to-integer conversion (declaration, assignment, `kosh_push`, integer-`kosh` store, integer
-  argument, `mukhya`'s return) checks the value at run time: exact whole numbers in range convert; a fraction,
-  inf, NaN or out of range stops with `E_DASHAM_VITTI`, exit 1. Its 13-case oracle: v280 4/13, v281 13/13.
-- **The library relied on truncation in three places - rewritten, same results:** `madhava_sin`, `madhava_cos`
-  (`k = trunc(x / 2PI)`) and `roop_sthir` (`rounded = scaled`) now take the whole part as a `dasham` with
-  `(m + 2^52) - 2^52`, then convert exactly.
-- **Four programs pinned truncation:** 93 and 94 now convert `blend(1.0, 3.0)` = 2.0 (same output); r71
-  conversion converts 2.0 (same output); 112 shows 2.0 stored and 4.8 refused (golden changed - the intended
-  rule).
-- **Goldens:** 294 (ChatGPT's R160 six-operator NaN fixture, unchanged, renumbered: prints 0 1 0 0 0 0), 295
-  (3.0 converts, 3.7 stops).

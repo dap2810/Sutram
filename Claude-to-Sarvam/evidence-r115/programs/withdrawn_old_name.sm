@@ -1,0 +1,5 @@
+mukhya() {
+    kosh dasham a[4]
+    kosh_kship(a, 2.5)
+    likha(sankhya_dot(a, a, 1))
+}

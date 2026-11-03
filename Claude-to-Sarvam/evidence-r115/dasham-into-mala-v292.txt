@@ -1,0 +1,8 @@
+# R115 WS4 on v292 (main): a dasham stored into a mala element
+brief_case.sm: 3 [exit 0]
+fraction.sm: Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati [exit 1]
+negative.sm: -7 [exit 0]
+too_large.sm: Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati [exit 1]
+computed.sm: 3 [exit 0]
+vitti_mala.sm: 3 [exit 0]
+into_kosh.sm: 3 [exit 0]

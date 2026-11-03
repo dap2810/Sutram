@@ -1,0 +1,22 @@
+# R115 guard: origin/main (v294) -> v295
+
+## elf
+DIFFER       examples/329_r113_sankhya_bindu.sm (source changed) old rc=0 new rc=1
+source files whose text changed: 1
+707 programs: 564 byte-identical, 142 refused identically, 1 DIFFER, 0 new
+
+## pe
+DIFFER       examples/329_r113_sankhya_bindu.sm (source changed) old rc=0 new rc=1
+source files whose text changed: 1
+707 programs: 564 byte-identical, 142 refused identically, 1 DIFFER, 0 new
+
+## wine
+DIFFER       examples/329_r113_sankhya_bindu.sm (source changed) old rc=0 new rc=1
+source files whose text changed: 1
+707 programs: 564 byte-identical, 142 refused identically, 1 DIFFER, 0 new
+
+CHANGED examples/329_r113_sankhya_bindu.sm: rc 0 -> None
+elf: 1 DIFFER run old and new: 0 same output and exit code, 1 changed
+
+## Wine against the Linux PE outputs
+compared 1129, differ 0

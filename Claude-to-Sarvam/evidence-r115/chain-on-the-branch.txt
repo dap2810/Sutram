@@ -1,0 +1,13 @@
+# R115: the chain on the arena branch - 0e71e54 (as built), 3a6292e (fixed), and main v293
+chain32_reuse.sm  branch-0e71e54: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain32_reuse.sm  branch-3a6292e: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain32_reuse.sm  main-v293: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain33_reuse.sm  branch-0e71e54: Siddh: 28662 baait sankalit | runs: 99  
+chain33_reuse.sm  branch-3a6292e: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain33_reuse.sm  main-v293: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain40_reuse.sm  branch-0e71e54: Siddh: 34192 baait sankalit | runs: 99  
+chain40_reuse.sm  branch-3a6292e: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain40_reuse.sm  main-v293: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain40_reuse_addr.sm  branch-0e71e54: Siddh: 34805 baait sankalit | runs: k is at 140694867935192 j is at 140694867935192 bahar is at 140694867935192 99  
+chain40_reuse_addr.sm  branch-3a6292e: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva
+chain40_reuse_addr.sm  main-v293: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (niva

@@ -1,0 +1,7 @@
+mukhya() {
+    kosh dasham a[4]
+    kosh_kship(a, 2.5)
+    kosh_kship(a, 1.5)
+    likha(a[0], " ", a[1], "\n")
+    likha(sankhya_bindu(a, a, 2), "\n")
+}

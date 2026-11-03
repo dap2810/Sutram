@@ -1,6 +1,10 @@
 # R113-00 — A `rachana` reference beside an operator is refused (`E_RACHANA_GANIT`); Muse's bad alias was `sankhya_bindu`, now an integer dot product; the reference says what would remove `Error` (v293).
 
-- **Commit on `main`:** `98623a1` (on top of your R113-R115 files, `ff5d9d4`; the v292 base was `938d994`).
+> **Correction (R115):** the integer dot product below is **wrong for a `kosh dasham`** (it multiplies float bits;
+> 2.5·2.5 + 1.5·1.5 gave 0) - I tested an untyped `kosh` and missed the typed one. `sankhya_bindu` / `sankhya_dot` are
+> **withdrawn in v295** (`E_PRATYAHRITA`); see R115-00.
+
+- **Commit on `main`:** `1f706cf` (written as `98623a1` before a rebase; on top of `2065ebe`; the v292 base was `938d994`).
 - **Compiler: `Sutram 1.0 (v293) - sampurna sutra`** (was v292). Linux x86-64 cloud, 2 cores, 7 GB.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `suite: NO-EXPECTATION=4  PASS=297  (301 run)`, FAIL=0** (295 + goldens 328, 329).

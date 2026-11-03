@@ -1,0 +1,6 @@
+mukhya() {
+    dasham d = 10000000000000000000.0
+    mala m[4]
+    m[0] = d
+    likha(m[0])
+}

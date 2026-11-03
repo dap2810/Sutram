@@ -4,7 +4,8 @@ new name; the old name, written in the program's own file, prints one warning on
 replacement; the new name prints none. `asti` / `nasti` (and अस्ति / नास्ति) are the tokens `==` / `!=`.
 
 Checks, each against the compiler given (default ./sutram_compiler), ELF and PE:
-  * each of the 22 builtin pairs: old-name program and new-name program -> byte-identical outputs;
+  * sankhya_bindu / sankhya_dot (withdrawn, R115): refused with E_PRATYAHRITA, no warning, no output;
+  * each of the other 21 builtin pairs: old-name program and new-name program -> byte-identical outputs;
     old -> exactly one "Sutram suchana: 'OLD' purana nama - 'NEW' likhatu"; new -> no warning;
   * asti / nasti / अस्ति / नास्ति -> the same bytes as == / !=, and they run true and false correctly;
   * an old name used twice warns once; an old name inside a yoj'd module does not warn;
@@ -41,7 +42,6 @@ PAIRS = [
     ('vartani_cat', 'vartani_sandhi', 'vitti c = vartani_cat(S, "!")'),
     ('lkhb', 'likha_santat', 'lkhb(7)'),
     ('likha_fmt', 'likha_rup', 'likha_fmt("x=", 42)'),
-    ('sankhya_dot', 'sankhya_bindu', 'vitti dp = sankhya_dot(B, B, 2)'),
     ('smaran_cp', 'smaran_pratilip', 'smaran_cp(B, "OK", 3)'),
 ]
 BODY = '''mukhya() {{
@@ -88,6 +88,19 @@ def main():
                 ok = same and warnings(eo) == want and warnings(en) == []
                 check(ok, f'{old} -> {new} ({ext}): same bytes {same}, old warns {warnings(eo) == want}, '
                           f'new silent {warnings(en) == []}' + ('' if ro == 0 and rn == 0 else f' (exit {ro}/{rn}: {so or sn})'))
+
+        # R115: sankhya_bindu and sankhya_dot are withdrawn - both refused, named, no output, no old-name warning
+        for name in ('sankhya_bindu', 'sankhya_dot'):
+            for ext in ('bin', 'exe'):
+                p = os.path.join(d, 'w.sm')
+                out = os.path.join(d, 'w.' + ext)
+                if os.path.exists(out):
+                    os.remove(out)
+                open(p, 'w').write(BODY.format(stmt=f'vitti dp = {name}(B, B, 2)'))
+                rc, so, err = compile_(p, out)
+                ok = rc != 0 and '[E_PRATYAHRITA]' in so and warnings(err) == [] and not os.path.exists(out)
+                check(ok, f'{name} ({ext}): withdrawn - exit {rc}, E_PRATYAHRITA {"[E_PRATYAHRITA]" in so}, '
+                          f'no warning {warnings(err) == []}, no output {not os.path.exists(out)}')
 
         # asti / nasti: the same bytes as == / !=, and the right answers
         base = 'mukhya() {\n    vitti a = 4\n    likha(a OP1 4)\n    likha(a OP1 5)\n    likha(a OP2 5)\n    likha(a OP2 4)\n}\n'

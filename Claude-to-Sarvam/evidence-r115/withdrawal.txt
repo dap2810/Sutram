@@ -1,0 +1,6 @@
+# R115: sankhya_bindu on a kosh dasham, v293 (R113's integer loop) against v295 (withdrawn), and the library's dot
+kosh_dasham_dot.sm v293: Siddh: 2485 baait sankalit | runs: 2.500000 1.500000 0     (2.5*2.5 + 1.5*1.5 = 8.5)
+kosh_dasham_dot.sm v295: kosh_dasham_dot.sm:6:11: Sutram truti [E_PRATYAHRITA]: sankhya_bindu (sankhya_dot) pratyahrita - asyah phalam ashuddham,   (2.5*2.5 + 1.5*1.5 = 8.5)
+withdrawn_old_name.sm v293: Sutram suchana: 'sankhya_dot' purana nama - 'sankhya_bindu' likhatu Siddh: 712 baait sankalit 
+withdrawn_old_name.sm v295: withdrawn_old_name.sm:4:11: Sutram truti [E_PRATYAHRITA]: sankhya_bindu (sankhya_dot) pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate       likha(sankhya_dot(a, a, 1)) 
+library_bindu_gunan.sm v295: 8.500000
