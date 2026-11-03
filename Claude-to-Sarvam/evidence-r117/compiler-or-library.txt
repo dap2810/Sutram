@@ -1,0 +1,6 @@
+# R117: what made the 167 differ in bytes - the compiler or the library?
+# (a) compiles each of the 167 with the v296 compiler against the v295 library and v295 program text;
+#     the compiler finds lib/ beside its own binary, so it runs from a copied v295 tree holding the v296 binary.
+# (b) cannot be run: the v296 library uses abhava(cond, "msg"), which the v295 compiler cannot parse.
+(a) v296 COMPILER on v295 lib + v295 program text: 167 byte-identical to v295, 0 differ []
+(b) v295 compiler on v296 LIB + v295 program text: 0 byte-identical, 167 differ or do not compile (v296 lib uses abhava(cond, msg), which v295 cannot parse)

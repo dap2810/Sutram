@@ -1,0 +1,17 @@
+# R117: the 167 guard DIFFERs (v295 -> v296, Linux ELF), each run old and new: stdout, stderr and exit compared
+
+## A same stdout, stderr and exit: 164
+   of these, 37 call a changed function in their own text; 127 only import a changed module
+
+## B now stops with a contract refusal (output up to it unchanged): 1
+   examples/207_sankhyiki_vector.sm: calls ['bindu_gunan']; exit 0 -> 1; Sutram truti [E_AKARA_ASAMYA]: bindu_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite.
+
+## C program text rewritten this round (deliberate migration): 2
+   tests/stdlib/numeric29.sm: calls ['brahmagupta_kshetr', 'dvigun', 'trigun', 'vardh', 'viparyay_ank']; exit 0 -> 0; 
+   tests/stdlib/r76_known_values.sm: calls ['brahmagupta_kshetr']; exit 0 -> 0; 
+
+total 167
+
+## class C, unrewritten: the v295 text of the two tests, compiled by v296
+   numeric29: exit 1, stdout up to the stop identical to v295's first 6 lines: yes; Sutram truti [E_ATIPRAVAH]: brahmagupta_kshetr: kshetraphalam purnanka-seemam atikramati; adhikatamam mulyam 9223372036854775807.
+   r76_known_values: exit 1, stdout up to the stop identical to v295's first 13 lines: yes; Sutram truti [E_MULYA_AYOGYA]: brahmagupta_kshetr: dattam mulyam ayogyam; kriyayah niyaman parikshatam.

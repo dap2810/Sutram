@@ -1,0 +1,13 @@
+# R117 WS2: examples/345_r116_long_literal.sm (126/127/255/256/300-byte literals, three ways each), Linux ELF
+v244 (backups/ snapshot of 2026-10-22, the oldest compiler that can be run; likha_rup did not exist yet, so its lines are left out): exit 139, 0 bytes of stdout - SIGSEGV before printing anything, as v295
+v295 (origin/main before R116): exit 139, 0 bytes of stdout, golden match: no
+v296: exit 0, 3228 bytes of stdout, golden match: yes
+
+# the jump that wraps, in the first commit of this repository (8071ad5, 2026-10-28, v254):
+16265:    ; jmp rel8 = EB (len+1)
+18435:    ; Emit jmp rel8 = EB (length+1)
+# and in the v244 snapshot:
+16111:    ; jmp rel8 = EB (len+1)
+18281:    ; Emit jmp rel8 = EB (length+1)
+
+# string literals of 120 bytes or more in the tree before R116 (examples, tests, lib): none - the first are R116's messages
