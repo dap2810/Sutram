@@ -85,7 +85,7 @@ def main(argv) -> int:
     f.write_text(V2 + 'z0|0||i64|sutram_z0\ns6|6|i64,i64,i64,i64,i64,i64|i64|sutram_ffi_mix\n')
     for body, want in (('likha(z0(1))', b"'z0' ityasmai 1 tarkah dattah; hastakshare 0"),
                        ('likha(s6(1, 2, 3, 4, 5))', b"'s6' ityasmai 5 tarkah dattah; hastakshare 6"),
-                       ('likha(s6(1, 2, 3, 4, 5, 6, 7))', b'Sutram Error')):
+                       ('likha(s6(1, 2, 3, 4, 5, 6, 7))', b'Sutram truti')):
         src = t / 'e.sm'
         src.write_text(f'mukhya() {{\n    {body}\n}}\n')
         o = t / 'e.smo'

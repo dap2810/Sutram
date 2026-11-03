@@ -34,6 +34,8 @@ it - do not fix it.** It goes on the queue.
 ### Claude (main channel)
 - **All compiler, library, test and tool work targets Sanskrit.**
 - If a change touches the language packs, **it must leave the other ten exactly as they are.**
+  - **One written exception (owner, 3 November 2026):** the fixed token `Sutram Error` → `Sutram truti`, identically
+    in all eleven packs and the compiler, and nothing else in them - `docs/decisions/R114-SUTRAM-TRUTI.md`.
 - **State in your delivery that the non-Sanskrit packs are unchanged.**
 
 ### ChatGPT

@@ -11,12 +11,12 @@ spec.loader.exec_module(m)
 
 class CoverageFixtures(unittest.TestCase):
     def test_default_comment_association(self):
-        text = '# "Sutram Error: example"\nmsg_one\t"अनुवाद"\n'
-        self.assertEqual(m.extract_default_comments(text)['msg_one'], 'Sutram Error: example')
+        text = '# "Sutram truti: example"\nmsg_one\t"अनुवाद"\n'
+        self.assertEqual(m.extract_default_comments(text)['msg_one'], 'Sutram truti: example')
 
     def test_matching_output_evidence_not_native_pass(self):
-        rows = m.build(['k'], [], {'k': 'Sutram Error: original'},
-                       {'case': 'Sutram Error: original\n'}, set())
+        rows = m.build(['k'], [], {'k': 'Sutram truti: original'},
+                       {'case': 'Sutram truti: original\n'}, set())
         self.assertEqual(rows['entries'][0]['status'], 'CHECKED_IN_EXPECTATION_CANDIDATE')
         self.assertEqual(rows['native_execution'], 'NOT_RUN')
         self.assertFalse(rows['all_diagnostics_covered'])

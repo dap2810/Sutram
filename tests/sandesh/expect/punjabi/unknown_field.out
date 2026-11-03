@@ -1,5 +1,5 @@
 ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
-unknown_field.sm:6:13: Sutram Error [E_UNKNOWN_FIELD]: ਅਣਜਾਣ ਖੇਤਰ 'q'
+unknown_field.sm:6:13: Sutram truti [E_UNKNOWN_FIELD]: ਅਣਜਾਣ ਖੇਤਰ 'q'
       likha(p.q)
               ^
 ਸੰਕੇਤ: 'q' ਕਿਸੇ ਰਚਨਾ ਦਾ ਖੇਤਰ ਨਹੀਂ ਹੈ

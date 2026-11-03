@@ -33,7 +33,7 @@ class Module:
 class GraphDiagnostic(Exception):
     def __init__(self, kind: str, path: Path, line: int, message: str):
         self.kind, self.path, self.line = kind, path, line
-        self.message = f'{path}:{line}: Sutram Error [{kind}]: {message}'
+        self.message = f'{path}:{line}: Sutram truti [{kind}]: {message}'
         super().__init__(self.message)
 
 class GraphReference:

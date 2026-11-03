@@ -2,8 +2,9 @@
 
 **The rule (the owner's):** the compiler's messages and the Windows IDE's status line are in the
 language of the selected pack. Sanskrit is the default. There is no English: not as a default, not as
-a fallback, not behind a switch. `Sutram Error` and the `[E_CODE]` tags stay as they are: they are
-identifiers, not prose.
+a fallback, not behind a switch. `Sutram truti` and the `[E_CODE]` tags stay as they are: they are
+identifiers, not prose. (The token was `Sutram Error` up to v293; it changed in every pack at once, by the owner's
+written exception - `docs/decisions/R114-SUTRAM-TRUTI.md`.)
 
 | How it is run | Messages |
 |---|---|
@@ -34,7 +35,7 @@ when the program is compiled, so they follow the same `--lang`.
 For every entry of every pack:
 
 - the key is a message the compiler or the IDE has;
-- `Sutram Error` and the `[E_CODE]` tags are present and unchanged;
+- `Sutram truti` and the `[E_CODE]` tags are present and unchanged;
 - the punctuation the code relies on is kept at both ends: the leading newline or `: `, the opening
   quote the compiler closes after the name, the trailing newline, the brackets of the IDE messages;
 - every Latin word is code that the default also has (a keyword, a builtin, a flag, a file name), so

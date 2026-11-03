@@ -1,5 +1,5 @@
 ਭਾਸ਼ਾ ਪੈਕ ਮਿਲਿਆ: punjabi
-parse.sm:3:11: Sutram Error [E_PARSE]: ਸ਼ਬਦ '='
+parse.sm:3:11: Sutram truti [E_PARSE]: ਸ਼ਬਦ '='
       vitti = 5
             ^
 ਸੂਤਰਮ੍ ਜਾਂਚ: ਦੋਸ਼ ਮਿਲੇ; ਨਤੀਜਾ ਫ਼ਾਈਲ ਨਹੀਂ ਬਣੀ

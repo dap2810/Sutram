@@ -69,7 +69,7 @@ try:
 except Exception: pass
 finally: conn.settimeout(old)
 print("DRAWN TEXTS:", texts)
-shown = any(("compiled" in t) or ("Sutram Error" in t) for t in texts)
+shown = any(("compiled" in t) or ("Sutram truti" in t) for t in texts)
 print("OUTPUT SHOWN (compiler message drawn in the pane):", shown)
 conn.close(); srv.close(); proc.terminate()
 try: proc.communicate(timeout=5)

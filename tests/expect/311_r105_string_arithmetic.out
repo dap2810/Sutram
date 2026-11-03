@@ -1,4 +1,4 @@
-311_r105_string_arithmetic.sm:6:13: Sutram Error [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na
+311_r105_string_arithmetic.sm:6:13: Sutram truti [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na
       likha(a - b)
               ^
 Sanket: dvayoh vartanyoh '+' navinam vartanim rachayati; '-' '*' '/' sankhyabhih eva

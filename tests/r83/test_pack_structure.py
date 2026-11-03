@@ -17,7 +17,7 @@ def entry(key, text):
 def baseline():
     return {
         name: entry("name", "सूत्रम्" if name == "sanskrit" else "नाम") +
-              entry("error", "Sutram Error [E_BAD]: '")
+              entry("error", "Sutram truti [E_BAD]: '")
         for name in m.PACKS
     }
 
@@ -39,15 +39,15 @@ class StructureFixtures(unittest.TestCase):
 
     def test_missing_placeholder_detected(self):
         packs = baseline()
-        packs["sanskrit"] = entry("x", "Sutram Error {kw:likha}: ")
-        packs["gujarati"] = entry("x", "Sutram Error: ")
+        packs["sanskrit"] = entry("x", "Sutram truti {kw:likha}: ")
+        packs["gujarati"] = entry("x", "Sutram truti: ")
         self.assertIn("placeholder missing",
                       {e["issue"] for e in m.examine(packs)["packs"]["gujarati"]["failures"]})
 
     def test_extra_placeholder_is_review_not_hard_fail(self):
         packs = baseline()
-        packs["sanskrit"] = entry("x", "Sutram Error ")
-        packs["gujarati"] = entry("x", "Sutram Error {kw:likha}")
+        packs["sanskrit"] = entry("x", "Sutram truti ")
+        packs["gujarati"] = entry("x", "Sutram truti {kw:likha}")
         row = m.examine(packs)["packs"]["gujarati"]
         self.assertEqual(row["hard_violations"], 0)
         self.assertTrue(row["review_candidates"])
@@ -67,8 +67,8 @@ class StructureFixtures(unittest.TestCase):
 
     def test_error_tag_change_detected(self):
         packs = baseline()
-        packs["gujarati"] = entry("error", "Sutram Error [E_OTHER]: '")
-        self.assertIn("Sutram Error/[E_] identifiers changed",
+        packs["gujarati"] = entry("error", "Sutram truti [E_OTHER]: '")
+        self.assertIn("Sutram truti/[E_] identifiers changed",
                       {e["issue"] for e in m.examine(packs)["packs"]["gujarati"]["failures"]})
 
     def test_actual_checkout_structure(self):

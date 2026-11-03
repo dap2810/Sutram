@@ -2397,10 +2397,10 @@ do_run:
 .no_jump:
     ; ---- if the compiler succeeded (no output, exit 0) run the binary ----
     ; The compiler prints "OK: compiled N bytes" on success; treat any
-    ; non-empty output that contains "Error" as failure and stop.
+    ; non-empty output that contains "truti" (Sutram truti, R114) as failure and stop.
     cmp qword [rel run_out_len], 0
     je .run_bin
-    ; scan for the substring "Error"
+    ; scan for the substring "truti"
     call has_error
     cmp rax, 0
     jne .done
@@ -2418,7 +2418,7 @@ do_run:
     ret
 
 ; ---------------------------------------------------------------- has_error
-; rax = 1 if run_out contains "Error", else 0.
+; rax = 1 if run_out contains "truti", else 0.
 has_error:
     push rbx
     push rcx
@@ -2430,15 +2430,15 @@ has_error:
     ja .no
     lea rsi, [rel run_out]
     add rsi, rbx
-    cmp byte [rsi], 'E'
+    cmp byte [rsi], 't'               ; R114: the compiler's failure token is "Sutram truti" (was "Error")
     jne .next
     cmp byte [rsi+1], 'r'
     jne .next
-    cmp byte [rsi+2], 'r'
+    cmp byte [rsi+2], 'u'
     jne .next
-    cmp byte [rsi+3], 'o'
+    cmp byte [rsi+3], 't'
     jne .next
-    cmp byte [rsi+4], 'r'
+    cmp byte [rsi+4], 'i'
     jne .next
     mov rax, 1
     pop rcx

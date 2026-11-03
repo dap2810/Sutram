@@ -18,7 +18,7 @@ for file,expected_file,firstline,minimum in cases:
   p=subprocess.run([str(C),"--check",str(D/file)],cwd=tmp,stdout=subprocess.PIPE,
                    stderr=subprocess.PIPE,text=True,timeout=20)
   result=p.stdout+p.stderr
-  actual=re.findall(r"^([^\s:]+):(\d+):(\d+): Sutram Error \[([^\]]+)\]",result,re.M)
+  actual=re.findall(r"^([^\s:]+):(\d+):(\d+): Sutram truti \[([^\]]+)\]",result,re.M)
   relevant=[(name,int(line),int(col),code) for name,line,col,code in actual
             if name==expected_file and int(col)>0]
   print("R51_BEGIN",file,"exit",p.returncode)

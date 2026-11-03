@@ -1,4 +1,4 @@
-228_block_scope.sm:6:11: Sutram Error [E_UNDEFINED_NAME]: agyat naam 'b'
+228_block_scope.sm:6:11: Sutram truti [E_UNDEFINED_NAME]: agyat naam 'b'
       likha(b)
             ^
 Sanket: 'b' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate

@@ -49,7 +49,7 @@
 
 | # | What | Blocked on |
 |---|---|---|
-| **C1** | **`Sutram Error` -> `Sutram dosh`, 74 places** | **a decision: the Linux IDE matches the literal string.** **Change the IDE too, or keep English in the prefix.** |
+| **C1** | ~~**`Sutram Error` -> `Sutram dosh`, 74 places**~~ | **Done in v294 (R114), as `Sutram truti`**, with the owner's exception for the packs; the Linux IDE now matches `truti` (`docs/decisions/R114-SUTRAM-TRUTI.md`) |
 | **C2** | **The 15 mutants that survived every proof** | **including a sign error in `madhava_sin`/`cos`/`atan`.** **A maths function returning a wrong-signed answer passed 224 proofs.** |
 | **C3** | **The 818 undecided mutants** | **the library is proven against KNOWN bugs, not proven correct** |
 | **C4** | **`तक्` in the loop parser** | **the loop parser holds ONE spelling per keyword and last-wins, so adding `तक्` broke `पर्यन्त`.** **A compiler change, not a data change.** |
@@ -65,7 +65,7 @@
 | # | Decision | Why it matters |
 |---|---|---|
 | **D1** | **The type on variables** | **open longest.** It unblocks indexing, checked calls through function values, method dispatch and traits. |
-| **D2** | **`Sutram Error` — change the IDE or keep English** | **blocks 74 sites** |
+| **D2** | ~~**`Sutram Error` — change the IDE or keep English**~~ | **Done in v294: the IDE was changed too** |
 | **D3** | **`ganit` -> `ganan`, 41 sites** | **Muse says safe; ChatGPT wants a separate review because `ganan` may collide with the `ganana` enum keyword** |
 | **D4** | **The 34 vocabulary disagreements** | **the review page** |
 | **D5** | **The keyword count, 31 or 32** | **ChatGPT and I both say 31** |

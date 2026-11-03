@@ -5,7 +5,7 @@
 ; already says `agyat prakriya: <name>`. If <name> is a library prakriya, it now
 ; adds, for each module that has it, one line:
 ;
-;   Sutram Error: agyat prakriya: brihat_yuj
+;   Sutram truti: agyat prakriya: brihat_yuj
 ;     Sanket: 'brihat_yuj' 'brihat' ghatake asti; 'yoj brihat' iti likhatu
 ;
 ; The names come from src/r52_lib_index.inc, which tools/lib_index.py generates

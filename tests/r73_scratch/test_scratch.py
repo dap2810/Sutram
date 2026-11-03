@@ -72,7 +72,7 @@ def main():
         code, text, r = run(out)
         rss[n] = r
         if n == 'negative_runtime':
-            report(code == 1 and text == '123\nSutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati',
+            report(code == 1 and text == '123\nSutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati',
                    f'negative_runtime: stops with the error, exit 1 (exit {code}, output {text!r})')
             continue
         if n == 'full':

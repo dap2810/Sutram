@@ -99,7 +99,7 @@ def main(argv) -> int:
         obj = t / 'v.smo'
         obj.unlink(missing_ok=True)
         r = run([comp, '--ffi', sffi, '--object', str(src), str(obj)])
-        want = f'v.sm:{line}:{col}: Sutram Error [E_FFI_KIND]: videshi prakriya {name}: mulyam na pratyarpayati'
+        want = f'v.sm:{line}:{col}: Sutram truti [E_FFI_KIND]: videshi prakriya {name}: mulyam na pratyarpayati'
         check(r.returncode == 1 and want.encode() in r.stdout and not obj.exists(), f'void value {body}: {r.stdout!r}')
     for body, line, col, name, n in cases:
         src = t / 'e.sm'
@@ -107,7 +107,7 @@ def main(argv) -> int:
         obj = t / 'e.smo'
         obj.unlink(missing_ok=True)
         r = run([comp, '--ffi', sffi, '--object', str(src), str(obj)])
-        want = (f'e.sm:{line}:{col}: Sutram Error [E_FFI_KIND]: videshi prakriya {name}: '
+        want = (f'e.sm:{line}:{col}: Sutram truti [E_FFI_KIND]: videshi prakriya {name}: '
                 f'ghoshitat prakarat bhinnah tarkah {n}').encode()
         check(r.returncode == 1 and want in r.stdout and not obj.exists(), f'{body}: {r.stdout!r}')
     src = t / 'ok.sm'

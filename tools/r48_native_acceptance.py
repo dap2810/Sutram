@@ -35,7 +35,7 @@ def main():
         print(p.stdout,end="")
         print(p.stderr,end="")
         print("R48_MULTI_END")
-        diags=re.findall(r"three_parse_errors\.sm:(\d+):(\d+): Sutram Error \[E_PARSE\]: near '([^']+)'",p.stdout)
+        diags=re.findall(r"three_parse_errors\.sm:(\d+):(\d+): Sutram truti \[E_PARSE\]: near '([^']+)'",p.stdout)
         assert p.returncode!=0 and len(diags)>=3, f"must report 3 real parse diagnostics: {p.returncode} {diags}"
         assert {int(x[0]) for x in diags} >= {2,3,4}, f"wrong locations: {diags}"
         assert all(int(line)>0 and int(col)>0 and tok for line,col,tok in diags)
@@ -53,7 +53,7 @@ def main():
         print(semantic.stderr,end="")
         print("R48_SEMANTIC_END")
         assert semantic.returncode!=0, "unresolved call should fail --check"
-        assert "semantic_unknown.sm:2:11: Sutram Error [E_UNDEFINED_FUNCTION]" in semantic.stdout, repr(semantic.stdout)
+        assert "semantic_unknown.sm:2:11: Sutram truti [E_UNDEFINED_FUNCTION]" in semantic.stdout, repr(semantic.stdout)
         assert "missing_fun" in semantic.stdout and "^" in semantic.stdout
         # A user-provided potential output file must not be created.
         assert not (ROOT/"out.bin").exists(), "unexpected workspace output out.bin"

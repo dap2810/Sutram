@@ -30,7 +30,7 @@ CASES = [  # name, expected output lines, exit, rss test
     ('c2_param', ['8', '10'], 0, None),
     ('c3_siblings', ['0', '500000500000'], 0, lambda r: r < 4 * MB),
     ('c4_100mb', ['190'], 0, lambda r: r < 120 * MB),
-    ('c4_too_big', ['Sutram Error: kshetra purnam - mandapa-smritih samapta'], 1, None),
+    ('c4_too_big', ['Sutram truti: kshetra purnam - mandapa-smritih samapta'], 1, None),
     ('c5_recursion', ['500500000'], 0, lambda r: r < 8 * MB),
     ('c5_recursion_control', ['500500000'], 0, lambda r: r > 32 * MB),
     ('c6_adjacent', ['0'], 0, None),

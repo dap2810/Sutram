@@ -2,7 +2,7 @@
 ; and R68 diagnostics. r71_after_lex is called immediately after lex.
 section .data
 r71_boundary_prefix:
-    db "Sutram Error [E_UNSAFE_BOUNDARY]: ",0
+    db "Sutram truti [E_UNSAFE_BOUNDARY]: ",0
 r71_boundary_outside:
     db ": unchecked operation requires asurakshit { ... }",10,0
 r71_boundary_structure:

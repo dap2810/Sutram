@@ -10,7 +10,7 @@ The rule: the compiler must ERROR on invalid input, never crash. So for each
 input this runner requires
 
   * exit status 1 (not a signal, not 0),
-  * a diagnostic on stdout that starts with "Sutram Error" (after any
+  * a diagnostic on stdout that starts with "Sutram truti" (after any
     leading newline the diagnostic convention prints), and
   * no output file.
 
@@ -81,8 +81,8 @@ def judge(code: str, stdout: bytes, produced: bool, must_compile: bool) -> str:
         return '' if code == '0' and produced else 'expected to compile, got exit %s' % code
     if code != '1':
         return 'exit %s, expected 1' % code
-    if not stdout.lstrip(b'\n').startswith(b'Sutram Error'):
-        return 'no "Sutram Error" diagnostic on stdout'
+    if not stdout.lstrip(b'\n').startswith(b'Sutram truti'):
+        return 'no "Sutram truti" diagnostic on stdout'
     if produced:
         return 'an output file was written'
     return ''

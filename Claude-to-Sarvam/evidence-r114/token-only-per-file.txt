@@ -1,0 +1,17 @@
+# R114: each file, HEAD (v293) against the working tree, after replacing the token in the old text
+lang/bengali.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/gujarati.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/hindi.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/kannada.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/malayalam.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/marathi.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/odia.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/punjabi.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/sanskrit.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/tamil.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+lang/telugu.sandesh: 137 occurrences replaced; 68 message values; the file differs ONLY by the token
+src/sutram_compiler.asm: 116 occurrences replaced; the file differs ONLY by the token
+src/r52_yoj_hint.inc: 1 occurrences replaced; the file differs ONLY by the token
+src/r66_indic_lexer.inc: 1 occurrences replaced; the file differs ONLY by the token
+src/r68_diagnostics.inc: 2 occurrences replaced; the file differs ONLY by the token
+src/r71_unsafe_integration.inc: 1 occurrences replaced; the file differs ONLY by the token

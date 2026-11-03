@@ -44,7 +44,7 @@ work = tempfile.mkdtemp(prefix="sutram-goto-")
 shutil.copy(gui_src, os.path.join(work, "sutram-gui"))
 mock = os.path.join(work, "sutram_compiler")
 with open(mock, "w") as f:
-    f.write('#!/bin/sh\necho "Sutram Error [E_TEST]: $1:%d: deliberate"\nexit 1\n' % ERR_LINE)
+    f.write('#!/bin/sh\necho "Sutram truti [E_TEST]: $1:%d: deliberate"\nexit 1\n' % ERR_LINE)
 os.chmod(mock, 0o755)
 
 src = os.path.join(work, "prog.sm")

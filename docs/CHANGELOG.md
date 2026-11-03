@@ -1,4 +1,17 @@
-> **The 20 newest entries.** Older ones, from "v435" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v280" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v294 (Claude, R114) - `Sutram Error` becomes `Sutram truti`, in the compiler and all eleven packs
+
+- **The failure token is Sanskrit:** every message that stops a compile or a program begins `Sutram truti`
+  (`Sutram truti [E_PARSE]: ...`). Bodies, `[E_CODE]` tags, punctuation, placeholders and exit codes unchanged;
+  `Sutram suchana:` unchanged.
+- **By the owner's written exception** (3 November; `docs/decisions/R114-SUTRAM-TRUTI.md`): the one token,
+  identically in all eleven `lang/*.sandesh` files - 68 message values each, 748 in all - and nothing else in them.
+  Each pack file differs from v293 by the token alone.
+- `tools/sandesh.py` enforces the new token (a pack still carrying `Sutram Error` is refused - a new test); the
+  Linux IDE's failure check matches `truti`; goldens, test scripts and current docs move with it.
+- **Not changed:** the linker's own messages (`sutram-link`, `sutram-elf2smo`, `sutram-coff2smo`) - outside the
+  permission. A program built by v293 or earlier still prints `Sutram Error` from its own bytes.
 
 ## v293 (Claude, R113) - a `rachana` reference beside an operator is refused; `sankhya_bindu` is an integer dot product
 
@@ -338,19 +351,3 @@
   rule).
 - **Goldens:** 294 (ChatGPT's R160 six-operator NaN fixture, unchanged, renumbered: prints 0 1 0 0 0 0), 295
   (3.0 converts, 3.7 stops).
-
-## v280 (Claude, R90) - NaN compares as IEEE says, a `dasham` divided by zero stops, `likha` keeps one line after a division
-
-- **Integrated ChatGPT's R159 NaN patch** (`ROUND-159-NAN-COMPARE.patch`, unchanged): `==`, `<`, `<=` are false and
-  `!=` true when either side is NaN; both code paths (general and register). Reviewed: `dl` is runtime scratch
-  (the general path already pops into `rdx`). Its oracle: v279 5/10, v280 10/10, ELF and PE, and in the
-  peephole and XMM-cache builds.
-- **Integrated ChatGPT's R159 float-division patch** (`ROUND-159-FLOAT-DIVISION.patch`, unchanged): a `dasham`
-  divided by `+0.0` or `-0.0` stops with `E_SHUNYA_BHAJAN`; NaN divisors are not mistaken for zero; the three
-  division fast paths fall back to the checked general path. Its oracle: v279 1/8, v280 8/8.
-- **Fixed (mine, since v276):** the division check's own message calls consumed `lkhb`'s no-newline flag, so
-  `likha("y ", a / b, a % b, 5)` printed each value on its own line. `r80_emit_div_fatal` now saves it.
-- **Not integrated:** ChatGPT's narrowing prototype - it refuses 25 tree programs, every one that imports
-  `madhava` or `roop`, at a file-level position inside the library.
-- **Goldens:** 291 (NaN, six operators), 292 (likha after a division), 293 (float division by zero); 289 and
-  ChatGPT's NaN oracle now make inf and NaN by overflow, not by dividing by zero.

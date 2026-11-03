@@ -82,7 +82,7 @@ def main(argv) -> int:
         prog = 'mukhya() {\n    mala a[8]\n    brihat_yuj(a, a, a, 8)\n}\n'
         hint = "  Sanket: 'brihat_yuj' 'brihat' ghatake asti; 'yoj brihat' iti likhatu\n"
         _, msg, _ = build(prog)
-        check(msg.startswith('Sutram Error: agyat prakriya: brihat_yuj\n' + hint),
+        check(msg.startswith('Sutram truti: agyat prakriya: brihat_yuj\n' + hint),
               f'the yoj hint after agyat prakriya (got {msg!r:.160})')
         _, msg, _ = build(prog, check_mode=True)
         check(hint in msg, '--check prints the same hint')

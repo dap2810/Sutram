@@ -95,7 +95,7 @@ def main(argv) -> int:
         src.write_text(f'mukhya() {{\n    likha(s_add({args}))\n}}\n')
         obj = t / f'a{n}.smo'
         r = run([comp, '--ffi', sffi, '--object', str(src), str(obj)])
-        check(r.returncode == 1 and f'a{n}.sm:2:11: Sutram Error [E_ARITY]'.encode() in r.stdout
+        check(r.returncode == 1 and f'a{n}.sm:2:11: Sutram truti [E_ARITY]'.encode() in r.stdout
               and f"'s_add' ityasmai {n} tarkah dattah; hastakshare 2".encode() in r.stdout
               and not obj.exists(), f'arity {n}: {r.returncode} {r.stdout[:120]!r} written={obj.exists()}')
         r = run([comp, '--ffi', sffi, '--separate', str(src), str(obj), str(src)])

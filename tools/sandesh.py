@@ -28,7 +28,7 @@ complete or --check fails.
 
 The checks, per entry:
   * the key is a known message;
-  * `Sutram Error` and every `[E_CODE]` tag of the default are present, unchanged
+  * `Sutram truti` and every `[E_CODE]` tag of the default are present, unchanged
     (identifiers, not prose: the owner's rule);
   * the punctuation the code relies on is kept: the leading newline / `: ` and the
     trailing newline or opening quote, since the compiler prints the name and the
@@ -82,7 +82,7 @@ SHARED_MARKS = {0x0964, 0x0965, 0x200C, 0x200D}   # danda, double danda, ZWNJ, Z
 # Every message the compiler prints, in source order. A key whose label lives in
 # src/r68_diagnostics.inc exists only in the r68 entry build, so its row is wrapped
 # in `%ifmacro call 1` (that entry defines a `call` macro; a bare build does not).
-# Fragments that are only punctuation or an identifier ("'\n", ": Sutram Error [")
+# Fragments that are only punctuation or an identifier ("'\n", ": Sutram truti [")
 # are not listed: there is nothing in them to translate.
 KEYS = [
     'msg_usage', 'msg_version', 'r48_msg_near', 'r48_msg_ok', 'r48_msg_errors', 'r48_msg_eof',
@@ -121,7 +121,7 @@ R65_ONLY = {k for k in KEYS if k.startswith('r65_msg_')}
 
 # Latin words a translation may keep: code the reader types or sees in the source.
 CODE_WORDS = set('''
-Sutram Error sutram check lang version i vitti akshar_rakh dvaram akshar aksharank kosh_pop
+Sutram truti sutram check lang version i vitti akshar_rakh dvaram akshar aksharank kosh_pop
 kosh_peek kosh_dequeue kosh_push v157 v1 lib smlib sm bin UTF x86 yoj upanaam likha chakra tak
 mala arr x n sarvam nirgat sahayata Namaste Enter F5 KiB win exe
 '''.split())
@@ -264,7 +264,7 @@ def read_pack(pack: str) -> dict[str, str]:
 
 EDGE_L = re.compile(r"^[\n:' ,\[]*")
 EDGE_R = re.compile(r"[\r\n' \]]*$")
-TAGS = re.compile(r'Sutram Error|\[E_[A-Z0-9_]+\]')
+TAGS = re.compile(r'Sutram truti|\[E_[A-Z0-9_]+\]')
 LATIN = re.compile(r'[A-Za-z][A-Za-z0-9_]*')
 
 
@@ -418,7 +418,7 @@ def render_ide(defs: dict[str, str]) -> str:
 def write_template(pack: str, defs: dict[str, str], have: dict[str, str]) -> str:
     lines = [f'# Sutram compiler messages: {pack}. ROUND-11 (WS1).',
              '# One line per message: key<TAB>"text" (a JSON string; \\n is a newline).',
-             '# The comment above each line is the romanised Sanskrit default. Keep `Sutram Error`,',
+             '# The comment above each line is the romanised Sanskrit default. Keep `Sutram truti`,',
              '# the [E_CODE] tags, the code words (keywords, builtins, file names) and the',
              "# punctuation at both ends exactly as the default has them: the compiler prints the",
              '# name and the closing quote around the fragment. tools/sandesh.py --check verifies it.',

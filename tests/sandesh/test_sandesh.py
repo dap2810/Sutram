@@ -96,15 +96,16 @@ class PackFiles(unittest.TestCase):
 
     def test_checker_refuses(self):
         sandesh.ROMAN_KW.update(sandesh.roman_keywords())
-        d = ": Sutram Error [E_UNDEFINED_NAME]: agyat naam '"
-        ok = ": Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम '"
+        d = ": Sutram truti [E_UNDEFINED_NAME]: agyat naam '"
+        ok = ": Sutram truti [E_UNDEFINED_NAME]: अज्ञात नाम '"
         self.assertEqual(sandesh.check_entry('hindi', 'k', ok, d), [])
         cases = {
-            'English word': ": Sutram Error [E_UNDEFINED_NAME]: unknown नाम '",
-            'tag dropped': ": Sutram Error: अज्ञात नाम '",
+            'English word': ": Sutram truti [E_UNDEFINED_NAME]: unknown नाम '",
+            'tag dropped': ": Sutram truti: अज्ञात नाम '",
             'prefix translated': ": सूत्रम् त्रुटि [E_UNDEFINED_NAME]: अज्ञात नाम '",
-            'quote dropped': ": Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम",
-            'wrong script': ": Sutram Error [E_UNDEFINED_NAME]: அறியாத நாம '",
+            'quote dropped': ": Sutram truti [E_UNDEFINED_NAME]: अज्ञात नाम",
+            'wrong script': ": Sutram truti [E_UNDEFINED_NAME]: அறியாத நாம '",
+            'retired token (R114)': ": Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम '",
         }
         for why, text in cases.items():
             self.assertNotEqual(sandesh.check_entry('hindi', 'k', text, d), [], why)

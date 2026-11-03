@@ -50,7 +50,7 @@ shutil.copy(gui_src, os.path.join(work, "sutram-gui"))
 mock = os.path.join(work, "sutram_compiler")
 with open(mock, "w") as f:
     f.write('#!/bin/sh\n'
-            'echo "Sutram Error [E_TEST]: $1:%d: deliberate failure for the test"\n' % ERR_LINE
+            'echo "Sutram truti [E_TEST]: $1:%d: deliberate failure for the test"\n' % ERR_LINE
             + 'exit 1\n')
 os.chmod(mock, 0o755)
 

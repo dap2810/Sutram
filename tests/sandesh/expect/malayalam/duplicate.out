@@ -1,5 +1,5 @@
 ഭാഷാ പാക്ക് കണ്ടെത്തി: malayalam
-duplicate.sm:4:11: Sutram Error [E_DUPLICATE_NAME]: വീണ്ടും പ്രഖ്യാപനം 'x'
+duplicate.sm:4:11: Sutram truti [E_DUPLICATE_NAME]: വീണ്ടും പ്രഖ്യാപനം 'x'
       vitti x = 2
             ^
 സൂചന: 'x' ഇതിനകം പ്രഖ്യാപിച്ചതാണ്; പുതിയ മൂല്യം നൽകാൻ: x = ...

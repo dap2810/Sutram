@@ -1,0 +1,25 @@
+# R114 guard: origin/main (v293) -> v294
+
+## elf
+source files whose text changed: 0
+707 programs: 119 byte-identical, 142 refused identically, 446 DIFFER, 0 new
+DIFFER programs: 446 (listed in guard-elf-differ.txt)
+
+## pe
+source files whose text changed: 0
+707 programs: 250 byte-identical, 142 refused identically, 315 DIFFER, 0 new
+DIFFER programs: 315 (listed in guard-pe-differ.txt)
+
+## wine
+source files whose text changed: 0
+707 programs: 250 byte-identical, 142 refused identically, 315 DIFFER, 0 new
+DIFFER programs: 315 (listed in guard-wine-differ.txt)
+
+## the Windows compiler under Wine against the Linux compiler's PE outputs
+compared 1130, differ 0
+
+## every DIFFER is the token (verify.py)
+446 DIFFER: 446 differ only by the token (10174 occurrences), 0 otherwise; run: 446 same output and exit code after the token, 0 otherwise
+315 DIFFER: 315 differ only by the token (3299 occurrences), 0 otherwise
+315 DIFFER: 315 differ only by the token (3299 occurrences), 0 otherwise
+refusals: 142 refusals: 142 messages differ only by the token, 0 otherwise

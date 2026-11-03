@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v293) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v294) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -254,16 +254,16 @@ str_dot_exe  db ".exe", 0
     r32_flag_ffi db "--ffi",0
     r32_empty db 0
     r38_flag_fail db "--fail-alloc",0
-    r48_msg_near db ": Sutram Error [E_PARSE]: shabd '",0
+    r48_msg_near db ": Sutram truti [E_PARSE]: shabd '",0
     r48_msg_end db "'",10,0
     r48_msg_ok db "Sutram pariksha: shuddham (nirgata-patram na rachitam)",10,0
     r48_msg_errors db "Sutram pariksha: doshah praptah; nirgata-patram na rachitam",10,0
     r48_msg_eof db "<patra-ant>",0
-    r50_msg_setchar_arity db "Sutram Error: akshar_rakh: 3 tark avashyak",10,0
-    r52_msg_dvaram_arity db "Sutram Error: dvaram: 2 va 3 tark avashyak",10,0
-    r52_msg_charat_arity db "Sutram Error: akshar: 2 tark avashyak",10,0
-    r52_msg_charcode_arity db "Sutram Error: aksharank: 1 va 2 tark avashyak",10,0
-    r54_msg_arity db "Sutram Error: tark sankhya hastakshar nasti",10,0   ; R111: "se bhinn" -> "nasti" (no code prints it)
+    r50_msg_setchar_arity db "Sutram truti: akshar_rakh: 3 tark avashyak",10,0
+    r52_msg_dvaram_arity db "Sutram truti: dvaram: 2 va 3 tark avashyak",10,0
+    r52_msg_charat_arity db "Sutram truti: akshar: 2 tark avashyak",10,0
+    r52_msg_charcode_arity db "Sutram truti: aksharank: 1 va 2 tark avashyak",10,0
+    r54_msg_arity db "Sutram truti: tark sankhya hastakshar nasti",10,0   ; R111: "se bhinn" -> "nasti" (no code prints it)
     ; R54 builtin signature min,max in declaration ID order.
 r54_builtin_arity_table:
     db 0,0               ; 0 reserved0
@@ -315,27 +315,27 @@ r54_builtin_arity_table:
     db 3,3               ; 46 dvaram_likha (FIXALL (a))
     db 0,0               ; 47 parimana (R107)
 
-    r48_msg_undefined db ": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
+    r48_msg_undefined db ": Sutram truti [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
     ; R4: a read of a name that was never declared or assigned is an error
     ; (it used to be auto-allocated and read as 0: a wrong answer, no diagnostic).
-    r4_msg_undef db ": Sutram Error [E_UNDEFINED_NAME]: agyat naam '",0
+    r4_msg_undef db ": Sutram truti [E_UNDEFINED_NAME]: agyat naam '",0
     r4_msg_hint_decl db "Sanket: prayogat purvam ghoshana avashyaki: vitti ",0
     r4_msg_hint_decl2 db " = ...",10,0
     r4_msg_hint_old db "Sanket: '",0
     r4_msg_hint_old2 db "' puratanah kunjishabdah (v157 tah purvam); navinah: '",0
     r4_msg_hint_old3 db "'",10,0
-    r5_msg_field db ": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '",0
-    r7_msg_dup db ": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '",0
+    r5_msg_field db ": Sutram truti [E_UNKNOWN_FIELD]: agyat avayava '",0
+    r7_msg_dup db ": Sutram truti [E_DUPLICATE_NAME]: punah ghoshana '",0
     r7_msg_dup_hint db "' purvam eva ghoshitam; navinam manam datum: ",0
     r7_msg_dup_hint2 db " = ...",10,0
-    r7_msg_field_amb db ": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '",0
+    r7_msg_field_amb db ": Sutram truti [E_AMBIGUOUS_FIELD]: avayava '",0
     r7_msg_field_amb_hint db "' dvayoh rachanayoh bhinne sthane asti; pratyekasyam rachanayam bhinnam nama dadatu",10,0
     r7_msg_field_dup_hint db "' asyam rachanayam purvam eva asti",10,0
-    r7_msg_arity db ": Sutram Error [E_ARITY]: '",0
+    r7_msg_arity db ": Sutram truti [E_ARITY]: '",0
     r7_msg_arity2 db "' ityasmai ",0
     r7_msg_arity3 db " tarkah dattah; hastakshare ",0
     r7_msg_arity_hint db "Sanket: prakriyayah paribhashayam yavantah tarkah santi, tavantah eva dadatu",10,0
-    r7_msg_mod_missing db "Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: ",0
+    r7_msg_mod_missing db "Sutram truti [E_MODULE_MISSING]: yoj patra aprapt: ",0
     r7_msg_mod_missing2 db 10,"Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet",10,0
     r7_msg_hint_block db "' kasminshchit khande { } chakra-madhye va ghoshitam; tatah bahih na drishyate",10,0
     r5_msg_field_hint db "Sanket: '",0
@@ -356,7 +356,7 @@ r54_builtin_arity_table:
     r4_o_parig db "parigrah",0
     r4_o_nishk db "nishkriya",0
     r4_o_to db "to",0
-    msg_err_line db 10, "Sutram Error: vyakaran dosh, pankti ", 0
+    msg_err_line db 10, "Sutram truti: vyakaran dosh, pankti ", 0
     msg_err_near db ", shabd '", 0
     msg_err_end  db "'", 10, 0
     msg_err_eof  db "patra-ant", 0
@@ -369,25 +369,25 @@ r54_builtin_arity_table:
     msg_diag_caret db "^", 10, 0
     msg_err_arg_limit db "Sanket: prakriya adhikatamam 6 tarkan grihnati.", 10, 0
     msg_err_duplicate_func db "Sanket: prakriyayah dvih paribhasha (nama-sangharshah).", 10, 0
-    msg_duplicate_func db "Sutram Error: punah prakriya paribhasha: ", 0
-    msg_undefined_func db "Sutram Error: agyat prakriya: ", 0
-    msg_array_oob db "Sutram Error: mala ank seema atikram", 10, 0
+    msg_duplicate_func db "Sutram truti: punah prakriya paribhasha: ", 0
+    msg_undefined_func db "Sutram truti: agyat prakriya: ", 0
+    msg_array_oob db "Sutram truti: mala ank seema atikram", 10, 0
     ; R80: arithmetic that used to lie - division by zero crashed (SIGFPE, exit 136, no message),
     ; and a literal or a constant expression past int64 wrapped silently
     ; Run time (the line is the user's: from the origin map, so a program with yoj is not offset
     ; by the library's lines; a division inside another file names that file).
-    r80_msg_div_a db "Sutram Error [E_SHUNYA_BHAJAN]: pankti ", 0
+    r80_msg_div_a db "Sutram truti [E_SHUNYA_BHAJAN]: pankti ", 0
     r80_msg_div_b db " - shunye vibhajanam na sambhavati", 10, 0
     r80_msg_mod_b db " - shunyena sheshah na sambhavati", 10, 0
     r80_msg_in_a  db " (", 0
     r80_msg_in_b  db ")", 0
     ; Compile time: printed after file:line:col, then the source line and a caret, as every
     ; other compile error.
-    r80_hdr_div   db ": Sutram Error [E_SHUNYA_BHAJAN]: ", 0
+    r80_hdr_div   db ": Sutram truti [E_SHUNYA_BHAJAN]: ", 0
     r80_txt_div   db "shunye vibhajanam na sambhavati", 10, 0
     r80_txt_mod   db "shunyena sheshah na sambhavati", 10, 0
     r80_hint_div  db "Sanket: bhajakah shunyam na bhavet", 10, 0
-    r80_hdr_ovf   db ": Sutram Error [E_ATIPRAVAH]: ", 0
+    r80_hdr_ovf   db ": Sutram truti [E_ATIPRAVAH]: ", 0
     r80_txt_lit   db "ankah 64-bit purnanka-seemam atikramati", 10, 0
     r80_hint_lit  db "Sanket: purnankah -9223372036854775808 tah 9223372036854775807 paryantam", 10, 0
     r80_txt_fold  db "sthira-gananayah phalam 64-bit purnanka-seemam atikramati", 10, 0
@@ -397,10 +397,10 @@ r54_builtin_arity_table:
     ; the builtins of the trust base. What the checker cannot verify is refused, not warned.
     r81_word      db "parikshita", 0
     r81_mukhya    db "mukhya", 0
-    r81_hdr_call  db ": Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya '", 0
-    r81_hdr_karya db ": Sutram Error [E_APARIKSHITA_KARYA]: parikshita prakriya '", 0
-    r81_hdr_smriti db ": Sutram Error [E_APARIKSHITA_SMRITI]: parikshita prakriya '", 0
-    r81_hdr_sthan db ": Sutram Error [E_PARIKSHITA_STHAN]: ", 0
+    r81_hdr_call  db ": Sutram truti [E_APARIKSHITA_AHVAN]: parikshita prakriya '", 0
+    r81_hdr_karya db ": Sutram truti [E_APARIKSHITA_KARYA]: parikshita prakriya '", 0
+    r81_hdr_smriti db ": Sutram truti [E_APARIKSHITA_SMRITI]: parikshita prakriya '", 0
+    r81_hdr_sthan db ": Sutram truti [E_PARIKSHITA_STHAN]: ", 0
     r81_txt_call  db "' aparikshitam prakriyam '", 0
     r81_txt_call2 db "' ahvayati", 10, 0
     r81_hint_call db "Sanket: parikshita prakriya keval parikshita prakriyah ahvayitum shaknoti - '", 0
@@ -424,17 +424,17 @@ r54_builtin_arity_table:
     r81_k_rawlikha db "likha(fd, smriti, sankhya)", 0
     r81_k_nirm    db "nirmmita", 0
     ; R82: a kosh made in a mandapa lives as long as the block (generation-checked)
-    r82_m1 db "Sutram Error [E_KOSH_MANDAPA]: prakriya '", 0
+    r82_m1 db "Sutram truti [E_KOSH_MANDAPA]: prakriya '", 0
     r82_m2 db "' - kosh '", 0
     r82_m3 db "' pankti ", 0
     r82_m4 db " mandape rachitah; sa mandapah samaptah", 10, 0
     r82_m5 db "Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam", 10, 0
     r82_lname db "0kl", 0
     ; R87: a written fraction stored into a whole-number vitti was silently truncated
-    r87_hdr db ": Sutram Error [E_DASHAM_VITTI]: ", 0
+    r87_hdr db ": Sutram truti [E_DASHAM_VITTI]: ", 0
     r87_txt db "dashamah sankhya purnanka-vittau na sthapyate - bhinnam lupyeta", 10, 0
     r87_hint db "Sanket: vitti purnankanam eva; dashamaya 'dasham' likhyatam: dasham f = 3.5", 10, 0
-    r161_narrow_msg db "Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati",10,0
+    r161_narrow_msg db "Sutram truti [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati",10,0
     ; mov rdx,[r8-40] ; mov [rax],rdx ; mov rdx,[r8-32] ; mov [rax+8],rdx ; mov rdx,[r8-24] ;
     ; mov [rax+16],rdx ; mov [rax+24],r9 ; mov [rax+32],r11 ; lea r10,[rax+40]
     r82_grow_bytes db 0x49,0x8B,0x50,0xD8, 0x48,0x89,0x10, 0x49,0x8B,0x50,0xE0, 0x48,0x89,0x50,0x08
@@ -470,14 +470,14 @@ r54_builtin_arity_table:
     r107_e2_len equ $ - r107_e2
     r107_e3 db 0x4D,0x89,0xDA, 0xE9
     r107_e3_len equ $ - r107_e3
-    r96_hdr db ": Sutram Error [E_CHAKRA_DASHAM]: ", 0
+    r96_hdr db ": Sutram truti [E_CHAKRA_DASHAM]: ", 0
     r96_txt db "chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati", 10, 0
     r96_hint db "Sanket: chakra i = 0 tak 3 likhyatam; dashamaya yavat upayujyatam", 10, 0
-    r94_hdr db ": Sutram Error [E_DASHAM_KRIYA]: ", 0
+    r94_hdr db ": Sutram truti [E_DASHAM_KRIYA]: ", 0
     r94_txt db "dashama-sankhyayam % & | ^ << >> kriyah na sambhavanti", 10, 0
     r94_hint db "Sanket: etah purnanka-kriyah - vitti upayujyatam", 10, 0
     ; FIXALL (d): scalar locals declared without a value are refused (E_MULYA_VINA).
-    rfx_hdr db ": Sutram Error [E_MULYA_VINA]: ", 0
+    rfx_hdr db ": Sutram truti [E_MULYA_VINA]: ", 0
     rfx_vitti db "vitti", 0
     rfx_dasham db "dasham", 0
     rfx_q db " '", 0
@@ -489,19 +489,19 @@ r54_builtin_arity_table:
     ; door/opening, completing the dvaram/band/grahan fd family); R100's
     ; suggested likha_fd mixes in the English abbreviation "fd". Renaming
     ; is one table entry plus this hint.
-    rfx_lk_hdr db ": Sutram Error [E_LIKHA_TRAYA]: ", 0
+    rfx_lk_hdr db ": Sutram truti [E_LIKHA_TRAYA]: ", 0
     rfx_lk_txt db "tri-mulya-likha prathamam uddharanam apeksate", 10, 0
     rfx_lk_hint db "Sanket: smriti-lekhanaya dvaram_likha(fd, smriti, sankhya) iti prayujyatam", 10, 0
     ; FIXALL (b/c): string ==/!=/+ refusal strings (Sanskrit-only, outside
     ; the per-pack sandesh table, like the R52 hints; transliterations are
     ; best-effort pending native-speaker review, as with all new strings).
-    rfx_bc_hdr_tul db ": Sutram Error [E_VARTANI_TUL]: ", 0
+    rfx_bc_hdr_tul db ": Sutram truti [E_VARTANI_TUL]: ", 0
     ; R105: '==' / '!=' between two strings compare their contents. Refused only when one side
     ; is a string and the other is not (or holds a number at one point and a string at another).
     rfx_bc_txt_eq db "'==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam", 10, 0
     rfx_bc_txt_ne db "'!=' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam", 10, 0
     rfx_bc_hint_tul db "Sanket: vartani vartanya saha tulyate (s == ", 34, "ab", 34, "); ekasmin vitti vartani sankhya cha na sthapyatam", 10, 0
-    rfx_bc_hdr_cat db ": Sutram Error [E_VARTANI_CAT]: ", 0
+    rfx_bc_hdr_cat db ": Sutram truti [E_VARTANI_CAT]: ", 0
     ; R105: '+' between two strings makes a new string. Refused only for a string plus a dasham,
     ; a kosh, or a variable that holds a number at one point and a string at another.
     rfx_bc_txt_add db "'+' vartanya saha kevalam vartani (navina vartani) athava purnankam (sthana-gati) yojayati", 10, 0
@@ -524,7 +524,7 @@ r54_builtin_arity_table:
     db 0x48,0x8B,0x74,0x24,0x10, 0x48,0x8B,0x0C,0x24, 0xF3,0xA4, 0xC6,0x07,0x00, 0x48,0x83,0xC4,0x20
     rfx2_v5_len equ $ - rfx2_v5
     rfx_bc_txt_ord db "'<' '>' '<=' '>=' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam", 10, 0
-    rfx_bc_hdr_gan db ": Sutram Error [E_VARTANI_GANIT]: ", 0
+    rfx_bc_hdr_gan db ": Sutram truti [E_VARTANI_GANIT]: ", 0
     rfx_bc_txt_gan db "vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na", 10, 0
     rfx_bc_hint_gan db "Sanket: dvayoh vartanyoh '+' navinam vartanim rachayati; '-' '*' '/' sankhyabhih eva", 10, 0
     ; R105 string ordering: rax = (first differing byte of a) - (that of b), 0 when equal.
@@ -533,21 +533,21 @@ r54_builtin_arity_table:
     db 0x48,0xFF,0xC7, 0x48,0xFF,0xC6, 0xEB,0xEA, 0x89,0xC8, 0x29,0xD0, 0x48,0x63,0xC0
     rfx2_o1_len equ $ - rfx2_o1
     ; R106 (Muse R101 traps 3 and 4): a string as a condition, a kosh as an operand.
-    rfx_bc_hdr_sat db ": Sutram Error [E_VARTANI_SATYA]: ", 0
+    rfx_bc_hdr_sat db ": Sutram truti [E_VARTANI_SATYA]: ", 0
     rfx_bc_txt_sat db "vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate", 10, 0
     rfx_bc_hint_sat db "Sanket: yadi (s != ", 34, 34, ") - rikta na cet; yadi (s == ", 34, "ab", 34, ") - samam cet", 10, 0
-    rfx_bc_hdr_kosh db ": Sutram Error [E_KOSH_GANIT]: ", 0
+    rfx_bc_hdr_kosh db ": Sutram truti [E_KOSH_GANIT]: ", 0
     rfx_bc_txt_kosh db "kosh-upari ganitam tulana va na sambhavati - kosh sankhya na", 10, 0
     rfx_bc_hint_kosh db "Sanket: k[i] tasya mulyam; kosh_len(k) tasya dirghata - tani tulyantam", 10, 0
     r107_cname db "0parimana", 0           ; R107: bytes held by kosh regions (only if parimana() is used)
     r107_cidx dq -1
     ; R107: a kosh made in a mandapa does not leave it (compile time). The runtime form, for what
     ; the compiler cannot see (a prakriya that keeps it), is R82's E_KOSH_MANDAPA, unchanged.
-    r107_msg_var db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate", 10
+    r107_msg_var db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate", 10
     db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
-    r107_msg_mem db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - smritau na likhyate", 10
+    r107_msg_mem db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - smritau na likhyate", 10
     db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
-    r107_msg_ret db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - nivartanam na shakyate", 10
+    r107_msg_ret db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - nivartanam na shakyate", 10
     db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
     ; R107 parimana(): (cur - base) + (sima - end) of the arena, + the kosh regions' counter
     r107_p1 db 0x48,0x3D,0x00,0x10,0x00,0x00, 0x72,0x2F, 0x50
@@ -555,23 +555,23 @@ r54_builtin_arity_table:
     r107_p3 db 0x48,0x89,0xC1, 0x48,0x2B,0x0C,0x24, 0x48,0x2D,0x00,0x00,0x00,0x40, 0x48,0x8B,0x54,0x24,0x08
     db 0x48,0x29,0xC2, 0x48,0x8D,0x04,0x11, 0x48,0x83,0xC4,0x10, 0xEB,0x02, 0x31,0xC0
     r107_p3_len equ $ - r107_p3
-    r108_msg_keep db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
+    r108_msg_keep db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
     db "Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
-    r108_msg_full db "Sutram Error: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
-    rfx_bc_hdr_mala db ": Sutram Error [E_MALA_GANIT]: ", 0
-    r113_hdr db ": Sutram Error [E_RACHANA_GANIT]: ", 0
+    r108_msg_full db "Sutram truti: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
+    rfx_bc_hdr_mala db ": Sutram truti [E_MALA_GANIT]: ", 0
+    r113_hdr db ": Sutram truti [E_RACHANA_GANIT]: ", 0
     r113_txt db "rachana-upari ganitam tulana va na sambhavati - rachana sankhya na", 10, 0
     r113_hint db "Sanket: p.x tasya avayavasya mulyam - tani tulyantam", 10, 0
     rfx_bc_txt_mala db "mala-upari ganitam tulana va na sambhavati - mala sankhya na", 10, 0
     rfx_bc_hint_mala db "Sanket: a[i] tasyah mulyam - tani tulyantam", 10, 0
-    rfx2_msg_cap db "Sutram Error: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
-    rfx2_msg_nomem db "Sutram Error [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
+    rfx2_msg_cap db "Sutram truti: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
+    rfx2_msg_nomem db "Sutram truti [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
     rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
     ; FIXALL (rec): runaway-recursion message (Sanskrit-only, outside the
     ; per-pack sandesh table). The message is embedded in the emitted
     ; program by the function-prologue guard; its length drives the guard's
     ; jump displacements (see RFX_REC_TRAP_LEN), so NASM computes them.
-    rfx_rec_msg db "Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram", 10
+    rfx_rec_msg db "Sutram truti [E_GAHANATA]: aahvan-gahanata seema atikram", 10
     rfx_rec_msg_len equ $ - rfx_rec_msg
     RFX_REC_THRESH equ 8339456 ; 8 MiB stack minus 48 KiB margin: below every
     ; usage ever observed to survive (depth 4020 = 8365776 bytes), so the
@@ -583,9 +583,9 @@ r54_builtin_arity_table:
     r87_absmask dq 0x7FFFFFFFFFFFFFFF, 0x7FFFFFFFFFFFFFFF
     align 8
     r80_ten dq 10.0
-    msg_kosh_required db "Sutram Error: kosh prakriya hetu kosh-vitti avashyak", 10, 0
+    msg_kosh_required db "Sutram truti: kosh prakriya hetu kosh-vitti avashyak", 10, 0
 %ifdef SUTRAM_R65_TRAP_INT
-    r65_msg_prefix db "Sutram Error [E_INTEGER_TRAP] ",0
+    r65_msg_prefix db "Sutram truti [E_INTEGER_TRAP] ",0
     r65_msg_colon db ":",0
     r65_msg_add db ": yog atipravah",10,0
     r65_msg_sub db ": nyun atipravah",10,0
@@ -595,33 +595,33 @@ r54_builtin_arity_table:
     r65_msg_div_overflow db ": bhajan atipravah",10,0
     r65_msg_mod_overflow db ": shesh atipravah",10,0
 %endif
-    msg_kosh_empty db "Sutram Error: riktat koshat kosh_pop", 10, 0
-    msg_kosh_peek_empty db "Sutram Error: riktat koshat kosh_peek", 10, 0
-    msg_kosh_dequeue_empty db "Sutram Error: riktat koshat kosh_dequeue", 10, 0
-    msg_kosh_param_type db "Sutram Error: kosh tark: tatv prakar bhinn", 10, 0
-    msg_kosh_param_push db "Sutram Error: kosh-tarke kosh_push asamarthitam", 10, 0
-    r23_msg_slice_base db "Sutram Error: vibhag: mala, kosh va vibhag apekshita", 10, 0
-    r23_msg_slice_return db "Sutram Error: vibhag prakriyayah na pratyarpaniyah", 10, 0
+    msg_kosh_empty db "Sutram truti: riktat koshat kosh_pop", 10, 0
+    msg_kosh_peek_empty db "Sutram truti: riktat koshat kosh_peek", 10, 0
+    msg_kosh_dequeue_empty db "Sutram truti: riktat koshat kosh_dequeue", 10, 0
+    msg_kosh_param_type db "Sutram truti: kosh tark: tatv prakar bhinn", 10, 0
+    msg_kosh_param_push db "Sutram truti: kosh-tarke kosh_push asamarthitam", 10, 0
+    r23_msg_slice_base db "Sutram truti: vibhag: mala, kosh va vibhag apekshita", 10, 0
+    r23_msg_slice_return db "Sutram truti: vibhag prakriyayah na pratyarpaniyah", 10, 0
     r24_msg_method_hint db "Sanket: vidheh purvam ghoshana avashyaki: rachana ",0
-    r25_msg_phal_return db "Sutram Error: phal-prakriya: prati siddhi va dosh bhavet", 10, 0
-    r25_msg_phal_unused db "Sutram Error: phal-prakriya prasar vina ahuta", 10, 0
-    r25_msg_prasar_call db "Sutram Error: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
-    r25_msg_prasar_where db "Sutram Error: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
-    r26_msg_handle_call db "Sutram Error: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
-    r72_msg_escape db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate", 10
+    r25_msg_phal_return db "Sutram truti: phal-prakriya: prati siddhi va dosh bhavet", 10, 0
+    r25_msg_phal_unused db "Sutram truti: phal-prakriya prasar vina ahuta", 10, 0
+    r25_msg_prasar_call db "Sutram truti: prasar: phal-prakriya-ahvanam apekshitam", 10, 0
+    r25_msg_prasar_where db "Sutram truti: prasar kevalam phal-prakriya-madhye mukhya-madhye va", 10, 0
+    r26_msg_handle_call db "Sutram truti: yadi dosh: phal-prakriya-ahvanam apekshitam", 10, 0
+    r72_msg_escape db "Sutram truti [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate", 10
     r73_msg_limit db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
-    r73_msg_escape_var db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate", 10
+    r73_msg_escape_var db "Sutram truti [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate", 10
     db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
-    r73_msg_escape_mem db "Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate", 10
+    r73_msg_escape_mem db "Sutram truti [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate", 10
     db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
-    r73_msg_full db "Sutram Error: kshetra purnam - mandapa-smritih samapta", 10, 0
+    r73_msg_full db "Sutram truti: kshetra purnam - mandapa-smritih samapta", 10, 0
     ; R75: a negative size. Written as a number, refused when compiled; computed, refused
     ; when a mandapa's nirmmita runs (it would otherwise give 0).
-    r75_msg_neg_lit db "Sutram Error [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati", 10
+    r75_msg_neg_lit db "Sutram truti [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati", 10
     db "Sanket: nirmmita(n) - n shunyam va dhanatmakam bhavet", 10, 0
-    r75_msg_neg_run db "Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati", 10, 0
+    r75_msg_neg_run db "Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati", 10, 0
     ; R77/R78: p = nirmmita(BYTES), p[IDX] with a constant IDX past the end
-    r78_msg_a db "Sutram Error [E_NIRMMITA_SEEMA]: pankti ", 0
+    r78_msg_a db "Sutram truti [E_NIRMMITA_SEEMA]: pankti ", 0
     r78_msg_b db " - ", 0
     r78_msg_c db " nirmmita(", 0
     r78_msg_d db ") bahih", 10, "Sanket: nirmmita bhaita-sankhyam ganayati, ", 0
@@ -631,7 +631,7 @@ r54_builtin_arity_table:
     r78_msg_neg db "] - rnatmakah ankah", 10, 0
     r78_s_lb db "[", 0
     ; R77 (Muse R77): a body's indentation that mixes tabs and spaces cannot be compared
-    r77_msg_mix_a db "Sutram Error [E_ANTARAL_MISHRA]: pankti ", 0
+    r77_msg_mix_a db "Sutram truti [E_ANTARAL_MISHRA]: pankti ", 0
     r77_msg_mix_b db " - pankti-arambhe tab space cha mishritau: purva-panktya saha tulana na shakyate", 10
     db "Sanket: ekasmin khande sarvatra tab athava sarvatra space - ekam eva upayujyatam", 10, 0
     r78_rb db "]", 0
@@ -642,10 +642,10 @@ r54_builtin_arity_table:
     db '0', 'm', '0' + (r73_i / 10), '0' + (r73_i % 10), 0
 %assign r73_i r73_i + 1
 %endrep
-    r28_msg_object_globals db "Sutram Error: vastu-patre ghatak-star vitti asamarthita", 10, 0
-    r32_msg_ffi_bad db "Sutram Error: videshi-ghoshana-patram dushtam, pankti ", 0
-    r32_msg_ffi_clash db "Sutram Error: videshi prakriya-nama anyatra api: ", 0
-    r33_msg_ffi_kind db "Sutram Error [E_FFI_KIND]: videshi prakriya ", 0
+    r28_msg_object_globals db "Sutram truti: vastu-patre ghatak-star vitti asamarthita", 10, 0
+    r32_msg_ffi_bad db "Sutram truti: videshi-ghoshana-patram dushtam, pankti ", 0
+    r32_msg_ffi_clash db "Sutram truti: videshi prakriya-nama anyatra api: ", 0
+    r33_msg_ffi_kind db "Sutram truti [E_FFI_KIND]: videshi prakriya ", 0
     r33_msg_ffi_kind2 db ": ghoshitat prakarat bhinnah tarkah ", 0
     r33_msg_ffi_void db ": mulyam na pratyarpayati", 10, 0
 
@@ -721,7 +721,7 @@ r54_builtin_arity_table:
                      db "  nirgat                  kholat nirgacchatu", 10, 0
     repl_prog_hdr db "mukhya() {", 10, 0
     repl_prog_ftr db 10, "}", 10, 0
-    msg_open_err  db "Sutram Error: nivesh patra aprapt", 10, 0
+    msg_open_err  db "Sutram truti: nivesh patra aprapt", 10, 0
     msg_ok        db "Siddh: ", 0
     msg_bytes     db " baait sankalit", 10, 0
     dbg_pfb       db 0
@@ -1273,18 +1273,18 @@ r54_builtin_arity_table:
     bn_lkhb      db "lkhb", 0
     bn_shabda    db "shabda", 0
 
-    msg_namespace_error db "Sutram Error: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)", 10, 0
-    msg_namespace_module_missing db "Sutram Error: ghatak patra aprapt", 10, 0
-    msg_namespace_alias_reuse db "Sutram Error: upanaam purv-niyukt (anya ghatak)", 10, 0
-    r51_alias_conflict db ": Sutram Error [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya ghatak)",10,0
-    msg_namespace_func_limit db "Sutram Error: ghatak prakriya-naam seema atikram", 10, 0
-    msg_import_overflow db "Sutram Error: vistarit srot seema atikram", 10, 0
+    msg_namespace_error db "Sutram truti: ashuddh yoj (roop: ghatak@upanaam, upanaam 31 baait tak)", 10, 0
+    msg_namespace_module_missing db "Sutram truti: ghatak patra aprapt", 10, 0
+    msg_namespace_alias_reuse db "Sutram truti: upanaam purv-niyukt (anya ghatak)", 10, 0
+    r51_alias_conflict db ": Sutram truti [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya ghatak)",10,0
+    msg_namespace_func_limit db "Sutram truti: ghatak prakriya-naam seema atikram", 10, 0
+    msg_import_overflow db "Sutram truti: vistarit srot seema atikram", 10, 0
     graph_v1_header db '# sutram-module-v1', 0
     graph_msg_cycle db 'E_MODULE_CYCLE', 0
     graph_msg_missing db 'E_MODULE_MISSING', 0
     graph_msg_limit db 'E_MODULE_LIMIT', 0
     graph_msg_invalid db 'E_MODULE_INVALID', 0
-    graph_prefix db ': Sutram Error [', 0
+    graph_prefix db ': Sutram truti [', 0
     graph_close db ']: ', 0
     graph_arrow db ' -> ', 0
     graph_colon db ':', 0
@@ -1295,27 +1295,27 @@ r54_builtin_arity_table:
     graph_missing_prefix db 'yoj patra aprapt: ',0
     graph_limit_prefix db 'ghatak/yoj seema atikram',0
     graph_invalid_prefix db 'ashuddh ghatak naam',0
-    msg_ast_overflow db "Sutram Error: vakya-vriksh seema atikram", 10, 0
-    msg_func_params_overflow db "Sutram Error: prakriya tark-suchi seema atikram", 10, 0
-    msg_var_table_overflow db "Sutram Error: vitti-suchi seema atikram", 10, 0
-    msg_func_table_overflow db "Sutram Error: prakriya-suchi seema atikram", 10, 0
-    msg_patch_overflow db "Sutram Error: aahvan-suchi seema atikram", 10, 0
-    msg_func_defs_overflow db "Sutram Error: prakriya paribhasha-suchi seema atikram", 10, 0
-    msg_r9_guna_overflow db "Sutram Error: guna seema atikram (1024)", 10, 0
-    msg_break_patch_overflow db "Sutram Error: chakra-madhye krama seema atikram", 10, 0
-    msg_continue_patch_overflow db "Sutram Error: chakra-madhye agrim seema atikram", 10, 0
-    msg_code_overflow db "Sutram Error: yantra-bhasha seema atikram", 10, 0
-    msg_rachana_overflow db "Sutram Error: rachana-suchi seema atikram", 10, 0
-    msg_rachana_fields_overflow db "Sutram Error: rachana avayava seema atikram", 10, 0
-    msg_block_nesting_overflow db "Sutram Error: khand gahrai seema atikram", 10, 0
-    msg_block_stmt_overflow db "Sutram Error: khand kathan seema atikram", 10, 0
-    r55_msg_proto_duplicate db "Sutram Error: punah prakriya purv-ghoshana",10,0
-    r55_msg_proto_missing db "Sutram Error: prakriya purv-ghoshana paribhasha-rahit",10,0
-    r55_msg_proto_signature db "Sutram Error: prakriya purv-ghoshana va paribhasha bhinn (tark/prakar)",10,0
-    r55_msg_proto_capacity db "Sutram Error: prakriya purv-ghoshana seema atikram",10,0
-    r56_msg_global_capacity db "Sutram Error: ghatak-star vitti seema atikram",10,0
-    r56_msg_global_duplicate db "Sutram Error: punah ghatak-star vitti naam",10,0
-    r56_msg_patch_capacity db "Sutram Error: sarvatrik mulya sandarbh seema atikram",10,0
+    msg_ast_overflow db "Sutram truti: vakya-vriksh seema atikram", 10, 0
+    msg_func_params_overflow db "Sutram truti: prakriya tark-suchi seema atikram", 10, 0
+    msg_var_table_overflow db "Sutram truti: vitti-suchi seema atikram", 10, 0
+    msg_func_table_overflow db "Sutram truti: prakriya-suchi seema atikram", 10, 0
+    msg_patch_overflow db "Sutram truti: aahvan-suchi seema atikram", 10, 0
+    msg_func_defs_overflow db "Sutram truti: prakriya paribhasha-suchi seema atikram", 10, 0
+    msg_r9_guna_overflow db "Sutram truti: guna seema atikram (1024)", 10, 0
+    msg_break_patch_overflow db "Sutram truti: chakra-madhye krama seema atikram", 10, 0
+    msg_continue_patch_overflow db "Sutram truti: chakra-madhye agrim seema atikram", 10, 0
+    msg_code_overflow db "Sutram truti: yantra-bhasha seema atikram", 10, 0
+    msg_rachana_overflow db "Sutram truti: rachana-suchi seema atikram", 10, 0
+    msg_rachana_fields_overflow db "Sutram truti: rachana avayava seema atikram", 10, 0
+    msg_block_nesting_overflow db "Sutram truti: khand gahrai seema atikram", 10, 0
+    msg_block_stmt_overflow db "Sutram truti: khand kathan seema atikram", 10, 0
+    r55_msg_proto_duplicate db "Sutram truti: punah prakriya purv-ghoshana",10,0
+    r55_msg_proto_missing db "Sutram truti: prakriya purv-ghoshana paribhasha-rahit",10,0
+    r55_msg_proto_signature db "Sutram truti: prakriya purv-ghoshana va paribhasha bhinn (tark/prakar)",10,0
+    r55_msg_proto_capacity db "Sutram truti: prakriya purv-ghoshana seema atikram",10,0
+    r56_msg_global_capacity db "Sutram truti: ghatak-star vitti seema atikram",10,0
+    r56_msg_global_duplicate db "Sutram truti: punah ghatak-star vitti naam",10,0
+    r56_msg_patch_capacity db "Sutram truti: sarvatrik mulya sandarbh seema atikram",10,0
 
 %include "src/r11_sandesh.inc"   ; R11: every message per pack (tools/sandesh.py writes it)
 section .bss
@@ -3947,26 +3947,26 @@ expand_imports_pass:
 ; ============================================================
 
 section .data
-mg_e_cycle:   db "Sutram Error [E_MODULE_CYCLE]: yoj chakra: ", 0
-mg_e_noexp1:  db "Sutram Error [E_MODULE_NOT_EXPORTED]: '", 0
+mg_e_cycle:   db "Sutram truti [E_MODULE_CYCLE]: yoj chakra: ", 0
+mg_e_noexp1:  db "Sutram truti [E_MODULE_NOT_EXPORTED]: '", 0
 mg_e_noexp2:  db "' ghatakat '", 0
 mg_e_noexp3:  db "' aniryatam", 10, 0
-mg_e_dupexp1: db "Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat '", 0
+mg_e_dupexp1: db "Sutram truti [E_MODULE_DUP_EXPORT]: punah niryat '", 0
 mg_e_dupexp2: db "', ghatak '", 0
 mg_e_dupexp3: db "'", 10, 0
-mg_e_undef1:  db "Sutram Error [E_EXPORT_UNDEFINED]: niryat '", 0
+mg_e_undef1:  db "Sutram truti [E_EXPORT_UNDEFINED]: niryat '", 0
 mg_e_undef2:  db "' paribhasha-rahit, ghatak '", 0
 mg_e_undef3:  db "'", 10, 0
-mg_e_unknown1: db "Sutram Error [E_EXPORT_UNDEFINED]: agyat sanket '", 0
+mg_e_unknown1: db "Sutram truti [E_EXPORT_UNDEFINED]: agyat sanket '", 0
 mg_e_unknown2: db "', ghatak '", 0
 mg_e_unknown3: db "'", 10, 0
 mg_w_sutra:    db "sutra", 0
-mg_e_depth:   db "Sutram Error [E_MODULE_DEPTH]: yoj gahrai seema atikram", 10, 0
+mg_e_depth:   db "Sutram truti [E_MODULE_DEPTH]: yoj gahrai seema atikram", 10, 0
 r51_colon_space: db ": ", 0
-mg_e_valias1: db "Sutram Error [E_MODULE_V1_ALIAS]: v1 ghatak '", 0
+mg_e_valias1: db "Sutram truti [E_MODULE_V1_ALIAS]: v1 ghatak '", 0
 mg_e_valias2: db "' upanaam avashyak: yoj ", 0
 mg_e_valias3: db "@upanaam", 10, 0
-mg_e_limit:   db "Sutram Error [E_MODULE_LIMIT]: ghatak/yoj seema atikram", 10, 0
+mg_e_limit:   db "Sutram truti [E_MODULE_LIMIT]: ghatak/yoj seema atikram", 10, 0
 mg_root_name: db "__root__", 0
 mg_v1_mark:   db "sutram-module-v1", 0
 mg_arrow:     db " -> ", 0
@@ -8686,7 +8686,7 @@ r96_check_for_float:
 ;; R103: `mandapa parimita N { ... }` - a block with a byte budget.
 ;; The block's own nirmmita (written in its text, the scratch side) may use at most N bytes in
 ;; all; one that would pass the budget stops the program before it is given memory:
-;;   Sutram Error [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)
+;;   Sutram truti [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)
 ;; and exit 1. Nested budgets all hold (an inner block's nirmmita counts against every budgeted
 ;; block around it). Like the block itself, it covers what is written inside it: a kosh, or what a
 ;; called prakriya allocates, is not counted. Linux ELF only, as the block (PE: inert, unchecked).
@@ -8694,10 +8694,10 @@ r96_check_for_float:
 section .data
     r103_w_lat db "parimita", 0
     r103_w_dev db 0xE0,0xA4,0xAA,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAE,0xE0,0xA4,0xBF,0xE0,0xA4,0xA4, 0  ; परिमित
-    r103_msg_a db "Sutram Error [E_PARIMITA]: pankti ", 0
+    r103_msg_a db "Sutram truti [E_PARIMITA]: pankti ", 0
     r103_msg_b db " - mandape parimitat adhikam nirmmitam na sambhavati (parimitih ", 0
     r103_msg_c db " baait)", 10, 0
-    r103_hdr_bad db ": Sutram Error [E_PARIMITA]: ", 0
+    r103_hdr_bad db ": Sutram truti [E_PARIMITA]: ", 0
     r103_txt_bad db "'mandapa parimita' dhanatmakam purnankam apekshate (baait)", 10, 0
     r103_hint_bad db "Sanket: mandapa parimita 65536 { ... }", 10, 0
     ; push rsi ; push rax  /  sub rax,[rsp] ; mov rcx, imm64 (follows)
@@ -11471,8 +11471,8 @@ r80_src_valid:
     xor eax, eax                   ; ZF = 1 (rax restored below is not needed by callers)
     ret
 
-; r80_compile_error(rdi = position in source_buf, rsi = ": Sutram Error [..]: ", rdx = text,
-; rcx = Sanket line or 0): file:line:col: Sutram Error [..]: text / the source line / a caret /
+; r80_compile_error(rdi = position in source_buf, rsi = ": Sutram truti [..]: ", rdx = text,
+; rcx = Sanket line or 0): file:line:col: Sutram truti [..]: text / the source line / a caret /
 ; Sanket - the form of every other compile error. Exits 1.
 r80_compile_error:
     push rsi
@@ -13184,7 +13184,7 @@ set_lang_id:
 parse_error:
     cmp qword [rel r48_mode], 0
     jne _start.r48_parse_failure
-    ; Sutram Error: parse error at line N near token 'X'
+    ; Sutram truti: parse error at line N near token 'X'
     push rbx
     lea rbx, [rel token_arr]
     mov r9, [rel token_idx]
@@ -13798,7 +13798,7 @@ r7_check_arity:
     mov rax,[rbx+8]
     cmp rax,[r14+8]
     je .next_call
-    ; report: file:L:C: Sutram Error [E_ARITY]: 'f' ko N tark diye; hastakshar me M
+    ; report: file:L:C: Sutram truti [E_ARITY]: 'f' ko N tark diye; hastakshar me M
     mov rax,[rbx+16]
     mov rdi,[rax+32]
     call r51_print_origin

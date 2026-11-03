@@ -1,4 +1,20 @@
-> **Older changelog entries**, "v435" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+> **Older changelog entries**, "v280" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
+
+## v280 (Claude, R90) - NaN compares as IEEE says, a `dasham` divided by zero stops, `likha` keeps one line after a division
+
+- **Integrated ChatGPT's R159 NaN patch** (`ROUND-159-NAN-COMPARE.patch`, unchanged): `==`, `<`, `<=` are false and
+  `!=` true when either side is NaN; both code paths (general and register). Reviewed: `dl` is runtime scratch
+  (the general path already pops into `rdx`). Its oracle: v279 5/10, v280 10/10, ELF and PE, and in the
+  peephole and XMM-cache builds.
+- **Integrated ChatGPT's R159 float-division patch** (`ROUND-159-FLOAT-DIVISION.patch`, unchanged): a `dasham`
+  divided by `+0.0` or `-0.0` stops with `E_SHUNYA_BHAJAN`; NaN divisors are not mistaken for zero; the three
+  division fast paths fall back to the checked general path. Its oracle: v279 1/8, v280 8/8.
+- **Fixed (mine, since v276):** the division check's own message calls consumed `lkhb`'s no-newline flag, so
+  `likha("y ", a / b, a % b, 5)` printed each value on its own line. `r80_emit_div_fatal` now saves it.
+- **Not integrated:** ChatGPT's narrowing prototype - it refuses 25 tree programs, every one that imports
+  `madhava` or `roop`, at a file-level position inside the library.
+- **Goldens:** 291 (NaN, six operators), 292 (likha after a division), 293 (float division by zero); 289 and
+  ChatGPT's NaN oracle now make inf and NaN by overflow, not by dividing by zero.
 
 ## v435 - the float blocker is closed, and it was my test that was wrong
 

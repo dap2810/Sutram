@@ -80,7 +80,7 @@ def run(compiler,boundary):
    def negative():
     src=ROOT/'examples/r71/boundary_bad.sm';out=work/'must-not-exist.bin'
     p=execute([boundary,src,out],ROOT,env)
-    wanted=f'Sutram Error [E_UNSAFE_BOUNDARY]: {src}:3: unchecked operation requires asurakshit {{ ... }}\n'.encode()
+    wanted=f'Sutram truti [E_UNSAFE_BOUNDARY]: {src}:3: unchecked operation requires asurakshit {{ ... }}\n'.encode()
     if p.returncode!=1 or p.stdout!=wanted or p.stderr!=b'' or os.path.lexists(out):raise AssertionError(f'bad rejection: exit={p.returncode}, stdout={p.stdout!r}, stderr={p.stderr!r}, output={os.path.lexists(out)}')
     return {'exit':p.returncode,'stdout_hex':p.stdout.hex(),'executable_created':False}
    check('boundary_negative',negative)

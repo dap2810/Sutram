@@ -205,7 +205,7 @@ foreach ($n in $names) {
     elseif (Test-Path -LiteralPath $cfF) {
         $want = ([IO.File]::ReadAllText($outF, [Text.Encoding]::UTF8)).Replace("`r`n", "`n")
         $firstWant = ($want -split "`n" | Where-Object { $_ -match 'Error' } | Select-Object -First 1)
-        if ($firstWant) { $key = ($firstWant -replace '^.*?(Sutram Error[^:]*:?)', '$1'); $key = $key.Substring(0, [Math]::Min(40, $key.Length)) } else { $key = 'Error' }
+        if ($firstWant) { $key = ($firstWant -replace '^.*?(Sutram truti[^:]*:?)', '$1'); $key = $key.Substring(0, [Math]::Min(40, $key.Length)) } else { $key = 'Error' }
         if ($got.Contains($key) -or ($key -eq 'Error' -and $got -match 'Error|Truti|truti')) { $verdict = 'MATCH' } else { $verdict = 'DIFFER'; $detail = 'expected the diagnostic: ' + $key }
     } else {
         $want = ([IO.File]::ReadAllText($outF, [Text.Encoding]::UTF8)).Replace("`r`n", "`n")

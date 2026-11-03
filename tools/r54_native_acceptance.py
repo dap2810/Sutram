@@ -38,7 +38,7 @@ def case(name,kind,args,valid):
         else:
             p=execute([COMP,"--check",src],wd)
             print("R54_INVALID",name,kind,"exit",p.returncode,"stdout",repr(p.stdout[:180]),flush=True)
-            assert p.returncode!=0 and "Sutram Error" in p.stdout and not exe.exists(),(name,kind,p.returncode,p.stdout,p.stderr)
+            assert p.returncode!=0 and "Sutram truti" in p.stdout and not exe.exists(),(name,kind,p.returncode,p.stdout,p.stderr)
 def main():
     assert len(SPECS)==40
     for name,lo,hi,args in SPECS:
@@ -64,13 +64,13 @@ def main():
         assert x.returncode==0 and x.stdout=="258\n2\n66\n77\n0\n65\n65\n79\n75\n89\n4\n"
         n=execute([COMP,"--check",FIX/"raw_invalid.sm"],wd)
         print("R54_RAW_INVALID",n.returncode,"stdout",repr(n.stdout),flush=True)
-        assert n.returncode!=0 and "Sutram Error" in n.stdout
+        assert n.returncode!=0 and "Sutram truti" in n.stdout
     with tempfile.TemporaryDirectory(prefix="r54-seven-") as d:
         wd=Path(d);src=wd/"seven.sm"
         src.write_text(code("likha","1,2,3,4,5,6,7"))
         n=execute([COMP,"--check",src],wd)
         print("R54_SEVEN_ARGUMENT_GUARD",n.returncode,"stdout",repr(n.stdout[:200]),flush=True)
-        assert n.returncode!=0 and "Sutram Error" in n.stdout
+        assert n.returncode!=0 and "Sutram truti" in n.stdout
     print("R54_ACCEPTED builtin_ids=40 valid_arity=43 invalid_arity=80 raw_memory=1 arg_capacity=1",flush=True)
 if __name__=="__main__":
     main()

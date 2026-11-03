@@ -29,7 +29,7 @@ PACKS = {
 }
 SUPPORTED = {"sanskrit", "hindi", "gujarati"}
 SHARED_MARKS = {0x0964, 0x0965, 0x200C, 0x200D}
-TAGS = re.compile(r"Sutram Error|\[E_[A-Z0-9_]+\]")
+TAGS = re.compile(r"Sutram truti|\[E_[A-Z0-9_]+\]")
 PLACEHOLDERS = re.compile(r"\{(?:kw:[A-Za-z_][A-Za-z0-9_]*|ver)\}")
 LATIN = re.compile(r"[A-Za-z][A-Za-z0-9_]*")
 # The existing generator defines recognized user-facing code words. Additional
@@ -88,7 +88,7 @@ def examine(packs: dict[str, str], code_words: set[str] | None = None):
                 continue
             base = reference[key]
             if TAGS.findall(text) != TAGS.findall(base):
-                failures.append({"key": key, "issue": "Sutram Error/[E_] identifiers changed"})
+                failures.append({"key": key, "issue": "Sutram truti/[E_] identifiers changed"})
             for boundary in ("left", "right"):
                 if boundary == "left" and base.startswith("'") and not text.startswith("'"):
                     failures.append({"key": key, "issue": "opening name quote removed"})

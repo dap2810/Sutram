@@ -97,9 +97,9 @@ error.** In detail:
 | | what happens |
 |---|---|
 | `+` `-` `*` past the range, **at run time** | wraps around, silently (checking every operation measured +5% to +282% on the benchmarks, so it is not done) |
-| the same with **numbers written in the program** — `4000000000 * 4000000000`, `9223372036854775807 + 1`, `-(0 - 9223372036854775808)` | **refused when compiled**: `prog.sm:2:22: Sutram Error [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati`, with the line and a caret under the operator |
+| the same with **numbers written in the program** — `4000000000 * 4000000000`, `9223372036854775807 + 1`, `-(0 - 9223372036854775808)` | **refused when compiled**: `prog.sm:2:22: Sutram truti [E_ATIPRAVAH]: sthira-gananayah phalam 64-bit purnanka-seemam atikramati`, with the line and a caret under the operator |
 | a **written whole number** too large — `99999999999999999999`, `9223372036854775808`, `0x10000000000000000` | **refused when compiled**: `... [E_ATIPRAVAH]: ankah 64-bit purnanka-seemam atikramati`. (`0 - 9223372036854775808` and `-9223372036854775808` are allowed: they are the smallest `vitti`.) A `dasham` literal may be larger, but it keeps only about 16 significant digits: `100000000000000000000.5` is `100000000000000000000.0` (the `.5` is lost; `==` between them is 1). |
-| `/` or `%` **by zero** (also a `dasham` divided by `0.0`, v280 — §15) | the program **stops**: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 3 - shunye vibhajanam na sambhavati` (for `%`: `shunyena sheshah na sambhavati`), exit 1. The line is in your file; inside a module it is that module's line and name: `pankti 3 (r80_ausat.smlib)`. **Written as `/ 0`, it is refused when compiled.** |
+| `/` or `%` **by zero** (also a `dasham` divided by `0.0`, v280 — §15) | the program **stops**: `Sutram truti [E_SHUNYA_BHAJAN]: pankti 3 - shunye vibhajanam na sambhavati` (for `%`: `shunyena sheshah na sambhavati`), exit 1. The line is in your file; inside a module it is that module's line and name: `pankti 3 (r80_ausat.smlib)`. **Written as `/ 0`, it is refused when compiled.** |
 | `/` and `%` of negative numbers | `/` **truncates toward zero** and `%` **takes the sign of the left side**: `-7 / 2` is −3 and `-7 % 2` is −1; `-9 / 8` is −1 and `-9 % 8` is −1 (the same for a written divisor and a variable one). |
 | `<<` and `>>` | the shift count is taken **modulo 64**: `1 << 64` is 1, `1 << 63` is the smallest `vitti`. **`>>` is a logical shift** - it fills with zeros, so a negative number becomes a large positive one: `-8 >> 1` is 9223372036854775804. To halve a negative number, use `/ 2`. |
 | `/` and `%` by −1 | the smallest `vitti` divided by −1 wraps to itself; `% -1` is 0 (before v276 this crashed; written as numbers, `(0 - 9223372036854775808) / (0 - 1)` is refused) |
@@ -194,21 +194,17 @@ Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
 for byte (`examples/324`-`327`). `==` and `!=` remain. In the shell (`sutram -i`) **`tyaj`** leaves (`exit` and
 `quit` still do, with the warning) and `sahayata` is help (`help` still is, with the warning).
 
-**Why one English word remains: `Sutram Error`.** Every message begins `Sutram Error` (and many carry an
-`[E_CODE]` tag). It stays, for two reasons (R110-00, R111-00, R112-00):
+**`Sutram truti` (v294, R114): the failure token, in Sanskrit.** Every message that stops a compile or a
+program begins `Sutram truti` (त्रुटि), often followed by an `[E_CODE]` tag: `Sutram truti [E_PARSE]: ...`. Up to
+v293 it was `Sutram Error`, the last English word a program could print. The token is fixed: every language pack
+keeps it word for word around its own translation, so a failure looks the same, and can be searched for, in any
+language. **`truti` is the severity, not a verdict on the program** - a syntax error, a safety refusal
+(`E_APARIKSHITA_AHVAN`) and a resource limit all stop what was asked, for the reasons their codes and text give.
+A notice that stops nothing begins `Sutram suchana:` (the deprecation warning, §4b).
 
-- **It is an identifier, kept the same in every language pack.** The owner's R11 rule makes `Sutram Error` and
-  the `[E_CODE]` tags fixed tokens, not prose: each of the eleven packs (`lang/<pack>.sandesh`) translates the
-  message around them and keeps them word for word, so an error looks the same and can be searched for in any
-  language. Ten of those packs are frozen, so the token cannot change in them - and changing it only in the
-  Sanskrit default would split one token into two.
-- **Programs carry it.** A program that stops at run time (`E_GAHANATA`, a `mala` bound, an empty `kosh`...)
-  prints the message from its own bytes; 443 of the guard's 705 programs contain one. Renaming it changes them all.
-
-**What would remove it:** two decisions together - an owner exception to the pack freeze for this one token
-(`Sutram Error` → `Sutram truti` in all eleven `.sandesh` files, nothing else in them), and accepting that every
-program carrying a run-time message changes, in those bytes only. ChatGPT R183 counts 68 per pack (748) and the
-compiler's own lines. Until both are given, `Error` is the one English word a program can print.
+The change was made by the owner's narrow exception to the pack freeze, written down in
+`docs/decisions/R114-SUTRAM-TRUTI.md`: one token, in the compiler and all eleven packs, nothing else in them.
+A program built by v293 or earlier still prints `Sutram Error` from its own bytes; rebuild it.
 
 `to` is not a word either (`tak` is the loop's "up to"; `prati` stays the return alias).
 
@@ -536,7 +532,7 @@ mukhya() {
 **A `chakra` counts in whole numbers (v283).** Its counter is a `vitti` and steps by 1, so both ends must be
 whole numbers: `chakra i = 0 tak 3.0`, `chakra i = 0.5 tak 2.5`, a `dasham` variable as an end
 (`chakra i = 0 tak n` with `dasham n`), or a `dasham` variable as the counter are refused when compiled:
-`Sutram Error [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati`, with
+`Sutram truti [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati`, with
 a caret under a written decimal. **Up to v282 such a loop compared the decimal's bits as a whole number** -
 3.0 is 4613937818241073152 - so `chakra i = 0 tak 3.0` printed 0, 1, 2, ... and never stopped, and a
 decimal start counted from its bits. To step through decimals, use `yavat`:
@@ -576,7 +572,7 @@ likha("done")           # back at the header's indentation: after the loop
 - Nothing may follow `mukhya`'s closing `}` (v266). A `mukhya()` written without braces runs to the end of the file.
 - **Indent a body with tabs or with spaces, not both** (v275). Indentation is compared only when one line's
   leading whitespace begins with the other's; a tab-indented body under a space-indented header is refused —
-  `Sutram Error [E_ANTARAL_MISHRA]` at that line — because before v275 a tab counted as one column, and such a body
+  `Sutram truti [E_ANTARAL_MISHRA]` at that line — because before v275 a tab counted as one column, and such a body
   silently ran its second line outside the `yadi` (`examples/276`).
 - `guna` needs `{ }`; its `bhavana` bodies may be indented.
 
@@ -596,10 +592,10 @@ cell, not ten: for `count` cells, write **`nirmmita(count * 8)`**.
 `+ - *` of numbers) and is **never assigned again in that function**, `p` is known to point at the start of SIZE
 bytes, and
 - **a constant index past the end is a compile error**:
-  `nirmmita(10)` then `p[9]` → `Sutram Error [E_NIRMMITA_SEEMA]: ... p[9] nirmmita(10) bahih` /
+  `nirmmita(10)` then `p[9]` → `Sutram truti [E_NIRMMITA_SEEMA]: ... p[9] nirmmita(10) bahih` /
   `Sanket: nirmmita bhaita-sankhyam ganayati, p[i] ashta-bhaita-ekakaih: p[9] hetu nirmmita(80) avashyakam`;
 - **a computed index is bounds-checked when the program runs**, like a `mala`'s: the loop
-  `yavat (i < 10) p[i] = i` over `nirmmita(10)` stops at `p[1]` with `Sutram Error: mala ank seema atikram`.
+  `yavat (i < 10) p[i] = i` over `nirmmita(10)` stops at `p[1]` with `Sutram truti: mala ank seema atikram`.
 
 **What it does not check:** a size computed at run time (`nirmmita(n)`), a name assigned again (`p = p + 8`), an
 address computed from `p` (`p + 8`, `arr + (pos + 1) * 8`), a parameter, a `likh8`/`akshar_rakh` store. Those are
@@ -624,7 +620,7 @@ output. From v286 every `prakriya` checks the stack on entry (Linux); past **8,3
 entry** (8 MiB less 48 KiB, under the default 8 MiB stack) it prints
 
 ```
-Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram
+Sutram truti [E_GAHANATA]: aahvan-gahanata seema atikram
 ```
 
 *(call depth: limit exceeded)*, exit 1. Each call frame is 2,048 bytes plus the saved registers, so the limit is
@@ -774,7 +770,7 @@ integer division (3), then the 3 is stored. Write `7.0 / 2` or `7 / 2.0` for 3.5
 and the comparisons work in `dasham`: `2 + 0.5` is 2.5, and `vitti i = 3; dasham d = 3.0; d == i` is 1.
 
 **`%`, `&`, `|`, `^`, `<<` and `>>` are whole-number operators (v282).** With a `dasham` operand they are
-refused: `Sutram Error [E_DASHAM_KRIYA]: dashama-sankhyayam % & | ^ << >> kriyah na sambhavanti`. Up to
+refused: `Sutram truti [E_DASHAM_KRIYA]: dashama-sankhyayam % & | ^ << >> kriyah na sambhavanti`. Up to
 v281 they ran on the number's bits: `5.5 % 2.0` printed `6192449487634432`. (For `%` and `%=` the error gives the line and a
 caret; for `& | ^ << >>` only the file - those operators carry no position yet.)
 
@@ -803,7 +799,7 @@ is 2, and `-0.0` is 0); anything else — a fraction, `inf`, `-inf`, NaN, or a v
 range — stops the program:
 
 ```
-Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati
+Sutram truti [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati
 ```
 
 exit 1, before the value is stored (`examples/112_t18_kosh_integer_conversion.sm`,
@@ -845,7 +841,7 @@ number - `inf == inf` and `inf > 0.0` are 1 - and `-inf` is below every number. 
 `evidence-r94`). Stored in a `vitti` they stop the program (`E_DASHAM_VITTI`).
 
 **Dividing a `dasham` by zero stops the program (v280)** — `0.0` or `-0.0`, written or computed — with
-the same message as for `vitti`: `Sutram Error [E_SHUNYA_BHAJAN]: pankti 8 - shunye vibhajanam na
+the same message as for `vitti`: `Sutram truti [E_SHUNYA_BHAJAN]: pankti 8 - shunye vibhajanam na
 sambhavati`, exit 1 (`examples/293_r90_float_divide_by_zero.sm`). Up to v279 it gave `inf`, `-inf` or
 `nan` and carried on. A `dasham` can still become `inf` by overflow (`x * 10.0` repeated) and NaN from
 `inf - inf`.
@@ -876,7 +872,7 @@ The old names still work and compile to the same bytes (§4b). **`kosh_iksh` tak
 grammar error, `vyakaran dosh`): **the element at any position is `k[i]`**, bounds-checked like every `kosh` read
 (past the length it stops with `mala ank seema atikram`). So the top of a stack is `kosh_iksh(k)` and the front of a
 queue - what `kosh_apanay` would take - is `k[0]`. On an empty `kosh`, `kosh_iksh` stops the program with
-`Sutram Error: riktat koshat kosh_peek` (that run-time message still names the old spelling: it is compiled into
+`Sutram truti: riktat koshat kosh_peek` (that run-time message still names the old spelling: it is compiled into
 the program, R111-00). Measured on v292: `evidence-r112/kosh-iksh-v292.txt`.
 
 Full specification, measured behaviour, and the `kosh` vs `suchi`/`queue`
@@ -1117,7 +1113,7 @@ block works; its storage is ordinary memory, which the block does not reclaim.
   passed on by `prasar`. A later block reuses the same memory, and sees zeros, never the earlier block's data.
 - **A negative size** is an error: written as a number (`nirmmita(-1)`), the compiler refuses it —
   `E_NIRMMITA_RNA`; computed (`nirmmita(n)` with `n` below 0), the program stops, exit 1:
-  `Sutram Error: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`. (Outside a block, and in
+  `Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`. (Outside a block, and in
   a Windows program, a computed negative size still gives 0.)
 - **Measured (Linux x86-64, v270/v271):** 1,000,000 × `nirmmita(64)` in a loop — **264 KB** peak with the block,
   **62 MB** without it. A `kosh` outside the block filled with 1,000,000 numbers from inside it: **7.8 MB** (the
@@ -1126,7 +1122,7 @@ block works; its storage is ordinary memory, which the block does not reclaim.
 - **Pages are reused, not returned:** a block that touched 100 MB keeps those 100 MB resident; the next block
   uses them again.
 - **More than the field holds** stops the program, exit 1:
-  `Sutram Error: kshetra purnam - mandapa-smritih samapta` (*the field is full — the block's memory is used up*).
+  `Sutram truti: kshetra purnam - mandapa-smritih samapta` (*the field is full — the block's memory is used up*).
 - **Linux only.** In a Windows (PE) program, and in the `GUARD_PAGES` diagnostic build, a `mandapa` is an
   ordinary block: everything works, nothing is reclaimed.
 
@@ -1174,7 +1170,7 @@ it, written into memory (`kosh_push(outer, k)`, `m[i] = k`), or returned - with 
 error (`examples/287`):
 
 ```
-Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate
+Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate
 Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam
 ```
 
@@ -1188,7 +1184,7 @@ pass it to one that does. The compiler works this out for every `prakriya` and p
 function value or a foreign function counts as keeping. Otherwise (`examples/316`):
 
 ```
-Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
 ```
 
 **v291 (R109) closed two ways round it that v290 missed:** a second name - `vitti a = k` or `a = k`, then `rakh(a)` -
@@ -1200,7 +1196,7 @@ So no reference to a block's `kosh` outlives the block. The runtime check below 
 in the tree, and none written for its gate, can reach it any more. If one ever does, it stops the program with
 
 ```
-Sutram Error [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 10 mandape rachitah; sa mandapah samaptah
+Sutram truti [E_KOSH_MANDAPA]: prakriya 'padh' - kosh 'k' pankti 10 mandape rachitah; sa mandapah samaptah
 Sanket: mandape rachitah kosh mandapat bahih na jivati - mandape eva upayujyatam, mulyam nivartyatam
 ```
 
@@ -1276,7 +1272,7 @@ mukhya() {
 ```
 
 ```
-Sutram Error [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)
+Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)
 ```
 
 *(more than the budget cannot be made in the block; budget 1,048,576 bytes)*, exit 1 (`examples/303`). The

@@ -94,7 +94,7 @@ mukhya() {
     }
     likha(1)
 }
-''', (OK, 'Sutram Error: mala ank seema atikram\n')),
+''', (OK, 'Sutram truti: mala ank seema atikram\n')),
     ('unmarked leaf refused at the first bad edge', '''prakriya patta(x) {
     nivartanam x
 }

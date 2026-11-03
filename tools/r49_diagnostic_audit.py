@@ -12,7 +12,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 COMPILER = ROOT / "r48_after"
-LOCATION = re.compile(r"^([^\s:]+\.(?:sm|smlib)):(\d+):(\d+):\s+Sutram Error \[([^\]]+)\]", re.M)
+LOCATION = re.compile(r"^([^\s:]+\.(?:sm|smlib)):(\d+):(\d+):\s+Sutram truti \[([^\]]+)\]", re.M)
 # (source under tests or examples, test source, expected diagnostics)
 SPECS = [
  ("tests/r49_check", "missing_separators.sm", [("missing_separators.sm",2,"E_PARSE"),("missing_separators.sm",3,"E_PARSE"),("missing_separators.sm",4,"E_PARSE")]),
@@ -42,7 +42,7 @@ for directory, name, expected in SPECS:
         output = p.stdout + p.stderr
         actual = [(file,int(line),int(column),code)
                   for file,line,column,code in LOCATION.findall(output)]
-        error_lines = [line for line in output.splitlines() if "Sutram Error [" in line]
+        error_lines = [line for line in output.splitlines() if "Sutram truti [" in line]
         observed = [(f,l,c) for f,l,c,_ in actual]
         wanted = [(f,l,c) for f,l,c in expected]
         unlocated += max(0, len(error_lines)-len(actual))

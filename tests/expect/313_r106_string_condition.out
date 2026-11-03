@@ -1,2 +1,2 @@
-313_r106_string_condition.sm: Sutram Error [E_VARTANI_SATYA]: vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate
+313_r106_string_condition.sm: Sutram truti [E_VARTANI_SATYA]: vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate
 Sanket: yadi (s != "") - rikta na cet; yadi (s == "ab") - samam cet

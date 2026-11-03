@@ -61,7 +61,7 @@ def main():
                 rc,out,err=run([NEW,"--check",FIX/name],dest)
                 report("INVALID","after",name,"check",rc,out,err)
                 assert isinstance(rc,int) and rc!=0,(name,rc)
-                assert "Sutram Error" in out+err,(name,out,err)
+                assert "Sutram truti" in out+err,(name,out,err)
                 assert not list(dest.iterdir()),(name,"--check created output")
         print("R52_ACCEPTED PASS indexed_char_code=1 likh_store=1 "
               "dvaram_default_mode=0644 dvaram_explicit_mode=0600 bad_arity=5")
