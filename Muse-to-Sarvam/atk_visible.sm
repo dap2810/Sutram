@@ -1,0 +1,9 @@
+mukhya() {
+    kosh bahar[1]
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        bahar = k
+    }
+    likha(bahar[0])
+}

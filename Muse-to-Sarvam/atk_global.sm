@@ -1,0 +1,12 @@
+kosh g[1]
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+mukhya() {
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        g = k
+    }
+    likha(padh(g, 0))
+}

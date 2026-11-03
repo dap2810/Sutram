@@ -1,0 +1,15 @@
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+prakriya banav() {
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        nivartanam k
+    }
+}
+mukhya() {
+    kosh kept[1]
+    kept = banav()
+    likha(padh(kept, 0))
+}

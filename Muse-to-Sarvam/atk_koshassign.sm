@@ -1,0 +1,15 @@
+mukhya() {
+    mandapa {
+        kosh k[1]
+        kosh_push(k, 7)
+        likha("before assign ", parimana(), "\n")
+        kosh a[1]
+        a = k
+        likha("after assign ", parimana(), "\n")
+        kosh_push(k, 8)
+        kosh_push(k, 9)
+        likha("k[2]=", k[2], " a[2]=", a[2], " len(a)=", kosh_len(a), "\n")
+        k[0] = 99
+        likha("after k[0]=99: k[0]=", k[0], " a[0]=", a[0], "\n")
+    }
+}

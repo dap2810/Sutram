@@ -1,0 +1,12 @@
+mukhya() {
+    mandapa parimita 1000 {
+        kosh k[1]
+        vitti i = 0
+        yavat (i < 100000) {
+            kosh_push(k, i)
+            i = i + 1
+        }
+        likha("this line never runs\n")
+    }
+    likha("after\n")
+}

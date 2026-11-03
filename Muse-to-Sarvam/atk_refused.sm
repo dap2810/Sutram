@@ -1,0 +1,8 @@
+mukhya() {
+    mandapa {
+        kosh k[1]
+        vitti a = k
+        kosh_push(k, 1)
+        likha(a[0])
+    }
+}

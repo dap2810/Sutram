@@ -1,0 +1,13 @@
+rachana Point = { x, y, z }
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+mukhya() {
+    vitti p = nirmmita(24)
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        p.x = k
+    }
+    likha(padh(p.x, 0))
+}
