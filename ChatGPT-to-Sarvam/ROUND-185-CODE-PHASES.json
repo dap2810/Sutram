@@ -1,0 +1,815 @@
+{
+ "base": "ff5d9d419976f3f48f37e63ab4aefaa56f41dd9b",
+ "source_codes": 47,
+ "rows": [
+  {
+   "code": "E_ABBREVIATION_VALUE",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/r68_diagnostics.inc",
+     "line": 12,
+     "text": "db \"Sutram Error [E_ABBREVIATION_VALUE]: \",0"
+    }
+   ]
+  },
+  {
+   "code": "E_AMBIGUOUS_FIELD",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 331,
+     "text": "r7_msg_field_amb db \": Sutram Error [E_AMBIGUOUS_FIELD]: avayava '\",0"
+    }
+   ]
+  },
+  {
+   "code": "E_ANTARAL_MISHRA",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 631,
+     "text": "r77_msg_mix_a db \"Sutram Error [E_ANTARAL_MISHRA]: pankti \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 12874,
+     "text": "; Now that is E_ANTARAL_MISHRA at B's line. Preserves rbx, r12-r15."
+    }
+   ]
+  },
+  {
+   "code": "E_APARIKSHITA_AHVAN",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 400,
+     "text": "r81_hdr_call  db \": Sutram Error [E_APARIKSHITA_AHVAN]: parikshita prakriya '\", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_APARIKSHITA_KARYA",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 401,
+     "text": "r81_hdr_karya db \": Sutram Error [E_APARIKSHITA_KARYA]: parikshita prakriya '\", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_APARIKSHITA_SMRITI",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 402,
+     "text": "r81_hdr_smriti db \": Sutram Error [E_APARIKSHITA_SMRITI]: parikshita prakriya '\", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_ARITY",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/r32_ffi.inc",
+     "line": 29,
+     "text": ";   * a call to the local name with the wrong number of arguments is E_ARITY,"
+    },
+    {
+     "file": "src/r32_ffi.inc",
+     "line": 620,
+     "text": "; like E_ARITY, at the call; then exit 1 (no object is written)."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 334,
+     "text": "r7_msg_arity db \": Sutram Error [E_ARITY]: '\",0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 13669,
+     "text": "; report: file:L:C: Sutram Error [E_ARITY]: 'f' ko N tark diye; hastakshar me M"
+    }
+   ]
+  },
+  {
+   "code": "E_ATIPRAVAH",
+   "phase": "compile/tool pre-execution",
+   "response": "Literal/constant-expression overflow detected during compilation; use representable constants. Runtime checked arithmetic has its separate result/trap paths.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 390,
+     "text": "r80_hdr_ovf   db \": Sutram Error [E_ATIPRAVAH]: \", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_CHAKRA_DASHAM",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 473,
+     "text": "r96_hdr db \": Sutram Error [E_CHAKRA_DASHAM]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8521,
+     "text": "; (position 0), like the variable forms of E_CHAKRA_DASHAM."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8643,
+     "text": "; Refused: E_CHAKRA_DASHAM, at the written number when there is one, else naming the file."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 18999,
+     "text": "; like the variable forms of E_CHAKRA_DASHAM / E_DASHAM_VITTI."
+    }
+   ]
+  },
+  {
+   "code": "E_DASHAM_KRIYA",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 476,
+     "text": "r94_hdr db \": Sutram Error [E_DASHAM_KRIYA]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8638,
+     "text": "; 6192449487634432. Refused: E_DASHAM_KRIYA at the operator. Other operators return untouched."
+    }
+   ]
+  },
+  {
+   "code": "E_DASHAM_VITTI",
+   "phase": "compile + runtime",
+   "response": "Literal/type checks or exact float-to-integer conversion failure. Validate/convert through an explicitly fallible API; no current trap catch.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 434,
+     "text": "r87_hdr db \": Sutram Error [E_DASHAM_VITTI]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 437,
+     "text": "r161_narrow_msg db \"Sutram Error [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati\",10,0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8633,
+     "text": "; with a fraction (or too large for 64 bits) stored into a whole-number vitti is E_DASHAM_VITTI:"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 18999,
+     "text": "; like the variable forms of E_CHAKRA_DASHAM / E_DASHAM_VITTI."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 19273,
+     "text": "jz .gs_ai_value_ready    ; converted exactly, as into a vitti (E_DASHAM_VITTI if it has"
+    }
+   ]
+  },
+  {
+   "code": "E_DUPLICATE_NAME",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 328,
+     "text": "r7_msg_dup db \": Sutram Error [E_DUPLICATE_NAME]: punah ghoshana '\",0"
+    }
+   ]
+  },
+  {
+   "code": "E_EXPORT_UNDEFINED",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3952,
+     "text": "mg_e_undef1:  db \"Sutram Error [E_EXPORT_UNDEFINED]: niryat '\", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3955,
+     "text": "mg_e_unknown1: db \"Sutram Error [E_EXPORT_UNDEFINED]: agyat sanket '\", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_FFI_KIND",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/r32_ffi.inc",
+     "line": 563,
+     "text": "; (its value used anywhere is E_FFI_KIND, never a made-up 0)."
+    },
+    {
+     "file": "src/r32_ffi.inc",
+     "line": 665,
+     "text": "; its value is used). A void function's value cannot be used: E_FFI_KIND."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 645,
+     "text": "r33_msg_ffi_kind db \"Sutram Error [E_FFI_KIND]: videshi prakriya \", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_GAHANATA",
+   "phase": "runtime fatal",
+   "response": "Recursion-depth protection. Bound recursion/use iteration; do not resume the trapped operation.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 571,
+     "text": "rfx_rec_msg db \"Sutram Error [E_GAHANATA]: aahvan-gahanata seema atikram\", 10"
+    }
+   ]
+  },
+  {
+   "code": "E_INTEGER_TRAP",
+   "phase": "conditional runtime fatal",
+   "response": "R65 checked-integer build path. Use checked arithmetic results to branch; not an ordinary handler event.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 585,
+     "text": "r65_msg_prefix db \"Sutram Error [E_INTEGER_TRAP] \",0"
+    }
+   ]
+  },
+  {
+   "code": "E_KOSH_GANIT",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 539,
+     "text": "rfx_bc_hdr_kosh db \": Sutram Error [E_KOSH_GANIT]: \", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_KOSH_MANDAPA",
+   "phase": "compile + runtime",
+   "response": "Static escape refusal and runtime lifetime/generation check. Repair ownership; never continue using a dead reference.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 427,
+     "text": "r82_m1 db \"Sutram Error [E_KOSH_MANDAPA]: prakriya '\", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 545,
+     "text": "; the compiler cannot see (a prakriya that keeps it), is R82's E_KOSH_MANDAPA, unchanged."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 546,
+     "text": "r107_msg_var db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate\", 10"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 548,
+     "text": "r107_msg_mem db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - smritau na likhyate\", 10"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 550,
+     "text": "r107_msg_ret db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - nivartanam na shakyate\", 10"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 558,
+     "text": "r108_msg_keep db \"Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)\", 10"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 10295,
+     "text": ";     its generation (the block has ended, or the frame is gone) is E_KOSH_MANDAPA."
+    }
+   ]
+  },
+  {
+   "code": "E_LIKHA_TRAYA",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 492,
+     "text": "rfx_lk_hdr db \": Sutram Error [E_LIKHA_TRAYA]: \", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_MALA_GANIT",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 561,
+     "text": "rfx_bc_hdr_mala db \": Sutram Error [E_MALA_GANIT]: \", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_ALIAS_REUSE",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 1276,
+     "text": "r51_alias_conflict db \": Sutram Error [E_MODULE_ALIAS_REUSE]: upanaam purv-niyukt (anya ghatak)\",10,0"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_CYCLE",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 1280,
+     "text": "graph_msg_cycle db 'E_MODULE_CYCLE', 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3934,
+     "text": ";  - visiting -> visiting  =  E_MODULE_CYCLE with file:line and the cycle path"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3945,
+     "text": "mg_e_cycle:   db \"Sutram Error [E_MODULE_CYCLE]: yoj chakra: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 5097,
+     "text": "; --- mg_print_cycle: prints E_MODULE_CYCLE with file:line and cycle path ---"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_DEPTH",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3959,
+     "text": "mg_e_depth:   db \"Sutram Error [E_MODULE_DEPTH]: yoj gahrai seema atikram\", 10, 0"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_DUP_EXPORT",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3937,
+     "text": ";    E_MODULE_DUP_EXPORT; references to alias__<private> from outside the"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3949,
+     "text": "mg_e_dupexp1: db \"Sutram Error [E_MODULE_DUP_EXPORT]: punah niryat '\", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 4516,
+     "text": "; E_MODULE_DUP_EXPORT with file:line"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_INVALID",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 1283,
+     "text": "graph_msg_invalid db 'E_MODULE_INVALID', 0"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_LIMIT",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 1282,
+     "text": "graph_msg_limit db 'E_MODULE_LIMIT', 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3964,
+     "text": "mg_e_limit:   db \"Sutram Error [E_MODULE_LIMIT]: ghatak/yoj seema atikram\", 10, 0"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_MISSING",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 338,
+     "text": "r7_msg_mod_missing db \"Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: \",0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 1281,
+     "text": "graph_msg_missing db 'E_MODULE_MISSING', 0"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_NOT_EXPORTED",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3938,
+     "text": ";    defining module are E_MODULE_NOT_EXPORTED (checked in Phase B below)."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3946,
+     "text": "mg_e_noexp1:  db \"Sutram Error [E_MODULE_NOT_EXPORTED]: '\", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 5707,
+     "text": "; E_MODULE_NOT_EXPORTED at mg_cur_path:rax"
+    }
+   ]
+  },
+  {
+   "code": "E_MODULE_V1_ALIAS",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3939,
+     "text": ";  - v1 modules must be imported with an alias (E_MODULE_V1_ALIAS otherwise)."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 3961,
+     "text": "mg_e_valias1: db \"Sutram Error [E_MODULE_V1_ALIAS]: v1 ghatak '\", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 4991,
+     "text": "; --- mg_valias_error: rdi = parent path. Prints E_MODULE_V1_ALIAS and exits. ---"
+    }
+   ]
+  },
+  {
+   "code": "E_MULYA_VINA",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 479,
+     "text": "; FIXALL (d): scalar locals declared without a value are refused (E_MULYA_VINA)."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 480,
+     "text": "rfx_hdr db \": Sutram Error [E_MULYA_VINA]: \", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_NIRMMITA_RNA",
+   "phase": "compile/tool pre-execution",
+   "response": "Negative literal allocation size refuses at compile time; validate dynamic input in a fallible allocation contract, not by catching this code.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 617,
+     "text": "r75_msg_neg_lit db \"Sutram Error [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati\", 10"
+    }
+   ]
+  },
+  {
+   "code": "E_NIRMMITA_SEEMA",
+   "phase": "compile/tool pre-execution",
+   "response": "Known raw allocation + constant out-of-range index refuses at compile time. Dynamic analogous bounds use another trap path; validate index before access.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 621,
+     "text": "r78_msg_a db \"Sutram Error [E_NIRMMITA_SEEMA]: pankti \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 11713,
+     "text": "; compile error (E_NIRMMITA_SEEMA); a computed i gets the mala bounds check against CONST / 8."
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 11894,
+     "text": "; in range -> -1 (nothing to check at run time); out of range -> E_NIRMMITA_SEEMA."
+    }
+   ]
+  },
+  {
+   "code": "E_PARIKSHITA_STHAN",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 403,
+     "text": "r81_hdr_sthan db \": Sutram Error [E_PARIKSHITA_STHAN]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 10782,
+     "text": "; after 'parikshita' is E_PARIKSHITA_STHAN."
+    }
+   ]
+  },
+  {
+   "code": "E_PARIMITA",
+   "phase": "compile + runtime",
+   "response": "Invalid budget refuses; dynamic budget exhaustion terminates. Bound work; a future fallible allocation must check before mutation.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8684,
+     "text": ";;   Sutram Error [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8692,
+     "text": "r103_msg_a db \"Sutram Error [E_PARIMITA]: pankti \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8695,
+     "text": "r103_hdr_bad db \": Sutram Error [E_PARIMITA]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 8785,
+     "text": "; force: if (its mark - new end) > N, print E_PARIMITA with the block's line and exit 1."
+    }
+   ]
+  },
+  {
+   "code": "E_PARSE",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 257,
+     "text": "r48_msg_near db \": Sutram Error [E_PARSE]: shabd '\",0"
+    }
+   ]
+  },
+  {
+   "code": "E_SCRATCH_ESCAPE",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 608,
+     "text": "r72_msg_escape db \"Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam nivartanam na shakyate\", 10"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 610,
+     "text": "r73_msg_escape_var db \"Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate\", 10"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 612,
+     "text": "r73_msg_escape_mem db \"Sutram Error [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate\", 10"
+    }
+   ]
+  },
+  {
+   "code": "E_SHUNYA_BHAJAN",
+   "phase": "compile + runtime",
+   "response": "Constant zero can refuse at compile time; dynamic zero stops. Check divisor or use checked phal division before the trap.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 379,
+     "text": "r80_msg_div_a db \"Sutram Error [E_SHUNYA_BHAJAN]: pankti \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 386,
+     "text": "r80_hdr_div   db \": Sutram Error [E_SHUNYA_BHAJAN]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 11403,
+     "text": ";   test rcx,rcx ; jnz .nz ; <E_SHUNYA_BHAJAN, exit 1> ; .nz: cmp rcx,-1 ; jne .go ;"
+    }
+   ]
+  },
+  {
+   "code": "E_UNDEFINED_FUNCTION",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 318,
+     "text": "r48_msg_undefined db \": Sutram Error [E_UNDEFINED_FUNCTION]: agyat prakriya '\",0"
+    }
+   ]
+  },
+  {
+   "code": "E_UNDEFINED_NAME",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 321,
+     "text": "r4_msg_undef db \": Sutram Error [E_UNDEFINED_NAME]: agyat naam '\",0"
+    }
+   ]
+  },
+  {
+   "code": "E_UNKNOWN_FIELD",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 327,
+     "text": "r5_msg_field db \": Sutram Error [E_UNKNOWN_FIELD]: agyat avayava '\",0"
+    }
+   ]
+  },
+  {
+   "code": "E_UNSAFE_BOUNDARY",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/r71_unsafe_integration.inc",
+     "line": 5,
+     "text": "db \"Sutram Error [E_UNSAFE_BOUNDARY]: \",0"
+    }
+   ]
+  },
+  {
+   "code": "E_UTF8",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/r68_diagnostics.inc",
+     "line": 8,
+     "text": "db \"Sutram Error [E_UTF8]: \",0"
+    },
+    {
+     "file": "src/r66_indic_lexer.inc",
+     "line": 12,
+     "text": "db \"Sutram Error [E_UTF8]: ashuddh ya khandit bharatiya naam\", 10, 0"
+    }
+   ]
+  },
+  {
+   "code": "E_VARTANI_CAT",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 504,
+     "text": "rfx_bc_hdr_cat db \": Sutram Error [E_VARTANI_CAT]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 9348,
+     "text": "; A string beside a non-string is E_VARTANI_TUL / E_VARTANI_CAT, except string + integer,"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 27577,
+     "text": "jmp .teidr_no                 ; pointer arithmetic or E_VARTANI_CAT) - one rule for every path"
+    }
+   ]
+  },
+  {
+   "code": "E_VARTANI_GANIT",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 527,
+     "text": "rfx_bc_hdr_gan db \": Sutram Error [E_VARTANI_GANIT]: \", 0"
+    }
+   ]
+  },
+  {
+   "code": "E_VARTANI_SATYA",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 536,
+     "text": "rfx_bc_hdr_sat db \": Sutram Error [E_VARTANI_SATYA]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 9143,
+     "text": "; (yadi (s), yavat (s), c ? .. with c a string) is E_VARTANI_SATYA: every string, even \"\", is a"
+    }
+   ]
+  },
+  {
+   "code": "E_VARTANI_SMRITI",
+   "phase": "runtime fatal",
+   "response": "String allocation failure. A future fallible allocator could report failure before publication; checking available memory beforehand is insufficient.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 565,
+     "text": "rfx2_msg_nomem db \"Sutram Error [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha\", 10"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 23307,
+     "text": "cmp qword [rel target_pe], 0   ; Linux: no memory is E_VARTANI_SMRITI, exit 1"
+    }
+   ]
+  },
+  {
+   "code": "E_VARTANI_TUL",
+   "phase": "compile/tool pre-execution",
+   "response": "Fix source, declarations, verification requirements or build/module inputs; the not-yet-running program cannot handle this diagnostic.",
+   "sites": [
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 498,
+     "text": "rfx_bc_hdr_tul db \": Sutram Error [E_VARTANI_TUL]: \", 0"
+    },
+    {
+     "file": "src/sutram_compiler.asm",
+     "line": 9348,
+     "text": "; A string beside a non-string is E_VARTANI_TUL / E_VARTANI_CAT, except string + integer,"
+    }
+   ]
+  }
+ ]
+}
