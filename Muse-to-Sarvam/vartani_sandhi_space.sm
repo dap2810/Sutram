@@ -1,0 +1,3 @@
+mukhya() {
+    likha(vartani_sandhi ("ab", "cd"), "\n")
+}
