@@ -1,0 +1,47 @@
+{
+  "base": "2065ebeb71edebecfee47db14861d4d5e455bf4a",
+  "method": "Executed Python exact-integer/explicit-wrap models, not native Sutram tests",
+  "cases": [
+    {
+      "case": "trigun(3074457345618258603)",
+      "exact": 9223372036854775809,
+      "difference_from_MAX": 2,
+      "wrapped": -9223372036854775807
+    },
+    {
+      "case": "dvigun(MAX)",
+      "exact": 18446744073709551614,
+      "wrapped": -2
+    },
+    {
+      "case": "reverse(1999999999999999999)",
+      "exact": 9999999999999999991,
+      "wrapped": -8446744073709551625
+    },
+    {
+      "case": "19 nines to signed i64",
+      "exact": 9999999999999999999,
+      "wrapped": -8446744073709551617
+    },
+    {
+      "case": "brahmagupta (1, 1, 2, 3)",
+      "scaled_product_16_area_squared": 75,
+      "correct_integer_area": 2,
+      "old_integer_product": 0,
+      "old_integer_area": 0
+    },
+    {
+      "case": "brahmagupta (2, 3, 4, 0)",
+      "scaled_product_16_area_squared": 135,
+      "correct_integer_area": 2,
+      "old_integer_product": 0,
+      "old_integer_area": 0
+    },
+    {
+      "case": "yog_seema(x,x), x=2^62",
+      "true_sum": 4611686018427387904,
+      "early_guard": true,
+      "early_return": 9223372036854775807
+    }
+  ]
+}
