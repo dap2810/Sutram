@@ -1,0 +1,13 @@
+mukhya() {
+    kosh outer[4]
+    kosh_push(outer, 1)
+    mandapa {
+        kosh inner[2]
+        kosh_push(inner, 9)
+        kosh_push(outer, 2)
+        kosh_push(outer, 3)
+        likha(kosh_peek(inner), "\n")
+    }
+    likha(kosh_len(outer), "\n")
+    likha(kosh_peek(outer), "\n")
+}

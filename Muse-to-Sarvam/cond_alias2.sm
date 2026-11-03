@@ -1,0 +1,10 @@
+mukhya() {
+    mandapa {
+        kosh k[2]
+        kosh_push(k, 33)
+        kosh kk[2]
+        kk = k
+        likha(kosh_peek(kk), "\n")
+    }
+    likha(99, "\n")
+}

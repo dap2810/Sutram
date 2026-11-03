@@ -1,0 +1,15 @@
+mukhya() {
+    kosh k1[2]
+    kosh_kship(k1, 11)
+    mandapa {
+        kosh k[2]
+        kosh_kship(k, 33)
+        vitti c = 1
+        kosh kk
+        yadi (c) {
+            kk = k
+        }
+        likha(kosh_peek(kk), "\n")
+    }
+    likha(99, "\n")
+}
