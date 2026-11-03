@@ -1,0 +1,6 @@
+mukhya() {
+    likha(jala(), "\n")
+    likha(jala_bandh(3, 45999), "\n")
+    likha(jala_shru(3), "\n")
+    likha(jala_grah(3), "\n")
+}

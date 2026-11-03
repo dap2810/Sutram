@@ -1,0 +1,20 @@
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    kosh_kship(k, 30)
+    likha(kosh_gan(k), "\n")
+    likha(kosh_ksham(k), "\n")
+    likha(kosh_iksh(k), "\n")
+    likha(kosh_rikt(k), "\n")
+    kosh_yuj(k, 40)
+    likha(kosh_gan(k), "\n")
+    likha(kosh_iksh(k), "\n")
+    likha(kosh_apanay(k), "\n")
+    likha(kosh_gan(k), "\n")
+    likha(kosh_iksh(k), "\n")
+    kosh_shodh(k)
+    likha(kosh_gan(k), "\n")
+    likha(kosh_rikt(k), "\n")
+    likha(kosh_ksham(k), "\n")
+}

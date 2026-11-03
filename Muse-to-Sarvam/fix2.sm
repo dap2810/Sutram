@@ -1,0 +1,25 @@
+mukhya() {
+    shabda(vartani_sandhi("ab", "cd"))
+    likha("\n")
+    mala s[3]
+    s[0] = 1
+    s[1] = 2
+    s[2] = 3
+    mala d[3]
+    smaran_pratilip(d, s, 24)
+    likha(d[0], "\n")
+    likha(d[1], "\n")
+    likha(d[2], "\n")
+    kosh dasham a[4]
+    kosh_push(a, 5.0)
+    kosh_push(a, 6.0)
+    kosh_push(a, 7.0)
+    kosh_push(a, 0.0)
+    likha(sankhya_bindu(a, a), "\n")
+    kosh k[3]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    likha(kosh_hri(k), "\n")
+    likha(kosh_gan(k), "\n")
+    likha(kosh_iksh(k), "\n")
+}
