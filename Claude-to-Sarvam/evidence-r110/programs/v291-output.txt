@@ -1,0 +1,6 @@
+== yoj_suffix.sm (v291)
+Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: =
+Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet
+== to_word.sm (v291)
+
+Sutram Error: vyakaran dosh, pankti 2:18, shabd 'to'

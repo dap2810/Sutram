@@ -1,0 +1,30 @@
+asti | Siddh: 198 baait sankalit | 7
+nasti | Siddh: 198 baait sankalit | 7
+kosh_kship | Siddh: 198 baait sankalit | 7
+kosh_hri | Siddh: 198 baait sankalit | 7
+kosh_gan | Siddh: 198 baait sankalit | 7
+kosh_ksham | Siddh: 198 baait sankalit | 7
+kosh_iksh | Siddh: 198 baait sankalit | 7
+kosh_rikt | Siddh: 198 baait sankalit | 7
+kosh_shodh | Siddh: 198 baait sankalit | 7
+kosh_yuj | Siddh: 198 baait sankalit | 7
+kosh_muc | Siddh: 198 baait sankalit | 7
+pankti_gan | Siddh: 198 baait sankalit | 7
+tyaj | Siddh: 198 baait sankalit | 7
+saha | Siddh: 198 baait sankalit | 7
+jala | Siddh: 198 baait sankalit | 7
+jala_bandh | Siddh: 198 baait sankalit | 7
+jala_shru | Siddh: 198 baait sankalit | 7
+jala_grah | Siddh: 198 baait sankalit | 7
+akshar_laghu | Siddh: 198 baait sankalit | 7
+akshar_guru | Siddh: 198 baait sankalit | 7
+akshar_tas | Siddh: 198 baait sankalit | 7
+vartani_yoj | Sutram Error [E_MODULE_MISSING]: yoj patra aprapt: = | 
+likha_bindu | Siddh: 198 baait sankalit | 7
+likha_rup | Siddh: 198 baait sankalit | 7
+sankhya_bindu | Siddh: 198 baait sankalit | 7
+smaran_kriti | Siddh: 198 baait sankalit | 7
+prati |  | 
+truti | Siddh: 198 baait sankalit | 7
+अस्ति | Siddh: 198 baait sankalit | 7
+नास्ति | Siddh: 198 baait sankalit | 7
