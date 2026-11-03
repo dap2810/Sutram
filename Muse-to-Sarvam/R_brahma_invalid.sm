@@ -1,0 +1,4 @@
+yoj ganita
+mukhya() {
+    likha(brahmagupta_kshetr(1, 1, 1, 100))
+}

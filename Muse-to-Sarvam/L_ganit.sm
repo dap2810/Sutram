@@ -1,0 +1,18 @@
+yoj ganit
+yoj ank
+yoj ganita
+mukhya() {
+    likha(dvigun(4611686018427387903))
+    likha(dvigun(0 - 4611686018427387904))
+    likha(trigun(3074457345618258602))
+    likha(trigun(0 - 3074457345618258602))
+    likha(vardh(9223372036854775806))
+    vitti mn1 = 0 - 9223372036854775807
+    likha(nirapeksh_mulya(mn1))
+    likha(ganita_nirapeksh(mn1))
+    vitti mn = mn1 - 1
+    likha(mahattam_samapavartak(mn, 2))
+    likha(mahattam_samapavartak(mn, 0 - 1))
+    likha(viparyay_ank(1234))
+    likha(viparyay_ank(mn))
+}

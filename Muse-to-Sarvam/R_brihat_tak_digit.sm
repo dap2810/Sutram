@@ -1,0 +1,7 @@
+yoj brihat
+mukhya() {
+    mala a[2]
+    a[0] = 1
+    a[1] = 10
+    likha(brihat_ank_tak_laghu(a, 2))
+}

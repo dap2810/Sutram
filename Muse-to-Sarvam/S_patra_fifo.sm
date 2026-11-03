@@ -1,0 +1,4 @@
+yoj patra
+mukhya() {
+    likha(patra_asti("myfifo"))
+}

@@ -1,0 +1,10 @@
+yoj brihat
+mukhya() {
+    mala a[19]
+    vitti i = 0
+    yavat (i < 19) {
+        a[i] = 9
+        i = i + 1
+    }
+    likha(brihat_ank_tak_laghu(a, 19))
+}

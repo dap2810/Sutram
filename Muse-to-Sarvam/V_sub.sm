@@ -1,0 +1,15 @@
+yoj vakyank
+mukhya() {
+    vitti ok = nirmmita(8)
+    vitti buf = nirmmita(48)
+    buf[0] = 51
+    buf[1] = 101
+    buf[2] = 45
+    buf[3] = 51
+    buf[4] = 50
+    buf[5] = 52
+    dasham w = varna_tak_dashm(buf, 6, ok)
+    yadi (w == 0.0) { likha(1) }
+    yadi (w != 0.0) { likha(0) }
+    likha(ok[0])
+}

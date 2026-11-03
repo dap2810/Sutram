@@ -1,0 +1,5 @@
+yoj ganita
+mukhya() {
+    vitti mx = 9223372036854775807
+    likha(brahmagupta_kshetr(mx, mx, mx, mx))
+}

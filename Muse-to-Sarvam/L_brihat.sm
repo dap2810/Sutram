@@ -1,0 +1,18 @@
+yoj aadhar
+yoj brihat
+mukhya() {
+    mala d[3]
+    d[0] = 1
+    d[1] = 2
+    d[2] = 3
+    mala x[3]
+    likha(brihat_ank_se(d, 3, 10, x, 3))
+    likha(x[0])
+    likha(x[1])
+    likha(x[2])
+    mala a[3]
+    a[0] = 3
+    a[1] = 2
+    a[2] = 1
+    likha(brihat_ank_tak_laghu(a, 3))
+}

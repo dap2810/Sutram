@@ -1,0 +1,5 @@
+yoj ganita
+mukhya() {
+    vitti mn = 0 - 9223372036854775807 - 1
+    likha(ganita_nirapeksh(mn))
+}
