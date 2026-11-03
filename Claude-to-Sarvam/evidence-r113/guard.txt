@@ -1,0 +1,25 @@
+# R113 guard: origin/main (v292) -> v293, every program compiled by both compilers, outputs compared byte for byte
+
+## elf
+NEW          examples/328_r113_rachana_operand.sm
+NEW          examples/329_r113_sankhya_bindu.sm
+source files whose text changed: 0
+707 programs: 564 byte-identical, 141 refused identically, 0 DIFFER, 2 new
+
+## pe
+NEW          examples/328_r113_rachana_operand.sm
+NEW          examples/329_r113_sankhya_bindu.sm
+source files whose text changed: 0
+707 programs: 564 byte-identical, 141 refused identically, 0 DIFFER, 2 new
+
+## wine
+NEW          examples/328_r113_rachana_operand.sm
+NEW          examples/329_r113_sankhya_bindu.sm
+source files whose text changed: 0
+707 programs: 564 byte-identical, 141 refused identically, 0 DIFFER, 2 new
+
+## diffrun
+elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+
+## the Windows compiler under Wine against the Linux compiler's PE outputs
+compared 1128, differ 0
