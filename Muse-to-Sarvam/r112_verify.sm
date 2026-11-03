@@ -1,0 +1,28 @@
+yoj ganit
+yoj patra
+yoj samanvaya
+yoj vakyank
+
+mukhya() {
+    likha(dvigun(9223372036854775807), "\n")
+    likha(patra_asti("/tmp/loop1_r112"), "\n")
+    kosh dasham u[4]
+    kosh dasham v[4]
+    kosh_kship(u, 1.0)
+    kosh_kship(u, 2.0)
+    kosh_kship(u, 3.0)
+    kosh_kship(v, 4.0)
+    kosh_kship(v, 5.0)
+    likha(adish_gunan(u, v), "\n")
+    vitti ok = nirmmita(8)
+    vitti buf = nirmmita(160)
+    vitti i = 0
+    yavat (i < 19) {
+        buf[i] = 48
+        i = i + 1
+    }
+    buf[19] = 49
+    dasham w = varna_tak_dashm(buf, 20, ok)
+    likha(w, "\n")
+    likha(ok[0], "\n")
+}
