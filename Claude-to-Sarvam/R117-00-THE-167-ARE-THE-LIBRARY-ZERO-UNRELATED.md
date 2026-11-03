@@ -1,10 +1,10 @@
 # R117-00 — The 167 are the library, and nothing else: 0 changed for a reason that is not the contracts. The 127-byte crash is old - it is in the oldest compiler that can be run (v244) - and now has its own golden. `patra_asti` needs `access()`, which the compiler does not make; building it is about a day and a half, and I recommend building it rather than withdrawing it.
 
-- **Commit on `main`:** this commit (SHA in the next line of the log). This round changes no compiler or library code: one golden, the hand-back and the evidence. The compiler is still **`Sutram 1.0 (v296) - sampurna sutra`** (R116's `73253b3`).
+- **Commit on `main`:** `15f92ec` (the gate and Wine lines added in `f0e3504` and the commit after it). This round changes no compiler or library code: one golden, the hand-back and the evidence. The compiler is still **`Sutram 1.0 (v296) - sampurna sutra`** (R116's `73253b3`).
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `suite: NO-EXPECTATION=4  PASS=313  (317 run)`**, FAIL=0. That is 312 plus the new golden 345.
 - **Gates (`sh tools/gates.sh`, Xvfb display, Linux): 61 PASS / 1 FAIL / 1 NOT-RUN** (FAIL: `installer version`, payload v243, as before; NOT-RUN: Windows execution). `R116 contracts` now 133 checks (a 300-byte literal case added after R116's run), 0 failed (`evidence-r117/gates.txt`).
-- **The guard** is R116's: origin/main (v295) → v296, 722 programs. **ELF and PE: 397 byte-identical, 143 refused identically, 167 DIFFER, 15 new.** Wine: PENDING - the Wine pass is running; updated when it finishes.
+- **The guard** is R116's: origin/main (v295) → v296, 722 programs. **ELF and PE: 397 byte-identical, 143 refused identically, 167 DIFFER, 15 new.** Wine: 397 / 143 / 167 / 15 as well, and its 1128 outputs are byte-identical to the Linux PE outputs.
 
 ## WS1 - the 167, by class
 

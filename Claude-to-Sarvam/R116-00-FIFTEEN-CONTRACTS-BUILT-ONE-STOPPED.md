@@ -5,10 +5,10 @@
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `suite: NO-EXPECTATION=4  PASS=312  (316 run)`**, FAIL=0. That is 297 plus the 15 new goldens 330-344; golden 207 is rewritten as a refusal.
 - **The new `R116 contracts` gate: `r116 contracts: 132 checks, 0 failed`** (`evidence-r116/contracts.txt`).
-- **Gates (`sh tools/gates.sh`, Xvfb display, Linux):** PENDING - running; this line is updated when they finish.
+- **Gates (`sh tools/gates.sh`, Xvfb display, Linux):** **61 PASS / 1 FAIL / 1 NOT-RUN** (FAIL: `installer version`, payload v243 inside Sutram-Setup.exe, as before; NOT-RUN: Windows execution). Run with v296 after R117's golden 345, so the suite inside is PASS=313 (`evidence-r116/gates.txt`).
 - **The guard, origin/main (v295) → v296, 722 programs** (`evidence-r116/guard.txt`):
   - **ELF and PE: 397 byte-identical, 143 refused identically, 167 DIFFER, 15 new** (examples 330-344).
-  - **Wine:** PENDING - the Wine pass is running; this line is updated when it finishes.
+  - **Wine:** Wine (the Windows compiler under Wine): 397 byte-identical, 143 refused identically, 167 DIFFER, 15 new; its 1128 outputs are byte-identical to the Linux compiler's PE outputs.
   - **The brief's "0 DIFFER except where a refusal is emitted" is not what happened, and it could not be.** A library function is compiled into every program that imports it. So all 167 programs that import a changed module (directly or through another module) have different bytes. I checked this: every one of the 167 imports a changed module, and no byte-identical program does.
   - I ran each of the 167, old and new: **164 print the same output with the same exit code.** The other 3 changed on purpose:
     - example 207 now refuses, with the length mismatch;

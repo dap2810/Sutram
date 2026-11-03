@@ -1,0 +1,90 @@
+# R116 guard: origin/main (v295) -> v296
+
+## elf
+NEW          examples/330_r116_dvigun.sm
+NEW          examples/331_r116_trigun.sm
+NEW          examples/332_r116_vardh.sm
+NEW          examples/333_r116_nirapeksh_mulya.sm
+NEW          examples/334_r116_mahattam_samapavartak.sm
+NEW          examples/335_r116_viparyay_ank.sm
+NEW          examples/336_r116_ganita_nirapeksh.sm
+NEW          examples/337_r116_brahmagupta_kshetr.sm
+NEW          examples/338_r116_brihat_ank_se.sm
+NEW          examples/339_r116_brihat_ank_tak_laghu.sm
+NEW          examples/340_r116_yog_seema.sm
+NEW          examples/341_r116_adish_gunan.sm
+NEW          examples/342_r116_bindu_gunan.sm
+NEW          examples/343_r116_suchi_shreni.sm
+NEW          examples/344_r116_varna_tak_dashm.sm
+source files whose text changed: 3
+722 programs: 397 byte-identical, 143 refused identically, 167 DIFFER, 15 new
+(the 167 DIFFER lines: all programs importing a changed module - evidence-r117/the-167-by-class.txt)
+
+## pe
+NEW          examples/330_r116_dvigun.sm
+NEW          examples/331_r116_trigun.sm
+NEW          examples/332_r116_vardh.sm
+NEW          examples/333_r116_nirapeksh_mulya.sm
+NEW          examples/334_r116_mahattam_samapavartak.sm
+NEW          examples/335_r116_viparyay_ank.sm
+NEW          examples/336_r116_ganita_nirapeksh.sm
+NEW          examples/337_r116_brahmagupta_kshetr.sm
+NEW          examples/338_r116_brihat_ank_se.sm
+NEW          examples/339_r116_brihat_ank_tak_laghu.sm
+NEW          examples/340_r116_yog_seema.sm
+NEW          examples/341_r116_adish_gunan.sm
+NEW          examples/342_r116_bindu_gunan.sm
+NEW          examples/343_r116_suchi_shreni.sm
+NEW          examples/344_r116_varna_tak_dashm.sm
+source files whose text changed: 3
+722 programs: 397 byte-identical, 143 refused identically, 167 DIFFER, 15 new
+(the 167 DIFFER lines: all programs importing a changed module - evidence-r117/the-167-by-class.txt)
+
+## wine
+NEW          examples/330_r116_dvigun.sm
+NEW          examples/331_r116_trigun.sm
+NEW          examples/332_r116_vardh.sm
+NEW          examples/333_r116_nirapeksh_mulya.sm
+NEW          examples/334_r116_mahattam_samapavartak.sm
+NEW          examples/335_r116_viparyay_ank.sm
+NEW          examples/336_r116_ganita_nirapeksh.sm
+NEW          examples/337_r116_brahmagupta_kshetr.sm
+NEW          examples/338_r116_brihat_ank_se.sm
+NEW          examples/339_r116_brihat_ank_tak_laghu.sm
+NEW          examples/340_r116_yog_seema.sm
+NEW          examples/341_r116_adish_gunan.sm
+NEW          examples/342_r116_bindu_gunan.sm
+NEW          examples/343_r116_suchi_shreni.sm
+NEW          examples/344_r116_varna_tak_dashm.sm
+source files whose text changed: 3
+722 programs: 397 byte-identical, 143 refused identically, 167 DIFFER, 15 new
+(the 167 DIFFER lines: all programs importing a changed module - evidence-r117/the-167-by-class.txt)
+
+## ELF DIFFERs run old and new (stdout + exit)
+elf: 167 DIFFER run old and new: 164 same output and exit code, 3 changed
+CHANGED examples/207_sankhyiki_vector.sm: rc 0 -> 1
+        line 3: old '7.000000'  new ''
+        line 4: old ''  new '<none>'
+SAME    examples/209_samanvaya.sm: rc 0 -> 0
+SAME    examples/217_r12_report.sm: rc 0 -> 0
+SAME    examples/280_r80_runtime_wraps.sm: rc 0 -> 0
+SAME    examples/61_stdlib_math.sm: rc 0 -> 0
+--
+CHANGED tests/stdlib/numeric29.sm: rc 0 -> 0
+        line 7: old '0'  new '9223372030926249001'
+        line 17: old '-2'  new '9223372036854775806'
+        line 19: old '9223372036854775805'  new '9223372036854775806'
+        line 21: old '-9223372036854775808'  new '9223372036854775807'
+        line 31: old '-8570200862721897295'  new '9223372036854775807'
+SAME    tests/stdlib/numeric_hangfix.sm: rc 0 -> 0
+--
+CHANGED tests/stdlib/r76_known_values.sm: rc 0 -> 0
+        line 14: old '0 6'  new '2 6'
+SAME    tests/stdlib/r78_suchi_avali_srij.sm: rc 0 -> 0
+SAME    tests/stdlib/r80_library_edges.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_array_guard.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_base_digits.sm: rc 0 -> 0
+SAME    tests/stdlib/r8_chakravala_sweep.sm: rc 0 -> 0
+
+## Wine against the Linux PE outputs
+compared 1128, differ 0
