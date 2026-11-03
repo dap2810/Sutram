@@ -1,6 +1,6 @@
 # R110-00 — STOPPED before implementing, as WS3 says: the collision check found one collision in the table, one with the frozen packs, and one with a known scanner bug. Nothing is renamed. The decision sheet is below.
 
-- **Commit on `main`:** `7218132` (documentation and evidence only; on top of your R110 files, `632c7e0`).
+- **Commit on `main`:** `7218132` (documentation and evidence only; on top of Muse's R106, `c6b41df`, and your R110 files, `632c7e0`).
 - **Compiler: `Sutram 1.0 (v291) - sampurna sutra`, unchanged** (the brief says v290; R109 made it v291).
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `suite: NO-EXPECTATION=4  PASS=289  (293 run)`, FAIL=0** (re-run on this tree).
@@ -98,6 +98,26 @@ The warning needs a Sanskrit text you have not given. My proposal is
 **Count check:** the brief says the 28 names were checked against "90 builtins". The builtin table has **48
 entries** (`bn_table`, including the two `parimana` spellings and `kosh_enqueue`, which is `kosh_push`). The 90
 may count something else; it does not change the result.
+
+## Muse's R106 audit, which landed as I pushed - where we agree and differ
+
+Muse (`c6b41df`, `Muse-to-Sarvam/ROUND-106-VOCABULARY-AUDIT.md`) says *"No blocking collision"*. Both of us are
+right about what we checked:
+
+- **We agree on `to`:** its replacement is `tak`, not `prati`. Muse calls the row safe to delete but wrongly
+  annotated; I call it a collision with the keyword `prati`. Either way the row needs correcting before it ships.
+- **Muse matched names against tables** (builtins, keywords, library, `.lang`, example identifiers). It did not
+  compile the names or run the pack check. **The two measured conflicts above are outside that method:** the
+  frozen packs' `Sutram Error` rule (748 failures when run) and the include scanner taking `vartani_yoj ` as an
+  include (compiled: `E_MODULE_MISSING`). The names themselves collide with nothing in the tables - on that we
+  agree.
+- **Muse adds what I did not judge, the Sanskrit:** five names wrong in meaning (`kosh_muc` for a dequeue that
+  releases nothing, `akshar_tas` backwards, `likha_bindu` for a function that prints no point, `saha` "with"
+  truncated from `sahayata`, `smaran_kriti` where the project's copy word is `pratilip`), and 13 bare roots. That is
+  one more reason to settle the table before it is built: an alias, once primary, is hard to take back.
+- **Counts:** Muse finds 30 names, not 28, and 47 builtins. I count 48 rows; `bn_dev_parimana` is the Devanagari
+  spelling, so Muse's 47 counts each name once. The rest of our figures agree: the old names are used in 69
+  examples and 3 library files.
 
 ## WS4 - the arena
 
