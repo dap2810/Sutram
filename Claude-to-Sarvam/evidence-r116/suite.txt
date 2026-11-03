@@ -1,0 +1,7 @@
+.......................................................................................................???.?................................................................................................................................................................................................................
+--- 215_r12_wordfreq: NO-EXPECTATION - no golden, not counted as passing; its output (8 line(s)) is not checked:
+--- 216_r12_expr: NO-EXPECTATION - no golden, not counted as passing; its output (8 line(s)) is not checked:
+--- 217_r12_report: NO-EXPECTATION - no golden, not counted as passing; its output (22 line(s)) is not checked:
+--- 219_sanskrit_kosh_aliases: NO-EXPECTATION - no golden, not counted as passing; its output (4 line(s)) is not checked:
+
+suite: NO-EXPECTATION=4  PASS=312  (316 run)

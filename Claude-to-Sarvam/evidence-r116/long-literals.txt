@@ -1,0 +1,24 @@
+# A string literal of N bytes printed three ways (likha literal, a vitti then shabda, likha_rup), then 'after'. Linux ELF.
+# columns: N | x, y, z printed | the 'after' line printed | exit
+== v295
+120 | 120 120 120 | 1 | exit 0
+125 | 125 125 125 | 1 | exit 0
+126 | 126 126 126 | 1 | exit 0
+127 | 0 0 0 | 0 | exit 139
+128 | 0 0 0 | 0 | exit 132
+200 | 0 0 0 | 0 | exit 139
+255 | 255 0 0 | 0 | exit 132
+256 | 0 0 0 | 1 | exit 0
+300 | 44 44 0 | 1 | exit 0
+1000 | 0 0 0 | 0 | exit 139
+== v296
+120 | 120 120 120 | 1 | exit 0
+125 | 125 125 125 | 1 | exit 0
+126 | 126 126 126 | 1 | exit 0
+127 | 127 127 127 | 1 | exit 0
+128 | 128 128 128 | 1 | exit 0
+200 | 200 200 200 | 1 | exit 0
+255 | 255 255 255 | 1 | exit 0
+256 | 256 256 256 | 1 | exit 0
+300 | 300 300 300 | 1 | exit 0
+1000 | 1000 1000 1000 | 1 | exit 0

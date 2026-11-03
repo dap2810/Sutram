@@ -1,0 +1,133 @@
+PASS  dvigun((0 - 4611686018427387904)) = -9223372036854775808
+PASS  dvigun(4611686018427387903) = 9223372036854775806
+PASS  dvigun(0) = 0
+PASS  dvigun((0 - 1)) = -2
+PASS  dvigun(12345) = 24690
+PASS  dvigun((0 - 4611686018427387905)) refused
+PASS  dvigun(4611686018427387904) refused
+PASS  dvigun(9223372036854775807) refused
+PASS  dvigun(((0 - 9223372036854775807) - 1)) refused
+PASS  trigun((0 - 3074457345618258602)) = -9223372036854775806
+PASS  trigun(3074457345618258602) = 9223372036854775806
+PASS  trigun(7) = 21
+PASS  trigun((0 - 3074457345618258603)) refused
+PASS  trigun(3074457345618258603) refused
+PASS  trigun(9223372036854775807) refused
+PASS  trigun(((0 - 9223372036854775807) - 1)) refused
+PASS  vardh(9223372036854775806) = 9223372036854775807
+PASS  vardh(((0 - 9223372036854775807) - 1)) = -9223372036854775807
+PASS  vardh((0 - 1)) = 0
+PASS  vardh(9223372036854775807) refused
+PASS  nirapeksh_mulya((0 - 9223372036854775807)) = 9223372036854775807
+PASS  nirapeksh_mulya(9223372036854775807) = 9223372036854775807
+PASS  nirapeksh_mulya((0 - 5)) = 5
+PASS  nirapeksh_mulya(0) = 0
+PASS  nirapeksh_mulya(((0 - 9223372036854775807) - 1)) refused
+PASS  ganita_nirapeksh((0 - 9223372036854775807)) = 9223372036854775807
+PASS  ganita_nirapeksh(9223372036854775807) = 9223372036854775807
+PASS  ganita_nirapeksh((0 - 5)) = 5
+PASS  ganita_nirapeksh(0) = 0
+PASS  ganita_nirapeksh(((0 - 9223372036854775807) - 1)) refused
+PASS  mahattam_samapavartak(((0 - 9223372036854775807) - 1), 2) = 2
+PASS  mahattam_samapavartak(2, ((0 - 9223372036854775807) - 1)) = 2
+PASS  mahattam_samapavartak(((0 - 9223372036854775807) - 1), 3) = 1
+PASS  mahattam_samapavartak(((0 - 9223372036854775807) - 1), (0 - 9223372036854775807)) = 1
+PASS  mahattam_samapavartak(((0 - 9223372036854775807) - 1), 6) = 2
+PASS  mahattam_samapavartak((0 - 6), 4) = 2
+PASS  mahattam_samapavartak(0, 0) = 0
+PASS  mahattam_samapavartak(12, (0 - 18)) = 6
+PASS  mahattam_samapavartak(9223372036854775807, 9223372036854775807) = 9223372036854775807
+PASS  mahattam_samapavartak(((0 - 9223372036854775807) - 1), (0 - 1)) = 1
+PASS  mahattam_samapavartak(((0 - 9223372036854775807) - 1), 0) refused
+PASS  mahattam_samapavartak(0, ((0 - 9223372036854775807) - 1)) refused
+PASS  mahattam_samapavartak(((0 - 9223372036854775807) - 1), ((0 - 9223372036854775807) - 1)) refused
+PASS  viparyay_ank(1000) = 1
+PASS  viparyay_ank((0 - 1000)) = -1
+PASS  viparyay_ank(7085774586302733229) = 9223372036854775807
+PASS  viparyay_ank((0 - 8085774586302733229)) = -9223372036854775808
+PASS  viparyay_ank(0) = 0
+PASS  viparyay_ank(123) = 321
+PASS  viparyay_ank((0 - 123)) = -321
+PASS  viparyay_ank(1000000000000000009) = 9000000000000000001
+PASS  viparyay_ank(7463847412) = 2147483647
+PASS  viparyay_ank(9223372036854775807) = 7085774586302733229
+PASS  viparyay_ank(((0 - 9223372036854775807) - 1)) = -8085774586302733229
+PASS  viparyay_ank(1000000000000000019) = 9100000000000000001
+PASS  viparyay_ank(8085774586302733229) refused
+PASS  viparyay_ank((0 - 9085774586302733229)) refused
+PASS  viparyay_ank(1000000000000000039) refused
+PASS  viparyay_ank((0 - 1000000000000000039)) refused
+PASS  brihat_ank_tak_laghu(a, 19) = 9223372036854775807
+PASS  brihat_ank_tak_laghu(a, 1) = 0
+PASS  brihat_ank_tak_laghu(a, 1) = 1
+PASS  brihat_ank_tak_laghu(a, 18) = 922337203685477580
+PASS  brihat_ank_tak_laghu(a, 0) = 0
+PASS  brihat_ank_tak_laghu(a, 4) = 12
+PASS  brihat_ank_tak_laghu(a, 19) refused
+PASS  brihat_ank_tak_laghu(a, 20) refused
+PASS  brihat_ank_tak_laghu(a, 2) refused
+PASS  brihat_ank_tak_laghu(a, 0 - 1) refused
+PASS  adish_gunan(u, v) = 8.500000
+PASS  adish_gunan(u, v) = 0.000000
+PASS  adish_gunan(u, u) = 8.500000
+PASS  adish_gunan(u, v) refused
+PASS  bindu_gunan(u, v) = 8.500000
+PASS  bindu_gunan(u, v) = 0.000000
+PASS  bindu_gunan(u, u) = 8.500000
+PASS  bindu_gunan(u, v) refused
+PASS  brahmagupta_kshetr(1, 1, 2, 3) = 2
+PASS  brahmagupta_kshetr(2, 3, 4, 0) = 2
+PASS  brahmagupta_kshetr(3, 3, 3, 3) = 9
+PASS  brahmagupta_kshetr(1, 1, 1, 3) = 0
+PASS  brahmagupta_kshetr(1, 2, 3, 0) = 0
+PASS  brahmagupta_kshetr(9223372036854775807, 9223372036854775807, 1, 1) = 9223372036854775807
+PASS  brahmagupta_kshetr(3037000499, 3037000499, 3037000499, 3037000499) = 9223372030926249001
+PASS  brahmagupta_kshetr(9223372036854775807, 9223372036854775807, 9223372036854775807, 9223372036854775807) refused
+PASS  brahmagupta_kshetr(3037000500, 3037000500, 3037000500, 3037000500) refused
+PASS  brahmagupta_kshetr(9223372036854775807, 9223372036854775807, 9223372036854775807, 0) refused
+PASS  brahmagupta_kshetr((0 - 1), 2, 2, 2) refused
+PASS  brahmagupta_kshetr(2, 0, 2, 2) refused
+PASS  brahmagupta_kshetr(2, 2, 2, (0 - 1)) refused
+PASS  brahmagupta_kshetr(1, 2, 10, 3) refused
+PASS  brahmagupta_kshetr(1, 1, 10, 0) refused
+PASS  brahmagupta_kshetr(0, 0, 0, 0) refused
+PASS  brihat_ank_se([9, 9], base 10, n 2) -> ['1', '9', '9']
+PASS  brihat_ank_se([1, 0, 0], base 10, n 2) -> ['0', '0', '0']
+PASS  brihat_ank_se([0, 0, 1, 2], base 10, n 2) -> ['1', '2', '1']
+PASS  brihat_ank_se([1, 10], base 10, n 2) -> ['0', '0', '0']
+PASS  brihat_ank_se([], base 10, n 2) -> ['1', '0', '0']
+PASS  brihat_ank_se([1, 1, 1, 1], base 2, n 2) -> ['1', '5', '1']
+PASS  brihat_ank_se([15, 15], base 16, n 3) -> ['1', '5', '5', '2']
+PASS  brihat_ank_se([1], base 1, n 2) -> ['0', '7', '7']
+PASS  brihat_ank_se([1], base 17, n 2) -> ['0', '7', '7']
+PASS  brihat_ank_se([1], base 10, n 0) -> ['0', '7']
+PASS  yog_seema(4611686018427387904, 4611686018427387904) = 4611686018427387904
+PASS  yog_seema(((0 - 9223372036854775807) - 1), ((0 - 9223372036854775807) - 1)) = -9223372036854775808
+PASS  yog_seema(((0 - 9223372036854775807) - 1), 9223372036854775807) = -9223372036854775808
+PASS  yog_seema(5, 4) = 0
+PASS  yog_seema(0, 9223372036854775807) = 9223372036854775807
+PASS  yog_seema((0 - 9223372036854775806), 9223372036854775807) = 9223372036854775807
+PASS  yog_seema((0 - 4611686018427387905), (0 - 4611686018427387905)) = -4611686018427387905
+PASS  yog_seema(0, 4294967296) = 9223372036854775807
+PASS  yog_seema(4611686018427387904, 4611686018427387905) = 9223372036854775807
+PASS  yog_seema((0 - 5), 5) = 0
+PASS  yog_seema(9223372036854775807, 9223372036854775807) = 9223372036854775807
+PASS  suchi_shreni: sorted 1, empty 1, refused scratch 0 with cells unchanged  [['1', '1', '3', '1', '0', '9', '2'] '']
+PASS  varna_tak_dashm('00000000000000000001') -> ['1.000000e+20', '1']
+PASS  varna_tak_dashm('0.00000000000000000001') -> ['1.000000', '1']
+PASS  varna_tak_dashm('0000') -> ['0.000000', '1']
+PASS  varna_tak_dashm('1x') -> ['0.000000', '0']
+PASS  varna_tak_dashm('1e999') -> ['0.000000', '0']
+PASS  varna_tak_dashm('9e308') -> ['0.000000', '0']
+PASS  varna_tak_dashm('1e-999') -> ['0.000000', '1']
+PASS  varna_tak_dashm('0e99999999999999999999') -> ['0.000000', '1']
+PASS  varna_tak_dashm('000000000000000000000000000002.5') -> ['2.500000e+20', '1']
+PASS  a 125-byte string literal, three ways
+PASS  a 126-byte string literal, three ways
+PASS  a 127-byte string literal, three ways
+PASS  a 128-byte string literal, three ways
+PASS  a 255-byte string literal, three ways
+PASS  a 256-byte string literal, three ways
+PASS  a 1000-byte string literal, three ways
+PASS  a 5000-byte string literal, three ways
+r116 contracts: 132 checks, 0 failed

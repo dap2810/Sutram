@@ -1,0 +1,65 @@
+# Each R116 example, compiled by v295 (with v295's lib) and by v296 (with v296's lib), Linux ELF. stdout | stderr | exit
+
+## 207_sankhyiki_vector
+v295: 11.000000 5.000000 7.000000 |  | exit 0
+v296: 11.000000 5.000000 | Sutram truti [E_AKARA_ASAMYA]: bindu_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite. | exit 1
+
+## 330_r116_dvigun
+v295: 9223372036854775806 -9223372036854775808 1 |  | exit 0
+v296: 9223372036854775806 | Sutram truti [E_ATIPRAVAH]: dvigun: dvigunitam phalam purnanka-seemam atikramati; n -4611686018427387904 tah 4611686018427387903 paryantam bhavet. | exit 1
+
+## 331_r116_trigun
+v295: -9223372036854775806 -9223372036854775807 1 |  | exit 0
+v296: -9223372036854775806 | Sutram truti [E_ATIPRAVAH]: trigun: trigunitam phalam purnanka-seemam atikramati; n -3074457345618258602 tah 3074457345618258602 paryantam bhavet. | exit 1
+
+## 332_r116_vardh
+v295: 9223372036854775807 -9223372036854775807 -9223372036854775808 1 |  | exit 0
+v296: 9223372036854775807 -9223372036854775807 | Sutram truti [E_ATIPRAVAH]: vardh: ekena vardhitam phalam purnanka-seemam atikramati; n 9223372036854775807 tah nyunam bhavet. | exit 1
+
+## 333_r116_nirapeksh_mulya
+v295: 9223372036854775807 1 -9223372036854775808 1 |  | exit 0
+v296: 9223372036854775807 1 | Sutram truti [E_PHALA_SEEMA]: nirapeksh_mulya: nirapeksha-mulyam 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807. | exit 1
+
+## 334_r116_mahattam_samapavartak
+v295: 2 1 0 -9223372036854775808 1 |  | exit 0
+v296: 2 1 0 | Sutram truti [E_PHALA_SEEMA]: mahattam_samapavartak: mahattama-samapavartakah 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807. | exit 1
+
+## 335_r116_viparyay_ank
+v295: -8085774586302733229 -21 -8446744073709551625 1 |  | exit 0
+v296: -8085774586302733229 -21 | Sutram truti [E_PHALA_SEEMA]: viparyay_ank: viparita-ankasya mulyam purnanke na dharyate; seema -9223372036854775808 tah 9223372036854775807 paryantam. | exit 1
+
+## 336_r116_ganita_nirapeksh
+v295: 9223372036854775807 -9223372036854775808 1 |  | exit 0
+v296: 9223372036854775807 | Sutram truti [E_PHALA_SEEMA]: ganita_nirapeksh: nirapeksha-mulyam 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807. | exit 1
+
+## 337_r116_brahmagupta_kshetr
+v295: 9 0 0 0 0 1 1 |  | exit 0
+v296: 9 2 2 0 9223372030926249001 | Sutram truti [E_ATIPRAVAH]: brahmagupta_kshetr: kshetraphalam purnanka-seemam atikramati; adhikatamam mulyam 9223372036854775807. | exit 1
+
+## 338_r116_brihat_ank_se
+v295: 1 9 9 1 0 0 0 |  | exit 0
+v296: 1 9 9 0 0 0 0 |  | exit 0
+
+## 339_r116_brihat_ank_tak_laghu
+v295: 9223372036854775807 -9223372036854775808 1 |  | exit 0
+v296: 9223372036854775807 | Sutram truti [E_PHALA_SEEMA]: brihat_ank_tak_laghu: ankasya mulyam purnanke na dharyate; adhikatamam mulyam 9223372036854775807. | exit 1
+
+## 340_r116_yog_seema
+v295: 9223372036854775807 -9223372036854775808 9223372036854775807 0 5050 |  | exit 0
+v296: 4611686018427387904 -9223372036854775808 9223372036854775807 0 5050 |  | exit 0
+
+## 341_r116_adish_gunan
+v295: 32.000000 14.000000 1 |  | exit 0
+v296: 32.000000 | Sutram truti [E_AKARA_ASAMYA]: adish_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite. | exit 1
+
+## 342_r116_bindu_gunan
+v295: 32.000000 14.000000 1 |  | exit 0
+v296: 32.000000 | Sutram truti [E_AKARA_ASAMYA]: bindu_gunan: dvi-koshayoh dirghate asamane; samane dirghate apekshite. | exit 1
+
+## 343_r116_suchi_shreni
+v295: 1 123 1 923 |  | exit 0
+v296: 1 123 0 923 |  | exit 0
+
+## 344_r116_varna_tak_dashm
+v295: 0.000000 1 0.000000 0 0.000000 0 |  | exit 0
+v296: 1.000000 1 0.000000 0 0.000000 0 |  | exit 0

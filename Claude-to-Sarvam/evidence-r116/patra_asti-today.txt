@@ -1,0 +1,8 @@
+# patra_asti on v296 (unchanged from v295), Linux ELF, run as root (so EACCES cannot be shown here)
+file: prints '1', exit 0
+dir: prints '1', exit 0
+missing: prints '0', exit 0
+dangling: prints '0', exit 0
+loop1: prints '0', exit 0
+file/x: prints '0', exit 0
+fifo: prints '', exit 124

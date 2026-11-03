@@ -1,0 +1,25 @@
+# yog_seema: v296 against Python's exact sum clamped to int64 (720 pairs: all 20x20 boundary pairs + 300 random)
+720 720 bad 0
+[]
+
+# brahmagupta_kshetr: v296 against isqrt(P)//4 (Python big integers)
+ok cases 221 bad 0
+PASS (9223372036854775807, 9223372036854775807, 9223372036854775807, 9223372036854775807) big 1  Sutram truti [E_ATIPRAVAH]: brahmagupta_
+PASS (9223372036854775807, 9223372036854775807, 9223372036854775807, 0) big 1  Sutram truti [E_ATIPRAVAH]: brahmagupta_
+PASS (4294967296, 4294967296, 4294967296, 4294967296) big 1  Sutram truti [E_ATIPRAVAH]: brahmagupta_
+PASS (6074001000, 6074001000, 6074001000, 6074001000) big 1  Sutram truti [E_ATIPRAVAH]: brahmagupta_
+PASS (4179409012561175018, 4565409504131702185, 1773016515759067310, 7660206667421189689) big 1  Sutram truti [E_ATIPRAVAH]: brahmagupta_
+PASS (7000763519158413845, 6467076229271791217, 4797793605413166915, 4374857683776088240) big 1  Sutram truti [E_ATIPRAVAH]: brahmagupta_
+PASS (252226257740, 569783084011, 140936055835, 0) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (610477967, 276482055, 160910214, 2098808064) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (348472067354, 690159073311, 784699739486, 1090249500604) big 1  Sutram truti [E_ATIPRAVAH]: brahmagupta_
+PASS (255105011165, 60021504526, 355479302232, 0) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (305937904641, 895268982183, 177888790328, 152851481087) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (1369975410892938331, 5575005027730585670, 1749487845201874647, 0) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (-5, 3, 3, 3) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (3, 0, 3, 3) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (3, 3, 3, -1) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (1, 2, 10, 3) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (1, 1, 10, 0) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+PASS (0, 0, 0, 0) inv 1  Sutram truti [E_MULYA_AYOGYA]: brahmagup
+(1, 2, 3, 0) is degenerate - 0, correct; listed with the refusals by mistake in the harness, so not shown
