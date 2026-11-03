@@ -1,0 +1,14 @@
+prakriya rakh(kosh k) {
+    nivartanam k
+}
+
+mukhya() {
+    kosh bahar[1]
+    kosh o[2]
+    kosh_push(o, 5)
+    mandapa {
+        vitti a = o
+        bahar = rakh(a)
+    }
+    likha(bahar[0])
+}

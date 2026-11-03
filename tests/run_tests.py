@@ -160,9 +160,25 @@ def main():
         if status in ("FAIL", "COMPILE-FAIL", "NO-EXPECTATION"):
             failures.append((n, status, detail or out))
     print()
-    print("  ".join(f"{k}={v}" for k, v in sorted(counts.items())))
+    # R109 (WS3): the details first, the summary LAST - it used to be printed first, so the run ended
+    # with a no-expectation program's raw output ("1 7 7 1"), which read as if it were the result.
+    # A program's output is indented and labelled, never left bare; the gates read the last line only.
     for n, status, detail in failures:
-        print(f"\n--- {n}: {status}\n{detail}")
+        if status == "NO-EXPECTATION":
+            lines = (detail or "").splitlines()
+            print(f"--- {n}: NO-EXPECTATION - no golden, not counted as passing; "
+                  f"its output ({len(lines)} line(s)) is not checked:")
+            for l in lines[:5]:
+                print(f"    | {l}")
+            if len(lines) > 5:
+                print(f"    | ... {len(lines) - 5} more")
+        else:
+            print(f"--- {n}: {status}")
+            for l in (detail or "").splitlines():
+                print(f"    | {l}")
+    print()
+    print("suite: " + "  ".join(f"{k}={v}" for k, v in sorted(counts.items()))
+          + f"  ({len(names)} run)")
     bad = counts.get("FAIL", 0) + counts.get("COMPILE-FAIL", 0) + counts.get("NO-EXPECTATION", 0)
     return 1 if bad else 0
 

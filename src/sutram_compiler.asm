@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v290) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v291) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -557,6 +557,7 @@ r54_builtin_arity_table:
     r107_p3_len equ $ - r107_p3
     r108_msg_keep db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
     db "Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
+    r108_msg_full db "Sutram Error: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
     rfx_bc_hdr_mala db ": Sutram Error [E_MALA_GANIT]: ", 0
     rfx_bc_txt_mala db "mala-upari ganitam tulana va na sambhavati - mala sankhya na", 10, 0
     rfx_bc_hint_mala db "Sanket: a[i] tasyah mulyam - tani tulyantam", 10, 0
@@ -1344,7 +1345,8 @@ section .bss
     r108_cnt_all resq 1
     r108_cnt_ok resq 1
     r108_pname  resq 1
-    r107_used   resq 1                      ; R107: parimana() appears in the program
+    r108_ovf    resq 1                      ; R109: the walk's stack overflowed - count the parameter as keeping
+    r107_used   resq 1                     ; R107: parimana() appears in the program
     r108_bk_name resq 256                   ; R108: kosh made in an open mandapa of this function:
     r108_bk_gd  resq 256                    ;   name, the r82 depth of its block,
     r108_bk_node resq 256                   ;   a BN_NIRM_SCRATCH node carrying its depth and budgets
@@ -12180,7 +12182,7 @@ r108_kosh_alloc:
     je r101a_emit_kosh_alloc
     mov rcx, [rel r108_bk_n]
     cmp rcx, 256
-    jae r101a_emit_kosh_alloc
+    jae r108_full                  ; R109: a full table refuses; it does not leave the kosh unchecked
     lea rdx, [rel r108_bk_node]
     mov qword [rdx+rcx*8], 1       ; non-zero: "a kosh of an open block"
     lea rdx, [rel r108_bk_name]
@@ -12191,6 +12193,58 @@ r108_kosh_alloc:
     mov [rdx+rcx*8], rsi
     inc qword [rel r108_bk_n]
     jmp r101a_emit_kosh_alloc
+r108_full:
+    lea rdi, [rel r108_msg_full]
+    jmp capacity_fail
+
+; r108_note_alias(rbx = a statement, at code generation; every register preserved). R109 (ChatGPT
+; R178): `vitti a = k` and `a = k`, k a kosh of an open block, make a a name of that kosh, so
+; r108_check_call treats `rakh(a)` as `rakh(k)`. v290 knew only k's own name.
+r108_note_alias:
+    cmp qword [rel r108_bk_n], 0
+    je .r
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rax, [rbx]
+    mov rdi, [rbx+16]              ; the value: a DECL's initializer, an ASSIGN's right side
+    mov rsi, [rbx+8]
+    cmp rax, AST_DECL
+    je .chk
+    cmp rax, AST_ASSIGN
+    jne .out
+    test rsi, rsi
+    jz .out
+    cmp qword [rsi], AST_VAR
+    jne .out
+    mov rsi, [rsi+8]               ; the target's name
+.chk:
+    test rsi, rsi
+    jz .out
+    call r108_bk_of
+    test rax, rax
+    jz .out
+    mov rcx, [rel r108_bk_n]
+    cmp rcx, 256
+    jae r108_full
+    lea rdx, [rel r108_bk_node]
+    mov [rdx+rcx*8], rax
+    lea rdx, [rel r108_bk_name]
+    mov [rdx+rcx*8], rsi
+    lea rdx, [rel r108_bk_gd]
+    mov rax, [rel r82_gdepth]
+    mov [rdx+rcx*8], rax
+    inc qword [rel r108_bk_n]
+.out:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+.r:
+    ret
 
 ; r108_bk_of(rdi = AST node) -> rax = the BN_NIRM_SCRATCH node of the open-block kosh it names, or 0
 r108_bk_of:
@@ -12289,8 +12343,9 @@ r108_compute_esc:
     xor eax, eax
     mov ecx, FUNC_DEFS_CAP * 16
     rep stosb
-    mov r14d, 32                   ; rounds
-.round:
+.round:                            ; R109: to convergence - v290 stopped after 32 rounds, so a chain
+                                   ; of 33 prakriyas passed a block's kosh out unrefused. Each round
+                                   ; marks a parameter or ends: at most FUNC_DEFS_CAP * 6 + 1 rounds.
     xor r13d, r13d                 ; changed
     xor r12d, r12d
 .fn:
@@ -12332,8 +12387,6 @@ r108_compute_esc:
     jmp .fn
 .rend:
     test r13d, r13d
-    jz .done
-    dec r14d
     jnz .round
 .done:
     pop r14
@@ -12350,6 +12403,7 @@ r108_param_kept:
     push r12
     push r15
     mov [rel r108_pname], rdi
+    mov qword [rel r108_ovf], 0
     mov qword [rel r108_cnt_all], 0
     mov qword [rel r108_cnt_ok], 0
     push rsi
@@ -12482,6 +12536,7 @@ r108_param_kept:
     cmp rax, [rel r108_cnt_ok]
     seta al
     movzx eax, al
+    or rax, [rel r108_ovf]         ; R109: a walk that did not finish proves nothing - "keeps"
     pop r15
     pop r12
     pop rbx
@@ -12490,11 +12545,14 @@ r108_param_kept:
     test rdi, rdi
     jz .pr
     cmp r15, 65536
-    jae .pr
+    jae .ovf
     lea rax, [rel r108_stack]
     mov [rax+r15*8], rdi
     inc r15
 .pr:
+    ret
+.ovf:
+    mov qword [rel r108_ovf], 1
     ret
 .is_p:                             ; rdi = node -> rax = 1 if AST_VAR naming the parameter
     xor eax, eax
@@ -18283,6 +18341,7 @@ r45_gen_block_body:                 ; R45: gen_block is the wrapper in src/r45_d
 gen_stmt:
     push rbx
     mov rbx, rax
+    call r108_note_alias           ; R109: a second name of an open block's kosh (no code emitted)
     cmp qword [rel r45_debug], 0   ; R45 --debug: the trap before the statement
     je .r45_no_trap
     mov rdi, rbx

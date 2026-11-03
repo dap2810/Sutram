@@ -1,0 +1,12 @@
+PASS  current, both compilers: exit 0, PASS payload v291 = compiler v291 (bin/ and win/sutram.exe, packed 2026-11-03; the wizard has no version of it
+PASS  current, no .sha256 file: exit 0, PASS payload v291 = compiler v291 (bin/ and win/sutram.exe, packed 2026-11-03; the wizard has no version of it
+PASS  bin compiler one version behind: exit 1, FAIL payload bin/sutram.exe v290, win/sutram.exe v291 inside Sutram-Setup.exe (the wizard has no version of it
+PASS  win compiler one version behind: exit 1, FAIL payload bin/sutram.exe v291, win/sutram.exe v290 inside Sutram-Setup.exe (the wizard has no version of it
+PASS  win compiler missing: exit 1, FAIL payload v291 inside Sutram-Setup.exe (the wizard has no version of its own); compiler v291, packed 2026-1
+PASS  a compiler with no version: exit 1, FAIL payload v291 inside Sutram-Setup.exe (the wizard has no version of its own); compiler v291, packed 2026-1
+PASS  .sha256 of another file: exit 1, FAIL payload v291 inside Sutram-Setup.exe (the wizard has no version of its own); compiler v291, packed 2026-1
+PASS  stale payload named as the payload: exit 1, FAIL payload v290 inside Sutram-Setup.exe (the wizard has no version of its own); compiler v291, packed 2026-1
+PASS  a wizard with its own version is reported: exit 0, PASS payload v291 = compiler v291 (bin/ and win/sutram.exe, packed 2026-11-03; the wizard says v291; sutram_co
+PASS  tree sutram.exe one version behind: exit 1, FAIL payload v291 inside Sutram-Setup.exe (the wizard has no version of its own); compiler v291, packed 2026-1
+PASS  no installer at all: exit 1, FAIL no installer at /tmp/tmpmr5p3doq/absent.exe (compiler is v291)
+r93 installer gate: 11 checks, 0 failed

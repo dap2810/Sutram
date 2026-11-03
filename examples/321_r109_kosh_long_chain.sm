@@ -1,0 +1,145 @@
+# R109 (ChatGPT R178): the outlives rule follows a chain of any length. Each f_i passes its kosh to
+# f_(i+1) and the last returns it, so every link keeps what it is given. v290 stopped its fixpoint after
+# 32 rounds: with 33 links defined in this order the first was never marked, and the block's kosh left
+# the block through f1. From v291 the fixpoint runs until nothing changes, and the call is refused.
+prakriya f1(kosh k) {
+    nivartanam f2(k)
+}
+
+prakriya f2(kosh k) {
+    nivartanam f3(k)
+}
+
+prakriya f3(kosh k) {
+    nivartanam f4(k)
+}
+
+prakriya f4(kosh k) {
+    nivartanam f5(k)
+}
+
+prakriya f5(kosh k) {
+    nivartanam f6(k)
+}
+
+prakriya f6(kosh k) {
+    nivartanam f7(k)
+}
+
+prakriya f7(kosh k) {
+    nivartanam f8(k)
+}
+
+prakriya f8(kosh k) {
+    nivartanam f9(k)
+}
+
+prakriya f9(kosh k) {
+    nivartanam f10(k)
+}
+
+prakriya f10(kosh k) {
+    nivartanam f11(k)
+}
+
+prakriya f11(kosh k) {
+    nivartanam f12(k)
+}
+
+prakriya f12(kosh k) {
+    nivartanam f13(k)
+}
+
+prakriya f13(kosh k) {
+    nivartanam f14(k)
+}
+
+prakriya f14(kosh k) {
+    nivartanam f15(k)
+}
+
+prakriya f15(kosh k) {
+    nivartanam f16(k)
+}
+
+prakriya f16(kosh k) {
+    nivartanam f17(k)
+}
+
+prakriya f17(kosh k) {
+    nivartanam f18(k)
+}
+
+prakriya f18(kosh k) {
+    nivartanam f19(k)
+}
+
+prakriya f19(kosh k) {
+    nivartanam f20(k)
+}
+
+prakriya f20(kosh k) {
+    nivartanam f21(k)
+}
+
+prakriya f21(kosh k) {
+    nivartanam f22(k)
+}
+
+prakriya f22(kosh k) {
+    nivartanam f23(k)
+}
+
+prakriya f23(kosh k) {
+    nivartanam f24(k)
+}
+
+prakriya f24(kosh k) {
+    nivartanam f25(k)
+}
+
+prakriya f25(kosh k) {
+    nivartanam f26(k)
+}
+
+prakriya f26(kosh k) {
+    nivartanam f27(k)
+}
+
+prakriya f27(kosh k) {
+    nivartanam f28(k)
+}
+
+prakriya f28(kosh k) {
+    nivartanam f29(k)
+}
+
+prakriya f29(kosh k) {
+    nivartanam f30(k)
+}
+
+prakriya f30(kosh k) {
+    nivartanam f31(k)
+}
+
+prakriya f31(kosh k) {
+    nivartanam f32(k)
+}
+
+prakriya f32(kosh k) {
+    nivartanam f33(k)
+}
+
+prakriya f33(kosh k) {
+    nivartanam k
+}
+
+mukhya() {
+    kosh bahar[1]
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        bahar = f1(k)
+    }
+    likha("yah pankti na chalati\n")
+}

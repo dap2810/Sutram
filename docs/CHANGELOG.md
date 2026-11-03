@@ -1,4 +1,18 @@
-> **The 20 newest entries.** Older ones, from "v431" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v432" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v291 (Claude, R109) - the outlives rule follows a second name and a chain of any length; the installer gate names the payload; the suite's summary is its last line
+
+- **ChatGPT R178's branch findings, checked on main:** two were open on v290. `vitti a = k` then `rakh(a)` gave a
+  block's `kosh` to a `prakriya` that keeps it (only `k`'s own name was checked), and a chain of 33 or more
+  keeping `prakriya`s passed it out (the fixpoint stopped after 32 rounds). Both are `E_KOSH_MANDAPA` now:
+  an alias made by `vitti a = k` or `a = k` carries the block, and the fixpoint runs to convergence. Examples 320
+  and 321. A full table of open block `kosh`s now refuses instead of leaving the next one unchecked, and a walk
+  that overflows its stack counts the parameter as keeping (neither is reachable in the tree).
+- **`installer version`** now says what it read: `payload v243 inside Sutram-Setup.exe (the wizard has no
+  version of its own)`, the payload's packing date, and how many of its `lib`/`lang` files differ from the
+  tree. `docs/INSTALLER-REBUILD.md` is the Windows procedure, with the payload compiler's expected SHA-256.
+- **`tests/run_tests.py`** prints the failure details first and `suite: ... (N run)` last; a no-expectation
+  program's output is indented and labelled. The gates read the last line.
 
 ## v290 (Claude, R108 + its correction) - the outlives rule: a block's kosh never goes to a prakriya that keeps it; a mala operand is refused; the arena is NOT on main
 
@@ -374,34 +388,3 @@
 **R87 Claude** - dump the emitted code for `vitti f = 3.5` and find where the fraction goes; then check whether any golden recorded the truncated output.
 **R157 ChatGPT** - why its symptom differs from mine, and does Sutram support float variables at all.
 **R85 Muse** - does the library compute through float variables, and were its earlier six-decimal comparisons valid or lucky.
-
-## v432 - I was wrong for several rounds: `vitti a = k` is not refused
-
-### What happened
-**Since round 76 I have written "Refused: `vitti a = k`" in every partner brief.** **ChatGPT tested it on Windows and said it is not refused on v277. I ran it on v278:**
-
-```
-kosh k[2]
-kosh_push(k, 41)
-vitti a = k
-likha(a[0])        -> prints 41
-```
-
-**It compiles and runs.** **I conflated it with `box[0] = nirmmita(64); outer = box[0]`, which IS refused, and then repeated the wrong one as verified fact for several rounds.**
-
-### Why it matters beyond the error
-**Two variables can own one `kosh` buffer.** **That is the exact hazard that made me drop the recycling bins in Step 0 - the reason the whole `kosh` fix was redesigned.**
-
-**So the aliasing hazard is real and open, and I have been telling three partners it was closed.**
-
-### And `kosh` in a block is done
-**Claude's R82 shipped it: generation-checked, refused after the block, 0 DIFFER elsewhere across 665 programs on three paths, +11% worst case where the check runs.** **Suite 255, gates 57 PASS, new gate `R82 kosh-mandapa`.**
-
-**That was the last memory gap I was tracking - and it is closed.**
-
-### The pattern, which is the fourth of its kind
-**Four false claims in my briefs this session:** **`vitti a = k` refused** · **the one-sentence scope rule sufficient** · **15 mutants including a Madhava sign error** · **`nirmmita(-1)` "compiles and runs" when it segfaults.**
-
-**All four share a shape: I described what I believed the system did, rather than running it and pasting the output.** **The `## Verified behaviour` block exists to prevent this and did not, because I wrote its entries from memory.**
-
-**So the rule becomes: every line in that block is run in the same turn it is written, and the output is pasted in.** **And I have asked ChatGPT what format would make a claim in it impossible to be wrong.**

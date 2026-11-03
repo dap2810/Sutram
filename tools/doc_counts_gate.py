@@ -85,7 +85,8 @@ def suite_pass(repo):
         out = subprocess.run([sys.executable, t], cwd=repo, capture_output=True, text=True, timeout=600).stdout
     except Exception:
         return None
-    m = re.search(r"PASS=(\d+)", out)
+    last = out.strip().splitlines()[-1] if out.strip() else ""   # R109: the summary is the last line
+    m = re.search(r"PASS=(\d+)", last)
     return int(m.group(1)) if m else None
 
 

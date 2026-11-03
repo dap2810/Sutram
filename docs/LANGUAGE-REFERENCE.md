@@ -1120,6 +1120,11 @@ function value or a foreign function counts as keeping. Otherwise (`examples/316
 Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
 ```
 
+**v291 (R109) closed two ways round it that v290 missed:** a second name - `vitti a = k` or `a = k`, then `rakh(a)` -
+is the block's `kosh` too (`examples/320`); and the "keeps" analysis runs to the end however long the chain of
+`prakriya`s is (v290 stopped after 32 rounds, so 33 keeping `prakriya`s, each passing it on, let it out:
+`examples/321`).
+
 So no reference to a block's `kosh` outlives the block. The runtime check below stays as a second line; no program
 in the tree, and none written for its gate, can reach it any more. If one ever does, it stops the program with
 

@@ -14,7 +14,14 @@ present, is the SHA-256 of Sutram-Setup.exe - the hash the maintainer verifies a
 The embedded compiler's BYTES are not compared with win/sutram.exe: the installer's compiler is built on
 Windows, and that toolchain's bytes differ from the Linux cross-build in the tree. The version must match.
 
-Last line: "PASS installer vNNN = compiler vNNN (...)" or "FAIL ...". Exit 0 on PASS, 1 on FAIL.
+R109: the verdict names WHAT it read. The version is the payload's - the two compilers packed inside
+Sutram-Setup.exe - not the wizard's: the wizard (the bytes before the payload) carries no version string of
+its own, and the line says so. "payload v243" means the compilers the wizard would install are v243; it
+does not mean the wizard is. The payload's packing date and how many of its lib/ and lang/ files differ
+from the tree's are reported too (CR/LF ignored). docs/INSTALLER-REBUILD.md is the rebuild procedure.
+
+Last line: "PASS payload vNNN = compiler vNNN (...)" or "FAIL payload vMMM inside Sutram-Setup.exe ...".
+Exit 0 on PASS, 1 on FAIL.
 
 Usage: python3 tools/check_installer_version.py [--setup PATH] [--repo DIR]
 """
@@ -51,6 +58,37 @@ def embedded_payload(setup):
     return zipfile.ZipFile(io.BytesIO(setup[start:j + 22 + comment]))
 
 
+def payload_bounds(setup):
+    """(start, end) of the embedded payload in the installer's bytes, or None."""
+    j = setup.rfind(b'PK\x05\x06')
+    if j < 0:
+        return None
+    cd_size, cd_off = struct.unpack('<II', setup[j + 12:j + 20])
+    comment = struct.unpack('<H', setup[j + 20:j + 22])[0]
+    start = j - cd_size - cd_off
+    return (start, j + 22 + comment) if start >= 0 else None
+
+
+def tree_drift(z, repo):
+    """(differ, compared): payload lib/ and lang/ files (under bin/, win/ or the root) against the tree's, CR/LF ignored."""
+    differ = compared = 0
+    for info in z.infolist():
+        n = info.filename.replace('\\', '/')
+        if n.endswith('/'):
+            continue
+        for pre, d in (('bin/lib/', 'lib'), ('win/lib/', 'lib'), ('lib/', 'lib'),
+                       ('bin/lang/', 'lang'), ('win/lang/', 'lang'), ('lang/', 'lang')):
+            if n.lower().startswith(pre):
+                t = os.path.join(repo, d, n[len(pre):])
+                if os.path.isfile(t):
+                    compared += 1
+                    a = z.read(info).replace(b'\r\n', b'\n')
+                    b = open(t, 'rb').read().replace(b'\r\n', b'\n')
+                    differ += a != b
+                break
+    return differ, compared
+
+
 def main(argv):
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('--repo', default=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -69,12 +107,14 @@ def main(argv):
     except (zipfile.BadZipFile, struct.error) as e:
         problems.append(f'the embedded payload is not a readable zip ({e})')
     found = {}
+    packed = set()
     if z is not None:
-        for name in z.namelist():
-            key = name.replace('\\', '/').lower()
+        for info in z.infolist():
+            key = info.filename.replace('\\', '/').lower()
             if key in ('bin/sutram.exe', 'win/sutram.exe'):
-                m = VERSION.search(z.read(name))
+                m = VERSION.search(z.read(info))
                 found[key] = int(m.group(1)) if m else None
+                packed.add('%04d-%02d-%02d' % info.date_time[:3])
         for key in ('bin/sutram.exe', 'win/sutram.exe'):
             if key not in found:
                 problems.append(f'{key} is not in the payload')
@@ -104,17 +144,34 @@ def main(argv):
         if not recorded or recorded[0].lower() != digest:
             problems.append(f'Sutram-Setup.sha256 says {recorded[0][:12] if recorded else "nothing"}..., '
                             f'the file is {digest[:12]}...')
+    # R109: what the version belongs to. The wizard is the bytes outside the payload.
+    b = payload_bounds(setup)
+    outside = setup[:b[0]] + setup[b[1]:] if b else setup
+    m = VERSION.search(outside)
+    wizard = f'the wizard says v{int(m.group(1))}' if m else 'the wizard has no version of its own'
+    drift = ''
+    if z is not None:
+        differ, compared = tree_drift(z, a.repo)
+        if compared:
+            drift = f'; {differ} of its {compared} lib/lang files differ from the tree'
+    vs = sorted({v for v in found.values() if v is not None})
+    if not vs:
+        payload = 'payload (no compiler version found)'
+    elif len(vs) == 1:
+        payload = f'payload v{vs[0]}'
+    else:
+        payload = 'payload ' + ', '.join(f'{k} v{v}' for k, v in sorted(found.items()) if v is not None)
+    when = f', packed {"/".join(sorted(packed))}' if packed else ''
     for p in problems:
         print('  ' + p)
-    shown = ', '.join(f'{k} v{v}' for k, v in sorted(found.items()) if v is not None)
     if problems:
-        print(f'FAIL installer ({shown or "no compiler found"}), compiler v{want}: {"; ".join(problems)} - '
-              f'rebuild it on Windows: windows/build-windows-setup.ps1')
+        print(f'FAIL {payload} inside Sutram-Setup.exe ({wizard}); compiler v{want}{when}{drift}: '
+              f'{"; ".join(problems)} - rebuild the payload on Windows: '
+              f'windows\\native-installer\\build-installer.ps1 (docs/INSTALLER-REBUILD.md)')
         return 1
-    print(f'PASS installer v{want} = compiler v{want} ({shown}; sutram_compiler, sutram.exe, win/sutram.exe '
-          f'v{want}; sha256 {digest[:16]}...)')
+    print(f'PASS {payload} = compiler v{want} (bin/ and win/sutram.exe{when}; {wizard}{drift}; '
+          f'sutram_compiler, sutram.exe, win/sutram.exe v{want}; sha256 {digest[:16]}...)')
     return 0
-
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

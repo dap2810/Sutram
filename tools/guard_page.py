@@ -109,9 +109,9 @@ def main():
             env = dict(os.environ, SUTRAM_COMPILER=exe, SUTRAM_TEST_TIMEOUT='60',
                        SUTRAM_TEST_SKIP='288_r86_kosh_alias_moves,303_r103_parimita_refuses,317_r107_parimana,318_r108_parimana_moves')
             out = run([sys.executable, 'tests/run_tests.py'], env)
-            p = re.search(r'PASS=(\d+)', out)
-            f = re.search(r'FAIL=(\d+)', out)
-            nf = int(f.group(1)) if f else 0
+            last = out.strip().splitlines()[-1] if out.strip() else ''   # R109: the summary is the last line
+            p = re.search(r'(?<![-\w])PASS=(\d+)', last)
+            nf = sum(int(x) for x in re.findall(r'(?:COMPILE-)?FAIL=(\d+)', last))
             parts.append(f'suite PASS={p.group(1) if p else "?"} FAIL={nf}')
             failed += nf + (0 if p else 1)
             if nf:

@@ -1,0 +1,25 @@
+# R109 guard: origin/main 5b4f0f9 (v290) -> v291, every program compiled by both compilers, outputs compared byte for byte
+
+## elf
+NEW          examples/320_r109_kosh_alias_kept.sm
+NEW          examples/321_r109_kosh_long_chain.sm
+source files whose text changed: 0
+699 programs: 558 byte-identical, 139 refused identically, 0 DIFFER, 2 new
+
+## pe
+NEW          examples/320_r109_kosh_alias_kept.sm
+NEW          examples/321_r109_kosh_long_chain.sm
+source files whose text changed: 0
+699 programs: 558 byte-identical, 139 refused identically, 0 DIFFER, 2 new
+
+## wine
+NEW          examples/320_r109_kosh_alias_kept.sm
+NEW          examples/321_r109_kosh_long_chain.sm
+source files whose text changed: 0
+699 programs: 558 byte-identical, 139 refused identically, 0 DIFFER, 2 new
+
+## diffrun (ELF DIFFERs run old and new)
+elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+
+## the Windows compiler under Wine against the Linux compiler's PE outputs
+compared 1116 outputs, 0 differ

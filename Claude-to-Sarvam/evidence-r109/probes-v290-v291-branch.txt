@@ -1,0 +1,32 @@
+# R109 probes: v290 (origin/main 5b4f0f9's compiler) against v291 (this round), and the arena branch 0e71e54
+alias.sm  v290: Siddh: 1892 baait sankalit; runs: 11 exit 0
+alias.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+alias2.sm  v290: Siddh: 1895 baait sankalit; runs: 11 exit 0
+alias2.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+assign_alias.sm  v290: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+assign_alias.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+ternary.sm  v290: Sutram Error: kosh tark: tatv prakar bhinn
+ternary.sm  v291: Sutram Error: kosh tark: tatv prakar bhinn
+chain31.sm  v290: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+chain31.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+chain32.sm  v290: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+chain32.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+chain33.sm  v290: Siddh: 27159 baait sankalit; runs: 11 exit 0
+chain33.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+chain34.sm  v290: Siddh: 27949 baait sankalit; runs: 11 exit 0
+chain34.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+chain40.sm  v290: Siddh: 32689 baait sankalit; runs: 11 exit 0
+chain40.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+chain120.sm  v290: Siddh: 95910 baait sankalit; runs: 11 exit 0
+chain120.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+ok_alias_read.sm  v290: Siddh: 1907 baait sankalit; runs: 11 1 exit 0
+ok_alias_read.sm  v291: Siddh: 1907 baait sankalit; runs: 11 1 exit 0
+ok_outer_rakh.sm  v290: Siddh: 1164 baait sankalit; runs: 5 exit 0
+ok_outer_rakh.sm  v291: Siddh: 1164 baait sankalit; runs: 5 exit 0
+ok_chain120.sm  v290: Siddh: 95785 baait sankalit; runs: 11 exit 0
+ok_chain120.sm  v291: Siddh: 95785 baait sankalit; runs: 11 exit 0
+
+## the arena branch (0e71e54), where a block's kosh is reclaimed at block exit
+chain40_reuse.sm  v290: Siddh: 33332 baait sankalit; runs: 11 exit 0
+chain40_reuse.sm  branch: Siddh: 34160 baait sankalit; runs: 99 exit 0
+chain40_reuse.sm  v291: Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)

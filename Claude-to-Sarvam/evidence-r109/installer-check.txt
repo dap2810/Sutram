@@ -1,0 +1,3 @@
+  bin/sutram.exe is v243
+  win/sutram.exe is v243
+FAIL payload v243 inside Sutram-Setup.exe (the wizard has no version of its own); compiler v291, packed 2026-10-21; 108 of its 138 lib/lang files differ from the tree: bin/sutram.exe is v243; win/sutram.exe is v243 - rebuild the payload on Windows: windows\native-installer\build-installer.ps1 (docs/INSTALLER-REBUILD.md)

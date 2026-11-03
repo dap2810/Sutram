@@ -52,6 +52,23 @@ def main():
             checks += 1
             fails += not ok
             print(('PASS  ' if ok else 'FAIL  ') + f'{name}: exit {rc}, {last[:110]}')
+        # R109: the verdict names the payload, not "the installer", and says the wizard has no version.
+        rc, last = verdict(setup_with(d, {'bin\\sutram.exe': old, 'win\\sutram.exe': old}))
+        ok = (rc == 1 and last.startswith(f'FAIL payload v{v - 1} inside Sutram-Setup.exe')
+              and 'the wizard has no version of its own' in last)
+        checks += 1
+        fails += not ok
+        print(('PASS  ' if ok else 'FAIL  ') + f'stale payload named as the payload: exit {rc}, {last[:110]}')
+        path = setup_with(d, {'bin\\sutram.exe': exe, 'win\\sutram.exe': exe})
+        stamp = (b'Sutram 1.0 (v%d)' % v).ljust(30, b'\0')      # a version string in the wizard's bytes
+        blob = open(path, 'rb').read().replace(b'MZ' + b'\0' * 30, b'MZ' + stamp, 1)
+        open(path, 'wb').write(blob)
+        open(os.path.join(d, 'Sutram-Setup.sha256'), 'w').write(hashlib.sha256(blob).hexdigest() + ' *Sutram-Setup.exe\n')
+        rc, last = verdict(path)
+        ok = rc == 0 and f'the wizard says v{v}' in last
+        checks += 1
+        fails += not ok
+        print(('PASS  ' if ok else 'FAIL  ') + f'a wizard with its own version is reported: exit {rc}, {last[:110]}')
         # R95: a tree binary one version behind fails even with a current installer
         repo = os.path.join(d, 'repo')
         for sub in ('src', 'win'):

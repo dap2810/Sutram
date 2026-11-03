@@ -1,0 +1,23 @@
+# R109 (ChatGPT R178): a second name for a block's kosh is the same kosh. v290 checked only the kosh's own
+# name, so `vitti a = k` and then `rakh(a)` gave the block's kosh to a prakriya that keeps it, and the
+# reference outlived the block. From v291 the alias carries the block too: the call is refused, as
+# `rakh(k)` is (example 316). Giving the alias to a prakriya that only reads it (padh) is still allowed.
+prakriya rakh(kosh k) {
+    nivartanam k
+}
+
+prakriya padh(kosh k, i) {
+    nivartanam k[i]
+}
+
+mukhya() {
+    kosh bahar[1]
+    mandapa {
+        kosh k[4]
+        kosh_push(k, 11)
+        vitti a = k
+        likha(padh(a, 0))
+        bahar = rakh(a)
+    }
+    likha("yah pankti na chalati\n")
+}
