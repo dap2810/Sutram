@@ -559,6 +559,7 @@ r54_builtin_arity_table:
     db "Sanket: kosh svena namna eva upayujyatam; mandape vardhamanah kosh sthanantaram gacchati", 10, 0
     r108_msg_keep db "Sutram Error [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
     db "Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
+    r108_msg_full db "Sutram Error: mandapa-kosh-suchi seema atikram", 10, 0   ; R115: refused, not unchecked
     rfx_bc_hdr_mala db ": Sutram Error [E_MALA_GANIT]: ", 0
     rfx_bc_txt_mala db "mala-upari ganitam tulana va na sambhavati - mala sankhya na", 10, 0
     rfx_bc_hint_mala db "Sanket: a[i] tasyah mulyam - tani tulyantam", 10, 0
@@ -1347,6 +1348,7 @@ section .bss
     r108_cnt_all resq 1
     r108_cnt_ok resq 1
     r108_pname  resq 1
+    r108_ovf    resq 1                      ; R115: the walk's stack overflowed
     r107_used   resq 1                      ; R107: parimana() appears in the program
     r108_bk_name resq 256                   ; R108: kosh made in an open mandapa of this function:
     r108_bk_gd  resq 256                    ;   name, the r82 depth of its block,
@@ -12176,6 +12178,10 @@ r107_note_kosh:
 ; Declared in an open mandapa (r82 tracks it, the declaration carries its depth) on Linux ELF with
 ; regions: a slot on the block's scratch side, budgeted like its nirmmita, released at its end.
 ; Otherwise R101A's region (or nirmmita).
+r108_full:
+    lea rdi, [rel r108_msg_full]
+    jmp capacity_fail
+
 r108_kosh_alloc:
     call r101a_regions_on
     test rax, rax
@@ -12186,7 +12192,7 @@ r108_kosh_alloc:
     je r101a_emit_kosh_alloc
     mov rcx, [rel r108_bk_n]
     cmp rcx, 256
-    jae r101a_emit_kosh_alloc
+    jae r108_full                  ; R115: a full table refuses - it would make the kosh persistent unchecked
     call alloc_ast                 ; the slot's BN_NIRM_SCRATCH node: depth, budgets
     mov qword [rax], AST_CALL
     mov qword [rax+8], BN_NIRM_SCRATCH
@@ -12358,8 +12364,8 @@ r108_compute_esc:
     xor eax, eax
     mov ecx, FUNC_DEFS_CAP * 16
     rep stosb
-    mov r14d, 32                   ; rounds
-.round:
+.round:                            ; R115 (main's R109 fix, ported): to convergence - 32 rounds let a chain
+                                   ; of 33 keeping prakriyas pass a block's kosh out, and here its slot is reused
     xor r13d, r13d                 ; changed
     xor r12d, r12d
 .fn:
@@ -12401,8 +12407,6 @@ r108_compute_esc:
     jmp .fn
 .rend:
     test r13d, r13d
-    jz .done
-    dec r14d
     jnz .round
 .done:
     pop r14
@@ -12419,6 +12423,7 @@ r108_param_kept:
     push r12
     push r15
     mov [rel r108_pname], rdi
+    mov qword [rel r108_ovf], 0
     mov qword [rel r108_cnt_all], 0
     mov qword [rel r108_cnt_ok], 0
     push rsi
@@ -12551,6 +12556,7 @@ r108_param_kept:
     cmp rax, [rel r108_cnt_ok]
     seta al
     movzx eax, al
+    or rax, [rel r108_ovf]         ; R115: a walk that did not finish proves nothing - "keeps"
     pop r15
     pop r12
     pop rbx
@@ -12559,11 +12565,14 @@ r108_param_kept:
     test rdi, rdi
     jz .pr
     cmp r15, 65536
-    jae .pr
+    jae .ovf
     lea rax, [rel r108_stack]
     mov [rax+r15*8], rdi
     inc r15
 .pr:
+    ret
+.ovf:
+    mov qword [rel r108_ovf], 1
     ret
 .is_p:                             ; rdi = node -> rax = 1 if AST_VAR naming the parameter
     xor eax, eax
