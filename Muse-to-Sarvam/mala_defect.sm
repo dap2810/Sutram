@@ -1,0 +1,9 @@
+mukhya() {
+    dasham d = 3.0
+    mala m[4]
+    m[0] = d
+    likha(m[0], "\n")
+    mala n[4]
+    n[0] = 3.5
+    likha(n[0], "\n")
+}

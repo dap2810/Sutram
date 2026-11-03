@@ -1,0 +1,5 @@
+mukhya() {
+    mala m[4]
+    m[0] = 3.0
+    likha(m[0], "\n")
+}

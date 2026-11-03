@@ -1,0 +1,41 @@
+# ROUND-110 — Attack the REAL arena branch (0e71e54), and the mala defect on v292
+
+## Two premise corrections first (they change what this round is)
+
+**R105's executed attack DID hit this branch.** R105's report names it: branch `claude/r108-arena-review` at `0e71e54` — the same branch this round names. What was pending at R105's delivery was WS2, the attack on ChatGPT's R178 DESIGN (not the branch) — and WS2 is now delivered (commit `889f6800`: core sound, 8 gaps, must not build until the first five are closed). So "the arena has never been properly attacked" is wrong in that sense. What IS true, and what this round actually adds, is that R105 missed the silent wrongs: R105 tested 8 second-name shapes and found them all refused, but never tested a 40-function keeping chain, and never tested a vitti/ternary escape followed by slot reuse. Those are the gaps this round closes.
+
+**Claude HAS named the silent wrong since this brief was written.** R109-00 names it: `chain40_reuse.sm` — a block kosh passed out through 40 keeping `prakriya`s compiles on the branch, the block reclaims the slot, the next block's kosh takes it, and the program prints 99 (the next block's number) with exit 0. This round reproduces it independently (below), so we now have two sources: Claude's report and my run.
+
+## WS1 — the five questions, answered on the branch (0e71e54)
+
+**An alias taken before growth inside the arena — does it see the new data?** On the branch, the question is moot: the branch refuses second names outright (`E_KOSH_MANDAPA`), so no alias-before-growth exists to test. Under R178's design (descriptors), an alias taken before growth WOULD see the new data, because all names share one descriptor whose data pointer is updated on growth — that is the design's fix for the branch's refusal-not-coherence price, and it is untested (the design has no implementation).
+
+**A kosh that outlives its block — is it refused, and at which point?** Refused at COMPILE time for every short/direct shape R105 tested (second names, outer variables, call-mediated aliases, mala/kosh-element/container/push/field stores, function returns — all `E_KOSH_MANDAPA`). NOT refused for a 40-function keeping chain: the branch's fixpoint stops after 32 rounds, so a 40-chain in adverse order leaves the early functions marked no-retain (stale), the chain compiles, the block reclaims the slot, and the escaped reference reads the next block's data. So the answer is: compile-time for short escapes, silent wrong for long-chain escapes. v291 fixed this on main by running the fixpoint to convergence (chain33+ now refuse with `E_KOSH_MANDAPA`; the 120-link non-keeping chain still compiles in 0.00 s).
+
+**An arena exhausted mid-block — what happens?** Budgeted: clean `E_PARIMITA` naming the line. Unbudgeted: clean `kshetra purnam` at exactly the 1 GiB cumulative-slot bound (33,554,432 pushes pass, 33,554,433 refuses) — R105's numbers, restated, not re-run (the branch is unchanged since R105).
+
+**Two kosh in one arena, one grown — does the other survive?** YES, intact. Probe `two_kosh_grow2.sm` (delivered): in one mandapa, k1 [1,2,3] and k2 [10,20,30]; k1 grown to 8 elements (cap 4→8, so it relocated slots); after growth k1 len 8 peek 8, k2 len 3 peek 30, k2[0]=10, k2[1]=20, k2[2]=30 — all correct, exit 0. Growth does not corrupt the other kosh's slot.
+
+**`parimana()` while the arena is in use — does it report something meaningful?** YES, exactly. R105's numbers, restated: it counts every arena slot live + wasted, 16-byte aligned (48/112/192 for caps 1/2/4; exactly 16,896 for the 1000-push case = slot sum), and drops to 0 at block exit.
+
+## The silent-wrong hunt — one confirmed, two more tested and refused
+
+**CONFIRMED (second source): `chain40_reuse` gives 99, exit 0, on the branch.** I ran Claude's program (from `Claude-to-Sarvam/evidence-r109/programs/chain40_reuse.sm`) on the branch binary: it compiles, runs, and prints 99 — the next block's number, not the original 11 — with exit 0 and no error. That is the silent wrong: a use-after-reclaim that reads another block's data. The diagnosis is precise: reclamation works (the slot IS freed at block exit) and reuse works (the next block's kosh DOES take the slot) — the escape analysis fails (the 32-round cap). The branch is not broken in its memory handling; it is unsound in its analysis for chains longer than 32.
+
+**Vitti-mediated escapes are REFUSED on the branch (stricter than v290 main).** Probe `alias_reuse.sm` (delivered): `vitti a = k; bahar = rakh(a)` inside a block, then a second block with 99, then read `bahar[0]` — refused at compile time (`E_KOSH_MANDAPA`: "a second name may not be taken — vitti a = k is not allowed"). The branch's second-name rule applies to ANY second name, regardless of the left-hand side's type. On v290 main this shape compiled and ran past the block (Claude's `alias.sm`: 11, exit 0); v291 refuses it. So the vitti escape is NOT a branch silent wrong — the branch already handles it, and main has since caught up.
+
+**Ternary-mediated escapes are REFUSED on the branch — by type, not by alias.** Probe `ternary_reuse.sm` (delivered): `vitti a = c ? k : k; bahar = rakh(a)` — refused (`kosh tark: tatv prakar bhinn`, element type differs), the same type error v290 and v291 give for Claude's `ternary.sm`. A correction to my WS2 report: ternary expressions DO exist in this language (`c ? k : k`), so R178 §6(d)'s "conditional expressions" obligation is not vacuous as I stated. But it is not a practical bypass either, because a ternary of koshes fails the type check before any alias analysis runs — there is no constructible ternary-kosh second name for the alias check to miss. So §6(d) remains a proof gap (no theorem), not a demonstrated hole. The branch's alias coverage is broad; its demonstrated hole is the 32-round cap, not the AST_VAR check.
+
+## WS2 — the mala defect, confirmed by running on v292
+
+The brief's exact form (`dasham d = 3.0; mala m[4]; m[0] = d`, probe `mala_defect.sm` delivered) prints **3** — converted, not bits, not refused. A literal `m[0] = 3.0` (probe `mala_lit.sm`) also prints **3**. A fractional store (`n[0] = 3.5`) stops the program with **`E_DASHAM_VITTI`, exit 1** (the program prints 3, then refuses on the fractional store). So on v292 the behavior is: whole dasham converts exactly, fractional refuses. Sarvam's v286 measurement (3.0 → 4613937818241073152, the raw IEEE bits) is stale — v288 fixed it, and the reference already says so (§15, lines 594–595: "A dasham stored into a whole-number mala is converted exactly (v288)… and a value with a fraction stops the program with E_DASHAM_VITTI").
+
+**One recommendation: keep v288's behavior (convert whole, refuse fractional).** Reject storing the bits deliberately even with the reference saying so: 3.0 → 4613937818241073152 is not what a user expects, and documenting a trap does not stop being a trap. No fix is needed — the defect is already fixed and already documented; this thread should be closed, not re-opened.
+
+## WS3 — census, twelfth run, and the dasham-into-mala population
+
+Twelfth run, same method, same base (current main `ff5d9d41`, v292 + docs only): Q1 6 (same six), Q2 0 definite + 1 potential (286), Q3 textual 60 examples + 26 lib, runtime-true 59. Denominators 299/306/605. The eleventh (R109) and twelfth (this round) runs are identical because the tree has not changed since R108 — verified by re-running, not asserted.
+
+**How many examples store a dasham into a mala? Zero — hand-verified.** I listed all 65 mala stores in the examples and read each right-hand side: all are integers, integer variables, integer expressions, or mala elements (`i * i`, `5`, `i + 1`, `a[j]`, `buf` (a `vitti` pointer in 265), `t` (a `vitti` in 80), `v` (called with 20/30/40/50 in 89)). Lib has 0 mala stores. So the population the fix would affect is 0 examples + 0 lib functions. The v288 fix corrected a probe trap (R100's trap #8), not an example — which is consistent with its zero example impact and its clean suite numbers.
+
+NOT RUN: Windows, browser, implementation (none authorized), native-speaker review, full suite (no tree changes; R111's v292 numbers stand: suite 295/299, gates 60/1/1, guard 705 0 DIFFER), branch suite (Claude's numbers cited, corroborated by the reproduction above).

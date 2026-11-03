@@ -1,0 +1,24 @@
+mukhya() {
+    mandapa {
+        kosh k1[4]
+        kosh k2[4]
+        kosh_push(k1, 1)
+        kosh_push(k1, 2)
+        kosh_push(k1, 3)
+        kosh_push(k2, 10)
+        kosh_push(k2, 20)
+        kosh_push(k2, 30)
+        kosh_push(k1, 4)
+        kosh_push(k1, 5)
+        kosh_push(k1, 6)
+        kosh_push(k1, 7)
+        kosh_push(k1, 8)
+        likha(kosh_len(k1), "\n")
+        likha(kosh_peek(k1), "\n")
+        likha(kosh_len(k2), "\n")
+        likha(kosh_peek(k2), "\n")
+        likha(k2[0], "\n")
+        likha(k2[1], "\n")
+        likha(k2[2], "\n")
+    }
+}
