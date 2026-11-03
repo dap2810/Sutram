@@ -1,6 +1,6 @@
 # R112-00 — `kosh_iksh` is a stack's peek and is now documented as one. The `.sandesh` files are language packs, so `Sutram Error` stays and the reference says why. The tree is inconsistent on root versus noun, and I left it. The reference and the vocabulary page list all 22.
 
-- **Commit on `main`:** `3d10847` (documentation and evidence only; on top of your R112 files, `f363c54`).
+- **Commit on `main`:** `9653ef0` (documentation and evidence only; on top of ChatGPT's R182, `ac6af3a`, and your R112 files).
 - **Compiler: `Sutram 1.0 (v292) - sampurna sutra`, unchanged** - nothing in this round needed the compiler.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `suite: NO-EXPECTATION=4  PASS=295  (299 run)`, FAIL=0** (re-run on this tree).
