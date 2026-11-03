@@ -1,0 +1,7 @@
+yoj sankhyiki
+mukhya() {
+    kosh dasham a[2]
+    kosh_push(a, 2.5)
+    kosh_push(a, 1.5)
+    likha(bindu_gunan(a, a))
+}
