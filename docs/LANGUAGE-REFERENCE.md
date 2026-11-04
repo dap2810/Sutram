@@ -1,6 +1,6 @@
-> **Status at compiler v299, 3 November 2026 (R123) — read this before the page below.**
+> **Status at compiler v300, 4 November 2026 (R124) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v299) - sampurna sutra`.** Suite **PASS=315** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **64 PASS / 1 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The FAIL is the installer's bundled payload (v243); the NOT-RUN is Windows execution, the owner's own test.**
+> **Compiler `Sutram 1.0 (v300) - sampurna sutra`.** Suite **PASS=315** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **65 PASS / 1 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The FAIL is the installer's bundled payload (v243); the NOT-RUN is Windows execution, the owner's own test.**
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -8,9 +8,9 @@
 > - **Every failure begins `Sutram truti`** (v294; `Sutram Error` up to v293).
 > - **`sankhya_bindu` / `sankhya_dot` are withdrawn** (v295, `E_PRATYAHRITA`).
 > - **Fifteen library contracts refuse instead of wrapping** (v296, R116); `patra_asti` is blocked on an OS query the compiler does not make.
-> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms; **v299 brought the Linux memory model to Windows** (R123).
+> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms; **v299 brought the Linux memory model to Windows** (R123), **and v300 made Windows commit only what a program touches** (R124).
 >
-> **Memory:** on Linux and, from v299 (R123), on Windows: `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, every `kosh` has a region of its own and never moves, and `parimana()` reports the bytes held. **On Windows it costs more:** the arena is 1 GiB of commit charge from the first allocation and each `kosh` 64 MiB, because Windows commits what it reserves (reference §16, §19; `docs/MEMORY-MODEL.md`).
+> **Memory:** on Linux and, from v299 (R123), on Windows: `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, every `kosh` has a region of its own and never moves, and `parimana()` reports the bytes held. **On Windows it commits only the pages a program touches** (v300; in v299 the arena was 1 GiB of commit from the first allocation and each `kosh` 64 MiB) (reference §16, §19; `docs/MEMORY-MODEL.md`).
 >
 > **The authoritative open list is `docs/WHATS-LEFT.md`.**
 
@@ -981,7 +981,7 @@ a[0]=7 k[0]=7
 **On Windows the same from v299 (R123, the Windows round 4):** a `kosh` has its region there too and prints
 `a[0]=99 k[0]=99` / `a[0]=7 k[0]=7`. Up to v298 a Windows `kosh` always moved and `a` kept the old buffer
 (`a[0]=41 k[0]=99`); up to v283 Linux did the same whenever something had been allocated after the `kosh`.
-**On Windows it costs more:** the runtime's `VirtualAlloc` reserves *and commits*, so the arena is 1 GiB of commit charge from a program's first allocation and each `kosh` region 64 MiB (the Windows round 4 measured 1.08 GB for one `nirmmita`, 67.7 MB per `kosh`). A program with many live `kosh`es can run out of Windows commit where Linux would not.
+**On Windows, from v300 (R124), it commits only what it touches,** as Linux does: the runtime reserves the arena and each `kosh` region, and commits 64 KiB at a time where the program first touches it (one `nirmmita(64)`: about 0 MB; it was 1 GiB in v299, and 64 MiB per `kosh`).
 
 **What a region costs (R101A, measured with `tools/peak_rss.py`):** at least one 4 KB page per `kosh` that is
 used, and one `mmap` (about 4 microseconds) when a `kosh` is made. For the tree's programs that is nothing - all
@@ -1186,7 +1186,7 @@ block works; its storage is ordinary memory, which the block does not reclaim.
 - **More than the field holds** stops the program, exit 1:
   `Sutram truti: kshetra purnam - mandapa-smritih samapta` (*the field is full — the block's memory is used up*).
 - **Linux and Windows** (Windows from v299, R123). In the `GUARD_PAGES` diagnostic build a `mandapa` is an
-  ordinary block: everything works, nothing is reclaimed. **On Windows it costs more:** the runtime's `VirtualAlloc` reserves *and commits*, so the arena is 1 GiB of commit charge from a program's first allocation and each `kosh` region 64 MiB (the Windows round 4 measured 1.08 GB for one `nirmmita`, 67.7 MB per `kosh`). A program with many live `kosh`es can run out of Windows commit where Linux would not.
+  ordinary block: everything works, nothing is reclaimed. **On Windows, from v300 (R124), it commits only what it touches,** as Linux does: the runtime reserves the arena and each `kosh` region, and commits 64 KiB at a time where the program first touches it (one `nirmmita(64)`: about 0 MB; it was 1 GiB in v299, and 64 MiB per `kosh`).
 
 ### What the compiler refuses — `E_SCRATCH_ESCAPE`
 

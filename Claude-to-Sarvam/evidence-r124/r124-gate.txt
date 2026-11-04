@@ -1,0 +1,8 @@
+PASS  a 100 MB nirmmita written on every page and summed back (PE, Wine): '73245\n' exit 0 (want '73245\n')
+PASS  a kosh grown from 1 to 200,000 numbers (PE, Wine): '200000\n200000\n' exit 0 (want '200000\n200000\n')
+PASS  1000 blocks, each with a kosh of 100 (PE, Wine): '100000\n' exit 0 (want '100000\n')
+PASS  a file written, then read into a fresh, untouched buffer (PE, Wine): '9\n9\npustakam\n' exit 0 (want '9\n9\npustakam\n')
+PASS  one nirmmita(64): commits 0.0 MB (allowed 0-1)
+PASS  100 koshes of 1: commits 8.7 MB (allowed 0-16)
+PASS  a 100 MB nirmmita, every page written: commits 100.0 MB (allowed 95-110)
+r124 lazy commit: 7 checks, 0 failed

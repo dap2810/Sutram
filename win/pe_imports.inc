@@ -14,6 +14,8 @@ dq pe_name_SetConsoleOutputCP-pe_import_template
 dq pe_name_SetConsoleCP-pe_import_template
 dq pe_name_CreateFileA-pe_import_template
 dq pe_name_GetConsoleOutputCP-pe_import_template
+dq pe_name_AddVectoredExceptionHandler-pe_import_template
+dq pe_name_VirtualQuery-pe_import_template
 dq 0
 pe_import_int:
 dq pe_name_GetStdHandle-pe_import_template
@@ -26,6 +28,8 @@ dq pe_name_SetConsoleOutputCP-pe_import_template
 dq pe_name_SetConsoleCP-pe_import_template
 dq pe_name_CreateFileA-pe_import_template
 dq pe_name_GetConsoleOutputCP-pe_import_template
+dq pe_name_AddVectoredExceptionHandler-pe_import_template
+dq pe_name_VirtualQuery-pe_import_template
 dq 0
 pe_name_GetStdHandle: dw 0
 db "GetStdHandle",0
@@ -57,7 +61,16 @@ align 2, db 0
 pe_name_GetConsoleOutputCP: dw 0
 db "GetConsoleOutputCP",0
 align 2, db 0
+pe_name_AddVectoredExceptionHandler: dw 0
+db "AddVectoredExceptionHandler",0
+align 2, db 0
+pe_name_VirtualQuery: dw 0
+db "VirtualQuery",0
+align 2, db 0
 pe_import_dll: db "KERNEL32.dll",0
+%if ($-pe_import_template) > RT_ORIGINAL_CP
+%error "PE import block overlaps RT_ORIGINAL_CP"
+%endif
 times RT_IMPORT_BYTES-($-pe_import_template) db 0
 pe_import_fixups:
 dd 0,12,16
@@ -71,6 +84,8 @@ dd pe_import_iat-pe_import_template+48,pe_import_int-pe_import_template+48
 dd pe_import_iat-pe_import_template+56,pe_import_int-pe_import_template+56
 dd pe_import_iat-pe_import_template+64,pe_import_int-pe_import_template+64
 dd pe_import_iat-pe_import_template+72,pe_import_int-pe_import_template+72
+dd pe_import_iat-pe_import_template+80,pe_import_int-pe_import_template+80
+dd pe_import_iat-pe_import_template+88,pe_import_int-pe_import_template+88
 dd -1
 section .bss
 pe_import_output: resb RT_IMPORT_BYTES

@@ -1,0 +1,20 @@
+# R124 guard: main a4cc654 (v299) -> this tree (v300), tools/guard_pair.py, every example and test program
+## Linux elf
+source files whose text changed: 0
+725 programs: 582 byte-identical, 143 refused identically, 0 DIFFER, 0 new
+## Linux pe
+source files whose text changed: 0
+725 programs: 0 byte-identical, 143 refused identically, 582 DIFFER, 0 new
+## ELF DIFFER run old and new
+elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+## PE: all 582 DIFFER run old and new under Wine
+pe: 582 DIFFER run old and new under Wine: 581 same output and exit, 1 changed
+CHANGED tests/r72_mandapa/devanagari_with.sm: exit 1 -> 0; new = Linux golden: no golden
+    old b''
+    new b'3\n\n'
+that one, rerun: v299 PE three times '3', exit 0; v300 PE '3', exit 0; Linux ELF '3', exit 0 - the first old run failed under load (the gates ran alongside). So 582 of 582 the same.
+
+## The Windows compiler under Wine
+source files whose text changed: 0
+725 programs: 0 byte-identical, 143 refused identically, 582 DIFFER, 0 new
+1163 Wine outputs, 1163 byte-identical to the Linux PE outputs; the 1164th (examples/209_samanvaya.sm, old compile: rc=1 under load) rerun alone = the Linux PE output

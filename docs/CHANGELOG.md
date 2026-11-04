@@ -1,4 +1,16 @@
-> **The 20 newest entries.** Older ones, from "v437" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v438" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v300 (Claude, R124) - Windows commits what a program touches, not what it reserves
+
+- **The PE runtime reserves an `mmap` with `MAP_NORESERVE`** (the 1 GiB arena, each 64 MiB `kosh` region) instead
+  of reserving and committing it, and **a vectored exception handler commits 64 KiB where a page is first
+  touched** - only inside memory the program reserved, never its stack. `ReadFile` / `WriteFile` buffers are
+  touched first, since the kernel does not fault on the program's behalf (without that, reading a file into a
+  fresh buffer returned -1; the gate shows it). Two new kernel32 imports: `AddVectoredExceptionHandler`,
+  `VirtualQuery`.
+- **Measured under Wine** (its read-write mappings are what it committed): one `nirmmita(64)` **1073.7 MB → 0.0**;
+  100 koshes **6,713 MB → 8.7**; a 100 MB buffer touched on every page **1073.7 → 100.0**. **ELF unchanged byte
+  for byte.** Native Windows commit is the owner's measurement. Gate `R124 lazy commit` (7 checks).
 
 ## v299 (Claude, R123) - the Linux memory model on Windows: merged from the Windows round 4 branch (PR #65)
 
@@ -318,27 +330,3 @@
   `chakra i = 0 tak 3.0` printed 6,625,058 lines in 3 seconds (ELF), 16-17 million in 10 s (PE, from both the
   Linux and the Windows compiler), still counting; it would end near 4.6 x 10^18. `0 1 2 3 4` is what its first
   five lines look like (evidence-r96/v282-remeasured.txt).
-
-## v438 - CORRECTION to v437: a decimal loop bound is an off-by-one, not a hang
-
-### What I got wrong
-**v437 said `chakra dasham i = 0.0 tak 3.0` never terminates.** **It does terminate.**
-
-**My test used `chakra vitti i = 0 tak 3` - invalid syntax, no braces, the type keyword in the wrong place - which printed nothing. I read "nothing" as "hangs" and wrote it down as fact.**
-
-### What is actually true
-| Form | Output | Correct? |
-|---|---|---|
-| `chakra i = 0 tak 3` | `0 1 2 3` | yes |
-| `chakra i = 0 tak 3.0` | `0 1 2 3 4` | **no - one extra iteration** |
-| `dasham d = 3.0; chakra i = 0 tak d` | `0 1 2 3 4` | **no - same** |
-
-**So it is a wrong answer, not a non-termination.** **Less severe, still wrong, and it produced no error message.**
-
-### And Muse's README sentence was wrong for the same reason
-**It said "a loop whose end number is a decimal never stops."** **It stops, one iteration late.** **A README that overstates a limitation is as bad as one that hides it, because a reader who finds it stops will distrust the rest.**
-
-### The lesson, which is the ninth of its kind
-**Every one of the nine false claims in this session has the same shape: I ran something, got an unexpected result, and reported my interpretation instead of checking the setup.** **This time the setup was the syntax, and `examples/103_b10_nested_break_patches.sm` had the correct form all along.**
-
-**The rule that would have caught it: when a test produces nothing, suspect the test before the compiler.**

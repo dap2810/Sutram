@@ -1,0 +1,24 @@
+# R124 WS1: one kosh read, today's layout (header at [p-16]) vs a descriptor ([d] buffer, [d+8] length), as the compiler emits k[i] in a loop: reload the variable, bounds-check, load. bench.asm; 200 million reads; best of 5; this cloud machine.
+N=1000 today      .186579403s = .932 ns a read (fill included)
+N=1000 descriptor .165613015s = .828 ns a read (fill included)
+N=1000000 today      .194115412s = .970 ns a read (fill included)
+N=1000000 descriptor .233510918s = 1.167 ns a read (fill included)
+N=16000000 today      .304682762s = 1.523 ns a read (fill included)
+N=16000000 descriptor .421775804s = 2.108 ns a read (fill included)
+
+# R124 WS1: making 20,000 kosh today (one 64 MiB region mmap each) vs two bump allocations from the arena (what a descriptor and its first buffer would cost), best of 5
+kosh today         20000: .129525812s = 6.47 us each
+two nirmmita (24+16) 20000: .003710817s = .18 us each
+ 99.92    0.034533           1     20000           mmap
+
+# R124 WS3: copying a kosh of 1,000,000 numbers (8 MB, rep movsq; copy.asm): 1 copy vs 201 copies, best of 5
+copies=1: .014549396s
+copies=201: .132005824s
+
+# The run above was taken while the guard's Wine pass and the gates ran alongside. An earlier run of the same
+# binaries on a quiet machine (the same session, before the guard started), ns a read, today / descriptor:
+#   N=1000      0.638 / 0.673
+#   N=1000000   0.860 / 0.836
+#   N=16000000  1.654 / 1.965
+# and making 20,000 kosh: 4.4 us each today (20,000 mmap calls), 0.1 us for two bump allocations.
+# copying 1,000,000 numbers: (0.132 - 0.0145) / 200 = 0.59 ms a copy (8 MB).

@@ -1,4 +1,4 @@
-> **Status at compiler v299 (3 November 2026, R123). The body below is the R70 research snapshot - historical; this box is the current model.**
+> **Status at compiler v300 (4 November 2026, R124). The body below is the R70 research snapshot - historical; this box is the current model.**
 >
 > **What a program's memory does today, on Linux ELF and (from v299) Windows PE** (reference §16 and §19 have the detail and the measurements):
 > - **`nirmmita(n)`** takes `n` zeroed bytes from an **arena** (a pointer bump, rounded to 16; past 1 GiB its own `mmap`). Outside a block they live as long as the program.
@@ -8,7 +8,7 @@
 > - **A `kosh` made in a block cannot leave it** - refused when compiled, `E_KOSH_MANDAPA` (R107-R109).
 > - **`parimana()`** reports the bytes the program's `nirmmita` and `kosh` hold now (R107).
 >
-> **On Windows (PE) the same from v299 (R123, the Windows round 4).** The cost differs: Windows commits what it reserves, so the arena is 1 GiB of commit charge from a program's first allocation and each `kosh` region 64 MiB (measured there: 1.08 GB for one `nirmmita`, 67.7 MB per `kosh`). Up to v298 none of this was on Windows: `parimana()` was 0, a budget was not checked and a growing `kosh` moved.
+> **On Windows (PE) the same from v299 (R123, the Windows round 4).** **From v300 (R124) Windows also commits only what is touched:** the runtime reserves the arena and each `kosh` region and a vectored exception handler commits 64 KiB where a page is first touched. In v299 the arena was 1 GiB of commit charge from a program's first allocation and each `kosh` region 64 MiB (measured there: 1.08 GB for one `nirmmita`, 67.7 MB per `kosh`). Up to v298 none of this was on Windows: `parimana()` was 0, a budget was not checked and a growing `kosh` moved.
 >
 > **Still true from the snapshot:** there is no `free` and no garbage collector (refused: it needs a runtime); outside a block, memory is held for the program's life.
 

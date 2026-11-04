@@ -1,0 +1,12 @@
+# R124: commit as Wine shows it (its read-write mappings), v299 vs v300, PE
+# MB of read-write private anonymous mappings in the Wine process (= what Wine committed), at the program's end
+program                                          v299         v300
+prints only                                       0.0          0.0
+one nirmmita(64)                               1073.7          0.0
+one kosh of 1                                    67.1          0.1
+100 kosh of 1                                  6713.0          8.7
+nirmmita(100 MB), every page written           1073.7        100.0
+(each row less the "prints only" row of the same compiler; that row itself is the Wine process baseline: v299 10.4 MB, v300 10.4 MB)
+
+# the same gate with the pre-touch removed from the runtime (a scratch build): reading a file into a fresh buffer fails
+FAIL  a file written, then read into a fresh, untouched buffer (PE, Wine): '9\n-1\n' exit 0 (want '9\n9\npustakam\n')

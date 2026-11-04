@@ -14,6 +14,9 @@ rt_init:
     mov [rbx+RT_ORIGINAL_CP],eax
     mov ecx,65001
     call qword [rbx+RT_SetConsoleOutputCP]
+    mov ecx,1                     ; R124: commit reserved pages when first touched (rt_veh)
+    lea rdx,[rel rt_veh]
+    call qword [rbx+RT_AddVectoredExceptionHandler]
     mov rsp,rbp
     pop rbp
     pop rbx
@@ -78,6 +81,7 @@ rt_syscall:
     mov rax,-38                   ; ENOSYS, never fake success.
     jmp .done
 .write:
+    call rt_touch
     mov rcx,r13
     cmp r13,1
     je .stdout
@@ -99,6 +103,7 @@ rt_syscall:
     call qword [rbx+RT_WriteFile]
     jmp .io_result
 .read:
+    call rt_touch
     mov rcx,r13
     test r13,r13
     jnz .read_handle
@@ -141,9 +146,15 @@ rt_syscall:
     xor eax,eax
     jmp .done
 .alloc:
+    ; R124: mmap with MAP_NORESERVE (0x4000: the arena, each kosh region) only reserves; rt_veh commits
+    ; a page's 64 KiB when it is first touched, as Linux does. Anything else is reserved and committed.
     xor ecx,ecx
     mov rdx,r14
     mov r8d,0x3000
+    test r10d,0x4000
+    jz .alloc_go
+    mov r8d,0x2000
+.alloc_go:
     mov r9d,4
     call qword [rbx+RT_VirtualAlloc]
     test rax,rax
@@ -189,6 +200,75 @@ rt_syscall:
     pop rdi
     pop rsi
     pop rbp
+    pop rbx
+    ret
+; rt_touch: before ReadFile / WriteFile, read one byte of each page of [r14, r14+r15), so a page still only
+; reserved is committed by rt_veh first (the kernel does not fault on the program's behalf; it would fail).
+rt_touch:
+    test r15,r15
+    jz .t_done
+    mov r10,r14
+    and r10,-4096
+    lea r11,[r14+r15]
+.t_loop:
+    cmp r10,r11
+    jae .t_done
+    mov al,[r10]
+    add r10,4096
+    jmp .t_loop
+.t_done:
+    ret
+
+; rt_veh (a vectored exception handler, R124): an access violation inside memory this program only reserved
+; (MEM_RESERVE, MEM_PRIVATE, not this thread's stack) commits up to 64 KiB there, read-write, and the faulting
+; instruction runs again. Every other exception goes on to the next handler.
+rt_veh:
+    push rbx
+    push rsi
+    push rdi
+    sub rsp,96
+    mov rax,[rcx]
+    cmp dword [rax],0xC0000005
+    jne .v_search
+    mov rsi,[rax+0x28]
+    mov rax,[gs:0x08]             ; this thread's stack: never ours to commit
+    cmp rsi,rax
+    jae .v_notstack
+    mov rax,[gs:0x1478]
+    cmp rsi,rax
+    jae .v_search
+.v_notstack:
+    call rt_import_base
+    mov rcx,rsi
+    lea rdx,[rsp+48]
+    mov r8d,48
+    call qword [rbx+RT_VirtualQuery]
+    test rax,rax
+    jz .v_search
+    cmp dword [rsp+48+32],0x2000  ; State = MEM_RESERVE
+    jne .v_search
+    cmp dword [rsp+48+40],0x20000 ; Type = MEM_PRIVATE
+    jne .v_search
+    mov rdx,[rsp+48+24]           ; RegionSize from this page
+    cmp rdx,0x10000
+    jbe .v_size
+    mov edx,0x10000
+.v_size:
+    mov rcx,rsi
+    and rcx,-4096
+    mov r8d,0x1000                ; MEM_COMMIT
+    mov r9d,4
+    call qword [rbx+RT_VirtualAlloc]
+    test rax,rax
+    jz .v_search
+    mov eax,-1                    ; EXCEPTION_CONTINUE_EXECUTION
+    jmp .v_ret
+.v_search:
+    xor eax,eax                   ; EXCEPTION_CONTINUE_SEARCH
+.v_ret:
+    add rsp,96
+    pop rdi
+    pop rsi
     pop rbx
     ret
 rt_end:

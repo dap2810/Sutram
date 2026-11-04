@@ -13,4 +13,6 @@ RT_SetConsoleOutputCP equ RT_IAT_OFF + 48
 RT_SetConsoleCP equ RT_IAT_OFF + 56
 RT_CreateFileA equ RT_IAT_OFF + 64
 RT_GetConsoleOutputCP equ RT_IAT_OFF + 72
+RT_AddVectoredExceptionHandler equ RT_IAT_OFF + 80   ; R124: lazy commit
+RT_VirtualQuery equ RT_IAT_OFF + 88
 RT_ORIGINAL_CP equ 508

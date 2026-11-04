@@ -1,0 +1,11 @@
+mukhya() {
+    vitti t = 0
+    chakra i = 1 tak 20000 {
+        vitti d = nirmmita(24)
+        vitti b = nirmmita(16)
+        likh(d, b)
+        likh(b, i)
+        t = t + 1
+    }
+    likha(t)
+}
