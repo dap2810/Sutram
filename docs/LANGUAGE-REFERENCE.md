@@ -952,15 +952,14 @@ abort with their own diagnostics — `rikta kosh se kosh_pop`,
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
 
-### Two names for one `kosh`: `vitti a = k` is not a copy (v278; on Linux the names stay one from v284)
+### Two names for one `kosh`: region-backed alias stability (Linux v284; Windows Round 4 candidate)
 
 **`vitti a = k` (or `a = k`) makes a second name for the same `kosh`, not a copy.** Both names read and write
 the same cells.
 
-**On Linux (from v284) a `kosh` never moves**, so the two names stay one however `k` grows. Every `kosh` is made
-in a region of its own - 64 MB of address space, of which only the pages it touches are used - and grows in
-place inside it, doubling its capacity as before. Only a `kosh` past **8,388,603 elements** leaves its region:
-then it moves once, as below.
+**On ELF and PE a `kosh` grows in its own 64 MiB region.** Aliases stay together while the new capacity fits `R101A_MAXCAP = 8,388,603`. Capacity doubles: for a power-of-two capacity, growth beyond 4,194,304 elements already asks for 8,388,608 and relocates. Larger initial declarations and diagnostic allocation modes also retain relocation paths. This is bounded alias stability, not a general alias-safety guarantee.
+
+Linux uses lazy `MAP_NORESERVE`; Windows currently reserves **and commits** the entire region. The Windows candidate therefore costs 64 MiB of commit per kosh, even when almost empty. See the Round 4 MEMORY report for measured cost and the reserve/commit follow-up required before release.
 
 ```
 mukhya() {
@@ -976,20 +975,14 @@ mukhya() {
 }
 ```
 
-prints on Linux (`examples/288`, which pins it):
+prints on Linux and Windows (`examples/288`, which pins it):
 
 ```
 a[0]=99 k[0]=99
 a[0]=7 k[0]=7
 ```
 
-**On Windows the old behaviour remains (not yet changed there):** a growing `kosh` always moves, `a` stays on
-the old buffer, and the program prints `a[0]=41 k[0]=99` / `a[0]=7 k[0]=99` - reading through `a` gives the
-old data, writing through `a` does not reach `k`. Up to v283 Linux did the same whenever something had been
-allocated after the `kosh`. **Until Windows has regions too, keep one name per `kosh` and copy values out
-(`k[i]`, `kosh_len(k)`), not the `kosh`.** A program that does not alias is unaffected on both systems.
-
-**What a region costs (R101A, measured with `tools/peak_rss.py`):** at least one 4 KB page per `kosh` that is
+**What a region costs on Linux (R101A, measured with `tools/peak_rss.py`):** at least one 4 KB page per `kosh` that is
 used, and one `mmap` (about 4 microseconds) when a `kosh` is made. For the tree's programs that is nothing - all
 86 programs with a `kosh` use the same memory or less (one: 78 MB down to 70 MB). A loop that makes a new
 100-number `kosh` 100,000 times uses 400 MB instead of 100 MB and 0.45 s instead of 0.05 s: make the `kosh`
@@ -1181,8 +1174,7 @@ block works; its storage is ordinary memory, which the block does not reclaim.
   passed on by `prasar`. A later block reuses the same memory, and sees zeros, never the earlier block's data.
 - **A negative size** is an error: written as a number (`nirmmita(-1)`), the compiler refuses it —
   `E_NIRMMITA_RNA`; computed (`nirmmita(n)` with `n` below 0), the program stops, exit 1:
-  `Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`. (Outside a block, and in
-  a Windows program, a computed negative size still gives 0.)
+  `Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`. (Outside a block, a computed negative size still gives 0.)
 - **Measured (Linux x86-64, v270/v271):** 1,000,000 × `nirmmita(64)` in a loop — **264 KB** peak with the block,
   **62 MB** without it. A `kosh` outside the block filled with 1,000,000 numbers from inside it: **7.8 MB** (the
   `kosh` itself) against **78 MB** without the block. A block recursing 1,000 deep, 1,000 times: **2 MB**
@@ -1191,8 +1183,7 @@ block works; its storage is ordinary memory, which the block does not reclaim.
   uses them again.
 - **More than the field holds** stops the program, exit 1:
   `Sutram truti: kshetra purnam - mandapa-smritih samapta` (*the field is full — the block's memory is used up*).
-- **Linux only.** In a Windows (PE) program, and in the `GUARD_PAGES` diagnostic build, a `mandapa` is an
-  ordinary block: everything works, nothing is reclaimed.
+- **ELF and PE:** scratch cursor rewind reuses storage. In the `GUARD_PAGES` diagnostic build, a `mandapa` remains an ordinary block. Windows currently commits the whole 1 GiB arena on first use; cursor rewind does not decommit it.
 
 ### What the compiler refuses — `E_SCRATCH_ESCAPE`
 
@@ -1315,8 +1306,7 @@ a kosh of 1000 8272
   a `kosh`'s capacity counts whether or not every page has been touched. It is what the program asked for.
 - **Not counted:** a `nirmmita` that the arena could not hold (past 1 GiB it falls back to its own `mmap`).
 - **Cost:** a program without `parimana` compiles to the same bytes; with it, each `kosh` allocation and growth
-  adds one counter update. **Linux ELF only; Windows (PE) compilation refuses `parimana()` with
-  `E_WINDOWS_SMRITI`, rather than silently returning zero.**
+  adds one counter update. **ELF and PE share this logical-byte accounting.** It excludes reserved address space, Windows commit charge and fallback allocations outside the arena.
 
 **One number, moving (`examples/318`):** `parimana()` is the arena and the `kosh` regions together, so it answers
 "how much am I holding" the same way for a program and for a test. A block's `nirmmita` comes back at its end; a
@@ -1360,9 +1350,7 @@ gives its memory back at its end (`examples/304`).
   still works.
 - **Cost:** a program without `parimita` compiles to the same bytes as before. In a budgeted block each
   `nirmmita` gains one compare per budget around it.
-- **Linux ELF only, as the block.** Windows (PE) compilation refuses `mandapa parimita N` with
-  `E_WINDOWS_SMRITI`, including blocks whose allocations would fit. An ordinary Windows `mandapa`
-  still releases nothing. Windows `kosh` growth/alias limitations in section 16 remain unchanged.
+- **ELF and PE:** the same scratch budget and nested-budget checks apply. Exceeding the limit stops before the allocation with `E_PARIMITA`, exit 1. This bounds logical scratch bytes, not OS commit or kosh storage.
 
 **Measured (R103, `tools/peak_rss.py`, Linux):** 1,000,000 `nirmmita(64)` in one block -
 

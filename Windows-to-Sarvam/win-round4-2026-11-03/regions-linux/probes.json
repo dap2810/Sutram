@@ -1,0 +1,277 @@
+{
+  "stage": "regions",
+  "host": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "compiler_sha256": "eaaf39b187aa4282218c3c0f05ea846aefbdf3e3cf2c7e316a2c03849ae94c2f",
+  "rows": [
+    {
+      "name": "concat_literal",
+      "expected": "abcd\n",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/concat_literal.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_literal.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 580 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203538302062616169742073616e6b616c69740a",
+        "seconds": 0.011188212000007525
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_literal.bin"
+        ],
+        "exit": 0,
+        "stdout": "abcd\n",
+        "stderr": "",
+        "stdout_hex": "616263640a",
+        "seconds": 0.00440626200000338
+      },
+      "output_match": true
+    },
+    {
+      "name": "concat_loop",
+      "expected": "abcd\nabcd\nabcd\n",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/concat_loop.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_loop.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 600 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203630302062616169742073616e6b616c69740a",
+        "seconds": 0.011226912000012135
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_loop.bin"
+        ],
+        "exit": 0,
+        "stdout": "abcd\nabcd\nabcd\n",
+        "stderr": "",
+        "stdout_hex": "616263640a616263640a616263640a",
+        "seconds": 0.0040158280000071045
+      },
+      "output_match": true
+    },
+    {
+      "name": "concat_inputs",
+      "expected": "ab|cd|abcd",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/concat_inputs.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_inputs.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 702 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203730322062616169742073616e6b616c69740a",
+        "seconds": 0.012323973999997406
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_inputs.bin"
+        ],
+        "exit": 0,
+        "stdout": "ab|cd|abcd",
+        "stderr": "",
+        "stdout_hex": "61627c63647c61626364",
+        "seconds": 0.004287050999991493
+      },
+      "output_match": true
+    },
+    {
+      "name": "concat_empty",
+      "expected": "cdab",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/concat_empty.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_empty.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 992 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203939322062616169742073616e6b616c69740a",
+        "seconds": 0.012953194999994366
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/concat_empty.bin"
+        ],
+        "exit": 0,
+        "stdout": "cdab",
+        "stderr": "",
+        "stdout_hex": "63646162",
+        "seconds": 0.004339930000000436
+      },
+      "output_match": true
+    },
+    {
+      "name": "char66",
+      "expected": "B\n",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/char66.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char66.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 487 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203438372062616169742073616e6b616c69740a",
+        "seconds": 0.012405227000002128
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char66.bin"
+        ],
+        "exit": 0,
+        "stdout": "B\n",
+        "stderr": "",
+        "stdout_hex": "420a",
+        "seconds": 0.0040895610000006855
+      },
+      "output_match": true
+    },
+    {
+      "name": "char97",
+      "expected": "a\n",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/char97.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char97.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 487 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203438372062616169742073616e6b616c69740a",
+        "seconds": 0.01102068999999517
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char97.bin"
+        ],
+        "exit": 0,
+        "stdout": "a\n",
+        "stderr": "",
+        "stdout_hex": "610a",
+        "seconds": 0.0042886770000052366
+      },
+      "output_match": true
+    },
+    {
+      "name": "char_kept",
+      "expected": "Ba\n",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/char_kept.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char_kept.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 1036 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a20313033362062616169742073616e6b616c69740a",
+        "seconds": 0.012338866999996867
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char_kept.bin"
+        ],
+        "exit": 0,
+        "stdout": "Ba\n",
+        "stderr": "",
+        "stdout_hex": "42610a",
+        "seconds": 0.00425625600000501
+      },
+      "output_match": true
+    },
+    {
+      "name": "char_loop",
+      "expected": "10000\n",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/char_loop.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char_loop.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 586 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203538362062616169742073616e6b616c69740a",
+        "seconds": 0.013953248999996504
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/char_loop.bin"
+        ],
+        "exit": 0,
+        "stdout": "10000\n",
+        "stderr": "",
+        "stdout_hex": "31303030300a",
+        "seconds": 0.004411747999995441
+      },
+      "output_match": true
+    },
+    {
+      "name": "memory_query",
+      "expected": "0\n",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/memory_query.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/memory_query.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 302 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203330322062616169742073616e6b616c69740a",
+        "seconds": 0.012400904000003266
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/memory_query.bin"
+        ],
+        "exit": 0,
+        "stdout": "0\n",
+        "stderr": "",
+        "stdout_hex": "300a",
+        "seconds": 0.004226600000009739
+      },
+      "output_match": true
+    },
+    {
+      "name": "memory_budget",
+      "expected": "",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/compiler",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/memory_budget.sm",
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/memory_budget.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 1101 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a20313130312062616169742073616e6b616c69740a",
+        "seconds": 0.015790416999990953
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/regions-linux/memory_budget.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_PARIMITA]: pankti 1 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1 baait)\n",
+        "stderr": "",
+        "stdout_hex": "53757472616d207472757469205b455f504152494d4954415d3a2070616e6b74692031202d206d616e6461706520706172696d6974617420616468696b616d206e69726d6d6974616d206e612073616d626861766174692028706172696d697469682031206261616974290a",
+        "seconds": 0.004694922999988194
+      },
+      "output_match": false
+    }
+  ]
+}

@@ -9,10 +9,13 @@ exe=ROOT/'win/sutram.exe'
 names=[]
 skipped=[]
 for source in sorted((ROOT/'examples').glob('*.sm')):
+    if source.stem == '29_nishkriya':
+        skipped.append({'case':source.stem,'status':'SKIP_LINUX_RAW_SYSCALL','reason':'yantra emits raw Linux exit syscall 60; not a Windows ABI program'})
+        continue
     if re.search(r'\b(nishkriya|dvaram|pad8?|likh8?|net\w*|system|unlink)\b',source.read_text(encoding='utf8')):
         skipped.append({'case':source.stem,'status':'SKIP_SIDE_EFFECT_OR_INLINE_ASM'})
     else:names.append(source.stem)
-langs={'37_native_gujarati':'gujarati','38_native_hindi':'hindi','39_native_tamil':'tamil','218_sanskrit_devanagari':'sanskrit','219_sanskrit_kosh_aliases':'sanskrit'}
+langs={'220_hindi_parse_error':'hindi','37_native_gujarati':'gujarati','38_native_hindi':'hindi','39_native_tamil':'tamil','218_sanskrit_devanagari':'sanskrit','219_sanskrit_kosh_aliases':'sanskrit'}
 stdin={'23_grahan_input':'5\n','59_windows_grahan_runtime':'42\n','24_guess_game':'7\n','26_calculator':'20\n4\n','number_game':'3\n','46_language_reference':'7\n'}
 rows=list(skipped)
 for name in names:

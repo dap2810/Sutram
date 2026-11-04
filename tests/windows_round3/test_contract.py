@@ -56,13 +56,11 @@ class Contracts(unittest.TestCase):
                 self.assertIn(new.encode(), a.stderr)
                 self.assertEqual(b.stderr, b'')
 
-    def test_pe_memory_features_refuse_before_output_is_written(self):
+    def test_pe_memory_features_compile(self):
         for name, source in [('query', 'mukhya() { likha(parimana()) }'), ('budget', 'mukhya() { mandapa parimita 64 { likha(1) } }')]:
-            with self.subTest(name=name):
-                result, target = self.compile(source, name, pe=True)
-                self.assertEqual(result.returncode, 1)
-                self.assertIn(b'E_WINDOWS_SMRITI', result.stdout + result.stderr)
-                self.assertFalse(target.exists())
+            result, target = self.compile(source, name, pe=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertTrue(target.exists())
 
     @unittest.skipIf(os.name == 'nt', 'ELF allocation fault injection is Linux-only')
     def test_allocation_failure_is_diagnostic_not_invalid_store(self):
@@ -74,8 +72,7 @@ class Contracts(unittest.TestCase):
                 self.assertEqual(actual.returncode, 1)
                 self.assertIn(b'E_VARTANI_SMRITI', actual.stdout + actual.stderr)
 
-    @unittest.skipIf(os.name == 'nt', 'Linux region accounting has no Windows implementation')
-    def test_elf_accounting_and_budget_still_work(self):
+    def test_accounting_and_budget_work(self):
         self.output('mukhya() { likha(parimana()) mandapa { vitti p = nirmmita(64) likha(parimana()) } likha(parimana()) }', b'0\n64\n0\n')
         result, target = self.compile('mukhya() { mandapa parimita 1 { vitti p = nirmmita(64) likha(123) } }', 'budget')
         self.assertEqual(result.returncode, 0)

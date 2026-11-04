@@ -1,0 +1,18 @@
+[
+  {
+    "name": "contracts",
+    "command": [
+      "C:\\Users\\dmech\\miniconda3\\python.exe",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests/windows_round3",
+      "-v"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_accounting_and_budget_work (test_contract.Contracts.test_accounting_and_budget_work) ... ok\r\ntest_allocation_failure_is_diagnostic_not_invalid_store (test_contract.Contracts.test_allocation_failure_is_diagnostic_not_invalid_store) ... skipped 'ELF allocation fault injection is Linux-only'\r\ntest_character_allocation_in_loop (test_contract.Contracts.test_character_allocation_in_loop) ... ok\r\ntest_character_results_survive_calls_and_do_not_alias (test_contract.Contracts.test_character_results_survive_calls_and_do_not_alias) ... ok\r\ntest_empty_inputs_and_nested_join (test_contract.Contracts.test_empty_inputs_and_nested_join) ... ok\r\ntest_join_leaves_both_inputs_and_previous_results_unchanged (test_contract.Contracts.test_join_leaves_both_inputs_and_previous_results_unchanged) ... ok\r\ntest_literals_repeat_without_self_modification (test_contract.Contracts.test_literals_repeat_without_self_modification) ... ok\r\ntest_old_names_are_byte_identical (test_contract.Contracts.test_old_names_are_byte_identical) ... ok\r\ntest_pe_memory_features_compile (test_contract.Contracts.test_pe_memory_features_compile) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 9 tests in 0.671s\r\n\r\nOK (skipped=1)\r\n"
+  }
+]

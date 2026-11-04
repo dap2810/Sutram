@@ -1,0 +1,1 @@
+mukhya() { kosh k[1] kosh_push(k,41) vitti a=k vitti i=0 yavat(i<10000) { kosh_push(k,i) i=i+1 } k[0]=99 likha(a[0]) }

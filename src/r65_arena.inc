@@ -1,8 +1,8 @@
 ; ============================================================
 ; ROUND-65 (Step 1): nirmmita becomes a contiguous bump; kosh grows in place.
 ;
-; Linux ELF, ordinary (non --object) builds only. PE output and object mode keep
-; the per-call mmap sequence unchanged (Windows is the owner's work).
+; Shared ELF/PE arena. Linux reserves lazily; PE VirtualAlloc commits the full
+; reservation (see Windows-to-Sarvam/win-round4-2026-11-03/MEMORY.md).
 ;
 ; Two hidden module globals, registered at the FIRST nirmmita emission so that a
 ; program which never allocates gets no new storage and the same bytes as before:
@@ -108,15 +108,14 @@ section .bss
 
 section .text
 
-; r65_active -> rax = 1 when the arena path applies to this build: a Linux ELF target.
+; r65_active -> shared ELF/PE arena; GUARD_PAGES retains independent allocations.
+; PE uses VirtualAlloc RESERVE|COMMIT: 1 GiB commit charge, not lazy Linux mmap.
 ; --object / --separate builds take the same path, so that an object linked by sutram-link
 ; is byte-identical to the direct compile (R28/R29); the two globals are then ordinary
 ; module vitti of the object - defined by the root, extern in a module object.
 r65_active:
     xor eax, eax
 %ifndef GUARD_PAGES
-    cmp qword [rel target_pe], 0
-    jne .no
     mov eax, 1
 .no:
 %endif

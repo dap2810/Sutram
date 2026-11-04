@@ -575,10 +575,6 @@ r54_builtin_arity_table:
     rfx2_msg_nomem db "Sutram truti [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
     rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
     wr3_msg_nomem db "Sutram truti [E_VARTANI_SMRITI]: vartani-rachane smriti na labdha", 10, 0
-    wr3_memory_hdr db ": Sutram truti [E_WINDOWS_SMRITI]: ", 0
-    wr3_query_txt db "Windows lakshye parimana smriti-gananam na samarthitam", 10, 0
-    wr3_budget_txt db "Windows lakshye mandapa parimita smriti-seema na samarthita", 10, 0
-    wr3_memory_hint db "Sanket: ayam prayogah Linux ELF lakshye eva samarthitah", 10, 0
     ; FIXALL (rec): runaway-recursion message (Sanskrit-only, outside the
     ; per-pack sandesh table). The message is embedded in the emitted
     ; program by the function-prologue guard; its length drives the guard's
@@ -8816,8 +8812,6 @@ r103_parse_budget:
     mov rdx, [rax+8]
     test rdx, rdx
     jle .bad
-    cmp qword [rel target_pe], 0
-    jne .wr3_unsupported
     push rdx
     call advance_tok                    ; 'parimita'
     call advance_tok                    ; N
@@ -8843,13 +8837,6 @@ r103_parse_budget:
     pop rbx
     pop rcx
     ret
-.wr3_unsupported:
-    call cur_tok
-    mov rdi, [rax+32]
-    lea rsi, [rel wr3_memory_hdr]
-    lea rdx, [rel wr3_budget_txt]
-    lea rcx, [rel wr3_memory_hint]
-    jmp r80_compile_error
 .bad:                                    ; at the token after `parimita`: file:line:col, the line, a caret
     mov rax, [rel token_idx]
     inc rax
@@ -8947,19 +8934,19 @@ r103_emit_lkhb_num:
 ;; R101A (Option A, R101): every kosh has a region of its own.
 ;; A kosh used to be a block in the arena: when it grew and something had been allocated
 ;; after it, it moved - the old block was abandoned (R101: about one more kosh), and a
-;; second name (`vitti a = k`) kept the old block (section 16). Now, on Linux ELF, a kosh is
-;; made in its own mmap reservation of R101A_REGION bytes, MAP_NORESERVE: pages are committed
+;; second name (`vitti a = k`) kept the old block (section 16). Now, on ELF and PE, a kosh is
+;; made in its own region of R101A_REGION bytes. On Linux MAP_NORESERVE pages are committed
 ;; only when touched, so a 4-element kosh costs one page. It grows in place inside its region
 ;; - capacity still doubles, as kosh_cap shows - and never moves until it passes
-;; R101A_MAXCAP elements (8,388,603 - 64 MB); only then does it take the old relocating path.
+;; R101A_MAXCAP requested capacity (8,388,603); exceeding it takes the relocating path.
 ;; A kosh declared larger than the region gets a region of exactly its size, so its first
 ;; growth relocates as before. Not under --fail-alloc (its counted allocations stay the old
-;; path), not in the GUARD_PAGES build, not on PE (r65_active is 0 there): unchanged.
+;; path), not in the GUARD_PAGES build. PE commits the whole region via VirtualAlloc.
 ;; ============================================================
 R101A_REGION equ 0x04000000          ; 64 MB of address space per kosh
 R101A_MAXCAP equ (R101A_REGION - 40) / 8
 
-; r101a_regions_on -> rax = 1 when kosh regions apply (Linux ELF, not --fail-alloc)
+; r101a_regions_on -> rax = 1 when kosh regions apply (ELF/PE, not --fail-alloc)
 r101a_regions_on:
     call r65_active
     test rax, rax
@@ -17569,16 +17556,6 @@ parse_primary_inner:
     jmp .pp_paren
 .pp_builtin_valid:
     mov rbx, [rax+16]        ; builtin id
-    cmp rbx, BN_PARIMANA
-    jne .wr3_builtin_supported
-    cmp qword [rel target_pe], 0
-    je .wr3_builtin_supported
-    mov rdi, [rax+32]
-    lea rsi, [rel wr3_memory_hdr]
-    lea rdx, [rel wr3_query_txt]
-    lea rcx, [rel wr3_memory_hint]
-    jmp r80_compile_error
-.wr3_builtin_supported:
     call advance_tok          ; consume builtin name
     ; expect (
     call cur_tok
@@ -23636,7 +23613,7 @@ gen_expr:
 .ge_call_parimana:
     ; R107: parimana() -> the bytes the program's nirmmita and kosh hold now: the arena's
     ; persistent side (cur - start) and scratch side (sima - end), and the kosh regions
-    ; (0parimana, counted at each region's allocation and growth). Linux ELF (direct, --object, --separate); on PE 0.
+    ; (0parimana, counted at each region's allocation and growth). Shared ELF/PE logical bytes.
     call r65_active
     test rax, rax
     jnz .pm_arena

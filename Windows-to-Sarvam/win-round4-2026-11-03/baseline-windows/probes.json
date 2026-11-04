@@ -1,0 +1,257 @@
+{
+  "stage": "baseline",
+  "host": "Windows-11-10.0.26200-SP0",
+  "compiler_sha256": "626f8bc65d7dd0b61936406bba894abc5f37bf7bcca86f643a659cec52c181eb",
+  "rows": [
+    {
+      "name": "concat_literal",
+      "expected": "abcd\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\concat_literal.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_literal.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 412 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203431322062616169742073616e6b616c69740a",
+        "seconds": 0.07235649996437132
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_literal.exe"
+        ],
+        "exit": 0,
+        "stdout": "abcd\n",
+        "stderr": "",
+        "stdout_hex": "616263640a",
+        "seconds": 0.04751229996327311
+      },
+      "output_match": true
+    },
+    {
+      "name": "concat_loop",
+      "expected": "abcd\nabcd\nabcd\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\concat_loop.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_loop.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 432 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203433322062616169742073616e6b616c69740a",
+        "seconds": 0.013195600011385977
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_loop.exe"
+        ],
+        "exit": 0,
+        "stdout": "abcd\nabcd\nabcd\n",
+        "stderr": "",
+        "stdout_hex": "616263640a616263640a616263640a",
+        "seconds": 0.031861099996604025
+      },
+      "output_match": true
+    },
+    {
+      "name": "concat_inputs",
+      "expected": "ab|cd|abcd",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\concat_inputs.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_inputs.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 543 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203534332062616169742073616e6b616c69740a",
+        "seconds": 0.020910599967464805
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_inputs.exe"
+        ],
+        "exit": 0,
+        "stdout": "ab|cd|abcd",
+        "stderr": "",
+        "stdout_hex": "61627c63647c61626364",
+        "seconds": 0.0468089000787586
+      },
+      "output_match": true
+    },
+    {
+      "name": "concat_empty",
+      "expected": "cdab",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\concat_empty.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_empty.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 681 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203638312062616169742073616e6b616c69740a",
+        "seconds": 0.012653900077566504
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\concat_empty.exe"
+        ],
+        "exit": 0,
+        "stdout": "cdab",
+        "stderr": "",
+        "stdout_hex": "63646162",
+        "seconds": 0.04964920005295426
+      },
+      "output_match": true
+    },
+    {
+      "name": "char66",
+      "expected": "B\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\char66.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char66.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 319 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203331392062616169742073616e6b616c69740a",
+        "seconds": 0.012101899948902428
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char66.exe"
+        ],
+        "exit": 0,
+        "stdout": "B\n",
+        "stderr": "",
+        "stdout_hex": "420a",
+        "seconds": 0.034795999992638826
+      },
+      "output_match": true
+    },
+    {
+      "name": "char97",
+      "expected": "a\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\char97.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char97.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 319 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203331392062616169742073616e6b616c69740a",
+        "seconds": 0.01928340003360063
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char97.exe"
+        ],
+        "exit": 0,
+        "stdout": "a\n",
+        "stderr": "",
+        "stdout_hex": "610a",
+        "seconds": 0.03121259994804859
+      },
+      "output_match": true
+    },
+    {
+      "name": "char_kept",
+      "expected": "Ba\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\char_kept.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char_kept.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 613 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203631332062616169742073616e6b616c69740a",
+        "seconds": 0.013443000032566488
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char_kept.exe"
+        ],
+        "exit": 0,
+        "stdout": "Ba\n",
+        "stderr": "",
+        "stdout_hex": "42610a",
+        "seconds": 0.047305500018410385
+      },
+      "output_match": true
+    },
+    {
+      "name": "char_loop",
+      "expected": "10000\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\char_loop.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char_loop.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 418 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203431382062616169742073616e6b616c69740a",
+        "seconds": 0.012182799982838333
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\char_loop.exe"
+        ],
+        "exit": 0,
+        "stdout": "10000\n",
+        "stderr": "",
+        "stdout_hex": "31303030300a",
+        "seconds": 0.06577990006189793
+      },
+      "output_match": true
+    },
+    {
+      "name": "memory_query",
+      "expected": "0\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\memory_query.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\memory_query.exe"
+        ],
+        "exit": 1,
+        "stdout": "memory_query.sm:1:18: Sutram truti [E_WINDOWS_SMRITI]: Windows lakshye parimana smriti-gananam na samarthitam\n  mukhya() { likha(parimana()) }\n                   ^\nSanket: ayam prayogah Linux ELF lakshye eva samarthitah\n",
+        "stderr": "",
+        "stdout_hex": "6d656d6f72795f71756572792e736d3a313a31383a2053757472616d207472757469205b455f57494e444f57535f534d524954495d3a2057696e646f7773206c616b7368796520706172696d616e6120736d726974692d67616e616e616d206e612073616d617274686974616d0a20206d756b6879612829207b206c696b686128706172696d616e61282929207d0a202020202020202020202020202020202020205e0a53616e6b65743a206179616d20707261796f676168204c696e757820454c46206c616b73687965206576612073616d61727468697461680a",
+        "seconds": 0.017159700044430792
+      },
+      "output_match": false
+    },
+    {
+      "name": "memory_budget",
+      "expected": "",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\memory_budget.sm",
+          "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\baseline-windows\\memory_budget.exe"
+        ],
+        "exit": 1,
+        "stdout": "memory_budget.sm:1:20: Sutram truti [E_WINDOWS_SMRITI]: Windows lakshye mandapa parimita smriti-seema na samarthita\n  mukhya() { mandapa parimita 1 { vitti p = nirmmita(64) likha(\"reached\") } }\n                     ^\nSanket: ayam prayogah Linux ELF lakshye eva samarthitah\n",
+        "stderr": "",
+        "stdout_hex": "6d656d6f72795f6275646765742e736d3a313a32303a2053757472616d207472757469205b455f57494e444f57535f534d524954495d3a2057696e646f7773206c616b73687965206d616e6461706120706172696d69746120736d726974692d7365656d61206e612073616d617274686974610a20206d756b6879612829207b206d616e6461706120706172696d6974612031207b2076697474692070203d206e69726d6d69746128363429206c696b68612822726561636865642229207d207d0a2020202020202020202020202020202020202020205e0a53616e6b65743a206179616d20707261796f676168204c696e757820454c46206c616b73687965206576612073616d61727468697461680a",
+        "seconds": 0.011149900034070015
+      },
+      "output_match": false
+    }
+  ]
+}

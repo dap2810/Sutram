@@ -1,0 +1,10 @@
+{
+  "command": [
+    "git",
+    "show",
+    "HEAD:tests/fixtures/file_hello.txt"
+  ],
+  "before_hex": "68656c6c6f2073757472616d0d0a",
+  "committed_hex": "68656c6c6f2073757472616d0a",
+  "sha256": "35104c4154cf640c4a83ae8a8d1a5d27855499f50805e09f79a429fd179a862a"
+}

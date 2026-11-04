@@ -1,0 +1,1 @@
+mukhya() { vitti n = 0 yavat (n < 3) { shabda(vartani_sandhi("ab", "cd")) likha("\n") n = n + 1 } }

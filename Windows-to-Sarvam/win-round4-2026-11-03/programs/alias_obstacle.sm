@@ -1,0 +1,1 @@
+mukhya() { kosh k[1] kosh_push(k,41) vitti a=k vitti obstacle=nirmmita(64) kosh_push(k,42) k[0]=99 likha("a[0]=",a[0]," k[0]=",k[0]) }

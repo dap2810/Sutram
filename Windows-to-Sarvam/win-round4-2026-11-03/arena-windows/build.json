@@ -1,0 +1,35 @@
+[
+  {
+    "command": [
+      "nasm",
+      "-f",
+      "win64",
+      "-I.",
+      "-dWINDOWS",
+      "-dWR4_EXPERIMENT",
+      "src/r68_compiler_entry.asm",
+      "-o",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\arena-windows\\compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 9.76326949999202
+  },
+  {
+    "command": [
+      "ld",
+      "-mi386pep",
+      "--entry=_start",
+      "-o",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\arena-windows\\compiler.exe",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\arena-windows\\compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 0.039648199919611216
+  }
+]

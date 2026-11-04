@@ -1,0 +1,182 @@
+[
+  {
+    "name": "rounding_rewind",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/rounding_rewind.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/rounding_rewind.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1589 baait sankalit\n",
+    "compile_stderr": "",
+    "expected": "0\n16\n48\n16\n",
+    "expected_exit": 0,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/rounding_rewind.bin"
+    ],
+    "exit": 0,
+    "stdout": "0\n16\n48\n16\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "budget_exact",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/budget_exact.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_exact.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1483 baait sankalit\n",
+    "compile_stderr": "",
+    "expected": "16\n0\n",
+    "expected_exit": 0,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_exact.bin"
+    ],
+    "exit": 0,
+    "stdout": "16\n0\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "budget_rounding",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/budget_rounding.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_rounding.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1097 baait sankalit\n",
+    "compile_stderr": "",
+    "expected": "E_PARIMITA",
+    "expected_exit": 1,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_rounding.bin"
+    ],
+    "exit": 1,
+    "stdout": "Sutram truti [E_PARIMITA]: pankti 1 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 15 baait)\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "budget_outer",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/budget_outer.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_outer.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 2581 baait sankalit\n",
+    "compile_stderr": "",
+    "expected": "E_PARIMITA",
+    "expected_exit": 1,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_outer.bin"
+    ],
+    "exit": 1,
+    "stdout": "Sutram truti [E_PARIMITA]: pankti 1 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 16 baait)\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "budget_inner",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/budget_inner.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_inner.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1722 baait sankalit\n",
+    "compile_stderr": "",
+    "expected": "E_PARIMITA",
+    "expected_exit": 1,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/budget_inner.bin"
+    ],
+    "exit": 1,
+    "stdout": "Sutram truti [E_PARIMITA]: pankti 1 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 16 baait)\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "zero_reuse",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/zero_reuse.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/zero_reuse.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1407 baait sankalit\n",
+    "compile_stderr": "",
+    "expected": "0\n0\n",
+    "expected_exit": 0,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/zero_reuse.bin"
+    ],
+    "exit": 0,
+    "stdout": "0\n0\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "alias_obstacle",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/alias_obstacle.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/alias_obstacle.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1772 baait sankalit\n",
+    "compile_stderr": "Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu\n",
+    "expected": "a[0]=99 k[0]=99",
+    "expected_exit": 0,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/alias_obstacle.bin"
+    ],
+    "exit": 0,
+    "stdout": "a[0]=99 k[0]=99\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "alias_many",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/alias_many.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/alias_many.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1285 baait sankalit\n",
+    "compile_stderr": "Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu\n",
+    "expected": "99\n",
+    "expected_exit": 0,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/alias_many.bin"
+    ],
+    "exit": 0,
+    "stdout": "99\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "name": "return_rewind",
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/Windows-to-Sarvam/win-round4-2026-11-03/programs/return_rewind.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/return_rewind.bin"
+    ],
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 1057 baait sankalit\n",
+    "compile_stderr": "",
+    "expected": "7\n0\n",
+    "expected_exit": 0,
+    "run_command": [
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/return_rewind.bin"
+    ],
+    "exit": 0,
+    "stdout": "7\n0\n",
+    "stderr": "",
+    "passed": true
+  }
+]

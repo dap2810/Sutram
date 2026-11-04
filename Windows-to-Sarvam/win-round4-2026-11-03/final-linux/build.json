@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "nasm",
+      "-f",
+      "elf64",
+      "-I.",
+      "-dWR4_EXPERIMENT",
+      "src/r68_compiler_entry.asm",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 8.398804929999999
+  },
+  {
+    "command": [
+      "ld",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round4-review/build/round3/final-linux/compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 0.0577854250000005
+  }
+]

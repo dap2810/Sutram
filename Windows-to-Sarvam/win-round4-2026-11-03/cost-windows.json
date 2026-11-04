@@ -1,0 +1,102 @@
+[
+  {
+    "name": "empty",
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\compiler.exe",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\cost_empty.sm",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_empty.exe"
+    ],
+    "run_command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_empty.exe"
+    ],
+    "exit": 0,
+    "counters": {
+      "cb": 80,
+      "PageFaultCount": 960,
+      "PeakWorkingSetSize": 3727360,
+      "WorkingSetSize": 3665920,
+      "QuotaPeakPagedPoolUsage": 34664,
+      "QuotaPagedPoolUsage": 26488,
+      "QuotaPeakNonPagedPoolUsage": 5752,
+      "QuotaNonPagedPoolUsage": 4496,
+      "PagefileUsage": 475136,
+      "PeakPagefileUsage": 483328,
+      "PrivateUsage": 475136
+    }
+  },
+  {
+    "name": "arena",
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\compiler.exe",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\cost_arena.sm",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_arena.exe"
+    ],
+    "run_command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_arena.exe"
+    ],
+    "exit": 0,
+    "counters": {
+      "cb": 80,
+      "PageFaultCount": 961,
+      "PeakWorkingSetSize": 3727360,
+      "WorkingSetSize": 3670016,
+      "QuotaPeakPagedPoolUsage": 34664,
+      "QuotaPagedPoolUsage": 26488,
+      "QuotaPeakNonPagedPoolUsage": 5752,
+      "QuotaNonPagedPoolUsage": 4632,
+      "PagefileUsage": 1076314112,
+      "PeakPagefileUsage": 1076314112,
+      "PrivateUsage": 1076314112
+    }
+  },
+  {
+    "name": "one_kosh",
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\compiler.exe",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\cost_one_kosh.sm",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_one_kosh.exe"
+    ],
+    "run_command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_one_kosh.exe"
+    ],
+    "exit": 0,
+    "counters": {
+      "cb": 80,
+      "PageFaultCount": 962,
+      "PeakWorkingSetSize": 3727360,
+      "WorkingSetSize": 3674112,
+      "QuotaPeakPagedPoolUsage": 34664,
+      "QuotaPagedPoolUsage": 26488,
+      "QuotaPeakNonPagedPoolUsage": 5752,
+      "QuotaNonPagedPoolUsage": 4632,
+      "PagefileUsage": 67715072,
+      "PeakPagefileUsage": 67715072,
+      "PrivateUsage": 67715072
+    }
+  },
+  {
+    "name": "arena_two_kosh",
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\compiler.exe",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\Windows-to-Sarvam\\win-round4-2026-11-03\\programs\\cost_arena_two_kosh.sm",
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_arena_two_kosh.exe"
+    ],
+    "run_command": [
+      "E:\\Github_Projects\\Sutram\\build\\round4-review\\build\\round3\\final-windows\\cost_arena_two_kosh.exe"
+    ],
+    "exit": 0,
+    "counters": {
+      "cb": 80,
+      "PageFaultCount": 965,
+      "PeakWorkingSetSize": 3727360,
+      "WorkingSetSize": 3678208,
+      "QuotaPeakPagedPoolUsage": 34664,
+      "QuotaPagedPoolUsage": 26488,
+      "QuotaPeakNonPagedPoolUsage": 5752,
+      "QuotaNonPagedPoolUsage": 4904,
+      "PagefileUsage": 1210793984,
+      "PeakPagefileUsage": 1210793984,
+      "PrivateUsage": 1210793984
+    }
+  }
+]

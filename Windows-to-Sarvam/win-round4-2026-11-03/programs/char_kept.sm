@@ -1,0 +1,2 @@
+prakriya f() { nivartanam 12 }
+mukhya() { vitti a = anka_akshar(66) vitti b = anka_akshar(97) vitti c = f() shabda(a) shabda(b) likha("\n") }
