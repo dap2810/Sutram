@@ -1,0 +1,11 @@
+vitti holder = 0
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 11)
+    vitti p = nirmmita(16)
+    p[0] = 77
+    vitti c = 1
+    holder = c ? k : p
+    likha(holder[0])
+    likha("\n")
+}
