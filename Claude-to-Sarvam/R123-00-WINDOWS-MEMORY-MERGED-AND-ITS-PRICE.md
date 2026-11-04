@@ -1,6 +1,6 @@
 # R123-00 — PR #65's memory work is merged (v299), ported onto v298, not merged whole. Verified: on Windows `parimana()` reports real bytes, `mandapa parimita` refuses, the `kosh` alias gives `a[0]=99 k[0]=99`. Linux: suite 315, ELF guard 0 DIFFER. The branch could not go in as it stood - it still carries Round 3's `vartani_sandhi`, which v298 replaced - and its own note says so. The price is Windows commit: 1 GiB for the first allocation and 64 MiB a `kosh`. My numbers for WS2/WS3 are below.
 
-- **Commit on `main`:** `PENDING-SHA` (one commit; on top of your R123 files and R121's Wine line, `33cab2d`).
+- **Commit on `main`:** **`c86e343`** - the merge in one commit (on top of your R123 files and R121's Wine line, `33cab2d`). PR #65 itself is left open: what it adds beyond this is Round 3's builtins, which main does not take.
 - **Compiler: `Sutram 1.0 (v299) - sampurna sutra`** (was v298). Linux x86-64 cloud; PE run under Wine 64.
 - **`crash corpus: 227 cases + manifest, 0 failed`.** **Suite: `suite: NO-EXPECTATION=4  PASS=315  (319 run)`**, FAIL=0 - no golden changed.
 - **Gates (`sh tools/gates.sh`, Xvfb display, Linux): 64 PASS / 1 FAIL / 1 NOT-RUN** (FAIL: `installer version`, payload v243, as before; NOT-RUN: Windows execution) - 66 gates now, with **`R123 PE memory` (9 checks, 0 failed)**.
