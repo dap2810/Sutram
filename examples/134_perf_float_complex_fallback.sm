@@ -5,8 +5,8 @@ prakriya dasham_nirm(dasham x) {
 }
 mukhya() {
     kosh dasham datt[2]
-    kosh_push(datt, 3.0)
-    kosh_push(datt, 8.0)
+    kosh_kship(datt, 3.0)
+    kosh_kship(datt, 8.0)
     dasham sarva_yog = 1.0
     sarva_yog = sarva_yog + dasham_nirm(datt[0])
     likha(sarva_yog)

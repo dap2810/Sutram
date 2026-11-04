@@ -2,8 +2,8 @@
 prakriya yog_ek(dasham a) { nivartanam a + 1.0 }
 mukhya() {
     kosh dasham datt[2]
-    kosh_push(datt, 3.0)
-    kosh_push(datt, 9.0)
+    kosh_kship(datt, 3.0)
+    kosh_kship(datt, 9.0)
     dasham threshold = 4.0
     vitti yes = 0
     yes = datt[0] < threshold

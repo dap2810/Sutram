@@ -10,8 +10,8 @@ mukhya() {
     vitti bahar = 0
     mandapa {
         kosh k[4]
-        kosh_push(k, 11)
-        kosh_push(k, 22)
+        kosh_kship(k, 11)
+        kosh_kship(k, 22)
         likha(padh(k, 1))
         bahar = k
     }

@@ -4,25 +4,25 @@ mukhya()
     likha("Kilometers to Miles:\n")
     chakra km = 1 tak 5 {
         vitti miles = km * 62 / 100
-        lkhb(km)
+        likha_santat(km)
         likha(" km = ")
-        lkhb(miles)
+        likha_santat(miles)
         likha(" miles\n")
     }
     likha("\nKilograms to Pounds:\n")
     chakra kg = 1 tak 5 {
         vitti pounds = kg * 220 / 100
-        lkhb(kg)
+        likha_santat(kg)
         likha(" kg = ")
-        lkhb(pounds)
+        likha_santat(pounds)
         likha(" lbs\n")
     }
     likha("\nCelsius to Fahrenheit:\n")
     chakra c = 0 tak 40 {
         vitti f = c * 9 / 5 + 32
-        lkhb(c)
+        likha_santat(c)
         likha("C = ")
-        lkhb(f)
+        likha_santat(f)
         likha("F\n")
         c += 9
     }

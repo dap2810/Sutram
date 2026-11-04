@@ -4,16 +4,16 @@ mukhya()
     vitti principal = 100000
     vitti rate = 8
     likha("Principal: ")
-    lkhb(principal)
+    likha_santat(principal)
     likha("\nRate: ")
-    lkhb(rate)
+    likha_santat(rate)
     likha("% per year\n\n")
     likha("Growth over 5 years:\n")
     chakra year = 1 tak 5 {
         vitti interest = principal * rate / 100
         principal += interest
         likha("Year ")
-        lkhb(year)
+        likha_santat(year)
         likha(": ", principal)
     }
     likha("\nCompound growth using *= :\n")

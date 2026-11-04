@@ -1,0 +1,64 @@
+# R118: ChatGPT R191's 33 bucket-1 words (ROUND-191-BUCKETS.csv, exclusive_word_bucket = 1), each against the
+# bucket-1 locations the CSV gives for it, and what this round did. The CSV is pinned to v295; locations were
+# re-read on v296. "R111" = an alias since v292 (the old builtin still works, with the warning).
+
+word      bucket-1 occurrence(s)                               what R118 did
+--------  ---------------------------------------------------  ------------------------------------------------------
+arr       shell help: "mala arr[5]  mala-ghoshana"              NOT CHANGED - STOPPED: the help is translated by all eleven
+                                                                packs, which keep `arr`; changing the default fails the
+                                                                `language packs` gate 11 times (pack-check-if-messages-changed.txt).
+                                                                Proposed: `mala pankti[5]`.
+bit       ganit.bit_gan                                         BUILT: `ekanka_gan` (count of 1-digits)
+          "64-bit" in two E_ATIPRAVAH texts, "bit-kriyah"       KEPT: a unit, as ChatGPT's bucket 4 keeps kilograms/miles
+cap       kosh_cap (examples, packs' target column)             R111 (`kosh_ksham`); the examples now write the new name
+cat       vartani_cat (example 323 only)                        R111 (`vartani_sandhi`); 323 keeps old names on purpose
+char      char_lower / char_upper / char_from                   R111 (`akshar_laghu` / `akshar_guru` / `anka_akshar`); examples migrated
+clear     kosh_clear                                            R111 (`kosh_shodh`)
+dequeue   kosh_dequeue; run-time msg "riktat koshat kosh_dequeue" R111 (`kosh_apanay`); message NOT CHANGED (below)
+diff      sangrah.rakh_samroop_diff                             BUILT: `rakh_ubhaya_bhed`
+dot       E_PRATYAHRITA text "sankhya_bindu (sankhya_dot)"      KEPT: it names the withdrawn spelling it refuses (ChatGPT R191 agrees)
+empty     kosh_empty                                            R111 (`kosh_rikt`)
+enqueue   kosh_enqueue                                          R111 (`kosh_yuj`)
+enter     shell banner "Enter nudatu"                           KEPT: the label printed on the key; also pack-translated
+fd        hint "dvaram_likha(fd, smriti, sankhya)"              BUILT: `dvaram_likha(dvara, smriti, sankhya)`
+fmt       likha_fmt (examples; the parikshita hint)             R111 (`likha_rup`); examples migrated; hint now says likha_rup
+from      char_from                                             R111 (`anka_akshar`)
+len       kosh_len, pankti_len; five E_KOSH_* hints             R111 (`kosh_gan`, `pankti_gan`); examples migrated;
+                                                                hints now say kosh_gan(k)
+lib       hint "naam.smlib lib/ madhye ..."                     KEPT: the name of the directory (a file identity, bucket-4 rule);
+                                                                pack-translated too
+lower     char_lower                                            R111 (`akshar_laghu`)
+netbind   example 245                                           R111 (`jala_bandh`); example migrated
+netlisten example 245                                           R111 (`jala_shru`); example migrated
+netsock   example 245                                           R111 (`jala`); example migrated
+pad       roop.roop_pad_vam / _dakshin / _madhya, vakyank.pad_vam BUILT: `roop_purti_vam` / `_dakshin` / `_madhya`, `purti_vam`
+path      patra.patra_path_sarv                                 NOT ENGLISH: पठ् paṭh, "read" (its sibling is patra_likh_sarv,
+                                                                "write all"). Not renamed.
+peek      kosh_peek; run-time msg "riktat koshat kosh_peek"     R111 (`kosh_iksh`); message NOT CHANGED (below)
+pop       kosh_pop; run-time msg "riktat koshat kosh_pop"       R111 (`kosh_hri`); message NOT CHANGED (below)
+pre       roop.roop_ank_pre                                     BUILT: `roop_ank_upasarga`
+push      kosh_push; compile-time msg "kosh-tarke kosh_push ..." R111 (`kosh_kship`); examples migrated; message NOT CHANGED (below)
+root      "__root__", the module graph's internal name           NOT STUDENT-FACING: no message prints it (the cycle message names
+                                                                modules only - tried). Not renamed.
+sign      roop.roop_sign_akshar                                 BUILT: `roop_chihna_akshar`
+sorted    shreni.asti_sorted, suchi.suchi_asti_sorted           BUILT: `asti_kramabaddha`, `suchi_asti_kramabaddha`
+space     E_ANTARAL_MISHRA text "tab space cha mishritau"       KEPT: the names of the two characters / keys
+tab       the same                                              KEPT: the same
+upper     char_upper                                            R111 (`akshar_guru`)
+
+Totals: BUILT this round 7 words (bit, diff, fd, pad, pre, sign, sorted: ten library names and one hint word),
+plus the fmt / len hints. Already aliases since R111: 18 (cap cat char clear dequeue empty enqueue fmt from len
+lower netbind netlisten netsock peek pop push upper) - now also out of the examples and lib/. STOPPED on the frozen
+packs: arr. Message not changed (needs a decision): the four kosh messages naming pop / peek / dequeue / push.
+KEPT, with the reason: bit (as a unit), dot, enter, lib, space, tab. Not English: path. Not student-facing: root.
+
+The four kosh messages: msg_kosh_empty / _peek_empty / _dequeue_empty are compiled INTO programs (27 of the
+guard's 580 compiled ELF programs carry one), and all four are translated by the ten frozen packs as {kw:kosh_pop}
+etc. Changing the default passes the pack gate (pack-check-if-messages-changed.txt, part 2) but (a) changes those
+27 programs' bytes and (b) leaves every frozen pack naming the old builtin while the default names the new one.
+Both are the owner's call; nothing was changed.
+
+The packs' target column (lang/sanskrit.lang, lang/gujarati.lang: "कोशपुष् kosh_push"): not changed. The student
+types the native word; the target is the compiler's internal mapping, and a pack word never warns (R111). The
+r66/r67 gates pin those rows word for word. (कोशपोप् itself reads as English "pop" - already on docs/WHATS-LEFT.md
+as C6.)

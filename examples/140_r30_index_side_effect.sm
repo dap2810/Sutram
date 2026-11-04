@@ -8,7 +8,7 @@ prakriya pad_pashchat(kosh dasham ank_mala) {
 }
 mukhya() {
     kosh dasham ank_mala[1]
-    kosh_push(ank_mala, 2.0)
+    kosh_kship(ank_mala, 2.0)
     dasham delta = 1.5
     dasham nirgat = 0.0
     nirgat = ank_mala[badl_sanket(ank_mala)] + delta

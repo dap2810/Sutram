@@ -7,20 +7,20 @@ yoj samanvaya
 
 mukhya() {
     kosh dasham a[4]
-    kosh_push(a, 1.0)
-    kosh_push(a, 2.0)
-    kosh_push(a, 3.0)
-    kosh_push(a, 4.0)
+    kosh_kship(a, 1.0)
+    kosh_kship(a, 2.0)
+    kosh_kship(a, 3.0)
+    kosh_kship(a, 4.0)
 
     kosh dasham b[4]
-    kosh_push(b, 5.0)
-    kosh_push(b, 6.0)
-    kosh_push(b, 7.0)
-    kosh_push(b, 8.0)
+    kosh_kship(b, 5.0)
+    kosh_kship(b, 6.0)
+    kosh_kship(b, 7.0)
+    kosh_kship(b, 8.0)
 
     kosh dasham c[4]
     vitti z = 0
-    yavat (z < 4) { kosh_push(c, 0.0); z = z + 1 }
+    yavat (z < 4) { kosh_kship(c, 0.0); z = z + 1 }
     likha(matrika_gunana(a, b, 2, 2, 2, c))
     likha(c[0])
     likha(c[1])
@@ -32,33 +32,33 @@ mukhya() {
     likha(rekha_manak(a, 2, 2))
 
     kosh dasham d[9]
-    kosh_push(d, 6.0)
-    kosh_push(d, 1.0)
-    kosh_push(d, 1.0)
-    kosh_push(d, 4.0)
-    kosh_push(d, -2.0)
-    kosh_push(d, 5.0)
-    kosh_push(d, 2.0)
-    kosh_push(d, 8.0)
-    kosh_push(d, 7.0)
+    kosh_kship(d, 6.0)
+    kosh_kship(d, 1.0)
+    kosh_kship(d, 1.0)
+    kosh_kship(d, 4.0)
+    kosh_kship(d, -2.0)
+    kosh_kship(d, 5.0)
+    kosh_kship(d, 2.0)
+    kosh_kship(d, 8.0)
+    kosh_kship(d, 7.0)
     likha(saranik3(d))
 
     kosh dasham id[9]
     vitti w = 0
-    yavat (w < 9) { kosh_push(id, 0.0); w = w + 1 }
+    yavat (w < 9) { kosh_kship(id, 0.0); w = w + 1 }
     likha(ekaka_matrika(3, id))
     likha(karna_yog(id, 3))
 
     kosh dasham e[6]
-    kosh_push(e, 1.0)
-    kosh_push(e, 2.0)
-    kosh_push(e, 3.0)
-    kosh_push(e, 4.0)
-    kosh_push(e, 5.0)
-    kosh_push(e, 6.0)
+    kosh_kship(e, 1.0)
+    kosh_kship(e, 2.0)
+    kosh_kship(e, 3.0)
+    kosh_kship(e, 4.0)
+    kosh_kship(e, 5.0)
+    kosh_kship(e, 6.0)
     kosh dasham t[6]
     vitti y = 0
-    yavat (y < 6) { kosh_push(t, 0.0); y = y + 1 }
+    yavat (y < 6) { kosh_kship(t, 0.0); y = y + 1 }
     likha(vivartana(e, 2, 3, t))
     likha(t[0])
     likha(t[1])

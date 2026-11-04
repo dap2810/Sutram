@@ -1,5 +1,16 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v282 (Claude, R94) - `%` and the bit operators refuse a `dasham`; the arithmetic gaps written down
+
+- **Found: `5.5 % 2.0` printed `6192449487634432`.** `%`, `&`, `|`, `^`, `<<`, `>>` with a `dasham` operand ran the
+  integer code on the IEEE-754 bits. Now refused when compiled: `E_DASHAM_KRIYA` (`r94_check_float_bitop`).
+- **Reference, from probing v281:** `/` truncates toward zero and `%` follows the left sign; shifts take the count
+  mod 64 and `>>` is logical; `dasham d = 7 / 2` is 3.0; `.5` and `5.` are not literals; `0.1 + 0.2 != 0.3`;
+  tiny values print 0.000000 but are not zero; where inf and NaN come from; `100000000000000000000.5` is not
+  that number (the old line said it was).
+- **inf and NaN through `kosh`, functions and `mandapa`: unchanged, as expected** - now pinned (golden 299).
+- **Goldens:** 297, 298, 299.
+
 ## v281, unchanged (Claude, R93) - the installer is a release gate; `e+N` explained
 
 - **New gate `installer version`** (`tools/check_installer_version.py`): opens `Sutram-Setup.exe`, reads the

@@ -4,10 +4,10 @@
 mukhya() {
     likha("start ", parimana(), "\n")
     kosh k[1]
-    kosh_push(k, 1)
+    kosh_kship(k, 1)
     likha("a kosh of 1 ", parimana(), "\n")
-    kosh_push(k, 2)
-    kosh_push(k, 3)
+    kosh_kship(k, 2)
+    kosh_kship(k, 3)
     likha("grown to capacity 4 ", parimana(), "\n")
     mandapa {
         vitti b = nirmmita(100)

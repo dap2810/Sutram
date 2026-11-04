@@ -19,7 +19,7 @@ mukhya()
     vitti n = 1
     chakra i = 1 tak 5 {
         vitti varg = n * n
-        lkhb(n)
+        likha_santat(n)
         likha(" squared = ", varg)
         n++
     }

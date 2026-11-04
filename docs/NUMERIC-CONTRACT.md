@@ -46,7 +46,7 @@ marked — that gap suchi is as valuable as the table.
 | `kramgun` | `vitti` | **wraps** for `n >= 21`; `n < 2` → `1` | `ganita_janchit_kramgun` | `ganita_paripurna_kramgun` | `prop_numeric28` (edges); `prop_numeric29` (`kramgun(21)` wrap) |
 | `asti_abhajya` | `vitti` | n/a; `n < 2` → `0` | — | — | `prop_numeric28` (edges + `asti_abhajya(97)`); one-off: `asti_abhajya(9223372036854775783) = 1` (largest 63-bit prime, verified vs Python Miller-Rabin) |
 | `yog_tak` | `vitti` | **wraps** for large `n`; `n < 1` → `0` | — | — | `prop_numeric28` (edges) — **OPEN GAP**: wrapping is defined but not pinned — pinning needs `n ≈ 4.3e9` iterations, impractical in a test |
-| `bit_gan` | `vitti` | defined for `n >= 0`; negative `n` → `0` (not two's-complement popcount) | — | — | `prop_numeric28` (pins it) |
+| `ekanka_gan` (was `bit_gan`) | `vitti` | defined for `n >= 0`; negative `n` → `0` (not two's-complement popcount) | — | — | `prop_numeric28` (pins it) |
 | `ganit_yadricch` | 1-cell state | wraps by design (LCG) | — | — | `prop_breadth26` |
 | `ganit_seemit` | `vitti, vitti, vitti` | n/a; requires `lo <= hi` (`lo > hi` → returns `lo`) | — | — | `prop_breadth26` |
 
@@ -59,7 +59,7 @@ marked — that gap suchi is as valuable as the table.
 | `varna_tak_dashm` | bytes, `vitti` | malformed/overflow → `0.0`, `ok` 0; underflow → `0.0`, `ok` 1 | itself (`ok`) | — | `prop_breadth26` |
 | `ank_tak_varna` | `vitti` | n/a; `MIN` → `"-9223372036854775808"` (R26 fix) | — | — | `prop_min26`, `prop_safety27`, golden `strconv_overflow` |
 | `ank_tak_aadhar_varna` | `vitti`, base | requires `n >= 0`; negative → `0` (empty) | — | — | `prop_numeric28` (pins it) |
-| `pad_vam` | bytes | n/a (padding) | — | — | `prop_strconv_pad_left` |
+| `purti_vam` (was `pad_vam`) | bytes | n/a (padding) | — | — | `prop_strconv_pad_left` |
 
 ## `roop` — formatting
 
@@ -70,8 +70,8 @@ marked — that gap suchi is as valuable as the table.
 | `roop_dash/shodash/shodash_unnat/asht/dwi` | `vitti` | n/a (fixed-base forms of `roop_ank_aadhar2`) | — | — | `prop_fmt_int_base_roundtrip` |
 | `roop_varg*` / `roop_varg_ank` | bytes / `vitti` | n/a; grouping is digit-preserving | — | — | `prop_fmt_group_digits`, golden `roop_varg` |
 | `roop_sthir` / `roop_sthir_chinhit` | `dasham`, places | requires `\|x\| * 10^places` fits in int64; overflow input returns `0` (empty) — R29 guard (was a segfault: the dasham→int conversion is indefinite past 2^63) | — | — | `prop_numeric29` (overflow → 0, negative overflow → 0, largest fixed output `9223372036854774784` = 2^63 − 1024, 19 chars) |
-| `roop_chinhit` / `roop_sign_akshar` | `vitti` | n/a | — | — | `prop_fmt_signed` |
-| `roop_pad_vam/dakshin/madhya` | bytes | n/a (padding) | — | — | `prop_fmt_pad_content` |
+| `roop_chinhit` / `roop_chihna_akshar` (was `roop_sign_akshar`) | `vitti` | n/a | — | — | `prop_fmt_signed` |
+| `roop_purti_vam/dakshin/madhya` (were `roop_pad_*`) | bytes | n/a (padding) | — | — | `prop_fmt_pad_content` |
 
 ## `ank` — found by the same sweep (R28)
 

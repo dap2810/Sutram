@@ -1,0 +1,25 @@
+# R118: what tools/sandesh.py --check (the 'language packs' gate) says if the default (romanised Sanskrit) text of the
+# pack-translated messages that still name an old builtin, or 'arr', is changed - in a scratch copy of src/ lang/ tools/.
+
+## 1. msg_kosh_empty / msg_kosh_peek_empty / msg_kosh_dequeue_empty / msg_kosh_param_push to kosh_hri / kosh_iksh / kosh_apanay / kosh_kship, AND msg_shell_help 'mala arr[5]' -> 'mala pankti[5]':
+FAIL sanskrit msg_shell_help: code word 'arr' is not in the default
+FAIL hindi msg_shell_help: code word 'arr' is not in the default
+FAIL marathi msg_shell_help: code word 'arr' is not in the default
+FAIL gujarati msg_shell_help: code word 'arr' is not in the default
+FAIL bengali msg_shell_help: code word 'arr' is not in the default
+FAIL punjabi msg_shell_help: code word 'arr' is not in the default
+FAIL odia msg_shell_help: code word 'arr' is not in the default
+FAIL tamil msg_shell_help: code word 'arr' is not in the default
+FAIL telugu msg_shell_help: code word 'arr' is not in the default
+FAIL kannada msg_shell_help: code word 'arr' is not in the default
+FAIL malayalam msg_shell_help: code word 'arr' is not in the default
+sandesh: 119 compiler + 23 IDE messages x 11 packs: 11 problem(s)
+
+## 2. the four kosh messages only (help left as it is):
+sandesh: 119 compiler + 23 IDE messages x 11 packs: OK
+
+## The frozen packs' text for the kosh messages (unchanged either way) - hindi, for example:
+101:msg_kosh_empty	"Sutram truti: खाली कोश से {kw:kosh_pop}\n"
+103:msg_kosh_peek_empty	"Sutram truti: खाली कोश से {kw:kosh_peek}\n"
+105:msg_kosh_dequeue_empty	"Sutram truti: खाली कोश से {kw:kosh_dequeue}\n"
+109:msg_kosh_param_push	"Sutram truti: कोश तर्क पर {kw:kosh_push} समर्थित नहीं\n"

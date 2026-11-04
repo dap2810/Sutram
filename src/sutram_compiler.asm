@@ -231,7 +231,7 @@ RFX2_STACK_CAP equ 65536   ; R105: the walk's node stack
 BN_VYOJ equ 91             ; R105: internal (no name): string + string -> a new string
 BN_VKRAM equ 92            ; R105: internal (no name): string ordering -> the byte difference
 BN_PARIMANA equ 47        ; R107: parimana() -> bytes the program's nirmmita and kosh hold now
-BN_DVARLIKHA equ 46 ; FIXALL (a): dvaram_likha(fd, smriti, sankhya) -> bytes written (raw fd write)
+BN_DVARLIKHA equ 46 ; FIXALL (a): dvaram_likha(dvara, smriti, sankhya) -> bytes written (raw fd write)
 BN_NIRM_SCRATCH equ 90 ; R73: nirmmita written inside a mandapa - the scratch side
 
 ; ============================================================
@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v296) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v297) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -407,7 +407,7 @@ r54_builtin_arity_table:
     r81_hint_call2 db "' api 'parikshita prakriya' bhavet, athava ahvanam tyajyatam", 10, 0
     r81_txt_q     db "' - '", 0
     r81_txt_karya db "' parikshitum na shakyate", 10, 0
-    r81_hint_karya db "Sanket: parikshita prakriyayam vishvasta: likha, likha_fmt, grahan, nirmmita, mala, parikshita prakriyah", 10, 0
+    r81_hint_karya db "Sanket: parikshita prakriyayam vishvasta: likha, likha_rup, grahan, nirmmita, mala, parikshita prakriyah", 10, 0
     r81_txt_smriti db "[...]' - asya smriti-sima parikshitum na shakyate", 10, 0
     r81_hint_smriti db "Sanket: x[i] keval mala-nama athava 'vitti p = nirmmita(SANKHYA)' (p punah na nirdishtam) - na prachalah, na sthanam", 10, 0
     r81_txt_sthan db "'parikshita' keval 'prakriya' athava 'mukhya' purvam", 10, 0
@@ -491,7 +491,7 @@ r54_builtin_arity_table:
     ; is one table entry plus this hint.
     rfx_lk_hdr db ": Sutram truti [E_LIKHA_TRAYA]: ", 0
     rfx_lk_txt db "tri-mulya-likha prathamam uddharanam apeksate", 10, 0
-    rfx_lk_hint db "Sanket: smriti-lekhanaya dvaram_likha(fd, smriti, sankhya) iti prayujyatam", 10, 0
+    rfx_lk_hint db "Sanket: smriti-lekhanaya dvaram_likha(dvara, smriti, sankhya) iti prayujyatam", 10, 0
     ; FIXALL (b/c): string ==/!=/+ refusal strings (Sanskrit-only, outside
     ; the per-pack sandesh table, like the R52 hints; transliterations are
     ; best-effort pending native-speaker review, as with all new strings).
@@ -538,17 +538,17 @@ r54_builtin_arity_table:
     rfx_bc_hint_sat db "Sanket: yadi (s != ", 34, 34, ") - rikta na cet; yadi (s == ", 34, "ab", 34, ") - samam cet", 10, 0
     rfx_bc_hdr_kosh db ": Sutram truti [E_KOSH_GANIT]: ", 0
     rfx_bc_txt_kosh db "kosh-upari ganitam tulana va na sambhavati - kosh sankhya na", 10, 0
-    rfx_bc_hint_kosh db "Sanket: k[i] tasya mulyam; kosh_len(k) tasya dirghata - tani tulyantam", 10, 0
+    rfx_bc_hint_kosh db "Sanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam", 10, 0
     r107_cname db "0parimana", 0           ; R107: bytes held by kosh regions (only if parimana() is used)
     r107_cidx dq -1
     ; R107: a kosh made in a mandapa does not leave it (compile time). The runtime form, for what
     ; the compiler cannot see (a prakriya that keeps it), is R82's E_KOSH_MANDAPA, unchanged.
     r107_msg_var db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate", 10
-    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
+    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_gan(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
     r107_msg_mem db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - smritau na likhyate", 10
-    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
+    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_gan(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
     r107_msg_ret db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - nivartanam na shakyate", 10
-    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
+    db "Sanket: kosh mandape eva upayujyatam (k[i], kosh_gan(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam", 10, 0
     ; R107 parimana(): (cur - base) + (sima - end) of the arena, + the kosh regions' counter
     r107_p1 db 0x48,0x3D,0x00,0x10,0x00,0x00, 0x72,0x2F, 0x50
     r107_p2 db 0x50
@@ -556,7 +556,7 @@ r54_builtin_arity_table:
     db 0x48,0x29,0xC2, 0x48,0x8D,0x04,0x11, 0x48,0x83,0xC4,0x10, 0xEB,0x02, 0x31,0xC0
     r107_p3_len equ $ - r107_p3
     r108_msg_keep db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
-    db "Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
+    db "Sanket: prakriya kosh-tarkam k[i], kosh_gan(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
     r108_msg_full db "Sutram truti: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
     rfx_bc_hdr_mala db ": Sutram truti [E_MALA_GANIT]: ", 0
     r113_hdr db ": Sutram truti [E_RACHANA_GANIT]: ", 0
@@ -876,6 +876,51 @@ r54_builtin_arity_table:
     r111_msg_a db "Sutram suchana: '", 0   ; R111: the deprecation warning (stderr)
     r111_msg_b db "' purana nama - '", 0
     r111_msg_c db "' likhatu", 10, 0
+    ; R118: the library's old English names (ChatGPT R191 bucket 1). The library defines only the new
+    ; name; r118_lib_alias turns a call to an old one into the new one, with the R111 warning.
+    R118_LIB_N equ 10
+    r118_lib_old:
+        dq r118_o0
+        dq r118_o1
+        dq r118_o2
+        dq r118_o3
+        dq r118_o4
+        dq r118_o5
+        dq r118_o6
+        dq r118_o7
+        dq r118_o8
+        dq r118_o9
+    r118_lib_new:
+        dq r118_n0
+        dq r118_n1
+        dq r118_n2
+        dq r118_n3
+        dq r118_n4
+        dq r118_n5
+        dq r118_n6
+        dq r118_n7
+        dq r118_n8
+        dq r118_n9
+    r118_o0 db "bit_gan", 0
+    r118_n0 db "ekanka_gan", 0
+    r118_o1 db "rakh_samroop_diff", 0
+    r118_n1 db "rakh_ubhaya_bhed", 0
+    r118_o2 db "roop_pad_vam", 0
+    r118_n2 db "roop_purti_vam", 0
+    r118_o3 db "roop_pad_dakshin", 0
+    r118_n3 db "roop_purti_dakshin", 0
+    r118_o4 db "roop_pad_madhya", 0
+    r118_n4 db "roop_purti_madhya", 0
+    r118_o5 db "pad_vam", 0
+    r118_n5 db "purti_vam", 0
+    r118_o6 db "roop_ank_pre", 0
+    r118_n6 db "roop_ank_upasarga", 0
+    r118_o7 db "roop_sign_akshar", 0
+    r118_n7 db "roop_chihna_akshar", 0
+    r118_o8 db "asti_sorted", 0
+    r118_n8 db "asti_kramabaddha", 0
+    r118_o9 db "suchi_asti_sorted", 0
+    r118_n9 db "suchi_asti_kramabaddha", 0
     r111_old_repl:
         dq r111_netsock
         dq r111_netbind
@@ -1437,6 +1482,7 @@ section .bss
     r113_rn_n   resq 1
     r111_old_hit resq 1                     ; R111: the old-name row the last lookup matched, or 0
     r111_warned resb 32                     ; R111: an old name already warned about
+    r118_warned resb 16                     ; R118: an old library name already warned about
     r108_ovf    resq 1                      ; R109: the walk's stack overflowed - count the parameter as keeping
     r107_used   resq 1                     ; R107: parimana() appears in the program
     r108_bk_name resq 256                   ; R108: kosh made in an open mandapa of this function:
@@ -2966,6 +3012,7 @@ _start:
 %endif
     ; Lex
     call lex
+    call r118_lib_alias       ; R118: a call to an old library name becomes the new name (warned)
 %ifdef R49_WIN_DIAG_6
     mov eax, 76
     ret
@@ -22526,7 +22573,7 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_dvarlikha:
-    ; FIXALL (a): dvaram_likha(fd, smriti, sankhya) -> bytes written.
+    ; FIXALL (a): dvaram_likha(dvara, smriti, sankhya) -> bytes written.
     ; The legitimate raw fd write, moved out of likha's 3-arg form so that
     ; likha(a, " ", b) with a variable first can be refused instead of
     ; silently raw-writing. Identical emission to likha's old raw path
@@ -31171,6 +31218,138 @@ r111_err:
     mov rdi, 2
     jmp os_write
 .r:
+    ret
+
+; r118_lib_alias: R118 - the library's old English names (bit_gan, asti_sorted, roop_pad_vam, ...). Run once,
+; after lex, over every token. An identifier followed by `(` that is one of r118_lib_old, where no `prakriya`
+; of that name is defined anywhere in the program or its modules, becomes the new name - a fresh copy in
+; str_pool, so each occurrence keeps its own lexeme pointer (R49 locates a diagnostic by it). The library
+; defines only the new names and a prakriya's name is not in the compiled program, so a call written either
+; way compiles to the same bytes. A program's own prakriya of an old name is left alone (no rewrite, no
+; warning). Written in the program's own file (not in a yoj'd module; never in a --lang run, r111_err), the
+; old name is warned about once, as R111's builtins are:
+;   Sutram suchana: 'asti_sorted' purana nama - 'asti_kramabaddha' likhatu
+r118_lib_alias:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    xor r15d, r15d                 ; r15 = the row
+.row:
+    cmp r15, R118_LIB_N
+    jae .done
+    lea rax, [rel r118_lib_old]
+    mov r14, [rax+r15*8]           ; r14 = the old name
+    xor ebx, ebx                   ; is it the name of a prakriya the program or a module defines?
+.def_scan:
+    mov rax, [rel token_cnt]
+    dec rax
+    cmp rbx, rax
+    jge .uses
+    mov rax, rbx
+    imul rax, TOKEN_SIZE
+    lea r13, [rel token_arr]
+    add r13, rax
+    cmp qword [r13], TOK_KEYWORD
+    jne .def_next
+    cmp qword [r13+16], KW_PRAKRIYA
+    jne .def_next
+    cmp qword [r13+TOKEN_SIZE], TOK_IDENT
+    jne .def_next
+    mov rdi, [r13+TOKEN_SIZE+8]
+    mov rsi, r14
+    call strcmp
+    test rax, rax
+    jz .row_next                   ; defined: the program's own prakriya, left alone
+.def_next:
+    inc rbx
+    jmp .def_scan
+.uses:
+    xor ebx, ebx
+.use_scan:
+    mov rax, [rel token_cnt]
+    dec rax
+    cmp rbx, rax
+    jge .row_next
+    mov rax, rbx
+    imul rax, TOKEN_SIZE
+    lea r13, [rel token_arr]
+    add r13, rax
+    cmp qword [r13], TOK_IDENT
+    jne .use_next
+    cmp qword [r13+TOKEN_SIZE], TOK_DELIMITER
+    jne .use_next
+    cmp qword [r13+TOKEN_SIZE+8], '('
+    jne .use_next                  ; only a call: a variable of that name is the program's own
+    mov rdi, [r13+8]
+    mov rsi, r14
+    call strcmp
+    test rax, rax
+    jnz .use_next
+    lea rax, [rel r118_lib_new]
+    mov r12, [rax+r15*8]           ; r12 = the new name
+    mov rdi, r12
+    call strlen
+    mov rcx, [rel str_ptr]
+    lea rdx, [rcx+rax+1]
+    lea rsi, [rel str_pool]
+    add rsi, STR_POOL_CAP
+    cmp rdx, rsi
+    ja .static                     ; no room left: the shared name (the same compile)
+    mov [rel str_ptr], rdx
+    mov [r13+8], rcx
+    mov rdi, rcx
+    mov rsi, r12
+.copy:
+    mov al, [rsi]
+    mov [rdi], al
+    inc rsi
+    inc rdi
+    test al, al
+    jnz .copy
+    jmp .warn
+.static:
+    mov [r13+8], r12
+.warn:
+    mov rax, [r13+32]              ; the token's file, from the origin map (as r111_note_old)
+    lea rcx, [rel source_buf]
+    sub rax, rcx
+    cmp rax, IMPORT_BUF_CAP
+    jae .own
+    lea rcx, [rel r51_src_file]
+    mov rcx, [rcx+rax*8]
+    test rcx, rcx
+    jz .own
+    cmp rcx, [rel source_path_ptr]
+    jne .use_next                  ; a module's text: rewritten, not warned about
+.own:
+    lea rcx, [rel r118_warned]
+    cmp byte [rcx+r15], 0
+    jne .use_next                  ; once per name
+    mov byte [rcx+r15], 1
+    lea rdi, [rel r111_msg_a]
+    call r111_err
+    mov rdi, r14
+    call r111_err
+    lea rdi, [rel r111_msg_b]
+    call r111_err
+    mov rdi, r12
+    call r111_err
+    lea rdi, [rel r111_msg_c]
+    call r111_err
+.use_next:
+    inc rbx
+    jmp .use_scan
+.row_next:
+    inc r15
+    jmp .row
+.done:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
     ret
 
 ; R28: pin the import template's alignment. Its `align 2` entries are

@@ -1,0 +1,25 @@
+# R118 (2 of 2; the other five are in 346): the ten library prakriya with an English word in their names. Each is called here by its OLD name:
+# it still compiles - to the same bytes as the new name (tests/r118/test_lib_aliases.py checks that) - and
+# the compiler prints one warning per name on stderr (the `R118 library names` gate checks them):
+#   Sutram suchana: 'roop_pad_vam' purana nama - 'roop_purti_vam' likhatu
+# New code writes the new names (docs/LANGUAGE-REFERENCE.md section 4c).
+yoj roop
+
+mukhya() {
+    vitti out = nirmmita(128)
+    vitti n = roop_pad_vam("ka", 2, 5, 46, out)
+    dvaram_likha(1, out, n)
+    likha("|\n")
+    n = roop_pad_dakshin("ka", 2, 5, 46, out)
+    dvaram_likha(1, out, n)
+    likha("|\n")
+    n = roop_pad_madhya("ka", 2, 5, 46, out)
+    dvaram_likha(1, out, n)
+    likha("|\n")
+    n = roop_ank_pre(255, 16, 0, out)
+    dvaram_likha(1, out, n)
+    likha("\n")
+    n = roop_sign_akshar(42, 43, out)
+    dvaram_likha(1, out, n)
+    likha("\n")
+}

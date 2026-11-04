@@ -205,8 +205,8 @@ prakriya vardh(n) {
     nivartanam n + 1
 }
 
-# bit_gan(n) — count of set bits in n; negatives return 0.
-prakriya bit_gan(n) {
+# ekanka_gan(n) — count of set bits in n; negatives return 0. (R118: was `bit_gan`, still accepted.)
+prakriya ekanka_gan(n) {
     vitti x = n
     vitti c = 0
     # Negatives return 0 (R28-pinned contract: defined for n >= 0).

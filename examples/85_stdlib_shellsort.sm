@@ -11,7 +11,7 @@ mukhya()
     a[5] = 2
     a[6] = 6
     a[7] = 4
-    likha(asti_sorted(a, 8))
+    likha(asti_kramabaddha(a, 8))
     likha("\n")
     shankh_shreni(a, 8)
     vitti i = 0
@@ -21,5 +21,5 @@ mukhya()
         i = i + 1
     }
     likha("\n")
-    likha(asti_sorted(a, 8))
+    likha(asti_kramabaddha(a, 8))
     likha("\n")

@@ -1,0 +1,29 @@
+PASS  bit_gan -> ekanka_gan (bin): same bytes True, old warns True, new silent True, prints '8' (want '8')
+PASS  bit_gan -> ekanka_gan (exe): same bytes True, old warns True, new silent True, prints '8' (want '8')
+PASS  rakh_samroop_diff -> rakh_ubhaya_bhed (bin): same bytes True, old warns True, new silent True, prints '2' (want '2')
+PASS  rakh_samroop_diff -> rakh_ubhaya_bhed (exe): same bytes True, old warns True, new silent True, prints '2' (want '2')
+PASS  roop_pad_vam -> roop_purti_vam (bin): same bytes True, old warns True, new silent True, prints '5' (want '5')
+PASS  roop_pad_vam -> roop_purti_vam (exe): same bytes True, old warns True, new silent True, prints '5' (want '5')
+PASS  roop_pad_dakshin -> roop_purti_dakshin (bin): same bytes True, old warns True, new silent True, prints '5' (want '5')
+PASS  roop_pad_dakshin -> roop_purti_dakshin (exe): same bytes True, old warns True, new silent True, prints '5' (want '5')
+PASS  roop_pad_madhya -> roop_purti_madhya (bin): same bytes True, old warns True, new silent True, prints '5' (want '5')
+PASS  roop_pad_madhya -> roop_purti_madhya (exe): same bytes True, old warns True, new silent True, prints '5' (want '5')
+PASS  pad_vam -> purti_vam (bin): same bytes True, old warns True, new silent True, prints '3' (want '3')
+PASS  pad_vam -> purti_vam (exe): same bytes True, old warns True, new silent True, prints '3' (want '3')
+PASS  roop_ank_pre -> roop_ank_upasarga (bin): same bytes True, old warns True, new silent True, prints '4' (want '4')
+PASS  roop_ank_pre -> roop_ank_upasarga (exe): same bytes True, old warns True, new silent True, prints '4' (want '4')
+PASS  roop_sign_akshar -> roop_chihna_akshar (bin): same bytes True, old warns True, new silent True, prints '3' (want '3')
+PASS  roop_sign_akshar -> roop_chihna_akshar (exe): same bytes True, old warns True, new silent True, prints '3' (want '3')
+PASS  asti_sorted -> asti_kramabaddha (bin): same bytes True, old warns True, new silent True, prints '1' (want '1')
+PASS  asti_sorted -> asti_kramabaddha (exe): same bytes True, old warns True, new silent True, prints '1' (want '1')
+PASS  suchi_asti_sorted -> suchi_asti_kramabaddha (bin): same bytes True, old warns True, new silent True, prints '1' (want '1')
+PASS  suchi_asti_sorted -> suchi_asti_kramabaddha (exe): same bytes True, old warns True, new silent True, prints '1' (want '1')
+PASS  asti_sorted twice, once with a space before "(": exit 0, 1 warning (1)
+PASS  own prakriya asti_sorted: exit 0, warnings [], prints '77' (77)
+PASS  own prakriya asti_sorted beside yoj shreni: exit 0, warnings [], prints '77' (77)
+PASS  a variable named bit_gan: exit 0, warnings [] (none), prints 7
+PASS  bit_gan inside a yoj'd module: exit 0, warnings [] (none), prints 6 
+PASS  --lang hindi with bit_gan: exit 0, warnings [] (none)
+PASS  asti_sorted without yoj shreni: exit 1, hint names yoj shreni True
+PASS  E_KOSH hint: names kosh_gan(k) True, no kosh_len True
+r118 library names: 28 checks, 0 failed

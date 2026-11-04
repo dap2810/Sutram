@@ -233,10 +233,10 @@ prakriya roop_dwi(v, out) {
     nivartanam roop_ank_aadhar_saral(v, 2, out)
 }
 
-# roop_ank_pre(v, base, upper, out) — any base with its prefix
+# roop_ank_upasarga(v, base, upper, out) — any base with its prefix
 # ("0b"/"0o"/"0x" for 2/8/16; none for other bases). `upper` 1 ->
-# uppercase digits, prefix stays lowercase.
-prakriya roop_ank_pre(v, base, upper, out) {
+# uppercase digits, prefix stays lowercase. (R118: was `roop_ank_pre`, still accepted.)
+prakriya roop_ank_upasarga(v, base, upper, out) {
     vitti fl = 1
     yadi (upper == 1) { fl = 3 }
     nivartanam roop_ank_dhvaj(v, base, fl, out)
@@ -247,9 +247,9 @@ prakriya roop_ank_pre(v, base, upper, out) {
 # terminator at byte `width` (when width <= sn: the sn bytes copied, then the
 # terminator at byte `sn`), as every roop formatter does. `out` must hold
 # width + 1 bytes (sn + 1 when width <= sn). (R68: stated; the bodies were right.)
-# roop_pad_vam(src, sn, width, padbyte, out) — pad on the LEFT with
-# `padbyte` (32 space, 48 '0') to `width`. width <= sn: copy unchanged.
-prakriya roop_pad_vam(src, sn, width, padbyte, out) {
+# roop_purti_vam(src, sn, width, padbyte, out) — pad on the LEFT with
+# `padbyte` (32 space, 48 '0') to `width`. width <= sn: copy unchanged. (R118: was `roop_pad_vam`, still accepted.)
+prakriya roop_purti_vam(src, sn, width, padbyte, out) {
     vitti s = src
     vitti cnt = sn
     vitti w = width
@@ -281,8 +281,8 @@ prakriya roop_pad_vam(src, sn, width, padbyte, out) {
     nivartanam w
 }
 
-# roop_pad_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT.
-prakriya roop_pad_dakshin(src, sn, width, padbyte, out) {
+# roop_purti_dakshin(src, sn, width, padbyte, out) — pad on the RIGHT. (R118: was `roop_pad_dakshin`, still accepted.)
+prakriya roop_purti_dakshin(src, sn, width, padbyte, out) {
     vitti s = src
     vitti cnt = sn
     vitti w = width
@@ -314,9 +314,9 @@ prakriya roop_pad_dakshin(src, sn, width, padbyte, out) {
     nivartanam w
 }
 
-# roop_pad_madhya(src, sn, width, padbyte, out) — pad both sides to width;
-# when width-sn is odd, the extra padding byte goes RIGHT.
-prakriya roop_pad_madhya(src, sn, width, padbyte, out) {
+# roop_purti_madhya(src, sn, width, padbyte, out) — pad both sides to width;
+# when width-sn is odd, the extra padding byte goes RIGHT. (R118: was `roop_pad_madhya`, still accepted.)
+prakriya roop_purti_madhya(src, sn, width, padbyte, out) {
     vitti s = src
     vitti cnt = sn
     vitti w = width
@@ -640,10 +640,10 @@ prakriya roop_chinhit(v, out) {
     nivartanam n + 1
 }
 
-# roop_sign_akshar(v, signch, out) — `signch` (a byte value, e.g. 32 for a
+# roop_chihna_akshar(v, signch, out) — `signch` (a byte value, e.g. 32 for a
 # blank, 43 for '+') in place of '+' for non-negative values; negatives
-# always get '-'.
-prakriya roop_sign_akshar(v, signch, out) {
+# always get '-'. (R118: was `roop_sign_akshar`, still accepted.)
+prakriya roop_chihna_akshar(v, signch, out) {
     vitti val = v
     vitti sc = signch
     vitti dst = out

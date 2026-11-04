@@ -1,0 +1,16 @@
+# R118: the ten new library names, and the hint's 'dvara', against every namespace, on the v296 compiler (before the change).
+# keywords/builtins/retired table/messages (every db string in src/), library prakriya, every identifier in examples/ lib/ tests/ tools/,
+# the eleven .lang and eleven .sandesh files; and each compiled as a variable, a prakriya, and a call with a space before '('.
+Sutram 1.0 (v296) - sampurna sutra
+ekanka_gan                   FREE  | variable: ok; prakriya: ok; call with a space: ok
+rakh_ubhaya_bhed             FREE  | variable: ok; prakriya: ok; call with a space: ok
+roop_purti_vam               FREE  | variable: ok; prakriya: ok; call with a space: ok
+roop_purti_dakshin           FREE  | variable: ok; prakriya: ok; call with a space: ok
+roop_purti_madhya            FREE  | variable: ok; prakriya: ok; call with a space: ok
+purti_vam                    FREE  | variable: ok; prakriya: ok; call with a space: ok
+roop_ank_upasarga            FREE  | variable: ok; prakriya: ok; call with a space: ok
+roop_chihna_akshar           FREE  | variable: ok; prakriya: ok; call with a space: ok
+asti_kramabaddha             FREE  | variable: ok; prakriya: ok; call with a space: ok
+suchi_asti_kramabaddha       FREE  | variable: ok; prakriya: ok; call with a space: ok
+dvara                        FREE  | variable: ok; prakriya: ok; call with a space: ok
+11 names, 0 collide

@@ -8,14 +8,14 @@ mukhya()
     yavat (n < 6) {
         vitti i = 0
         yavat (i <= n) {
-            kosh_push(row, meru(n, i))
+            kosh_kship(row, meru(n, i))
             i = i + 1
         }
         n = n + 1
     }
-    likha("length = ", kosh_len(row))
+    likha("length = ", kosh_gan(row))
     vitti j = 0
-    yavat (j < kosh_len(row)) {
+    yavat (j < kosh_gan(row)) {
         likha(row[j])
         likha(" ")
         j = j + 1

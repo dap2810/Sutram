@@ -14,7 +14,7 @@ mukhya() {
     kosh bahar[1]
     mandapa {
         kosh k[4]
-        kosh_push(k, 11)
+        kosh_kship(k, 11)
         bahar = rakh(k)
         likha(padh(bahar, 0))
     }

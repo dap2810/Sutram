@@ -4,12 +4,12 @@ mukhya() {
     a[0] = 1
     a[1] = 2
     a[2] = 3
-    likha(asti_sorted(a, 3))
+    likha(asti_kramabaddha(a, 3))
     likha("\n")
     mala b[3]
     b[0] = 3
     b[1] = 1
     b[2] = 2
-    likha(asti_sorted(b, 3))
+    likha(asti_kramabaddha(b, 3))
     likha("\n")
 }

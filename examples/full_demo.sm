@@ -21,7 +21,7 @@ mukhya()
     likha("6. String len: ", vartani_aayam("Sutram"))
     likha("7. Char ops: ", akshar("Hello", 0))
     likha("8. Format: ")
-    likha_fmt("x=", 42)
+    likha_rup("x=", 42)
     likha("\n")
     likha("9. Strength: ")
     vitti x = 8

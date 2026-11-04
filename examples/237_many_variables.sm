@@ -63,8 +63,8 @@ prakriya gahra(p) {
     dasham d = 1.5
     d = d + 0.25
     kosh k[1]
-    kosh_push(k, 9)
-    kosh_push(k, 11)
+    kosh_kship(k, 9)
+    kosh_kship(k, 11)
     likha(t)
     likha(ank_mala[2])
     likha(b.y)

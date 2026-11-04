@@ -16,25 +16,25 @@ mukhya() {
     inf = inf * inf
     dasham nan = inf - inf
     kosh dasham k[1]
-    kosh_push(k, inf)
-    kosh_push(k, nan)
-    kosh_push(k, 0.0 - inf)
+    kosh_kship(k, inf)
+    kosh_kship(k, nan)
+    kosh_kship(k, 0.0 - inf)
     vitti i = 0
     yavat (i < 20) {
-        kosh_push(k, nan)
+        kosh_kship(k, nan)
         i = i + 1
     }
     likha("kosh ", k[0], " ", k[1], " ", k[2])
-    likha("len ", kosh_len(k), " last ", k[22])
+    likha("len ", kosh_gan(k), " last ", k[22])
     likha("nan != nan in kosh ", k[1] != k[1], " ", k[22] != k[22], 0)
     k[0] = nan
-    likha("store ", k[0], " pop ", kosh_pop(k))
+    likha("store ", k[0], " pop ", kosh_hri(k))
     likha("param ", ardh(inf), " ", pratham(k))
     mandapa {
         kosh dasham m[2]
-        kosh_push(m, inf)
-        kosh_push(m, nan)
-        kosh_push(m, 1.5)
+        kosh_kship(m, inf)
+        kosh_kship(m, nan)
+        kosh_kship(m, 1.5)
         vitti p = nirmmita(4 * 8)
         dasham sum = m[0] + m[2]
         likha("mandapa ", m[0], " ", m[1], " ", sum)

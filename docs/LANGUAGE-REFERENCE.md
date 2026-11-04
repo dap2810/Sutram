@@ -234,6 +234,38 @@ A program built by v293 or earlier still prints `Sutram Error` from its own byte
 
 `to` is not a word either (`tak` is the loop's "up to"; `prati` stays the return alias).
 
+### 4c. The library's English names (v297, R118): new names, old ones still accepted
+
+Ten library `prakriya` had an English word in their names. **The library now defines the Sanskrit name; a
+call written with the old name still compiles - to the same bytes - and prints the §4b warning once**, when it
+is in the program's own file (not in a `yoj`'d module; never in a `--lang` run):
+
+```
+Sutram suchana: 'asti_sorted' purana nama - 'asti_kramabaddha' likhatu
+```
+
+| new | old | module | what it does |
+|---|---|---|---|
+| `ekanka_gan` | `bit_gan` | `ganit` | the count of 1-digits (एकाङ्क) in `n`'s binary form |
+| `rakh_ubhaya_bhed` | `rakh_samroop_diff` | `sangrah` | the difference both ways (उभय-भेद): `(a - b)` with `(b - a)` |
+| `roop_purti_vam` | `roop_pad_vam` | `roop` | fill (पूर्ति) on the left to `width` |
+| `roop_purti_dakshin` | `roop_pad_dakshin` | `roop` | fill on the right |
+| `roop_purti_madhya` | `roop_pad_madhya` | `roop` | fill both sides |
+| `purti_vam` | `pad_vam` | `vakyank` | fill a `mala` of character codes on the left, in place |
+| `roop_ank_upasarga` | `roop_ank_pre` | `roop` | a number in any base, with its prefix (उपसर्ग) `0b` / `0o` / `0x` |
+| `roop_chihna_akshar` | `roop_sign_akshar` | `roop` | a number with the sign character (चिह्न) you give for `+` |
+| `asti_kramabaddha` | `asti_sorted` | `shreni` | 1 if the array is in order (क्रमबद्ध), non-decreasing |
+| `suchi_asti_kramabaddha` | `suchi_asti_sorted` | `suchi` | the same for a `suchi` |
+
+**What counts as the old name:** an identifier followed by `(` - a call. A `prakriya` your program defines with
+an old name is yours: it is not renamed and not warned about. A variable of that name is not touched.
+
+**Three compiler hints named old builtins, and now name the new ones** (`kosh_gan(k)` for `kosh_len(k)` in the
+five `E_KOSH_*` hints, `likha_rup` for `likha_fmt` in the `parikshita` hint, and `dvaram_likha(dvara, smriti,
+sankhya)` for `fd`). **Four run-time messages still name `kosh_pop`, `kosh_peek`, `kosh_dequeue` and
+`kosh_push`**, and the shell's help still writes `mala arr[5]`: the ten frozen packs translate those messages
+and keep those words, so changing them waits for the owner's decision (`Claude-to-Sarvam/R118-00-*.md`).
+
 ### 4a. Output: print values, raw bytes, and formatting (compiler v257)
 
 `likha` is overloaded. **A string literal prints its bytes exactly as written** (there is no automatic newline); **a scalar integer or `dasham` prints a value followed by a newline**. **From v288 a string value - a variable, `s + t`, a string a `prakriya` returns - prints its text, like a literal, with no newline** (up to v287 it printed its address). A number last on the line ends it with a newline: `likha("name: ", s, " age ", 30)`. `shabda(s)` still prints a string, and a raw buffer is still `dvaram_likha`.
@@ -330,7 +362,7 @@ no runtime dependency, the code becomes part of your binary. `lib/` ships:
 |---|---|---|
 | ganit | `yoj ganit` | 15 — `varg`, `vargit`, `ghan`, `dvigun`, `trigun`, `vardh`, `nirapeksh_mulya`, `laghu2`, `adhik2`, `mahattam_samapavartak`, `laghuttam_samapavartya`, `ghat`, `kramgun`, `asti_abhajya`, `yog_tak` |
 | ank | `yoj ank` | 10 — `asti_yugm`, `asti_visham`, `ank_gan`, `ank_yog`, `viparyay_ank`, `asti_viparyay_sam`, `seemit`, `fib`, `asti_sampurna`, `collatz_charan` |
-| shreni | `yoj shreni` | 11 — `vinimay`, `budbud_shreni`, `shankh_shreni`, `viparyay_mala`, `laghu`, `adhik`, `yog`, `anwesh_sarak`, `gan`, `asti_sorted`, `dwi_anwesh` |
+| shreni | `yoj shreni` | 11 — `vinimay`, `budbud_shreni`, `shankh_shreni`, `viparyay_mala`, `laghu`, `adhik`, `yog`, `anwesh_sarak`, `gan`, `asti_kramabaddha` (was `asti_sorted`), `dwi_anwesh` |
 | ganita | `yoj ganita` | 6 — `kuttaka` (linear indeterminate), `chakravala` (Pell's equation x^2-Ny^2=1), `samasa` (Brahmagupta's composition law), `brahmagupta_kshetr` (cyclic-quadrilateral area), `ganita_vargmool`, `ganita_nirapeksh` |
 | madhava | `yoj madhava` | 5 — `madhava_pi`, `madhava_sin`, `madhava_cos`, `madhava_atan`, `madhava_vargmool` (Kerala school, T12 floats) |
 | varna | `yoj varna` | 13 — `varna_maap`, `akshar_sanket`, `asti_ank_akshar`, `asti_unnat_akshar`, `asti_avanat_akshar`, `asti_akshar_akshar`, `asti_avakash_akshar`, `gan_swar`, `gan_akshar`, `anwesh_akshar`, `asti_sarv_ank`, `unnat_sanket`, `avanat_sanket` |

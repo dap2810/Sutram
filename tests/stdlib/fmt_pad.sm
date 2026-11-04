@@ -3,36 +3,36 @@ mukhya() {
     vitti out = nirmmita(128)
     vitti n = 0
     # left pad with spaces
-    n = roop_pad_vam("hi", 2, 5, 32, out)
+    n = roop_purti_vam("hi", 2, 5, 32, out)
     dvaram_likha(1, out, n)
     likha("\n")
     # right pad with '0'
-    n = roop_pad_dakshin("hi", 2, 5, 48, out)
+    n = roop_purti_dakshin("hi", 2, 5, 48, out)
     dvaram_likha(1, out, n)
     likha("\n")
     # centre, odd extra goes right
-    n = roop_pad_madhya("hi", 2, 5, 45, out)
+    n = roop_purti_madhya("hi", 2, 5, 45, out)
     dvaram_likha(1, out, n)
     likha("\n")
     # centre, even
-    n = roop_pad_madhya("hi", 2, 6, 45, out)
+    n = roop_purti_madhya("hi", 2, 6, 45, out)
     dvaram_likha(1, out, n)
     likha("\n")
     # width <= length: copy unchanged
-    n = roop_pad_vam("hello", 5, 3, 32, out)
+    n = roop_purti_vam("hello", 5, 3, 32, out)
     dvaram_likha(1, out, n)
     likha("\n")
-    n = roop_pad_dakshin("hello", 5, 5, 32, out)
+    n = roop_purti_dakshin("hello", 5, 5, 32, out)
     dvaram_likha(1, out, n)
     likha("\n")
     # empty input pads tak all fill
-    n = roop_pad_vam("", 0, 3, 42, out)
+    n = roop_purti_vam("", 0, 3, 42, out)
     dvaram_likha(1, out, n)
     likha("\n")
     # pad a formatted number: "42" zero-padded tak 5
     vitti ank = nirmmita(32)
     vitti nd = roop_dash(42, ank)
-    n = roop_pad_vam(ank, nd, 5, 48, out)
+    n = roop_purti_vam(ank, nd, 5, 48, out)
     dvaram_likha(1, out, n)
     likha("\n")
 }

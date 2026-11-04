@@ -4,8 +4,8 @@ prakriya dwi_gun(dasham x) {
 }
 mukhya() {
     kosh dasham mulya[2]
-    kosh_push(mulya, 3.0)
-    kosh_push(mulya, 5.0)
+    kosh_kship(mulya, 3.0)
+    kosh_kship(mulya, 5.0)
     dasham nirgat = 0.0
     nirgat = mulya[0] + 2.5
     likha(nirgat)

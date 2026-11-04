@@ -47,7 +47,7 @@ SETS = '''    vitti a = rakh_srij(4)
 # name: (module, setup, call, setup allocations, own allocations, failure output, after-check)
 # The after-check is printed after the call: what the caller's buffer holds.
 PROBES = {
-    'rakh_samroop_diff': ('sangrah', SETS, 'rakh_samroop_diff(a, 4, b, 4, o)', 3, 2, '-1', 'rakh_maap(o)', '0'),
+    'rakh_ubhaya_bhed': ('sangrah', SETS, 'rakh_ubhaya_bhed(a, 4, b, 4, o)', 3, 2, '-1', 'rakh_maap(o)', '0'),
     'rakh_sangam': ('sangrah', SETS, 'rakh_sangam(a, 4, b, 4, o)', 3, 2, '-1', 'rakh_maap(o)', '0'),
     'rakh_sampat': ('sangrah', SETS, 'rakh_sampat(a, 4, b, 4, o)', 3, 1, '-1', 'rakh_maap(o)', '0'),
     'rakh_bhed': ('sangrah', SETS, 'rakh_bhed(a, 4, b, 4, o)', 3, 1, '-1', 'rakh_maap(o)', '0'),
@@ -94,7 +94,7 @@ PROBES = {
                    'akshar(o, 0)', '0'),
     'roop_chinhit': ('roop', '    vitti o = nirmmita(40)\n    akshar_rakh(o, 0, 65)\n', 'roop_chinhit(42, o)', 1, 2, '0',
                      'akshar(o, 0)', '0'),
-    'roop_sign_akshar': ('roop', '    vitti o = nirmmita(40)\n    akshar_rakh(o, 0, 65)\n', 'roop_sign_akshar(42, 32, o)',
+    'roop_chihna_akshar': ('roop', '    vitti o = nirmmita(40)\n    akshar_rakh(o, 0, 65)\n', 'roop_chihna_akshar(42, 32, o)',
                          1, 2, '0', 'akshar(o, 0)', '0'),
     'ank_tak_varna': ('vakyank', '    vitti o = nirmmita(24 * 8)\n    o[0] = 65\n', 'ank_tak_varna(42, o)', 1, 1, '0',
                       'o[0]', '0'),

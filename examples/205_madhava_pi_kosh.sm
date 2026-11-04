@@ -7,14 +7,14 @@ mukhya() {
     vitti k = 0
     yavat (k < 9) {
         dasham denom = 2 * k + 1
-        kosh_push(pada_kosh, chinha / denom)
+        kosh_kship(pada_kosh, chinha / denom)
         chinha = chinha * -1.0
         k = k + 1
     }
-    likha(kosh_len(pada_kosh))
+    likha(kosh_gan(pada_kosh))
     dasham sankalan = 0.0
     vitti i = 0
-    yavat (i < kosh_len(pada_kosh)) {
+    yavat (i < kosh_gan(pada_kosh)) {
         sankalan = sankalan + pada_kosh[i]
         i = i + 1
     }

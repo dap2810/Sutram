@@ -1,0 +1,40 @@
+=== tests/expect/120_t18_kosh_param_mismatch.out (v296 golden -> R118)
+2d1
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+=== tests/expect/121_t18_kosh_param_push_reject.out (v296 golden -> R118)
+2,3d1
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+< Sutram suchana: 'kosh_len' purana nama - 'kosh_gan' likhatu
+=== tests/expect/270_r75_nested_store.out (v296 golden -> R118)
+3d2
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+=== tests/expect/287_r82_kosh_after_mandapa.out (v296 golden -> R118)
+2,3c2
+< Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+---
+> Sanket: kosh mandape eva upayujyatam (k[i], kosh_gan(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam
+=== tests/expect/314_r106_kosh_operand.out (v296 golden -> R118)
+2,3c2
+< Sanket: k[i] tasya mulyam; kosh_len(k) tasya dirghata - tani tulyantam
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+---
+> Sanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam
+=== tests/expect/316_r107_kosh_kept_by_a_prakriya.out (v296 golden -> R118)
+2,3c2
+< Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+---
+> Sanket: prakriya kosh-tarkam k[i], kosh_gan(k) iti eva pathatu; kosh mandapat bahih na jivati
+=== tests/expect/320_r109_kosh_alias_kept.out (v296 golden -> R118)
+2,3c2
+< Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+---
+> Sanket: prakriya kosh-tarkam k[i], kosh_gan(k) iti eva pathatu; kosh mandapat bahih na jivati
+=== tests/expect/321_r109_kosh_long_chain.out (v296 golden -> R118)
+2,3c2
+< Sanket: prakriya kosh-tarkam k[i], kosh_len(k) iti eva pathatu; kosh mandapat bahih na jivati
+< Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu
+---
+> Sanket: prakriya kosh-tarkam k[i], kosh_gan(k) iti eva pathatu; kosh mandapat bahih na jivati

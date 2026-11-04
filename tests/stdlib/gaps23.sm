@@ -23,7 +23,7 @@ mukhya() {
     rakh_yuj(s1, 8, "c", 1)
     rakh_yuj(s2, 8, "b", 1)
     rakh_yuj(s2, 8, "d", 1)
-    likha(rakh_samroop_diff(s1, 8, s2, 8, s3))
+    likha(rakh_ubhaya_bhed(s1, 8, s2, 8, s3))
     likha("\n")
     likha(rakh_antah(s3, 16, "a", 1))
     likha("\n")

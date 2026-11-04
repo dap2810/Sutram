@@ -40,8 +40,8 @@ mukhya() {
     likha("\nRange: ", mx - mn)
     likha("-------------------------\n")
     likha("Padded scores:\n")
-    # demonstrate pad_vam: right-align each score in width 6
-    # R68: ank_tak_varna's contract asks for >= 22 cells and pad_vam's for
+    # demonstrate purti_vam: right-align each score in width 6
+    # R68: ank_tak_varna's contract asks for >= 22 cells and purti_vam's for
     # >= width + 1 = 7; 4 cells (32 bytes) satisfied neither, and the two
     # cells past the block landed in `row` once nirmmita stopped page-padding.
     vitti koshtha = nirmmita(22 * 8)
@@ -50,7 +50,7 @@ mukhya() {
     yavat (i < n) {
         vitti cnt = ank_tak_varna(scores[i], koshtha)
         # pad buf in place tak width 6 (buf holds qword cells)
-        pad_vam(koshtha, cnt, 6, 32)
+        purti_vam(koshtha, cnt, 6, 32)
         # repack 6 qword cells tak bytes for printing
         vitti j = 0
         yavat (j < 6) {

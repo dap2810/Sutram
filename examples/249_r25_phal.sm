@@ -13,7 +13,7 @@ prakriya bhaj(a, b) {
 }
 
 prakriya grah(vibhag s, i) {
-    yadi (i < 0 || i >= pankti_len(s)) {
+    yadi (i < 0 || i >= pankti_gan(s)) {
         nivartanam dosh(2)
     }
     nivartanam siddhi(s[i])
@@ -28,7 +28,7 @@ prakriya anupat(vibhag s, i, j) {
 
 # the mean of s; an empty slice is a failure of its own (3)
 prakriya madhyaman(vibhag s) {
-    vitti n = pankti_len(s)
+    vitti n = pankti_gan(s)
     yadi (n == 0) {
         nivartanam dosh(3)
     }

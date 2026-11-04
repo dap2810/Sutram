@@ -264,11 +264,11 @@ prakriya suchi_anwesh(l, v) {
     nivartanam anwesh_sarak(l[2], l[0], v)
 }
 
-# suchi_asti_sorted(l) — 1 if the elements are in non-decreasing order,
+# suchi_asti_kramabaddha(l) — 1 if the elements are in non-decreasing order,
 # else 0; empty and single-element lists are sorted (WS2, R23).
-# List-shaped form of shreni.smlib's asti_sorted.
-prakriya suchi_asti_sorted(l) {
-    nivartanam asti_sorted(l[2], l[0])
+# List-shaped form of shreni.smlib's asti_kramabaddha. (R118: was `suchi_asti_sorted`, still accepted.)
+prakriya suchi_asti_kramabaddha(l) {
+    nivartanam asti_kramabaddha(l[2], l[0])
 }
 
 # suchi_dwi_anwesh(l, v) — index of v in a SORTED list, or -1

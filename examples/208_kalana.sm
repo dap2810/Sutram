@@ -13,11 +13,11 @@ mukhya() {
     yavat (i < 11) {
         dasham x = i
         x = x / 10.0
-        kosh_push(ank_suchi, x)
-        kosh_push(ys, x * x)
+        kosh_kship(ank_suchi, x)
+        kosh_kship(ys, x * x)
         i = i + 1
     }
-    likha(kosh_len(ank_suchi))
+    likha(kosh_gan(ank_suchi))
     likha(kalana_trapiz(ank_suchi, ys))
     likha(simpson(ank_suchi, ys))
 
@@ -28,14 +28,14 @@ mukhya() {
 
     # --- root of x^2 - 2 on [0,2] ---
     kosh dasham c[4]
-    kosh_push(c, -2.0)
-    kosh_push(c, 0.0)
-    kosh_push(c, 1.0)
+    kosh_kship(c, -2.0)
+    kosh_kship(c, 0.0)
+    kosh_kship(c, 1.0)
     likha(bahu_ganana(c, 2.0))
     # the out-parameter needs one element pushed: a kosh's CAPACITY is not its LENGTH,
     # so ok[0] would be out of bounds until something is pushed.
     kosh dasham ok[1]
-    kosh_push(ok, 0.0)
+    kosh_kship(ok, 0.0)
     likha(bahu_mula(c, 0.0, 2.0, ok))
     likha(ok[0])
 }

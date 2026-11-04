@@ -5,6 +5,6 @@ prakriya pratham(कोश दशम a) {
 
 mukhya() {
     कोश दशम values[1]
-    kosh_push(values, 2.25)
+    kosh_kship(values, 2.25)
     likha(pratham(values))
 }

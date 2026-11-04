@@ -3,6 +3,6 @@ mukhya() {
     a[0] = 11
     a[1] = 22
     vitti i = 2
-    likha(i < pankti_len(a) && a[i] > 0)
-    likha(i >= pankti_len(a) || a[i] > 0)
+    likha(i < pankti_gan(a) && a[i] > 0)
+    likha(i >= pankti_gan(a) || a[i] > 0)
 }

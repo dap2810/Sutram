@@ -9,7 +9,7 @@ mukhya()
     a[3] = 1
     a[4] = 7
     a[5] = 3
-    likha(asti_sorted(a, 6))
+    likha(asti_kramabaddha(a, 6))
     likha("\n")
     budbud_shreni(a, 6)
     vitti i = 0
@@ -19,7 +19,7 @@ mukhya()
         i = i + 1
     }
     likha("\n")
-    likha(asti_sorted(a, 6))
+    likha(asti_kramabaddha(a, 6))
     likha("\n")
     likha(dwi_anwesh(a, 6, 7))
     likha("\n")

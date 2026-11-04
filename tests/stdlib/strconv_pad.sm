@@ -3,7 +3,7 @@ mukhya() {
     vitti buf = nirmmita(10 * 8)
     # pad "42" tak width 5 with '0'
     ank_tak_varna(42, buf)
-    vitti n1 = pad_vam(buf, 2, 5, 48)
+    vitti n1 = purti_vam(buf, 2, 5, 48)
     likha(n1)
     likha("\n")
     vitti i = 0
@@ -14,7 +14,7 @@ mukhya() {
     }
     # width <= count: no-op
     ank_tak_varna(12345, buf)
-    vitti n2 = pad_vam(buf, 5, 3, 48)
+    vitti n2 = purti_vam(buf, 5, 3, 48)
     likha(n2)
     likha("\n")
 }

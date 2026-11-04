@@ -45,8 +45,8 @@ CAP = "a container's own capacity X[0], bounded by nighantu_srij: X[0] * 33 + 1 
 EXEMPT = {
     ('nighantu', 'nighantu_vardh', 'oldcap * 33 + 1'): 'oldcap = m[0]: ' + CAP,
     ('nighantu', 'nighantu_mil', 'src[0] * 33 + 1'): CAP,
-    ('sangrah', 'rakh_samroop_diff', 'a[0] * 33 + 1'): CAP,
-    ('sangrah', 'rakh_samroop_diff', 'b[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_ubhaya_bhed', 'a[0] * 33 + 1'): CAP,
+    ('sangrah', 'rakh_ubhaya_bhed', 'b[0] * 33 + 1'): CAP,
     ('sangrah', 'rakh_sangam', 'a[0] * 33 + 1'): CAP,
     ('sangrah', 'rakh_sangam', 'b[0] * 33 + 1'): CAP,
     ('sangrah', 'rakh_sampat', 'a[0] * 33 + 1'): CAP,

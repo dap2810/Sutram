@@ -1,7 +1,7 @@
 # R30: integer RHS, raw literals, and >5 local slots still use safe paths.
 mukhya() {
     kosh dasham v[1]
-    kosh_push(v, 7.0)
+    kosh_kship(v, 7.0)
     dasham x = 2.0
     dasham y = 3.0
     dasham z = 4.0

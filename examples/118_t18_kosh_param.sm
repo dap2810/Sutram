@@ -2,23 +2,23 @@
 prakriya madhya(kosh dasham a) {
     dasham sarva_yog = a[0] + a[1] + a[2]
     a[1] = 4.0
-    nivartanam sarva_yog / kosh_len(a)
+    nivartanam sarva_yog / kosh_gan(a)
 }
 
 prakriya kacch_yog(kosh a) {
-    nivartanam a[0] + a[1] + kosh_len(a)
+    nivartanam a[0] + a[1] + kosh_gan(a)
 }
 
 mukhya() {
     kosh dasham mulya[4]
-    kosh_push(mulya, 1.5)
-    kosh_push(mulya, 2.5)
-    kosh_push(mulya, 2.0)
+    kosh_kship(mulya, 1.5)
+    kosh_kship(mulya, 2.5)
+    kosh_kship(mulya, 2.0)
     likha(madhya(mulya))
     likha(mulya[1])
 
     kosh nums[2]
-    kosh_push(nums, 3)
-    kosh_push(nums, 7)
+    kosh_kship(nums, 3)
+    kosh_kship(nums, 7)
     likha(kacch_yog(nums))
 }

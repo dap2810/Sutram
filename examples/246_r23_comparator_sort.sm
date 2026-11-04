@@ -23,7 +23,7 @@ prakriya sama_pratham(a, b) {
 
 # insertion sort of a slice, ordered by tulana(x, y) < 0
 prakriya shreni(vibhag s, tulana) {
-    vitti n = pankti_len(s)
+    vitti n = pankti_gan(s)
     chakra i = 1 tak n - 1 {
         vitti v = s[i]
         vitti j = i - 1
@@ -47,8 +47,8 @@ prakriya kram_chuno(k) {
 }
 
 prakriya dikhao(vibhag s) {
-    chakra i = 0 tak pankti_len(s) - 1 {
-        lkhb(s[i])
+    chakra i = 0 tak pankti_gan(s) - 1 {
+        likha_santat(s[i])
         likha(" ")
     }
     likha("\n")

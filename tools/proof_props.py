@@ -331,7 +331,7 @@ def prop_hash_fnv1a_avalanche(compiler, rng):
 
 
 def prop_sort_ordered(compiler, rng):
-    """nivesh_shreni and mil_shreni output is ordered (asti_sorted==1)"""
+    """nivesh_shreni and mil_shreni output is ordered (asti_kramabaddha==1)"""
     # fewer cases: each case emits many statements (block size limit)
     lines = ["yoj shreni", "mukhya() {",
              "    vitti a = nirmmita(10*8)",
@@ -342,12 +342,12 @@ def prop_sort_ordered(compiler, rng):
             lines.append(f"    a[{j}] = {v}")
             lines.append(f"    b[{j}] = {v}")
         lines.append(f"    nivesh_shreni(a, 10)")
-        lines.append(f"    yadi (asti_sorted(a, 10) != 1) {{")
+        lines.append(f"    yadi (asti_kramabaddha(a, 10) != 1) {{")
         lines.append(f'        likha("FAIL sort_ordered insertion\\n")')
         lines.append(f"        prati 1")
         lines.append(f"    }}")
         lines.append(f"    mil_shreni(b, 10)")
-        lines.append(f"    yadi (asti_sorted(b, 10) != 1) {{")
+        lines.append(f"    yadi (asti_kramabaddha(b, 10) != 1) {{")
         lines.append(f'        likha("FAIL sort_ordered merge\\n")')
         lines.append(f"        prati 1")
         lines.append(f"    }}")
@@ -498,7 +498,7 @@ def prop_strconv_base_roundtrip(compiler, rng):
 
 
 def prop_strconv_pad_left(compiler, rng):
-    """pad_vam width invariant: result length == max(count, width),
+    """purti_vam width invariant: result length == max(count, width),
     original digits preserved at the right, fill on the left"""
     lines = ["yoj vakyank", "mukhya() {",
              "    vitti buf = nirmmita(12*8)"]
@@ -507,31 +507,31 @@ def prop_strconv_pad_left(compiler, rng):
         width = rng.randint(1, 10)
         # render v, then pad
         lines.append(f"    vitti c{idx} = ank_tak_varna({v}, buf)")
-        lines.append(f"    vitti w{idx} = pad_vam(buf, c{idx}, {width}, 48)")
+        lines.append(f"    vitti w{idx} = purti_vam(buf, c{idx}, {width}, 48)")
         # expected length
         # (compute in python for the check)
         s = str(v)
         exp_len = max(len(s), width)
         lines.append(f"    yadi (w{idx} != {exp_len}) {{")
-        lines.append(f'        likha("FAIL pad_vam len {v} w{width}\\n")')
+        lines.append(f'        likha("FAIL purti_vam len {v} w{width}\\n")')
         lines.append(f"        prati 1")
         lines.append(f"    }}")
         # check the rightmost len(s) chars are the digits of v
         for j, ch in enumerate(s):
             pos = exp_len - len(s) + j
             lines.append(f"    yadi (buf[{pos}] != {ord(ch)}) {{")
-            lines.append(f'        likha("FAIL pad_vam digits {v} w{width}\\n")')
+            lines.append(f'        likha("FAIL purti_vam digits {v} w{width}\\n")')
             lines.append(f"        prati 1")
             lines.append(f"    }}")
         # check fill chars on the left
         for j in range(exp_len - len(s)):
             lines.append(f"    yadi (buf[{j}] != 48) {{")
-            lines.append(f'        likha("FAIL pad_vam fill {v} w{width}\\n")')
+            lines.append(f'        likha("FAIL purti_vam fill {v} w{width}\\n")')
             lines.append(f"        prati 1")
             lines.append(f"    }}")
     lines.append('    likha("PASS\\n")')
     lines.append("}")
-    ok, out = run_sm(compiler, "pad_vam", "\n".join(lines))
+    ok, out = run_sm(compiler, "purti_vam", "\n".join(lines))
     return ok and out == "PASS", out
 
 
@@ -1507,7 +1507,7 @@ def prop_fmt_int_base_roundtrip(compiler, rng):
     lines.append("        prati 1")
     lines.append("    }")
     # prefixed form: skip the 0x and parse the rest
-    lines.append("    vitti pn = roop_ank_pre(255, 16, 0, out)")
+    lines.append("    vitti pn = roop_ank_upasarga(255, 16, 0, out)")
     lines.append("    yadi (parse_base(out + 2, pn - 2, 16) != 255) {")
     lines.append('        likha("FAIL fmt prefix skip\\n")')
     lines.append("        prati 1")
@@ -1563,22 +1563,22 @@ def prop_fmt_pad_content(compiler, rng):
         exp_len = max(w, n)
         pad = w - n if w > n else 0
         left = pad // 2
-        # pad_vam: content at offset pad, fill before it
-        lines.append(f'    yadi (roop_pad_vam("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
-        lines.append('        likha("FAIL fmt pad_vam len\\n")')
+        # purti_vam: content at offset pad, fill before it
+        lines.append(f'    yadi (roop_purti_vam("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
+        lines.append('        likha("FAIL fmt purti_vam len\\n")')
         lines.append("        prati 1")
         lines.append("    }")
         lines.append(f'    yadi (bytes_match_at(out, {pad}, "{s}", {n}) == 0) {{')
-        lines.append('        likha("FAIL fmt pad_vam content\\n")')
+        lines.append('        likha("FAIL fmt purti_vam content\\n")')
         lines.append("        prati 1")
         lines.append("    }")
         if pad:
             lines.append(f'    yadi (all_fill(out, {pad}, 42) == 0) {{')
-            lines.append('        likha("FAIL fmt pad_vam fill\\n")')
+            lines.append('        likha("FAIL fmt purti_vam fill\\n")')
             lines.append("        prati 1")
             lines.append("    }")
         # pad_right: content at 0, fill after it
-        lines.append(f'    yadi (roop_pad_dakshin("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
+        lines.append(f'    yadi (roop_purti_dakshin("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
         lines.append('        likha("FAIL fmt pad_right len\\n")')
         lines.append("        prati 1")
         lines.append("    }")
@@ -1587,7 +1587,7 @@ def prop_fmt_pad_content(compiler, rng):
         lines.append("        prati 1")
         lines.append("    }")
         # pad_center: content at offset left
-        lines.append(f'    yadi (roop_pad_madhya("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
+        lines.append(f'    yadi (roop_purti_madhya("{s}", {n}, {w}, 42, out) != {exp_len}) {{')
         lines.append('        likha("FAIL fmt pad_center len\\n")')
         lines.append("        prati 1")
         lines.append("    }")
@@ -1730,7 +1730,7 @@ def prop_fmt_fixed(compiler, rng):
 
 
 def prop_fmt_signed(compiler, rng):
-    """roop_chinhit / roop_sign_akshar match Python util_chinha + digits"""
+    """roop_chinhit / roop_chihna_akshar match Python util_chinha + digits"""
     vals = [0, 1, -1, 42, -42, 99999, -99999]
     lines = ["yoj roop",
              "prakriya bytes_match(buf, n, lit, ln) {",
@@ -1752,9 +1752,9 @@ def prop_fmt_signed(compiler, rng):
         lines.append('        likha("FAIL roop_chinhit\\n")')
         lines.append("        prati 1")
         lines.append("    }")
-        lines.append(f"    vitti sc{ci} = roop_sign_akshar({v}, 32, out)")
+        lines.append(f"    vitti sc{ci} = roop_chihna_akshar({v}, 32, out)")
         lines.append(f'    yadi (bytes_match(out, sc{ci}, "{exp_sp}", {len(exp_sp)}) == 0) {{')
-        lines.append('        likha("FAIL roop_sign_akshar\\n")')
+        lines.append('        likha("FAIL roop_chihna_akshar\\n")')
         lines.append("        prati 1")
         lines.append("    }")
     lines.append('    likha("PASS\\n")')
@@ -2893,7 +2893,7 @@ def prop_gaps21(compiler, rng):
 
 
 def prop_containers23(compiler, rng):
-    """suchi_anwesh/asti_sorted/dwi_anwesh, avali_tak_mala vs Python"""
+    """suchi_anwesh/asti_kramabaddha/dwi_anwesh, avali_tak_mala vs Python"""
     lvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 9))]
     qvals = [rng.randint(-50, 50) for _ in range(rng.randint(0, 6))]
 
@@ -2912,13 +2912,13 @@ def prop_containers23(compiler, rng):
     lines.append("        prati 1")
     lines.append("    }")
     want_sorted = 1 if lvals == sorted(lvals) else 0
-    lines.append(f"    yadi (suchi_asti_sorted(l) != {want_sorted}) {{")
-    lines.append('        likha("FAIL suchi_asti_sorted pre\\n")')
+    lines.append(f"    yadi (suchi_asti_kramabaddha(l) != {want_sorted}) {{")
+    lines.append('        likha("FAIL suchi_asti_kramabaddha pre\\n")')
     lines.append("        prati 1")
     lines.append("    }")
     lines.append("    suchi_shreni(l)")
-    lines.append("    yadi (suchi_asti_sorted(l) != 1) {")
-    lines.append('        likha("FAIL suchi_asti_sorted post\\n")')
+    lines.append("    yadi (suchi_asti_kramabaddha(l) != 1) {")
+    lines.append('        likha("FAIL suchi_asti_kramabaddha post\\n")')
     lines.append("        prati 1")
     lines.append("    }")
     want_bs = sorted(lvals).index(probe) if probe in lvals else -1
@@ -2956,7 +2956,7 @@ def prop_containers23(compiler, rng):
 
 
 def prop_gaps23(compiler, rng):
-    """nighantu_mil / rakh_samroop_diff vs Python (incl. a partial merge when
+    """nighantu_mil / rakh_ubhaya_bhed vs Python (incl. a partial merge when
     the destination fills up)"""
     pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
     akeys = rng.sample(pool, rng.randint(0, 4))
@@ -3014,18 +3014,18 @@ def prop_gaps23(compiler, rng):
         lines.append(f'    rakh_yuj(x, 8, "{k}", {len(k)})')
     for k in bkeys:
         lines.append(f'    rakh_yuj(y, 8, "{k}", {len(k)})')
-    lines.append(f"    yadi (rakh_samroop_diff(x, 8, y, 8, o) != {len(sym)}) {{")
-    lines.append('        likha("FAIL rakh_samroop_diff count\\n")')
+    lines.append(f"    yadi (rakh_ubhaya_bhed(x, 8, y, 8, o) != {len(sym)}) {{")
+    lines.append('        likha("FAIL rakh_ubhaya_bhed count\\n")')
     lines.append("        prati 1")
     lines.append("    }")
     for k in sym:
         lines.append(f'    yadi (rakh_antah(o, 16, "{k}", {len(k)}) != 1) {{')
-        lines.append('        likha("FAIL rakh_samroop_diff member\\n")')
+        lines.append('        likha("FAIL rakh_ubhaya_bhed member\\n")')
         lines.append("        prati 1")
         lines.append("    }")
     for k in (s1 & s2):
         lines.append(f'    yadi (rakh_antah(o, 16, "{k}", {len(k)}) != 0) {{')
-        lines.append('        likha("FAIL rakh_samroop_diff excluded\\n")')
+        lines.append('        likha("FAIL rakh_ubhaya_bhed excluded\\n")')
         lines.append("        prati 1")
         lines.append("    }")
     lines.append('    likha("PASS\\n")')
@@ -3147,7 +3147,7 @@ def prop_invariants24_containers(compiler, rng):
 
 def prop_invariants24_merge_symdiff(compiler, rng):
     """R23 cross-function invariants: nighantu_mil is associative
-    (src-wins), rakh_samroop_diff is symmetric, sym_diff with itself is
+    (src-wins), rakh_ubhaya_bhed is symmetric, sym_diff with itself is
     empty, sym_diff with empty is identity."""
     pool = ["aa", "ab", "ba", "bb", "abc", "bca", "cab", "a", "b", "c"]
     akeys = rng.sample(pool, rng.randint(0, 3))
@@ -3210,10 +3210,10 @@ def prop_invariants24_merge_symdiff(compiler, rng):
     lines.append("    vitti o3 = rakh_srij(16)")
     lines.append("    vitti o4 = rakh_srij(16)")
     lines.append("    vitti e = rakh_srij(8)")
-    lines.append("    rakh_samroop_diff(x, 8, y, 8, o1)")
-    lines.append("    rakh_samroop_diff(y, 8, x, 8, o2)")
-    lines.append("    rakh_samroop_diff(x, 8, x, 8, o3)")
-    lines.append("    rakh_samroop_diff(x, 8, e, 8, o4)")
+    lines.append("    rakh_ubhaya_bhed(x, 8, y, 8, o1)")
+    lines.append("    rakh_ubhaya_bhed(y, 8, x, 8, o2)")
+    lines.append("    rakh_ubhaya_bhed(x, 8, x, 8, o3)")
+    lines.append("    rakh_ubhaya_bhed(x, 8, e, 8, o4)")
     lines.append("    yadi (rakh_maap(o1) != rakh_maap(o2)) {")
     lines.append('        likha("FAIL sym_diff symmetric size\\n")')
     lines.append("        prati 1")
@@ -4068,7 +4068,7 @@ def prop_ok_convention(compiler, rng):
 
 def prop_numeric28(compiler, rng):
     """R28 WS3: the numeric contract — mahattam_samapavartak/laghuttam_samapavartya util_chinha and zero cases,
-    math ghat/kramgun edges, wrapping abs, bit_gan negatives,
+    math ghat/kramgun edges, wrapping abs, ekanka_gan negatives,
     asti_abhajya/yog_tak edges, and the documented domain limits."""
     lines = ["yoj ganit", "yoj ganita", "yoj roop", "yoj vakyank",
              "yoj ank",
@@ -4107,10 +4107,10 @@ def prop_numeric28(compiler, rng):
     # program with E_PHALA_SEEMA - checked below as separate programs. The largest that fits:
     check("nirapeksh_mulya(minv + 1)", 9223372036854775807, "nirapeksh_mulya MIN+1")
     check("ganita_nirapeksh(minv + 1)", 9223372036854775807, "ganita_nirapeksh MIN+1")
-    # bit_gan: defined for n >= 0; negative returns 0
-    check("bit_gan(7)", 3, "bit_gan 7")
-    check("bit_gan(0)", 0, "bit_gan 0")
-    check("bit_gan(0 - 1)", 0, "bit_gan neg")
+    # ekanka_gan: defined for n >= 0; negative returns 0
+    check("ekanka_gan(7)", 3, "ekanka_gan 7")
+    check("ekanka_gan(0)", 0, "ekanka_gan 0")
+    check("ekanka_gan(0 - 1)", 0, "ekanka_gan neg")
     # asti_abhajya / yog_tak edges
     check("asti_abhajya(0)", 0, "prime 0")
     check("asti_abhajya(1)", 0, "prime 1")
@@ -4841,7 +4841,7 @@ def main():
         ("baseconv roundtrip", prop_baseconv_roundtrip),
         ("strconv roundtrip", prop_strconv_roundtrip),
         ("strconv base roundtrip", prop_strconv_base_roundtrip),
-        ("strconv pad_vam", prop_strconv_pad_left),
+        ("strconv purti_vam", prop_strconv_pad_left),
         ("string find vs python", prop_string_find),
         ("string replace", prop_string_replace),
         ("string split/join", prop_string_split_join),

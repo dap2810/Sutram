@@ -1,5 +1,5 @@
 # Empty pop must fail safely rather than reading before element zero.
 mukhya() {
     kosh a
-    likha(kosh_pop(a))
+    likha(kosh_hri(a))
 }

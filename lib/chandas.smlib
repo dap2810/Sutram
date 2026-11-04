@@ -98,7 +98,7 @@ prakriya asti_guru(pat, i) {
 prakriya guru_gan(pat) {
     vitti p = pat
     vitti c = 0
-    # Negative patterns return 0, as bit_gan (R28 contract).
+    # Negative patterns return 0, as ekanka_gan (R28 contract).
     yavat (p > 0) {
         c = c + (p % 2)
         p = p / 2

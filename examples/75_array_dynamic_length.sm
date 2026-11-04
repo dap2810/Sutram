@@ -2,6 +2,6 @@ mukhya() {
     vitti n = 4
     mala a[n + 1]
     a[4] = 55
-    likha(pankti_len(a))
+    likha(pankti_gan(a))
     likha(a[4])
 }

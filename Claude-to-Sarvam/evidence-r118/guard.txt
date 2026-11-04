@@ -1,0 +1,62 @@
+# R118 guard: origin/main bce5405 (v296) -> this tree (v297), tools/guard_pair.py, every example and test program
+
+## FINAL RUN
+### Linux elf
+source files whose text changed: 81
+725 programs: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new
+NEW          examples/346_r118_old_library_names.sm
+NEW          examples/347_r118_old_roop_names.sm
+### Linux pe
+source files whose text changed: 81
+725 programs: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new
+NEW          examples/346_r118_old_library_names.sm
+NEW          examples/347_r118_old_roop_names.sm
+### ELF DIFFER run old and new
+elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+### the 81 programs whose source text changed: every one IDENTICAL or refused identically
+81
+     73 IDENTICAL
+      8 REFUSED-SAME
+### Wine: PENDING
+
+## FIRST RUN (discarded): a comment line added above each renamed library function moved later functions' line numbers
+725 programs: 543 byte-identical, 143 refused identically, 37 DIFFER, 2 new
+725 programs: 543 byte-identical, 143 refused identically, 37 DIFFER, 2 new
+elf: 37 DIFFER run old and new: 37 same output and exit code, 0 changed
+DIFFER       examples/217_r12_report.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/343_r116_suchi_shreni.sm old rc=0 new rc=0
+DIFFER       examples/344_r116_varna_tak_dashm.sm old rc=0 new rc=0
+DIFFER       tests/r79_real/report_blocks.sm old rc=0 new rc=0
+DIFFER       tests/r79_real/report_plain.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/breadth26.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/containers20.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/containers21.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/containers23.sm (source changed) old rc=0 new rc=0
+DIFFER       tests/stdlib/containers_clear.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/fmt_fixed.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/fmt_group.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/fmt_int_base.sm (source changed) old rc=0 new rc=0
+DIFFER       tests/stdlib/fmt_min.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/fmt_pad.sm (source changed) old rc=0 new rc=0
+DIFFER       tests/stdlib/fmt_signed.sm (source changed) old rc=0 new rc=0
+DIFFER       tests/stdlib/list_basic.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/list_queue.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/list_stack.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/numeric29.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r10_roop_suchi_edges.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r11_misc_edges.sm (source changed) old rc=0 new rc=0
+DIFFER       tests/stdlib/r11_sets_lists.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r18_srij_overflow_guard.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r36_growth_guard.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r48_srij_fill.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r78_suchi_avali_srij.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r8_base_digits.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r8_list_edges.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r8_list_growth.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r8_list_model.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r9_alloc_failure.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/r9_guard_cells2.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/strconv_base.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/strconv_int_str.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/strconv_overflow.sm old rc=0 new rc=0
+DIFFER       tests/stdlib/strconv_pad.sm (source changed) old rc=0 new rc=0

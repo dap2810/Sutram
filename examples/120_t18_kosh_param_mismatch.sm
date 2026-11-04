@@ -5,6 +5,6 @@ prakriya pratham(kosh dasham a) {
 
 mukhya() {
     kosh raw[1]
-    kosh_push(raw, 7)
+    kosh_kship(raw, 7)
     likha(pratham(raw))
 }

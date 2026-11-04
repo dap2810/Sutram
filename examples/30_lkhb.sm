@@ -6,10 +6,10 @@ mukhya()
         chakra j = 1 tak 5 {
             vitti p = i * j
             yadi (p < 10) {
-                lkhb(p)
+                likha_santat(p)
                 likha("  ")
             } anya {
-                lkhb(p)
+                likha_santat(p)
                 likha(" ")
             }
         }
@@ -18,7 +18,7 @@ mukhya()
     likha("\nCountdown: ")
     vitti n = 5
     chakra i = 1 tak 5 {
-        lkhb(n)
+        likha_santat(n)
         likha(" ")
         n--
     }

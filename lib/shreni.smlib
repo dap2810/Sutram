@@ -94,8 +94,8 @@ prakriya gan(a, n, target) {
     nivartanam c
 }
 
-# asti_sorted(a, n) — 1 if a[0..n-1] is in non-decreasing order, else 0.
-prakriya asti_sorted(a, n) {
+# asti_kramabaddha(a, n) — 1 if a[0..n-1] is in non-decreasing order, else 0. (R118: was `asti_sorted`, still accepted.)
+prakriya asti_kramabaddha(a, n) {
     vitti i = 0
     yavat (i < n - 1) {
         yadi (a[i] > a[i + 1]) { nivartanam 0 }

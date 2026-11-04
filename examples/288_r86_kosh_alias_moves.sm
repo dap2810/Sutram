@@ -1,13 +1,13 @@
 # R86: `vitti a = k` is a second NAME for the same kosh, not a copy. Up to v283, with something allocated
-# in between (obstacle), kosh_push moved k's cells and a stayed on the old buffer (a[0]=41 k[0]=99).
+# in between (obstacle), kosh_kship moved k's cells and a stayed on the old buffer (a[0]=41 k[0]=99).
 # R101A (v284): on Linux every kosh has a region of its own and grows in place, so the names stay one:
 # a[0]=99 k[0]=99, then a[0]=7 k[0]=7. Windows still moves (reference section 16).
 mukhya() {
     kosh k[1]
-    kosh_push(k, 41)
+    kosh_kship(k, 41)
     vitti a = k
     vitti obstacle = nirmmita(64)
-    kosh_push(k, 42)
+    kosh_kship(k, 42)
     k[0] = 99
     likha("a[0]=", a[0], " k[0]=", k[0])
     a[0] = 7

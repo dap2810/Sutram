@@ -13,7 +13,7 @@ mukhya() {
     kosh k[1]
     vitti i = 0
     yavat (i < 1000) {
-        kosh_push(k, i)
+        kosh_kship(k, i)
         i = i + 1
     }
     likha("a kosh of 1000 ", parimana(), "\n")

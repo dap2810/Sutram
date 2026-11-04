@@ -1,16 +1,16 @@
 # R18 WS3: the network builtins, without a network. This program opens NO connection
-# and listens on NOTHING: netsock() only creates a descriptor (socket(2), AF_INET,
-# SOCK_STREAM), and the netbind / netlisten calls are given an invalid descriptor
+# and listens on NOTHING: jala() only creates a descriptor (socket(2), AF_INET,
+# SOCK_STREAM), and the jala_bandh / jala_shru calls are given an invalid descriptor
 # (-1), so the kernel refuses them with EBADF (-9) before touching any interface.
-# netbind cannot be tested on loopback at all: it binds INADDR_ANY (every interface),
+# jala_bandh cannot be tested on loopback at all: it binds INADDR_ANY (every interface),
 # so a real bind here would open a port on whatever machine runs the suite.
 # expected: 1 1 -9 -9 0
 mukhya() {
-    vitti s = netsock()
+    vitti s = jala()
     likha(s >= 3)
-    vitti t = netsock()
+    vitti t = jala()
     likha(t == s + 1)
-    likha(netbind(0 - 1, 0))
-    likha(netlisten(0 - 1))
+    likha(jala_bandh(0 - 1, 0))
+    likha(jala_shru(0 - 1))
     likha(band(s) + band(t))
 }

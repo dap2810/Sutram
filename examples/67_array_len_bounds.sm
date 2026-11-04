@@ -3,6 +3,6 @@ mukhya() {
     a[0] = 10
     a[1] = 20
     a[2] = 30
-    likha(pankti_len(a))
+    likha(pankti_gan(a))
     likha(a[2])
 }

@@ -200,55 +200,55 @@
   "EQUIVALENT",
   "lo is (2^63 mod base) on this -2^63-only path; for every base 2..36 it is never exactly 10, so < 10 and <= 10 agree (checked over all 35 bases)"
  ],
- "roop.roop_pad_vam C1:<=-><": [
+ "roop.roop_purti_vam C1:<=-><": [
   "EQUIVALENT",
   "width = length: the pad path pads 0 bytes and copies the same text, returning the same count"
  ],
- "roop.roop_pad_vam C2:<-><=": [
+ "roop.roop_purti_vam C2:<-><=": [
   "EQUIVALENT",
   "the extra pass writes out[n], which the terminator then overwrites"
  ],
- "roop.roop_pad_vam C3:<-><=": [
+ "roop.roop_purti_vam C3:<-><=": [
   "EQUIVALENT",
   "the extra pad byte lands where the copy (or, for empty text, the terminator) writes next"
  ],
- "roop.roop_pad_vam C4:<-><=": [
+ "roop.roop_purti_vam C4:<-><=": [
   "EQUIVALENT",
   "the extra pass writes out[width], which the terminator then overwrites"
  ],
- "roop.roop_pad_dakshin C1:<=-><": [
+ "roop.roop_purti_dakshin C1:<=-><": [
   "EQUIVALENT",
-  "as roop_pad_vam C1"
+  "as roop_purti_vam C1"
  ],
- "roop.roop_pad_dakshin C2:<-><=": [
+ "roop.roop_purti_dakshin C2:<-><=": [
   "EQUIVALENT",
-  "as roop_pad_vam C2"
+  "as roop_purti_vam C2"
  ],
- "roop.roop_pad_dakshin C3:<-><=": [
+ "roop.roop_purti_dakshin C3:<-><=": [
   "EQUIVALENT",
   "the extra copied byte lands where the padding (or the terminator) writes next"
  ],
- "roop.roop_pad_dakshin C4:<-><=": [
+ "roop.roop_purti_dakshin C4:<-><=": [
   "EQUIVALENT",
   "the extra pad byte is out[width], which the terminator overwrites"
  ],
- "roop.roop_pad_madhya C1:<=-><": [
+ "roop.roop_purti_madhya C1:<=-><": [
   "EQUIVALENT",
-  "as roop_pad_vam C1"
+  "as roop_purti_vam C1"
  ],
- "roop.roop_pad_madhya C2:<-><=": [
+ "roop.roop_purti_madhya C2:<-><=": [
   "EQUIVALENT",
-  "as roop_pad_vam C2"
+  "as roop_purti_vam C2"
  ],
- "roop.roop_pad_madhya C3:<-><=": [
+ "roop.roop_purti_madhya C3:<-><=": [
   "EQUIVALENT",
   "the extra left pad byte is overwritten next by the copy, the right padding or the terminator"
  ],
- "roop.roop_pad_madhya C4:<-><=": [
+ "roop.roop_purti_madhya C4:<-><=": [
   "EQUIVALENT",
   "the extra copied byte is overwritten next by the right padding or the terminator"
  ],
- "roop.roop_pad_madhya C5:<-><=": [
+ "roop.roop_purti_madhya C5:<-><=": [
   "EQUIVALENT",
   "the extra right pad byte is out[width], which the terminator overwrites"
  ],
@@ -260,11 +260,11 @@
   "EQUIVALENT",
   "as C2, one place to the right"
  ],
- "roop.roop_sign_akshar C2:<-><=": [
+ "roop.roop_chihna_akshar C2:<-><=": [
   "EQUIVALENT",
   "as roop_chinhit C2"
  ],
- "roop.roop_sign_akshar C3:<-><=": [
+ "roop.roop_chihna_akshar C3:<-><=": [
   "EQUIVALENT",
   "as roop_chinhit C3"
  ],

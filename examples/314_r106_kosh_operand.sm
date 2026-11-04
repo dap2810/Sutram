@@ -1,9 +1,9 @@
 # R106: a kosh is not a number. kosh == kosh compared two addresses (0 for two equal koshes),
-# kosh + 1 added to an address. E_KOSH_GANIT; compare k[i] or kosh_len(k) instead.
+# kosh + 1 added to an address. E_KOSH_GANIT; compare k[i] or kosh_gan(k) instead.
 mukhya() {
     kosh a[2]
     kosh b[2]
-    kosh_push(a, 7)
-    kosh_push(b, 7)
+    kosh_kship(a, 7)
+    kosh_kship(b, 7)
     likha(a == b)
 }

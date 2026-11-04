@@ -56,11 +56,11 @@ prakriya rakh_maap(s) {
     nivartanam nighantu_maap(s)
 }
 
-# rakh_samroop_diff(a, cap, b, bcap, out) — add every element that is in
+# rakh_ubhaya_bhed(a, cap, b, bcap, out) — add every element that is in
 # exactly one of a, b into out (fresh, empty, capacity >= cap + bcap
 # for the worst case, disjoint sets). (a - b) union (b - a).
-# Returns rakh_maap(out).
-prakriya rakh_samroop_diff(a, cap, b, bcap, out) {
+# Returns rakh_maap(out). (R118: was `rakh_samroop_diff`, still accepted.)
+prakriya rakh_ubhaya_bhed(a, cap, b, bcap, out) {
     vitti ocap = out[0]
     vitti tmpa = nirmmita(a[0] * 33 + 1)
     vitti tmpb = nirmmita(b[0] * 33 + 1)
