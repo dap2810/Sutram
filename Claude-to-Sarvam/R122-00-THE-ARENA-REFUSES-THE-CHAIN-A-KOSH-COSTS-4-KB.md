@@ -1,6 +1,6 @@
 # R122-00 — The arena branch refuses `chain40_reuse.sm` (and every chain from 32 up), as main does. Merged, it would change one program's output on main (318, the right way) and one program's bytes. A `kosh` costs one 4 KB page plus 8 bytes a number - and 64 MiB of address space, which is not free: under a 1 GiB address limit the 16th `kosh` crashes the program. With the arena, the region return is moot. Not merged.
 
-- **Commit on `main`:** `PENDING-SHA` (documentation and evidence only; main stays v298).
+- **Commit on `main`:** `c494dfd` (documentation and evidence only; main stays v298).
 - **The branch:** `claude/r108-arena-review` at **`3a6292e`**, **not merged** (Sutram v290). I rebuilt its compiler from its source: **byte-identical to the binary committed there.**
 - **Suite, gates, guard:** not re-run for this round (no code changed); R121's are current.
 

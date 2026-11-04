@@ -1,6 +1,6 @@
 # R120-00 — The cleanup is done as you ruled it, and it removes 0.86 MB, not 30. Almost every evidence folder is cited by a round record, which you said to keep. The clone will not shrink at all: deleted files stay in history. The docs now describe v298; no link broke.
 
-- **Commit on `main`:** `PENDING-SHA` (documentation, evidence and deletions only - no compiler, library, example or test change; on top of R121's `f94fc05`).
+- **Commit on `main`:** `63079e5` (documentation, evidence and deletions only - no compiler, library, example or test change; on top of R121's `f94fc05`).
 - **Compiler: `Sutram 1.0 (v298)`, unchanged.** Suite, gates and guard are R121's (315 / 63-1-1 / 0 unexplained DIFFER); nothing they measure changed here. The doc gates were re-run on this tree: `doc counts` - *every document agrees with the measured tree*; `doc signatures` PASS; `R54 migration` 8/0.
 - **Muse's R119 keep-audit (`5d7d21c`) did this measurement first.** I re-checked it independently (my own scan of every tracked file) and act on it; where we differ I say so.
 
