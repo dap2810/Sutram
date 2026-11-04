@@ -11,6 +11,7 @@ so do small tests that the checker refuses what it must refuse.
     python3 tests/sandesh/test_sandesh.py --record   # rewrite expect/ (review the diff)
 """
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -30,6 +31,7 @@ import sandesh  # noqa: E402
 
 PACKS = ['default'] + sandesh.PACK_ORDER
 CHECK_CASES = ('parse', 'ok')
+SIZE = re.compile(r'^([^:\n]+: )[0-9]+( )', re.M)   # R128: '<siddh>: <size> <bytes> <compiled>'
 
 
 def run_case(pack: str, case: str, check: bool) -> str:
@@ -40,7 +42,13 @@ def run_case(pack: str, case: str, check: bool) -> str:
         cmd = [COMPILER] + (['--lang', pack] if pack != 'default' else [])
         cmd += ['--check', src] if check else [src, out]
         c = subprocess.run(cmd, cwd=ROOT, capture_output=True, timeout=30)
-        text = c.stdout.decode('utf-8') + c.stderr.decode('utf-8') + f'[compile exit {c.returncode}]\n'
+        said = c.stdout.decode('utf-8')
+        if not check and c.returncode == 0:
+            # R128: the success line names the compiled size ("Siddh: 678 baait sankalit"). The pack's words
+            # are what this test checks, not the size, which moves with any change to the generated code
+            # (R127 re-recorded 12 goldens for it): the number is written #.
+            said = SIZE.sub(r'\1#\2', said)
+        text = said + c.stderr.decode('utf-8') + f'[compile exit {c.returncode}]\n'
         if not check and c.returncode == 0:
             r = subprocess.run([out], capture_output=True, timeout=10)
             text += r.stdout.decode('utf-8') + f'[run exit {r.returncode}]\n'

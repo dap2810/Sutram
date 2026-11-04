@@ -1104,8 +1104,9 @@ likha(yog(a))              # a whole mala or kosh is passed as a[:]
 Closures; calling an expression directly (`t[0](x)`, `p.f(x)` through a field:
 store it in a variable first); a checked type for function values; methods
 dispatched on the object's type, traits; slices of a `kosh dasham`; a slice that
-outlives its function; a `kosh` that grows after a slice of it was made leaves the
-slice pointing at the old storage.
+outlives its function. (Up to v301 a `kosh` that grew after a slice of it was made left the
+slice pointing at the old storage; from v302 a slice of a `kosh` cannot be kept in a name,
+`E_KOSH_VIBHAG` - pass it on directly.)
 
 ## 18. The error type: `siddhi`, `dosh`, `prasar` (R25)
 

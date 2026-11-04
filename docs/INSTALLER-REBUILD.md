@@ -1,4 +1,15 @@
-# Rebuilding the installer's payload (Windows)
+# Rebuilding the installer's payload (Windows, or Linux)
+
+> **R128 (v302): there is now a Linux route as well** - `python3 tools/build_installer_linux.py`, a step-for-step
+> port of `windows\native-installer\build-installer.ps1` (payload, manifest, zip with backslash names, embedded
+> hashes, icon resource, `nasm -f win64` + mingw `ld`, `--self-test` under Wine 64, `Sutram-Setup.sha256`).
+> It built the v302 installer: payload compilers `bin\sutram.exe` = `win\sutram.exe` =
+> `b5edcf19101b4baf...` (the tree's `win\sutram.exe`), `sutram-link.exe` rebuilt from `linker/sutram_link.asm`
+> (`nasm -f win64 -DWINDOWS`, `ld -mi386pep --entry=_start --no-insert-timestamp`), `Sutram-Setup.sha256` written
+> by the script. The differences from the Windows build: text files keep LF line endings, and the link uses
+> mingw's import libraries. **Install and uninstall on a real Windows machine stay the owner's acceptance test.**
+> The Windows procedure below is unchanged; its expected hashes are v291's.
+
 
 R109. This is the procedure that makes `python3 tools/check_installer_version.py` (the `installer version`
 gate) pass. It is run on a real Windows machine by the maintainer; nothing here has been run on Windows by
