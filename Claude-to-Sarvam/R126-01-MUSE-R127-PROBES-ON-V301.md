@@ -15,7 +15,7 @@
 | O5 ternary, silent 0 | `r127_ws1_ternary_oob` (and its two in-bounds controls) | `E_KOSH_DVARA` |
 
 - **Its controls behave as it says:** redeclaration and the two scope probes are still `E_DUPLICATE_NAME`; a `kosh` parameter is still checked (`r127_ws1_param`); `vitti` as a parameter type is still a grammar error.
-- **Its "mala → kosh is correct" control** (`r127_ws1_assign_mala_kosh`) **is refused now.** It starts with `vitti a = nirmmita(..)`-style raw use before the `kosh`. That is a kind change, and refusing it is the rule: on v300 it was checked correctly only because the `kosh` mark happened to win.
+- **Its "mala → kosh is correct" control** (`r127_ws1_assign_mala_kosh`) **is refused now.** Its `m` is the library's `mala_nava(4)` - a raw address to the compiler, not a declared `mala` - so `vitti a = m` makes `a` a number, and `a = k` changes its kind. That is a kind change, and refusing it is the rule: on v300 it was checked correctly only because the `kosh` mark happened to win.
 - **The cliff** (`r127_ws3_cliff`) is unchanged, as expected: v301 changes tracking, not storage (R126-00 WS4).
 - **One wording fault I own:** for `?:` the message reads `'kadachit kosh' kadachit kosh dadati ...` - the "name" slot repeats the phrase. The refusal is right; the text is clumsy, and I will tidy it with the next compiler change rather than spend a version on it.
 
