@@ -1,0 +1,7 @@
+mukhya() {
+    mandapa {
+        vitti b = nirmmita(64)
+        likha("in a block\n")
+    }
+    likha("end\n")
+}

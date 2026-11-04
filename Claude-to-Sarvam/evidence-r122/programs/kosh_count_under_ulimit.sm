@@ -1,0 +1,9 @@
+mukhya() {
+    chakra i = 1 tak 40 {
+        kosh k[1]
+        kosh_kship(k, i)
+        likha_santat(i)
+        likha(" ")
+    }
+    likha("end\n")
+}

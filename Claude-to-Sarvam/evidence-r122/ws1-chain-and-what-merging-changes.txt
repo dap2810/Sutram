@@ -1,0 +1,23 @@
+# R122 WS1: chain40_reuse and the chains, on the arena branch (3a6292e, rebuilt from its source = its committed binary) and main v298
+chain40_reuse (arena): refused: Sutram Error [E_KOSH_MANDAPA]
+chain40_reuse (main): refused: Sutram truti [E_KOSH_MANDAPA]
+chain32 (arena): refused: Sutram Error [E_KOSH_MANDAPA]
+chain32 (main): refused: Sutram truti [E_KOSH_MANDAPA]
+chain33 (arena): refused: Sutram Error [E_KOSH_MANDAPA]
+chain33 (main): refused: Sutram truti [E_KOSH_MANDAPA]
+chain40 (arena): refused: Sutram Error [E_KOSH_MANDAPA]
+chain40 (main): refused: Sutram truti [E_KOSH_MANDAPA]
+ok_chain120 (arena): compiles, prints 11 
+ok_chain120 (main): compiles, prints 11 
+
+# main's 318 and 286 (old names substituted for the v290 branch): main | arena
+== 318_r108_parimana_moves
+start 0|start 0
+a kosh of 1 48|a kosh of 1 48
+grown to capacity 4 72|grown to capacity 4 72
+a block's nirmmita(100) 184|a block's nirmmita(100) 184
+and a kosh of 8 in it 288|and a kosh of 8 in it 296
+after the block 176|after the block 72
+== 286_r82_kosh_in_mandapa
+385|385
+338350|338350

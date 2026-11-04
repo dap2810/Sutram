@@ -1,0 +1,12 @@
+# 685 programs in the branch tree; base 416637b (v289) vs branch 3a6292e, ELF
+ 554  identical bytes
+ 125  both refused
+   3  new on the branch
+   2  different bytes, same output and exit
+   1  refused by the branch only
+      refused by the branch only: examples/316_r107_kosh_kept_by_a_prakriya.sm
+      new on the branch: examples/318_r108_kosh_in_block_arena.sm
+      new on the branch: examples/319_r108_kosh_one_name.sm
+      new on the branch: examples/320_r108_mala_operand.sm
+      different bytes, same output and exit: examples/286_r82_kosh_in_mandapa.sm
+      different bytes, same output and exit: examples/299_r94_nonfinite_kosh_mandapa.sm

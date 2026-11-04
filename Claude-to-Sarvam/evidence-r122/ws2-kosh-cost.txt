@@ -1,0 +1,57 @@
+# R122 WS2: kosh cost on main v298, a kosh in a loop body (its region kept for the program's life)
+# Sutram 1.0 (v298) - sampurna sutra, Linux ELF. KB from /proc/PID/status at the end of the program.
+baseline (no kosh): VmPeak 252 KB, VmHWM 32 KB, 7 mappings
+  kosh  elements each |   address space (VmPeak) |  resident peak (VmHWM) |  per kosh: address  resident | mappings
+     1              1 |             65,788 KB (   0.1 GiB) |                  40 KB |           64.0 MiB     8.0 KB | 8
+    10              1 |            655,612 KB (   0.6 GiB) |                  72 KB |           64.0 MiB     4.0 KB | 8
+   100              1 |          6,553,852 KB (   6.3 GiB) |                 432 KB |           64.0 MiB     4.0 KB | 8
+  1000              1 |         65,536,252 KB (  62.5 GiB) |               4,032 KB |           64.0 MiB     4.0 KB | 8
+     1            100 |             65,788 KB (   0.1 GiB) |                  36 KB |           64.0 MiB     4.0 KB | 8
+    10            100 |            655,612 KB (   0.6 GiB) |                  72 KB |           64.0 MiB     4.0 KB | 8
+   100            100 |          6,553,852 KB (   6.3 GiB) |                 432 KB |           64.0 MiB     4.0 KB | 8
+  1000            100 |         65,536,252 KB (  62.5 GiB) |               4,036 KB |           64.0 MiB     4.0 KB | 8
+     1          10000 |             65,788 KB (   0.1 GiB) |                 116 KB |           64.0 MiB    84.0 KB | 8
+    10          10000 |            655,612 KB (   0.6 GiB) |                 836 KB |           64.0 MiB    80.4 KB | 8
+   100          10000 |          6,553,852 KB (   6.3 GiB) |               8,032 KB |           64.0 MiB    80.0 KB | 8
+  1000          10000 |         65,536,252 KB (  62.5 GiB) |              80,032 KB |           64.0 MiB    80.0 KB | 8
+
+# the same with each kosh inside a mandapa, main v298:
+baseline (no kosh): VmPeak 252 KB, VmHWM 32 KB, 7 mappings
+  kosh  elements each |   address space (VmPeak) |  resident peak (VmHWM) |  per kosh: address  resident | mappings
+     1              1 |          1,114,364 KB (   1.1 GiB) |                  40 KB |         1088.0 MiB     8.0 KB | 8
+    10              1 |          1,704,188 KB (   1.6 GiB) |                  76 KB |          166.4 MiB     4.4 KB | 8
+   100              1 |          7,602,428 KB (   7.3 GiB) |                 432 KB |           74.2 MiB     4.0 KB | 8
+  1000              1 |         66,584,828 KB (  63.5 GiB) |               4,036 KB |           65.0 MiB     4.0 KB | 8
+     1            100 |          1,114,364 KB (   1.1 GiB) |                  44 KB |         1088.0 MiB    12.0 KB | 8
+    10            100 |          1,704,188 KB (   1.6 GiB) |                  76 KB |          166.4 MiB     4.4 KB | 8
+   100            100 |          7,602,428 KB (   7.3 GiB) |                 432 KB |           74.2 MiB     4.0 KB | 8
+  1000            100 |         66,584,828 KB (  63.5 GiB) |               4,032 KB |           65.0 MiB     4.0 KB | 8
+     1          10000 |          1,114,364 KB (   1.1 GiB) |                 116 KB |         1088.0 MiB    84.0 KB | 8
+    10          10000 |          1,704,188 KB (   1.6 GiB) |                 832 KB |          166.4 MiB    80.0 KB | 8
+   100          10000 |          7,602,428 KB (   7.3 GiB) |               8,032 KB |           74.2 MiB    80.0 KB | 8
+  1000          10000 |         66,584,828 KB (  63.5 GiB) |              80,036 KB |           65.0 MiB    80.0 KB | 8
+
+# ...and on the arena branch (old names):
+baseline (no kosh): VmPeak 252 KB, VmHWM 36 KB, 7 mappings
+  kosh  elements each |   address space (VmPeak) |  resident peak (VmHWM) |  per kosh: address  resident | mappings
+     1              1 |          1,048,828 KB (   1.0 GiB) |                  36 KB |         1024.0 MiB     0.0 KB | 8
+    10              1 |          1,048,828 KB (   1.0 GiB) |                  40 KB |          102.4 MiB     0.4 KB | 8
+   100              1 |          1,048,828 KB (   1.0 GiB) |                  40 KB |           10.2 MiB     0.0 KB | 8
+  1000              1 |          1,048,828 KB (   1.0 GiB) |                  40 KB |            1.0 MiB     0.0 KB | 8
+     1            100 |          1,048,828 KB (   1.0 GiB) |                  40 KB |         1024.0 MiB     4.0 KB | 8
+    10            100 |          1,048,828 KB (   1.0 GiB) |                  36 KB |          102.4 MiB     0.0 KB | 8
+   100            100 |          1,048,828 KB (   1.0 GiB) |                  36 KB |           10.2 MiB     0.0 KB | 8
+  1000            100 |          1,048,828 KB (   1.0 GiB) |                  40 KB |            1.0 MiB     0.0 KB | 8
+     1          10000 |          1,048,828 KB (   1.0 GiB) |                 292 KB |         1024.0 MiB   256.0 KB | 8
+    10          10000 |          1,048,828 KB (   1.0 GiB) |                 300 KB |          102.4 MiB    26.4 KB | 8
+   100          10000 |          1,048,828 KB (   1.0 GiB) |                 296 KB |           10.2 MiB     2.6 KB | 8
+  1000          10000 |          1,048,828 KB (   1.0 GiB) |                 296 KB |            1.0 MiB     0.3 KB | 8
+
+# under an address-space limit (ulimit -v): programs/kosh_count_under_ulimit.sm (a kosh per loop pass, printing its number), main v298
+ulimit -v unlimited : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 end  exit 0
+ulimit -v 4194304   : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 end  exit 0
+ulimit -v 1048576   : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  exit 139
+ulimit -v 262144    : 1 2 3  exit 139
+# programs/mandapa_under_ulimit.sm: the arena's own reservation failing is caught
+ulimit -v 2097152 : in a block end  exit 0
+ulimit -v 1048576 : Sutram truti: kshetra purnam - mandapa-smritih samapta  exit 1
