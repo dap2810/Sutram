@@ -1,0 +1,19 @@
+prakriya make_kosh() {
+    kosh k[4]
+    kosh_kship(k, 1)
+    kosh_kship(k, 2)
+    nivartanam k
+}
+mukhya() {
+    vitti m = nirmmita(8000)
+    vitti i = 0
+    yavat (i < 1000) {
+        m[i] = make_kosh()
+        i = i + 1
+    }
+    likha("made 1000\n")
+    vitti j = 0
+    yavat (j < 2000000000) {
+        j = j + 1
+    }
+}

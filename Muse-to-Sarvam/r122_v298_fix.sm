@@ -1,0 +1,14 @@
+mukhya() {
+    vitti c1 = anka_akshar(66)
+    shabda(c1)
+    likha("\n")
+    vitti t = vartani_sandhi("x", "y")
+    shabda(c1)
+    likha("\n")
+    vitti v = "ab"
+    vitti s = vartani_sandhi(v, "cd")
+    shabda(v)
+    likha("\n")
+    shabda(s)
+    likha("\n")
+}
