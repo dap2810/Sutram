@@ -1,0 +1,31 @@
+[
+  {
+    "command": [
+      "nasm",
+      "-f",
+      "elf64",
+      "-I.",
+      "src/r68_compiler_entry.asm",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/baseline-linux/compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 8.026816553
+  },
+  {
+    "command": [
+      "ld",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/baseline-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/baseline-linux/compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 0.07788972500000035
+  }
+]

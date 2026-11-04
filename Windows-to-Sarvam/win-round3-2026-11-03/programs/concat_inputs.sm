@@ -1,0 +1,1 @@
+mukhya() { vitti a = "ab" vitti b = "cd" vitti c = vartani_sandhi(a, b) shabda(a) likha("|") shabda(b) likha("|") shabda(c) }

@@ -1,0 +1,1 @@
+mukhya() { shabda(vartani_sandhi("", "cd")) shabda(vartani_sandhi("ab", "")) }

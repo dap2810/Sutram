@@ -1,0 +1,20 @@
+[
+  {
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/baseline-linux/compiler",
+      "/mnt/e/Github_Projects/Sutram/build/round3-review/tests/stdlib/file_read.sm",
+      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/file-read-baseline.bin"
+    ],
+    "exit": 0,
+    "stdout": "Siddh: 3627 baait sankalit\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/file-read-baseline.bin"
+    ],
+    "exit": 0,
+    "stdout": "14\n\n104\n\n101\n\n108\n\n108\n\n111\n\n32\n\n115\n\n117\n\n116\n\n114\n\n97\n\n109\n\n13\n\n10\n\n5\n\n104\n\n111\n\n0\n\n-1\n\n-1\n\n1\n\n0\n\nfile-read-done\n",
+    "stderr": ""
+  }
+]

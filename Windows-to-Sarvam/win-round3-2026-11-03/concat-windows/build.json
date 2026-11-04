@@ -1,0 +1,34 @@
+[
+  {
+    "command": [
+      "nasm",
+      "-f",
+      "win64",
+      "-I.",
+      "-dWINDOWS",
+      "src/r68_compiler_entry.asm",
+      "-o",
+      "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\concat-windows\\compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 9.876649799989536
+  },
+  {
+    "command": [
+      "ld",
+      "-mi386pep",
+      "--entry=_start",
+      "-o",
+      "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\concat-windows\\compiler.exe",
+      "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\concat-windows\\compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "stdout_hex": "",
+    "seconds": 0.043134299921803176
+  }
+]

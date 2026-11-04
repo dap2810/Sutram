@@ -1,0 +1,6 @@
+{
+  "path": "tests\\fixtures\\file_hello.txt",
+  "before_hex": "68656c6c6f2073757472616d0d0a",
+  "committed_hex": "68656c6c6f2073757472616d0a",
+  "change": "restore exact committed bytes after Windows CRLF checkout; no golden edited"
+}
