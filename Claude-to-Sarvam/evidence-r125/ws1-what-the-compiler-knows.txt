@@ -1,0 +1,8 @@
+# R125 WS1: what v300 compiles for a[i] when a vitti holds a kosh, by how it got there. Linux ELF. Programs beside this file.
+t1_alias: [41 Sutram truti: mala ank seema atikram ] exit 1
+t2_sticky: [] exit 139
+t3_branch (input 0): [] exit 139
+t3_branch (input 1): [41 ] exit 0
+t4_mala_then_kosh: [0 ] exit 0
+t5_return: [0 ] exit 0
+t6_mala_cell: [0 ] exit 0

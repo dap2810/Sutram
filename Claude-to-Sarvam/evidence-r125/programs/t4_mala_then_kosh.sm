@@ -1,0 +1,9 @@
+mukhya() {
+    mala m[2]
+    m[0] = 5
+    kosh k[8]
+    kosh_kship(k, 41)
+    vitti a = m
+    a = k
+    likha(a[5])
+}

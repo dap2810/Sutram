@@ -1,0 +1,6 @@
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 1)
+    vitti a = k + 8
+    likha(pad8(a))
+}

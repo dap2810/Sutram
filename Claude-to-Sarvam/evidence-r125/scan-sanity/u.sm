@@ -1,0 +1,8 @@
+prakriya f(x) {
+    nivartanam pad8(x)
+}
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 41)
+    likha(f(k))
+}

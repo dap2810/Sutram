@@ -1,0 +1,13 @@
+== sanity: the scan on three probe programs, one per door (scan-sanity/)
+# 3 programs, 3 declare a kosh
+1 arithmetic on it (= k + n):
+    examples/a.sm
+1 stored in a cell (x[i] = k):
+    examples/m.sm
+1 passed to an untyped parameter:
+    examples/u.sm (f)
+3 programs in all
+
+== the tree
+# 712 programs, 44 declare a kosh
+0 programs in all

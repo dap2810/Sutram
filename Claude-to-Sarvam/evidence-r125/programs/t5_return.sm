@@ -1,0 +1,9 @@
+prakriya pehla(kosh k) {
+    nivartanam k[0]
+}
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 41)
+    vitti a = k + 0
+    likha(a[5])
+}
