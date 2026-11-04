@@ -1,0 +1,17 @@
+prakriya make_kosh() {
+    kosh k[4]
+    kosh_kship(k, 1)
+    nivartanam k
+}
+mukhya() {
+    vitti m = nirmmita(128)
+    vitti i = 0
+    yavat (i < 16) {
+        m[i] = make_kosh()
+        i = i + 1
+        likha("made ")
+        likha(i)
+        likha("\n")
+    }
+    likha("all 16 made\n")
+}

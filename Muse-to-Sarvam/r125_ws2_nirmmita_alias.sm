@@ -1,0 +1,7 @@
+mukhya() {
+    vitti p = nirmmita(16)
+    vitti q = p
+    q[0] = 99
+    likha(p[0])
+    likha("\n")
+}

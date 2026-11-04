@@ -1,0 +1,10 @@
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 41)
+    vitti a = k
+    a[0] = 99
+    likha(k[0])
+    likha("\n")
+    likha(a[0])
+    likha("\n")
+}

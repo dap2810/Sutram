@@ -1,0 +1,8 @@
+yoj mala
+mukhya() {
+    vitti m1 = mala_nava(4)
+    vitti m2 = m1
+    m2[0] = 99
+    likha(m1[0])
+    likha("\n")
+}
