@@ -1,10 +1,47 @@
-# R128-00 — The installer carries v302 and the gate passes: **68 PASS / 0 FAIL / 1 NOT-RUN**. I built it on Linux with a port of `build-installer.ps1`, and also rebuilt the Windows linker, whose embedded runtime predated v300. WS3: 36 goldens asserted a compiled size, all in the pack-message test; they now check the words and not the number. The release notes are written with R197's corrections.
+# R128-00 — The installer carries the compiler and the gate passes: **68 PASS / 0 FAIL / 1 NOT-RUN**. ChatGPT R203 (landed mid-round) named three descriptor defects by reading; I reproduced all three on v302 - one SIGSEGV, one silent memory overwrite, one wrong `parimana()` - and fixed them: v303. I built it on Linux with a port of `build-installer.ps1`, and also rebuilt the Windows linker, whose embedded runtime predated v300. WS3: 36 goldens asserted a compiled size, all in the pack-message test; they now check the words and not the number. The release notes are written with R197's corrections.
 
 - **Commit on `main`:** the commit that carries this file; its SHA is in my chat report.
-- **Compiler: `Sutram 1.0 (v302) - sampurna sutra`** - unchanged this round (no compiler source changed). Linux x86-64 cloud; Windows binaries run under Wine 64.
+- **Compiler: `Sutram 1.0 (v303) - sampurna sutra`** (was v302; the three R203 fixes, below). Linux x86-64 cloud; Windows binaries run under Wine 64.
 - **`crash corpus: 227 cases + manifest, 0 failed`.** **Suite: `suite: NO-EXPECTATION=4  PASS=327  (331 run)`.**
-- **Gates (`sh tools/gates.sh`, Xvfb, Linux): 68 PASS / 0 FAIL / 1 NOT-RUN** - no FAIL; NOT-RUN is Windows execution. `R93 installer gate` (11 checks) and `pack messages` (12 sets × 11 cases) both PASS. (The gate run was before the final installer build, which only re-packed the docs below; `installer version`, `R93 installer gate` and doc counts were rerun on the final one: PASS.)
-- **Guard: NOT RUN, and not needed** - no compiler source and no compiler binary changed. `sutram_compiler`, `sutram.exe` and `win/sutram.exe` are byte-identical to R127's (checked).
+- **Gates (`sh tools/gates.sh`, Xvfb, Linux): 68 PASS / 0 FAIL / 1 NOT-RUN** (NOT-RUN: Windows execution). How that number was reached:
+  - **the full run on v303 gave 66 / 2 / 1**: `installer version` failed (the payload was v302 then), and so did `doc counts`, which counts the documents' claims against that;
+  - I then rebuilt the installer with v303 and reran those two and `R93 installer gate`: **all PASS**.
+  - In that full run: `codegen shapes` 12/12, `R127 descriptor` 24 checks, `pack messages` 12 sets × 11 cases.
+- **The guard, v302 (`1202455`) → v303, 737 programs** (`evidence-r128/guard.txt`):
+  - **Linux ELF and PE alike: 491 byte-identical, 154 refused identically, 92 DIFFER.** The 92 are the programs with a `kosh`: each `kosh` declaration now checks its capacity.
+  - **Run old and new: all 92 the same output and exit, on ELF and under Wine.** **The Windows compiler (v303) under Wine compiled every program: its output is byte-identical to the Linux compiler's PE output in 583, both refuse 154, 0 differ.**
+
+## Then: ChatGPT R203's three descriptor defects - reproduced on v302, fixed in v303
+
+R203 landed during this round. It is a source reading, NOT RUN, and it says *do not publish "the memory model has no known defect"*. **It is right.** I ran each finding on v302 before touching code:
+
+| R203 | the program | v302 | v303 |
+|---|---|---|---|
+| **F1** an index that changes the `kosh` | `k[kosh_kship(k, 5) - 2]`, `k` past 8,388,608 numbers | **SIGSEGV**: the length and elements were read before the index, which moved them and gave the old region back | `8388608` |
+| F1 | `k[kosh_hri(k) - 1]` | **`2`, a read past the new length** (checked against the old one) | refused: `mala ank seema atikram` |
+| F1 | `k[kosh_kship(k, 2) - 1] = 9` | refused wrongly (the old length) | stores; prints `1`, `9` |
+| F1 | a slice bound `k[kosh_kship(k, 8) - 2 : 2]` | refused wrongly | `7` |
+| **F2** a capacity whose bytes wrap | `kosh k[2305843009213693952]` (2^61), then 8 pushes | **another buffer's 77 became 1**: (2^61 + 4) × 8 wrapped to a 32-byte allocation | `kosh rachayitum smritih na labdha`, exit 1 |
+| **F3** `parimana()` and a region | 20,000 numbers | `234096` - the new capacity read from `r11`, which the Linux `syscall` had just overwritten | `294976` (32,832 arena + 262,144 region; worked out in the evidence) |
+
+**The fixes:**
+
+- **F1:** when the index, or a slice's bound, **has a call in it** - the only way it can change the `kosh` (a `kosh` cannot be reached through a global, a cell or a raw builtin since v301) - the descriptor stays on the stack, and the length and elements are read after the index.
+  - Without a call, v302's code is kept. My first fix refreshed every index, and **the codegen-shape gate caught it**: two float-index shapes exceeded their instruction ceilings (46 / 43, 47 / 44). Now 12 / 12.
+  - **A note on the gate:** `tools/codegen_gate.py` ignores its argument and reads `SUTRAM_COMPILER` or the tree's `sutram_compiler`.
+- **F2:** a declared capacity above 2^40 numbers (8 TiB) stops with the "cannot make a kosh" message before any arithmetic. Growth only doubles from there, one push at a time, so it cannot reach a wrapping size.
+- **F3:** the new capacity is read from the runtime stack, where it was pushed before the `syscall`.
+
+**Gate `R127 descriptor` +6 checks, these six. v302 fails all six; v303 passes 24 of 24 with PE.**
+
+**What R203 also says, and I agree:**
+
+- old arena buffers are retained;
+- a block does not reclaim its `kosh`;
+- `parimana()` is accounted bytes, not physical memory;
+- the release notes must not claim "no known defect" - **they do not.**
+
+**Muse R129** (also mid-round) attacked v302 and found no crash or silent wrong. Its probes could not reach R203's F1-F3: no index with a call, no capacity near 2^61, no `parimana()` with a region. Its "gap": growing a `kosh` parameter is refused. That is my R127 WS3 step 5, a language decision. **Its nit:** that refusal still says `kosh_push`, the old name.
 
 ## WS3 first - goldens that assert a compiled size
 
@@ -29,7 +66,7 @@
 **`python3 tools/check_installer_version.py`:**
 
 ```
-PASS payload v302 = compiler v302 (bin/ and win/sutram.exe, packed 2026-11-04; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/sutram.exe v302; sha256 122dde964e178aba...)
+PASS payload v303 = compiler v303 (bin/ and win/sutram.exe, packed 2026-11-04; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/sutram.exe v303; sha256 0a278682f8333419...)
 ```
 
 **How, without a Windows machine:**
@@ -49,9 +86,9 @@ PASS payload v302 = compiler v302 (bin/ and win/sutram.exe, packed 2026-11-04; t
 
 | check | result |
 |---|---|
-| the version the installed compiler reports: `bin\sutram.exe --version`, `win\sutram.exe --version`, extracted from the installer and run under Wine | **`Sutram 1.0 (v302) - sampurna sutra`**, both |
-| the payload compilers are the tree's verified binary | SHA-256 of both = `win/sutram.exe`'s, `b5edcf19101b4baf...` |
-| SHA-256 of `Sutram-Setup.exe` = `Sutram-Setup.sha256` | **`122dde964e178aba944ae31da5316898c4c99ecdfb9f89ffac203265f3094a1e`** both |
+| the version the installed compiler reports: `bin\sutram.exe --version`, `win\sutram.exe --version`, extracted from the installer and run under Wine | **`Sutram 1.0 (v303) - sampurna sutra`**, both |
+| the payload compilers are the tree's verified binary | SHA-256 of both = `win/sutram.exe`'s, `4c05d5cbad99b32b...` |
+| SHA-256 of `Sutram-Setup.exe` = `Sutram-Setup.sha256` | **`0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0`** both |
 | `Sutram-Setup.exe --self-test` (embedded hashes of the payload and the two scripts) | exit 0 under Wine. **A copy with one payload byte flipped: exit 1** - so it checks, not only runs |
 | `install-core.ps1`'s `Verify-Payload`, replayed in Python on the extracted payload | 656 manifest lines (the final build, with these notes), 0 hash mismatches, 0 unmanifested files |
 

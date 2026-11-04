@@ -1,10 +1,10 @@
-> **Status at compiler v302 (4 November 2026, R127). The body below is the R70 research snapshot - historical; this box is the current model.**
+> **Status at compiler v303 (4 November 2026, R128). The body below is the R70 research snapshot - historical; this box is the current model.**
 >
 > **What a program's memory does today, on Linux ELF and (from v299) Windows PE** (reference §16 and §19 have the detail and the measurements):
 > - **`nirmmita(n)`** takes `n` zeroed bytes from an **arena** (a pointer bump, rounded to 16; past 1 GiB its own `mmap`). Outside a block they live as long as the program.
 > - **A `mandapa` block gives back what it allocated when it ends** - the arena's scratch side falls (R102). Pages are reused, not returned to the kernel.
 > - **`mandapa parimita N`** refuses an allocation past a budget of `N` bytes: `E_PARIMITA`, exit 1 (R103).
-> - **A `kosh` is a descriptor that never moves** (v302, R127): its length, capacity and the address of its elements. Growth moves the elements and updates the descriptor, so every name of the `kosh` stays right at any size. Small elements live in the arena; past 64 KiB they get a region (reserved, touched as they grow), and an outgrown region is given back. Up to v301 every `kosh` was a 64 MiB region of its own (R101A): about 15 under a 1 GiB address limit, and two names parted past 4,194,304 numbers.
+> - **A `kosh` is a descriptor that never moves** (v302, R127): its length, capacity and the address of its elements. Growth moves the elements and updates the descriptor, so every name of the `kosh` stays right at any size. Small elements live in the arena; past 64 KiB they get a region (reserved, touched as they grow), and an outgrown region is given back. A `kosh`'s length and elements are read after an index or slice bound that could change it (v303). Up to v301 every `kosh` was a 64 MiB region of its own (R101A): about 15 under a 1 GiB address limit, and two names parted past 4,194,304 numbers.
 > - **A `kosh` made in a block cannot leave it** - refused when compiled, `E_KOSH_MANDAPA` (R107-R109).
 > - **`parimana()`** reports the bytes the program's `nirmmita` and `kosh` hold now (R107).
 >

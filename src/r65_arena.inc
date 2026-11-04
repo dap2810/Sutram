@@ -651,7 +651,8 @@ r127_emit_grow:
     mov rax, [rel code_sz]
     dec rax
     push rax
-    R23_EMIT 0x4C,0x89,0xD9, 0x48,0xC1,0xE1,0x03   ; mov rcx,r11 ; shl rcx,3: its elements' bytes
+    R23_EMIT 0x48,0x8B,0x0C,0x24, 0x48,0xC1,0xE1,0x03   ; mov rcx,[rsp] ; shl rcx,3: the new capacity
+    ; as pushed (R128, R203 F3: the syscall clobbered r11, so v302 counted the wrong number of bytes)
     call r107_emit_count_rcx
     pop rdi
     call r69_patch8

@@ -1,4 +1,22 @@
-> **The 20 newest entries.** Older ones, from "v439" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v440" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v303 (Claude, R128) - three descriptor defects ChatGPT R203 found by reading: fixed
+
+- **A `kosh`'s length and elements are read after its index is evaluated** (`k[i]`, `k[i] = v`) and after a
+  slice's bounds (`k[lo:hi]`) **whenever the index or a bound has a call in it** - the only way it can change
+  the `kosh`; an index without a call compiles to v302's bytes (the codegen-shape ceilings hold). v302 read them first, so an index that grew the `kosh` (`k[kosh_kship(k, 5) - 2]`)
+  read the old elements - **SIGSEGV once an outgrown region had been given back** - and one that shrank it
+  (`k[kosh_hri(k) - 1]`) was checked against the old length. (R203 F1.)
+- **A declared capacity past 2^40 numbers stops with `kosh rachayitum smritih na labdha`.** v302 multiplied it
+  by 8 without a check: `kosh k[2305843009213693952]` became a 32-byte allocation and the pushes overwrote the
+  next block (measured: another buffer's 77 became 1). (R203 F2.)
+- **`parimana()` counts a region `kosh`'s bytes right:** v302 took the new capacity from `r11`, which the Linux
+  `syscall` had just overwritten (20,000 numbers: 234,096 printed, 294,976 right). (R203 F3.)
+- Gate `R127 descriptor` +6 checks (24 with PE; v302 fails all six). No program in the tree changes output; the
+  92 that change bytes are the `kosh` programs (a declared capacity's check).
+- **Also R128:** the installer's payload rebuilt (on Linux, `tools/build_installer_linux.py`); `sutram-link.exe`
+  rebuilt (its embedded runtime predated v300); `docs/RELEASE-NOTES.md`; the pack-message goldens no longer
+  assert a compiled size.
 
 ## v302 (Claude, R127) - a `kosh` is a descriptor: two names stay one, and no region per `kosh`
 
@@ -289,35 +307,3 @@
 - **Not done:** the block giving its `kosh` regions back (it would break the exact `E_KOSH_MANDAPA` check - see the
   hand-back), and Windows regions (`VirtualAlloc` reserve/commit in the PE runtime).
 - Gate `R101 memory`: 6 checks (in-place cost, 9,000,000 pushes past the region).
-
-## v440 - CORRECTION 3, the final one: it WAS a hang, and my own `head -8` faked the count
-
-### The truth, counted by lines rather than truncated
-
-| form | v282 | v283 |
-|---|---|---|
-| `chakra i = 0 tak 2` | `0 1 2`, exit 0 | same |
-| `chakra i = 0.0 tak 3` | `0 1 2 3` - **right by luck**, `0.0`'s bits are 0 | refused |
-| `chakra i = 0 tak 3.0` | **5,375,137 lines before kill** | refused, `E_CHAKRA_DASHAM` |
-| `chakra i = 0 tak 2.5` | **5,853,479 lines** | refused |
-| `chakra i = 0 tak 2.9` | **6,987,595 lines** | refused |
-| `chakra i = 0 tak 0.5` | **7,499,473 lines** | refused |
-
-**The bound's bit pattern is read as an integer - about 4.6 x 10^18 - so the loop runs essentially forever.**
-
-### The worst error of this session, and it is a measurement failure
-**I piped output through `head -8`.** A loop printing 7.5 million lines looks exactly like an 8-iteration loop when truncated at eight.
-
-**v437 said HANG - correct.**
-**v438 said off-by-one - wrong, caused by `head`.**
-**v439 said unpredictable eight iterations - wrong, same cause.**
-
-**I corrected a correct finding twice, from my own truncation, and told three partners they were wrong on that basis.**
-
-### Muse was right and I overrode it twice
-**Muse wrote "a loop whose end number is a decimal never stops."** Accurate. **I asked for it to be changed. It should not have been.**
-
-### The rule
-**`head -N` on an unbounded stream is not a measurement.** Count the lines, cap the loop, or watch for exit. **Never truncate a stream and treat what you saw as the number of iterations.**
-
-**This is a different class from the other nine errors. Those were describing belief instead of testing. This one was testing with an instrument that could not show the truth.**

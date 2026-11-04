@@ -1,9 +1,11 @@
 self-test (Wine 64): exit 0 
-payload: 657 files, 1844845 bytes zipped; Sutram-Setup.exe 1965013 bytes, sha256 122dde964e178aba944ae31da5316898c4c99ecdfb9f89ffac203265f3094a1e
-SETUP PASS: built /home/claude/sutram/Sutram-Setup.exe; staging kept at /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r128/setup2
-PASS payload v302 = compiler v302 (bin/ and win/sutram.exe, packed 2026-11-04; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/sutram.exe v302; sha256 122dde964e178aba...)
-payload compilers under Wine: bin\sutram.exe and win\sutram.exe --version: Sutram 1.0 (v302) - sampurna sutra; sha256 = win/sutram.exe b5edcf19101b4baf...
-Sutram-Setup.exe sha256 122dde964e178aba944ae31da5316898c4c99ecdfb9f89ffac203265f3094a1e ; Sutram-Setup.sha256: 122dde964e178aba944ae31da5316898c4c99ecdfb9f89ffac203265f3094a1e *Sutram-Setup.exe
+payload: 657 files, 1846569 bytes zipped; Sutram-Setup.exe 1967061 bytes, sha256 0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0
+SETUP PASS: built /home/claude/sutram/Sutram-Setup.exe; staging kept at /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r128/setup3
+PASS payload v303 = compiler v303 (bin/ and win/sutram.exe, packed 2026-11-04; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/sutram.exe v303; sha256 0a278682f8333419...)
+payload compilers under Wine: bin\sutram.exe and win\sutram.exe --version: Sutram 1.0 (v303) - sampurna sutra; sha256 = win/sutram.exe 4c05d5cbad99b32b...
+Sutram-Setup.exe sha256 0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0 ; Sutram-Setup.sha256: 0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0 *Sutram-Setup.exe
 --self-test: exit 0; a copy with one payload byte flipped: exit 1
 Verify-Payload replay (Python): 656 manifest lines, 0 mismatches, 0 unmanifested
+r93 installer gate: 11 checks, 0 failed (rerun after this build)
+doc counts --totals '68 0 1' --suite-pass 327: pass (4 html documents behind, not a failure)
 Windows linker identity under Wine (32 sampled examples, 21 compile directly): rebuilt sutram-link.exe 21/21 byte-identical to the direct compile; the Oct-27 sutram-link.exe 0/21

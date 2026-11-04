@@ -1,0 +1,12 @@
+# R128 guard: main 1202455 (v302) -> this tree (v303), tools/guard_pair.py
+## Linux elf
+source files whose text changed: 0
+737 programs: 491 byte-identical, 154 refused identically, 92 DIFFER, 0 new
+## Linux pe
+source files whose text changed: 0
+737 programs: 491 byte-identical, 154 refused identically, 92 DIFFER, 0 new
+## the 92 DIFFER are the kosh programs (each kosh declaration checks its capacity); run old and new
+ELF: 92 same output and exit, 0 changed
+pe: 92 DIFFER run old and new under Wine: 92 same output and exit, 0 changed
+## The Windows compiler (v303 sutram.exe) under Wine, every program
+737 programs: output byte-identical to the Linux compiler's PE output in 583, refused by both in 154, differ 0

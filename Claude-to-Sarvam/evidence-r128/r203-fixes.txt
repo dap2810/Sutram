@@ -1,0 +1,23 @@
+# R203 F1-F3, v302 vs v303 (tests/r127/test_descriptor.py)
+FAIL  an index that grows the kosh past a region move (R203 F1; v302 SIGSEGV) (ELF): '' exit -11 (want '8388608\n' exit 0)
+FAIL  k[i] = v where i grows the kosh (R203 F1) (ELF): 'Sutram truti: mala ank seema atikram\n' exit 1 (want '1\n9\n' exit 0)
+FAIL  an index that shrinks the kosh is checked against the new length (R203 F1) (ELF): '2\n' exit 0 (want 'Sutram truti: mala ank seema atikram\n' exit 1)
+FAIL  a slice bound that grows the kosh (R203 F1) (ELF): 'Sutram truti: mala ank seema atikram\n' exit 1 (want '7\n' exit 0)
+FAIL  a capacity whose bytes would wrap is refused at run time (R203 F2; v302 overwrote memory) (ELF): '1\n' exit 0 (want 'Sutram truti: kosh rachayitum smritih na labdha\n' exit 1)
+FAIL  parimana() counts a region kosh (R203 F3; v302 counted the clobbered r11) (ELF): '234096\n' exit 0 (want '294976\n' exit 0)
+r127 descriptor: 16 checks, 6 failed
+
+PASS  an index that grows the kosh past a region move (R203 F1; v302 SIGSEGV) (ELF): '8388608\n' exit 0
+PASS  k[i] = v where i grows the kosh (R203 F1) (ELF): '1\n9\n' exit 0
+PASS  k[i] = v where i grows the kosh (R203 F1) (PE, Wine): '1\n9\n' exit 0
+PASS  an index that shrinks the kosh is checked against the new length (R203 F1) (ELF): 'Sutram truti: mala ank seema atikram\n' exit 1
+PASS  a slice bound that grows the kosh (R203 F1) (ELF): '7\n' exit 0
+PASS  a slice bound that grows the kosh (R203 F1) (PE, Wine): '7\n' exit 0
+PASS  a capacity whose bytes would wrap is refused at run time (R203 F2; v302 overwrote memory) (ELF): 'Sutram truti: kosh rachayitum smritih na labdha\n' exit 1
+PASS  a capacity whose bytes would wrap is refused at run time (R203 F2; v302 overwrote memory) (PE, Wine): 'Sutram truti: kosh rachayitum smritih na labdha\n' exit 1
+PASS  parimana() counts a region kosh (R203 F3; v302 counted the clobbered r11) (ELF): '294976\n' exit 0
+r127 descriptor: 24 checks, 0 failed
+
+# F3 arithmetic: 20,000 numbers grown past an allocation: arena 48 (descriptor + 1 element) + 16 (z) + 32,768 (the elements grown in place at the cursor to 4,096) = 32,832;
+# region: 65,536 (made at capacity 8,192) + 65,536 (to 16,384) + 131,072 (to 32,768) = 262,144; total 294,976
+# codegen shapes: the always-refresh build failed float_index_left_reg_right 46/43 and float_index_left_literal_right 47/44; the refresh-only-with-a-call build: 12/12

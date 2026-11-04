@@ -13,7 +13,9 @@ Checks (ELF; with --pe and Wine 64 the run checks again as PE, NOT RUN without W
   * pop / peek / dequeue / clear / a dasham kosh / a slice passed on / a kosh parameter, all through d;
   * no memory for a kosh, or for its growth: a message and exit 1, not SIGSEGV (--fail-alloc);
   * a slice of a kosh kept in a name is refused (E_KOSH_VIBHAG): the next growth would leave it behind;
-  * a moved region is given back: 20,000,000 numbers peak under 200 MB (it holds 160 MB).
+  * a moved region is given back: 20,000,000 numbers peak under 200 MB (it holds 160 MB);
+  * R128 (ChatGPT R203): an index or slice bound that grows or shrinks the kosh is read after it (F1); a
+    capacity whose bytes would wrap stops (F2); parimana() counts a region kosh's bytes (F3).
 Last line: "r127 descriptor: N checks, M failed".
 """
 import os, resource, subprocess, sys, tempfile
@@ -53,6 +55,25 @@ RUNS = [  # (what, program, compile flags, address limit in KB or 0, stdout, exi
     ('no memory to grow a kosh: a message', 'mukhya() {\n    kosh k[1]\n    chakra i = 1 tak 10 {\n'
      '        kosh_kship(k, i)\n        vitti p = nirmmita(16)\n    }\n}\n', ['--fail-alloc', '3'], 0,
      'Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva\n', 1, False),
+    # R128 (ChatGPT R203): the index or slice bounds may grow or shrink the kosh - read it after them
+    ('an index that grows the kosh past a region move (R203 F1; v302 SIGSEGV)', 'mukhya() {\n    kosh k[1]\n'
+     '    vitti z = nirmmita(8)\n    chakra i = 1 tak 8388608 {\n        kosh_kship(k, i)\n    }\n'
+     '    likha(k[kosh_kship(k, 5) - 2])\n}\n', [], 0, '8388608\n', 0, False),
+    ('k[i] = v where i grows the kosh (R203 F1)', 'mukhya() {\n    kosh k[1]\n    vitti z = nirmmita(8)\n'
+     '    kosh_kship(k, 1)\n    k[kosh_kship(k, 2) - 1] = 9\n    likha(k[0])\n    likha(k[1])\n}\n', [], 0, '1\n9\n', 0, True),
+    ('an index that shrinks the kosh is checked against the new length (R203 F1)', 'mukhya() {\n    kosh k[4]\n'
+     '    kosh_kship(k, 1)\n    kosh_kship(k, 2)\n    likha(k[kosh_hri(k) - 1])\n}\n', [], 0,
+     'Sutram truti: mala ank seema atikram\n', 1, False),
+    ('a slice bound that grows the kosh (R203 F1)', 'prakriya pratham(vibhag s) {\n    nivartanam s[0]\n}\n'
+     'mukhya() {\n    kosh k[1]\n    vitti z = nirmmita(8)\n    kosh_kship(k, 7)\n'
+     '    likha(pratham(k[kosh_kship(k, 8) - 2:2]))\n}\n', [], 0, '7\n', 0, True),
+    ('a capacity whose bytes would wrap is refused at run time (R203 F2; v302 overwrote memory)', 'mukhya() {\n'
+     '    kosh k[2305843009213693952]\n    vitti p = nirmmita(16)\n    likh8(p, 77)\n    chakra i = 1 tak 8 {\n'
+     '        kosh_kship(k, i)\n    }\n    likha(pad8(p))\n}\n', [], 0,
+     'Sutram truti: kosh rachayitum smritih na labdha\n', 1, True),
+    ('parimana() counts a region kosh (R203 F3; v302 counted the clobbered r11)', 'mukhya() {\n    kosh k[1]\n'
+     '    vitti z = nirmmita(8)\n    chakra i = 1 tak 20000 {\n        kosh_kship(k, i)\n    }\n    likha(parimana())\n'
+     '}\n', [], 0, '294976\n', 0, False),
 ]
 
 

@@ -1,7 +1,7 @@
-Sutram gates — 2026-11-04T18:38Z
+Sutram gates — 2026-11-04T19:18Z
 
   committed modes (7 x 100755, git index) PASS
-  build: compiler              ok  (560944 B)
+  build: compiler              ok  (561992 B)
   build: terminal IDE          ok  (24824 B)
   build: X11 GUI               ok  (38184 B)
   build: linker (R28)          ok  (16672 B)
@@ -60,7 +60,7 @@ Sutram gates — 2026-11-04T18:38Z
   crash corpus (227 cases + manifest, 0 failed) PASS
   operator precedence (314 pairs tested) PASS
   formatted tree               PASS
-  version string (v302 (CHANGELOG v302)) PASS
+  version string (v303 (CHANGELOG v303)) PASS
   R101 memory (8 checks)       PASS
   R111 vocabulary (57 checks)  PASS
   R116 contracts (133 checks)  PASS
@@ -69,17 +69,17 @@ Sutram gates — 2026-11-04T18:38Z
   R123 PE memory (9 checks)    PASS
   R124 lazy commit (7 checks)  PASS
   R126 kinds (55 checks)       PASS
-  R127 descriptor (15 checks)  PASS
+  R127 descriptor (24 checks)  PASS
   R93 installer gate (11 checks) PASS
-  installer version (payload v302 = compiler v302) PASS
+  installer version            FAIL   payload v302 inside Sutram-Setup.exe (the wizard has no version of its own); compiler v303, pac
   performance (  8 ran, 0 failed) PASS
   X11 GUI protocol (18/18)     PASS
   Windows execution            NOT-RUN cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1
-  doc counts (68 gates PASS, 0 FAIL, 1 NOT-RUN; suite PASS=327) PASS
+  doc counts                   FAIL      PROJECT-MASTER.md: quotes 68 PASS but only 67 gates exist
 
   ------------------------------------------
-  PASS                         68
-  FAIL                         0
+  PASS                         66
+  FAIL                         2
   NOT-RUN                      1
 
   PASS, FAIL and NOT-RUN are separate on purpose.

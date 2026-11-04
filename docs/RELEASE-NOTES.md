@@ -1,7 +1,7 @@
-# Sutram 1.0 (v302) — release notes
+# Sutram 1.0 (v303) — release notes
 
-**Compiler `Sutram 1.0 (v302) - sampurna sutra`, 4 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v302). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v303) - sampurna sutra`, 4 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v303). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -52,7 +52,7 @@ contract table, the Windows rounds 1-4 and the v297 IDE run.
 ## Integer arithmetic: what wraps, what refuses, what reports
 
 **The operators wrap; the compiler refuses only what it can see; the library follows each function's
-contract.** Measured on v302, Linux:
+contract.** Measured on v303, Linux:
 
 | you write | you get |
 |---|---|
@@ -115,8 +115,8 @@ succeeded; use the checked form when the program must detect a failure and go on
 - **Every Linux gate runs here; the Windows gates run on the owner's machine.**
   - The last native Windows runs were the Windows rounds 1-4: v297 had 305 passes and 8 failures; after the
     round 3 and round 4 fixes, 312 passes and 0 failures, on the branch merged as v299.
-  - v298-v302 have been run on Windows only under Wine 64 here, with every program's output compared.
-  - **Native Windows execution of v302 is not yet done.**
+  - v298-v303 have been run on Windows only under Wine 64 here, with every program's output compared.
+  - **Native Windows execution of v303 is not yet done.**
 - **Skipped on Windows, by design:**
   - `examples/29_nishkriya`: inline Linux system calls;
   - socket examples, which differ by platform (`245_r18_netsock`).
@@ -127,7 +127,7 @@ succeeded; use the checked form when the program must detect a failure and go on
   - **Run Module gives no interactive input** (end of input at once).
 - **The installer's PowerShell scripts are unsigned.**
   - Under a `Restricted` or `AllSigned` execution policy they are blocked.
-  - Install and uninstall on a fresh machine are the owner's acceptance test, not yet done for v302.
+  - Install and uninstall on a fresh machine are the owner's acceptance test, not yet done for v303.
   - The installer's hashes detect corruption, not the publisher.
 - **The linker:** `sutram-link` and the object tools still print `Sutram Error` where the compiler prints
   `Sutram truti` (v294 renamed only the compiler's).
@@ -141,7 +141,7 @@ succeeded; use the checked form when the program must detect a failure and go on
   - a slice of a `kosh` cannot be kept in a name.
   - Three examples were rewritten for the first rule.
 
-## Changes since the last installer (v243)
+## Changes since the last installer before R128 (v243)
 
 The full record is `docs/CHANGELOG.md` and `docs/rounds/CHANGELOG-ARCHIVE.md`. Since v297, Windows found two
 defects Linux never showed:
@@ -155,3 +155,7 @@ v298 fixed both. Then:
 - **v301:** fixed three live defects in how the compiler tracks a name's kind (two crashes, one silent
   over-read), and closed the eight Muse found.
 - **v302:** made a `kosh` a descriptor.
+- **v303:** fixed three defects in it that ChatGPT R203 found by reading the source:
+  - an index or a slice bound that grew the `kosh` read its old elements (SIGSEGV after a region was given back);
+  - a capacity past 2^40 wrapped into a tiny allocation;
+  - `parimana()` miscounted a large `kosh`.

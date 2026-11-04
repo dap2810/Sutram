@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v302) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v303) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -565,6 +565,15 @@ r54_builtin_arity_table:
     r127_dk_len equ $ - r127_dk
     r127_ix db 0x48,0x8B,0x48,0xF0, 0x48,0x8B,0x00, 0x48,0x89,0x04,0x24, 0x51
     r127_ix_len equ $ - r127_ix   ; mov rcx,[rax-16] ; mov rax,[rax] ; mov [rsp],rax ; push rcx
+    ; R128: when the index has a call in it (it may grow or shrink the kosh), only the length now -
+    ; mov rcx,[rax-16] ; push rcx: the base stays the descriptor, and r128_ixr reads both after the index
+    r128_ixd db 0x48,0x8B,0x48,0xF0, 0x51
+    r128_ixd_len equ $ - r128_ixd
+    ; R128 (ChatGPT R203 F1): after the index is evaluated - it may grow or shrink the kosh -
+    ; mov rcx,[rsp+8] ; mov rdx,[rcx-16] ; mov [rsp],rdx ; mov rcx,[rcx] ; mov [rsp+8],rcx:
+    ; the length and the elements read now, from the descriptor, not before
+    r128_ixr db 0x48,0x8B,0x4C,0x24,0x08, 0x48,0x8B,0x51,0xF0, 0x48,0x89,0x14,0x24, 0x48,0x8B,0x09, 0x48,0x89,0x4C,0x24,0x08
+    r128_ixr_len equ $ - r128_ixr
     r127_g1 db 0x41,0x50, 0x41,0x51, 0x41,0x53, 0x4C,0x89,0xD8, 0x48,0xC1,0xE0,0x03
     r127_g1_len equ $ - r127_g1
     r127_g2 db 0x41,0x5B, 0x41,0x59, 0x41,0x58, 0x49,0x89,0xC2, 0x49,0x8B,0x30, 0x31,0xC9
@@ -19163,6 +19172,7 @@ gen_stmt:
     call emit_byte
     mov dil, 0xC0
     call emit_byte
+    call r128_emit_cap_check  ; R128 (R203 F2): a capacity whose bytes would not fit stops here
     mov dil, 0x50             ; push capacity
     call emit_byte
     mov dil, 0x48             ; add rax,4: 2 header qwords + R127's elements pointer and region size
@@ -19662,10 +19672,9 @@ gen_stmt:
     call is_kosh_var
     test rax, rax
     jz .gs_ai_check_pankti
-    mov r12, 2
-    lea rsi, [rel r127_ix]    ; R127: mov rcx,[rax-16] ; mov rax,[rax] ; mov [rsp],rax ; push rcx
-    mov rcx, r127_ix_len
-    call r23_emit_bytes
+    mov rax, [rbx+8]
+    mov rdi, [rax+16]         ; the index
+    call r128_emit_kosh_base  ; R127 / R128: r12 = 2, or 0x102 when the index has a call
     jmp .gs_ai_no_len
 .gs_ai_check_pankti:
     mov rax, [rbx+8]
@@ -19697,6 +19706,7 @@ gen_stmt:
     push r12                  ; preserve compiler-time array marker
     call gen_expr             ; runtime index -> rax
     pop r12
+    call r128_emit_kosh_refresh ; R128: a kosh's length and elements, read after the index
     test r12, r12
     jz .gs_ai_no_bounds
     call emit_array_bounds_check
@@ -21096,6 +21106,105 @@ emit_kosh_empty_check_r9:
     pop rbx
     ret
 
+; r128_emit_kosh_base(rdi = the index expression): a kosh base is on the runtime stack, rax = it.
+; An index with no call cannot change the kosh: R127's sequence (length, elements, now), r12 = 2.
+; With a call (kosh_kship / kosh_hri / a prakriya, ...): the length only, the descriptor stays the base,
+; r12 = 0x102 - r128_emit_kosh_refresh reads length and elements after the index (ChatGPT R203 F1).
+r128_emit_kosh_base:
+    call r128_has_call
+    test eax, eax
+    jnz .call
+    mov r12, 2
+    lea rsi, [rel r127_ix]
+    mov rcx, r127_ix_len
+    jmp r23_emit_bytes
+.call:
+    mov r12, 0x102
+    lea rsi, [rel r128_ixd]
+    mov rcx, r128_ixd_len
+    jmp r23_emit_bytes
+
+; r128_emit_kosh_refresh(r12 = the index path's marker): 0x102 -> emit r128_ixr, r12 = 2. Else nothing.
+r128_emit_kosh_refresh:
+    cmp r12, 0x102
+    jne .r
+    lea rsi, [rel r128_ixr]
+    mov rcx, r128_ixr_len
+    call r23_emit_bytes
+    mov r12, 2
+.r:
+    ret
+
+; r128_has_call(rdi = an expression) -> eax = 1 if a call is anywhere in it (a builtin, a prakriya, prasar),
+; or it is too deep to tell (64 levels). Every register but rax preserved.
+r128_has_call:
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    xor esi, esi
+    call .walk
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    ret
+.walk:                             ; rdi = node, esi = depth
+    xor eax, eax
+    test rdi, rdi
+    jz .ret
+    lea rcx, [rel ast_heap]
+    cmp rdi, rcx
+    jb .ret
+    cmp rdi, [rel ast_ptr]
+    jae .ret
+    mov rax, [rdi]
+    cmp rax, AST_CALL
+    je .yes
+    cmp rax, AST_FUNCALL
+    je .yes
+    cmp rax, AST_PRASAR
+    je .yes
+    cmp rax, AST_NUM
+    je .no
+    cmp rax, AST_FLOAT
+    je .no
+    cmp rax, AST_STR
+    je .no
+    cmp rax, AST_VAR
+    je .no
+    cmp esi, 64
+    jae .yes
+    mov edx, 8
+.f:
+    cmp edx, 72
+    jae .no
+    push rdi
+    push rdx
+    mov rdi, [rdi+rdx]
+    test rdi, 7
+    jnz .skip
+    inc esi
+    call .walk
+    dec esi
+    test eax, eax
+    jnz .found
+.skip:
+    pop rdx
+    pop rdi
+    add edx, 8
+    jmp .f
+.found:
+    pop rdx
+    pop rdi
+.yes:
+    mov eax, 1
+    ret
+.no:
+    xor eax, eax
+.ret:
+    ret
+
 ; r127_emit_grow_check: after the allocation of a kosh's new elements (rax = 0 when the memory
 ; was not given): stop with a message. The descriptor is not touched before this point, so the
 ; kosh is as it was; the program does not go on with it half-grown (R127, R201).
@@ -21106,6 +21215,35 @@ r127_emit_make_check:
     push r13
     lea r12, [rel r127_msg_make]
     jmp r127_emit_grow_check.go
+; r128_emit_cap_check: rax = a kosh's declared capacity (not negative): above R128_MAXCAP elements
+; ((cap + 7) * 8 would wrap, or ask for more than any machine has) it stops with the make message,
+; rax unchanged otherwise. mov rcx,R128_MAXCAP ; cmp rax,rcx ; jbe .ok ; message ; exit
+R128_MAXCAP equ 0x0000010000000000   ; 2^40 numbers = 8 TiB
+r128_emit_cap_check:
+    push r12
+    push r14
+    push r15
+    push r13
+    lea r12, [rel r127_msg_make]
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xB9
+    call emit_byte
+    mov rdi, R128_MAXCAP
+    call emit_u32
+    mov rdi, R128_MAXCAP >> 32
+    call emit_u32
+    mov dil, 0x48             ; cmp rax,rcx
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x0F             ; jbe ok rel32
+    call emit_byte
+    mov dil, 0x86
+    call emit_byte
+    jmp r127_emit_grow_check.cond_done
 r127_emit_grow_check:
     push r12
     push r14
@@ -21123,6 +21261,7 @@ r127_emit_grow_check:
     call emit_byte
     mov dil, 0x85
     call emit_byte
+.cond_done:
     mov r13, [rel code_sz]
     xor edi, edi
     call emit_u32
@@ -21612,10 +21751,8 @@ gen_expr:
     call is_kosh_var
     test rax, rax
     jz .ge_index_check_pankti
-    mov r12, 2               ; kosh length header at [ptr-16]
-    lea rsi, [rel r127_ix]   ; R127: the length, then the elements through the descriptor
-    mov rcx, r127_ix_len
-    call r23_emit_bytes
+    mov rdi, [rbx+16]        ; the index
+    call r128_emit_kosh_base ; R127 / R128: r12 = 2, or 0x102 when the index has a call
     jmp .ge_index_no_len
 .ge_index_check_pankti:
     mov rdi, [rbx+8]
@@ -21645,6 +21782,7 @@ gen_expr:
     push r12                  ; preserve compiler-time array marker
     call gen_expr             ; runtime index -> rax
     pop r12
+    call r128_emit_kosh_refresh ; R128: a kosh's length and elements, read after the index
     test r12, r12
     jz .ge_index_no_bounds
     call emit_array_bounds_check

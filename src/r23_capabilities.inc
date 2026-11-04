@@ -616,9 +616,20 @@ r23_gen_slice:
     jmp .have
 .len_kosh:
     R23_EMIT 0x48,0x8B,0x48,0xF0       ; mov rcx,[rax-16]
-    R23_EMIT 0x48,0x8B,0x00            ; R127: mov rax,[rax] - the elements, through the descriptor
+    mov rdi, [rbx + 16]                ; R128: a call in lo or hi may grow or shrink the kosh - then the
+    call r128_has_call                 ; descriptor stays pushed and both are read after them (below);
+    test eax, eax                      ; else the elements now, as R127
+    jnz .len_kosh_late
+    mov rdi, [rbx + 24]
+    call r128_has_call
+    test eax, eax
+    jnz .len_kosh_late
+    R23_EMIT 0x48,0x8B,0x00            ; mov rax,[rax] - the elements, through the descriptor
+    xor r13d, r13d                     ; nothing to read again
+.len_kosh_late:
 .have:
     R23_EMIT 0x50,0x51                 ; push rax (elements); push rcx (length)
+    push r13                           ; R128: the base's kind, across lo and hi
     ; lo -> push
     mov rax, [rbx + 16]
     test rax, rax
@@ -638,6 +649,11 @@ r23_gen_slice:
 .hi_len:
     R23_EMIT 0x48,0x8B,0x44,0x24,0x08  ; mov rax,[rsp+8]
 .hi_done:
+    pop r13
+    cmp r13d, 2                        ; R128 (R203 F1): a kosh - lo and hi may have grown it:
+    jne .no_refresh                    ; its length and elements now, from the descriptor
+    R23_EMIT 0x48,0x8B,0x4C,0x24,0x10, 0x48,0x8B,0x51,0xF0, 0x48,0x89,0x54,0x24,0x08, 0x48,0x8B,0x09, 0x48,0x89,0x4C,0x24,0x10
+.no_refresh:
     ; hi <= length: hi < length + 1 (unsigned, so a negative hi fails too)
     R23_EMIT 0x48,0x8B,0x4C,0x24,0x08  ; mov rcx,[rsp+8]
     R23_EMIT 0x48,0xFF,0xC1            ; inc rcx
