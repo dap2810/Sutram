@@ -1,0 +1,9 @@
+mukhya() {
+    likha(parimana())
+    mandapa {
+        vitti p = nirmmita(16)
+        p[0] = 99
+        likha(parimana())
+    }
+    likha(parimana())
+}

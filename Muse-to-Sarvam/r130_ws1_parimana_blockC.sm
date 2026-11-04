@@ -1,0 +1,11 @@
+mukhya() {
+    kosh k0[4]
+    kosh_kship(k0, 11)
+    likha(parimana())
+    mandapa {
+        vitti p = nirmmita(16)
+        p[0] = 99
+        likha(parimana())
+    }
+    likha(parimana())
+}

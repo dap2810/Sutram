@@ -1,0 +1,13 @@
+mukhya() {
+    kosh k[3]
+    kosh_kship(k, 11)
+    kosh_kship(k, 22)
+    kosh_kship(k, 33)
+    kosh_kship(k, 44)
+    kosh_kship(k, 55)
+    kosh_kship(k, 66)
+    kosh_kship(k, 77)
+    likha(k[0])
+    likha(k[3])
+    likha(k[6])
+}
