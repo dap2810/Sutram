@@ -1,0 +1,7 @@
+mukhya() {
+    shabda(char_from(66))
+    likha("|")
+    vitti s = vartani_cat("ab", "cd")
+    shabda(s)
+    likha("|end\n")
+}

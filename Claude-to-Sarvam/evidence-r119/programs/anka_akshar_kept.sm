@@ -1,0 +1,13 @@
+prakriya f(x) {
+    vitti a = x * 3
+    nivartanam a + 1
+}
+mukhya() {
+    vitti c = anka_akshar(66)
+    vitti d = anka_akshar(67)
+    vitti y = f(5)
+    shabda(c)
+    shabda(d)
+    likha("\n")
+    likha(y)
+}

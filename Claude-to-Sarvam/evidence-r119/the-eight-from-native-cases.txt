@@ -1,0 +1,43 @@
+# R119: the eight FAIL rows of Windows-to-Sarvam/win-v297-2026-11-03/native-cases.json (319 rows), the fields that decide the class
+# statuses: {'SKIP_SIDE_EFFECT_OR_INLINE_ASM': 3, 'PASS': 305, 'NO_EXPECTATION': 3, 'FAIL': 8}
+
+== 220_hindi_parse_error: compile_exit 1, run exit -, expected exit 1
+   compile command: sutram.exe 220_hindi_parse_error.sm 220_hindi_parse_error.exe
+   actual_normalized: "\nSutram truti: vyakaran dosh, pankti 7:1, shabd 'patra-ant'\n  \n  ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n"
+   expected_stdout: "भाषा पैक मिला: hindi\n\nSutram truti: व्याकरण दोष, पंक्ति 7:1, शब्द 'फ़ाइल का अंत'\n  \n  ^\nसंकेत: इस स्थान पर शब्द और व्याकरण जाँचें।\n"
+
+== 288_r86_kosh_alias_moves: compile_exit 0, run exit 0, expected exit 0
+   compile command: sutram.exe 288_r86_kosh_alias_moves.sm 288_r86_kosh_alias_moves.exe
+   stdout: 'a[0]=41 k[0]=99\na[0]=7 k[0]=99\n'
+   expected_stdout: 'a[0]=99 k[0]=99\na[0]=7 k[0]=7\n'
+
+== 29_nishkriya: compile_exit 0, run exit 0, expected exit 42
+   compile command: sutram.exe 29_nishkriya.sm 29_nishkriya.exe
+   stdout: 'Yantra: Inline Assembly\n==========================\nThis program exits with code 42 using raw x86-64 bytes.\nmov eax,60 / mov edi,42 / syscall  is just:\n  yantra("B8 3C 00 00 00")\n  yantra("BF 2A 00 00 00")\n  yantra("0F 05")\nExiting with code 42...\n'
+   expected_stdout: 'Yantra: Inline Assembly\n==========================\nThis program exits with code 42 using raw x86-64 bytes.\nmov eax,60 / mov edi,42 / syscall  is just:\n  yantra("B8 3C 00 00 00")\n  yantra("BF 2A 00 00 00")\n  yantra("0F 05")\nExiting with code 42...\n'
+
+== 303_r103_parimita_refuses: compile_exit 0, run exit 0, expected exit 1
+   compile command: sutram.exe 303_r103_parimita_refuses.sm 303_r103_parimita_refuses.exe
+   stdout: 'not reached 499999500000\n'
+   expected_stdout: 'Sutram truti [E_PARIMITA]: pankti 6 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)\n'
+
+== 317_r107_parimana: compile_exit 0, run exit 0, expected exit 0
+   compile command: sutram.exe 317_r107_parimana.sm 317_r107_parimana.exe
+   stdout: 'start 0\nafter nirmmita(64) 0\nin a block, nirmmita(1000) 0\nafter the block 0\na kosh of 1000 0\n'
+   expected_stdout: 'start 0\nafter nirmmita(64) 64\nin a block, nirmmita(1000) 1072\nafter the block 64\na kosh of 1000 8272\n'
+
+== 318_r108_parimana_moves: compile_exit 0, run exit 0, expected exit 0
+   compile command: sutram.exe 318_r108_parimana_moves.sm 318_r108_parimana_moves.exe
+   stdout: "start 0\na kosh of 1 0\ngrown to capacity 4 0\na block's nirmmita(100) 0\nand a kosh of 8 in it 0\nafter the block 0\n"
+   expected_stdout: "start 0\na kosh of 1 48\ngrown to capacity 4 72\na block's nirmmita(100) 184\nand a kosh of 8 in it 288\nafter the block 176\n"
+
+== 322_r111_new_names: compile_exit 0, run exit 3221225477, expected exit 0
+   compile command: sutram.exe 322_r111_new_names.sm 322_r111_new_names.exe
+   stdout: 'gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\n�42\n'
+   expected_stdout: 'gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\nB42\nabcd\n'
+
+== 323_r111_old_names: compile_exit 0, run exit 3221225477, expected exit 0
+   compile command: sutram.exe 323_r111_old_names.sm 323_r111_old_names.exe
+   stdout: 'gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\n�42\n'
+   expected_stdout: 'gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\nB42\nabcd\n'
+   compile_stderr: "Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu\nSutram suchana: 'kosh_enqueue' purana nama - 'kosh_yuj' likhatu\nSutram suchana: 'kosh_len' purana nama - 'kosh_gan' likhatu\nSutram suchana: 'kosh_cap' purana nama - 'kosh_ksham' likhatu\nSutram suchana: 'kosh_peek' purana nama - 'kosh_iksh' likhatu\nSutram suchana: 'kosh_pop' purana nama - 'kosh_hri' likhatu\nSut

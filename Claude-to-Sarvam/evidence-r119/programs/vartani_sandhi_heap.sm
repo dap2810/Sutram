@@ -1,0 +1,7 @@
+mukhya() {
+    vitti b = nirmmita(16)
+    vartani_pratilip(b, "ab")
+    vitti s = vartani_sandhi(b, "cd")
+    shabda(s)
+    likha("\n")
+}

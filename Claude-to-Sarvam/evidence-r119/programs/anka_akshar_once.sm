@@ -1,0 +1,4 @@
+mukhya() {
+    shabda(anka_akshar(66))
+    likha("\nend\n")
+}

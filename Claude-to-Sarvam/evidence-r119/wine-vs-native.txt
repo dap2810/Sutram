@@ -1,0 +1,7 @@
+288_r86_kosh_alias_moves: wine exit 0, native exit 0; stdout = native
+303_r103_parimita_refuses: wine exit 0, native exit 0; stdout = native
+317_r107_parimana: wine exit 0, native exit 0; stdout = native
+318_r108_parimana_moves: wine exit 0, native exit 0; stdout = native
+322_r111_new_names: wine exit 5, native exit 3221225477; stdout first 8 lines = native, then a garbage byte (differs from native garbage)
+323_r111_old_names: wine exit 5, native exit 3221225477; stdout first 8 lines = native, then a garbage byte (differs from native garbage)
+29_nishkriya: wine exit 42, native exit 0; stdout = native

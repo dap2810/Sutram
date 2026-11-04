@@ -1,0 +1,52 @@
+# R119: the two builtins under 322/323, on this tree's v297 compiler. Linux ELF run natively; PE run under Wine 64 (/usr/lib/wine/wine64).
+
+## 1. anka_akshar(66) then shabda at once (the shape in 322) - programs/anka_akshar_once.sm
+ELF:
+0000000   B  \n   e   n   d  \n
+0000006
+PE (Wine):
+0000000   P  \n   e   n   d  \n
+0000006
+
+## 2. anka_akshar kept in a variable across a prakriya call - programs/anka_akshar_kept.sm (want: BC, then 16)
+ELF:
+0000000   B 370   ) 322   Y 374 177  \n   1   6  \n
+0000013
+PE (Wine):
+0000000   B 272 023  \n   1   6  \n
+0000007
+
+## 3. vartani_sandhi("ab", "cd") - the destination is a literal, which lives in the code - programs/vartani_sandhi_literal.sm
+ELF:
+0000000   a   b   c   d  \n   e   n   d  \n
+0000011
+PE (Wine):
+0000000
+PE exit: 5
+
+## 4. the same, three times round a loop - programs/vartani_sandhi_literal_loop.sm
+ELF:
+abcd
+/bin/bash: line 45: 17805 Segmentation fault      timeout 10 $W/loop.bin
+ELF exit: 139
+
+## 5. a writable destination (nirmmita + vartani_pratilip) - programs/vartani_sandhi_heap.sm
+ELF:
+abcd
+PE (Wine):
+abcd
+PE exit: 0
+
+## 6. where the literal lives: the PE code section is read-only, the ELF segment is writable
+  0 text          000003c2  0000000140001000  0000000140001000  00000200  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  LOAD           0x000078 0x0000000000400078 0x0000000000400078 0x0000cc 0x0100cc RWE 0x1000
+
+## 7. how old: char_from + vartani_cat (the pre-R111 names) on compilers from git history - programs/old_names_history.sm
+8071ad5 (first commit) Sutram 1.0 (v254) - sampurna sutra  ELF: B|abcd|end  PE(Wine):  P | exit 5
+caed891 Sutram 1.0 (v258) - sampurna sutra  ELF: B|abcd|end  PE(Wine):  P | exit 5
+
+## 8. the code the compiler emits for anka_akshar (src/sutram_compiler.asm .ge_call_charfr)
+   sub rsp,16 ; mov [rsp],al ; mov byte [rsp+1],0 ; mov rax,rsp ; add rsp,8
+   -> the result points at memory 8 bytes below the new rsp: the next push or call overwrites it,
+      and rsp stays 8 lower than before (unbalanced) - every call leaks 8 bytes of stack and misaligns it.
