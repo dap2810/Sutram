@@ -1,16 +1,21 @@
 > **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
 > unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
 
-> **Status at v411, 29 October 2026 — read this before the page below.**
+> **Status at compiler v298, 3 November 2026 (R120) — read this before the page below.**
 >
-> **Compiler v261.** Suite **PASS=225** · crash corpus **227/0** · library proofs **226/226** · property proofs 86 of 86 · doc signatures PASS · layers 14/9/1 · alloc bounds 26 (13 bounded, 13 exempt) · built-in packs CURRENT · gates **48 PASS / 0 FAIL / 1 NOT-RUN**.
-> **The NOT-RUN is Windows execution, and that is the owner's own test.**
+> **Compiler `Sutram 1.0 (v298) - sampurna sutra`.** Suite **PASS=315** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **63 PASS / 1 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The FAIL is the installer's bundled payload (v243); the NOT-RUN is Windows execution, the owner's own test.**
 >
-> **`nivartanam` is the return keyword; `prati` is a legacy alias.** 235 files across compiler, `lib/`, `examples/`, `tests/` and `docs/` — **zero goldens changed**, and a program written either way compiles to a byte-identical binary.
-> **Done and off every open list:** `likha` up to six values · 135 three-statement triples · the `lkhb` float bug · `arabhya ... paryantam` · **20 library names that described the wrong operation** · 7 wrong Devanagari words · 33 contract comments · Patch A's 12 variable names.
-> **The authoritative page is `docs/WHATS-LEFT.md`.** Where this page disagrees with it, that page is right.
+> **The language today:**
+> - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
+> - **`asti` / `nasti` are `==` / `!=`**; `nivartanam` is return (`prati` a legacy alias).
+> - **Every failure begins `Sutram truti`** (v294; `Sutram Error` up to v293).
+> - **`sankhya_bindu` / `sankhya_dot` are withdrawn** (v295, `E_PRATYAHRITA`).
+> - **Fifteen library contracts refuse instead of wrapping** (v296, R116); `patra_asti` is blocked on an OS query the compiler does not make.
+> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms.
 >
-> **And the memory question is answered:** `nirmmita` emits **`mmap` per allocation** on Linux and **`VirtualAlloc`** on Windows, and there is **no `munmap` anywhere** — nothing ever returns memory. See `docs/MEMORY-MODEL.md`.
+> **Memory:** on Linux, `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, every `kosh` has a region of its own and never moves, and `parimana()` reports the bytes held. **On Windows none of that is there yet:** `parimana()` is 0, a budget is not checked, and a growing `kosh` moves (reference §16, §19; `docs/MEMORY-MODEL.md`).
+>
+> **The authoritative open list is `docs/WHATS-LEFT.md`.**
 
 # Sutram — Project Master Record
 
@@ -162,8 +167,8 @@ build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Gates (`tools/gates.sh`) | **48 PASS, 0 FAIL, 1 NOT-RUN** (Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
-| Regression suite | **225 pass, 4 no-expectation** |
+| Gates (`tools/gates.sh`) | **63 PASS, 1 FAIL, 1 NOT-RUN** (v298; FAIL: the installer's payload is v243; NOT-RUN: Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
+| Regression suite | **315 pass, 4 no-expectation** (v298) |
 | Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |
 | Language packs | **33 / 33** checks over **11** packs |
@@ -387,7 +392,7 @@ the observation that makes it true. Two of them — Windows execution and the fr
    ```
 3. **Run the gates** before and after your change:
    ```sh
-   python3 tests/run_tests.py                        # expect PASS=225 NO-EXPECTATION=4
+   python3 tests/run_tests.py                        # expect PASS=315 NO-EXPECTATION=4 (v298)
    python3 tools/codegen_gate.py ./sutram_compiler   # expect 12 PASS
    python3 tools/test_lang_packs.py ./sutram_compiler # expect 33/33
    python3 tools/proof_lib.py --compiler ./sutram_compiler     # expect 226

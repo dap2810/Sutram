@@ -304,7 +304,7 @@ Sanket: asmin sthane shabdam vyakaranam cha pashyatu.</code></pre>
 <tr><td><code><span class="k" data-tip="अर्थः: true">purna</span> / <span class="k" data-tip="अर्थः: false / null">shunya</span></code></td><td>true / false</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: negation (-)">abhava</span></code></td><td>assert</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: inline assembly">yantra</span></code></td><td>इनलाइन यन्त्रकोडः</td></tr>
-<tr><td><code><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span></code></td><td>नवीनपङ्क्तिं विना मुद्रणम्</td></tr>
+<tr><td><code><span class="k" data-tip="अर्थः: print (no newline)">likha_santat</span></code></td><td>नवीनपङ्क्तिं विना मुद्रणम्</td></tr>
 <tr><td><code><span class="k" data-tip="अर्थः: input">grahan</span></code></td><td>निवेशपठनम् (EOF इत्यत्र -1)</td></tr>
 <tr><td><code># / //</code></td><td>टिप्पन्यः</td></tr>
 </table>
@@ -344,17 +344,17 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <span class="k" data-tip="अर्थः: print">likha</span>("उत्तरम्: " + 42 + "\n")
 <span class="k" data-tip="अर्थः: print">likha</span>(7 + " दिनानि\n")</code></pre>
 
-<h3><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>() — नवीनपङ्क्तिं विना मुद्रणम्</h3>
-<p><code><span class="k" data-tip="अर्थः: print">likha</span>()</code> संख्यायाः अनन्तरं नवीनपङ्क्तिं ददाति; <code><span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>()</code> न ददाति — सारणीनिर्माणाय:</p>
+<h3><span class="k" data-tip="अर्थः: print (no newline)">likha_santat</span>() — नवीनपङ्क्तिं विना मुद्रणम्</h3>
+<p><code><span class="k" data-tip="अर्थः: print">likha</span>()</code> संख्यायाः अनन्तरं नवीनपङ्क्तिं ददाति; <code><span class="k" data-tip="अर्थः: print (no newline)">likha_santat</span>()</code> न ददाति — सारणीनिर्माणाय:</p>
 <pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">tak</span> 5 {
-    <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="अर्थः: print (no newline)">likha_santat</span>(i)
     <span class="k" data-tip="अर्थः: print">likha</span>(" ")
 }</code></pre>
 
 <h3>अवरोही पुनरावृत्तिः (Descending Loops)</h3>
 <p>प्रारम्भिकमूल्यम् अन्तिमात् मूल्यात् बृहत्तरं भवति चेत्, गणना स्वतः अवरोहति:</p>
 <pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 5 <span class="k" data-tip="अर्थः: range-to">tak</span> 1 {
-    <span class="k" data-tip="अर्थः: print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="अर्थः: print (no newline)">likha_santat</span>(i)
     <span class="k" data-tip="अर्थः: print">likha</span>(" ")
 }    <span class="cm"># फलम्: 5 4 3 2 1</span></code></pre>
 
@@ -388,7 +388,7 @@ mukhya()
     } yavat (i &lt; 3)
     likha(i)
     mala a[3]
-    likha(pankti_len(a))
+    likha(pankti_gan(a))
 </code></pre>
 
 <h3>The standard library</h3>
@@ -397,7 +397,7 @@ mukhya()
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
 <tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
 <tr><td><code>ank</code></td><td><code>yoj ank</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
-<tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
+<tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_kramabaddha</code> <code>dwi_anwesh</code></td></tr>
 <tr><td><code>varna</code></td><td><code>yoj varna</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
 </table>
 <pre><code>yoj ganit
@@ -637,7 +637,7 @@ Sutram → Uninstall</b>। अनुस्थापकः केवलं स�
   <p>Floats धारयितुं कोशः घोषितुं शक्यते। तस्मिन् प्रविष्टाः पूर्णाङ्कमूल्याः उन्नताः भवन्ति, तथा च तस्य तत्त्वानि सर्वत्र floats इव व्यवहरन्ति।</p>
   <h3>प्रकारिताः फलनमापदण्डाः</h3>
   <p>एकं फलनं विशिष्टप्रकारस्य तर्कम् अपेक्षते, तथा च सङ्कलकः तत् परीक्षते।</p>
-  <p>एकः प्रकारितः float व्यूहः सूचकाङ्करूपेण प्रदीयते, अतः सूचकाङ्कितलेखनानि आह्वानकर्तुः कृते दृश्यन्ते — एकं फलनं भवतः कृते व्यूहं पूरयितुं शक्नोति। परन्तु तस्य वर्धनम् अनुमतं नास्ति: मापदण्डे kosh_push आह्वानं नामयुक्तदोषेण अस्वीकृतं भवति, यतः सूचकः मूल्येन प्रदीयते तथा च आह्वानकर्तुः पार्श्वे पुरातनः एव अवशिष्येत। एषा एका जानन् एव कृता सुरक्षासीमा अस्ति, न तु लुप्तं वैशिष्ट्यम्।</p>
+  <p>एकः प्रकारितः float व्यूहः सूचकाङ्करूपेण प्रदीयते, अतः सूचकाङ्कितलेखनानि आह्वानकर्तुः कृते दृश्यन्ते — एकं फलनं भवतः कृते व्यूहं पूरयितुं शक्नोति। परन्तु तस्य वर्धनम् अनुमतं नास्ति: मापदण्डे kosh_kship आह्वानं नामयुक्तदोषेण अस्वीकृतं भवति, यतः सूचकः मूल्येन प्रदीयते तथा च आह्वानकर्तुः पार्श्वे पुरातनः एव अवशिष्येत। एषा एका जानन् एव कृता सुरक्षासीमा अस्ति, न तु लुप्तं वैशिष्ट्यम्।</p>
   <h3>मानकपुस्तकालयः</h3>
   <p>सङ्कलकेन सह पञ्चदश-माड्युल-सङ्कुलानि आगच्छन्ति। आयोजनेन एकं आयातयतु। तेषु गणितं सङ्ख्यासिद्धान्तः च; वर्गीकरणं पाठ्यं च; पिंगलस्य छन्दःशास्त्रम्; आर्यभटस्य भास्कराचार्यस्य च गणितम्; पाय, साइन, कोसाइन, वर्गमूलस्य च कृते केरलसम्प्रदायस्य शृङ्खला; सांख्यिकी; सङ्ख्यात्मकं कलनम् — समाकलनं, अवकलजाः बहुपदमूलानि च; आव्यूहैः निर्धारकैः च सह रैखिकबीजगणितम्; तथा च सञ्चिकापठनं लेखनं च अन्तर्भवन्ति।</p>
   <div class="try"><b>प्रयत्नं कुर्वन्तु:</b> परम्परागतमाड्युल-सङ्कुलानि वास्तविकं गणितं गणयन्ति — 61 इत्यस्य चक्रवालः x वर्गं - 61 y वर्गं = 1 इत्यस्य लघुतमं समाधानं प्रतिददाति, यत् x = 1766319049, y = 226153980 अस्ति। तत् सप्तमशताब्द्याः पद्धतिः अस्ति, यत् सम्यक् उत्तरस्य विरुद्धं प्रमाणीकृतम् अस्ति।</div>
@@ -658,25 +658,25 @@ Sutram → Uninstall</b>। अनुस्थापकः केवलं स�
 <span class="kw">likha</span>(x + y)      <span class="cm"># 3.750000</span></pre>
   <h3>Growable arrays</h3>
 <pre><span class="kw">kosh</span> xs[4]
-<span class="kw">kosh_push</span>(xs, 10)
-<span class="kw">kosh_push</span>(xs, 20)
-<span class="kw">likha</span>(<span class="kw">kosh_len</span>(xs))    <span class="cm"># 2</span>
+<span class="kw">kosh_kship</span>(xs, 10)
+<span class="kw">kosh_kship</span>(xs, 20)
+<span class="kw">likha</span>(<span class="kw">kosh_gan</span>(xs))    <span class="cm"># 2</span>
 <span class="kw">likha</span>(xs[0])            <span class="cm"># 10</span>
-<span class="kw">dasham</span> last = <span class="kw">kosh_pop</span>(xs)</pre>
+<span class="kw">dasham</span> last = <span class="kw">kosh_hri</span>(xs)</pre>
   <h3>Typed arrays</h3>
 <pre><span class="kw">kosh dasham</span> temps[4]
-<span class="kw">kosh_push</span>(temps, 36.6)
-<span class="kw">kosh_push</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
+<span class="kw">kosh_kship</span>(temps, 36.6)
+<span class="kw">kosh_kship</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
 <span class="kw">likha</span>(temps[1])            <span class="cm"># 37.000000</span></pre>
   <h3>A typed function parameter</h3>
 <pre><span class="kw">prakriya</span> mean(<span class="kw">kosh dasham</span> xs) {
     <span class="kw">dasham</span> s = 0.0
     <span class="kw">vitti</span> i = 0
-    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_len</span>(xs)) {
+    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_gan</span>(xs)) {
         s = s + xs[i]
         i = i + 1
     }
-    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+    <span class="kw">nivartanam</span> s / <span class="kw">kosh_gan</span>(xs)
 }</pre>
   <h3>Using the library</h3>
 <pre><span class="kw">yoj</span> sankhyiki

@@ -82,14 +82,18 @@ use-after-free or a leak.**
 
 ## C. Vocabulary — English still in the language
 
-### C1. Nine English words in the `kosh` builtins
+### C1. Nine English words in the `kosh` builtins - **CLOSED in v292 (R111)**
+**Resolved:** `kosh_kship`, `kosh_hri`, `kosh_ksham`, `kosh_shodh`, `kosh_rikt`, `kosh_iksh`, `kosh_apanay`, `kosh_yuj`, `kosh_gan` are primary; the English names are aliases that warn (reference §4b). The record below is kept as it was.
+
 **`kosh_push`, `kosh_pop`, `kosh_cap`, `kosh_clear`, `kosh_empty`, `kosh_peek`, `kosh_dequeue`, `kosh_enqueue`,
 `kosh_len`.** **`kosh` is Sanskrit; the actions are English.**
 
 **And ChatGPT found the project already has the right words:** **`khip` for push (in `chay_khip`, `suchi_khip`) and
 `apanay` for pop (in `chay_apanay`).** **My proposals invented new ones.**
 
-### C2. `pankti_len` - English `len` in a keyword
+### C2. `pankti_len` - English `len` in a keyword - **CLOSED in v292 (R111)**
+**Resolved:** `pankti_gan` is primary; `pankti_len` is an alias that warns.
+
 **The public length builtin.** **`vartani_aayam` was fixed; this one was not.**
 
 ### C3. `util_chinha` - the old `util` stem

@@ -1,9 +1,16 @@
-> **Status at v405.** The memory model below is unchanged and accurate. **Memory is the NEXT block of work, after the vocabulary round closes.**
+> **Status at compiler v298 (3 November 2026, R120). The body below is the R70 research snapshot - historical; this box is the current model.**
 >
-> **The facts that matter:** `nirmmita` allocates and there is **no `free`**. **`kosh` leaks about 15.3 bytes per item** — a million appends leaks ~15 MB with no way to recover it.
-> **A garbage collector is refused:** it needs a runtime, and the promise is a native binary with no runtime.
-> **The three real options are explicit allocate/free, region allocation, and compile-time ownership** — and **region allocation is faster than `malloc`, not slower**, because allocating is a pointer bump and freeing is a pointer reset.
-> **The measurement that should settle it is not done.** It has to be written in assembly in this sandbox (NASM is available, there is no C compiler) — which is the right language for it anyway, because `nirmmita` uses `mmap` directly.
+> **What a program's memory does today, on Linux ELF** (reference §16 and §19 have the detail and the measurements):
+> - **`nirmmita(n)`** takes `n` zeroed bytes from an **arena** (a pointer bump, rounded to 16; past 1 GiB its own `mmap`). Outside a block they live as long as the program.
+> - **A `mandapa` block gives back what it allocated when it ends** - the arena's scratch side falls (R102). Pages are reused, not returned to the kernel.
+> - **`mandapa parimita N`** refuses an allocation past a budget of `N` bytes: `E_PARIMITA`, exit 1 (R103).
+> - **Every `kosh` has a region of its own** (a 64 MiB `mmap` reservation, touched as it grows) and **never moves**, so a second name for it stays right (R101A).
+> - **A `kosh` made in a block cannot leave it** - refused when compiled, `E_KOSH_MANDAPA` (R107-R109).
+> - **`parimana()`** reports the bytes the program's `nirmmita` and `kosh` hold now (R107).
+>
+> **On Windows (PE) none of that is there yet:** `nirmmita` is a `VirtualAlloc` per call, a `mandapa` releases nothing, a budget is not checked, `parimana()` returns 0, and a growing `kosh` moves - keep one name per `kosh` there.
+>
+> **Still true from the snapshot:** there is no `free` and no garbage collector (refused: it needs a runtime); outside a block, memory is held for the program's life.
 
 # Sutram — current memory observations and proposed ownership model
 > **STATUS — HISTORICAL RESEARCH AND UNIMPLEMENTED DESIGN (R70 snapshot).** Current-state observations below are pinned to an older compiler revision; proposed ownership, borrowing and automatic cleanup are NOT implemented. Specific bounds checks added later do not establish general memory safety. Consult `docs/OPEN-ISSUES.md` and current source for present status.

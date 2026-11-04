@@ -1,13 +1,18 @@
-> **Status at v411, 29 October 2026 — read this before the page below.**
+> **Status at compiler v298, 3 November 2026 (R120) — read this before the page below.**
 >
-> **Compiler v261.** Suite **PASS=225** · crash corpus **227/0** · library proofs **226/226** · property proofs 86/86 · doc signatures PASS · layers 14/9/1 · alloc bounds 26 (13 bounded, 13 exempt) · built-in packs CURRENT · gates **48 PASS / 0 FAIL / 1 NOT-RUN**.
-> **The NOT-RUN is Windows execution, and that is the owner's own test.**
+> **Compiler `Sutram 1.0 (v298) - sampurna sutra`.** Suite **PASS=315** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **63 PASS / 1 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The FAIL is the installer's bundled payload (v243); the NOT-RUN is Windows execution, the owner's own test.**
 >
-> **`nivartanam` is the return keyword; `prati` is a legacy alias.** 235 files across compiler, `lib/`, `examples/`, `tests/` and `docs/` — **zero goldens changed**, and a program written either way compiles to a byte-identical binary.
-> **Done and off every open list:** `likha` up to six values · 135 three-statement triples · the `lkhb` float bug · `arabhya ... paryantam` · **20 library names that described the wrong operation** · 7 wrong Devanagari words · 33 contract comments · Patch A's 12 variable names.
-> **The authoritative page is `docs/WHATS-LEFT.md`.** Where this page disagrees with it, that page is right.
+> **The language today:**
+> - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
+> - **`asti` / `nasti` are `==` / `!=`**; `nivartanam` is return (`prati` a legacy alias).
+> - **Every failure begins `Sutram truti`** (v294; `Sutram Error` up to v293).
+> - **`sankhya_bindu` / `sankhya_dot` are withdrawn** (v295, `E_PRATYAHRITA`).
+> - **Fifteen library contracts refuse instead of wrapping** (v296, R116); `patra_asti` is blocked on an OS query the compiler does not make.
+> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms.
 >
-> **And the memory question is answered:** `nirmmita` emits **`mmap` per allocation** on Linux and **`VirtualAlloc`** on Windows, and there is **no `munmap` anywhere** — nothing ever returns memory. See `docs/MEMORY-MODEL.md`.
+> **Memory:** on Linux, `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, every `kosh` has a region of its own and never moves, and `parimana()` reports the bytes held. **On Windows none of that is there yet:** `parimana()` is 0, a budget is not checked, and a growing `kosh` moves (reference §16, §19; `docs/MEMORY-MODEL.md`).
+>
+> **The authoritative open list is `docs/WHATS-LEFT.md`.**
 
 # Sutram — Language Reference
 
@@ -340,17 +345,17 @@ mukhya() {
 ```
 `lkhb(2.5)` prints **`2.500000`**, not the raw IEEE-754 integer bits on compiler v257. It contributes no newline; the explicit string literal contributes the trailing `|` and LF.
 
-**`likha_fmt(fmt, v)` — literal prefix + integer, not placeholder substitution:**
+**`likha_rup(fmt, v)` — literal prefix + integer, not placeholder substitution:**
 ```sutram
 mukhya() {
-    likha_fmt("x = ", 42)
+    likha_rup("x = ", 42)
 }
 ```
 **Exact expected stdout:**
 ```text
 x = 42
 ```
-`likha_fmt` currently outputs the literal format/prefix string and numeric value sequentially. It does **not** interpret `{0}` or other format placeholders; its integer number path **already writes a final LF**. Therefore an extra `likha("\n")` gives an unwanted blank line. The existing `examples/format_demo.sm` has this extra newline; its golden records the blank lines. Do not edit either without running and updating acceptance.
+`likha_rup` currently outputs the literal format/prefix string and numeric value sequentially. It does **not** interpret `{0}` or other format placeholders; its integer number path **already writes a final LF**. Therefore an extra `likha("\n")` gives an unwanted blank line. The existing `examples/format_demo.sm` has this extra newline; its golden records the blank lines. Do not edit either without running and updating acceptance.
 
 **Evidence:** `src/sutram_compiler.asm:15956-15964,16144-16242,18050-18183`; `tests/r52/test_r52.py:55-74`; `tests/expect/43_nested_likha.out` and `tests/expect/format_demo.out`. Exact outputs are source/committed-test expectations, **NOT RUN by ChatGPT**.
 ## 4b. Standard library (`lib/`)
@@ -955,10 +960,10 @@ then it moves once, as below.
 ```
 mukhya() {
     kosh k[1]
-    kosh_push(k, 41)
+    kosh_kship(k, 41)
     vitti a = k
     vitti obstacle = nirmmita(64)     # something allocated in between
-    kosh_push(k, 42)                  # k grows - in its own region, in place
+    kosh_kship(k, 42)                  # k grows - in its own region, in place
     k[0] = 99
     likha("a[0]=", a[0], " k[0]=", k[0])
     a[0] = 7
@@ -977,7 +982,7 @@ a[0]=7 k[0]=7
 the old buffer, and the program prints `a[0]=41 k[0]=99` / `a[0]=7 k[0]=99` - reading through `a` gives the
 old data, writing through `a` does not reach `k`. Up to v283 Linux did the same whenever something had been
 allocated after the `kosh`. **Until Windows has regions too, keep one name per `kosh` and copy values out
-(`k[i]`, `kosh_len(k)`), not the `kosh`.** A program that does not alias is unaffected on both systems.
+(`k[i]`, `kosh_gan(k)`), not the `kosh`.** A program that does not alias is unaffected on both systems.
 
 **What a region costs (R101A, measured with `tools/peak_rss.py`):** at least one 4 KB page per `kosh` that is
 used, and one `mmap` (about 4 microseconds) when a `kosh` is made. For the tree's programs that is nothing - all
@@ -1040,7 +1045,7 @@ or another slice. **Nothing is copied:** a write through the slice changes the
 array. `a[lo:]` runs to the end, `a[:hi]` starts at 0, `a[:]` is all of it.
 
 ```
-prakriya yog(vibhag s) { ... pankti_len(s) ... s[i] ... }
+prakriya yog(vibhag s) { ... pankti_gan(s) ... s[i] ... }
 likha(yog(a[2:5]))         # elements 2, 3, 4
 vitti s = a[1:7]           # s is a slice: s[0] is a[1]
 likha(yog(a))              # a whole mala or kosh is passed as a[:]
@@ -1058,7 +1063,7 @@ likha(yog(a))              # a whole mala or kosh is passed as a[:]
 - **A slice lives in the frame of the function that makes it:** returning one is a
   compile error (`vibhag prakriyayah na pratyarpaniyah`). A slice made at one place
   in a loop is the same slice each time round (the next iteration remakes it).
-- `pankti_len(s)` is the slice's length.
+- `pankti_gan(s)` is the slice's length.
 
 ### Not done in this version
 
@@ -1159,7 +1164,7 @@ prakriya madhya(a, b, c)            # the middle of three numbers
 variable, a `mala`, a `kosh`, a buffer made outside, a return value. That is how results leave a block.
 
 **Not a `kosh` of pointers.** **A `kosh` — made inside the block or outside it — cannot be relied on to hold an
-address made in the block.** Putting one in directly (`kosh_push(k, buf)`, `k[i] = buf`) is refused; the one way
+address made in the block.** Putting one in directly (`kosh_kship(k, buf)`, `k[i] = buf`) is refused; the one way
 it gets in unseen is through a `prakriya` that hands the address back (below). A `kosh` of *numbers* used in a
 block works; its storage is ordinary memory, which the block does not reclaim.
 
@@ -1192,7 +1197,7 @@ it — must not outlive its block:
 | | |
 |---|---|
 | **1. into a variable declared outside the block** — `outer = buf + 64`, and into a module `vitti` (`g = buf`), wherever in the file it is declared | refused |
-| **2. into memory** — `bahar[i] = buf`, a raw buffer's cell, `likh`, `likh8`, `kosh_push` — wherever the call is written: a statement, an initializer, an argument, a condition | refused |
+| **2. into memory** — `bahar[i] = buf`, a raw buffer's cell, `likh`, `likh8`, `kosh_kship` — wherever the call is written: a statement, an initializer, an argument, a condition | refused |
 | and out by `nivartanam` — plain, `siddhi(...)`, `dosh(...)` | refused |
 | into a variable of the same block or a deeper one | allowed |
 | a number read from scratch (`buf[i]`, `akshar(buf, i)`), anywhere | allowed |
@@ -1224,12 +1229,12 @@ not, see `docs/decisions/MEMORY-DECISION.md`.
 grow, index, pass it to a `prakriya` — and give back a value (`examples/286`).
 
 **From v289 the compiler refuses a `kosh` that would leave its block** - stored in a variable declared outside
-it, written into memory (`kosh_push(outer, k)`, `m[i] = k`), or returned - with the compile-time form of the same
+it, written into memory (`kosh_kship(outer, k)`, `m[i] = k`), or returned - with the compile-time form of the same
 error (`examples/287`):
 
 ```
 Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh mandapat bahih na gacchati - bahya-vittau na sthapyate
-Sanket: kosh mandape eva upayujyatam (k[i], kosh_len(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam
+Sanket: kosh mandape eva upayujyatam (k[i], kosh_gan(k)), mulyam nivartyatam; bahih avashyakah cet mandapat purvam rachyatam
 ```
 
 *(a kosh made in a block does not go outside it - it is not put in an outer variable; use it inside, return the
@@ -1237,7 +1242,7 @@ value; if it is needed outside, make it before the block)*. These are the scratc
 above) applied to the `kosh` itself.
 
 **From v290 a block's `kosh` may be given only to a `prakriya` that does not keep it** - one that reads its `kosh`
-parameter (`k[i]`, `kosh_len(k)`, passing it on to another such `prakriya`) but does not return it, store it, or
+parameter (`k[i]`, `kosh_gan(k)`, passing it on to another such `prakriya`) but does not return it, store it, or
 pass it to one that does. The compiler works this out for every `prakriya` and parameter of the program; a
 function value or a foreign function counts as keeping. Otherwise (`examples/316`):
 
@@ -1267,7 +1272,7 @@ How: each such block takes a fresh generation on entry and clears it on exit; ea
 a `prakriya` with a `kosh` parameter compares them on entry. **A `kosh` made outside every block is unchanged**,
 and a program with no `kosh` in a block compiles to the same bytes as before. In a program with one, every
 `kosh` carries three more header words and each call with a `kosh` parameter one check (+11% on a call whose
-whole body is one `kosh` read; +3.5% on `kosh_push`).
+whole body is one `kosh` read; +3.5% on `kosh_kship`).
 
 **Decided (R103, v285): the block does not take a `kosh`'s memory back; the `kosh` keeps it for the program's
 life.** That is what keeps the check above exact: the check reads the `kosh`'s header, so the header must still
@@ -1383,7 +1388,7 @@ parikshita mukhya() {
 |---|---|
 | numbers, `dasham`, `yadi`, `yavat`, `kuru`, `chakra`, `mandapa`, `nivartanam`, module `vitti` | `kosh`, `rachana` fields (`p.x`), slices, function values, `prasar`, `yadi dosh`, inline assembly |
 | calls to **other `parikshita` functions** | a call to any other `prakriya` — `E_APARIKSHITA_AHVAN`, at the call, naming it |
-| `likha`, `likha_fmt`, `grahan`, `nirmmita` | every other builtin: `dvaram_likha`, `likh8`, `pad8`, `akshar`, `akshar_rakh`, `smaran`, `shabda`, `kosh_*`, files … — `E_APARIKSHITA_KARYA` |
+| `likha`, `likha_rup`, `grahan`, `nirmmita` | every other builtin: `dvaram_likha`, `likh8`, `pad8`, `akshar`, `akshar_rakh`, `smaran`, `shabda`, `kosh_*`, files … — `E_APARIKSHITA_KARYA` |
 | `a[i]` on a `mala` declared in the function; `p[i]` where `vitti p = nirmmita(NUMBER)` and `p` is never assigned again — both checked against their size | `x[i]` on anything else — a parameter, `p + 8`, a size computed at run time — `E_APARIKSHITA_SMRITI` |
 
 **The rule is transitive:** a checked function calls only checked functions, and each of those is checked

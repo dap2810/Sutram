@@ -1,3 +1,5 @@
+> **SUPERSEDED - a proposal table (R96-era), kept as the record.** The names actually adopted are in the reference: **§4b** (v292, R111: `kosh_kship`, `kosh_hri`, `kosh_gan`, `pankti_gan`, `vartani_sandhi`, `likha_rup`, ... - several differ from the proposals here) and **§4c** (v297, R118: the ten library names). **`sankhya_bindu` / `sankhya_dot` are withdrawn** (v295, `E_PRATYAHRITA`). Where this page and the reference differ, the reference is right.
+
 # The nomenclature — short, meaningful, and checkable
 
 **The rule I applied to every entry:**

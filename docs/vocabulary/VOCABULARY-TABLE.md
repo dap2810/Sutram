@@ -1,3 +1,5 @@
+> **SUPERSEDED - a proposal table (R96-era), kept as the record.** The names actually adopted are in the reference: **§4b** (v292, R111: `kosh_kship`, `kosh_hri`, `kosh_gan`, `pankti_gan`, `vartani_sandhi`, `likha_rup`, ... - several differ from the proposals here) and **§4c** (v297, R118: the ten library names). **`sankhya_bindu` / `sankhya_dot` are withdrawn** (v295, `E_PRATYAHRITA`). Where this page and the reference differ, the reference is right.
+
 > **Status at v405 — the return keyword is decided.** **`nivartanam` (निवर्तनम्, `ni` + `vṛt`) is the keyword; `prati` is kept as a legacy alias so no existing program stops compiling.** Applied across 162 files in R53/R54 with **zero goldens changed**.
 >
 > **Two corrections to the table below, both from measuring rather than reading:** **`chay` IS real Sanskrit (चय, heap)** — the `chiti_*` rename I proposed is churn and should not happen. **`kosh_enqueue` must not become `kosh_purva_yuj`** — enqueue appends at the REAR, and `purva` means front.

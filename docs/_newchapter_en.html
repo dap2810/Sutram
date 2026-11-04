@@ -18,9 +18,9 @@
   <p>An ordinary mala (<span class="kw">mala</span>) is fixed in size. A <span class="kw">kosh</span>
   grows: it starts at a small capacity and doubles as needed.</p>
 <pre><span class="kw">kosh</span> xs[4]              <span class="cm"># capacity 4, length 0</span>
-<span class="kw">kosh_push</span>(xs, 10)
-<span class="kw">kosh_push</span>(xs, 20)
-<span class="kw">likha</span>(<span class="kw">kosh_len</span>(xs))    <span class="cm"># 2</span>
+<span class="kw">kosh_kship</span>(xs, 10)
+<span class="kw">kosh_kship</span>(xs, 20)
+<span class="kw">likha</span>(<span class="kw">kosh_gan</span>(xs))    <span class="cm"># 2</span>
 <span class="kw">likha</span>(xs[0])            <span class="cm"># 10</span>
 <span class="kw">dasham</span> last = <span class="kw">kosh_pop</span>(xs)</pre>
   <p><strong>Capacity is not length.</strong> <code>kosh xs[4]</code> has capacity 4 but length 0, so
@@ -31,8 +31,8 @@
   <p>A <span class="kw">kosh</span> can be declared to hold floats. Integer values pushed into it are
   promoted, and its elements behave as floats everywhere.</p>
 <pre><span class="kw">kosh dasham</span> temps[4]
-<span class="kw">kosh_push</span>(temps, 36.6)
-<span class="kw">kosh_push</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
+<span class="kw">kosh_kship</span>(temps, 36.6)
+<span class="kw">kosh_kship</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
 <span class="kw">likha</span>(temps[1])            <span class="cm"># 37.000000</span></pre>
 
   <h3>Typed function parameters</h3>
@@ -40,15 +40,15 @@
 <pre><span class="kw">prakriya</span> mean(<span class="kw">kosh dasham</span> xs) {
     <span class="kw">dasham</span> s = 0.0
     <span class="kw">vitti</span> i = 0
-    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_len</span>(xs)) {
+    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_gan</span>(xs)) {
         s = s + xs[i]
         i = i + 1
     }
-    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+    <span class="kw">nivartanam</span> s / <span class="kw">kosh_gan</span>(xs)
 }</pre>
   <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
   caller</strong> — a function can fill an mala for you. But growing it is not allowed: calling
-  <code>kosh_push</code> on a parameter is refused with a named error, because the pointer is passed by
+  <code>kosh_kship</code> on a parameter is refused with a named error, because the pointer is passed by
   value and the caller would be left holding a stale one. This is a deliberate safety boundary, not a
   missing feature.</p>
 

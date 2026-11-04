@@ -340,7 +340,7 @@ instantly without leaving your flow.</div>
 <tr><td><code><span class="k" data-tip="true">purna</span> / <span class="k" data-tip="false / null">shunya</span></code></td><td>true / false</td></tr>
 <tr><td><code><span class="k" data-tip="negation (-)">abhava</span></code></td><td>assert</td></tr>
 <tr><td><code><span class="k" data-tip="inline assembly">yantra</span></code></td><td>inline machine code</td></tr>
-<tr><td><code><span class="k" data-tip="print (no newline)">lkhb</span></code></td><td>print without newline</td></tr>
+<tr><td><code><span class="k" data-tip="print (no newline)">likha_santat</span></code></td><td>print without newline</td></tr>
 <tr><td><code><span class="k" data-tip="input">grahan</span></code></td><td>read input (-1 on EOF)</td></tr>
 <tr><td><code># / //</code></td><td>comments</td></tr>
 </table>
@@ -385,17 +385,17 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <span class="k" data-tip="print">likha</span>("The answer: " + 42 + "\n")
 <span class="k" data-tip="print">likha</span>(7 + " days\n")</code></pre>
 
-<h3><span class="k" data-tip="print (no newline)">lkhb</span>() — print without newline</h3>
-<p><code><span class="k" data-tip="print">likha</span>()</code> adds a newline after a number; <code><span class="k" data-tip="print (no newline)">lkhb</span>()</code> does not — ideal for tables:</p>
+<h3><span class="k" data-tip="print (no newline)">likha_santat</span>() — print without newline</h3>
+<p><code><span class="k" data-tip="print">likha</span>()</code> adds a newline after a number; <code><span class="k" data-tip="print (no newline)">likha_santat</span>()</code> does not — ideal for tables:</p>
 <pre><code><span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">tak</span> 5 {
-    <span class="k" data-tip="print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="print (no newline)">likha_santat</span>(i)
     <span class="k" data-tip="print">likha</span>(" ")
 }</code></pre>
 
 <h3>Descending Loops</h3>
 <p>If the start value is greater than the end value, the loop counts down automatically:</p>
 <pre><code><span class="k" data-tip="for">chakra</span> i = 5 <span class="k" data-tip="range-to">tak</span> 1 {
-    <span class="k" data-tip="print (no newline)">lkhb</span>(i)
+    <span class="k" data-tip="print (no newline)">likha_santat</span>(i)
     <span class="k" data-tip="print">likha</span>(" ")
 }    <span class="cm"># output: 5 4 3 2 1</span></code></pre>
 
@@ -428,7 +428,7 @@ mukhya()
     } yavat (i &lt; 3)
     likha(i)
     mala a[3]
-    likha(pankti_len(a))
+    likha(pankti_gan(a))
 </code></pre>
 
 <h3>The standard library</h3>
@@ -437,7 +437,7 @@ mukhya()
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
 <tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
 <tr><td><code>ank</code></td><td><code>yoj ank</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
-<tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_sorted</code> <code>dwi_anwesh</code></td></tr>
+<tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_kramabaddha</code> <code>dwi_anwesh</code></td></tr>
 <tr><td><code>varna</code></td><td><code>yoj varna</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
 </table>
 <pre><code>yoj ganit
@@ -677,11 +677,11 @@ toolchain. The installer is only packaging — it is not part of the language.</
   <p>An ordinary mala (<span class="kw">mala</span>) is fixed in size. A <span class="kw">kosh</span>
   grows: it starts at a small capacity and doubles as needed.</p>
 <pre><span class="kw">kosh</span> xs[4]              <span class="cm"># capacity 4, length 0</span>
-<span class="kw">kosh_push</span>(xs, 10)
-<span class="kw">kosh_push</span>(xs, 20)
-<span class="kw">likha</span>(<span class="kw">kosh_len</span>(xs))    <span class="cm"># 2</span>
+<span class="kw">kosh_kship</span>(xs, 10)
+<span class="kw">kosh_kship</span>(xs, 20)
+<span class="kw">likha</span>(<span class="kw">kosh_gan</span>(xs))    <span class="cm"># 2</span>
 <span class="kw">likha</span>(xs[0])            <span class="cm"># 10</span>
-<span class="kw">dasham</span> last = <span class="kw">kosh_pop</span>(xs)</pre>
+<span class="kw">dasham</span> last = <span class="kw">kosh_hri</span>(xs)</pre>
   <p><strong>Capacity is not length.</strong> <code>kosh xs[4]</code> has capacity 4 but length 0, so
   <code>xs[0]</code> is out of bounds until something is pushed. This trips people up once; it is
   deliberate, and it is what makes indexing safe.</p>
@@ -690,8 +690,8 @@ toolchain. The installer is only packaging — it is not part of the language.</
   <p>A <span class="kw">kosh</span> can be declared to hold floats. Integer values pushed into it are
   promoted, and its elements behave as floats everywhere.</p>
 <pre><span class="kw">kosh dasham</span> temps[4]
-<span class="kw">kosh_push</span>(temps, 36.6)
-<span class="kw">kosh_push</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
+<span class="kw">kosh_kship</span>(temps, 36.6)
+<span class="kw">kosh_kship</span>(temps, 37)      <span class="cm"># promoted to 37.0</span>
 <span class="kw">likha</span>(temps[1])            <span class="cm"># 37.000000</span></pre>
 
   <h3>Typed function parameters</h3>
@@ -699,15 +699,15 @@ toolchain. The installer is only packaging — it is not part of the language.</
 <pre><span class="kw">prakriya</span> mean(<span class="kw">kosh dasham</span> xs) {
     <span class="kw">dasham</span> s = 0.0
     <span class="kw">vitti</span> i = 0
-    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_len</span>(xs)) {
+    <span class="kw">yavat</span> (i &lt; <span class="kw">kosh_gan</span>(xs)) {
         s = s + xs[i]
         i = i + 1
     }
-    <span class="kw">nivartanam</span> s / <span class="kw">kosh_len</span>(xs)
+    <span class="kw">nivartanam</span> s / <span class="kw">kosh_gan</span>(xs)
 }</pre>
   <p>A <code>kosh dasham</code> is passed as a pointer, so <strong>indexed writes are visible to the
   caller</strong> — a function can fill an mala for you. But growing it is not allowed: calling
-  <code>kosh_push</code> on a parameter is refused with a named error, because the pointer is passed by
+  <code>kosh_kship</code> on a parameter is refused with a named error, because the pointer is passed by
   value and the caller would be left holding a stale one. This is a deliberate safety boundary, not a
   missing feature.</p>
 

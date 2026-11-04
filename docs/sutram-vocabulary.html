@@ -125,6 +125,17 @@ Marathi, Gujarati, Bengali, Punjabi, Odia, Tamil, Telugu, Kannada and Malayalam.
 <tr><td>shell help</td><td><code>help</code></td><td><b>sahayata</b></td><td>सहायता</td><td>help (already the shell's word)</td></tr></tbody></table>
 <p><b>The failure token, from v294 (R114):</b> <code>Sutram Error</code> became <b><code>Sutram truti</code></b> (त्रुटि) - in the compiler and, by the owner's written exception to the pack freeze, identically in all eleven language packs; nothing else in the packs changed (<code>docs/decisions/R114-SUTRAM-TRUTI.md</code>). <code>Sutram suchana:</code> stays the notice. <code>to</code> is not a word (<code>tak</code> is "up to"; <code>prati</code> is return).</p>
 
+<h2>Library names (v297, R118)</h2>
+<p>Ten library <code>prakriya</code> had an English word in their names. <b>The library defines the Sanskrit name; a call with the old name still compiles, to the same bytes, with the same warning</b> (reference §4c).</p>
+<table><thead><tr><th>What it does</th><th>Was</th><th>Now</th><th>Devanagari</th><th>Meaning</th></tr></thead><tbody><tr><td>count of 1-bits</td><td><code>bit_gan</code></td><td><b>ekanka_gan</b></td><td>एकाङ्क गण</td><td>count of the ones</td></tr>
+<tr><td>symmetric difference of two sets</td><td><code>rakh_samroop_diff</code></td><td><b>rakh_ubhaya_bhed</b></td><td>उभय भेद</td><td>difference both ways</td></tr>
+<tr><td>pad left / right / both</td><td><code>roop_pad_vam / _dakshin / _madhya</code></td><td><b>roop_purti_vam / _dakshin / _madhya</b></td><td>पूर्ति</td><td>filling</td></tr>
+<tr><td>pad a character array left</td><td><code>pad_vam</code></td><td><b>purti_vam</b></td><td>पूर्ति</td><td>filling</td></tr>
+<tr><td>number with its base prefix</td><td><code>roop_ank_pre</code></td><td><b>roop_ank_upasarga</b></td><td>उपसर्ग</td><td>prefix</td></tr>
+<tr><td>number with a sign character</td><td><code>roop_sign_akshar</code></td><td><b>roop_chihna_akshar</b></td><td>चिह्न</td><td>sign, mark</td></tr>
+<tr><td>is the array in order</td><td><code>asti_sorted</code></td><td><b>asti_kramabaddha</b></td><td>क्रमबद्ध</td><td>arranged in order</td></tr>
+<tr><td>is the list in order</td><td><code>suchi_asti_sorted</code></td><td><b>suchi_asti_kramabaddha</b></td><td>क्रमबद्ध</td><td>arranged in order</td></tr></tbody></table>
+
 <h2>Error codes and CLI flags</h2>
 <table><thead><tr><th>Was</th><th>Becomes</th><th>Devanagari</th></tr></thead><tbody><tr><td><code>E_PARSE</code></td><td><b>E_VYAKARAN</b></td><td>व्याकरण</td></tr>
 <tr><td><code>E_UTF8</code></td><td><b>E_LIPI</b></td><td>लिपि</td></tr>
