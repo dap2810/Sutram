@@ -86,6 +86,15 @@ RUNS = [  # (what, program, compile flags, address limit in KB or 0, stdout, exi
      '    nivartanam 0\n}\nmukhya() {\n    vitti t = 0\n    chakra j = 1 tak 100 {\n        mandapa {\n'
      '            kosh kk[1]\n            chakra i = 1 tak 50 {\n                jod(kk, i)\n            }\n'
      '            t = t + kk[49]\n        }\n    }\n    likha(t)\n}\n', [], 0, '5000\n', 0, False),
+    # R129 (ChatGPT R204 S2): an omitted hi is the length after lo was evaluated
+    ('k[lo:] where lo grows the kosh: to the new end (R204 S2; v304 refused it)', 'prakriya pratham(vibhag s) {\n'
+     '    nivartanam s[0]\n}\nmukhya() {\n    kosh k[1]\n    kosh_kship(k, 7)\n    vitti obstacle = nirmmita(16)\n'
+     '    likha(pratham(k[kosh_kship(k, 8) - 1:]))\n}\n', [], 0, '8\n', 0, True),
+    ('k[lo:] where lo shrinks the kosh (R204 S2)', 'prakriya gan(vibhag s) {\n    nivartanam pankti_gan(s)\n}\n'
+     'mukhya() {\n    kosh k[4]\n    kosh_kship(k, 1)\n    kosh_kship(k, 2)\n    kosh_kship(k, 3)\n'
+     '    likha(gan(k[kosh_hri(k) - 3:]))\n}\n', [], 0, '2\n', 0, False),
+    ('k[lo:] where lo clears the kosh (R204 S2)', 'prakriya gan(vibhag s) {\n    nivartanam pankti_gan(s)\n}\n'
+     'mukhya() {\n    kosh k[4]\n    kosh_kship(k, 1)\n    likha(gan(k[kosh_shodh(k):]))\n}\n', [], 0, '0\n', 0, False),
 ]
 
 
@@ -130,6 +139,13 @@ def main():
                            'prakriya g(kosh k) {\n    kosh_kship(k, 1)\n    nivartanam 0\n}\nprakriya f(kosh k, vibhag s) {\n'
                            '    g(k)\n    nivartanam s[0]\n}\nmukhya() {\n    kosh kk[1]\n    kosh_kship(kk, 5)\n'
                            '    likha(f(kk, kk[0:1]))\n}\n'),
+                          ('a kosh slice beside a growth that moves its region (R204 S1; v303 SIGSEGV)',
+                           'prakriya pratham(vibhag s, ignored) {\n    nivartanam s[0]\n}\nmukhya() {\n    kosh k[1]\n'
+                           '    chakra i = 1 tak 8388608 {\n        kosh_kship(k, i)\n    }\n'
+                           '    likha(pratham(k[0:1], kosh_kship(k, 9)))\n}\n'),
+                          ('a whole kosh to a vibhag beside a growth through an alias, as a statement (R204 S1)',
+                           'prakriya pratham(vibhag s, ignored) {\n    likha(s[0])\n    nivartanam 0\n}\nmukhya() {\n'
+                           '    kosh k[1]\n    vitti a = k\n    kosh_kship(k, 1)\n    pratham(k, kosh_kship(a, 9))\n}\n'),
                           ('a kosh slice beside an argument with a call',
                            'prakriya f(vibhag s, x) {\n    nivartanam s[0] + x\n}\nmukhya() {\n    kosh kk[1]\n'
                            '    kosh_kship(kk, 5)\n    likha(f(kk[0:1], kosh_kship(kk, 6)))\n}\n')):

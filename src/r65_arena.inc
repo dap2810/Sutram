@@ -580,6 +580,22 @@ r127_emit_grow:
     push r12
     push r13
     push r14
+    ; R129 (ChatGPT R204, F2's growth half): a new capacity past R128_MAXCAP stops with the grow message.
+    ; Unreachable on a real machine (2^40 pushes first need 8 TiB), so this is the stated invariant, checked:
+    ; mov rcx,R128_MAXCAP ; cmp r11,rcx ; jbe .ok ; xor eax,eax ; (the grow check: rax = 0 -> message)
+    R23_EMIT 0x48,0xB9
+    mov rdi, R128_MAXCAP
+    call emit_u32
+    mov rdi, R128_MAXCAP >> 32
+    call emit_u32
+    R23_EMIT 0x49,0x39,0xCB, 0x0F,0x86
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    R23_EMIT 0x31,0xC0
+    call r127_emit_grow_check
+    mov rdi, r12
+    call r73_patch32
     ; mov rax,r11 ; shl rax,3 ; mov rcx,[r8+8] ; test rcx,rcx ; jz .notreg
     R23_EMIT 0x4C,0x89,0xD8, 0x48,0xC1,0xE0,0x03, 0x49,0x8B,0x48,0x08, 0x48,0x85,0xC9, 0x0F,0x84
     mov r12, [rel code_sz]

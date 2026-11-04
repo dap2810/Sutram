@@ -1,7 +1,7 @@
-# Sutram 1.0 (v304) — release notes
+# Sutram 1.0 (v305) — release notes
 
-**Compiler `Sutram 1.0 (v304) - sampurna sutra`, 4 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v304). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v305) - sampurna sutra`, 4 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v305). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -17,11 +17,16 @@ contract table, the Windows rounds 1-4 and the v297 IDE run.
   `sutram-link` links separately compiled modules. A terminal IDE, an X11 IDE and a Windows IDE are included.
 - **Memory you can see:**
   - `nirmmita` comes from an arena;
-  - a `mandapa` block gives its memory back at its end, and `mandapa parimita N` refuses past a budget;
-  - `parimana()` reports the bytes held;
-  - **a `kosh` is a descriptor:** its names always agree, at any size, and there is no limit on how many a
-    program makes (v302);
-  - running out of memory is a message and exit 1, not a crash.
+  - a `mandapa` block gives back the scratch `nirmmita` written inside it when it ends (its pages are kept for
+    reuse, not returned to the system), and `mandapa parimita N` refuses a scratch allocation past `N` bytes - a
+    budget for that block's `nirmmita`, not for the whole program, nor for `kosh` storage;
+  - `parimana()` reports the allocator's accounted bytes (below), not memory in use or reserved;
+  - **a `kosh` is a descriptor:** its names always agree, at any size, and the fixed 64 MiB reservation every small
+    `kosh` had up to v301 is gone (v302); memory is still finite, a `kosh` past 64 KiB of elements reserves a region
+    of at least 64 MiB, and a declared capacity above 2^40 numbers is refused (v303);
+  - **when the checked allocation paths get no memory** - making or growing a `kosh`, a declared capacity too
+    large - the program stops with a message and exit 1 instead of crashing. That says nothing about a failure
+    later, when the system cannot back a reserved page that is first touched, nor about raw-pointer errors.
 - **Checked by the compiler:**
   - a name keeps one kind for its whole `prakriya` (`E_VITTI_PRAKAR`);
   - a `kosh` cannot become a raw number (`E_KOSH_DVARA`);
@@ -44,7 +49,7 @@ contract table, the Windows rounds 1-4 and the v297 IDE run.
 | **An interactive debugger** - no breakpoints, no stepping, no watch window in any IDE | **Debug diagnostics exist:** `--debug` traces each statement of your file with its line and its scalar variables. `--debug=<names>@N-M` watches chosen names over a line range; `--debug-from=N` starts at a line (R45-R49). `--check` checks without writing a program; `sutram -i` is an interactive session. An external native debugger (gdb, WinDbg) can run the output, but **sees machine code only: the output has no debug symbols** |
 | **Generics** | none: a `kosh` holds whole numbers (`kosh`) or `dasham` (`kosh dasham`); a `prakriya` parameter is untyped, or `kosh`, `kosh dasham`, `vibhag`, `dasham` |
 | **Threads, or any concurrent execution within a process** | none. The arena, its budgets and `kosh` growth are unsynchronised. **Deferred beyond v1.0, not ruled out** (ChatGPT R195: per-thread arenas, a multi-week design) |
-| **Freeing memory inside a live scope** | a `mandapa` block gives its memory back at its end; outside a block, memory lives as long as the program. No `free`, no garbage collector |
+| **Freeing memory inside a live scope** | a `mandapa` block gives back its scratch `nirmmita` at its end; other memory lives as long as the program (see *Memory and pointers* for what the allocator returns by itself). No `free`, no garbage collector |
 | **Closures**, calling an expression directly (`t[0](x)`), a checked type for function values, methods dispatched on type / traits, slices of a `kosh dasham`, a slice outliving its function | reference §17 lists them as not done |
 | **Formal verification** | the library proofs and property proofs are **executable tests** - they run code and compare results - and the native and Windows tests run programs. **No library function is marked `parikshita`** (0 of 310): R81's checked-function marker exists and works for your own `prakriya`, but the library does not use it. None of this is a machine-checked proof of the compiler or the library |
 | **Development of the ten non-Sanskrit packs** | Hindi, Gujarati and the other eight are frozen: in the tree and working, with no new development. A defect in one is reported, not fixed. Messages added since the freeze appear in the default (Sanskrit transliteration) form in those packs |
@@ -52,7 +57,7 @@ contract table, the Windows rounds 1-4 and the v297 IDE run.
 ## Integer arithmetic: what wraps, what refuses, what reports
 
 **The operators wrap; the compiler refuses only what it can see; the library follows each function's
-contract.** Measured on v304, Linux:
+contract.** Measured on v305, Linux:
 
 | you write | you get |
 |---|---|
@@ -84,9 +89,22 @@ succeeded; use the checked form when the program must detect a failure and go on
   inside a `mandapa` (escaping a block is refused, `E_SCRATCH_ESCAPE`).
 - **A foreign function** (`--ffi`, a `ptr` parameter) **receives a `kosh`'s elements' address, valid until the `kosh` next
   grows.** Nothing checks what the foreign side does with it.
-- **A slice of a `kosh` cannot be kept in a name** (`E_KOSH_VIBHAG`); pass it on directly.
-- **A small `kosh` that grows past something allocated after it leaves its old elements in the arena** (at most about
-  its own size again, under 64 KiB); `parimana()` counts them.
+- **A slice of a `kosh` is a view of the elements as they are when it is made.** So (`E_KOSH_VIBHAG`):
+  - it cannot be kept in a name (`vitti s = k[1:4]`);
+  - it cannot be given to a `prakriya` that may grow a `kosh` (it, or one it calls, runs `kosh_kship`);
+  - it cannot be given beside another argument that has a call in it (the call could grow the `kosh` first).
+  Passed on directly, to a `prakriya` that only reads, it is safe: `yog(k[1:4])`. In `k[lo:]` the end is the length
+  after `lo` is evaluated (v305).
+- **`parimana()` counts:** occupied arena storage (including temporary buffers in open blocks, `kosh` descriptors and
+  retained old arena buffers) plus the current capacity of a `kosh` whose elements have a region of their own. It is
+  not resident memory, commit or reserved address space, and an allocation that falls back to its own `mmap` (past the
+  arena, or with no arena) is not in it.
+- **There is no free a program can call.** What the allocator gives back by itself: a `mandapa`'s scratch at the
+  block's end, and an outgrown region of a large `kosh`. **What it keeps:** a small `kosh` that grows past
+  something allocated after it leaves its old elements in the arena (at most about its own size again, under 64 KiB);
+  a `kosh`'s first elements, which sit beside its descriptor, stay allocated when it grows - **for a `kosh` declared
+  large (`kosh k[1000000]`) that is the whole declared capacity**; and a block's `kosh` storage is not reclaimed at
+  the block's end. `parimana()` counts all of these.
 - **Helper allocations are kept for the program's life:** `anka_akshar`, string `+` and similar take new memory
   for each result, and it is not given back - not even at the end of an enclosing `mandapa` (measured: a
   16-byte `a + "cd"` made inside a block is still counted by `parimana()` after it).
@@ -115,8 +133,12 @@ succeeded; use the checked form when the program must detect a failure and go on
 - **Every Linux gate runs here; the Windows gates run on the owner's machine.**
   - The last native Windows runs were the Windows rounds 1-4: v297 had 305 passes and 8 failures; after the
     round 3 and round 4 fixes, 312 passes and 0 failures, on the branch merged as v299.
-  - v298-v304 have been run on Windows only under Wine 64 here, with every program's output compared.
-  - **Native Windows execution of v304 is not yet done.**
+  - v298-v305 have been run on Windows only under Wine 64 here, with every program's output compared.
+  - **Native Windows execution of v305 is not yet done.**
+- **An open observation under Wine:** about 1 run in 200 of a finished program, Wine reports an unhandled page
+  fault at exit - after all the output, with exit code 0, at the same address in Wine's own code each time. Seen
+  on v301 and v305 (also on programs with no `kosh`), not in 200 runs each of v299 and v300 - too few to say when
+  it began. Its cause is not known. Native Windows has not been run on these versions: watch for it there.
 - **Skipped on Windows, by design:**
   - `examples/29_nishkriya`: inline Linux system calls;
   - socket examples, which differ by platform (`245_r18_netsock`).
@@ -127,24 +149,27 @@ succeeded; use the checked form when the program must detect a failure and go on
   - **Run Module gives no interactive input** (end of input at once).
 - **The installer's PowerShell scripts are unsigned.**
   - Under a `Restricted` or `AllSigned` execution policy they are blocked.
-  - Install and uninstall on a fresh machine are the owner's acceptance test, not yet done for v304.
+  - Install and uninstall on a fresh machine are the owner's acceptance test, not yet done for v305.
   - The installer's hashes detect corruption, not the publisher.
 - **The linker:** `sutram-link` and the object tools still print `Sutram Error` where the compiler prints
   `Sutram truti` (v294 renamed only the compiler's).
 
 **Other**
-- **Separately compiled objects must come from the same compiler version:** `sutram-link` does not check the
-  version, and v302 changed how a `kosh` is passed.
-- **The breaking changes of v301-v302:**
+- **Objects from different compiler versions are not supported:** v302 changed how a `kosh` is passed, and
+  `sutram-link` does not check the version - mixing objects is not refused, it is wrong. Rebuild every object with
+  the same compiler.
+- **The breaking changes of v301-v304:**
   - a name cannot change kind (`vitti w = 0` then `w = k` is refused);
   - a `kosh` cannot go into a cell, a module `vitti` or an untyped parameter;
-  - a slice of a `kosh` cannot be kept in a name.
-  - Three examples were rewritten for the first rule.
+  - a slice of a `kosh` cannot be kept in a name, nor go beside a growth (above);
+  - a declared capacity above 2^40 numbers is refused.
+  - Three examples were rewritten for the first rule. The gain: a `kosh` parameter can grow (v304).
 
 ## Changes since the last installer before R128 (v243)
 
-The full record is `docs/CHANGELOG.md` and `docs/rounds/CHANGELOG-ARCHIVE.md`. Since v297, Windows found two
-defects Linux never showed:
+The full record is `docs/CHANGELOG.md` and `docs/rounds/CHANGELOG-ARCHIVE.md`. Since v297, the first Windows
+testing exposed two defects. A passing earlier Linux sample had not proved them correct; R121 then reproduced both
+on Linux as well:
 
 - `anka_akshar` returned memory it did not own;
 - `vartani_sandhi` wrote into a read-only literal.
@@ -157,10 +182,14 @@ v298 fixed both. Then:
 - **v302:** made a `kosh` a descriptor.
 - **v303:** fixed three defects in it that ChatGPT R203 found by reading the source:
   - an index or a slice bound that grew the `kosh` read its old elements (SIGSEGV after a region was given back);
-  - a capacity past 2^40 wrapped into a tiny allocation;
+  - a huge declared capacity wrapped its byte count into a tiny allocation (2^61 did; v303 refuses any declared
+    capacity above 2^40, which is not to say every one above it wrapped);
   - `parimana()` miscounted a large `kosh`.
 - **v304:** a `kosh` parameter can grow, and the caller sees it (refused up to v303). A slice of a `kosh` cannot be
-  given to a `prakriya` that may grow one, or beside an argument with a call (`E_KOSH_VIBHAG`).
+  given to a `prakriya` that may grow one, or beside an argument with a call (`E_KOSH_VIBHAG`) - that closes the
+  stale-slice case ChatGPT R204 found (S1: v303 crashed on it).
+- **v305:** `k[lo:]` ends at the length after `lo` is evaluated (R204 S2), and a growth past 2^40 numbers stops with
+  the grow message (a stated invariant, checked; no machine reaches it).
 
 How these defects were found - a second platform, testing, an independent attack and reading each found some the
 others missed - is in `docs/reports/HOW-DEFECTS-WERE-FOUND.md`.

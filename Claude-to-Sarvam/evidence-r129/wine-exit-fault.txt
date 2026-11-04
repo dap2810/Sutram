@@ -1,0 +1,8 @@
+# a rare Wine fault at process exit (after correct output, exit 0, address 0x6FFFFB642600 in Wine)
+the second full gates run's R127 rerun hit it once (r127-gate.txt: pop/peek/dequeue PE), the first gates run once (R126, the no-kosh program rr.sm)
+programs/rr.sm (no kosh) 200 runs each under Wine 64, nothing else running:
+(v305) rr: 200 runs, 0 with a page fault (543s)
+(v301) rr: 200 runs, 1 with a page fault (543s)
+(v300) rr: 200 runs, 0 with a page fault (536s)
+(v299, before the VEH) rr: 200 runs, 0 with a page fault
+programs/pp.sm (pop/peek) 60 runs: v305 1 with a fault, v300 0

@@ -653,6 +653,9 @@ r23_gen_slice:
     cmp r13d, 2                        ; R128 (R203 F1): a kosh - lo and hi may have grown it:
     jne .no_refresh                    ; its length and elements now, from the descriptor
     R23_EMIT 0x48,0x8B,0x4C,0x24,0x10, 0x48,0x8B,0x51,0xF0, 0x48,0x89,0x54,0x24,0x08, 0x48,0x8B,0x09, 0x48,0x89,0x4C,0x24,0x10
+    cmp qword [rbx + 24], 0            ; R129 (ChatGPT R204 S2): an omitted hi is "to the end" - the
+    jne .no_refresh                    ; length after lo was evaluated, not before
+    R23_EMIT 0x48,0x8B,0x44,0x24,0x08  ; mov rax,[rsp+8]
 .no_refresh:
     ; hi <= length: hi < length + 1 (unsigned, so a negative hi fails too)
     R23_EMIT 0x48,0x8B,0x4C,0x24,0x08  ; mov rcx,[rsp+8]

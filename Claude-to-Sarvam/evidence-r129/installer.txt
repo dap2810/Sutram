@@ -1,4 +1,5 @@
 self-test (Wine 64): exit 0 
-payload: 658 files, 1851161 bytes zipped; Sutram-Setup.exe 1971669 bytes, sha256 b6e165abd017c02323affad2a4425f09c869117af5dae96f35085591cdf83aec
-SETUP PASS: built /home/claude/sutram/Sutram-Setup.exe; staging kept at /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r129/setup
-PASS payload v304 = compiler v304 (bin/ and win/sutram.exe, packed 2026-11-04; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/
+payload: 658 files, 1853561 bytes zipped; Sutram-Setup.exe 1973717 bytes, sha256 99d26a89f355a2b20bdf7fe1fbd94aa8e304c3eae3a9b54c8364ecf8f1e6e6f5
+SETUP PASS: built /home/claude/sutram/Sutram-Setup.exe; staging kept at /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r129/setup3
+PASS payload v305 = compiler v305 (bin/ and win/sutram.exe, packed 2026-11-04; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/
+r93 installer gate: 11 checks, 0 failed (after this last build, which only re-packed the release notes)

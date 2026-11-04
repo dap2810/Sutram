@@ -1021,6 +1021,9 @@ it calls, runs `kosh_kship`), or given beside another argument that has a call i
 elements' address as they were when it was made; a growth would leave it behind. Both are `E_KOSH_VIBHAG`. Give
 such a `prakriya` the `kosh` itself; give a slice to one that only reads.
 
+**In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
+An explicit end is evaluated once, where it is written.
+
 ### A name keeps one kind (v301, R126) — `E_VITTI_PRAKAR`, `E_KOSH_DVARA`
 
 **Inside a `prakriya` (or `mukhya`), a name keeps the kind its first binding gave it:** a `kosh`, a `kosh dasham`,

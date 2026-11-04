@@ -63,23 +63,23 @@ any compiler (re-pinned in ROUND-03 together with `manifest.json`):
 
 | Input | Required Git blob |
 |---|---|
-| `src/sutram_compiler.asm` | `bda2faae05fdaee6da2c00d009dea56ed12b0fb6` |
+| `src/sutram_compiler.asm` | `3f31ec9b993ebc66d9da6b1dc0f253ce7132e141` |
 | `src/r68_compiler_entry.asm` | `42389aaf73179726d91e23359aee2199734036e1` |
 | `src/r68_diagnostics.inc` | `ed0cbd9eaa50397315b14a04681dd70c6d9cf69f` |
 | `src/r68_unicode_helpers.inc` | `69103e059634aa6b5b871ce7c06c2f4b9c742ff1` |
 | `src/r66_indic_lexer.inc` | `5f1f7994d036c5533b5f92ff9a71bd1cdfa9fd2d` |
 | `src/r67_stack_pair.inc` | `e8472bd1cad767cf06b0c00fcf88793419362db5` |
 | `lang/sanskrit.lang` | `c7820d27aa615169777f6f57fd6641345a945897` |
-| `src/r11_sandesh.inc` | `8c967467259eae509b8afed7d0b21fdb8e645bbb` |
+| `src/r11_sandesh.inc` | `aff0bc1aa38187a98c6fa1e0d24f9ed4d605bc55` |
 | `src/r22_lang_builtin.inc` | `45d7acd44d464fb86bb40d9a847c324a6e0aa94f` |
-| `src/r23_capabilities.inc` | `78f9f634a9ddf77af0f79cecf39be198078969bc` |
+| `src/r23_capabilities.inc` | `1d521bd2391055f396c97854de29249c7de0887f` |
 | `src/r25_phal.inc` | `7e212efbd094d7768813ba393d563c3c9201b561` |
 | `src/r28_object.inc` | `2ad1942d7444c9246ea1015bad071a60b2b2ca0e` |
 | `src/r32_ffi.inc` | `fe0643964a195252736d9c83137cc2a962762723` |
 | `src/r38_fail_alloc.inc` | `073861fa6d2be5ee47bbbbd087f3999591f33e66` |
 | `src/r45_debug.inc` | `b95ed9b4b584dd81338d03a272c1a4e2f8fe2328` |
 | `src/r52_yoj_hint.inc` | `bd76da75dc16090d2c46662d6bd1f4126841b223` |
-| `src/r65_arena.inc` | `a6ad2088b83a090541b09dddc9a336ebb26c9ae4` |
+| `src/r65_arena.inc` | `72d39ff6e1f7041fe7f53fcd01abdad32b5a37f5` |
 | `src/r52_lib_index.inc` | `96027af5d5e9abebf73d43dac3cfee537a4d23df` |
 
 Build the R68 diagnostic entry, not just the bare compiler. An example on the

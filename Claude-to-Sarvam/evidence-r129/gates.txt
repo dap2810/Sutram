@@ -1,7 +1,7 @@
-Sutram gates — 2026-11-04T20:28Z
+Sutram gates — 2026-11-04T22:08Z
 
   committed modes (7 x 100755, git index) PASS
-  build: compiler              ok  (567848 B)
+  build: compiler              ok  (568296 B)
   build: terminal IDE          ok  (24824 B)
   build: X11 GUI               ok  (38184 B)
   build: linker (R28)          ok  (16672 B)
@@ -54,13 +54,13 @@ Sutram gates — 2026-11-04T20:28Z
   keyword boundary (754 checks) PASS
   keyword prefix (18 of 575 lib names begin with a keyword, reported) PASS
   doc signatures (24 modules, 310 signatures, 0 mismatches) PASS
-  stale claims (142 documents, 212 hits) PASS
+  stale claims (142 documents, 213 hits) PASS
   R23 fuzzer (100 programs, 3558 printed values compared, 0 differ) PASS
   valid fuzzer + function values (60 run, 60 agree, 0 fail) PASS
   crash corpus (227 cases + manifest, 0 failed) PASS
   operator precedence (314 pairs tested) PASS
   formatted tree               PASS
-  version string (v304 (CHANGELOG v304)) PASS
+  version string (v305 (CHANGELOG v305)) PASS
   R101 memory (8 checks)       PASS
   R111 vocabulary (57 checks)  PASS
   R116 contracts (133 checks)  PASS
@@ -69,9 +69,9 @@ Sutram gates — 2026-11-04T20:28Z
   R123 PE memory (9 checks)    PASS
   R124 lazy commit (7 checks)  PASS
   R126 kinds (55 checks)       PASS
-  R127 descriptor (31 checks)  PASS
+  R127 descriptor (37 checks)  PASS
   R93 installer gate (11 checks) PASS
-  installer version (payload v304 = compiler v304) PASS
+  installer version (payload v305 = compiler v305) PASS
   performance (  8 ran, 0 failed) PASS
   X11 GUI protocol (18/18)     PASS
   Windows execution            NOT-RUN cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1

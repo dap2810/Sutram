@@ -1,11 +1,14 @@
-# R129 guard: main 8154fde (v303) -> this tree (v304)
+# R129 guard (v305 step): main 773bb77 (v304) -> this tree (v305)
 ## Linux elf
-DIFFER       examples/121_t18_kosh_param_push_reject.sm (source changed) old rc=1 new rc=0
-source files whose text changed: 1
-737 programs: 583 byte-identical, 153 refused identically, 1 DIFFER, 0 new
+source files whose text changed: 0
+737 programs: 500 byte-identical, 153 refused identically, 84 DIFFER, 0 new
 ## Linux pe
-DIFFER       examples/121_t18_kosh_param_push_reject.sm (source changed) old rc=1 new rc=0
-source files whose text changed: 1
-737 programs: 583 byte-identical, 153 refused identically, 1 DIFFER, 0 new
-examples/121 (v303 refused): v304 ELF prints 1 exit 0; PE under Wine prints 1
-## The Windows compiler (v304 sutram.exe) under Wine, every program: = Linux PE in 584, refused by both 153, 0 differ
+source files whose text changed: 0
+737 programs: 500 byte-identical, 153 refused identically, 84 DIFFER, 0 new
+ELF: 84 of the 84 DIFFER same output and exit; pe: 84 DIFFER run old and new under Wine: 84 same output and exit, 0 changed
+Windows compiler (v305 sutram.exe) under Wine, every program: = Linux PE in 584, refused by both 153, 0 differ
+
+# R129 guard (v304 step): main 8154fde (v303) -> v304: ELF and PE 583 identical, 153 refused identically, 1 DIFFER (examples/121: refused -> prints 1)
+
+# the first full gates run on v305 (gates-first-run-one-wine-flake.txt): 66/2/1 - R126 kinds failed one PE run under Wine (correct output, then 'Unhandled page fault' at exit),
+# doc counts followed from it. That PE is byte-identical to v304's (no kosh in it); 40 runs on each version under Wine: all clean; R126 alone: 55/55. The second full run: 68/0/1 (gates.txt).

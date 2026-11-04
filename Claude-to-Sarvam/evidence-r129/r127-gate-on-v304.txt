@@ -1,0 +1,27 @@
+PASS  two names stay one past 4,194,305 pushes (ELF): '4194305\n99\n4194305\n' exit 0
+PASS  two names stay one past a region move (9,000,000) (ELF): '9000000\n99\n9000000\n' exit 0
+PASS  1,000 koshes under a 300 MB address limit (ELF): '2000\n' exit 0
+PASS  20,000 koshes (ELF): '200010000\n' exit 0
+PASS  pop, peek, dequeue, clear through the descriptor (ELF): '20\n19\n1\n2\n18\n1\n' exit 0
+PASS  a dasham kosh, a slice passed on, a kosh parameter (ELF): '2.500000\n12\n55\n1\n' exit 0
+PASS  no memory to make a kosh: a message (ELF): 'Sutram truti: kosh rachayitum smritih na labdha\n' exit 1
+PASS  no memory to grow a kosh: a message (ELF): 'Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva\n' exit 1
+PASS  an index that grows the kosh past a region move (R203 F1; v302 SIGSEGV) (ELF): '8388608\n' exit 0
+PASS  k[i] = v where i grows the kosh (R203 F1) (ELF): '1\n9\n' exit 0
+PASS  an index that shrinks the kosh is checked against the new length (R203 F1) (ELF): 'Sutram truti: mala ank seema atikram\n' exit 1
+PASS  a slice bound that grows the kosh (R203 F1) (ELF): '7\n' exit 0
+PASS  a capacity whose bytes would wrap is refused at run time (R203 F2; v302 overwrote memory) (ELF): 'Sutram truti: kosh rachayitum smritih na labdha\n' exit 1
+PASS  parimana() counts a region kosh (R203 F3; v302 counted the clobbered r11) (ELF): '294976\n' exit 0
+PASS  a kosh parameter grown by a prakriya: the caller sees it (R129; v303 refused it) (ELF): '10\n10\n' exit 0
+PASS  a kosh parameter grown past a region move (R129) (ELF): '9000000\n9000000\n' exit 0
+PASS  a block kosh grown by a prakriya, 100 blocks (R129) (ELF): '5000\n' exit 0
+FAIL  k[lo:] where lo grows the kosh: to the new end (R204 S2; v304 refused it) (ELF): 'Sutram truti: mala ank seema atikram\n' exit 1 (want '8\n' exit 0)
+FAIL  k[lo:] where lo shrinks the kosh (R204 S2) (ELF): 'Sutram truti: mala ank seema atikram\n' exit 1 (want '2\n' exit 0)
+FAIL  k[lo:] where lo clears the kosh (R204 S2) (ELF): 'Sutram truti: mala ank seema atikram\n' exit 1 (want '0\n' exit 0)
+PASS  a kosh slice to a prakriya that may grow a kosh is refused (E_KOSH_VIBHAG), no output (R129)
+PASS  a kosh slice beside a growth that moves its region (R204 S1; v303 SIGSEGV) is refused (E_KOSH_VIBHAG), no output (R129)
+PASS  a whole kosh to a vibhag beside a growth through an alias, as a statement (R204 S1) is refused (E_KOSH_VIBHAG), no output (R129)
+PASS  a kosh slice beside an argument with a call is refused (E_KOSH_VIBHAG), no output (R129)
+PASS  a slice of a kosh kept in a name is refused (E_KOSH_VIBHAG), no output
+PASS  20,000,000 numbers: peak 152 MB (under 200: the 64 MiB region it left is given back)
+r127 descriptor: 26 checks, 3 failed

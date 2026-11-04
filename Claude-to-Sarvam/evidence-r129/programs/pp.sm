@@ -1,0 +1,15 @@
+mukhya() {
+    kosh k[1]
+    vitti z = nirmmita(8)
+    chakra i = 1 tak 20 {
+        kosh_kship(k, i)
+    }
+    vitti a = k
+    likha(kosh_hri(a))
+    likha(kosh_iksh(k))
+    likha(kosh_apanay(a))
+    likha(k[0])
+    likha(kosh_gan(k))
+    kosh_shodh(a)
+    likha(kosh_rikt(k))
+}

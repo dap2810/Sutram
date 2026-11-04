@@ -1,5 +1,22 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v285 (Claude, R102 + R103) - `mandapa parimita N`: a block with a byte budget that refuses; regions stay for the program's life
+
+- **`mandapa parimita N { }`** - the block's own `nirmmita` may use at most `N` bytes (each rounded to 16, as the
+  arena does). The one that would pass the budget stops the program before it is given memory:
+  `Sutram Error [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)`,
+  exit 1. Nested budgets all hold. `N` must be a positive whole number in the source (else `E_PARIMITA` at compile
+  time, with file:line:col). `परिमित` is the same word; `parimita` stays usable as a name. A `kosh`, and what a
+  called `prakriya` allocates, are not counted. Linux ELF only, as the block; on Windows it is not checked.
+- **Measured:** 1,000,000 `nirmmita(64)` in one 1 MB-budgeted block refuses at the 16,385th with a peak of 1,024 KB;
+  the same budget on a block entered once per pass runs to the end at 0 KB (a three-line program's reading); the
+  unbudgeted block peaks at 62,464 KB. Goldens `303` (refuses), `304` (within; nested; `parimita` as a name), `305`
+  (compile-time refusal).
+- **Decided: a block does not return its `kosh` regions** (Reference section 19): the R82 check reads the header,
+  so returning would turn `E_KOSH_MANDAPA` into a crash or a silent read, and in the tree it would return nothing
+  (the three programs with a `kosh` in a block all read 0 KB).
+- A program without `parimita` compiles to the same bytes as on v284 (the guard).
+
 ## v284 (Claude, R101A - the owner's Option A) - on Linux every `kosh` has a region of its own and never moves
 
 - **Owner's decision (2 November): Option A.** On Linux ELF a `kosh` is made in its own `mmap` reservation (64 MB

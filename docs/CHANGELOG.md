@@ -1,4 +1,18 @@
-> **The 20 newest entries.** Older ones, from "v284" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v285" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v305 (Claude, R129) - ChatGPT R204's slice findings: S1 closed by v304, S2 fixed; the release notes corrected
+
+- **`k[lo:]` ends at the length after `lo` is evaluated** (R204 S2): `k[kosh_kship(k, 8) - 1:]` is `[1:2]` and gives 8
+  (v304 refused it with the old length 1); after a `kosh_hri` or `kosh_shodh` in `lo`, the shorter or empty end.
+  An explicit `hi` is evaluated once, as before.
+- **R204 S1** - a slice passed beside an argument that grows the same `kosh` - crashed on v303 (SIGSEGV after a
+  region move, reproduced here); **v304's rule already refuses it** (`E_KOSH_VIBHAG`), for an expression call, a
+  statement call, a whole `kosh` to a `vibhag` parameter, and a growth through an alias.
+- **A growth past 2^40 numbers stops with the grow message** - R204's F2 qualification: the declared limit is now
+  checked on growth too. No machine reaches it (2^40 pushes first need 8 TiB).
+- **The release notes corrected as R204 lists:** what a `mandapa` and `parimana()` cover, finite limits, what the
+  out-of-memory message covers, the slice rules, what the allocator keeps, the v298 history, objects of mixed
+  versions. Gate `R127 descriptor` +5 checks.
 
 ## v304 (Claude, R129) - a `kosh` parameter can grow, and the caller sees it
 
@@ -289,20 +303,3 @@
 - **The guard, v285 -> v286:** every Linux program that compiles differs (the prologue bytes); each was run old and
   new - see `Claude-to-Sarvam/R104-00-*.md` for the counts by kind. PE: byte-identical. Reference 4a, 5a, 6d, 20.
 - Muse's report: `Muse-to-Sarvam/FIXALL-R100-TRAPS.md`. Native-speaker review of the new Sanskrit: NOT RUN.
-
-## v285 (Claude, R102 + R103) - `mandapa parimita N`: a block with a byte budget that refuses; regions stay for the program's life
-
-- **`mandapa parimita N { }`** - the block's own `nirmmita` may use at most `N` bytes (each rounded to 16, as the
-  arena does). The one that would pass the budget stops the program before it is given memory:
-  `Sutram Error [E_PARIMITA]: pankti L - mandape parimitat adhikam nirmmitam na sambhavati (parimitih N baait)`,
-  exit 1. Nested budgets all hold. `N` must be a positive whole number in the source (else `E_PARIMITA` at compile
-  time, with file:line:col). `परिमित` is the same word; `parimita` stays usable as a name. A `kosh`, and what a
-  called `prakriya` allocates, are not counted. Linux ELF only, as the block; on Windows it is not checked.
-- **Measured:** 1,000,000 `nirmmita(64)` in one 1 MB-budgeted block refuses at the 16,385th with a peak of 1,024 KB;
-  the same budget on a block entered once per pass runs to the end at 0 KB (a three-line program's reading); the
-  unbudgeted block peaks at 62,464 KB. Goldens `303` (refuses), `304` (within; nested; `parimita` as a name), `305`
-  (compile-time refusal).
-- **Decided: a block does not return its `kosh` regions** (Reference section 19): the R82 check reads the header,
-  so returning would turn `E_KOSH_MANDAPA` into a crash or a silent read, and in the tree it would return nothing
-  (the three programs with a `kosh` in a block all read 0 KB).
-- A program without `parimita` compiles to the same bytes as on v284 (the guard).
