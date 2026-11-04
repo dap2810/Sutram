@@ -1,6 +1,6 @@
 # R121-00 — Both builtins are fixed (v298) and wrong on Linux as proved. But no golden encoded the breakage: 322/323's `B42` / `abcd` were the right answers, which Linux printed by luck. Goldens that did record a wrong answer exist - three found and corrected before, by an independent oracle each time - and the honest count of goldens checked against an answer known in advance is small.
 
-- **Commit on `main`:** `PENDING-SHA` (one commit; on top of your R120/R121 files, `c803cc0`).
+- **Commit on `main`:** **`5357665`** - the round in one commit (on top of your R120/R121 files `c803cc0`; rebased onto the Windows round 3 `8db9842` and your Muse R123 brief `40061f7`). The branch comparison and the Wine line are in the commits after it.
 - **Compiler: `Sutram 1.0 (v298) - sampurna sutra`** (was v297). Linux x86-64 cloud; PE run under Wine 64.
 - **`crash corpus: 227 cases + manifest, 0 failed`.** **Suite: `suite: NO-EXPECTATION=4  PASS=315  (319 run)`**, FAIL=0 - no golden changed.
 - **Gates (`sh tools/gates.sh`, Xvfb display, Linux): 63 PASS / 1 FAIL / 1 NOT-RUN** (FAIL: `installer version`, payload v243, as before; NOT-RUN: Windows execution) - 65 gates now, with **`R121 builtins` (14 checks, 0 failed)**.
@@ -109,6 +109,26 @@ Sanket: s + t navinam vartanim rachayati; athava b = nirmmita(n), vartani_pratil
 **A mechanical scan of all 544 goldens** found nothing that marks a bad recording: no non-UTF-8 or control bytes; no value that looks like a printed address; 62 int64 edge values, all deliberate (saturation tests, refusal texts); 3 `nan`/`inf`, all deliberate float-print tests.
 
 **My recommendation:** the cheapest real oracle is the one that caught all three - **a second implementation in Python for each pure library function**, compared on random inputs, as R76 did for `kuttaka`. `tools/proof_props.py` already has the harness. Extending it module by module would turn "recorded" into "checked" where it matters most, in the numeric library.
+
+## A second fix of the same two builtins is on a review branch - the two differ, you choose
+
+**When my push rebased, `8db9842` landed: the Windows agent's round 3.** It fixes the same two builtins on `codex/windows-round3-2026-11-03` (`a01bd5b`, draft PR #64, **not merged**, based on v297 `5d7d21c`). **`main` now has mine (v298).** The two fixes agree on `anka_akshar` and differ on `vartani_sandhi`. There is also a third change, PE memory:
+
+| | main, v298 (this round) | `codex/windows-round3`, `a01bd5b` |
+|---|---|---|
+| `anka_akshar` | a 2-byte allocation from nirmmita's allocator, stack balanced | **the same** |
+| `vartani_sandhi(s, t)` | **appends in place, returns `s`** (unchanged meaning); a literal `s` refused when compiled, through a variable stopped at run time | **returns a new string** `s + t` and leaves `s` unchanged - **a change of meaning**: a program that appends into a buffer and keeps using the buffer (R54's raw test, `raw_valid.sm`: `"YES"` + `"!"` → 4) gets 3 |
+| `parimana()` / `mandapa parimita N` on PE | unchanged (returns 0 / budget not checked, as the reference documents) | **refused when compiled for PE**, `E_WINDOWS_SMRITI` (the Option B the owner asked for) |
+| `kosh` alias on Windows | unchanged | unchanged (the agent says so) |
+
+**My view:**
+
+- **The PE memory refusal is right, and it is not on main** - take it from the branch.
+- **On `vartani_sandhi`, keep main's meaning.**
+  - *sandhi* is a join, and both meanings are defensible.
+  - **But in-place is what the builtin has always done and what R54 tests.** Changing it silently changes what working programs compute (their buffers stop growing), while `s + t` already gives the new-string meaning.
+  - **The branch's version also cannot fail on a literal**, which is its one real advantage. Main gets the same safety by refusing.
+- **The branch no longer applies cleanly:** it edits the same `src/sutram_compiler.asm` sections as v298, so it needs a rebase onto main whichever you pick.
 
 ## WS4 - R120's cleanup
 
