@@ -1,0 +1,8 @@
+mukhya() {
+    likha("start=", parimana())
+    mandapa {
+        vitti p = nirmmita(4096)
+        likha("in=", parimana())
+    }
+    likha("after=", parimana())
+}
