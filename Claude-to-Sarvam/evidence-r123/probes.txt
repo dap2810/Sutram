@@ -1,0 +1,11 @@
+# R123: the PE probes, compiled by v298 (main 33cab2d) and v299, run under Wine 64; each compared with the Linux golden
+317_r107_parimana v298: start 0|after nirmmita(64) 0|in a block, nirmmita(1000) 0|after the block 0|a kosh of 1000 0| exit 0 (differs from the Linux golden)
+317_r107_parimana v299: start 0|after nirmmita(64) 64|in a block, nirmmita(1000) 1072|after the block 64|a kosh of 1000 8272| exit 0 (= Linux golden)
+318_r108_parimana_moves v298: start 0|a kosh of 1 0|grown to capacity 4 0|a block's nirmmita(100) 0|and a kosh of 8 in it 0|after the block 0| exit 0 (differs from the Linux golden)
+318_r108_parimana_moves v299: start 0|a kosh of 1 48|grown to capacity 4 72|a block's nirmmita(100) 184|and a kosh of 8 in it 288|after the block 176| exit 0 (= Linux golden)
+303_r103_parimita_refuses v298: not reached 499999500000| exit 0 (differs from the Linux golden)
+303_r103_parimita_refuses v299: Sutram truti [E_PARIMITA]: pankti 6 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)| exit 1 (= Linux golden)
+304_r103_parimita_within v298: s 499999500000|two inner blocks of 96 bytes fit a 1000-byte outer one|parimita = 7| exit 0 (= Linux golden)
+304_r103_parimita_within v299: s 499999500000|two inner blocks of 96 bytes fit a 1000-byte outer one|parimita = 7| exit 0 (= Linux golden)
+288_r86_kosh_alias_moves v298: a[0]=41 k[0]=99|a[0]=7 k[0]=99| exit 0 (differs from the Linux golden)
+288_r86_kosh_alias_moves v299: a[0]=99 k[0]=99|a[0]=7 k[0]=7| exit 0 (= Linux golden)

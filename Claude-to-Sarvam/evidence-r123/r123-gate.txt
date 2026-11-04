@@ -1,0 +1,21 @@
+PASS  parimana counts nirmmita, a block and a kosh (bin): '0\n64\n1072\n64\n' exit 0 (want '0\n64\n1072\n64\n' exit 0)
+PASS  parimana counts nirmmita, a block and a kosh (exe, Wine): '0\n64\n1072\n64\n' exit 0 (want '0\n64\n1072\n64\n' exit 0)
+PASS  mandapa parimita refuses past its budget (bin): 'one fits\nSutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)\n' exit 1 (want 'one fits\nSutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)\n' exit 1)
+PASS  mandapa parimita refuses past its budget (exe, Wine): 'one fits\nSutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)\n' exit 1 (want 'one fits\nSutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)\n' exit 1)
+PASS  a budget that fits is not refused (bin): 'both fit\n' exit 0 (want 'both fit\n' exit 0)
+PASS  a budget that fits is not refused (exe, Wine): 'both fit\n' exit 0 (want 'both fit\n' exit 0)
+PASS  a second name for a growing kosh stays right (it never moves) (bin): '99\n2\n' exit 0 (want '99\n2\n' exit 0)
+PASS  a second name for a growing kosh stays right (it never moves) (exe, Wine): '99\n2\n' exit 0 (want '99\n2\n' exit 0)
+PASS  --fail-alloc 1: anka_akshar stops with E_VARTANI_SMRITI (exit 1)
+r123 pe memory: 9 checks, 0 failed
+# the same gate on v298 (main 33cab2d):
+PASS  parimana counts nirmmita, a block and a kosh (bin): '0\n64\n1072\n64\n' exit 0 (want '0\n64\n1072\n64\n' exit 0)
+FAIL  parimana counts nirmmita, a block and a kosh (exe, Wine): '0\n0\n0\n0\n' exit 0 (want '0\n64\n1072\n64\n' exit 0)
+PASS  mandapa parimita refuses past its budget (bin): 'one fits\nSutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)\n' exit 1 (want 'one fits\nSutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)\n' exit 1)
+FAIL  mandapa parimita refuses past its budget (exe, Wine): 'one fits\nnot reached\n' exit 0 (want 'one fits\nSutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 100 baait)\n' exit 1)
+PASS  a budget that fits is not refused (bin): 'both fit\n' exit 0 (want 'both fit\n' exit 0)
+PASS  a budget that fits is not refused (exe, Wine): 'both fit\n' exit 0 (want 'both fit\n' exit 0)
+PASS  a second name for a growing kosh stays right (it never moves) (bin): '99\n2\n' exit 0 (want '99\n2\n' exit 0)
+FAIL  a second name for a growing kosh stays right (it never moves) (exe, Wine): '41\n1\n' exit 0 (want '99\n2\n' exit 0)
+PASS  --fail-alloc 1: anka_akshar stops with E_VARTANI_SMRITI (exit 1)
+r123 pe memory: 9 checks, 3 failed

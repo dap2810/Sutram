@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v298) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v299) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -8941,19 +8941,19 @@ r103_emit_lkhb_num:
 ;; R101A (Option A, R101): every kosh has a region of its own.
 ;; A kosh used to be a block in the arena: when it grew and something had been allocated
 ;; after it, it moved - the old block was abandoned (R101: about one more kosh), and a
-;; second name (`vitti a = k`) kept the old block (section 16). Now, on Linux ELF, a kosh is
-;; made in its own mmap reservation of R101A_REGION bytes, MAP_NORESERVE: pages are committed
+;; second name (`vitti a = k`) kept the old block (section 16). Now, on ELF and PE (PE from R123), a kosh
+;; is made in its own reservation of R101A_REGION bytes; on Linux MAP_NORESERVE, so pages are committed
 ;; only when touched, so a 4-element kosh costs one page. It grows in place inside its region
 ;; - capacity still doubles, as kosh_cap shows - and never moves until it passes
 ;; R101A_MAXCAP elements (8,388,603 - 64 MB); only then does it take the old relocating path.
 ;; A kosh declared larger than the region gets a region of exactly its size, so its first
 ;; growth relocates as before. Not under --fail-alloc (its counted allocations stay the old
-;; path), not in the GUARD_PAGES build, not on PE (r65_active is 0 there): unchanged.
+;; path), not in the GUARD_PAGES build: unchanged. On PE the runtime's VirtualAlloc commits the whole region.
 ;; ============================================================
 R101A_REGION equ 0x04000000          ; 64 MB of address space per kosh
 R101A_MAXCAP equ (R101A_REGION - 40) / 8
 
-; r101a_regions_on -> rax = 1 when kosh regions apply (Linux ELF, not --fail-alloc)
+; r101a_regions_on -> rax = 1 when kosh regions apply (ELF and PE, not --fail-alloc)
 r101a_regions_on:
     call r65_active
     test rax, rax
@@ -23615,7 +23615,7 @@ gen_expr:
 .ge_call_parimana:
     ; R107: parimana() -> the bytes the program's nirmmita and kosh hold now: the arena's
     ; persistent side (cur - start) and scratch side (sima - end), and the kosh regions
-    ; (0parimana, counted at each region's allocation and growth). Linux ELF (direct, --object, --separate); on PE 0.
+    ; (0parimana, counted at each region's allocation and growth). ELF and PE (R123), direct, --object, --separate.
     call r65_active
     test rax, rax
     jnz .pm_arena

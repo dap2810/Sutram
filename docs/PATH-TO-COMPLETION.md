@@ -1,6 +1,6 @@
-> **Status at compiler v298, 3 November 2026 (R120) — read this before the page below.**
+> **Status at compiler v299, 3 November 2026 (R123) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v298) - sampurna sutra`.** Suite **PASS=315** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **63 PASS / 1 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The FAIL is the installer's bundled payload (v243); the NOT-RUN is Windows execution, the owner's own test.**
+> **Compiler `Sutram 1.0 (v299) - sampurna sutra`.** Suite **PASS=315** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **64 PASS / 1 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The FAIL is the installer's bundled payload (v243); the NOT-RUN is Windows execution, the owner's own test.**
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -8,9 +8,9 @@
 > - **Every failure begins `Sutram truti`** (v294; `Sutram Error` up to v293).
 > - **`sankhya_bindu` / `sankhya_dot` are withdrawn** (v295, `E_PRATYAHRITA`).
 > - **Fifteen library contracts refuse instead of wrapping** (v296, R116); `patra_asti` is blocked on an OS query the compiler does not make.
-> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms.
+> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms; **v299 brought the Linux memory model to Windows** (R123).
 >
-> **Memory:** on Linux, `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, every `kosh` has a region of its own and never moves, and `parimana()` reports the bytes held. **On Windows none of that is there yet:** `parimana()` is 0, a budget is not checked, and a growing `kosh` moves (reference §16, §19; `docs/MEMORY-MODEL.md`).
+> **Memory:** on Linux and, from v299 (R123), on Windows: `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, every `kosh` has a region of its own and never moves, and `parimana()` reports the bytes held. **On Windows it costs more:** the arena is 1 GiB of commit charge from the first allocation and each `kosh` 64 MiB, because Windows commits what it reserves (reference §16, §19; `docs/MEMORY-MODEL.md`).
 >
 > **The authoritative open list is `docs/WHATS-LEFT.md`.**
 >

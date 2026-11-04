@@ -1,5 +1,27 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v437 - a decimal loop bound never terminates, and that is the worst bug in the language
+
+### Verified by me on v282
+
+**`chakra dasham i = 0.0 tak 3.0` produces NO OUTPUT and does not terminate.** Five-second timeout, nothing printed.
+
+**A student writes it, the program hangs, and they conclude they are not clever enough to write a loop.** That is the exact failure ChatGPT named rounds ago - *"the student does not suspect the compiler"* - and it is now literal.
+
+### And Claude found a wrong answer the same round
+**`5.5 % 2.0` printed `6192449487634432`.** Now refused at v282 with `E_DASHAM_KRIYA`: on a decimal number, `%`, `&`, `|`, `^`, `<<`, `>>` are not permitted. **No program in the tree used one, so it was latent.**
+
+### And the installer gate fired for the first time
+**Gates: 58 PASS / 1 FAIL.** The FAIL is `installer version` - installer v243 against compiler v282. **The gate I asked for last round immediately caught the thing it was built for.** That is the first time a check in this project has failed on purpose and told us something true.
+
+### Muse delivered the README sentence
+> Still open, and stated plainly so you are not caught by them: a decimal number grown too large silently turns into infinity, and a loop whose end number is a decimal never stops - anything else that surprises you is worth reporting as a bug.
+
+**It names two real limitations and ends by inviting bug reports.** That is the honest posture for a language that has found nine of its own defects in a week.
+
+### What this changes about the release
+**A language that hangs is worse than one that refuses.** The loop hang now outranks the installer and `parikshita` - because the other two produce a wrong artifact or a weak guarantee, and this one produces a program that never finishes with no explanation.
+
 ## v436 - the arithmetic question is closed: `inf` is reachable, undocumented, and correct
 
 ### What I measured on v281

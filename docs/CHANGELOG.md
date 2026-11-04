@@ -1,4 +1,18 @@
-> **The 20 newest entries.** Older ones, from "v436" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v437" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v299 (Claude, R123) - the Linux memory model on Windows: merged from the Windows round 4 branch (PR #65)
+
+- **On PE, as on ELF:** `nirmmita` uses the arena, a `mandapa` gives its memory back, `mandapa parimita N`
+  refuses past its budget (`E_PARIMITA`), `parimana()` reports the bytes held, and a `kosh` has its own region
+  and never moves (`examples/288` prints `a[0]=99 k[0]=99` on Windows too). The Windows agent found the cause:
+  `r65_active` excluded PE by a compile-time `target_pe` test, and the runtime's `VirtualAlloc` adapter already
+  served the arena's `mmap` calls. **Ported onto v298, not merged whole:** the branch also carried Round 3's
+  new-string `vartani_sandhi`, which v298 does not take (R121); its own `INTEGRATION.md` says the same.
+- **The cost, on Windows only:** `VirtualAlloc` reserves *and commits*, so the arena is 1 GiB of commit charge
+  from a program's first allocation and each `kosh` region 64 MiB (measured there: 1.08 GB, 67.7 MB). ELF
+  output is unchanged byte for byte. Priced in R123, not changed.
+- The native Windows harness passes `--lang hindi` to example 220 and skips 29 (a raw Linux exit syscall).
+  Gate `R123 PE memory` (9 checks; PE under Wine).
 
 ## v298 (Claude, R121) - `anka_akshar` and `vartani_sandhi` fixed: the two builtin defects Windows exposed
 
@@ -328,25 +342,3 @@
 **Every one of the nine false claims in this session has the same shape: I ran something, got an unexpected result, and reported my interpretation instead of checking the setup.** **This time the setup was the syntax, and `examples/103_b10_nested_break_patches.sm` had the correct form all along.**
 
 **The rule that would have caught it: when a test produces nothing, suspect the test before the compiler.**
-
-## v437 - a decimal loop bound never terminates, and that is the worst bug in the language
-
-### Verified by me on v282
-
-**`chakra dasham i = 0.0 tak 3.0` produces NO OUTPUT and does not terminate.** Five-second timeout, nothing printed.
-
-**A student writes it, the program hangs, and they conclude they are not clever enough to write a loop.** That is the exact failure ChatGPT named rounds ago - *"the student does not suspect the compiler"* - and it is now literal.
-
-### And Claude found a wrong answer the same round
-**`5.5 % 2.0` printed `6192449487634432`.** Now refused at v282 with `E_DASHAM_KRIYA`: on a decimal number, `%`, `&`, `|`, `^`, `<<`, `>>` are not permitted. **No program in the tree used one, so it was latent.**
-
-### And the installer gate fired for the first time
-**Gates: 58 PASS / 1 FAIL.** The FAIL is `installer version` - installer v243 against compiler v282. **The gate I asked for last round immediately caught the thing it was built for.** That is the first time a check in this project has failed on purpose and told us something true.
-
-### Muse delivered the README sentence
-> Still open, and stated plainly so you are not caught by them: a decimal number grown too large silently turns into infinity, and a loop whose end number is a decimal never stops - anything else that surprises you is worth reporting as a bug.
-
-**It names two real limitations and ends by inviting bug reports.** That is the honest posture for a language that has found nine of its own defects in a week.
-
-### What this changes about the release
-**A language that hangs is worse than one that refuses.** The loop hang now outranks the installer and `parikshita` - because the other two produce a wrong artifact or a weak guarantee, and this one produces a program that never finishes with no explanation.

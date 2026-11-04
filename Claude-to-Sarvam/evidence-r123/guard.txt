@@ -1,0 +1,65 @@
+# R123 guard: main 33cab2d (v298) -> this tree (v299), tools/guard_pair.py, every example and test program
+## Linux elf
+source files whose text changed: 0
+725 programs: 582 byte-identical, 143 refused identically, 0 DIFFER, 0 new
+## Linux pe
+source files whose text changed: 0
+725 programs: 255 byte-identical, 143 refused identically, 327 DIFFER, 0 new
+## ELF DIFFER run old and new
+elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
+## PE DIFFER run old and new under Wine
+pe: 327 DIFFER run old and new under Wine: 317 same output and exit, 10 changed
+CHANGED examples/288_r86_kosh_alias_moves.sm: exit 0 -> 0; new = Linux golden: True
+    old b'a[0]=41 k[0]=99\na[0]=7 k[0]=99\n'
+    new b'a[0]=99 k[0]=99\na[0]=7 k[0]=7\n'
+CHANGED examples/303_r103_parimita_refuses.sm: exit 0 -> 1; new = Linux golden: True
+    old b'not reached 499999500000\n'
+    new b'Sutram truti [E_PARIMITA]: pankti 6 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)\n'
+CHANGED examples/317_r107_parimana.sm: exit 0 -> 0; new = Linux golden: True
+    old b'start 0\nafter nirmmita(64) 0\nin a block, nirmmita(1000) 0\nafter the block 0\na kosh of 1000 0\n'
+    new b'start 0\nafter nirmmita(64) 64\nin a block, nirmmita(1000) 1072\nafter the block 64\na kosh of 1000 8272\n'
+CHANGED examples/318_r108_parimana_moves.sm: exit 0 -> 0; new = Linux golden: True
+    old b"start 0\na kosh of 1 0\ngrown to capacity 4 0\na block's nirmmita(100) 0\nand a kosh of 8 in it 0\nafter the block 0\n"
+    new b"start 0\na kosh of 1 48\ngrown to capacity 4 72\na block's nirmmita(100) 184\nand a kosh of 8 in it 288\nafter the block 176\n"
+CHANGED tests/r73_scratch/blind_kosh_via_call.sm: exit 0 -> 0; new = Linux golden: no golden
+    old b'42\n\n'
+    new b'99\n\n'
+CHANGED tests/r73_scratch/full.sm: exit 0 -> 1; new = Linux golden: no golden
+    old b'140640086786048\n\n'
+    new b'Sutram truti: kshetra purnam - mandapa-smritih samapta\n'
+CHANGED tests/r73_scratch/negative_runtime.sm: exit 0 -> 1; new = Linux golden: no golden
+    old b'123\n\n0\n\n123\n\n'
+    new b'123\n\nSutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati\n'
+CHANGED tests/r74_compose/c3_siblings.sm: exit -9 -> 0; new = Linux golden: no golden
+    old b''
+    new b'0\n\n500000500000\n\n'
+CHANGED tests/r74_compose/c4_too_big.sm: exit 0 -> 1; new = Linux golden: no golden
+    old b'12\n\n'
+    new b'Sutram truti: kshetra purnam - mandapa-smritih samapta\n'
+CHANGED tests/r79_real/report_blocks.sm: exit 1 -> 1; new = Linux golden: no golden
+    old b'subject    mean  median  lowest highest\nganita         0'
+    new b'lowest highest\nganita         0Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati\n'
+
+# R123: the six changed PE programs without a golden: v299 PE (Wine) against v299 Linux ELF, and v298 PE
+tests/r73_scratch/blind_kosh_via_call.sm: v299 PE = Linux ELF: True  (ELF exit 0, PE v299 exit 0, PE v298 exit 0)
+   v298 PE tail: b'42\n\n'
+tests/r73_scratch/full.sm: v299 PE = Linux ELF: True  (ELF exit 1, PE v299 exit 1, PE v298 exit 0)
+   v298 PE tail: b'140044388270080\n\n'
+tests/r73_scratch/negative_runtime.sm: v299 PE = Linux ELF: True  (ELF exit 1, PE v299 exit 1, PE v298 exit 0)
+   v298 PE tail: b'123\n\n0\n\n123\n\n'
+tests/r74_compose/c3_siblings.sm: v299 PE = Linux ELF: True  (ELF exit 0, PE v299 exit 0, PE v298 exit -9)
+   v298 PE tail: b''
+tests/r74_compose/c4_too_big.sm: v299 PE = Linux ELF: True  (ELF exit 1, PE v299 exit 1, PE v298 exit 0)
+   v298 PE tail: b'12\n\n'
+tests/r79_real/report_blocks.sm: v299 PE = Linux ELF: True  (ELF exit 1, PE v299 exit 1, PE v298 exit 1)
+   v298 PE tail: b'subject    mean  median  lowest highest\nganita         0'
+
+## The Windows compiler under Wine
+source files whose text changed: 0
+725 programs: 254 byte-identical, 143 refused identically, 328 DIFFER, 0 new
+its one extra DIFFER is examples/07_module.sm: 'old rc=timeout' - the old compiler timed out under Wine while the PE runs above ran alongside; rerun alone: identical bytes, 0.8 s
+1164 Wine outputs, 1164 byte-identical to the Linux PE outputs
+
+## the tree under an address-space limit: v298 ELF binaries (R121's guard), unlimited and RLIMIT_AS 2 GiB
+582 compiled programs run unlimited and under an address-space limit (RLIMIT_AS); those whose output/exit changes:
+0 changed
