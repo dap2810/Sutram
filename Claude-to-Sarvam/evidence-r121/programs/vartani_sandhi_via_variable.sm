@@ -1,0 +1,6 @@
+mukhya() {
+    vitti s = "ab"
+    vitti t = vartani_sandhi(s, "cd")
+    shabda(t)
+    likha("never\n")
+}

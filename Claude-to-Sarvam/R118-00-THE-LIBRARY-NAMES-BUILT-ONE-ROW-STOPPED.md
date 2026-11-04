@@ -8,7 +8,7 @@
 - **The guard, origin/main (v296) → v297, 725 programs** (`evidence-r118/guard.txt`):
   - **Linux ELF: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new** (346, 347).
   - **Linux PE: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new.**
-  - **The Windows compiler under Wine: still running when this was pushed - its line follows in the next commit.**
+  - **The Windows compiler under Wine: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new; its 1160 outputs are byte-identical to the Linux compiler's PE outputs.** (The first Wine run was stopped by a container restart at program 546 and rerun from the start; filled in during R121.)
   - **81 of those programs' source text changed** (the examples and tests now write the new names): **73 compile to the bytes the old text did on v296, 8 are refused as before.** The guard compares a refusal's exit, not its text; those 8 are the re-recorded goldens below, whose text differs only in the hint line.
   - **The guard ran twice, and the first run was right to fail** - below.
 

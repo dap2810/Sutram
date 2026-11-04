@@ -176,11 +176,11 @@ warning naming the new one** (§4b).
 | `smaran_pratilip` (was `smaran_cp`) | copy memory |
 | `vartani_aayam` | varna length |
 | `vartani_tul` | varna compare |
-| `vartani_sandhi` (was `vartani_cat`) | varna concatenate |
+| `vartani_sandhi` (was `vartani_cat`) | append `t` to `s` **in place** and return `s`: `vartani_sandhi(s, t)` - `s` must be writable memory with room (`b = nirmmita(n)`, `vartani_pratilip(b, "...")`), as C's `strcat`. **A string literal as `s` is refused when compiled, and stops the program at run time when it arrives through a variable** (`E_VARTANI_STHIRA`, v298): a literal is part of the program. For a new string, `s + t` |
 | `vartani_pratilip` | varna copy |
 | `akshar` | character code at an index |
 | `aksharank` | character code (note: index currently ignored) |
-| `anka_akshar` (was `char_from`) | character from a code |
+| `anka_akshar` (was `char_from`) | a new one-character string from a code: `shabda(anka_akshar(66))` prints `B`. From v298 each call gets its own two bytes (as `s + t` does), so the result can be kept; up to v297 it pointed at stack memory the next call overwrote |
 | `akshar_guru` (was `char_upper`) | uppercase a character |
 | `akshar_laghu` (was `char_lower`) | lowercase a character |
 | `sankhya_yog` | four 32-bit **float** lanes in raw memory, added: `sankhya_yog(dst, a, b)` (`addps`). No Sutram value holds 32-bit floats - `sankhya_bindu`, their dot-product sibling, is withdrawn (v295) |

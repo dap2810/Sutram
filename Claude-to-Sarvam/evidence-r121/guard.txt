@@ -1,0 +1,29 @@
+# R121 guard: origin/main c803cc0 (v297) -> this tree (v298), tools/guard_pair.py, every example and test program
+## Linux elf
+source files whose text changed: 2
+725 programs: 579 byte-identical, 143 refused identically, 3 DIFFER, 0 new
+DIFFER       examples/322_r111_new_names.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/323_r111_old_names.sm (source changed) old rc=0 new rc=0
+DIFFER       tests/r54_check/raw_valid.sm old rc=0 new rc=0
+## Linux pe
+source files whose text changed: 2
+725 programs: 579 byte-identical, 143 refused identically, 3 DIFFER, 0 new
+DIFFER       examples/322_r111_new_names.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/323_r111_old_names.sm (source changed) old rc=0 new rc=0
+DIFFER       tests/r54_check/raw_valid.sm old rc=0 new rc=0
+## ELF DIFFER run old and new
+SAME    examples/322_r111_new_names.sm: rc 0 -> 0
+SAME    examples/323_r111_old_names.sm: rc 0 -> 0
+SAME    tests/r54_check/raw_valid.sm: rc 0 -> 0
+elf: 3 DIFFER run old and new: 3 same output and exit code, 0 changed
+## PE DIFFER run old and new, under Wine
+# R121: the three PE DIFFERs, old (v297) and new (v298) binaries run under Wine 64
+examples/322_r111_new_names.sm old: exit 5 stdout 'ikt 1\npankti_gan 5\nlaghu 97 guru 65\nÂ42\n'
+examples/322_r111_new_names.sm new: exit 0 stdout '\npankti_gan 5\nlaghu 97 guru 65\nB42\nabcd\n'
+examples/323_r111_old_names.sm old: exit 5 stdout 'ikt 1\npankti_gan 5\nlaghu 97 guru 65\nÂ42\n'
+examples/323_r111_old_names.sm new: exit 0 stdout '\npankti_gan 5\nlaghu 97 guru 65\nB42\nabcd\n'
+tests/r54_check/raw_valid.sm old: exit 0 stdout '258\n2\n66\n77\n0\n65\n65\n79\n75\n89\n4\n'
+tests/r54_check/raw_valid.sm new: exit 0 stdout '258\n2\n66\n77\n0\n65\n65\n79\n75\n89\n4\n'
+## The Windows compiler under Wine: PENDING
+
+## The first run (discarded): the image check was skipped in --object mode, so R28/R29 found 322 not byte-identical as an object; fixed (a root object emits exactly what a direct compile does) and everything rerun

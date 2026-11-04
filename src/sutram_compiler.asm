@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v297) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v298) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -574,6 +574,14 @@ r54_builtin_arity_table:
     rfx2_msg_cap db "Sutram truti: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
     rfx2_msg_nomem db "Sutram truti [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
     rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
+    ; R121: vartani_sandhi writes into its first argument, so that must be writable memory - never a string
+    ; literal, which lives in the program's code (read-only on Windows; on Linux, writing it overwrote code).
+    r121_hdr db ": Sutram truti [E_VARTANI_STHIRA]: ", 0
+    r121_txt db "vartani_sandhi prathamam vartanim tasyah sthane eva vardhayati - sthira vartani (", 34, "...", 34, ") karyakramasya bhagah, tasyam likhitum na shakyate", 10, 0
+    r121_hint db "Sanket: s + t navinam vartanim rachayati; athava b = nirmmita(n), vartani_pratilip(b, s), tatah vartani_sandhi(b, t)", 10, 0
+    r121_rt_msg db "Sutram truti [E_VARTANI_STHIRA]: vartani_sandhi: prathama vartani sthira (karyakramasya bhagah) - tasyam likhitum na shakyate", 10, 0
+    r121_gname db "0sandhi", 0           ; R121: a hidden global whose address is past the code and its literals
+    r121_gidx dq -1
     ; FIXALL (rec): runaway-recursion message (Sanskrit-only, outside the
     ; per-pack sandesh table). The message is embedded in the emitted
     ; program by the function-prologue guard; its length drives the guard's
@@ -23765,6 +23773,8 @@ gen_expr:
 .ge_call_vartcat:
     ; vartani_cat(dst, src) → strcat, returns dst
     mov rax, [rbx+24]
+    cmp qword [rax], AST_STR       ; R121: a literal destination is refused when compiled
+    je r121_refuse_literal
     call gen_expr
     mov dil, 0x50           ; push rax (dst)
     call emit_byte
@@ -23780,6 +23790,7 @@ gen_expr:
     call emit_byte
     mov dil, 0xC6
     call emit_byte
+    call r121_emit_image_check     ; R121: a destination inside the program's own image stops the program
     ; mov r8, rdi (save dst) = 49 89 F8
     mov dil, 0x49
     call emit_byte
@@ -24193,55 +24204,33 @@ gen_expr:
     jmp capacity_fail
 
 .ge_call_charfr:
-    ; char_from(code) → pointer to a char (writes code to a temp buffer)
-    ; Uses a static 1-byte buffer in BSS
+    ; anka_akshar(code) -> a new one-character string. R121: up to v297 the character was written below the
+    ; stack pointer and its address returned, so the next push or call overwrote it (Windows at once, through
+    ; the runtime's kernel32 call; Linux as soon as the value was kept), and rsp was left 8 bytes lower.
+    ; Now two bytes from nirmmita's allocator (zeroed), as string + does: the character, then the NUL.
     mov rax, [rbx+24]
     call gen_expr
-    ; lea rdi, [rel char_buf] — we need the runtime address
-    ; But lea [rel] in generated code needs the address at link time
-    ; Instead: mov [rsp-1], al; lea rax, [rsp-1]
-    ; sub rsp, 16 = 48 83 EC 10
-    mov dil, 0x48
+    mov dil, 0x50                  ; push rax (the code)
     call emit_byte
-    mov dil, 0x83
+    mov dil, 0xB8                  ; mov eax, 2
     call emit_byte
-    mov dil, 0xEC
+    mov edi, 2
+    call emit_u32
+    call emit_nirmmita_from_rax
+    call r121_emit_nomem_check
+    mov dil, 0x59                  ; pop rcx
     call emit_byte
-    mov dil, 0x10
+    mov dil, 0x88                  ; mov [rax], cl
     call emit_byte
-    ; mov [rsp], al = 88 04 24
-    mov dil, 0x88
+    mov dil, 0x08
     call emit_byte
-    mov dil, 0x04
+    mov dil, 0xC6                  ; mov byte [rax+1], 0
     call emit_byte
-    mov dil, 0x24
-    call emit_byte
-    ; mov byte [rsp+1], 0 = C6 44 24 01 00
-    mov dil, 0xC6
-    call emit_byte
-    mov dil, 0x44
-    call emit_byte
-    mov dil, 0x24
+    mov dil, 0x40
     call emit_byte
     mov dil, 0x01
     call emit_byte
     xor edi, edi
-    call emit_byte
-    ; mov rax, rsp = 48 89 E0
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xE0
-    call emit_byte
-    ; add rsp, 8 (preserve the byte for return) = 48 83 C4 08
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x83
-    call emit_byte
-    mov dil, 0xC4
-    call emit_byte
-    mov dil, 0x08
     call emit_byte
     jmp .ge_call_done
 
@@ -31219,6 +31208,186 @@ r111_err:
     jmp os_write
 .r:
     ret
+
+; r121_emit_nomem_check: generated code after an allocation (rax = the result). Linux ELF: an mmap error
+; (rax below 4096 or a negative errno) stops with E_VARTANI_SMRITI, as string + does (R105); PE: nothing,
+; as for string +.
+r121_emit_nomem_check:
+    cmp qword [rel target_pe], 0
+    jne .r
+    lea rsi, [rel rfx2_v2]
+    mov rcx, rfx2_v2_len
+    call r23_emit_bytes
+    mov dil, 0xEB                  ; jmp over the message
+    call emit_byte
+    mov edi, rfx2_msg_nomem_len + 36
+    call emit_byte
+    lea rsi, [rel rfx2_v3]         ; .fail: lea rsi,[rip+29] ; mov edx,len ; write ; exit 1
+    mov rcx, 3
+    call r23_emit_bytes
+    mov edi, 29
+    call emit_u32
+    mov dil, 0xBA
+    call emit_byte
+    mov edi, rfx2_msg_nomem_len
+    call emit_u32
+    lea rsi, [rel rfx2_v4]
+    mov rcx, rfx2_v4_len
+    call r23_emit_bytes
+    lea rsi, [rel rfx2_msg_nomem]
+    mov rcx, rfx2_msg_nomem_len
+    call r23_emit_bytes
+.r:
+    ret
+
+; r121_emit_image_check: generated code, rdi = vartani_sandhi's destination, rsi = its source (both kept).
+; A destination from the start of the program's code up to its hidden global 0sandhi (past every literal)
+; is a string literal - writing it would be writing the program - so the program stops:
+;   Sutram truti [E_VARTANI_STHIRA]: vartani_sandhi: prathama vartani sthira ... (stderr, exit 1)
+; Not in a module object (--object with no mukhya): its code is not the image and its hidden globals would
+; be extern; the compile-time refusal still applies there. A root object emits exactly what a direct compile
+; does (R28/R29: the same bytes), checking its own code up to its own 0sandhi.
+r121_emit_image_check:
+    cmp qword [rel r28_object_mode], 0
+    je .go
+    cmp qword [rel r28_no_mukhya], 0
+    jne .r
+.go:
+    push rbx
+    mov dil, 0x48                  ; lea rcx, [rip + d] -> the first byte of the code
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x0D
+    call emit_byte
+    mov rdi, [rel code_sz]
+    add rdi, 4
+    neg rdi
+    call emit_u32
+    mov dil, 0x48                  ; cmp rdi, rcx
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xCF
+    call emit_byte
+    mov dil, 0x0F                  ; jb .ok (rel32)
+    call emit_byte
+    mov dil, 0x82
+    call emit_byte
+    push qword [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    call r121_ensure_global
+    push rax
+    mov dil, 0x48                  ; lea rcx, [rip + 0sandhi]
+    call emit_byte
+    mov dil, 0x8D
+    call emit_byte
+    mov dil, 0x0D
+    call emit_byte
+    pop rdi
+    call r56_record_patch
+    mov dil, 0x48                  ; cmp rdi, rcx
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xCF
+    call emit_byte
+    mov dil, 0x0F                  ; jae .ok (rel32)
+    call emit_byte
+    mov dil, 0x83
+    call emit_byte
+    push qword [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    call alloc_ast                 ; the message, as a string the program carries
+    mov qword [rax], AST_STR
+    lea rcx, [rel r121_rt_msg]
+    mov [rax+8], rcx
+    call gen_expr                  ; rax = the message
+    lea rsi, [rel r116_strlen]     ; rsi = rax, rdx = its length, edi = 2, eax = 1
+    mov ecx, r116_strlen_len
+.sl:
+    movzx edi, byte [rsi]
+    push rsi
+    push rcx
+    call emit_byte
+    pop rcx
+    pop rsi
+    inc rsi
+    dec ecx
+    jnz .sl
+    call emit_syscall              ; write(2, msg, len)
+    mov dil, 0xB8                  ; mov eax, 60
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF                  ; mov edi, 1
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall              ; exit(1)
+    lea rdx, [rel code_buf]        ; .ok: patch both jumps here
+    mov rax, [rel code_sz]
+    pop rcx
+    mov rbx, rax
+    sub rbx, rcx
+    sub rbx, 4
+    mov [rdx+rcx], ebx
+    pop rcx
+    mov rbx, rax
+    sub rbx, rcx
+    sub rbx, 4
+    mov [rdx+rcx], ebx
+    pop rbx
+.r:
+    ret
+
+; r121_ensure_global -> rax = the index of the hidden global 0sandhi, registered once (as r107_ensure_counter).
+r121_ensure_global:
+    mov rax, [rel r121_gidx]
+    test rax, rax
+    jns .have
+    push rbx
+    lea rbx, [rel r121_gname]
+    call alloc_ast
+    mov qword [rax], AST_DECL
+    mov [rax + 8], rbx
+    mov qword [rax + 16], 0
+    call r56_register_global
+    mov rdi, rbx
+    call r56_global_index
+    dec rax
+    mov [rel r121_gidx], rax
+    pop rbx
+.have:
+    ret
+
+; r121_refuse_literal (rax = the AST_STR node given as vartani_sandhi's destination): compile-time refusal,
+; at the literal's own position when its token is found (the lexeme pointer identifies it - R49).
+r121_refuse_literal:
+    mov r8, [rax+8]
+    xor edi, edi
+    xor ecx, ecx
+.find:
+    cmp rcx, [rel token_cnt]
+    jae .go
+    mov rax, rcx
+    imul rax, TOKEN_SIZE
+    lea rdx, [rel token_arr]
+    add rdx, rax
+    cmp [rdx+8], r8
+    jne .next
+    mov rdi, [rdx+32]
+    jmp .go
+.next:
+    inc rcx
+    jmp .find
+.go:
+    lea rsi, [rel r121_hdr]
+    lea rdx, [rel r121_txt]
+    lea rcx, [rel r121_hint]
+    jmp r80_compile_error
 
 ; r118_lib_alias: R118 - the library's old English names (bit_gan, asti_sorted, roop_pad_vam, ...). Run once,
 ; after lex, over every token. An identifier followed by `(` that is one of r118_lib_old, where no `prakriya`

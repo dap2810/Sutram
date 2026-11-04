@@ -1,4 +1,18 @@
-> **The 20 newest entries.** Older ones, from "v282" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v436" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v298 (Claude, R121) - `anka_akshar` and `vartani_sandhi` fixed: the two builtin defects Windows exposed
+
+- **`anka_akshar(code)`** wrote its character **below the stack pointer** and returned that address, leaving
+  `rsp` 8 bytes lower each call. Windows lost the character at once (the runtime's kernel32 call uses that
+  stack: example 322 printed a garbage byte); Linux lost it as soon as the value was kept past a call. **Now two
+  bytes from nirmmita's allocator**, as `s + t`; the result lives as long as the program.
+- **`vartani_sandhi(s, t)`** appends in place, and **`s` was allowed to be a string literal** - part of the
+  program's code. Windows: access violation (0xC0000005, example 322); Linux: it silently overwrote the code
+  after the literal, and crashed the second time round a loop. **Now a literal `s` is refused when compiled,
+  and a literal reached through a variable stops the program** (`E_VARTANI_STHIRA`, exit 1). In-place
+  appending into writable memory is unchanged (R54's raw test).
+- Examples 322/323 append into a `nirmmita` buffer instead of the literal; **their goldens are unchanged** - the
+  golden was the right answer, Linux printed it by luck. Gate `R121 builtins` (14 checks, ELF and PE).
 
 ## v297 (Claude, R118) - the library's English names become aliases; three compiler hints name the R111 builtins
 
@@ -336,35 +350,3 @@
 
 ### What this changes about the release
 **A language that hangs is worse than one that refuses.** The loop hang now outranks the installer and `parikshita` - because the other two produce a wrong artifact or a weak guarantee, and this one produces a program that never finishes with no explanation.
-
-## v436 - the arithmetic question is closed: `inf` is reachable, undocumented, and correct
-
-### What I measured on v281
-
-**The overflow ladder, four squarings from `1e20`:**
-
-| Step | Printed |
-|---|---|
-| `dasham h = 100000000000000000000.0` | `1.000000e+20` |
-| `h = h * h` | `1.000000e+40` |
-| `h = h * h` | `1.000000e+80` |
-| `h = h * h` | `1.000000e+160` |
-| `h = h * h` | `inf` |
-
-**And `inf == inf` gives `1`, `inf > 0.0` gives `1`.** **Both are correct IEEE - `inf` compares normally and only `nan` is unordered.**
-
-### So `inf` is not a bug
-**It is a value the language prints and compares correctly.** **It was simply never documented, and a student meeting `inf` has no way to know what it means.**
-
-### The decision, taken from ChatGPT's R163
-**Option C: document binary64-style arithmetic and its exceptions.** Retain `inf`, `-inf` and `nan` as output spellings; explain them in the Sanskrit teaching material as values outside the finite range or an undefined result. **And state explicitly that Sutram does NOT claim complete IEEE 754 conformance - division by zero is an error, conversions have checked rules, and the grammar imposes further constraints.**
-
-**That is honest in a way "we follow IEEE" would not be.**
-
-### And the conversion fix is inert, which Muse measured
-**Suite on v281: `PASS=263, NO-EXPECTATION=4, 0 fail`.** **Every in-tree conversion site was already converting a whole value first.** So the new `E_DASHAM_VITTII` refusal catches a mistake nobody in our own code was making - **which is the best outcome: right fix, zero cost.**
-
-### What remains
-**`parikshita`: 0 of 306 library functions marked, 63 eligible. It ships as a tool, not a guarantee, until the library is marked.**
-**The installer: v279 while the compiler is v281. Claude has made it a gate.**
-**The README paragraph, which decides whether a reader trusts everything else.**

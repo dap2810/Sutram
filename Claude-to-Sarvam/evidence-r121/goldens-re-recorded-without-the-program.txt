@@ -1,0 +1,185 @@
+# goldens whose .out changed in a commit that did not change the program (re-recorded to the code), from git log
+# (the first commit, 8071ad5, imports history and is not counted as a change)
+tests/expect/100_t18_kosh_bounds.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/101_t18_kosh_empty.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/105_block_nesting_capacity.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/106_rachana_field_capacity.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     817cd89 2026-10-29 R65 (1/2): apply Muse's avayava reword - the four struct-member diagnostics say avayava (v262)
+tests/expect/108_b11_block_statement_capacity.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/112_t18_kosh_integer_conversion.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/120_t18_kosh_param_mismatch.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/121_t18_kosh_param_push_reject.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/156_namespaced_alias_collision.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/157_namespaced_missing_module.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/158_namespaced_alias_digit.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/159_namespaced_path_traversal.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/160_namespaced_empty_alias.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/161_namespaced_overlong_alias.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/162_namespaced_import_capacity.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/164_r41_cycle_reject.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/165_r41_missing_reject.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/204_b11_block_statement_capacity.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/210_r41_cycle.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/212_r41_v1_private.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/213_r41_v1_dupexp.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/214_r41_v1_noalias.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/220_hindi_parse_error.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/221_eof_location.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/222_old_keyword_name.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/223_undefined_name.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/224_unknown_field.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     817cd89 2026-10-29 R65 (1/2): apply Muse's avayava reword - the four struct-member diagnostics say avayava (v262)
+tests/expect/225_undeclared_array.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/227_assign_undeclared.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/228_block_scope.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/229_loop_var_scope.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/231_duplicate_name.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/232_arity.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/233_missing_module.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/234_ambiguous_field.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     817cd89 2026-10-29 R65 (1/2): apply Muse's avayava reword - the four struct-member diagnostics say avayava (v262)
+tests/expect/235_duplicate_field.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/251_r38_alias_mala_oob.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/252_r38_alias_kosh_oob.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/253_r38_alias_slice_oob.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/257_r48_kosh_empty.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/259_r70_indent_ambiguous.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/261_r71_after_mukhya.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/262_r71_same_line_body.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/264_r73_escape_arith.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/265_r73_escape_mala.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/270_r75_nested_store.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/272_r75_negative_size.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/273_r77_bytes_not_cells.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/274_r77_bytes_loop_stops.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/276_r77_mixed_indentation.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/277_r80_divide_by_zero.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/278_r80_literal_too_large.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/279_r80_constant_overflow.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/281_r80_divide_in_module.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/283_r81_parikshita_refuses_library.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/284_r81_parikshita_transitive.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/285_r81_parikshita_address_param.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/287_r82_kosh_after_mandapa.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/290_r87_fraction_into_vitti.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/293_r90_float_divide_by_zero.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/295_r92_computed_fraction_into_vitti.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/298_r94_dasham_remainder_refused.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/300_r96_chakra_decimal_bound.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/301_r96_chakra_dasham_counter.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/303_r103_parimita_refuses.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/305_r103_parimita_needs_number.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/310_r105_string_beside_number.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/311_r105_string_arithmetic.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/313_r106_string_condition.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/314_r106_kosh_operand.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/315_r106_dasham_into_mala.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/316_r107_kosh_kept_by_a_prakriya.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/319_r108_mala_operand.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/320_r109_kosh_alias_kept.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/321_r109_kosh_long_chain.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+     c269e77 2026-11-03 R111: v292 - the vocabulary change as aliases: 22 builtins, asti/nasti, tyaj
+tests/expect/328_r113_rachana_operand.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/68_array_oob.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/69_undefined_function.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/70_module_collision.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/71_array_negative_index.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/73_array_equal_length.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/98_t18_kosh_empty.out
+     c97a862 2026-11-03 R114: v294 - Sutram Error becomes Sutram truti, in the compiler and all eleven packs
+tests/expect/func_demo.out
+     952b81a 2026-10-28 tests/expect/func_demo.out: Sanskrit identifiers in examples (add/mul3 round)
+tests/stdlib/numeric29.out
+     9f54350 2026-10-30 R76 1/2: kuttaka and meru gave wrong answers - fixed; known-values test; the golden that recorded a wrong answer corrected
+tests/stdlib/r8_split_model.out
+     9888227 2026-10-30 R69 1/5: the two splitters honour maxparts = 0 and state their capacity
+
+85 goldens re-recorded without their program changing

@@ -19,7 +19,9 @@ mukhya() {
     shabda(char_from(66))
     lkhb(42)
     likha("\n")
-    vitti s = vartani_cat("ab", "cd")
+    vitti b = nirmmita(8)              # R121: vartani_cat writes into its first argument - a writable buffer, not a literal
+    vartani_pratilip(b, "ab")
+    vitti s = vartani_cat(b, "cd")
     shabda(s)
     likha("\n")
 }

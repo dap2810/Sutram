@@ -1,0 +1,15 @@
+PASS  anka_akshar printed at once (bin): stdout 'B\n' exit 0 (want 'B\n' exit 0)
+PASS  anka_akshar printed at once (exe, Wine): stdout 'B\n' exit 0 (want 'B\n' exit 0)
+PASS  anka_akshar kept across a prakriya call (bin): stdout 'BC\n16\n' exit 0 (want 'BC\n16\n' exit 0)
+PASS  anka_akshar kept across a prakriya call (exe, Wine): stdout 'BC\n16\n' exit 0 (want 'BC\n16\n' exit 0)
+PASS  anka_akshar 200,001 times in a loop (tak is inclusive), the last kept: 200000 % 26 = 8, so I (bin): stdout 'I\n' exit 0 (want 'I\n' exit 0)
+PASS  anka_akshar 200,001 times in a loop (tak is inclusive), the last kept: 200000 % 26 = 8, so I (exe, Wine): stdout 'I\n' exit 0 (want 'I\n' exit 0)
+PASS  vartani_sandhi into a writable buffer, returned (bin): stdout 'abcd\nabcd\n' exit 0 (want 'abcd\nabcd\n' exit 0)
+PASS  vartani_sandhi into a writable buffer, returned (exe, Wine): stdout 'abcd\nabcd\n' exit 0 (want 'abcd\nabcd\n' exit 0)
+PASS  vartani_sandhi in place, as R54 tests it ("YES" + "!" is 4 long) (bin): stdout '4\n' exit 0 (want '4\n' exit 0)
+PASS  vartani_sandhi in place, as R54 tests it ("YES" + "!" is 4 long) (exe, Wine): stdout '4\n' exit 0 (want '4\n' exit 0)
+PASS  vartani_sandhi on a literal through a variable stops at run time (bin): stdout '' exit 1 (want '' exit 1)
+PASS  vartani_sandhi on a literal through a variable stops at run time (exe, Wine): stdout '' exit 1 (want '' exit 1)
+PASS  vartani_sandhi("ab", ...) refused when compiled (bin): exit 1, at 2:30 True, no output True
+PASS  vartani_sandhi("ab", ...) refused when compiled (exe): exit 1, at 2:30 True, no output True
+r121 builtins: 14 checks, 0 failed

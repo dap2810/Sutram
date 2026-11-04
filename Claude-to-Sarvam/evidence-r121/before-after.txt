@@ -1,0 +1,44 @@
+# R121: each program on v297 (before: the tree's committed compiler) and on the fixed compiler (after).
+# Linux ELF run natively, PE run under Wine 64. stdout shown as a Python string, then the exit code and stderr's first line.
+
+=== anka_akshar_kept.sm
+  before (v297) bin: 'Bèr[\x10ý\x7f\n16\n' exit 0 
+  before (v297) exe: 'Bº\x13\n16\n' exit 0 
+  after (R121) bin: 'BC\n16\n' exit 0 
+  after (R121) exe: 'BC\n16\n' exit 0 
+
+=== anka_akshar_once.sm
+  before (v297) bin: 'B\nend\n' exit 0 
+  before (v297) exe: 'P\nend\n' exit 0 
+  after (R121) bin: 'B\nend\n' exit 0 
+  after (R121) exe: 'B\nend\n' exit 0 
+
+=== old_names_history.sm
+  before (v297) bin: 'B|abcd|end\n' exit 0 
+  before (v297) exe: 'P|' exit 5 
+  after (R121) bin: refused when compiled: ]: vartani_sandhi prathamam vartanim tasyah sthane eva vardhayati - sthira vartani ("...") karyakramasya bhagah, tasyam likhitum na shakyate
+  after (R121) exe: refused when compiled: ]: vartani_sandhi prathamam vartanim tasyah sthane eva vardhayati - sthira vartani ("...") karyakramasya bhagah, tasyam likhitum na shakyate
+
+=== vartani_sandhi_heap.sm
+  before (v297) bin: 'abcd\n' exit 0 
+  before (v297) exe: 'abcd\n' exit 0 
+  after (R121) bin: 'abcd\n' exit 0 
+  after (R121) exe: 'abcd\n' exit 0 
+
+=== vartani_sandhi_literal.sm
+  before (v297) bin: 'abcd\nend\n' exit 0 
+  before (v297) exe: '' exit 5 
+  after (R121) bin: refused when compiled: ]: vartani_sandhi prathamam vartanim tasyah sthane eva vardhayati - sthira vartani ("...") karyakramasya bhagah, tasyam likhitum na shakyate
+  after (R121) exe: refused when compiled: ]: vartani_sandhi prathamam vartanim tasyah sthane eva vardhayati - sthira vartani ("...") karyakramasya bhagah, tasyam likhitum na shakyate
+
+=== vartani_sandhi_literal_loop.sm
+  before (v297) bin: 'abcd\n' exit -11 
+  before (v297) exe: '' exit 5 
+  after (R121) bin: refused when compiled: ]: vartani_sandhi prathamam vartanim tasyah sthane eva vardhayati - sthira vartani ("...") karyakramasya bhagah, tasyam likhitum na shakyate
+  after (R121) exe: refused when compiled: ]: vartani_sandhi prathamam vartanim tasyah sthane eva vardhayati - sthira vartani ("...") karyakramasya bhagah, tasyam likhitum na shakyate
+
+=== vartani_sandhi_via_variable.sm
+  before (v297) bin: 'abcdnever\n' exit 0 
+  before (v297) exe: '' exit 5 
+  after (R121) bin: '' exit 1 Sutram truti [E_VARTANI_STHIRA]: vartani_sandhi: prathama vartani sthira (karyakramasya bhagah) - ta
+  after (R121) exe: '' exit 1 Sutram truti [E_VARTANI_STHIRA]: vartani_sandhi: prathama vartani sthira (karyakramasya bhagah) - ta

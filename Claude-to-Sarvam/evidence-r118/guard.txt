@@ -17,7 +17,12 @@ elf: 0 DIFFER run old and new: 0 same output and exit code, 0 changed
 81
      73 IDENTICAL
       8 REFUSED-SAME
-### Wine: PENDING
+### the Windows compiler under Wine (rerun after a container restart stopped the first run at program 546)
+source files whose text changed: 81
+725 programs: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new
+NEW          examples/346_r118_old_library_names.sm
+NEW          examples/347_r118_old_roop_names.sm
+1160 Wine outputs, 1160 byte-identical to the Linux PE outputs
 
 ## FIRST RUN (discarded): a comment line added above each renamed library function moved later functions' line numbers
 725 programs: 543 byte-identical, 143 refused identically, 37 DIFFER, 2 new
