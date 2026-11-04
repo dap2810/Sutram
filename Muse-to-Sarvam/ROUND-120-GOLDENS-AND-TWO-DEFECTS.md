@@ -1,0 +1,46 @@
+# ROUND-120 — Which goldens encode broken behaviour?
+
+Base: v297 (worktree at `c803cc07`, current main). Suite on Linux v297, run directly: **NO-EXPECTATION=4, PASS=315 (319 run)** — so the "315-passing suite" is the 315 examples with expectations (319 files minus the 4 without: 215, 216, 217, 219), all passing. The provenance population below is those 315 `.out` goldens (+ 315 `.exit` files, treated separately).
+
+## WS1 — golden provenance: how much of the 315 is actually evidence?
+
+**Method (stated, so the ratio is checkable):** a golden counts as "provenance visible" if the tree contains, for that program, an explicit expected output, a derivation, a rule + error code, a known constant, or a spec reference (in the `.sm` header, a linked doc, or the harness's stdin table). "No provenance visible" means none of those was found — which is NOT the same as "recorded from buggy code" (an author can hand-check a value without writing it down), so the no-provenance count is an UPPER BOUND on the pool where a hidden bug could live, not a count of buggy goldens. I hand-classified a random sample of 40 goldens (seed 42, listed in `r120_sample.json` with one-line reasons) rather than pretending to hand-read all 315, and I also ran the mechanical marker grep (21 `.sm` files contain a strong provenance keyword like "expected"/"known value"/"cross-check").
+
+**Sample result (40 goldens):**
+
+| Category | Count | What it means |
+|---|---|---|
+| Refusal goldens (provenance visible via rule + error code) | 19 (47.5%) | The golden is a specific refusal (e.g. `E_UNDEFINED_NAME` for an undeclared name, `E_MODULE_MISSING` for a missing module, `E_CHAKRA_DASHAM` for a dasham counter, `E_KOSH_MANDAPA` for an escaping kosh). The header states the rule ("assigning to a never-declared name is a compile error"); the refusal + error code are spec facts, not recorded accidents. The exact message BYTES may have been recorded, but the fact of refusal is hand-known. These are strong evidence. |
+| Spec / known-constant / stdin-echo (provenance visible) | 3 (7.5%) | R116 contract examples (333: "\|MIN+1\| is MAX; \|MIN\| refused (R189 row 4)"; 339: "digits of 2^63−1 give it back; digits of 2^63 refused (R189 row 10)") + a stdin-echo (59: the harness passes "42\n", the program prints it). |
+| Trivial / readable value goldens | 11 (27.5%) | The output is obvious by reading the (short) program (hello, a 0..4 loop, "Hello World" + "3+4=7", a kosh push/len/cap trace, a swap giving 1/2/3/4). The author knew the answer without running — no derivation needed because the trace is the derivation. |
+| Non-trivial value goldens, NO provenance visible | 7 (17.5%) | The output is NOT obvious by reading (float codegen paths, XMM cache barriers, slice views, multimodule capacity) and the header states the rule being tested but NOT the expected numbers (e.g. 143: "calls must invalidate cached XMM locals" → golden 5.0/26.0/3.5/11.0, with no derivation of those numbers in the tree). These are the pool where recording-from-code could hide a bug. |
+
+**Extrapolated to 315 (sample proportions, not an exact count): ~260 goldens are evidence (refusal + spec + trivial/readable), and ~55 are in the no-provenance pool (upper bound).** So most of the suite IS evidence — but the pool is real, and WS2 proves it is not empty (both known defects live in it).
+
+**The `.exit` files are stronger than the `.out` files:** all 315 `.exit` goldens are 0 (success) or 1 (refusal), and that choice is almost always hand-known — it IS the test's design (a refusal test is written to refuse; a success test is written to succeed). A buggy codegen that changed an exit code would be caught by the test's intent, not just by its recorded bytes. The risk sits in the `.out` VALUES, not the exit codes.
+
+**Direct answer to "how many other goldens are like that?":** I cannot count buggy goldens directly (that would require knowing the right answer for all 315, which is the work itself). What I can bound: at most ~55 (the no-provenance pool), and the two known cases are both string builtins, not arithmetic or logic — so there is no evidence of a WIDE hidden-bug class, but the pool deserves hand-checking (starting with string builtins and float codegen paths, where the output is least obvious by reading).
+
+## WS2 — the two defects, verified independently (right answer first, then the run)
+
+**Contracts derived from the docs (not from the golden):** `vartani_sandhi(a, b)` (sandhi = joining) must return a NEW string "ab"+"cd" = "abcd", with `a` and `b` UNCHANGED (the v287 contract: string+ makes a new string, operands unchanged). `anka_akshar(code)` (anka = number, akshar = letter; the v292 `char_from` → `anka_akshar`, number→letter) must return a NEW, stable 1-character string (66 → "B") that survives later string operations. Probes delivered (`ws2_anka.sm`, `ws2_anka2.sm`).
+
+**What they SHOULD return vs what they DO on Linux v297:**
+
+- `vartani_sandhi("ab", "cd")` SHOULD return a new "abcd" with "ab" and "cd" unchanged. **It DOES return "abcd" — but it MUTATES its first operand.** Proof: `v = "ab"; s = vartani_sandhi(v, "cd"); shabda(v)` prints **"abcd"** (not "ab"). So `s` IS `v`'s buffer, written in place (the old `vartani_cat` body: find dst's NUL, copy src, return dst — no allocation, no copy). **Defect confirmed on Linux.**
+- `anka_akshar(66)` SHOULD return a stable "B". **It DOES return "B" immediately — but the result is OVERWRITTEN by a later string operation.** Proof: `c1 = anka_akshar(66); t = vartani_sandhi("x", "y"); shabda(c1)` prints **garbage ("�\u0001@")**, not "B". So `anka_akshar`'s buffer is shared/reused by the string machinery (not a fresh, independent string). **Defect confirmed on Linux.** (Two `anka_akshar` calls in a row do NOT overwrite each other (c1 stays "B" after `anka_akshar(67)`) — it is specifically a later `vartani_sandhi` that corrupts it, which points to a shared scratch area, not a per-call static.)
+- **Why the basic cases pass (and why the golden hides both):** with LITERALS, each occurrence gets its own buffer, so `vartani_sandhi("ab","cd")` → "abcd" looks correct and a later `shabda("ab")` (a different buffer) still prints "ab" — the test never reads the OPERAND after the call, so the mutation is invisible. And 322 prints `shabda(anka_akshar(66))` ("B") IMMEDIATELY, before any `vartani_sandhi` — so the buffer is still intact at print time. The golden records the correct RESULT while hiding the operand corruption and the buffer instability, because the test never exercises the contract's second half (operands unchanged; result stable).
+- **Why Windows crashes (same bugs, different manifestation):** on PE, string literals live in read-only memory, so `vartani_sandhi`'s in-place write into the literal "ab"'s buffer triggers the access violation (0xC0000005) seen in 322/323 — and `anka_akshar`'s shared buffer gives a bad first byte (� instead of 'B') on PE. On Linux the literals are writable, so the same in-place write "works" silently. **One bug (in-place concatenation + shared buffer), two platforms, two symptoms — not two bugs.**
+- Minor, noted not headlined: `anka_akshar(256)` wraps to NUL → empty string (undocumented silent wrap, like the int64 wraps; the contract does not specify >255). `anka_akshar(0)` gives an empty string (NUL) without crashing.
+
+## WS3 — does `docs/` say memory reporting and the budget are Linux-only? YES, with exact quotes.
+
+**The documentation is CORRECT, not wrong — so the gap is a documented PE limitation (missing implementation), not a documentation error:**
+
+- `parimana()` — `docs/LANGUAGE-REFERENCE.md:1308` (§19, "How much is in use: `parimana()`"): *"adds one counter update. **Linux ELF only; in a Windows program it returns 0.**"* — exactly the Windows behavior found in R118 (317/318 return 0).
+- `mandapa parimita` (budget) — `docs/LANGUAGE-REFERENCE.md:1352` (§19, "A budget: `mandapa parimita N`"): *"**Linux ELF only, as the block.** In a Windows program a `mandapa` releases nothing, and its budget is not checked."* — exactly the Windows behavior found in R118 (303 runs to completion). Same statement in `docs/CHANGELOG.md:193` ("Linux ELF only, as the block; on Windows it is not checked.").
+- `kosh` regions — `docs/LANGUAGE-REFERENCE.md:976–979` (§16): *"**On Windows the old behaviour remains (not yet changed there):** a growing `kosh` always moves, `a` stays on the old buffer, and the program prints `a[0]=41 k[0]=99` / `a[0]=7 k[0]=99` … **Until Windows has regions too, keep one name per `kosh`…**"* — the reference even quotes 288's EXACT Windows output verbatim, so that behavior is documented, not surprising.
+
+So R118's "confirmed Windows defect" (parimana returns zero, parimita does not enforce) is a real missing PE feature, but it is a KNOWN, DOCUMENTED limitation — the compiler behaves on Windows exactly as the reference says it does. The fix is PE implementation (regions + tracking + reporting), not a doc correction.
+
+NOT RUN: Windows (cannot run Windows — the Windows claims come from R118's native-cases.json, re-cited here, not from a new Windows run), browser, implementation (none authorized — diagnosis and probes, not fixes), full suite beyond the v297 run quoted above (no tree changes).

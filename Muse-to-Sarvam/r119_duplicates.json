@@ -1,0 +1,1513 @@
+{
+ "67a638aace16895a347a7b910279662b0c3ead50adb7a61738a5a697a98409a7": [
+  "./ChatGPT-to-Sarvam/PATH.md",
+  "./Claude-to-Sarvam/PATH.md",
+  "./Muse-to-Sarvam/PATH.md",
+  "./Sarvam-to-ChatGPT-Windows/PATH.md",
+  "./Sarvam-to-ChatGPT/PATH.md",
+  "./Sarvam-to-Claude/PATH.md",
+  "./Sarvam-to-Muse/PATH.md",
+  "./Windows-to-Sarvam/PATH.md"
+ ],
+ "50072875e7cd27eda6e3313e773c12b4aa11dc029c58122b7c82b66043f50b34": [
+  "./ChatGPT-to-Sarvam/READ-FIRST.md",
+  "./Claude-to-Sarvam/READ-FIRST.md",
+  "./Muse-to-Sarvam/READ-FIRST.md",
+  "./Sarvam-to-ChatGPT-Windows/READ-FIRST.md",
+  "./Sarvam-to-ChatGPT/READ-FIRST.md",
+  "./Sarvam-to-Claude/READ-FIRST.md",
+  "./Sarvam-to-Muse/READ-FIRST.md",
+  "./Windows-to-Sarvam/READ-FIRST.md"
+ ],
+ "114069f396e2bf801e896f496f26546cf700cb81edd8b17a77c480f494b4029d": [
+  "./ChatGPT-to-Sarvam/ROUND-154-RECYCLING-AND-ALIAS-EVIDENCE.md",
+  "./Claude-to-Sarvam/ROUND-154-RECYCLING-AND-ALIAS-EVIDENCE.md"
+ ],
+ "b07a921914cafc6191dd34b44f90ed02d6933d7a12fe29d40884a7324fd324e1": [
+  "./ChatGPT-to-Sarvam/tools/check_doc_signatures.py",
+  "./tools/check_doc_signatures.py"
+ ],
+ "0b96d6a3096665296f24a3176cc22df82231fe0fc1a37134dda3be64478d0377": [
+  "./Claude-to-Sarvam/evidence-r103/programs/303_r103_parimita_refuses.sm",
+  "./examples/303_r103_parimita_refuses.sm"
+ ],
+ "8ca189a36614edfb003994782168dcd971ba78787b4e0bc42bbd4612e89bd954": [
+  "./Claude-to-Sarvam/evidence-r103/programs/304_r103_parimita_within.sm",
+  "./examples/304_r103_parimita_within.sm"
+ ],
+ "26a1b77f24a1b46473cd428c22007ff345df273742cc4b6f04476e5f3be447d4": [
+  "./Claude-to-Sarvam/evidence-r103/programs/305_r103_parimita_needs_number.sm",
+  "./examples/305_r103_parimita_needs_number.sm"
+ ],
+ "4b96b25096bfd4eeb612322e1af76477c0dade0e77297cc72006de77e2d67368": [
+  "./Claude-to-Sarvam/evidence-r103/programs/kb1.sm",
+  "./Claude-to-Sarvam/evidence-r107/programs/kb1_regions.sm"
+ ],
+ "27cd153348213e001aa13a96636282737bc2f4e20ba3aad9cde2f627e455c64e": [
+  "./Claude-to-Sarvam/evidence-r103/suite.txt",
+  "./Claude-to-Sarvam/evidence-r104/suite.txt"
+ ],
+ "def533ecd5f291520066607cafc594f759ab76f4ec3c1b4a13a70a2548d60164": [
+  "./Claude-to-Sarvam/evidence-r104/programs/c_relit.sm",
+  "./Claude-to-Sarvam/evidence-r105/programs/mixed_plus.sm"
+ ],
+ "08fedd76e93b852d8b44bdcf40889c9709a69100ea4cff33fd1f8490bea7ac56": [
+  "./Claude-to-Sarvam/evidence-r106/programs/kosh_eq.sm",
+  "./Claude-to-Sarvam/evidence-r108/programs/keq.sm"
+ ],
+ "519544bc72cd1b33bd89e3160dc5764977baf3b1d528849fec249e30c18ff21a": [
+  "./Claude-to-Sarvam/evidence-r109/suite.txt",
+  "./Claude-to-Sarvam/evidence-r110/suite.txt"
+ ],
+ "aa7d6fe416b42ccd30f96689991ab8ee3c1ae7749b0f10aa133f524fe284a513": [
+  "./Claude-to-Sarvam/evidence-r111/golden-diffs/270_r75_nested_store.diff",
+  "./Claude-to-Sarvam/evidence-r111/golden-diffs/287_r82_kosh_after_mandapa.diff",
+  "./Claude-to-Sarvam/evidence-r111/golden-diffs/314_r106_kosh_operand.diff",
+  "./Claude-to-Sarvam/evidence-r111/golden-diffs/316_r107_kosh_kept_by_a_prakriya.diff",
+  "./Claude-to-Sarvam/evidence-r111/golden-diffs/320_r109_kosh_alias_kept.diff",
+  "./Claude-to-Sarvam/evidence-r111/golden-diffs/321_r109_kosh_long_chain.diff"
+ ],
+ "cd28be4cfd53da6019aa82deed22e7419df26f3b366546384213aeaf0090db5b": [
+  "./Claude-to-Sarvam/evidence-r111/suite.txt",
+  "./Claude-to-Sarvam/evidence-r112/suite.txt"
+ ],
+ "47445bbf88fd8b9915b88c46933765f002ae8252c02c51326bb6ca5ea8dd45f0": [
+  "./Claude-to-Sarvam/evidence-r113/suite.txt",
+  "./Claude-to-Sarvam/evidence-r114/suite.txt",
+  "./Claude-to-Sarvam/evidence-r115/suite.txt"
+ ],
+ "88730e9bf0e4db0d9228e1dbf300be2b600e00092fcacd5bf1ffe17204ddbc21": [
+  "./Claude-to-Sarvam/evidence-r114/guard-pe-differ.txt",
+  "./Claude-to-Sarvam/evidence-r114/guard-wine-differ.txt"
+ ],
+ "d0db2ece2d9c8748c7ff125056c67ba8c4088ed1be4eab9a15afc6d2f3505e0f": [
+  "./Claude-to-Sarvam/evidence-r114/token-check-pe.txt",
+  "./Claude-to-Sarvam/evidence-r114/token-check-wine.txt"
+ ],
+ "dea43a616525af5426abf9fca3d2f62019bb3907455b9a6670dc062d4ad3b431": [
+  "./Claude-to-Sarvam/evidence-r116/gates.txt",
+  "./Claude-to-Sarvam/evidence-r117/gates.txt"
+ ],
+ "9367547d13c8ad95614f4db88532e85b24e4d3d9165797624bad8dcc1d45d462": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R1-yoj-at-end-of-file.sm",
+  "./tests/negative/r17/R1-yoj-at-end-of-file.sm",
+  "./tests/negative/r17/r15-original/mutation-15-16696.sm",
+  "./tests/negative/r17/r15-original/mutation-15-2101.sm",
+  "./tests/negative/r17/r15-original/mutation-15-24931.sm",
+  "./tests/negative/r17/r15-original/mutation-15-25571.sm",
+  "./tests/negative/r17/r15-original/mutation-15-28363.sm",
+  "./tests/negative/r17/r15-original/mutation-15-35457.sm",
+  "./tests/negative/r17/r15-original/mutation-15-40855.sm",
+  "./tests/negative/r17/r15-original/mutation-15-42507.sm",
+  "./tests/negative/r17/r15-original/mutation-15-48253.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-10061.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-1268.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-13912.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-16696.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-18721.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-2101.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-24127.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-24931.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-25571.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-27046.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-28363.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-28969.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-29084.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-30524.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-3065.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-3373.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-35457.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-37233.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-40194.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-40347.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-40855.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-42507.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-47085.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-48253.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-48781.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-5307.sm"
+ ],
+ "88ad7d075cab2a3c96fc6cd90fc66346208ca9bc5ce81dce2ed151adaec98c29": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R2-parameter-list-at-end-of-file.sm",
+  "./tests/negative/r17/R2-parameter-list-at-end-of-file.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-12832.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-14386.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-22286.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-26963.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-27298.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-29767.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-33516.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-38467.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-38911.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-40049.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-40597.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-47726.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-49763.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-5065.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-6125.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-9452.sm"
+ ],
+ "197a06a50d3d68848238f8cf98d842e94e303343a23b6b9ee662ff38c7a39f5e": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R2b-parameter-list-comma-at-end-of-file.sm",
+  "./tests/negative/r17/R2b-parameter-list-comma-at-end-of-file.sm"
+ ],
+ "6a81d57153c94e09ce09a48f4ffafa85b9ebea07f88e0fc1fa071c7269db2984": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R2c-number-as-parameter-then-end-of-file.sm",
+  "./tests/negative/r17/R2c-number-as-parameter-then-end-of-file.sm"
+ ],
+ "96abe8e148c079a620708f792eab8702fceca738ecfdc1501c0ad9ed4bcd7f2d": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R3-rachana-at-end-of-file.sm",
+  "./tests/negative/r17/R3-rachana-at-end-of-file.sm"
+ ],
+ "7cbb03e3273c0adfc4a18325e5524d3b948f4f9500fc2bc0653f9a3eb81f478c": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R4-anya-yadi-after-anya.sm",
+  "./tests/negative/r17/R4-anya-yadi-after-anya.sm"
+ ],
+ "065d85ba587fb6f0f0ac6a5e6a998f50e7ee688e3f97ba4d7b0817e6b82410de": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R5-expression-left-of-assignment.sm",
+  "./tests/negative/r17/R5-expression-left-of-assignment.sm"
+ ],
+ "affb44f83abc27e412c0896458c5eb15bc58daf048a2fa2fdddb97f0800e24c3": [
+  "./Claude-to-Sarvam/evidence-r15/robust/R5b-index-expression-left-of-assignment.sm",
+  "./tests/negative/r17/R5b-index-expression-left-of-assignment.sm"
+ ],
+ "465adaccc89d336191016c4afb7f9fa2e1265d2587ab49cd0d4b2c00da41dae2": [
+  "./Claude-to-Sarvam/evidence-r17/fuzz-valid-seed15-20000-final.txt",
+  "./Claude-to-Sarvam/evidence-r17/fuzz-valid-seed15-20000-no-workarounds.txt",
+  "./Claude-to-Sarvam/evidence-r18/fuzz-valid-seed15-20000.txt"
+ ],
+ "0c0885593b8d8ea535b1c75cfcb030947768bc16966c153d402bb30ae5e12733": [
+  "./Claude-to-Sarvam/evidence-r21/crash-corpus-branch.txt",
+  "./Claude-to-Sarvam/evidence-r36/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r38/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r39/branch-round-39/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r39/raw-crash_corpus.txt",
+  "./Windows-to-Sarvam/win-linker-2026-10-21/linux-crash-corpus.txt"
+ ],
+ "aec13e525510b6ca78834eef8cad4b165803bb68d8796f0e6a95fe9feeb4be82": [
+  "./Claude-to-Sarvam/evidence-r24/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r25/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r26/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r28/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r29/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r30/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r31/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r32/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r33/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r34-ffi/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r35/crash-corpus.txt",
+  "./Claude-to-Sarvam/evidence-r37/crash-corpus.txt"
+ ],
+ "e59670ff34db313ac6d9407ff1a5ecb5c2aef2b9c2102cf94ba286cbbd6581fa": [
+  "./Claude-to-Sarvam/evidence-r24/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r26/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r28/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r29/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r30/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r32/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r33/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r34-ffi/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r35/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r36/other-tests.txt",
+  "./Claude-to-Sarvam/evidence-r37/other-tests.txt"
+ ],
+ "f5600c204998d97a04be26b63218393364797177d76751a12e6a80dbe53dfaca": [
+  "./Claude-to-Sarvam/evidence-r26/suite.txt",
+  "./Claude-to-Sarvam/evidence-r28/suite.txt"
+ ],
+ "21382586eb30cfab7e7247f07da4face16e323585a96768d2cfb88c8d12b3b53": [
+  "./Claude-to-Sarvam/evidence-r29/suite.txt",
+  "./Claude-to-Sarvam/evidence-r30/suite.txt",
+  "./Claude-to-Sarvam/evidence-r31/suite.txt",
+  "./Claude-to-Sarvam/evidence-r32/suite.txt",
+  "./Claude-to-Sarvam/evidence-r33/suite.txt",
+  "./Claude-to-Sarvam/evidence-r34-ffi/suite.txt",
+  "./Claude-to-Sarvam/evidence-r35/suite.txt",
+  "./Claude-to-Sarvam/evidence-r36/suite.txt",
+  "./Claude-to-Sarvam/evidence-r37/suite.txt"
+ ],
+ "91f69e5ee5897e2d4e582db746696d1895ab55187126e2cba99cd3e3bcf83453": [
+  "./Claude-to-Sarvam/evidence-r30/compiler-version.txt",
+  "./Claude-to-Sarvam/evidence-r31/compiler-version.txt"
+ ],
+ "d091138df19d241c87ae185c92654fa0a152ee4cb523d77fbe9bf925c17d3319": [
+  "./Claude-to-Sarvam/evidence-r30/test_link.txt",
+  "./Claude-to-Sarvam/evidence-r32/test_link.txt",
+  "./Claude-to-Sarvam/evidence-r33/test_link.txt"
+ ],
+ "5dceddb835a69751de4d36eff49c3612a2d928478ff25179b918cd421d1e733d": [
+  "./Claude-to-Sarvam/evidence-r30/test_vitti.txt",
+  "./Claude-to-Sarvam/evidence-r32/test_vitti.txt",
+  "./Claude-to-Sarvam/evidence-r33/test_vitti.txt"
+ ],
+ "571b79690cd5c6a1bc79b2d2fb74a2b1abbc6b9d0d1f3f395af48975c3da7e59": [
+  "./Claude-to-Sarvam/evidence-r31/fuzz_r23-robust-seed31-5000.txt",
+  "./Claude-to-Sarvam/evidence-r33/fuzz_r23-robust-seed33-5000.txt"
+ ],
+ "66fd1d339f589b9627c7ec98a199e1263ea405089a721ff527337e6df9743a40": [
+  "./Claude-to-Sarvam/evidence-r31/test_incremental.txt",
+  "./Claude-to-Sarvam/evidence-r32/test_incremental.txt",
+  "./Claude-to-Sarvam/evidence-r33/test_incremental.txt"
+ ],
+ "435e0fd6fbf3f9312c51b8e874e6cecde81892644a4cd96b7f3491d89c882473": [
+  "./Claude-to-Sarvam/evidence-r32/test_ffi.txt",
+  "./Claude-to-Sarvam/evidence-r33/test_ffi.txt"
+ ],
+ "f0b036c56cd7de855130fc5f30ee1c3e21c35c021607c7281c697df1ff2e86a8": [
+  "./Claude-to-Sarvam/evidence-r33/test_ffi_kinds.txt",
+  "./Claude-to-Sarvam/evidence-r34-ffi/test_ffi_kinds.txt"
+ ],
+ "f43e2214c12d42aa646ce01343b29c05218f6119091150bfee3aca4b09841a44": [
+  "./Claude-to-Sarvam/evidence-r34-ffi/compiler-version.txt",
+  "./Claude-to-Sarvam/evidence-r35/compiler-version.txt",
+  "./Claude-to-Sarvam/evidence-r36/compiler-version.txt",
+  "./Claude-to-Sarvam/evidence-r37/compiler-version.txt"
+ ],
+ "e661437ff80a7528d1de07f67d59685191306d17e84fd2173a86fb94ca60b9e7": [
+  "./Claude-to-Sarvam/evidence-r37/property-proofs.txt",
+  "./Claude-to-Sarvam/evidence-r39/raw-proof_props.txt",
+  "./Claude-to-Sarvam/evidence-r8/logs/proof_props.txt"
+ ],
+ "969916239418bf7c1d1e7ad584f58c748b4964f51e9b13822168044f5cacf203": [
+  "./Claude-to-Sarvam/evidence-r38/proof_lib-4GB.txt",
+  "./Claude-to-Sarvam/evidence-r38/proof_lib-unlimited.txt"
+ ],
+ "d40037bfeea1357a76eaa2ad443e0262a21bf50d192caa3dce88dff93a17fdb4": [
+  "./Claude-to-Sarvam/evidence-r38/suite.txt",
+  "./Claude-to-Sarvam/evidence-r39/branch-round-39/suite.txt",
+  "./Windows-to-Sarvam/win-linker-2026-10-21/linux-suite.txt"
+ ],
+ "5b20494580b3acb17413f1340241220a8276eca5491ce9bfa5fd8bbe43aa9e56": [
+  "./Claude-to-Sarvam/evidence-r39/doc_counts_gate-after.txt",
+  "./Claude-to-Sarvam/evidence-r39/doc_counts_gate-before.txt"
+ ],
+ "f178f7805db3a3b688e5e46956aa95c91f69915c1473d95a3d0aea7e05acc7df": [
+  "./Claude-to-Sarvam/evidence-r39/raw-proof_lib__ulimit_-v_4_GB_.txt",
+  "./Claude-to-Sarvam/evidence-r39/raw-proof_lib__unlimited_.txt"
+ ],
+ "38f8335134f5b0a761c6455e8dbf1c43c4190ebc378edbd95244c8b925dfabb2": [
+  "./Claude-to-Sarvam/evidence-r41/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r41/guard-wine-windows-compiler.txt"
+ ],
+ "15b8f107b9e8315a7943a0cfa143037805558aa4ff5d2df184138ff6126964a1": [
+  "./Claude-to-Sarvam/evidence-r42/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r43/guard-v248-vs-now.txt"
+ ],
+ "fb1297d048c5a64c4c1f0cbc906f35c0f474fa4523a29efd136efb0458434449": [
+  "./Claude-to-Sarvam/evidence-r42/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r42/guard-wine-windows-compiler.txt"
+ ],
+ "6f5325c878917d6f3bca022234beae836d7f6dd29549cdd535570688a20e2af7": [
+  "./Claude-to-Sarvam/evidence-r44/guard-pair-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r44/guard-pair-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r44/guard-pair-wine.txt"
+ ],
+ "d8ac5080abd7ba9fc60ea5d6e6b115d4987860e084bc191c9242224836d060a3": [
+  "./Claude-to-Sarvam/evidence-r45/example-trace-linux.txt",
+  "./Claude-to-Sarvam/evidence-r45/example-trace-windows-compiler-under-wine.txt"
+ ],
+ "890cd7e21bc9b8269e52370d0f11589411335941d4c768840fad48769923851c": [
+  "./Claude-to-Sarvam/evidence-r45/guard-flag-off-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r45/guard-v250-v252-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r45/guard-v251-v252-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r46/guard-v252-v253-linux-elf.txt"
+ ],
+ "de55fd06146a690fb3576e48513b5d9987a75ee14d8246dae92f7ad2a5120244": [
+  "./Claude-to-Sarvam/evidence-r45/guard-flag-off-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r45/guard-flag-off-wine.txt",
+  "./Claude-to-Sarvam/evidence-r45/guard-v251-v252-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r45/guard-v251-v252-wine.txt",
+  "./Claude-to-Sarvam/evidence-r46/guard-v252-v253-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r46/guard-v252-v253-wine.txt"
+ ],
+ "9b82e69d03bdac2101b522ca5a59b0f8999b6e5411ffe009948c1e464db9b1a2": [
+  "./Claude-to-Sarvam/evidence-r47/guard-pair-laghu-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r47/guard-pair-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r47/guard-pair-linux-pe.txt"
+ ],
+ "ab85ca8390fc506aa11f47278e00af3ab1b77ee3d385c53e7a595ea425479826": [
+  "./Claude-to-Sarvam/evidence-r48/guard-pair-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r48/guard-pair-linux-pe.txt"
+ ],
+ "ca65f7c409b4438ff799c0f0211f505708cc4d2882acb794a9f9df546469bcf1": [
+  "./Claude-to-Sarvam/evidence-r49/guard-v253-v254-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r49/guard-v253-v254-wine.txt"
+ ],
+ "34c148d83a9d2b1c3e710fac9fe79475ada8b781acea98ee32757af5e6480594": [
+  "./Claude-to-Sarvam/evidence-r5/probes/p01_assign_typo.sm",
+  "./Claude-to-Sarvam/evidence-r7/probes/V02_assign_undeclared.sm"
+ ],
+ "65594d4eb20b6dab7c96c2fe64ad8bc8bb27b97d86573628a6bbba3a03d3c061": [
+  "./Claude-to-Sarvam/evidence-r5/probes/p04_branch_scope.sm",
+  "./Claude-to-Sarvam/evidence-r7/probes/V04_block_decl_after.sm"
+ ],
+ "f33595e51364e436d84d21592d2edda698c1752aedc6bc8cad8c13c561d5486b": [
+  "./Claude-to-Sarvam/evidence-r5/probes/p08_loop_var_after.sm",
+  "./Claude-to-Sarvam/evidence-r7/probes/V05_loopvar_after.sm"
+ ],
+ "bdf803a14156a64f14bf459ee1d1a8e2d0d6085dd9fc019a1fbe5f3bb80d2e4a": [
+  "./Claude-to-Sarvam/evidence-r50/proof_lib-4GB.txt",
+  "./Claude-to-Sarvam/evidence-r68/guard-pages-proof-lib.txt"
+ ],
+ "741f5c9183726b67ac32a7fc1f31e4dc7913c73e7bcbfb7254a92fd705be7f82": [
+  "./Claude-to-Sarvam/evidence-r52/guard-v256-v257-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r53/guard-v255-v256-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r54/guard-A-v257-v258-pre-patch-tree-linux-elf.txt"
+ ],
+ "491d5a9de7d6bf609a8188a572724727b85e4b755b0216f70aaccae8d58db4d8": [
+  "./Claude-to-Sarvam/evidence-r52/guard-v256-v257-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r52/guard-v256-v257-wine.txt",
+  "./Claude-to-Sarvam/evidence-r53/guard-v255-v256-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r53/guard-v255-v256-wine.txt",
+  "./Claude-to-Sarvam/evidence-r54/guard-A-v257-v258-pre-patch-tree-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r54/guard-A-v257-v258-pre-patch-tree-wine.txt"
+ ],
+ "47409c4d0bb1d86e14ed700b9f60f3026c46ee60824084148c8350db8bd3df44": [
+  "./Claude-to-Sarvam/evidence-r54/guard-B-v257-v258-patched-tree-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r54/guard-B-v257-v258-patched-tree-wine.txt"
+ ],
+ "94bbef29886c51d8825e6da69a0530ac7a9dd081efbe290b40b2debb9c5411d7": [
+  "./Claude-to-Sarvam/evidence-r54/guard-C-r52-tree-vs-r52+r53-tree-v258-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r54/guard-C-r52-tree-vs-r52+r53-tree-v258-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r54/guard-C-r52-tree-vs-r52+r53-tree-v258-wine.txt"
+ ],
+ "87c062ffa743c23a5d1702bc6e4048a4b86317295c0d7106d7a40221839acce1": [
+  "./Claude-to-Sarvam/evidence-r55/guard-head-vs-patched-v258-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r55/guard-head-vs-patched-v258-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r55/guard-head-vs-patched-v258-wine.txt"
+ ],
+ "4f35599ed815daa8d038e76796e735ffedd8be94cfa3f4461a7f058e3528a68e": [
+  "./Claude-to-Sarvam/evidence-r56/checks-c1.txt",
+  "./Claude-to-Sarvam/evidence-r56/checks-c2.txt",
+  "./Claude-to-Sarvam/evidence-r56/checks-c3.txt",
+  "./Claude-to-Sarvam/evidence-r57/checks.txt"
+ ],
+ "c62bdcf233db7b04811e738928f0f65f4b5250b86b5ac9301e817ea79bfcfa27": [
+  "./Claude-to-Sarvam/evidence-r56/guard-c1-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r56/guard-c1-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r56/guard-c1-wine.txt"
+ ],
+ "b0b19e68b8fc3eacfa9e1f52a1cd06a3f94d09dddfd6a7406496ddd3fdd58b3d": [
+  "./Claude-to-Sarvam/evidence-r56/guard-c2-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r56/guard-c2-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r56/guard-c2-wine.txt"
+ ],
+ "df33f2e64f2e83658496db48a319b6dc36b660c6e17674c2a79a0080f8a23a9e": [
+  "./Claude-to-Sarvam/evidence-r56/guard-c3-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r56/guard-c3-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r56/guard-c3-wine.txt"
+ ],
+ "6fab01c593902cfee20a23385c8227405a60c2832159d8334680e91970866883": [
+  "./Claude-to-Sarvam/evidence-r57/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r57/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r57/guard-wine.txt"
+ ],
+ "70711e073d5f6121176a6455e75d03ed8469a21803e21993e555e2534d4483e3": [
+  "./Claude-to-Sarvam/evidence-r58/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r58/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r58/guard-wine.txt"
+ ],
+ "953c4d091fe9e4b2489cffbc51930a8281b9dd8bfecb5da8ff1a7325fc00491a": [
+  "./Claude-to-Sarvam/evidence-r59/kosh_grow.sm",
+  "./Claude-to-Sarvam/evidence-r64/append-1M.sm",
+  "./Claude-to-Sarvam/evidence-r65/append-1M.sm",
+  "./Claude-to-Sarvam/evidence-r67/leak-single.sm"
+ ],
+ "18e61cd4a3b88b1ab4ed41680815e92293ff47b6da2d1a4011335839d5959c08": [
+  "./Claude-to-Sarvam/evidence-r65/guard-A-v261-v262-reword-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r65/guard-A-v261-v262-reword-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r65/guard-A-v261-v262-reword-wine.txt",
+  "./Claude-to-Sarvam/evidence-r65/guard-B-v262-v263-step1-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r65/guard-B-v262-v263-step1-wine.txt",
+  "./Claude-to-Sarvam/evidence-r69/guard-step2-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r69/guard-step2-wine.txt",
+  "./Claude-to-Sarvam/evidence-r70/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r70/guard-linux-pe.txt"
+ ],
+ "b82bf0a1a13ac3fd2595fbb15f78e2a9545738c657383ba2cb9f9e414c186e8d": [
+  "./Claude-to-Sarvam/evidence-r65/guard-B-v262-v263-step1-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r69/guard-step2-linux-elf.txt"
+ ],
+ "5f4383b4153e7305e0e083aca18c449d615c30bc04b12be2a69d75c511679b76": [
+  "./Claude-to-Sarvam/evidence-r68/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r68/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r68/guard-wine.txt"
+ ],
+ "cfae093a6721666fb44777247a14f7dc3eadd8be09f4ff233470391561001f05": [
+  "./Claude-to-Sarvam/evidence-r71/guard-v266-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r71/guard-v266-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r71/guard-v266-wine.txt"
+ ],
+ "7ec93cc32b3032069760b9d4bf85c5f130d5100cc85d387bd3975c7ca1628bb1": [
+  "./Claude-to-Sarvam/evidence-r71/guard-v267-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r71/guard-v267-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r71/guard-v267-wine.txt"
+ ],
+ "c14f7dd122c0056df34a4577d329094fdb0cbc830f6b50a84ffe3ca662ff5c7b": [
+  "./Claude-to-Sarvam/evidence-r72/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r72/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r72/guard-wine.txt"
+ ],
+ "47af9a7945f2d45e17ba13ff92787cc7b860e0305712216e889c8fce52bde4da": [
+  "./Claude-to-Sarvam/evidence-r73/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r73/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r73/guard-wine.txt"
+ ],
+ "6fb2e99172571d5a73091e85e2e2b2e766191fe8e471380cf54d978233abac6e": [
+  "./Claude-to-Sarvam/evidence-r73/guard-v270-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r73/guard-v270-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r73/guard-v270-wine.txt"
+ ],
+ "df4e53a7389743fed599d88816d7afe6b3842ee78bb4edbfcc3f0e66d1d4eccb": [
+  "./Claude-to-Sarvam/evidence-r74/guard-linux-elf-tree-only-v270.txt",
+  "./Claude-to-Sarvam/evidence-r74/guard-linux-pe-tree-only-v270.txt",
+  "./Claude-to-Sarvam/evidence-r74/guard-wine-tree-only-v270.txt"
+ ],
+ "8b5a8e103690fea9a3820409acf0961e98e130c052916aa42c79de9ee7352bf8": [
+  "./Claude-to-Sarvam/evidence-r74/guard-page-v270.txt",
+  "./Claude-to-Sarvam/evidence-r74/guard-page-v271.txt",
+  "./Claude-to-Sarvam/evidence-r74/guard-page-v272.txt"
+ ],
+ "ded11933bff0dadea8b1aa177f8d8f9c76238e992fba54d8ff3a20c0f0b4e505": [
+  "./Claude-to-Sarvam/evidence-r74/guard-v270-v271-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r74/guard-v270-v271-wine.txt"
+ ],
+ "41529f6e49983d32c3765851882aa44f06487480811f10230c6f3b9bc23db73d": [
+  "./Claude-to-Sarvam/evidence-r74/guard-v270-v272-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r74/guard-v270-v272-wine.txt"
+ ],
+ "2251f903f8ba4240510fc2e9442a05486c051598e6e71c7a61009c64eb3364fd": [
+  "./Claude-to-Sarvam/evidence-r75/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r75/guard-wine.txt"
+ ],
+ "22dfd3e7279cd9e7c6af4aea54cb85d5a13360d10c4fa54035035b96dabdabe5": [
+  "./Claude-to-Sarvam/evidence-r76/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r76/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r76/guard-wine.txt"
+ ],
+ "e16223403d46e4fb9cea366e5a17d9ec44a71fbda8fe3ee79e58b5511acc1921": [
+  "./Claude-to-Sarvam/evidence-r77/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r77/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r77/guard-wine.txt"
+ ],
+ "f51a4d1e1e64a24800837d9c43633f5df0869b2df4f609139e7805ff9648c237": [
+  "./Claude-to-Sarvam/evidence-r8/probes/F2b_nirmmita_zero.sm",
+  "./Claude-to-Sarvam/evidence-r9/F2-F6/f2b_nirmmita_zero.sm"
+ ],
+ "32d290981ff2972196dba1107f017855159df42132f2977747524d31341b867a": [
+  "./Claude-to-Sarvam/evidence-r8/probes/WS2_c3b_guna_eval.sm",
+  "./Claude-to-Sarvam/evidence-r9/F2-F6/f3_guna_eval.sm"
+ ],
+ "60e6d2d65cf145bac8d120debecbc2325174f743e29e080e25a0ee31c8bf8726": [
+  "./Claude-to-Sarvam/evidence-r80/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r80/guard-linux-pe.txt"
+ ],
+ "36b0be8e51850df9514aefefa241d023577b719d5a598671fb08f2ccfc9680cf": [
+  "./Claude-to-Sarvam/evidence-r81/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r81/guard-linux-pe.txt"
+ ],
+ "4c956c579c4987ec542f068c8423080b08c6ce2efe37f0016092a0b10c000692": [
+  "./Claude-to-Sarvam/evidence-r82/doc-counts.txt",
+  "./Claude-to-Sarvam/evidence-r83/doc-counts.txt"
+ ],
+ "cdb3e3e5e5bbb3d9b89ab294c9d3d01babb94693618beb72f923d874836781c6": [
+  "./Claude-to-Sarvam/evidence-r82/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r82/guard-linux-pe.txt"
+ ],
+ "1e1adcb9a5135f0b48b743521abb3375f240efae9de03026816a4bffe40116c5": [
+  "./Claude-to-Sarvam/evidence-r83/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r83/guard-linux-pe.txt",
+  "./Claude-to-Sarvam/evidence-r85/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r85/guard-linux-pe.txt"
+ ],
+ "18535e18551b4446610a607b316180699cfa6b5b4cebc9c967179f1ea9441850": [
+  "./Claude-to-Sarvam/evidence-r86/guard-linux-elf.txt",
+  "./Claude-to-Sarvam/evidence-r86/guard-linux-pe.txt"
+ ],
+ "48743c34aee163acbe377e1dea92bd801d9e2ef26e4bf3f5460f3c1d30602e5d": [
+  "./Claude-to-Sarvam/evidence-r9/expectations/r9_guard_cells.expect",
+  "./tests/stdlib/r9_guard_cells.out"
+ ],
+ "a26e5eff7ee9664d2bee4aa9a840b2ceb97827283094f49a74d2db0ad90c0561": [
+  "./Claude-to-Sarvam/evidence-r9/expectations/r9_guard_cells2.expect",
+  "./tests/stdlib/r9_guard_cells2.out"
+ ],
+ "df5c9726f24b0d12e511c4abf4017fc3c4bff7d8ac38cf2ccc67ee52977fc920": [
+  "./LICENSE.txt",
+  "./windows/LICENSE.txt"
+ ],
+ "1d6aa18253ae06d499951f6740be01978977fb1fef5275f3209ef3930141b3f7": [
+  "./Muse-to-Sarvam/V_lead.sm",
+  "./Muse-to-Sarvam/ws2_varna2.sm"
+ ],
+ "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa": [
+  "./Muse-to-Sarvam/r76_madhava_sign.exit",
+  "./Muse-to-Sarvam/r78_srij_fill_guard.exit",
+  "./Muse-to-Sarvam/r78_srij_witness.exit",
+  "./examples/215_r12_wordfreq.exit",
+  "./examples/216_r12_expr.exit",
+  "./examples/217_r12_report.exit",
+  "./examples/r67/bengali_native.exit",
+  "./examples/r67/punjabi_native.exit",
+  "./examples/r68/hindi.exit",
+  "./examples/r68/kannada.exit",
+  "./examples/r68/marathi.exit",
+  "./examples/r68/odia.exit",
+  "./examples/r68/pairs/all_registers.exit",
+  "./examples/r68/pairs/no_pairs.exit",
+  "./examples/r68/pairs/nonmatching.exit",
+  "./examples/r68/tamil.exit",
+  "./examples/r68/telugu.exit",
+  "./tests/expect/113_perf_self_update.exit",
+  "./tests/expect/114_perf_loop_fastpaths.exit",
+  "./tests/expect/115_perf_loop_bottom.exit",
+  "./tests/expect/116_perf_reg_destination.exit",
+  "./tests/expect/117_perf_constant_literals.exit",
+  "./tests/expect/118_t18_kosh_param.exit",
+  "./tests/expect/119_t18_kosh_param_forward.exit",
+  "./tests/expect/122_t18_kosh_param_devanagari.exit",
+  "./tests/expect/123_t18_kosh_param_statement_call.exit",
+  "./tests/expect/133_perf_float_scalar_call_rhs.exit",
+  "./tests/expect/134_perf_float_complex_fallback.exit",
+  "./tests/expect/141_xmm_cache_basic.exit",
+  "./tests/expect/142_xmm_cache_alias.exit",
+  "./tests/expect/143_xmm_cache_barriers.exit",
+  "./tests/expect/144_xmm_cache_fallback.exit",
+  "./tests/expect/145_xmm_cache_nested_calls.exit",
+  "./tests/expect/149_namespaced_colliding_imports.exit",
+  "./tests/expect/150_namespaced_same_module_two_aliases.exit",
+  "./tests/expect/151_namespaced_and_legacy_import.exit",
+  "./tests/expect/152_namespaced_comment_string_preservation.exit",
+  "./tests/expect/153_namespaced_devanagari_function.exit",
+  "./tests/expect/240_r17_d3_anya_self_assign.out",
+  "./tests/expect/294_r160_nan_comparisons.exit",
+  "./tests/expect/64_param_reassign.exit",
+  "./tests/expect/65_char_code_index.exit",
+  "./tests/expect/66_module_dedupe.exit",
+  "./tests/expect/67_array_len_bounds.exit",
+  "./tests/expect/80_b6_nested_call_loop.exit",
+  "./tests/expect/82_b7_stack_spill.exit",
+  "./tests/expect/86_b8_multi_modules.exit",
+  "./tests/expect/87_b8_all_modules.exit",
+  "./tests/expect/87_b8_func_params_capacity.exit",
+  "./tests/expect/87_b8_math_sort_string.exit",
+  "./tests/expect/92_t12_dasham_float.exit",
+  "./tests/expect/93_t12_float_functions.exit",
+  "./tests/expect/94_t12_float_functions.exit",
+  "./tests/expect/95_t12_madhava_functions.exit",
+  "./tests/stdlib/array_array_copy.exit",
+  "./tests/stdlib/array_array_fill.exit",
+  "./tests/stdlib/array_array_get.exit",
+  "./tests/stdlib/array_array_get_safe.exit",
+  "./tests/stdlib/array_array_new.exit",
+  "./tests/stdlib/array_array_set.exit",
+  "./tests/stdlib/array_array_set_safe.exit",
+  "./tests/stdlib/array_array_sum.exit",
+  "./tests/stdlib/baseconv_roundtrip.exit",
+  "./tests/stdlib/bigint_add.exit",
+  "./tests/stdlib/bigint_cmp.exit",
+  "./tests/stdlib/bigint_copy.exit",
+  "./tests/stdlib/bigint_divmod.exit",
+  "./tests/stdlib/bigint_divzero.exit",
+  "./tests/stdlib/bigint_from_int.exit",
+  "./tests/stdlib/bigint_is_zero.exit",
+  "./tests/stdlib/bigint_mul.exit",
+  "./tests/stdlib/bigint_powmod.exit",
+  "./tests/stdlib/bigint_sub.exit",
+  "./tests/stdlib/bigint_to_int.exit",
+  "./tests/stdlib/bigint_zero.exit",
+  "./tests/stdlib/breadth26.exit",
+  "./tests/stdlib/chakravala29.exit",
+  "./tests/stdlib/chandas_dviguna.exit",
+  "./tests/stdlib/chandas_guru_count.exit",
+  "./tests/stdlib/chandas_is_guru.exit",
+  "./tests/stdlib/chandas_matra_meru.exit",
+  "./tests/stdlib/chandas_meru.exit",
+  "./tests/stdlib/chandas_meru_pankti.exit",
+  "./tests/stdlib/containers20.exit",
+  "./tests/stdlib/containers21.exit",
+  "./tests/stdlib/containers23.exit",
+  "./tests/stdlib/containers_clear.exit",
+  "./tests/stdlib/file_read.exit",
+  "./tests/stdlib/file_write.exit",
+  "./tests/stdlib/fmt_fixed.exit",
+  "./tests/stdlib/fmt_group.exit",
+  "./tests/stdlib/fmt_int_base.exit",
+  "./tests/stdlib/fmt_min.exit",
+  "./tests/stdlib/fmt_pad.exit",
+  "./tests/stdlib/fmt_signed.exit",
+  "./tests/stdlib/ganita_brahmagupta_area.exit",
+  "./tests/stdlib/ganita_chakravala.exit",
+  "./tests/stdlib/ganita_checked.exit",
+  "./tests/stdlib/ganita_ganita_abs.exit",
+  "./tests/stdlib/ganita_ganita_isqrt.exit",
+  "./tests/stdlib/ganita_kuttaka.exit",
+  "./tests/stdlib/ganita_samasa.exit",
+  "./tests/stdlib/ganita_sat.exit",
+  "./tests/stdlib/gaps19.exit",
+  "./tests/stdlib/gaps20.exit",
+  "./tests/stdlib/gaps21.exit",
+  "./tests/stdlib/gaps23.exit",
+  "./tests/stdlib/hash_fnv1a.exit",
+  "./tests/stdlib/kalana_bahu_ganana.exit",
+  "./tests/stdlib/kalana_bahu_mula.exit",
+  "./tests/stdlib/kalana_simpson.exit",
+  "./tests/stdlib/kalana_slope.exit",
+  "./tests/stdlib/kalana_slope2.exit",
+  "./tests/stdlib/kalana_trapezoid.exit",
+  "./tests/stdlib/kosh_reuse.exit",
+  "./tests/stdlib/list_basic.exit",
+  "./tests/stdlib/list_queue.exit",
+  "./tests/stdlib/list_stack.exit",
+  "./tests/stdlib/madhava_madhava_atan.exit",
+  "./tests/stdlib/madhava_madhava_cos.exit",
+  "./tests/stdlib/madhava_madhava_pi.exit",
+  "./tests/stdlib/madhava_madhava_sin.exit",
+  "./tests/stdlib/madhava_madhava_sqrt.exit",
+  "./tests/stdlib/map_basic.exit",
+  "./tests/stdlib/map_clear.exit",
+  "./tests/stdlib/map_keys_bytes.exit",
+  "./tests/stdlib/map_remove.exit",
+  "./tests/stdlib/math_abs_val.exit",
+  "./tests/stdlib/math_bit_count.exit",
+  "./tests/stdlib/math_cube.exit",
+  "./tests/stdlib/math_double.exit",
+  "./tests/stdlib/math_fact.exit",
+  "./tests/stdlib/math_gcd.exit",
+  "./tests/stdlib/math_gcd_lcm_edge.exit",
+  "./tests/stdlib/math_inc.exit",
+  "./tests/stdlib/math_is_prime.exit",
+  "./tests/stdlib/math_lcm.exit",
+  "./tests/stdlib/math_max2.exit",
+  "./tests/stdlib/math_min2.exit",
+  "./tests/stdlib/math_power.exit",
+  "./tests/stdlib/math_sq.exit",
+  "./tests/stdlib/math_square.exit",
+  "./tests/stdlib/math_sum_to.exit",
+  "./tests/stdlib/math_triple.exit",
+  "./tests/stdlib/num_clamp.exit",
+  "./tests/stdlib/num_collatz_steps.exit",
+  "./tests/stdlib/num_digit_count.exit",
+  "./tests/stdlib/num_digit_sum.exit",
+  "./tests/stdlib/num_fib.exit",
+  "./tests/stdlib/num_is_even.exit",
+  "./tests/stdlib/num_is_odd.exit",
+  "./tests/stdlib/num_is_palindrome.exit",
+  "./tests/stdlib/num_is_perfect.exit",
+  "./tests/stdlib/num_reverse_num.exit",
+  "./tests/stdlib/numeric29.exit",
+  "./tests/stdlib/numeric_hangfix.exit",
+  "./tests/stdlib/r10_roop_suchi_edges.exit",
+  "./tests/stdlib/r18_madhava_reduction.exit",
+  "./tests/stdlib/r18_sign_digits_kramgun.exit",
+  "./tests/stdlib/r18_srij_overflow_guard.exit",
+  "./tests/stdlib/r35_alloc_wrap_guard.exit",
+  "./tests/stdlib/r36_growth_guard.exit",
+  "./tests/stdlib/r37_bounds.exit",
+  "./tests/stdlib/r39_scratch_from_set.exit",
+  "./tests/stdlib/r76_known_values.exit",
+  "./tests/stdlib/r78_suchi_avali_srij.exit",
+  "./tests/stdlib/r80_library_edges.exit",
+  "./tests/stdlib/r8_array_guard.exit",
+  "./tests/stdlib/r8_base_digits.exit",
+  "./tests/stdlib/r8_bytes_edges.exit",
+  "./tests/stdlib/r8_chakravala_sweep.exit",
+  "./tests/stdlib/r8_char_class.exit",
+  "./tests/stdlib/r8_list_edges.exit",
+  "./tests/stdlib/r8_list_growth.exit",
+  "./tests/stdlib/r8_list_model.exit",
+  "./tests/stdlib/r8_map_edges.exit",
+  "./tests/stdlib/r8_map_model.exit",
+  "./tests/stdlib/r8_number_edges.exit",
+  "./tests/stdlib/r8_result_flags.exit",
+  "./tests/stdlib/r8_split_model.exit",
+  "./tests/stdlib/r8_text_edges.exit",
+  "./tests/stdlib/r9_aadhar_alone.exit",
+  "./tests/stdlib/r9_alloc_failure.exit",
+  "./tests/stdlib/r9_guard_cells.exit",
+  "./tests/stdlib/r9_guard_cells2.exit",
+  "./tests/stdlib/result29.exit",
+  "./tests/stdlib/result_chain.exit",
+  "./tests/stdlib/safety24.exit",
+  "./tests/stdlib/safety25.exit",
+  "./tests/stdlib/samanvaya_mat_gunana.exit",
+  "./tests/stdlib/samanvaya_mat_yoga.exit",
+  "./tests/stdlib/samanvaya_nirnaya2.exit",
+  "./tests/stdlib/samanvaya_nirnaya3.exit",
+  "./tests/stdlib/samanvaya_nishan.exit",
+  "./tests/stdlib/samanvaya_pehchan.exit",
+  "./tests/stdlib/samanvaya_rekha_manak.exit",
+  "./tests/stdlib/samanvaya_sadish_yoga.exit",
+  "./tests/stdlib/samanvaya_skalar.exit",
+  "./tests/stdlib/samanvaya_vivartana.exit",
+  "./tests/stdlib/sankhyiki_adhikatama.exit",
+  "./tests/stdlib/sankhyiki_bindu.exit",
+  "./tests/stdlib/sankhyiki_laghutama.exit",
+  "./tests/stdlib/sankhyiki_madhya.exit",
+  "./tests/stdlib/sankhyiki_manak.exit",
+  "./tests/stdlib/sankhyiki_prasaran.exit",
+  "./tests/stdlib/sankhyiki_purna_adhikatama.exit",
+  "./tests/stdlib/sankhyiki_purna_laghutama.exit",
+  "./tests/stdlib/sankhyiki_purna_madhya.exit",
+  "./tests/stdlib/sankhyiki_purna_prasaran.exit",
+  "./tests/stdlib/sankhyiki_purna_vyapti.exit",
+  "./tests/stdlib/sankhyiki_purna_yoga.exit",
+  "./tests/stdlib/sankhyiki_sankhyiki_sqrt.exit",
+  "./tests/stdlib/sankhyiki_vichalan.exit",
+  "./tests/stdlib/sankhyiki_vyapti.exit",
+  "./tests/stdlib/sankhyiki_yoga.exit",
+  "./tests/stdlib/serial29.exit",
+  "./tests/stdlib/set_basic.exit",
+  "./tests/stdlib/set_difference.exit",
+  "./tests/stdlib/set_intersect.exit",
+  "./tests/stdlib/set_subset.exit",
+  "./tests/stdlib/set_to_array.exit",
+  "./tests/stdlib/set_union.exit",
+  "./tests/stdlib/slices23.exit",
+  "./tests/stdlib/sort_binary_search.exit",
+  "./tests/stdlib/sort_bubble_sort.exit",
+  "./tests/stdlib/sort_count_of.exit",
+  "./tests/stdlib/sort_find_linear.exit",
+  "./tests/stdlib/sort_insertion.exit",
+  "./tests/stdlib/sort_is_sorted.exit",
+  "./tests/stdlib/sort_max_of.exit",
+  "./tests/stdlib/sort_merge.exit",
+  "./tests/stdlib/sort_min_of.exit",
+  "./tests/stdlib/sort_reverse_arr.exit",
+  "./tests/stdlib/sort_shell_sort.exit",
+  "./tests/stdlib/sort_sum_of.exit",
+  "./tests/stdlib/sort_swap.exit",
+  "./tests/stdlib/strb_cell_pairs.exit",
+  "./tests/stdlib/strb_dup.exit",
+  "./tests/stdlib/strb_pack_unpack.exit",
+  "./tests/stdlib/strconv_base.exit",
+  "./tests/stdlib/strconv_int_str.exit",
+  "./tests/stdlib/strconv_overflow.exit",
+  "./tests/stdlib/strconv_pad.exit",
+  "./tests/stdlib/string_case_trim.exit",
+  "./tests/stdlib/string_char_code_at.exit",
+  "./tests/stdlib/string_count_char.exit",
+  "./tests/stdlib/string_count_vowels.exit",
+  "./tests/stdlib/string_find.exit",
+  "./tests/stdlib/string_find_char.exit",
+  "./tests/stdlib/string_is_all_digits.exit",
+  "./tests/stdlib/string_is_digit_char.exit",
+  "./tests/stdlib/string_is_letter_char.exit",
+  "./tests/stdlib/string_is_lower_char.exit",
+  "./tests/stdlib/string_is_space_char.exit",
+  "./tests/stdlib/string_is_upper_char.exit",
+  "./tests/stdlib/string_lower_code.exit",
+  "./tests/stdlib/string_replace.exit",
+  "./tests/stdlib/string_split_join.exit",
+  "./tests/stdlib/string_str_equals.exit",
+  "./tests/stdlib/string_str_len.exit",
+  "./tests/stdlib/string_strb_bridge.exit",
+  "./tests/stdlib/string_strb_find.exit",
+  "./tests/stdlib/string_strb_split_join.exit",
+  "./tests/stdlib/string_strb_starts_compare.exit",
+  "./tests/stdlib/string_strb_trim_case.exit",
+  "./tests/stdlib/string_upper_code.exit",
+  "./tests/stdlib/util_bool_to_int.exit",
+  "./tests/stdlib/util_div_ceil.exit",
+  "./tests/stdlib/util_int_max.exit",
+  "./tests/stdlib/util_lerp.exit",
+  "./tests/stdlib/util_mod.exit",
+  "./tests/stdlib/util_sign.exit",
+  "./tests/stdlib/util_sum_range.exit",
+  "./tests/stdlib/width_repro.exit"
+ ],
+ "de59b7413dcc5d89cc18cec04cf74e4ae05c7dae82864816ba528229e7a8ff54": [
+  "./Muse-to-Sarvam/r82_parikshita_table.json",
+  "./Muse-to-Sarvam/r89_parikshita.json"
+ ],
+ "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865": [
+  "./Muse-to-Sarvam/round39-whole-files/251_r38_alias_mala_oob.exit",
+  "./Muse-to-Sarvam/round39-whole-files/252_r38_alias_kosh_oob.exit",
+  "./Muse-to-Sarvam/round39-whole-files/253_r38_alias_slice_oob.exit",
+  "./Muse-to-Sarvam/round41-whole-files/251_r38_alias_mala_oob.exit",
+  "./Muse-to-Sarvam/round41-whole-files/252_r38_alias_kosh_oob.exit",
+  "./Muse-to-Sarvam/round41-whole-files/253_r38_alias_slice_oob.exit",
+  "./Muse-to-Sarvam/round42-whole-files/251_r38_alias_mala_oob.exit",
+  "./Muse-to-Sarvam/round42-whole-files/252_r38_alias_kosh_oob.exit",
+  "./Muse-to-Sarvam/round42-whole-files/253_r38_alias_slice_oob.exit",
+  "./tests/expect/102_ast_multimodule_capacity.out",
+  "./tests/expect/120_t18_kosh_param_mismatch.exit",
+  "./tests/expect/243_r18_sthagita.out",
+  "./tests/expect/251_r38_alias_mala_oob.exit",
+  "./tests/expect/252_r38_alias_kosh_oob.exit",
+  "./tests/expect/253_r38_alias_slice_oob.exit",
+  "./tests/expect/68_array_oob.exit",
+  "./tests/expect/69_undefined_function.exit",
+  "./tests/expect/70_module_collision.exit",
+  "./tests/expect/87_b8_all_modules.out",
+  "./tests/expect/87_b8_func_params_capacity.out",
+  "./tests/expect/87_b8_math_sort_string.out",
+  "./tests/expect/99_ast_multimodule_capacity.out"
+ ],
+ "08b49dea36a52deae29b9a6468cc8e8449ba939558d246765c79ed89d3d674e5": [
+  "./Muse-to-Sarvam/round39-whole-files/251_r38_alias_mala_oob.out",
+  "./Muse-to-Sarvam/round39-whole-files/252_r38_alias_kosh_oob.out",
+  "./Muse-to-Sarvam/round39-whole-files/253_r38_alias_slice_oob.out",
+  "./Muse-to-Sarvam/round41-whole-files/251_r38_alias_mala_oob.out",
+  "./Muse-to-Sarvam/round41-whole-files/252_r38_alias_kosh_oob.out",
+  "./Muse-to-Sarvam/round41-whole-files/253_r38_alias_slice_oob.out",
+  "./Muse-to-Sarvam/round42-whole-files/251_r38_alias_mala_oob.out",
+  "./Muse-to-Sarvam/round42-whole-files/252_r38_alias_kosh_oob.out",
+  "./Muse-to-Sarvam/round42-whole-files/253_r38_alias_slice_oob.out",
+  "./Windows-to-Sarvam/win-test-2026-10-27/t_4b.out"
+ ],
+ "f0c17263cddcb7cf3d492a23f2353a7dcbcb868126a7cb047fddb269ce8e1e27": [
+  "./Muse-to-Sarvam/round39-whole-files/251_r38_alias_mala_oob.sm",
+  "./Muse-to-Sarvam/round41-whole-files/251_r38_alias_mala_oob.sm",
+  "./Muse-to-Sarvam/round42-whole-files/251_r38_alias_mala_oob.sm",
+  "./examples/251_r38_alias_mala_oob.sm"
+ ],
+ "7bcee08884d3880a558bb13f507957b85c5e1fb73a7fa873d7b84b8eb0d4509a": [
+  "./Muse-to-Sarvam/round39-whole-files/252_r38_alias_kosh_oob.sm",
+  "./Muse-to-Sarvam/round41-whole-files/252_r38_alias_kosh_oob.sm",
+  "./Muse-to-Sarvam/round42-whole-files/252_r38_alias_kosh_oob.sm"
+ ],
+ "949492423ffbd1e45785845806033b727b8086b096a8b5da9b2dbc12d2f78cf1": [
+  "./Muse-to-Sarvam/round39-whole-files/253_r38_alias_slice_oob.sm",
+  "./Muse-to-Sarvam/round41-whole-files/253_r38_alias_slice_oob.sm",
+  "./Muse-to-Sarvam/round42-whole-files/253_r38_alias_slice_oob.sm",
+  "./examples/253_r38_alias_slice_oob.sm"
+ ],
+ "78ce8eae6df38455afc6f4570fdd25e1bdd2a67c3110c2d46fcecc13c130d5d0": [
+  "./Muse-to-Sarvam/s_bindu_scalar.sm",
+  "./Muse-to-Sarvam/ws1_dasham3.sm"
+ ],
+ "553dcf8b0c6c1917b0b54bf0b9848834ad3b6862485bdabbbc01df05ed89caaf": [
+  "./Muse-to-Sarvam/w_bindu2.sm",
+  "./Muse-to-Sarvam/ws1_dot2.sm"
+ ],
+ "54ddaeafd525b016586f8257fcbe8dc505c8d18172df26e77c77e6012cec432d": [
+  "./Sarvam-to-ChatGPT/ROUND-154-CORRECTION.md",
+  "./Sarvam-to-Claude/ROUND-84-CORRECTION.md"
+ ],
+ "2ee5d6042f531cedac2ee5b9e311ec28213e8be030239d28dc99cce3ca606ddf": [
+  "./Sarvam-to-ChatGPT/ROUND-167-CORRECTION-2.md",
+  "./Sarvam-to-Claude/ROUND-98-CORRECTION-2.md",
+  "./Sarvam-to-Muse/ROUND-93-CORRECTION-2.md"
+ ],
+ "b54f12ba82329714549e20a6e85c259a9b75ad63bd1503d6f5de36c2a411099c": [
+  "./Sarvam-to-ChatGPT/ROUND-168-CORRECTION-3.md",
+  "./Sarvam-to-Claude/ROUND-99-CORRECTION-3.md",
+  "./Sarvam-to-Muse/ROUND-94-CORRECTION-3.md"
+ ],
+ "120b37261b47592a755d93e7f36b1124d1c69212ddaa50ad4a43f58d1c1dc1fd": [
+  "./Windows-to-Sarvam/ide-v297-2026-11-03/explicit-packs/ide-open.png",
+  "./Windows-to-Sarvam/ide-v297-2026-11-03/ide-open.png",
+  "./Windows-to-Sarvam/sarvam-acceptance-v297-2026-11-03/test22-open.png"
+ ],
+ "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": [
+  "./Windows-to-Sarvam/sarvam-acceptance-v297-2026-11-03/gui-log.txt",
+  "./tests/expect/105_block_nesting_capacity.compile_fail",
+  "./tests/expect/106_rachana_field_capacity.compile_fail",
+  "./tests/expect/108_b11_block_statement_capacity.compile_fail",
+  "./tests/expect/120_t18_kosh_param_mismatch.compile_fail",
+  "./tests/expect/121_t18_kosh_param_push_reject.compile_fail",
+  "./tests/expect/156_namespaced_alias_collision.compile_fail",
+  "./tests/expect/157_namespaced_missing_module.compile_fail",
+  "./tests/expect/158_namespaced_alias_digit.compile_fail",
+  "./tests/expect/159_namespaced_path_traversal.compile_fail",
+  "./tests/expect/160_namespaced_empty_alias.compile_fail",
+  "./tests/expect/161_namespaced_overlong_alias.compile_fail",
+  "./tests/expect/162_namespaced_import_capacity.compile_fail",
+  "./tests/expect/164_r41_cycle_reject.compile_fail",
+  "./tests/expect/165_r41_missing_reject.compile_fail",
+  "./tests/expect/204_b11_block_statement_capacity.compile_fail",
+  "./tests/expect/210_r41_cycle.compile_fail",
+  "./tests/expect/212_r41_v1_private.compile_fail",
+  "./tests/expect/213_r41_v1_dupexp.compile_fail",
+  "./tests/expect/214_r41_v1_noalias.compile_fail",
+  "./tests/expect/220_hindi_parse_error.compile_fail",
+  "./tests/expect/221_eof_location.compile_fail",
+  "./tests/expect/222_old_keyword_name.compile_fail",
+  "./tests/expect/223_undefined_name.compile_fail",
+  "./tests/expect/224_unknown_field.compile_fail",
+  "./tests/expect/225_undeclared_array.compile_fail",
+  "./tests/expect/227_assign_undeclared.compile_fail",
+  "./tests/expect/228_block_scope.compile_fail",
+  "./tests/expect/229_loop_var_scope.compile_fail",
+  "./tests/expect/231_duplicate_name.compile_fail",
+  "./tests/expect/232_arity.compile_fail",
+  "./tests/expect/233_missing_module.compile_fail",
+  "./tests/expect/234_ambiguous_field.compile_fail",
+  "./tests/expect/235_duplicate_field.compile_fail",
+  "./tests/expect/259_r70_indent_ambiguous.compile_fail",
+  "./tests/expect/261_r71_after_mukhya.compile_fail",
+  "./tests/expect/262_r71_same_line_body.compile_fail",
+  "./tests/expect/264_r73_escape_arith.compile_fail",
+  "./tests/expect/265_r73_escape_mala.compile_fail",
+  "./tests/expect/270_r75_nested_store.compile_fail",
+  "./tests/expect/272_r75_negative_size.compile_fail",
+  "./tests/expect/273_r77_bytes_not_cells.compile_fail",
+  "./tests/expect/276_r77_mixed_indentation.compile_fail",
+  "./tests/expect/278_r80_literal_too_large.compile_fail",
+  "./tests/expect/279_r80_constant_overflow.compile_fail",
+  "./tests/expect/283_r81_parikshita_refuses_library.compile_fail",
+  "./tests/expect/284_r81_parikshita_transitive.compile_fail",
+  "./tests/expect/285_r81_parikshita_address_param.compile_fail",
+  "./tests/expect/287_r82_kosh_after_mandapa.compile_fail",
+  "./tests/expect/290_r87_fraction_into_vitti.compile_fail",
+  "./tests/expect/298_r94_dasham_remainder_refused.compile_fail",
+  "./tests/expect/300_r96_chakra_decimal_bound.compile_fail",
+  "./tests/expect/301_r96_chakra_dasham_counter.compile_fail",
+  "./tests/expect/305_r103_parimita_needs_number.compile_fail",
+  "./tests/expect/310_r105_string_beside_number.compile_fail",
+  "./tests/expect/311_r105_string_arithmetic.compile_fail",
+  "./tests/expect/313_r106_string_condition.compile_fail",
+  "./tests/expect/314_r106_kosh_operand.compile_fail",
+  "./tests/expect/316_r107_kosh_kept_by_a_prakriya.compile_fail",
+  "./tests/expect/319_r108_mala_operand.compile_fail",
+  "./tests/expect/320_r109_kosh_alias_kept.compile_fail",
+  "./tests/expect/321_r109_kosh_long_chain.compile_fail",
+  "./tests/expect/328_r113_rachana_operand.compile_fail",
+  "./tests/expect/329_r113_sankhya_bindu.compile_fail",
+  "./tests/expect/69_undefined_function.compile_fail",
+  "./tests/expect/70_module_collision.compile_fail"
+ ],
+ "0dbfec08053ead66ef9dc47b3c15569d4d552cdf59365b60a1991649cc77806d": [
+  "./Windows-to-Sarvam/win-ffi-2026-10-21/linux-ordinary-path.txt",
+  "./Windows-to-Sarvam/win-ffi-2026-10-21/windows-ordinary-path.txt"
+ ],
+ "77a129ac7650039f19399287fe0707fc47b671995382f4d7e463a394e87ff91e": [
+  "./Windows-to-Sarvam/win-ffi-2026-10-21/windows-test_windows_fixes.txt",
+  "./Windows-to-Sarvam/win-linker-2026-10-21/windows-test_windows_fixes.txt"
+ ],
+ "9a8181792c746b8d76fd3c6b1f9e00aa64e8cdb868816d535724a83c3169f23e": [
+  "./Windows-to-Sarvam/win-linker-2026-10-21/linux-ordinary-path.txt",
+  "./Windows-to-Sarvam/win-linker-2026-10-21/windows-ordinary-path.txt"
+ ],
+ "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0": [
+  "./Windows-to-Sarvam/win-test-2026-10-27/f_func.out",
+  "./examples/r71/boundary_good.out",
+  "./tests/expect/211_r41_v1_public.out",
+  "./tests/expect/59_windows_grahan_runtime.out",
+  "./tests/r64_check/default_compat.out"
+ ],
+ "2fca1e52e4e2d7e190f77aacc9aac1e973c20113a7508d5d352f4b53fcb03e2a": [
+  "./examples/100_t18_kosh_devanagari.sm",
+  "./examples/97_t18_kosh_devanagari.sm"
+ ],
+ "0167cd99bed3d3ff5205d45e07dca58c2b889e9dee24242100c14a270391ce74": [
+  "./examples/101_t18_kosh_empty.sm",
+  "./examples/98_t18_kosh_empty.sm"
+ ],
+ "4f5fdbcc5e7a8fda2c2b1fd197bd3973b8201e6db5cad65bc29aeeabd699b0ce": [
+  "./examples/102_ast_multimodule_capacity.sm",
+  "./examples/99_ast_multimodule_capacity.sm"
+ ],
+ "4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e": [
+  "./examples/69_undefined_function.sm",
+  "./tests/negative/r70/cases/unknown_identifier.sm"
+ ],
+ "1fd7121cc06995ba4e81c374711dcdcdd1f125f2183959a19dd3676a920d3104": [
+  "./examples/87_b8_func_params_capacity.sm",
+  "./examples/87_b8_math_sort_string.sm"
+ ],
+ "2f4e768b053d58e8465213b846c82f6a095eec482aa5a04127dcc4aea2d537c1": [
+  "./examples/96_t18_kosh.sm",
+  "./examples/99_t18_kosh.sm"
+ ],
+ "4c261c0438ad5679433a3c46d70ee4f31e3dd04cf4ccec2e29ae48fa64cad9b5": [
+  "./examples/r67/bengali_native.out",
+  "./examples/r67/punjabi_native.out"
+ ],
+ "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472": [
+  "./examples/r68/hindi.out",
+  "./examples/r68/kannada.out",
+  "./examples/r68/marathi.out",
+  "./examples/r68/odia.out",
+  "./examples/r68/tamil.out",
+  "./examples/r68/telugu.out"
+ ],
+ "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85": [
+  "./examples/r68/pairs/all_registers.out",
+  "./examples/r68/pairs/no_pairs.out",
+  "./examples/r68/pairs/nonmatching.out",
+  "./tests/r69/pairs/all_registers.out",
+  "./tests/r69/pairs/no_pairs.out"
+ ],
+ "6c7c537179a6f70f3e8b3e38c029954de0c416c5aed22347bec6574e5ea50ac8": [
+  "./examples/r68/pairs/no_pairs.sm",
+  "./tests/r69/pairs/no_pairs.sm"
+ ],
+ "e0b63c353ef47facbe1a389ae21a0df436c4bd1875dde2662778bb5793eea3d9": [
+  "./examples/r68/pairs/nonmatching.sm",
+  "./tests/r69/pairs/nonmatching.sm"
+ ],
+ "16ddd52e99bb9eafcbe8b1a15f0a5ff8ac5e528e2c859a49c9d5b4655f655396": [
+  "./sutram.exe",
+  "./win/sutram.exe"
+ ],
+ "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9": [
+  "./tests/expect/01_hello.exit",
+  "./tests/expect/02_arith.exit",
+  "./tests/expect/03_if_else.exit",
+  "./tests/expect/04_while.exit",
+  "./tests/expect/05_func_params.exit",
+  "./tests/expect/06_rachana.exit",
+  "./tests/expect/07_module.exit",
+  "./tests/expect/08_demo.exit",
+  "./tests/expect/09_comparisons.exit",
+  "./tests/expect/100_t18_kosh_devanagari.exit",
+  "./tests/expect/102_ast_multimodule_capacity.exit",
+  "./tests/expect/103_b10_nested_break_patches.exit",
+  "./tests/expect/104_b10_nested_continue_patches.exit",
+  "./tests/expect/107_b11_block_65_statements.exit",
+  "./tests/expect/109_t18_kosh_dasham.exit",
+  "./tests/expect/10_mathlib.exit",
+  "./tests/expect/110_t18_kosh_dasham_devanagari.exit",
+  "./tests/expect/111_t18_kosh_dasham_function_return.exit",
+  "./tests/expect/11_forloop.exit",
+  "./tests/expect/124_perf_wide_immediate.exit",
+  "./tests/expect/125_perf_register_immediate_destination.exit",
+  "./tests/expect/126_numeric_pipeline.exit",
+  "./tests/expect/127_perf_float_self_register.exit",
+  "./tests/expect/128_perf_float_self_fallback.exit",
+  "./tests/expect/129_perf_float_destination.exit",
+  "./tests/expect/12_elif.exit",
+  "./tests/expect/130_perf_float_destination_alias.exit",
+  "./tests/expect/131_perf_float_compare_register.exit",
+  "./tests/expect/132_perf_float_compare_fallback.exit",
+  "./tests/expect/135_r30_float_index_scalar.exit",
+  "./tests/expect/136_r30_float_complex_left.exit",
+  "./tests/expect/137_r30_float_literal_rhs.exit",
+  "./tests/expect/138_r30_float_comparison_index.exit",
+  "./tests/expect/139_r30_float_mixed_fallback.exit",
+  "./tests/expect/13_negatives.exit",
+  "./tests/expect/140_r30_index_side_effect.exit",
+  "./tests/expect/146_stage2_loop_call_boundary.exit",
+  "./tests/expect/147_stage2_recursive_float_boundary.exit",
+  "./tests/expect/148_stage2_array_mutation_call.exit",
+  "./tests/expect/14_strings.exit",
+  "./tests/expect/154_namespaced_duplicate_idempotent.exit",
+  "./tests/expect/155_namespaced_multi_alias_composition.exit",
+  "./tests/expect/15_sutra_const.exit",
+  "./tests/expect/163_r40_transitive_diamond.exit",
+  "./tests/expect/166_r41_optin_diamond.exit",
+  "./tests/expect/16_advanced.exit",
+  "./tests/expect/17_booleans.exit",
+  "./tests/expect/18_guna_switch.exit",
+  "./tests/expect/19_srijana_enum.exit",
+  "./tests/expect/200_madhava_series.exit",
+  "./tests/expect/201_madhava_library.exit",
+  "./tests/expect/202_brahmagupta_area.exit",
+  "./tests/expect/203_meru_with_kosh.exit",
+  "./tests/expect/205_madhava_pi_kosh.exit",
+  "./tests/expect/206_sankhyiki.exit",
+  "./tests/expect/208_kalana.exit",
+  "./tests/expect/209_samanvaya.exit",
+  "./tests/expect/20_pankti_array.exit",
+  "./tests/expect/211_r41_v1_public.exit",
+  "./tests/expect/218_sanskrit_devanagari.exit",
+  "./tests/expect/21_break_continue.exit",
+  "./tests/expect/226_long_field_names.exit",
+  "./tests/expect/22_precedence.exit",
+  "./tests/expect/230_redeclare_after_block.exit",
+  "./tests/expect/236_guna_once.exit",
+  "./tests/expect/237_many_variables.exit",
+  "./tests/expect/238_r17_d1_unary_not.exit",
+  "./tests/expect/239_r17_d2_anya_loop_krama.exit",
+  "./tests/expect/23_grahan_input.exit",
+  "./tests/expect/240_r17_d3_anya_self_assign.exit",
+  "./tests/expect/241_r17_d4_precedence.exit",
+  "./tests/expect/242_r17_empty_guna.exit",
+  "./tests/expect/243_r18_sthagita.exit",
+  "./tests/expect/244_r18_rachana_in_function.exit",
+  "./tests/expect/245_r18_netsock.exit",
+  "./tests/expect/246_r23_comparator_sort.exit",
+  "./tests/expect/247_r23_methods.exit",
+  "./tests/expect/248_r23_slices.exit",
+  "./tests/expect/24_guess_game.exit",
+  "./tests/expect/250_r26_dosh_handler.exit",
+  "./tests/expect/254_r42_alias_pankti_len.exit",
+  "./tests/expect/255_r42_alias_kosh_push.exit",
+  "./tests/expect/256_r44_vartani_sanskrit_names.exit",
+  "./tests/expect/258_r70_loop_indent.exit",
+  "./tests/expect/25_patterns.exit",
+  "./tests/expect/260_r71_indented_bodies.exit",
+  "./tests/expect/263_r72_mandapa.exit",
+  "./tests/expect/266_r73_inside_only.exit",
+  "./tests/expect/267_r73_outer_number.exit",
+  "./tests/expect/268_r73_return_value.exit",
+  "./tests/expect/269_r73_copy_out.exit",
+  "./tests/expect/26_calculator.exit",
+  "./tests/expect/271_r75_nested_store_data.exit",
+  "./tests/expect/275_r77_cells_times_eight.exit",
+  "./tests/expect/27_even_odd.exit",
+  "./tests/expect/280_r80_runtime_wraps.exit",
+  "./tests/expect/282_r81_parikshita_sort.exit",
+  "./tests/expect/286_r82_kosh_in_mandapa.exit",
+  "./tests/expect/288_r86_kosh_alias_moves.exit",
+  "./tests/expect/289_r87_float_print.exit",
+  "./tests/expect/28_compound.exit",
+  "./tests/expect/291_r90_nan_compare.exit",
+  "./tests/expect/292_r90_likha_after_division.exit",
+  "./tests/expect/296_r93_float_e_notation.exit",
+  "./tests/expect/297_r94_whole_number_operators.exit",
+  "./tests/expect/299_r94_nonfinite_kosh_mandapa.exit",
+  "./tests/expect/302_r96_decimal_loop_with_yavat.exit",
+  "./tests/expect/304_r103_parimita_within.exit",
+  "./tests/expect/306_r105_string_equal.exit",
+  "./tests/expect/307_r105_string_join.exit",
+  "./tests/expect/308_r105_likha_three.exit",
+  "./tests/expect/309_r105_string_order.exit",
+  "./tests/expect/30_lkhb.exit",
+  "./tests/expect/312_r106_likha_string.exit",
+  "./tests/expect/317_r107_parimana.exit",
+  "./tests/expect/318_r108_parimana_moves.exit",
+  "./tests/expect/31_strcat.exit",
+  "./tests/expect/322_r111_new_names.exit",
+  "./tests/expect/323_r111_old_names.exit",
+  "./tests/expect/324_r111_asti_true.exit",
+  "./tests/expect/325_r111_asti_false.exit",
+  "./tests/expect/326_r111_nasti_true.exit",
+  "./tests/expect/327_r111_nasti_false.exit",
+  "./tests/expect/32_bank_interest.exit",
+  "./tests/expect/338_r116_brihat_ank_se.exit",
+  "./tests/expect/33_unit_conversion.exit",
+  "./tests/expect/340_r116_yog_seema.exit",
+  "./tests/expect/343_r116_suchi_shreni.exit",
+  "./tests/expect/344_r116_varna_tak_dashm.exit",
+  "./tests/expect/345_r116_long_literal.exit",
+  "./tests/expect/346_r118_old_library_names.exit",
+  "./tests/expect/347_r118_old_roop_names.exit",
+  "./tests/expect/34_incdec.exit",
+  "./tests/expect/35_comments.exit",
+  "./tests/expect/36_descending.exit",
+  "./tests/expect/37_native_gujarati.exit",
+  "./tests/expect/38_native_hindi.exit",
+  "./tests/expect/39_native_tamil.exit",
+  "./tests/expect/40_functions_params.exit",
+  "./tests/expect/41_recursion.exit",
+  "./tests/expect/42_block_comments.exit",
+  "./tests/expect/43_nested_likha.exit",
+  "./tests/expect/44_shabda.exit",
+  "./tests/expect/45_shifts.exit",
+  "./tests/expect/46_language_reference.exit",
+  "./tests/expect/59_windows_grahan_runtime.exit",
+  "./tests/expect/60_six_func_args.exit",
+  "./tests/expect/61_stdlib_math.exit",
+  "./tests/expect/62_stdlib_num.exit",
+  "./tests/expect/63_stdlib_string.exit",
+  "./tests/expect/72_array_variable_index.exit",
+  "./tests/expect/74_array_highest_valid.exit",
+  "./tests/expect/75_array_dynamic_length.exit",
+  "./tests/expect/76_array_function_scope.exit",
+  "./tests/expect/77_ternary.exit",
+  "./tests/expect/78_do_while.exit",
+  "./tests/expect/79_ayojan_cwd.exit",
+  "./tests/expect/81_stdlib_num2.exit",
+  "./tests/expect/83_stdlib_sort.exit",
+  "./tests/expect/84_stdlib_string2.exit",
+  "./tests/expect/85_stdlib_shellsort.exit",
+  "./tests/expect/88_pingala_chandas.exit",
+  "./tests/expect/89_b9_short_circuit.exit",
+  "./tests/expect/90_b9_short_circuit_bounds.exit",
+  "./tests/expect/91_indian_number_theory.exit",
+  "./tests/expect/96_t18_kosh.exit",
+  "./tests/expect/97_t18_kosh_devanagari.exit",
+  "./tests/expect/99_ast_multimodule_capacity.exit",
+  "./tests/expect/99_t18_kosh.exit",
+  "./tests/expect/array_demo.exit",
+  "./tests/expect/char_ops.exit",
+  "./tests/expect/fizzbuzz.exit",
+  "./tests/expect/format_demo.exit",
+  "./tests/expect/full_demo.exit",
+  "./tests/expect/func_demo.exit",
+  "./tests/expect/hello.exit",
+  "./tests/expect/import_demo.exit",
+  "./tests/expect/mem_safe.exit",
+  "./tests/expect/multable.exit",
+  "./tests/expect/number_game.exit",
+  "./tests/expect/prime.exit",
+  "./tests/expect/strength_reduction.exit",
+  "./tests/stdlib/r11_brihat_guards.exit",
+  "./tests/stdlib/r11_kalana_edges.exit",
+  "./tests/stdlib/r11_khand_varna.exit",
+  "./tests/stdlib/r11_misc_edges.exit",
+  "./tests/stdlib/r11_nighantu_edges.exit",
+  "./tests/stdlib/r11_page_edges.exit",
+  "./tests/stdlib/r11_sets_lists.exit",
+  "./tests/stdlib/r48_meru_bada.exit",
+  "./tests/stdlib/r48_srij_fill.exit"
+ ],
+ "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b": [
+  "./tests/expect/100_t18_kosh_bounds.exit",
+  "./tests/expect/101_t18_kosh_empty.exit",
+  "./tests/expect/105_block_nesting_capacity.exit",
+  "./tests/expect/106_rachana_field_capacity.exit",
+  "./tests/expect/108_b11_block_statement_capacity.exit",
+  "./tests/expect/112_t18_kosh_integer_conversion.exit",
+  "./tests/expect/121_t18_kosh_param_push_reject.exit",
+  "./tests/expect/156_namespaced_alias_collision.exit",
+  "./tests/expect/157_namespaced_missing_module.exit",
+  "./tests/expect/158_namespaced_alias_digit.exit",
+  "./tests/expect/159_namespaced_path_traversal.exit",
+  "./tests/expect/160_namespaced_empty_alias.exit",
+  "./tests/expect/161_namespaced_overlong_alias.exit",
+  "./tests/expect/162_namespaced_import_capacity.exit",
+  "./tests/expect/164_r41_cycle_reject.exit",
+  "./tests/expect/165_r41_missing_reject.exit",
+  "./tests/expect/204_b11_block_statement_capacity.exit",
+  "./tests/expect/207_sankhyiki_vector.exit",
+  "./tests/expect/210_r41_cycle.exit",
+  "./tests/expect/212_r41_v1_private.exit",
+  "./tests/expect/213_r41_v1_dupexp.exit",
+  "./tests/expect/214_r41_v1_noalias.exit",
+  "./tests/expect/220_hindi_parse_error.exit",
+  "./tests/expect/221_eof_location.exit",
+  "./tests/expect/222_old_keyword_name.exit",
+  "./tests/expect/223_undefined_name.exit",
+  "./tests/expect/224_unknown_field.exit",
+  "./tests/expect/225_undeclared_array.exit",
+  "./tests/expect/227_assign_undeclared.exit",
+  "./tests/expect/228_block_scope.exit",
+  "./tests/expect/229_loop_var_scope.exit",
+  "./tests/expect/231_duplicate_name.exit",
+  "./tests/expect/232_arity.exit",
+  "./tests/expect/233_missing_module.exit",
+  "./tests/expect/234_ambiguous_field.exit",
+  "./tests/expect/235_duplicate_field.exit",
+  "./tests/expect/257_r48_kosh_empty.exit",
+  "./tests/expect/259_r70_indent_ambiguous.exit",
+  "./tests/expect/261_r71_after_mukhya.exit",
+  "./tests/expect/262_r71_same_line_body.exit",
+  "./tests/expect/264_r73_escape_arith.exit",
+  "./tests/expect/265_r73_escape_mala.exit",
+  "./tests/expect/270_r75_nested_store.exit",
+  "./tests/expect/272_r75_negative_size.exit",
+  "./tests/expect/273_r77_bytes_not_cells.exit",
+  "./tests/expect/274_r77_bytes_loop_stops.exit",
+  "./tests/expect/276_r77_mixed_indentation.exit",
+  "./tests/expect/277_r80_divide_by_zero.exit",
+  "./tests/expect/278_r80_literal_too_large.exit",
+  "./tests/expect/279_r80_constant_overflow.exit",
+  "./tests/expect/281_r80_divide_in_module.exit",
+  "./tests/expect/283_r81_parikshita_refuses_library.exit",
+  "./tests/expect/284_r81_parikshita_transitive.exit",
+  "./tests/expect/285_r81_parikshita_address_param.exit",
+  "./tests/expect/287_r82_kosh_after_mandapa.exit",
+  "./tests/expect/290_r87_fraction_into_vitti.exit",
+  "./tests/expect/293_r90_float_divide_by_zero.exit",
+  "./tests/expect/295_r92_computed_fraction_into_vitti.exit",
+  "./tests/expect/298_r94_dasham_remainder_refused.exit",
+  "./tests/expect/300_r96_chakra_decimal_bound.exit",
+  "./tests/expect/301_r96_chakra_dasham_counter.exit",
+  "./tests/expect/303_r103_parimita_refuses.exit",
+  "./tests/expect/305_r103_parimita_needs_number.exit",
+  "./tests/expect/310_r105_string_beside_number.exit",
+  "./tests/expect/311_r105_string_arithmetic.exit",
+  "./tests/expect/313_r106_string_condition.exit",
+  "./tests/expect/314_r106_kosh_operand.exit",
+  "./tests/expect/315_r106_dasham_into_mala.exit",
+  "./tests/expect/316_r107_kosh_kept_by_a_prakriya.exit",
+  "./tests/expect/319_r108_mala_operand.exit",
+  "./tests/expect/320_r109_kosh_alias_kept.exit",
+  "./tests/expect/321_r109_kosh_long_chain.exit",
+  "./tests/expect/328_r113_rachana_operand.exit",
+  "./tests/expect/329_r113_sankhya_bindu.exit",
+  "./tests/expect/330_r116_dvigun.exit",
+  "./tests/expect/331_r116_trigun.exit",
+  "./tests/expect/332_r116_vardh.exit",
+  "./tests/expect/333_r116_nirapeksh_mulya.exit",
+  "./tests/expect/334_r116_mahattam_samapavartak.exit",
+  "./tests/expect/335_r116_viparyay_ank.exit",
+  "./tests/expect/336_r116_ganita_nirapeksh.exit",
+  "./tests/expect/337_r116_brahmagupta_kshetr.exit",
+  "./tests/expect/339_r116_brihat_ank_tak_laghu.exit",
+  "./tests/expect/341_r116_adish_gunan.exit",
+  "./tests/expect/342_r116_bindu_gunan.exit",
+  "./tests/expect/71_array_negative_index.exit",
+  "./tests/expect/73_array_equal_length.exit",
+  "./tests/expect/98_t18_kosh_empty.exit"
+ ],
+ "bae3b6f522f7e9fe0f7242150bf4f66dbd06642c3bceb90004daa94164df4ddf": [
+  "./tests/expect/100_t18_kosh_bounds.out",
+  "./tests/expect/251_r38_alias_mala_oob.out",
+  "./tests/expect/252_r38_alias_kosh_oob.out",
+  "./tests/expect/253_r38_alias_slice_oob.out",
+  "./tests/expect/274_r77_bytes_loop_stops.out",
+  "./tests/expect/68_array_oob.out",
+  "./tests/expect/71_array_negative_index.out",
+  "./tests/expect/73_array_equal_length.out"
+ ],
+ "4463aaaaac43abfcaaa67a7ac78f1e2d21219fdf6d08a5e996eb50a8655f65a1": [
+  "./tests/expect/100_t18_kosh_devanagari.out",
+  "./tests/expect/97_t18_kosh_devanagari.out"
+ ],
+ "26b3b9dba2f027fb73ef25fb0974b97dd91b8752d6f0a649050c2aabae7b6a8c": [
+  "./tests/expect/101_t18_kosh_empty.out",
+  "./tests/expect/98_t18_kosh_empty.out"
+ ],
+ "2e6d31a5983a91251bfae5aefa1c0a19d8ba3cf601d0e8a706b4cfa9661a6b8a": [
+  "./tests/expect/103_b10_nested_break_patches.out",
+  "./tests/expect/104_b10_nested_continue_patches.out"
+ ],
+ "1c41db91763f948f165af7e9c98f0e220aff900ef4539ed6048f1f1e5ed464d8": [
+  "./tests/expect/108_b11_block_statement_capacity.out",
+  "./tests/expect/204_b11_block_statement_capacity.out"
+ ],
+ "64bde217938f75e934116222afa8a8b44a9879668e69e18707a782993f4c589d": [
+  "./tests/expect/122_t18_kosh_param_devanagari.out",
+  "./tests/expect/123_t18_kosh_param_statement_call.out"
+ ],
+ "5ab241dc44c435dedfb0d67eef9895413c4606b9f623acdf88b73a36aec34067": [
+  "./tests/expect/149_namespaced_colliding_imports.out",
+  "./tests/expect/155_namespaced_multi_alias_composition.out"
+ ],
+ "f89bb42bf69c7c047847c1b18b56f65bbb1f71cb52187ffb6d6023d942db786b": [
+  "./tests/expect/158_namespaced_alias_digit.out",
+  "./tests/expect/159_namespaced_path_traversal.out",
+  "./tests/expect/160_namespaced_empty_alias.out",
+  "./tests/expect/161_namespaced_overlong_alias.out",
+  "./tests/expect/162_namespaced_import_capacity.out"
+ ],
+ "1e43192e325644c0fd94dbc5615876a86cfa19b7747f2c9a6082a15907cc36b4": [
+  "./tests/expect/163_r40_transitive_diamond.out",
+  "./tests/expect/166_r41_optin_diamond.out"
+ ],
+ "4ec31ba10d9ec1cf1f30e5f1c5177bb9a6c4ee317672f1aee4f4c6bc95162368": [
+  "./tests/expect/207_sankhyiki_vector.err",
+  "./tests/expect/342_r116_bindu_gunan.err"
+ ],
+ "aa834a5c12a04546235ec8d2de972a10431d053f09be5fd8c1a726149edfbd23": [
+  "./tests/expect/265_r73_escape_mala.out",
+  "./tests/expect/270_r75_nested_store.out"
+ ],
+ "4c2ec15496f7eeecc5ae74a727c893b9d040c8c7517a49f86eaa40cfae4d39c3": [
+  "./tests/expect/316_r107_kosh_kept_by_a_prakriya.out",
+  "./tests/expect/320_r109_kosh_alias_kept.out",
+  "./tests/expect/321_r109_kosh_long_chain.out"
+ ],
+ "a32b802ba09dad8790a41a46ce05e3c5d6015f6294f04e6dae0f084e8f02d9e6": [
+  "./tests/expect/322_r111_new_names.out",
+  "./tests/expect/323_r111_old_names.out"
+ ],
+ "8284620db922f15d5735d991dd3d1be900f85baa87acc8e0c1f2ca163214967d": [
+  "./tests/expect/324_r111_asti_true.out",
+  "./tests/expect/326_r111_nasti_true.out"
+ ],
+ "6d749dc9ad7728993fed1c4fe22367de595ca79fa2d8f461b353275b38c5ddb3": [
+  "./tests/expect/325_r111_asti_false.out",
+  "./tests/expect/327_r111_nasti_false.out"
+ ],
+ "26d928ca7798882c482edb82cf892a2036308dff7482080e65ac947719112ef2": [
+  "./tests/expect/336_r116_ganita_nirapeksh.out",
+  "./tests/expect/339_r116_brihat_ank_tak_laghu.out"
+ ],
+ "91320628fce5ce2fd0475d930220d6ae06dcce803cabdbb13a41a22fec6d1d85": [
+  "./tests/expect/341_r116_adish_gunan.out",
+  "./tests/expect/342_r116_bindu_gunan.out"
+ ],
+ "ce516e29a2ccfe4bab40e4e6adab7661cd695680482c00b1faa738fc0df62698": [
+  "./tests/expect/66_module_dedupe.out",
+  "./tests/expect/79_ayojan_cwd.out"
+ ],
+ "70d55c022eac1fbb06ed87c6ffcbe01edcde5519aa7aecb848abeaea1e2e2caa": [
+  "./tests/expect/96_t18_kosh.out",
+  "./tests/expect/99_t18_kosh.out"
+ ],
+ "4f64e2e21d1b295ec65557c5e0f3da577e81bf3ce9cd86939ef5a555dde3a0c0": [
+  "./tests/negative/r17/r15-original/mutation-15-6070.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-6070.sm"
+ ],
+ "055a3aed7ace2db051547b03927d264963cb855e06911f04d5170a49331682f9": [
+  "./tests/negative/r17/r15-reduced/mutation-15-11005.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-21279.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-23437.sm"
+ ],
+ "a29e5476c3eb69fee5f97f36890d1cff74aee34209f391291d98f7f05433bb6f": [
+  "./tests/negative/r17/r15-reduced/mutation-15-12957.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-32279.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-34912.sm"
+ ],
+ "2708f64fafaf7a26e8ba1b03d685e36b8df4f9b5e758e0870ce143d0cdd2e31a": [
+  "./tests/negative/r17/r15-reduced/mutation-15-20160.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-6489.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-7460.sm"
+ ],
+ "cbb2684aae86adb783e89f95f8c94fef367ae7a97db5917273d7ab84ea5d4a83": [
+  "./tests/negative/r17/r15-reduced/mutation-15-26225.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-29820.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-4364.sm"
+ ],
+ "5b1f9a740e86d536dc22c924ef75860b9a2e44560afc0a294c8bf8d60fae97c7": [
+  "./tests/negative/r17/r15-reduced/mutation-15-27731.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-42057.sm"
+ ],
+ "3e422c0c3525063559165261bb3b4c624cd3624731915a7dbe3914fa77c23901": [
+  "./tests/negative/r17/r15-reduced/mutation-15-27971.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-29170.sm"
+ ],
+ "819fb89a39ea0ec560f8f38ceb5ef9b93e2fb08f44a50cf99542a9e2ec38eea0": [
+  "./tests/negative/r17/r15-reduced/mutation-15-35150.sm",
+  "./tests/negative/r17/r15-reduced/mutation-15-45494.sm"
+ ],
+ "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed": [
+  "./tests/r44_pending/01_undefined_export/EXPECTED.txt",
+  "./tests/r44_pending/02_exported_constant/EXPECTED.txt",
+  "./tests/r44_pending/03_unknown_qualified/EXPECTED.txt",
+  "./tests/r44_pending/04_private_constant/EXPECTED.txt",
+  "./tests/r44_pending/05_private_function/EXPECTED.txt",
+  "./tests/r44_pending/06_public_function/EXPECTED.txt",
+  "./tests/r44_pending/07_legacy_import/EXPECTED.txt"
+ ],
+ "65d19b7c635ab3fbc300ec76f971726b33a88d87c0bf831998f0d567b9a6addc": [
+  "./tests/r44_pending/01_undefined_export/main.sm",
+  "./tests/r44_pending/06_public_function/main.sm"
+ ],
+ "badadae02d69693d09ec05c31e7bb8417439c4c4496a8e0dff3829d4ba608ae6": [
+  "./tests/r44_pending/05_private_function/lib/calc.smlib",
+  "./tests/r44_pending/06_public_function/lib/calc.smlib"
+ ],
+ "beb22bd74368cdfbc5eb3a9c4f8da09fb2085b497e93d32894b4917e5fbdd0e0": [
+  "./tests/stdlib/bigint_is_zero.out",
+  "./tests/stdlib/string_is_all_digits.out"
+ ],
+ "4fe34f555263c53ce0032ed23c5419e6f4a505386c84f414806e76c6c98f4646": [
+  "./tests/stdlib/bigint_zero.out",
+  "./tests/stdlib/num_is_odd.out"
+ ],
+ "10dce6e88377db205b89d857a72b9016160a85ef973f54c7133c636049d2f414": [
+  "./tests/stdlib/chandas_is_guru.out",
+  "./tests/stdlib/num_is_even.out",
+  "./tests/stdlib/num_is_palindrome.out",
+  "./tests/stdlib/string_is_space_char.out"
+ ],
+ "ade12c9726c0ef0853066ced8bcfe23e25e5e2daab11e23f87838f2ddf6c4422": [
+  "./tests/stdlib/kalana_slope2.out",
+  "./tests/stdlib/sankhyiki_prasaran.out"
+ ],
+ "a8b4a573ab7aa154867f9b27483da9cb01694dab62936d5965a02533f25088ec": [
+  "./tests/stdlib/math_is_prime.out",
+  "./tests/stdlib/string_is_digit_char.out"
+ ],
+ "bb5daeec941e8f8d5b95841ba6c468451eedde273974111e4fcda3545d9cb617": [
+  "./tests/stdlib/sort_binary_search.out",
+  "./tests/stdlib/sort_max_of.out"
+ ],
+ "2b25834f0ec9662f3ac76a3260fbd6cb5fea3117f69d0fe10ec6fd8dd274c8fc": [
+  "./tests/stdlib/sort_insertion.out",
+  "./tests/stdlib/sort_merge.out"
+ ],
+ "fb5b54a66a27fad85a5c8c6c5bd7fc87b5dfcd996d1f9a5e322ea3caed74bdff": [
+  "./tests/stdlib/sort_is_sorted.out",
+  "./tests/stdlib/util_bool_to_int.out"
+ ],
+ "51b137b89273a7e99bfb2e146cd27f85eb2bcc0f4670b01f0333287c283a86a5": [
+  "./tests/stdlib/string_is_lower_char.out",
+  "./tests/stdlib/string_is_upper_char.out"
+ ],
+ "76dfd2bd4006cd92ec7f0edc67159a52df0147e175c89f95312b21f13e6f6761": [
+  "./tests/stdlib/string_replace.out",
+  "./tests/stdlib/string_strb_bridge.out"
+ ],
+ "1327fbdbe76580edf0a6823f52bdbf695df77540edd1b1f07892245b4284ba5d": [
+  "./windows/native/sutram.cmd",
+  "./windows/sutram.cmd"
+ ]
+}

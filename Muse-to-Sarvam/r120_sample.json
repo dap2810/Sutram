@@ -1,0 +1,62 @@
+{
+ "method": "Random sample of 40 of the 315 .out goldens (seed 42). Categories: refusal (rule+error code stated = provenance visible), spec/known/stdin (provenance visible), trivial/readable (output obvious by reading), nontrivial-no-provenance (output not obvious, no derivation in tree = pool where a hidden bug could live).",
+ "counts": {
+  "refusal": 19,
+  "spec_known_stdin": 3,
+  "trivial_readable": 11,
+  "nontrivial_no_provenance": 7,
+  "total": 40
+ },
+ "extrapolated_to_315": {
+  "evidence_refusal_spec_trivial": "~260",
+  "no_provenance_pool_upper_bound": "~55"
+ },
+ "refusal": [
+  "229_loop_var_scope",
+  "254_r42_alias_pankti_len",
+  "225_undeclared_array",
+  "227_assign_undeclared",
+  "233_missing_module",
+  "213_r41_v1_dupexp",
+  "283_r81_parikshita_refuses_library",
+  "285_r81_parikshita_address_param",
+  "301_r96_chakra_dasham_counter",
+  "105_block_nesting_capacity",
+  "106_rachana_field_capacity",
+  "156_namespaced_alias_collision",
+  "165_r41_missing_reject",
+  "252_r38_alias_kosh_oob",
+  "281_r80_divide_in_module",
+  "291_r90_nan_compare",
+  "239_r17_d2_anya_loop_krama",
+  "226_long_field_names",
+  "321_r109_kosh_long_chain"
+ ],
+ "spec_known_stdin": [
+  "333_r116_nirapeksh_mulya (R189 row 4)",
+  "339_r116_brihat_ank_tak_laghu (R189 row 10)",
+  "59_windows_grahan_runtime (harness stdin 42)"
+ ],
+ "trivial_readable": [
+  "hello",
+  "04_while",
+  "31_strcat",
+  "103_b10_nested_break_patches",
+  "87_b8_func_params_capacity",
+  "163_r40_transitive_diamond",
+  "99_t18_kosh",
+  "111_t18_kosh_dasham_function_return",
+  "import_demo",
+  "array_demo",
+  "80_b6_nested_call_loop"
+ ],
+ "nontrivial_no_provenance": [
+  "143_xmm_cache_barriers (5.0/26.0/3.5/11.0, no derivation)",
+  "131_perf_float_compare_register (0/1/1/0/1/0/1/1/1, no derivation)",
+  "134_perf_float_complex_fallback",
+  "136_r30_float_complex_left",
+  "139_r30_float_mixed_fallback (-4294967288.0, no derivation)",
+  "102_ast_multimodule_capacity (1, no derivation)",
+  "248_r23_slices (55/12/55/4/4/7/52/100/50/0, no derivation)"
+ ]
+}
