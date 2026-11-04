@@ -1,0 +1,388 @@
+{
+  "compiler": "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+  "compiler_sha256": "ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e",
+  "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source",
+  "rows": [
+    {
+      "name": "303_r103_parimita_refuses",
+      "source": "# R103: `mandapa parimita N` gives a block a byte budget. Its own nirmmita may use at most N bytes\n# (each rounded up to 16); the one that would pass it stops the program before it gets memory:\n# E_PARIMITA, with the block's line, exit 1. Here 1,000,000 x 64 bytes in one 1 MB block.\nmukhya() {\n    vitti s = 0\n    mandapa parimita 1048576 {\n        vitti i = 0\n        yavat (i < 1000000) {\n            vitti b = nirmmita(64)\n            b[0] = i\n            s = s + b[0]\n            i = i + 1\n        }\n    }\n    likha(\"not reached \", s)\n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\303_r103_parimita_refuses.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\303_r103_parimita_refuses.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 397 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203339372062616169742073616e6b616c69740a",
+        "seconds": 0.012572499923408031
+      },
+      "expected_stdout": "Sutram truti [E_PARIMITA]: pankti 6 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)\n",
+      "expected_exit": "1",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\303_r103_parimita_refuses.exe"
+        ],
+        "exit": 0,
+        "stdout": "not reached 499999500000\n",
+        "stderr": "",
+        "stdout_hex": "6e6f742072656163686564203439393939393530303030300a",
+        "seconds": 3.26511539996136
+      },
+      "sha256": "29df3814052a89d60053a6504c413a2981b6fac191b8362ab4c04c89dfe432a5"
+    },
+    {
+      "name": "317_r107_parimana",
+      "source": "# R107: parimana() - the bytes the program's nirmmita and kosh hold right now. A block gives its\n# bytes back at its end; a kosh holds its header and capacity (8 bytes a number) for the program's\n# life. Every nirmmita is rounded up to 16 bytes. Linux; a Windows program reads 0.\nmukhya() {\n    likha(\"start \", parimana(), \"\\n\")\n    vitti a = nirmmita(64)\n    likha(\"after nirmmita(64) \", parimana(), \"\\n\")\n    mandapa {\n        vitti b = nirmmita(1000)\n        likha(\"in a block, nirmmita(1000) \", parimana(), \"\\n\")\n    }\n    likha(\"after the block \", parimana(), \"\\n\")\n    kosh k[1]\n    vitti i = 0\n    yavat (i < 1000) {\n        kosh_kship(k, i)\n        i = i + 1\n    }\n    likha(\"a kosh of 1000 \", parimana(), \"\\n\")\n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\317_r107_parimana.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\317_r107_parimana.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 1584 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a20313538342062616169742073616e6b616c69740a",
+        "seconds": 0.016064300085417926
+      },
+      "expected_stdout": "start 0\nafter nirmmita(64) 64\nin a block, nirmmita(1000) 1072\nafter the block 64\na kosh of 1000 8272\n",
+      "expected_exit": "0",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\317_r107_parimana.exe"
+        ],
+        "exit": 0,
+        "stdout": "start 0\nafter nirmmita(64) 0\nin a block, nirmmita(1000) 0\nafter the block 0\na kosh of 1000 0\n",
+        "stderr": "",
+        "stdout_hex": "737461727420300a6166746572206e69726d6d6974612836342920300a696e206120626c6f636b2c206e69726d6d69746128313030302920300a61667465722074686520626c6f636b20300a61206b6f7368206f66203130303020300a",
+        "seconds": 0.04957040003500879
+      },
+      "sha256": "059be1a014b923ce33de9e8d32cf917b7756bd35e69a0745334420e13defc29d"
+    },
+    {
+      "name": "318_r108_parimana_moves",
+      "source": "# R108: parimana() - one number, the bytes the program's nirmmita and kosh hold now - moving as\n# allocations happen. A block gives back its nirmmita; a kosh (made inside a block or not) keeps its\n# header and capacity for the program's life: kosh storage is not reclaimed yet.\nmukhya() {\n    likha(\"start \", parimana(), \"\\n\")\n    kosh k[1]\n    kosh_kship(k, 1)\n    likha(\"a kosh of 1 \", parimana(), \"\\n\")\n    kosh_kship(k, 2)\n    kosh_kship(k, 3)\n    likha(\"grown to capacity 4 \", parimana(), \"\\n\")\n    mandapa {\n        vitti b = nirmmita(100)\n        likha(\"a block's nirmmita(100) \", parimana(), \"\\n\")\n        kosh m[8]\n        likha(\"and a kosh of 8 in it \", parimana(), \"\\n\")\n    }\n    likha(\"after the block \", parimana(), \"\\n\")\n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\318_r108_parimana_moves.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\318_r108_parimana_moves.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 2322 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a20323332322062616169742073616e6b616c69740a",
+        "seconds": 0.011446600081399083
+      },
+      "expected_stdout": "start 0\na kosh of 1 48\ngrown to capacity 4 72\na block's nirmmita(100) 184\nand a kosh of 8 in it 288\nafter the block 176\n",
+      "expected_exit": "0",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\318_r108_parimana_moves.exe"
+        ],
+        "exit": 0,
+        "stdout": "start 0\na kosh of 1 0\ngrown to capacity 4 0\na block's nirmmita(100) 0\nand a kosh of 8 in it 0\nafter the block 0\n",
+        "stderr": "",
+        "stdout_hex": "737461727420300a61206b6f7368206f66203120300a67726f776e20746f206361706163697479203420300a6120626c6f636b2773206e69726d6d697461283130302920300a616e642061206b6f7368206f66203820696e20697420300a61667465722074686520626c6f636b20300a",
+        "seconds": 0.041819200036115944
+      },
+      "sha256": "15a15e10570f7c91e208a27ad60c368429c6c0d232699b898d04e4199aef1afa"
+    },
+    {
+      "name": "322_r111_new_names",
+      "source": "# R111: the vocabulary change - the new names (primary from v292). Example 323 is the same program with\n# the old names: both print the same and compile to the same bytes; only 323 gets the warnings.\nmukhya() {\n    kosh k[2]\n    kosh_kship(k, 3)\n    kosh_kship(k, 7)\n    kosh_yuj(k, 11)\n    likha(\"gan \", kosh_gan(k), \" ksham \", kosh_ksham(k), \"\\n\")\n    likha(\"iksh \", kosh_iksh(k), \"\\n\")\n    likha(\"hri \", kosh_hri(k), \"\\n\")\n    likha(\"apanay \", kosh_apanay(k), \"\\n\")\n    likha(\"rikt \", kosh_rikt(k), \"\\n\")\n    kosh_shodh(k)\n    likha(\"rikt \", kosh_rikt(k), \"\\n\")\n    vitti m[5]\n    likha(\"pankti_gan \", pankti_gan(m), \"\\n\")\n    likha(\"laghu \", akshar_laghu(65), \" guru \", akshar_guru(97), \"\\n\")\n    shabda(anka_akshar(66))\n    likha_santat(42)\n    likha(\"\\n\")\n    vitti s = vartani_sandhi(\"ab\", \"cd\")\n    shabda(s)\n    likha(\"\\n\")\n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\322_r111_new_names.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\322_r111_new_names.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 3623 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a20333632332062616169742073616e6b616c69740a",
+        "seconds": 0.011302100028842688
+      },
+      "expected_stdout": "gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\nB42\nabcd\n",
+      "expected_exit": "0",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\322_r111_new_names.exe"
+        ],
+        "exit": 3221225477,
+        "stdout": "gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\n�42\n",
+        "stderr": "",
+        "stdout_hex": "67616e2033206b7368616d20340a696b73682031310a6872692031310a6170616e617920330a72696b7420300a72696b7420310a70616e6b74695f67616e20350a6c6167687520393720677572752036350ac234320a",
+        "seconds": 0.12232720002066344
+      },
+      "sha256": "c51eae1158d132e2028a541372ecf0e00c1f7d989eb4cfa204769a5c542ee7f5"
+    },
+    {
+      "name": "323_r111_old_names",
+      "source": "# R111: the vocabulary change - the old names, which keep working (example 322 is the same program\n# with the new names). The same output and the same bytes; each old name prints one warning naming its\n# replacement, on stderr, when compiled.\nmukhya() {\n    kosh k[2]\n    kosh_push(k, 3)\n    kosh_push(k, 7)\n    kosh_enqueue(k, 11)\n    likha(\"gan \", kosh_len(k), \" ksham \", kosh_cap(k), \"\\n\")\n    likha(\"iksh \", kosh_peek(k), \"\\n\")\n    likha(\"hri \", kosh_pop(k), \"\\n\")\n    likha(\"apanay \", kosh_dequeue(k), \"\\n\")\n    likha(\"rikt \", kosh_empty(k), \"\\n\")\n    kosh_clear(k)\n    likha(\"rikt \", kosh_empty(k), \"\\n\")\n    vitti m[5]\n    likha(\"pankti_gan \", pankti_len(m), \"\\n\")\n    likha(\"laghu \", char_lower(65), \" guru \", char_upper(97), \"\\n\")\n    shabda(char_from(66))\n    lkhb(42)\n    likha(\"\\n\")\n    vitti s = vartani_cat(\"ab\", \"cd\")\n    shabda(s)\n    likha(\"\\n\")\n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\323_r111_old_names.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\323_r111_old_names.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 3623 baait sankalit\n",
+        "stderr": "Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu\nSutram suchana: 'kosh_enqueue' purana nama - 'kosh_yuj' likhatu\nSutram suchana: 'kosh_len' purana nama - 'kosh_gan' likhatu\nSutram suchana: 'kosh_cap' purana nama - 'kosh_ksham' likhatu\nSutram suchana: 'kosh_peek' purana nama - 'kosh_iksh' likhatu\nSutram suchana: 'kosh_pop' purana nama - 'kosh_hri' likhatu\nSutram suchana: 'kosh_dequeue' purana nama - 'kosh_apanay' likhatu\nSutram suchana: 'kosh_empty' purana nama - 'kosh_rikt' likhatu\nSutram suchana: 'kosh_clear' purana nama - 'kosh_shodh' likhatu\nSutram suchana: 'pankti_len' purana nama - 'pankti_gan' likhatu\nSutram suchana: 'char_lower' purana nama - 'akshar_laghu' likhatu\nSutram suchana: 'char_upper' purana nama - 'akshar_guru' likhatu\nSutram suchana: 'char_from' purana nama - 'anka_akshar' likhatu\nSutram suchana: 'lkhb' purana nama - 'likha_santat' likhatu\nSutram suchana: 'vartani_cat' purana nama - 'vartani_sandhi' likhatu\n",
+        "stdout_hex": "53696464683a20333632332062616169742073616e6b616c69740a",
+        "seconds": 0.011351500055752695
+      },
+      "expected_stdout": "gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\nB42\nabcd\n",
+      "expected_exit": "0",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\323_r111_old_names.exe"
+        ],
+        "exit": 3221225477,
+        "stdout": "gan 3 ksham 4\niksh 11\nhri 11\napanay 3\nrikt 0\nrikt 1\npankti_gan 5\nlaghu 97 guru 65\n�42\n",
+        "stderr": "",
+        "stdout_hex": "67616e2033206b7368616d20340a696b73682031310a6872692031310a6170616e617920330a72696b7420300a72696b7420310a70616e6b74695f67616e20350a6c6167687520393720677572752036350ac234320a",
+        "seconds": 0.06776140001602471
+      },
+      "sha256": "c51eae1158d132e2028a541372ecf0e00c1f7d989eb4cfa204769a5c542ee7f5"
+    },
+    {
+      "name": "288_r86_kosh_alias_moves",
+      "source": "# R86: `vitti a = k` is a second NAME for the same kosh, not a copy. Up to v283, with something allocated\n# in between (obstacle), kosh_kship moved k's cells and a stayed on the old buffer (a[0]=41 k[0]=99).\n# R101A (v284): on Linux every kosh has a region of its own and grows in place, so the names stay one:\n# a[0]=99 k[0]=99, then a[0]=7 k[0]=7. Windows still moves (reference section 16).\nmukhya() {\n    kosh k[1]\n    kosh_kship(k, 41)\n    vitti a = k\n    vitti obstacle = nirmmita(64)\n    kosh_kship(k, 42)\n    k[0] = 99\n    likha(\"a[0]=\", a[0], \" k[0]=\", k[0])\n    a[0] = 7\n    likha(\"a[0]=\", a[0], \" k[0]=\", k[0])\n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\288_r86_kosh_alias_moves.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\288_r86_kosh_alias_moves.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 1999 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a20313939392062616169742073616e6b616c69740a",
+        "seconds": 0.011649299995042384
+      },
+      "expected_stdout": "a[0]=99 k[0]=99\na[0]=7 k[0]=7\n",
+      "expected_exit": "0",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\288_r86_kosh_alias_moves.exe"
+        ],
+        "exit": 0,
+        "stdout": "a[0]=41 k[0]=99\na[0]=7 k[0]=99\n",
+        "stderr": "",
+        "stdout_hex": "615b305d3d3431206b5b305d3d39390a615b305d3d37206b5b305d3d39390a",
+        "seconds": 0.03232620004564524
+      },
+      "sha256": "7448e93f71385b52d6a587b4b42c113a2ce3266108d09b555f4e49d68a48bfa0"
+    },
+    {
+      "name": "29_nishkriya",
+      "source": "mukhya()\n    likha(\"Yantra: Inline Assembly\\n\")\n    likha(\"==========================\\n\")\n    likha(\"This program exits with code 42 using raw x86-64 bytes.\\n\")\n    likha(\"mov eax,60 / mov edi,42 / syscall  is just:\\n\")\n    likha(\"  yantra(\\\"B8 3C 00 00 00\\\")\\n\")\n    likha(\"  yantra(\\\"BF 2A 00 00 00\\\")\\n\")\n    likha(\"  yantra(\\\"0F 05\\\")\\n\")\n    likha(\"Exiting with code 42...\\n\")\n    yantra(\"B8 3C 00 00 00\")\n    yantra(\"BF 2A 00 00 00\")\n    yantra(\"0F 05\")\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\29_nishkriya.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\29_nishkriya.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 588 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203538382062616169742073616e6b616c69740a",
+        "seconds": 0.013319500023499131
+      },
+      "expected_stdout": "Yantra: Inline Assembly\n==========================\nThis program exits with code 42 using raw x86-64 bytes.\nmov eax,60 / mov edi,42 / syscall  is just:\n  yantra(\"B8 3C 00 00 00\")\n  yantra(\"BF 2A 00 00 00\")\n  yantra(\"0F 05\")\nExiting with code 42...\n",
+      "expected_exit": "42",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\29_nishkriya.exe"
+        ],
+        "exit": 0,
+        "stdout": "Yantra: Inline Assembly\n==========================\nThis program exits with code 42 using raw x86-64 bytes.\nmov eax,60 / mov edi,42 / syscall  is just:\n  yantra(\"B8 3C 00 00 00\")\n  yantra(\"BF 2A 00 00 00\")\n  yantra(\"0F 05\")\nExiting with code 42...\n",
+        "stderr": "",
+        "stdout_hex": "59616e7472613a20496e6c696e6520417373656d626c790a3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d0a546869732070726f6772616d206578697473207769746820636f6465203432207573696e6720726177207838362d36342062797465732e0a6d6f76206561782c3630202f206d6f76206564692c3432202f2073797363616c6c20206973206a7573743a0a202079616e7472612822423820334320303020303020303022290a202079616e7472612822424620324120303020303020303022290a202079616e7472612822304620303522290a45786974696e67207769746820636f64652034322e2e2e0a",
+        "seconds": 0.05279250000603497
+      },
+      "sha256": "89df0eb7a0bff4c42687a1163ead361ac48e05ed4e43e21d4bad877fd2b828d3"
+    },
+    {
+      "name": "220_hindi_parse_error",
+      "source": "# R2-WS1a golden: a deliberate syntax error compiled with --lang hindi must\n# print the Hindi diagnostic as real Devanagari (not double-encoded bytes).\n# This file is expected to FAIL to compile.\nmukhya() {\n    vitti x = \n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\220_hindi_parse_error.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\220_hindi_parse_error.exe"
+        ],
+        "exit": 1,
+        "stdout": "\nSutram truti: vyakaran dosh, pankti 7:1, shabd 'patra-ant'\n  \n  ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+        "stderr": "",
+        "stdout_hex": "0a53757472616d2074727574693a207679616b6172616e20646f73682c2070616e6b746920373a312c207368616264202770617472612d616e74270a20200a20205e0a53616e6b65743a2061736d696e20737468616e65207368616264616d207679616b6172616e616d206368612070617368796174752e0a",
+        "seconds": 0.01053580001462251
+      },
+      "expected_stdout": "भाषा पैक मिला: hindi\n\nSutram truti: व्याकरण दोष, पंक्ति 7:1, शब्द 'फ़ाइल का अंत'\n  \n  ^\nसंकेत: इस स्थान पर शब्द और व्याकरण जाँचें।\n",
+      "expected_exit": "1"
+    },
+    {
+      "name": "220_with_hindi",
+      "source": "# R2-WS1a golden: a deliberate syntax error compiled with --lang hindi must\n# print the Hindi diagnostic as real Devanagari (not double-encoded bytes).\n# This file is expected to FAIL to compile.\nmukhya() {\n    vitti x = \n}\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "--lang",
+          "hindi",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\220_hindi_parse_error.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\220_with_hindi.exe"
+        ],
+        "exit": 1,
+        "stdout": "भाषा पैक मिला: hindi\n\nSutram truti: व्याकरण दोष, पंक्ति 7:1, शब्द 'फ़ाइल का अंत'\n  \n  ^\nसंकेत: इस स्थान पर शब्द और व्याकरण जाँचें।\n",
+        "stderr": "",
+        "stdout_hex": "e0a4ade0a4bee0a4b7e0a4be20e0a4aae0a588e0a49520e0a4aee0a4bfe0a4b2e0a4be3a2068696e64690a0a53757472616d2074727574693a20e0a4b5e0a58de0a4afe0a4bee0a495e0a4b0e0a4a320e0a4a6e0a58be0a4b72c20e0a4aae0a482e0a495e0a58de0a4a4e0a4bf20373a312c20e0a4b6e0a4ace0a58de0a4a62027e0a4abe0a4bce0a4bee0a487e0a4b220e0a495e0a4be20e0a485e0a482e0a4a4270a20200a20205e0ae0a4b8e0a482e0a495e0a587e0a4a43a20e0a487e0a4b820e0a4b8e0a58de0a4a5e0a4bee0a4a820e0a4aae0a4b020e0a4b6e0a4ace0a58de0a4a620e0a494e0a4b020e0a4b5e0a58de0a4afe0a4bee0a495e0a4b0e0a4a320e0a49ce0a4bee0a481e0a49ae0a587e0a482e0a5a40a",
+        "seconds": 0.010635999962687492
+      },
+      "expected_stdout": "भाषा पैक मिला: hindi\n\nSutram truti: व्याकरण दोष, पंक्ति 7:1, शब्द 'फ़ाइल का अंत'\n  \n  ^\nसंकेत: इस स्थान पर शब्द और व्याकरण जाँचें।\n",
+      "expected_exit": "1"
+    },
+    {
+      "name": "new_char",
+      "source": "mukhya() { shabda(anka_akshar(66)) likha(\"\\n\") }\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_char.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_char.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 155 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203135352062616169742073616e6b616c69740a",
+        "seconds": 0.01213269995059818
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_char.exe"
+        ],
+        "exit": 0,
+        "stdout": "P\n",
+        "stderr": "",
+        "stdout_hex": "500a",
+        "seconds": 0.05630709999240935
+      },
+      "sha256": "e1ce92101d19b122a45d33f29ebad21ea3ff7eab416e43628f77d580935c4e09"
+    },
+    {
+      "name": "old_char",
+      "source": "mukhya() { shabda(char_from(66)) likha(\"\\n\") }\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\old_char.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\old_char.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 155 baait sankalit\n",
+        "stderr": "Sutram suchana: 'char_from' purana nama - 'anka_akshar' likhatu\n",
+        "stdout_hex": "53696464683a203135352062616169742073616e6b616c69740a",
+        "seconds": 0.01138919999357313
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\old_char.exe"
+        ],
+        "exit": 0,
+        "stdout": "P\n",
+        "stderr": "",
+        "stdout_hex": "500a",
+        "seconds": 0.03399729996453971
+      },
+      "sha256": "e1ce92101d19b122a45d33f29ebad21ea3ff7eab416e43628f77d580935c4e09"
+    },
+    {
+      "name": "new_concat_literal",
+      "source": "mukhya() { vitti s = vartani_sandhi(\"ab\", \"cd\") shabda(s) }\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_concat_literal.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_concat_literal.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 164 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203136342062616169742073616e6b616c69740a",
+        "seconds": 0.01268420007545501
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_concat_literal.exe"
+        ],
+        "exit": 3221225477,
+        "stdout": "",
+        "stderr": "",
+        "stdout_hex": "",
+        "seconds": 0.09699470002669841
+      },
+      "sha256": "8f7a54f45e92c43e837a776dfef52427c6c9fa74d027a2a503abf3bd5dfb52ad"
+    },
+    {
+      "name": "old_concat_literal",
+      "source": "mukhya() { vitti s = vartani_cat(\"ab\", \"cd\") shabda(s) }\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\old_concat_literal.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\old_concat_literal.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 164 baait sankalit\n",
+        "stderr": "Sutram suchana: 'vartani_cat' purana nama - 'vartani_sandhi' likhatu\n",
+        "stdout_hex": "53696464683a203136342062616169742073616e6b616c69740a",
+        "seconds": 0.012091499986127019
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\old_concat_literal.exe"
+        ],
+        "exit": 3221225477,
+        "stdout": "",
+        "stderr": "",
+        "stdout_hex": "",
+        "seconds": 0.0722926000598818
+      },
+      "sha256": "8f7a54f45e92c43e837a776dfef52427c6c9fa74d027a2a503abf3bd5dfb52ad"
+    },
+    {
+      "name": "new_concat_writable",
+      "source": "mukhya() { vitti p = nirmmita(64) akshar_rakh(p, 0, 97) akshar_rakh(p, 1, 98) akshar_rakh(p, 2, 0) vitti s = vartani_sandhi(p, \"cd\") shabda(s) }\n",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_concat_writable.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_concat_writable.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 278 baait sankalit\n",
+        "stderr": "",
+        "stdout_hex": "53696464683a203237382062616169742073616e6b616c69740a",
+        "seconds": 0.010866599972359836
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-2026-11-03\\programs\\new_concat_writable.exe"
+        ],
+        "exit": 0,
+        "stdout": "abcd",
+        "stderr": "",
+        "stdout_hex": "61626364",
+        "seconds": 0.07006659999024123
+      },
+      "sha256": "9212d8484b6ec544428c86287c6130aeaa1b3751a36f46cc57fe3727b54dc7ab"
+    }
+  ],
+  "byte_identical_pairs": {
+    "322_r111_new_names / 323_r111_old_names": true,
+    "new_char / old_char": true,
+    "new_concat_literal / old_concat_literal": true
+  }
+}

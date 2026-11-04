@@ -1,0 +1,1 @@
+mukhya() { vitti p = nirmmita(64) akshar_rakh(p, 0, 97) akshar_rakh(p, 1, 98) akshar_rakh(p, 2, 0) vitti s = vartani_sandhi(p, "cd") shabda(s) }
