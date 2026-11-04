@@ -1,0 +1,18 @@
+vitti ctr = 0
+prakriya make_kosh() {
+    kosh k[4]
+    kosh_kship(k, ctr)
+    ctr = ctr + 1
+    nivartanam k
+}
+mukhya() {
+    vitti last = make_kosh()
+    vitti i = 1
+    yavat (i < 20000) {
+        last = make_kosh()
+        i = i + 1
+    }
+    likha("ready")
+    vitti x = grahan()
+    likha(last[0])
+}

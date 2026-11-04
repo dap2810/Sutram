@@ -1,0 +1,14 @@
+mukhya() {
+    kosh a[4]
+    kosh b[4]
+    vitti i = 0
+    yavat (i < 100) {
+        kosh_kship(a, i)
+        kosh_kship(b, i + 1000)
+        i = i + 1
+    }
+    likha(a[0])
+    likha(a[99])
+    likha(b[0])
+    likha(b[99])
+}

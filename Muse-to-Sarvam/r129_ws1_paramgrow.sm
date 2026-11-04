@@ -1,0 +1,14 @@
+prakriya grow(kosh k) {
+    kosh_kship(k, 22)
+    kosh_kship(k, 33)
+    kosh_kship(k, 44)
+    kosh_kship(k, 55)
+    nivartanam 0
+}
+mukhya() {
+    kosh kk[4]
+    kosh_kship(kk, 11)
+    grow(kk)
+    likha(kk[0])
+    likha(kk[4])
+}

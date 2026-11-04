@@ -1,0 +1,40 @@
+vitti ctr = 0
+prakriya dummy() {
+    kosh k[4]
+    nivartanam k
+}
+prakriya make_kosh() {
+    kosh k[4]
+    kosh_kship(k, ctr)
+    ctr = ctr + 1
+    nivartanam k
+}
+mukhya() {
+    vitti first = dummy()
+    vitti mid = dummy()
+    vitti last = dummy()
+    vitti i = 0
+    yavat (i < 20000) {
+        vitti k = make_kosh()
+        yadi (i == 0) {
+            first = k
+        }
+        yadi (i == 10000) {
+            mid = k
+        }
+        yadi (i == 19999) {
+            last = k
+        }
+        i = i + 1
+    }
+    kosh_kship(last, 999)
+    kosh_kship(last, 1000)
+    kosh_kship(last, 1001)
+    kosh_kship(last, 1002)
+    kosh_kship(last, 1003)
+    likha(first[0])
+    likha(mid[0])
+    likha(last[0])
+    likha(last[1])
+    likha(last[5])
+}
