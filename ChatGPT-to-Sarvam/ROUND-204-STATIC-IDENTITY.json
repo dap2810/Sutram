@@ -1,0 +1,50 @@
+{
+  "base_commit": "8154fdea7606b0e4febfb3b5e8fb9fafdfa44722",
+  "method": "Static file hashing and embedded ZIP inspection only; no native execution",
+  "installer": {
+    "sha256": "0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0",
+    "matches_sha256_file": true,
+    "payload_files": 657
+  },
+  "payload_binaries": [
+    {
+      "path": "bin/sutram.exe",
+      "sha256": "4c05d5cbad99b32be1a38459f1b4b794e00f8b34f89a662ef1ca363c92ec1603",
+      "tree_path": "win/sutram.exe",
+      "byte_identical": true,
+      "embedded_version": 303
+    },
+    {
+      "path": "win/sutram.exe",
+      "sha256": "4c05d5cbad99b32be1a38459f1b4b794e00f8b34f89a662ef1ca363c92ec1603",
+      "tree_path": "win/sutram.exe",
+      "byte_identical": true,
+      "embedded_version": 303
+    },
+    {
+      "path": "bin/sutram-link.exe",
+      "sha256": "b6c722e9172440d1f352d2e01ba0564fc46a618e909c04f5c072103c666d910e",
+      "tree_path": "sutram-link.exe",
+      "byte_identical": true,
+      "embedded_version": null
+    },
+    {
+      "path": "sutram-ide-gui.exe",
+      "sha256": "829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051",
+      "tree_path": "sutram-ide-gui.exe",
+      "byte_identical": true,
+      "embedded_version": null
+    }
+  ],
+  "manifest": {
+    "lines": 656,
+    "missing": [],
+    "mismatched": [],
+    "unmanifested": []
+  },
+  "source_lock": {
+    "pins": 25,
+    "mismatched": []
+  },
+  "native_checks": "NOT RUN - no toolchain used; read-side review"
+}
