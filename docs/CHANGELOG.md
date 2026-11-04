@@ -1,4 +1,18 @@
-> **The 20 newest entries.** Older ones, from "v440" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v284" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v304 (Claude, R129) - a `kosh` parameter can grow, and the caller sees it
+
+- **`kosh_kship` onto a `kosh` parameter compiles, and the growth is the caller's** - the parameter holds the
+  descriptor (v302), as an alias does. Up to v303 it was refused with `kosh-tarke kosh_push asamarthitam`, a
+  message that gave neither the current name nor the reason; the refusal dated from T18, when a parameter held
+  the elements' address. Measured: 10 pushes through `jod(kk, i)` give `kosh_gan(kk)` 10; 9,000,000 through a
+  parameter, past a region move, all seen; a block's `kosh` grown by a `prakriya` in 100 blocks.
+  `examples/121` (which pinned the refusal, "until Sutram gains a descriptor ABI") now prints 1.
+- **What it rules out, `E_KOSH_VIBHAG`:** a slice of a `kosh` given to a `prakriya` that may grow a `kosh` (it, or
+  one it calls - worked out for the whole program to a fixpoint), or given beside an argument that has a call in
+  it. A slice holds the elements' address as they were. No program in the tree does either.
+- `docs/reports/HOW-DEFECTS-WERE-FOUND.md`: reading and testing found different defects; neither alone was enough.
+  Gate `R127 descriptor` +5 checks.
 
 ## v303 (Claude, R128) - three descriptor defects ChatGPT R203 found by reading: fixed
 
@@ -292,18 +306,3 @@
   so returning would turn `E_KOSH_MANDAPA` into a crash or a silent read, and in the tree it would return nothing
   (the three programs with a `kosh` in a block all read 0 KB).
 - A program without `parimita` compiles to the same bytes as on v284 (the guard).
-
-## v284 (Claude, R101A - the owner's Option A) - on Linux every `kosh` has a region of its own and never moves
-
-- **Owner's decision (2 November): Option A.** On Linux ELF a `kosh` is made in its own `mmap` reservation (64 MB
-  of address space, `MAP_NORESERVE` - only touched pages count) and grows in place inside it; capacity still
-  doubles. It moves only past 8,388,603 elements, once, on the old path. Not under `--fail-alloc`, not in the
-  guard-page build, not on Windows (PE unchanged).
-- **What it fixes:** `vitti a = k` stays one name however `k` grows (example 288 now prints `a[0]=99 k[0]=99` /
-  `a[0]=7 k[0]=7`); a growing `kosh` leaves no copies behind (100,000 pushes past an allocation: 1.8 MB -> 0.8 MB).
-- **What it costs, measured:** one page (4 KB) at least per used `kosh` and an `mmap` per `kosh` made: a loop making
-  100,000 small `kosh`s goes from 100 MB / 0.05 s to 400 MB / 0.45 s. The tree's 86 `kosh` programs: none uses
-  more memory (one 78 -> 70 MB).
-- **Not done:** the block giving its `kosh` regions back (it would break the exact `E_KOSH_MANDAPA` check - see the
-  hand-back), and Windows regions (`VirtualAlloc` reserve/commit in the PE runtime).
-- Gate `R101 memory`: 6 checks (in-place cost, 9,000,000 pushes past the region).

@@ -1,5 +1,20 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v284 (Claude, R101A - the owner's Option A) - on Linux every `kosh` has a region of its own and never moves
+
+- **Owner's decision (2 November): Option A.** On Linux ELF a `kosh` is made in its own `mmap` reservation (64 MB
+  of address space, `MAP_NORESERVE` - only touched pages count) and grows in place inside it; capacity still
+  doubles. It moves only past 8,388,603 elements, once, on the old path. Not under `--fail-alloc`, not in the
+  guard-page build, not on Windows (PE unchanged).
+- **What it fixes:** `vitti a = k` stays one name however `k` grows (example 288 now prints `a[0]=99 k[0]=99` /
+  `a[0]=7 k[0]=7`); a growing `kosh` leaves no copies behind (100,000 pushes past an allocation: 1.8 MB -> 0.8 MB).
+- **What it costs, measured:** one page (4 KB) at least per used `kosh` and an `mmap` per `kosh` made: a loop making
+  100,000 small `kosh`s goes from 100 MB / 0.05 s to 400 MB / 0.45 s. The tree's 86 `kosh` programs: none uses
+  more memory (one 78 -> 70 MB).
+- **Not done:** the block giving its `kosh` regions back (it would break the exact `E_KOSH_MANDAPA` check - see the
+  hand-back), and Windows regions (`VirtualAlloc` reserve/commit in the PE runtime).
+- Gate `R101 memory`: 6 checks (in-place cost, 9,000,000 pushes past the region).
+
 ## v440 - CORRECTION 3, the final one: it WAS a hang, and my own `head -8` faked the count
 
 ### The truth, counted by lines rather than truncated

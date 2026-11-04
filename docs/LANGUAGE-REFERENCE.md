@@ -994,6 +994,33 @@ a[0]=7 k[0]=7
   `f(k[1:4])` - as before. A foreign function's `ptr` parameter receives the elements' address too, valid until
   the `kosh` next grows.
 
+### A `kosh` parameter can grow (v304, R129)
+
+**A `prakriya` may `kosh_kship` onto its `kosh` parameter, and the caller sees the growth:**
+
+```
+prakriya jod(kosh k, v) {
+    kosh_kship(k, v)
+    nivartanam kosh_gan(k)
+}
+mukhya() {
+    kosh kk[1]
+    chakra i = 1 tak 10 {
+        jod(kk, i)
+    }
+    likha(kosh_gan(kk))        # 10
+}
+```
+
+Up to v303 this was refused (`kosh-tarke kosh_push asamarthitam`): before v302 a parameter held the elements'
+address, which a growth could move, leaving the caller on the old ones. From v302 every name of a `kosh` - a
+parameter too - holds its descriptor, so the growth is the caller's, as it is an alias's.
+
+**One thing it rules out: a slice of a `kosh` given to a `prakriya` that may grow a `kosh`** (it, or a `prakriya`
+it calls, runs `kosh_kship`), or given beside another argument that has a call in it. A slice holds the
+elements' address as they were when it was made; a growth would leave it behind. Both are `E_KOSH_VIBHAG`. Give
+such a `prakriya` the `kosh` itself; give a slice to one that only reads.
+
 ### A name keeps one kind (v301, R126) — `E_VITTI_PRAKAR`, `E_KOSH_DVARA`
 
 **Inside a `prakriya` (or `mukhya`), a name keeps the kind its first binding gave it:** a `kosh`, a `kosh dasham`,

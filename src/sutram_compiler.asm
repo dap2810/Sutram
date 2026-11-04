@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v303) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v304) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -612,6 +612,10 @@ r54_builtin_arity_table:
     r126_nl db 10, 0
     r127_paren db "(...)", 0
     r127_tern db "?:", 0
+    r129_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: prakriya '", 0
+    r129_vb_grow db "' koshan vardhayitum shaknoti - kosh-vibhagah tasyai na diyate (vriddhau tasya mulyani anyatra gacchanti)", 10, 0
+    r129_vb_call db "' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)", 10, 0
+    r129_vb_hint db "Sanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat", 10, 0
     r127_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh '", 0
     r127_vb_txt db "' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti", 10
     db "Sanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)", 10, 0
@@ -1516,6 +1520,8 @@ section .bss
     r126_kdec   resq 256          ; R126: and the names it declares kosh (name, marker) pairs
     r126_kdec_n resq 1
     r126_cur_fn resq 1            ; R126: the func_defs index being generated, -1 for mukhya
+    r129_may    resb FUNC_DEFS_CAP ; R129: 1 if the prakriya may run kosh_kship (itself or a callee)
+    r129_done   resq 1
     kosh_param_vars resq KOSH_PARAM_VAR_CAP ; T18: kosh parameters (growth cannot replace caller ptr)
     kosh_param_var_cnt resq 1
     float_kosh_vars resq KOSH_VAR_CAP ; T18: kosh dasham element-type names in current scope
@@ -18911,6 +18917,7 @@ gen_stmt:
     ret
 .r33_gs_sutram:
     ; [AST_FUNCALL][name_ptr][arg_count][arg1..arg6]
+    call r129_check_call      ; R129: a kosh-made slice not beside a growth
     mov rdi, [rbx+8]          ; R25: a phal-prakriya only under prasar
     call r25_check_call
     ; Evaluate arguments and load them into the Sutram user-function registers:
@@ -21398,6 +21405,7 @@ gen_expr:
     ret
 
 .ge_funcall:
+    call r129_check_call              ; R129: a kosh-made slice not beside a growth
     mov rdi, rbx                      ; R108: a block kosh only to a prakriya that does not keep it
     call r108_check_call
     cmp qword [rel r32_ffi_count], 0  ; R32/R33: a declared foreign function,
@@ -22284,13 +22292,10 @@ gen_expr:
     call is_kosh_var
     test rax, rax
     jz .ge_call_koshpush_bad
-    ; Parameters are pointer-by-value views. A grow operation could replace the
-    ; callee's pointer without updating the caller, so kosh_push is rejected on
-    ; parameters until a deliberate reference ABI is introduced.
-    mov rdi, r13
-    call is_kosh_param_var
-    test rax, rax
-    jnz .ge_call_koshpush_param_bad
+    ; R129: a kosh parameter may grow. Up to v301 a parameter was the elements' address, and a growth
+    ; that moved them left the caller on the old ones, so this was refused; from v302 every name of a
+    ; kosh - a parameter too - holds its descriptor, so the caller sees the growth as an alias does.
+    ; (What a growth could leave behind is a slice of the same kosh: r129_check_call refuses that.)
     ; Evaluate value first, converting to the kosh element type, then preserve it
     ; on the generated runtime stack while capacity/growth is handled.
     mov rdi, [rbx+32]
@@ -28285,6 +28290,259 @@ r127_check_slice_value:
     pop rax
     R126_REST
 .r:
+    ret
+
+; R129: a kosh parameter may now grow (see .ge_call_koshpush). A slice made from a kosh holds the elements'
+; address at the moment it is made, so it must not travel with something that can grow that kosh first:
+;   - a call to a prakriya that may grow a kosh it is given (r129_may_grow: it, or a prakriya it calls,
+;     runs kosh_kship), with a kosh-made slice as one of its vibhag arguments; or
+;   - a kosh-made slice argument beside another argument that has a call in it (it could run first).
+; r129_check_call(rbx = AST_FUNCALL): refuse those (E_KOSH_VIBHAG). Every register but rax preserved.
+r129_check_call:
+    R126_SAVE
+    push rbx
+    push r12
+    push r13
+    push r14
+    mov rdi, [rbx+8]
+    call r23_call_is_indirect
+    test rax, rax
+    jnz .out
+    mov rdi, [rbx+8]
+    call rfx3_fn_index
+    cmp rax, -1
+    je .out
+    mov r14, rax                       ; the callee
+    xor r12, r12
+.arg:
+    cmp r12, [rbx+16]
+    jae .out
+    cmp r12, 6
+    jae .out
+    mov rdi, [rbx+8]
+    mov rsi, r12
+    call func_param_type
+    cmp rax, PARAM_VIBHAG
+    jne .next
+    mov rdi, [rbx+24+r12*8]
+    call r129_is_kosh_slice
+    test eax, eax
+    jz .next
+    mov rdi, r14
+    call r129_may_grow
+    test eax, eax
+    jnz .bad_grow
+    xor r13, r13                       ; any other argument with a call in it?
+.other:
+    cmp r13, [rbx+16]
+    jae .next
+    cmp r13, 6
+    jae .next
+    cmp r13, r12
+    je .onext
+    mov rdi, [rbx+24+r13*8]
+    call r128_has_call
+    test eax, eax
+    jnz .bad_call
+.onext:
+    inc r13
+    jmp .other
+.next:
+    inc r12
+    jmp .arg
+.bad_grow:
+    lea rdx, [rel r129_vb_grow]
+    jmp .bad
+.bad_call:
+    lea rdx, [rel r129_vb_call]
+.bad:
+    push rdx
+    lea rdi, [rel r129_vb_hdr]
+    call print_str_z
+    mov rdi, [rbx+8]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    lea rdi, [rel r129_vb_hint]
+    jmp capacity_fail
+.out:
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    R126_REST
+    ret
+
+; r129_is_kosh_slice(rdi = an argument) -> eax = 1 if it is a slice of a kosh (k[lo:hi]) or a whole kosh
+; (which a vibhag parameter receives as k[:]).
+r129_is_kosh_slice:
+    push rdi
+    xor eax, eax
+    test rdi, rdi
+    jz .r
+    cmp qword [rdi], AST_SLICE
+    je .base
+    cmp qword [rdi], AST_VAR
+    jne .r
+.base:
+    mov rdi, [rdi+8]
+    call is_kosh_var
+    test rax, rax
+    setnz al
+    movzx eax, al
+.r:
+    pop rdi
+    ret
+
+; r129_may_grow(rdi = func_defs index) -> eax = 1 if the prakriya, or one it calls (transitively), runs
+; kosh_kship / kosh_yuj on anything. Worked out once for the whole program, to a fixpoint (so recursion
+; and cycles are sound), on rfx2's walk stack.
+r129_may_grow:
+    push rcx
+    push rdi
+    cmp qword [rel r129_done], 0
+    jne .have
+    call r129_fixpoint
+.have:
+    pop rdi
+    lea rcx, [rel r129_may]
+    movzx eax, byte [rcx+rdi]
+    pop rcx
+    ret
+
+r129_fixpoint:
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov qword [rel r129_done], 1
+    lea rdi, [rel r129_may]
+    xor eax, eax
+    mov ecx, FUNC_DEFS_CAP
+    rep stosb
+.pass:
+    xor r14d, r14d                     ; changed
+    xor r12, r12
+.fn:
+    cmp r12, [rel func_def_cnt]
+    jae .pend
+    lea rax, [rel r129_may]
+    cmp byte [rax+r12], 0
+    jne .fnext
+    lea rax, [rel func_defs]
+    mov r13, [rax+r12*8]
+    call .scan                         ; eax = 1: grows, directly or by a call to one that may
+    test eax, eax
+    jz .fnext
+    lea rcx, [rel r129_may]
+    mov byte [rcx+r12], 1
+    mov r14d, 1
+.fnext:
+    inc r12
+    jmp .fn
+.pend:
+    test r14d, r14d
+    jnz .pass
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    ret
+.scan:                                 ; r13 = funcdef
+    lea rdi, [rel rfx2_seen]
+    xor eax, eax
+    mov ecx, AST_HEAP_CAP / 64
+    rep stosb
+    xor r15, r15
+    mov rdi, [r13+24]
+    call rfx2_push
+.walk:
+    test r15, r15
+    jz .no
+    dec r15
+    lea rax, [rel rfx2_stack]
+    mov rbx, [rax+r15*8]
+    lea rax, [rel ast_heap]
+    cmp rbx, rax
+    jb .walk
+    cmp rbx, [rel ast_ptr]
+    jae .walk
+    mov rcx, rbx
+    sub rcx, rax
+    test ecx, 7
+    jnz .walk
+    shr rcx, 3
+    mov rdx, rcx
+    shr rdx, 3
+    and ecx, 7
+    lea rax, [rel rfx2_seen]
+    movzx r8d, byte [rax+rdx]
+    bt r8d, ecx
+    jc .walk
+    bts r8d, ecx
+    mov [rax+rdx], r8b
+    mov rax, [rbx]
+    test rax, rax
+    jz .walk
+    cmp rax, 128
+    ja .walk
+    cmp rax, AST_NUM
+    je .walk
+    cmp rax, AST_FLOAT
+    je .walk
+    cmp rax, AST_STR
+    je .walk
+    cmp rax, AST_VAR
+    je .walk
+    cmp rax, AST_FUNCDEF
+    je .walk
+    cmp rax, AST_BLOCK
+    je .blk
+    cmp rax, AST_CALL
+    jne .notcall
+    cmp qword [rbx+8], BN_KOSHPUSH
+    je .yes
+    jmp .gen
+.notcall:
+    cmp rax, AST_FUNCALL
+    jne .gen
+    push rbx
+    mov rdi, [rbx+8]
+    call rfx3_fn_index
+    pop rbx
+    cmp rax, -1
+    je .gen
+    lea rcx, [rel r129_may]
+    cmp byte [rcx+rax], 0
+    jne .yes
+.gen:
+    mov r9d, 8
+.gl:
+    cmp r9d, 72
+    jae .walk
+    mov rdi, [rbx+r9]
+    call rfx2_push
+    add r9d, 8
+    jmp .gl
+.blk:
+    mov r10, [rbx+8]
+    cmp r10, BLOCK_STMT_CAP
+    ja .walk
+    xor r9, r9
+.bl:
+    cmp r9, r10
+    jae .walk
+    mov rdi, [rbx+16+r9*8]
+    call rfx2_push
+    inc r9
+    jmp .bl
+.yes:
+    mov eax, 1
+    ret
+.no:
+    xor eax, eax
     ret
 
 ; r126_check_decl(rbx = AST_DECL): the declaration's kind against the name's.

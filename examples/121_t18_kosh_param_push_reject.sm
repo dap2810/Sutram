@@ -1,5 +1,7 @@
 # kosh_kship may reallocate and replace the pointer; by-value parameters therefore
 # reject it until Sutram deliberately gains a reference/descriptor ABI.
+# R129 (v304): it has one - a kosh is a descriptor (v302), and a parameter holds it, so the growth
+# here is the caller's: this prints 1 (it was refused: kosh-tarke kosh_push asamarthitam).
 prakriya yuj_ek(kosh dasham a) {
     kosh_kship(a, 1.0)
     nivartanam kosh_gan(a)

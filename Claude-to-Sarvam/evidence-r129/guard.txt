@@ -1,0 +1,11 @@
+# R129 guard: main 8154fde (v303) -> this tree (v304)
+## Linux elf
+DIFFER       examples/121_t18_kosh_param_push_reject.sm (source changed) old rc=1 new rc=0
+source files whose text changed: 1
+737 programs: 583 byte-identical, 153 refused identically, 1 DIFFER, 0 new
+## Linux pe
+DIFFER       examples/121_t18_kosh_param_push_reject.sm (source changed) old rc=1 new rc=0
+source files whose text changed: 1
+737 programs: 583 byte-identical, 153 refused identically, 1 DIFFER, 0 new
+examples/121 (v303 refused): v304 ELF prints 1 exit 0; PE under Wine prints 1
+## The Windows compiler (v304 sutram.exe) under Wine, every program: = Linux PE in 584, refused by both 153, 0 differ

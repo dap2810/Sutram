@@ -74,6 +74,18 @@ RUNS = [  # (what, program, compile flags, address limit in KB or 0, stdout, exi
     ('parimana() counts a region kosh (R203 F3; v302 counted the clobbered r11)', 'mukhya() {\n    kosh k[1]\n'
      '    vitti z = nirmmita(8)\n    chakra i = 1 tak 20000 {\n        kosh_kship(k, i)\n    }\n    likha(parimana())\n'
      '}\n', [], 0, '294976\n', 0, False),
+    # R129: a kosh parameter may grow; the caller sees it
+    ('a kosh parameter grown by a prakriya: the caller sees it (R129; v303 refused it)',
+     'prakriya jod(kosh k, v) {\n    kosh_kship(k, v)\n    nivartanam kosh_gan(k)\n}\nmukhya() {\n    kosh kk[1]\n'
+     '    vitti a = kk\n    chakra i = 1 tak 10 {\n        jod(kk, i)\n    }\n    likha(kosh_gan(kk))\n    likha(a[9])\n}\n',
+     [], 0, '10\n10\n', 0, True),
+    ('a kosh parameter grown past a region move (R129)', 'prakriya jod(kosh k, n) {\n    chakra i = 1 tak n {\n'
+     '        kosh_kship(k, i)\n    }\n    nivartanam 0\n}\nmukhya() {\n    kosh kk[1]\n    vitti z = nirmmita(8)\n'
+     '    jod(kk, 9000000)\n    likha(kosh_gan(kk))\n    likha(kk[8999999])\n}\n', [], 0, '9000000\n9000000\n', 0, True),
+    ('a block kosh grown by a prakriya, 100 blocks (R129)', 'prakriya jod(kosh k, v) {\n    kosh_kship(k, v)\n'
+     '    nivartanam 0\n}\nmukhya() {\n    vitti t = 0\n    chakra j = 1 tak 100 {\n        mandapa {\n'
+     '            kosh kk[1]\n            chakra i = 1 tak 50 {\n                jod(kk, i)\n            }\n'
+     '            t = t + kk[49]\n        }\n    }\n    likha(t)\n}\n', [], 0, '5000\n', 0, False),
 ]
 
 
@@ -113,6 +125,20 @@ def main():
                 got = (r.stdout + r.stderr).decode('latin-1').replace('\r', '')
                 check(c.returncode == 0 and got == want and r.returncode == wexit,
                       f'{what} (PE, Wine): {got!r} exit {r.returncode}')
+        # R129: a kosh-made slice beside a growth is refused
+        for what, src in (('a kosh slice to a prakriya that may grow a kosh',
+                           'prakriya g(kosh k) {\n    kosh_kship(k, 1)\n    nivartanam 0\n}\nprakriya f(kosh k, vibhag s) {\n'
+                           '    g(k)\n    nivartanam s[0]\n}\nmukhya() {\n    kosh kk[1]\n    kosh_kship(kk, 5)\n'
+                           '    likha(f(kk, kk[0:1]))\n}\n'),
+                          ('a kosh slice beside an argument with a call',
+                           'prakriya f(vibhag s, x) {\n    nivartanam s[0] + x\n}\nmukhya() {\n    kosh kk[1]\n'
+                           '    kosh_kship(kk, 5)\n    likha(f(kk[0:1], kosh_kship(kk, 6)))\n}\n')):
+            open(p, 'w').write(src)
+            if os.path.exists(exe):
+                os.remove(exe)
+            c = subprocess.run([COMPILER, p, exe], capture_output=True, text=True, cwd=d)
+            check(c.returncode == 1 and 'E_KOSH_VIBHAG' in c.stdout + c.stderr and not os.path.exists(exe),
+                  f'{what} is refused (E_KOSH_VIBHAG), no output (R129)')
         # a slice of a kosh kept in a name
         open(p, 'w').write('mukhya() {\n    kosh k[2]\n    kosh_kship(k, 1)\n    vitti s = k[0:1]\n    likha(s[0])\n}\n')
         if os.path.exists(exe):
