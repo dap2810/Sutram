@@ -7,7 +7,7 @@
 - **The guard, origin/main (v297) → v298, 725 programs** (`evidence-r121/guard.txt`):
   - **Linux ELF and Linux PE: 579 byte-identical, 143 refused identically, 3 DIFFER, 0 new.** The 3 are exactly the programs that call the two builtins: `examples/322`, `323` (whose text changed) and `tests/r54_check/raw_valid.sm`.
   - **Run old and new:** ELF the same output and exit for all 3. PE under Wine: **322/323 crashed on v297 (exit 5, a garbage byte) and print their golden on v298**; `raw_valid` the same.
-  - **The Windows compiler under Wine: running; its line follows in the next commit.**
+  - **The Windows compiler under Wine: 579 byte-identical, 143 refused identically, the same 3 DIFFER, 0 new; its 1164 outputs are byte-identical to the Linux PE outputs.**
   - **The first run was discarded:** I had skipped the run-time check in `--object` mode, and the R28/R29 gates caught 322 compiled as an object no longer matching the direct build. Now a root object emits exactly what a direct compile does; only a module object (no `mukhya`) skips it. Rebuilt, everything rerun.
 - **R118's Windows-compiler-under-Wine line is filled in its own hand-back** (it finished during this round).
 
