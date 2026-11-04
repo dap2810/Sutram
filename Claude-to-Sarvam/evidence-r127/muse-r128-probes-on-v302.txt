@@ -1,0 +1,8 @@
+r128_ws2_global_call.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'make_kosh(...)' vaishvika-vittau na sthapyate
+r128_ws2_global_inbounds.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' vaishvika-vittau na sthapyate
+r128_ws2_global_koshcell.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'inner' koshthe, kshetre athava smritau na likhyate
+r128_ws2_global_malacell.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' koshthe, kshetre athava smritau na likhyate
+r128_ws2_global_ternary.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: '?:' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - tat
+r128_ws2_mala_after_kosh.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' vaishvika-vittau na sthapyate
+r128_ws2_mala_then_kosh.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' vaishvika-vittau na sthapyate
+r128_ws2_twofuncs.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' vaishvika-vittau na sthapyate

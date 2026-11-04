@@ -132,3 +132,16 @@ Plus the new growth routine and the Windows runtime's `munmap`. **R82's grow-hea
 - **Steps 4, 5 and 7:** listed and priced, not built. Step 5 is a language decision; the other two are not defects of a single-version program.
 - **Native Windows:** NOT RUN; Wine is the proxy.
 - **Not touched:** `backups/`, `Windows-to-Sarvam/`, the frozen packs (new messages are default-pack strings), `MEMORY-DECISION.md`, `Muse-to-Sarvam/` (its programs copied into `examples/`, not changed).
+
+## Afterword - Muse R128 and ChatGPT R202 landed while I built (read after the commit)
+
+- **Muse R128:** checked my global door from outside, with eight attempts to get round it. **All eight are still refused on v302** (`evidence-r127/muse-r128-probes-on-v302.txt`).
+  - Muse's one nit - a call result shown as `kosh ''` - is already fixed in v302: `kosh 'make_kosh(...)' vaishvika-vittau na sthapyate`, and `?:` now reads `'?:'`.
+- **ChatGPT R202's contract matches what was built:**
+  - aliases follow the descriptor;
+  - growth is published only after the copy, and a failure leaves the old state;
+  - replaced arena buffers are retained and counted, not reused;
+  - a block's `kosh` still cannot escape (R107-R109 unchanged);
+  - the FFI pointer is a borrow until the next growth;
+  - and *"neither [failure] follows from merely adding the descriptor while retaining the old allocator"* - **which is why the per-`kosh` region was removed in the same change**, not later.
+- **R202's 24-byte payload is 32 here,** for the region size (WS2).
