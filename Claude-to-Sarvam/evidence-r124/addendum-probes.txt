@@ -1,0 +1,60 @@
+# R124-01: the alias doors on v300 (Linux ELF)
+
+== r125_ws1_vitti_kosh_alias.sm
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 41)
+    vitti a = k
+    a[0] = 99
+    likha(k[0])
+    likha("\n")
+    likha(a[0])
+    likha("\n")
+}
+-- compiled and run:
+99
+
+99
+
+
+== r125_ws1_mala_holds_kosh.sm
+yoj mala
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 41)
+    vitti m = mala_nava(4)
+    m[0] = k
+    vitti p = m[0]
+    p[0] = 99
+    likha(k[0])
+    likha("\n")
+}
+-- compiled and run:
+99
+
+
+== tracked.sm
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 41)
+    vitti a = k
+    kosh_kship(a, 7)
+    likha(kosh_gan(k))
+    likha(kosh_gan(a))
+}
+-- compiled and run:
+2
+2
+
+== m.sm
+yoj mala
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 41)
+    vitti m = mala_nava(4)
+    m[0] = k
+    vitti p = m[0]
+    likha(kosh_gan(p))
+}
+-- compiled and run:
+Sutram truti: kosh prakriya hetu kosh-vitti avashyak
