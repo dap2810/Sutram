@@ -1,0 +1,26 @@
+[
+    {
+        "test":  22,
+        "result":  "PASS",
+        "output":  "Installed IDE window opened",
+        "screenshot":  "test22-open.png"
+    },
+    {
+        "test":  23,
+        "output":  "namaste",
+        "screenshot":  "test23.png",
+        "result":  "OBSERVED"
+    },
+    {
+        "test":  24,
+        "output":  "Sutram truti [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati\r\n[karyakramah asamanya-rupena samaptah]\r\n",
+        "screenshot":  "test24.png",
+        "result":  "OBSERVED"
+    },
+    {
+        "test":  21,
+        "output":  "नमस्ते",
+        "screenshot":  "test21.png",
+        "result":  "OBSERVED"
+    }
+]

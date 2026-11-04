@@ -1,0 +1,5 @@
+yoj sankhyiki
+mukhya() {
+    kosh a[2]
+    likha(sankhya_bindu(a, a))
+}

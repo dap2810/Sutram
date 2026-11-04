@@ -1,0 +1,4 @@
+yoj ganit
+mukhya() {
+    likha(dvigun(9223372036854775807))
+}

@@ -1,0 +1,17 @@
+Sutram IDE, every example: NO-EXPECTATION=16 IDE sutram-ide-gui.exe 7dd8e73b22e936fa20e7eb00e53f59da6820e99daa92d2ed9eab71e6ed82c633 compiler win\sutram.exe ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e Windows 10.0.26200.0  PowerShell 5.1.26100.9711 opened: ide-open.png 
+NO-EXPECTATION r67\bengali_native                       executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r67\punjabi_native                       executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\hindi                                executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\kannada                              executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\marathi                              executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\odia                                 executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\pairs\all_registers                  executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\pairs\no_pairs                       executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\pairs\nonmatching                    executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\tamil                                executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\telugu                               executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\associativity                        executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\boundary_bad                         executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\boundary_good                        executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\conversion                           executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\evaluation_order                     executed through IDE; no golden available, inspect captured output

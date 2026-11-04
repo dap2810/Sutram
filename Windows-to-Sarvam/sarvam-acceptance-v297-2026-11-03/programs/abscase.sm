@@ -1,0 +1,4 @@
+yoj ganit
+mukhya() {
+    likha(nirapeksh_mulya(-9223372036854775808))
+}

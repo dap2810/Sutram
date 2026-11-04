@@ -1,0 +1,498 @@
+{
+  "windows": "Windows-11-10.0.26200-SP0",
+  "console": "Windows PowerShell 5.1 launcher; Python subprocess capture (developer harness only)",
+  "compiler": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+  "sha256": "ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e",
+  "rows": [
+    {
+      "test": 1,
+      "title": "installer runs",
+      "result": "NOT-RUN",
+      "notes": "Direct compiler route; install/uninstall and fresh desktop CMD PATH acceptance not performed."
+    },
+    {
+      "test": 2,
+      "title": "compiler version after install",
+      "result": "PASS",
+      "run": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "Sutram 1.0 (v297) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+        "stderr": "",
+        "seconds": 0.010649799951352179
+      }
+    },
+    {
+      "test": 3,
+      "title": "compiler is on PATH",
+      "result": "NOT-RUN",
+      "notes": "Direct compiler route; install/uninstall and fresh desktop CMD PATH acceptance not performed."
+    },
+    {
+      "test": 4,
+      "title": "uninstall",
+      "result": "NOT-RUN",
+      "notes": "Direct compiler route; install/uninstall and fresh desktop CMD PATH acceptance not performed."
+    },
+    {
+      "test": 5,
+      "title": "hello world",
+      "result": "PASS",
+      "source": "hello.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 98 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.010762999998405576
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.exe"
+        ],
+        "exit": 0,
+        "stdout": "namaste",
+        "stderr": "",
+        "seconds": 0.05161500000394881
+      }
+    },
+    {
+      "test": 6,
+      "title": "compile a missing file",
+      "result": "PASS",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\does_not_exist.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\missing.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti: nivesh patra aprapt\n",
+        "stderr": "",
+        "seconds": 0.010004899930208921
+      }
+    },
+    {
+      "test": 7,
+      "title": "string equality and inequality",
+      "result": "PASS",
+      "source": "str1.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 554 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.01779419998638332
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.exe"
+        ],
+        "exit": 0,
+        "stdout": "eq: 1\nne: 1\n",
+        "stderr": "",
+        "seconds": 0.02657129999715835
+      }
+    },
+    {
+      "test": 8,
+      "title": "string ordering",
+      "result": "PASS",
+      "source": "str2.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 548 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.011518600047565997
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.exe"
+        ],
+        "exit": 0,
+        "stdout": "lt: 1\ngt: 0\n",
+        "stderr": "",
+        "seconds": 0.025981599930673838
+      }
+    },
+    {
+      "test": 9,
+      "title": "string concatenation",
+      "result": "PASS",
+      "source": "str3.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 116 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.012132999952882528
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.exe"
+        ],
+        "exit": 0,
+        "stdout": "abcd",
+        "stderr": "",
+        "seconds": 0.02533249999396503
+      }
+    },
+    {
+      "test": 10,
+      "title": "`likha` with three arguments",
+      "result": "PASS",
+      "source": "likha3.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 376 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.011267099995166063
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.exe"
+        ],
+        "exit": 0,
+        "stdout": "5 7\n",
+        "stderr": "",
+        "seconds": 0.024897299939766526
+      }
+    },
+    {
+      "test": 11,
+      "title": "the new `kosh` names",
+      "result": "PASS",
+      "source": "kosh1.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 1154 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.011457100044935942
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.exe"
+        ],
+        "exit": 0,
+        "stdout": "gan=2\nhri=20\nrikt=0\n",
+        "stderr": "",
+        "seconds": 0.02667930000461638
+      }
+    },
+    {
+      "test": 12,
+      "title": "old `kosh` names still work",
+      "result": "PASS",
+      "source": "kosh2.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 463 baait sankalit\n",
+        "stderr": "Sutram suchana: 'kosh_push' purana nama - 'kosh_kship' likhatu\nSutram suchana: 'kosh_len' purana nama - 'kosh_gan' likhatu\n",
+        "seconds": 0.012151099974289536
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.exe"
+        ],
+        "exit": 0,
+        "stdout": "1\n",
+        "stderr": "",
+        "seconds": 0.024854599963873625
+      }
+    },
+    {
+      "test": 13,
+      "title": "division by zero",
+      "result": "PASS",
+      "source": "divzero.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 543 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.011253200005739927
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati\n",
+        "stderr": "",
+        "seconds": 0.0252283998997882
+      }
+    },
+    {
+      "test": 14,
+      "title": "decimal loop bound",
+      "result": "PASS",
+      "source": "loopbound.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\loopbound.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\loopbound.exe"
+        ],
+        "exit": 1,
+        "stdout": "loopbound.sm:2:22: Sutram truti [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati\n      chakra i = 0 tak 3.0 {\n                       ^\nSanket: chakra i = 0 tak 3 likhyatam; dashamaya yavat upayujyatam\n",
+        "stderr": "",
+        "seconds": 0.011917199939489365
+      }
+    },
+    {
+      "test": 15,
+      "title": "integer overflow refusal",
+      "result": "PASS",
+      "source": "overflow.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 7340 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.01599710003938526
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.exe"
+        ],
+        "exit": 1,
+        "stdout": "",
+        "stderr": "Sutram truti [E_ATIPRAVAH]: dvigun: dvigunitam phalam purnanka-seemam atikramati; n -4611686018427387904 tah 4611686018427387903 paryantam bhavet.\n",
+        "seconds": 0.036855399957858026
+      }
+    },
+    {
+      "test": 16,
+      "title": "the same function on legitimate input",
+      "result": "PASS",
+      "source": "ok.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 7335 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.013291800045408309
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.exe"
+        ],
+        "exit": 0,
+        "stdout": "10\n",
+        "stderr": "",
+        "seconds": 0.0456214000005275
+      }
+    },
+    {
+      "test": 17,
+      "title": "a different refusal code",
+      "result": "PASS",
+      "source": "abscase.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 7340 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.014587300014682114
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.exe"
+        ],
+        "exit": 1,
+        "stdout": "",
+        "stderr": "Sutram truti [E_PHALA_SEEMA]: nirapeksh_mulya: nirapeksha-mulyam 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.\n",
+        "seconds": 0.03930389997549355
+      }
+    },
+    {
+      "test": 18,
+      "title": "memory reporting",
+      "result": "FAIL",
+      "source": "mem1.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 635 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.011080900090746582
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.exe"
+        ],
+        "exit": 0,
+        "stdout": "start=0\nin=0\nafter=0\n",
+        "stderr": "",
+        "seconds": 0.025333099998533726
+      }
+    },
+    {
+      "test": 19,
+      "title": "memory budget refuses",
+      "result": "FAIL",
+      "source": "mem2.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 354 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.011750999954529107
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.exe"
+        ],
+        "exit": 0,
+        "stdout": "200010000\n",
+        "stderr": "",
+        "seconds": 0.08389460004400462
+      }
+    },
+    {
+      "test": 20,
+      "title": "withdrawn function",
+      "result": "PASS",
+      "source": "withdrawn.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\withdrawn.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\withdrawn.exe"
+        ],
+        "exit": 1,
+        "stdout": "withdrawn.sm:4:11: Sutram truti [E_PRATYAHRITA]: sankhya_bindu (sankhya_dot) pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate\n      likha(sankhya_bindu(a, a))\n            ^\nSanket: dvayoh kosh dasham bindu-gunanaya: yoj sankhyiki, bindu_gunan(a, b) - laghutara dirghata eva pathyate\n",
+        "stderr": "",
+        "seconds": 0.013253399985842407
+      }
+    },
+    {
+      "test": 21,
+      "title": "Devanagari in output",
+      "result": "PASS",
+      "source": "deva.sm",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.sm",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 109 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.017114500049501657
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.exe"
+        ],
+        "exit": 0,
+        "stdout": "नमस्ते",
+        "stderr": "",
+        "seconds": 0.023615100071765482
+      },
+      "notes": "Captured UTF-8 is correct; IDE screenshot visually confirms Devanagari. CMD font rendering not tested.",
+      "gui": {
+        "test": 21,
+        "output": "नमस्ते",
+        "screenshot": "test21.png",
+        "result": "OBSERVED"
+      }
+    },
+    {
+      "test": 22,
+      "title": "the IDE opens",
+      "result": "PASS",
+      "notes": "Installed IDE launched directly; Start Menu shortcut not exercised.",
+      "gui": {
+        "test": 22,
+        "result": "PASS",
+        "output": "Installed IDE window opened",
+        "screenshot": "test22-open.png"
+      }
+    },
+    {
+      "test": 23,
+      "title": "the IDE compiles and runs",
+      "result": "PASS",
+      "notes": "Exact supplied hello program run in installed IDE.",
+      "gui": {
+        "test": 23,
+        "output": "namaste",
+        "screenshot": "test23.png",
+        "result": "OBSERVED"
+      }
+    },
+    {
+      "test": 24,
+      "title": "the IDE shows an error in Sanskrit",
+      "result": "UNEXPECTED",
+      "notes": "Correct Sanskrit error in Latin transliteration; this program emits no Devanagari. Separate test21 screenshot verifies Devanagari rendering in the IDE.",
+      "gui": {
+        "test": 24,
+        "output": "Sutram truti [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati\r\n[karyakramah asamanya-rupena samaptah]\r\n",
+        "screenshot": "test24.png",
+        "result": "OBSERVED"
+      }
+    }
+  ]
+}

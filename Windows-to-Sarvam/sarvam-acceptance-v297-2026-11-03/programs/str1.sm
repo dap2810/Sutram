@@ -1,0 +1,5 @@
+mukhya() {
+    vitti s = "ab"
+    likha("eq: ", s asti "ab")
+    likha("ne: ", s nasti "cd")
+}

@@ -1,0 +1,38 @@
+Sutram IDE, every example: MATCH=301  NOT-OPENED=1  NO-EXPECTATION=20  NO-INPUT-OK=6  DIFFER=7 IDE sutram-ide-gui.exe 7dd8e73b22e936fa20e7eb00e53f59da6820e99daa92d2ed9eab71e6ed82c633 compiler win\sutram.exe ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e Windows 10.0.26200.0  PowerShell 5.1.26100.9711 opened: ide-open.png 
+NOT-OPENED   105_block_nesting_capacity               the IDE refused to open it; title: 104_b10_nested_continue_patches.sm - Sutram sampadak
+NO-EXPECTATION 215_r12_wordfreq                         executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION 216_r12_expr                             executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION 217_r12_report                           executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION 219_sanskrit_kosh_aliases                executed through IDE; no golden available, inspect captured output
+NO-INPUT-OK  23_grahan_input                          finished at end of input: They are equal
+NO-INPUT-OK  24_guess_game                            finished at end of input: Guess the secret number (1-100): Input ended. Goodbye!
+DIFFER       245_r18_netsock                          line 1: expected [1] got [0]
+NO-INPUT-OK  26_calculator                            finished at end of input: Both are equal
+DIFFER       288_r86_kosh_alias_moves                 line 1: expected [a[0]=99 k[0]=99] got [a[0]=41 k[0]=99]
+DIFFER       303_r103_parimita_refuses                line 1: expected [Sutram truti [E_PARIMITA]: pankti 6 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)] got [not reached 499999500000]
+DIFFER       317_r107_parimana                        line 2: expected [after nirmmita(64) 64] got [after nirmmita(64) 0]
+DIFFER       318_r108_parimana_moves                  line 2: expected [a kosh of 1 48] got [a kosh of 1 0]
+DIFFER       322_r111_new_names                       line 9: expected [B42] got [Â42]
+DIFFER       323_r111_old_names                       line 9: expected [B42] got [Â42]
+NO-INPUT-OK  46_language_reference                    finished at end of input: hello
+NO-INPUT-OK  59_windows_grahan_runtime                finished at end of input: -1
+NO-INPUT-OK  number_game                              finished at end of input: Game over!
+NO-EXPECTATION r67\bengali_native                       executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r67\punjabi_native                       executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\hindi                                executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\kannada                              executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\marathi                              executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\odia                                 executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\pairs\all_registers                  executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\pairs\no_pairs                       executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\pairs\nonmatching                    executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\tamil                                executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r68\telugu                               executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\associativity                        executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\boundary_bad                         executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\boundary_good                        executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\conversion                           executed through IDE; no golden available, inspect captured output
+NO-EXPECTATION r71\evaluation_order                     executed through IDE; no golden available, inspect captured output
+
+PASS         a refused load, then Save, leaves the refused file untouched  (105_block_nesting_capacity (70422 bytes, a copy) is now 70422 bytes; title: 01_hello.sm - Sutram sampadak)
+PASS         an example asks before replacing unsaved work  (question shown: True; after Cancel the editor kept the text: True)

@@ -1,0 +1,178 @@
+[
+    {
+        "name":  "r67\\bengali_native",
+        "loaded":  "paste",
+        "language":  "bengali",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  113,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "পংক্তি 1   স্তম্ভ 1   |   ভাষা: বাংলা   |   অক্ষর: 252   |   সংরক্ষিত নয় *",
+        "output":  "15\n12.500000\n-7.250000\n123456789\n",
+        "screenshot":  "ide-r67_bengali_native.png"
+    },
+    {
+        "name":  "r67\\punjabi_native",
+        "loaded":  "paste",
+        "language":  "punjabi",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  65,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "ਪੰਕਤੀ 1   ਸਤੰਭ 1   |   ਭਾਸ਼ਾ: ਪੰਜਾਬੀ   |   ਅੱਖਰ: 242   |   ਨਹੀਂ ਸੰਭਾਲਿਆ *",
+        "output":  "15\n12.500000\n-7.250000\n123456789\n",
+        "screenshot":  "ide-r67_punjabi_native.png"
+    },
+    {
+        "name":  "r68\\hindi",
+        "loaded":  "paste",
+        "language":  "hindi",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  78,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "पंक्ति 1   स्तंभ 1   |   भाषा: हिन्दी   |   अक्षर: 141   |   नहीं सहेजा *",
+        "output":  "123456789\n2.500000\n",
+        "screenshot":  "ide-r68_hindi.png"
+    },
+    {
+        "name":  "r68\\kannada",
+        "loaded":  "paste",
+        "language":  "kannada",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  65,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "ಸಾಲು 1   ಸ್ತಂಭ 1   |   ಭಾಷೆ: ಕನ್ನಡ   |   ಅಕ್ಷರಗಳು: 153   |   ಉಳಿಸಿಲ್ಲ *",
+        "output":  "123456789\n2.500000\n",
+        "screenshot":  "ide-r68_kannada.png"
+    },
+    {
+        "name":  "r68\\marathi",
+        "loaded":  "paste",
+        "language":  "marathi",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  67,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "ओळ 1   स्तंभ 1   |   भाषा: मराठी   |   अक्षरे: 141   |   जतन नाही *",
+        "output":  "123456789\n2.500000\n",
+        "screenshot":  "ide-r68_marathi.png"
+    },
+    {
+        "name":  "r68\\odia",
+        "loaded":  "paste",
+        "language":  "odia",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  64,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "ଧାଡ଼ି 1   ସ୍ତମ୍ଭ 1   |   ଭାଷା: ଓଡ଼ିଆ   |   ଅକ୍ଷର: 150   |   ସଞ୍ଚିତ ନୁହେଁ *",
+        "output":  "123456789\n2.500000\n",
+        "screenshot":  "ide-r68_odia.png"
+    },
+    {
+        "name":  "r68\\pairs\\all_registers",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  66,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 478   |   asanchit *",
+        "output":  "73\n",
+        "screenshot":  "ide-r68_pairs_all_registers.png"
+    },
+    {
+        "name":  "r68\\pairs\\no_pairs",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  64,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 252   |   asanchit *",
+        "output":  "73\n",
+        "screenshot":  "ide-r68_pairs_no_pairs.png"
+    },
+    {
+        "name":  "r68\\pairs\\nonmatching",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  62,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 90   |   asanchit *",
+        "output":  "73\n",
+        "screenshot":  "ide-r68_pairs_nonmatching.png"
+    },
+    {
+        "name":  "r68\\tamil",
+        "loaded":  "paste",
+        "language":  "tamil",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  63,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "வரி 1   நெடுவரிசை 1   |   மொழி: தமிழ்   |   எழுத்துகள்: 159   |   சேமிக்கப்படவில்லை *",
+        "output":  "123456789\n2.500000\n",
+        "screenshot":  "ide-r68_tamil.png"
+    },
+    {
+        "name":  "r68\\telugu",
+        "loaded":  "paste",
+        "language":  "telugu",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  66,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "వరుస 1   నిలువు 1   |   భాష: తెలుగు   |   అక్షరాలు: 164   |   భద్రపరచలేదు *",
+        "output":  "123456789\n2.500000\n",
+        "screenshot":  "ide-r68_telugu.png"
+    },
+    {
+        "name":  "r71\\associativity",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  64,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 103   |   asanchit *",
+        "output":  "12\n5\n2\n8\n",
+        "screenshot":  "ide-r71_associativity.png"
+    },
+    {
+        "name":  "r71\\boundary_bad",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  75,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 72   |   asanchit *",
+        "output":  "",
+        "screenshot":  "ide-r71_boundary_bad.png"
+    },
+    {
+        "name":  "r71\\boundary_good",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  28,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 135   |   asanchit *",
+        "output":  "\nSutram truti: vyakaran dosh, pankti 5:9, shabd \u0027likha\u0027\n          likha(pad8c(buf, buf + 64))\n          ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n[sankalan asaphal]\n",
+        "screenshot":  "ide-r71_boundary_good.png"
+    },
+    {
+        "name":  "r71\\conversion",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  71,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 398   |   asanchit *",
+        "output":  "2\n-2\n2.500000\n",
+        "screenshot":  "ide-r71_conversion.png"
+    },
+    {
+        "name":  "r71\\evaluation_order",
+        "loaded":  "paste",
+        "language":  "auto",
+        "verdict":  "NO-EXPECTATION",
+        "ms":  69,
+        "detail":  "executed through IDE; no golden available, inspect captured output",
+        "status_line":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 327   |   asanchit *",
+        "output":  "7\n123\n123\n123\n",
+        "screenshot":  "ide-r71_evaluation_order.png"
+    }
+]
