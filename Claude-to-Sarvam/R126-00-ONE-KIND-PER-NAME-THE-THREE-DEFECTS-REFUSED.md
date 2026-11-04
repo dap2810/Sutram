@@ -1,6 +1,6 @@
 # R126-00 — v301: a name keeps one kind for its whole `prakriya`. The three defects share one cause and one fix; all three are refused at compile time, with a golden each. The tracking is sound for every way a `kosh` can move in the language except two, named below. No emitted byte changed and compiling is not measurably slower. WS3: yes - `vitti a = k` now knows enough to emit a descriptor access; that makes the descriptor one decision at about 17 emit sites, not a redesign.
 
-- **Commit on `main`:** see the commit line below this list (one commit; on top of ChatGPT R201 `0fd2530`).
+- **Commit on `main`:** `8d064f5` (one commit; rebased onto Muse R127 `df55c9d`, which landed while I built - see R126-01).
 - **Compiler: `Sutram 1.0 (v301) - sampurna sutra`** (was v300). Linux x86-64 cloud; PE run under Wine 64.
 - **`crash corpus: 227 cases + manifest, 0 failed`.** **Suite: `suite: NO-EXPECTATION=4  PASS=318  (322 run)`**, FAIL=0 (315 + the three new goldens).
 - **Gates (`sh tools/gates.sh`, Xvfb display, Linux): 66 PASS / 1 FAIL / 1 NOT-RUN** (FAIL: `installer version`, payload v243, as before; NOT-RUN: Windows execution) - 68 gates now, with **`R126 kinds` (55 checks with PE: 42 compile-time and ELF, 13 PE runs under Wine; 0 failed)**.

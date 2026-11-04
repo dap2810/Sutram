@@ -1,0 +1,20 @@
+r127_ws1_assign_kosh_mala.sm: REFUSED: Sutram truti [E_VITTI_PRAKAR]: 'a' kosh asti; sankhya (smriti-sthanam va) tasyam na sthapyate
+r127_ws1_assign_mala_kosh.sm: REFUSED: Sutram truti [E_VITTI_PRAKAR]: 'a' sankhya (smriti-sthanam va) asti; kosh tasyam na sthapyate
+r127_ws1_callresult.sm: compiles; runs: Sutram truti: mala ank seema atikram  exit=0
+r127_ws1_global.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' vaishvika-vittau na sthapyate
+r127_ws1_global_samefn.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' vaishvika-vittau na sthapyate
+r127_ws1_koshcell.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'inner' koshthe, kshetre athava smritau na likhyate
+r127_ws1_loop.sm: REFUSED: Sutram truti [E_VITTI_PRAKAR]: 'a' kosh asti; sankhya (smriti-sthanam va) tasyam na sthapyate
+r127_ws1_malacell.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'k' koshthe, kshetre athava smritau na likhyate
+r127_ws1_param.sm: compiles; runs: Sutram truti: mala ank seema atikram  exit=0
+r127_ws1_reassign.sm: REFUSED: Sutram truti [E_VITTI_PRAKAR]: 'a' kosh asti; sankhya (smriti-sthanam va) tasyam na sthapyate
+r127_ws1_redeclare.sm: REFUSED: r127_ws1_redeclare.sm:6:11: Sutram truti [E_DUPLICATE_NAME]: punah ghoshana 'a'
+r127_ws1_redeclare_rev.sm: REFUSED: r127_ws1_redeclare_rev.sm:6:11: Sutram truti [E_DUPLICATE_NAME]: punah ghoshana 'a'
+r127_ws1_scope_a.sm: REFUSED: r127_ws1_scope_a.sm:8:15: Sutram truti [E_DUPLICATE_NAME]: punah ghoshana 'a'
+r127_ws1_scope_b.sm: REFUSED: r127_ws1_scope_b.sm:8:15: Sutram truti [E_DUPLICATE_NAME]: punah ghoshana 'a'
+r127_ws1_ternary.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: 'kadachit kosh' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - ta
+r127_ws1_ternary_c0.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: 'kadachit kosh' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - ta
+r127_ws1_ternary_oob.sm: REFUSED: Sutram truti [E_KOSH_DVARA]: 'kadachit kosh' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - ta
+r127_ws1_vittiparam.sm: REFUSED: 
+r127_ws2_smallest.sm: compiles; runs: Sutram truti: mala ank seema atikram  exit=0
+r127_ws3_cliff.sm: compiles; runs: 41  99   exit=0
