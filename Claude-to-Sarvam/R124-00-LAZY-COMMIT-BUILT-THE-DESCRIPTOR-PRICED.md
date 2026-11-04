@@ -1,6 +1,6 @@
 # R124-00 — Windows lazy commit is built (v300): one `nirmmita` commits about 0 MB, not 1 GiB; Linux is unchanged byte for byte. The descriptor is priced: reads cost about the same, a `kosh` gets 40× cheaper to make, about 13 emit sites change, and yes - `R101A_REGION` can go to zero. Value semantics: viable, but it hides an O(n) copy in `=` and leaks it. Both closed answers: yes, with one refinement each.
 
-- **Commit on `main`:** `PENDING-SHA` (one commit; on top of your R124 files, `a4cc654`).
+- **Commit on `main`:** **`898a0e2`** (one commit; on top of your R124 files `a4cc654`, rebased onto Muse R125 `23f2843` and ChatGPT R199 `2ed1017`, which landed while I built).
 - **Compiler: `Sutram 1.0 (v300) - sampurna sutra`** (was v299). Linux x86-64 cloud; PE run under Wine 64.
 - **`crash corpus: 227 cases + manifest, 0 failed`.** **Suite: `suite: NO-EXPECTATION=4  PASS=315  (319 run)`**, FAIL=0.
 - **Gates (`sh tools/gates.sh`, Xvfb display, Linux): 65 PASS / 1 FAIL / 1 NOT-RUN** (FAIL: `installer version`, payload v243, as before; NOT-RUN: Windows execution) - 67 gates now, with **`R124 lazy commit` (7 checks, 0 failed)**.
