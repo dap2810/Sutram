@@ -1,0 +1,10 @@
+prakriya make_kosh() {
+    kosh k[4]
+    kosh_kship(k, 11)
+    nivartanam k
+}
+mukhya() {
+    vitti a = make_kosh()
+    likha(a[100])
+    likha("\n")
+}

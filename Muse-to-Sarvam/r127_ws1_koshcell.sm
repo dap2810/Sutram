@@ -1,0 +1,10 @@
+mukhya() {
+    kosh inner[4]
+    kosh_kship(inner, 11)
+    kosh outer[4]
+    kosh_kship(outer, 0)
+    outer[0] = inner
+    vitti a = outer[0]
+    likha(a[100])
+    likha("\n")
+}
