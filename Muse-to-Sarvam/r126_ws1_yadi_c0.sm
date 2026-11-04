@@ -1,0 +1,13 @@
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 11)
+    vitti p = nirmmita(16)
+    p[0] = 77
+    vitti a = k
+    vitti c = 0
+    yadi (c) {
+        a = p
+    }
+    likha(a[0])
+    likha("\n")
+}

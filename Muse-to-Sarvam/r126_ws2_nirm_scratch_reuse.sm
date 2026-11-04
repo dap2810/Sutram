@@ -1,0 +1,14 @@
+mukhya() {
+    vitti r = 0
+    mandapa {
+        vitti p = nirmmita(16)
+        p[0] = 41
+        r = p
+    }
+    mandapa {
+        vitti q = nirmmita(16)
+        q[0] = 99
+    }
+    likha(r[0])
+    likha("\n")
+}
