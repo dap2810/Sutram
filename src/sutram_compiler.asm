@@ -574,6 +574,11 @@ r54_builtin_arity_table:
     rfx2_msg_cap db "Sutram truti: vartani-vishleshana seema atikram (prakriyayam ati-bahavah vitti)", 10, 0
     rfx2_msg_nomem db "Sutram truti [E_VARTANI_SMRITI]: vartani-yojanaya smriti na labdha", 10
     rfx2_msg_nomem_len equ $ - rfx2_msg_nomem
+    wr3_msg_nomem db "Sutram truti [E_VARTANI_SMRITI]: vartani-rachane smriti na labdha", 10, 0
+    wr3_memory_hdr db ": Sutram truti [E_WINDOWS_SMRITI]: ", 0
+    wr3_query_txt db "Windows lakshye parimana smriti-gananam na samarthitam", 10, 0
+    wr3_budget_txt db "Windows lakshye mandapa parimita smriti-seema na samarthita", 10, 0
+    wr3_memory_hint db "Sanket: ayam prayogah Linux ELF lakshye eva samarthitah", 10, 0
     ; FIXALL (rec): runaway-recursion message (Sanskrit-only, outside the
     ; per-pack sandesh table). The message is embedded in the emitted
     ; program by the function-prologue guard; its length drives the guard's
@@ -8811,6 +8816,8 @@ r103_parse_budget:
     mov rdx, [rax+8]
     test rdx, rdx
     jle .bad
+    cmp qword [rel target_pe], 0
+    jne .wr3_unsupported
     push rdx
     call advance_tok                    ; 'parimita'
     call advance_tok                    ; N
@@ -8836,6 +8843,13 @@ r103_parse_budget:
     pop rbx
     pop rcx
     ret
+.wr3_unsupported:
+    call cur_tok
+    mov rdi, [rax+32]
+    lea rsi, [rel wr3_memory_hdr]
+    lea rdx, [rel wr3_budget_txt]
+    lea rcx, [rel wr3_memory_hint]
+    jmp r80_compile_error
 .bad:                                    ; at the token after `parimita`: file:line:col, the line, a caret
     mov rax, [rel token_idx]
     inc rax
@@ -17555,6 +17569,16 @@ parse_primary_inner:
     jmp .pp_paren
 .pp_builtin_valid:
     mov rbx, [rax+16]        ; builtin id
+    cmp rbx, BN_PARIMANA
+    jne .wr3_builtin_supported
+    cmp qword [rel target_pe], 0
+    je .wr3_builtin_supported
+    mov rdi, [rax+32]
+    lea rsi, [rel wr3_memory_hdr]
+    lea rdx, [rel wr3_query_txt]
+    lea rcx, [rel wr3_memory_hint]
+    jmp r80_compile_error
+.wr3_builtin_supported:
     call advance_tok          ; consume builtin name
     ; expect (
     call cur_tok
@@ -23574,6 +23598,11 @@ gen_expr:
     mov rcx, rfx2_v1_len
     call r23_emit_bytes
     call emit_nirmmita_from_rax
+    cmp r12, BN_VARTCAT
+    jne .vyoj_legacy_guard
+    call wr3_emit_string_alloc_guard
+    jmp .vyoj_copy
+.vyoj_legacy_guard:
     cmp qword [rel target_pe], 0   ; Linux: no memory is E_VARTANI_SMRITI, exit 1
     jne .vyoj_copy
     lea rsi, [rel rfx2_v2]
@@ -23763,103 +23792,8 @@ gen_expr:
     jmp .ge_call_done
 
 .ge_call_vartcat:
-    ; vartani_cat(dst, src) → strcat, returns dst
-    mov rax, [rbx+24]
-    call gen_expr
-    mov dil, 0x50           ; push rax (dst)
-    call emit_byte
-    mov rax, [rbx+32]
-    call gen_expr
-    ; pop rdi (dst) = 5F
-    mov dil, 0x5F
-    call emit_byte
-    ; mov rsi, rax (src) = 48 89 C6
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xC6
-    call emit_byte
-    ; mov r8, rdi (save dst) = 49 89 F8
-    mov dil, 0x49
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xF8
-    call emit_byte
-    ; cmp byte [rdi], 0 = 80 3F 00
-    mov dil, 0x80
-    call emit_byte
-    mov dil, 0x3F
-    call emit_byte
-    xor edi, edi
-    call emit_byte
-    ; je +5 = 74 05
-    mov dil, 0x74
-    call emit_byte
-    mov dil, 0x05
-    call emit_byte
-    ; inc rdi = 48 FF C7
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xC7
-    call emit_byte
-    ; jmp -10 = EB F6
-    mov dil, 0xEB
-    call emit_byte
-    mov dil, 0xF6
-    call emit_byte
-    ; movzx ecx, [rsi] = 0F B6 0E
-    mov dil, 0x0F
-    call emit_byte
-    mov dil, 0xB6
-    call emit_byte
-    mov dil, 0x0E
-    call emit_byte
-    ; mov [rdi], cl = 88 0F
-    mov dil, 0x88
-    call emit_byte
-    mov dil, 0x0F
-    call emit_byte
-    ; test ecx, ecx = 85 C9
-    mov dil, 0x85
-    call emit_byte
-    mov dil, 0xC9
-    call emit_byte
-    ; jz +8 = 74 08
-    mov dil, 0x74
-    call emit_byte
-    mov dil, 0x08
-    call emit_byte
-    ; inc rdi = 48 FF C7
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xC7
-    call emit_byte
-    ; inc rsi = 48 FF C6
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xC6
-    call emit_byte
-    ; jmp -17 = EB EF
-    mov dil, 0xEB
-    call emit_byte
-    mov dil, 0xEF
-    call emit_byte
-    ; mov rax, r8 (return dst) = 4C 89 C0
-    mov dil, 0x4C
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xC0
-    call emit_byte
-    jmp .ge_call_done
+    ; Return a fresh string; inputs (including literals) are never modified.
+    jmp .ge_call_vyoj
 
 .ge_call_vecadd:
     ; sankhya_yog(dst, src1, src2) — vaddps xmm0, xmm1, xmm2
@@ -24193,55 +24127,31 @@ gen_expr:
     jmp capacity_fail
 
 .ge_call_charfr:
-    ; char_from(code) → pointer to a char (writes code to a temp buffer)
-    ; Uses a static 1-byte buffer in BSS
+    ; Preserve the code, allocate two persistent bytes, then restore the code.
+    ; The result outlives subsequent calls and does not alias another result.
     mov rax, [rbx+24]
     call gen_expr
-    ; lea rdi, [rel char_buf] — we need the runtime address
-    ; But lea [rel] in generated code needs the address at link time
-    ; Instead: mov [rsp-1], al; lea rax, [rsp-1]
-    ; sub rsp, 16 = 48 83 EC 10
-    mov dil, 0x48
+    mov dil, 0x50                 ; push rax
     call emit_byte
-    mov dil, 0x83
+    mov dil, 0xB8                 ; mov eax,2
     call emit_byte
-    mov dil, 0xEC
+    mov edi, 2
+    call emit_u32
+    call emit_nirmmita_from_rax
+    call wr3_emit_string_alloc_guard
+    mov dil, 0x59                 ; pop rcx
     call emit_byte
-    mov dil, 0x10
+    mov dil, 0x88                 ; mov [rax],cl
     call emit_byte
-    ; mov [rsp], al = 88 04 24
-    mov dil, 0x88
+    mov dil, 0x08
     call emit_byte
-    mov dil, 0x04
+    mov dil, 0xC6                 ; mov byte [rax+1],0
     call emit_byte
-    mov dil, 0x24
-    call emit_byte
-    ; mov byte [rsp+1], 0 = C6 44 24 01 00
-    mov dil, 0xC6
-    call emit_byte
-    mov dil, 0x44
-    call emit_byte
-    mov dil, 0x24
+    mov dil, 0x40
     call emit_byte
     mov dil, 0x01
     call emit_byte
     xor edi, edi
-    call emit_byte
-    ; mov rax, rsp = 48 89 E0
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xE0
-    call emit_byte
-    ; add rsp, 8 (preserve the byte for return) = 48 83 C4 08
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x83
-    call emit_byte
-    mov dil, 0xC4
-    call emit_byte
-    mov dil, 0x08
     call emit_byte
     jmp .ge_call_done
 
@@ -26427,6 +26337,39 @@ gen_expr:
     mov dil, 0xF4
     call emit_byte
     pop rbx
+    ret
+
+; A string allocation returns 0 on failure. Refuse before storing into it.
+; Runtime RAX survives the success path; emit_syscall selects ELF or PE.
+wr3_emit_string_alloc_guard:
+    push r12
+    mov dil, 0x48             ; test rax,rax ; jnz success
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    lea rcx, [rel wr3_msg_nomem]
+    call r80_emit_likha_str
+    mov dil, 0xB8             ; exit(1)
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov rdi, r12
+    call r73_patch32
+    pop r12
     ret
 
 ; emit_nirmmita_from_rax

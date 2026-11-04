@@ -176,11 +176,11 @@ warning naming the new one** (§4b).
 | `smaran_pratilip` (was `smaran_cp`) | copy memory |
 | `vartani_aayam` | varna length |
 | `vartani_tul` | varna compare |
-| `vartani_sandhi` (was `vartani_cat`) | varna concatenate |
+| `vartani_sandhi` (was `vartani_cat`) | join two NUL-terminated strings into a new allocation; neither input changes |
 | `vartani_pratilip` | varna copy |
 | `akshar` | character code at an index |
 | `aksharank` | character code (note: index currently ignored) |
-| `anka_akshar` (was `char_from`) | character from a code |
+| `anka_akshar` (was `char_from`) | low byte of a code as a new, independently allocated NUL-terminated string |
 | `akshar_guru` (was `char_upper`) | uppercase a character |
 | `akshar_laghu` (was `char_lower`) | lowercase a character |
 | `sankhya_yog` | four 32-bit **float** lanes in raw memory, added: `sankhya_yog(dst, a, b)` (`addps`). No Sutram value holds 32-bit floats - `sankhya_bindu`, their dot-product sibling, is withdrawn (v295) |
@@ -190,6 +190,16 @@ warning naming the new one** (§4b).
 | `jala_bandh` (was `netbind`) | bind a socket |
 | `jala_shru` (was `netlisten`) | listen |
 | `jala_grah` (was `netaccept`) | accept a connection |
+
+**String-result lifetime (Windows round 3 review):** both `vartani_sandhi(a, b)` and
+`anka_akshar(n)` return independent persistent allocations through the ordinary allocator.
+The join requests `strlen(a) + strlen(b) + 1` bytes; character conversion requests two bytes.
+Allocator rounding still applies (16-byte arena alignment on Linux; a Windows allocation has
+OS page overhead). Results live for the program's lifetime, including when called in a `mandapa`.
+Neither function provides reclamation. Allocation failure reports `E_VARTANI_SMRITI` and exits 1.
+`vartani_sandhi` no longer mutates its first argument: callers must use its return value.
+The old names `vartani_cat` and `char_from` use the same implementations. Character conversion
+retains the low-byte behavior; it is not a Unicode code-point encoder.
 
 ### 4b. The vocabulary change (v292, R111): new names, old ones still accepted
 
@@ -1305,7 +1315,8 @@ a kosh of 1000 8272
   a `kosh`'s capacity counts whether or not every page has been touched. It is what the program asked for.
 - **Not counted:** a `nirmmita` that the arena could not hold (past 1 GiB it falls back to its own `mmap`).
 - **Cost:** a program without `parimana` compiles to the same bytes; with it, each `kosh` allocation and growth
-  adds one counter update. **Linux ELF only; in a Windows program it returns 0.**
+  adds one counter update. **Linux ELF only; Windows (PE) compilation refuses `parimana()` with
+  `E_WINDOWS_SMRITI`, rather than silently returning zero.**
 
 **One number, moving (`examples/318`):** `parimana()` is the arena and the `kosh` regions together, so it answers
 "how much am I holding" the same way for a program and for a test. A block's `nirmmita` comes back at its end; a
@@ -1349,8 +1360,9 @@ gives its memory back at its end (`examples/304`).
   still works.
 - **Cost:** a program without `parimita` compiles to the same bytes as before. In a budgeted block each
   `nirmmita` gains one compare per budget around it.
-- **Linux ELF only, as the block.** In a Windows program a `mandapa` releases nothing, and its budget is not
-  checked.
+- **Linux ELF only, as the block.** Windows (PE) compilation refuses `mandapa parimita N` with
+  `E_WINDOWS_SMRITI`, including blocks whose allocations would fit. An ordinary Windows `mandapa`
+  still releases nothing. Windows `kosh` growth/alias limitations in section 16 remain unchanged.
 
 **Measured (R103, `tools/peak_rss.py`, Linux):** 1,000,000 `nirmmita(64)` in one block -
 
