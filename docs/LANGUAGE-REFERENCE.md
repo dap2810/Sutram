@@ -990,6 +990,37 @@ used, and one `mmap` (about 4 microseconds) when a `kosh` is made. For the tree'
 once, before the loop, and `kosh_clear` it each pass (0 MB). A `kosh` that grows no longer leaves its old
 copies behind: grown to 100,000 past an allocation it used 1.8 MB, now 0.8 MB, the same as growing alone.
 
+### A name keeps one kind (v301, R126) — `E_VITTI_PRAKAR`, `E_KOSH_DVARA`
+
+**Inside a `prakriya` (or `mukhya`), a name keeps the kind its first binding gave it:** a `kosh`, a `kosh dasham`,
+a `mala`, a `vibhag`, or a number / raw address (`vitti n = 3`, `vitti p = nirmmita(64)`, an untyped parameter, a
+`chakra` counter). The compiler checks every `k[i]` by that kind - a `kosh` against its length at `[k-16]`, a
+`mala` against `[m-8]`, a raw address not at all - so a name that could hold two kinds would be checked wrongly
+on one of them. **Every later declaration or assignment of the name must give it the same kind:**
+
+```
+vitti a = k            # a is a kosh
+a = nirmmita(64)       # E_VITTI_PRAKAR: 'a' kosh asti; sankhya ... tasyam na sthapyate
+```
+
+- **The rule ignores control flow on purpose.** `vitti a = p` and then `yadi (x == 1) { a = k }` is refused even
+  if the branch never runs: no path decides a name's kind, so the kind is the same at every point of the
+  `prakriya`. A `vitti` declared with a number (`vitti w = 0`) is a number; declare it from a collection of the
+  kind it will hold (`vitti w = u`), or use another name. Two `prakriya` may use one name for two kinds.
+- **A `kosh` goes only where its kind goes with it:** by its own name (`vitti b = k`, `vitti b = (k)`, `b = k`,
+  chains of these), to a `kosh` parameter (`prakriya f(kosh k)`), as the first argument of a `kosh_*` builtin, and
+  back from a `prakriya` that returns a `kosh` parameter or a `kosh` it declares, **by its own name, on every
+  `nivartanam`** - then `vitti a = f(k)` makes `a` a `kosh` and `a[i]` is bounds-checked. Everything else would
+  turn it into a raw number and is **`E_KOSH_DVARA`**: a `kosh` stored in a `mala` cell, a field or a module
+  `vitti`; passed to an untyped parameter or through a function value; given to a raw builtin (`likha(k)`,
+  `pad8(k)`, `likh8(p, k)`, `kosh_kship(j, k)`); in `?:`; as a `siddhi` / `dosh` value; or returned by a second name or on only some paths.
+  `k + 0`, `k - 0` and `k * 1` are `E_KOSH_GANIT`, as `k + 8` is.
+- **Not covered:** a foreign function (`--ffi`, a `ptr` parameter) receives a `kosh` as its raw address, by
+  design; and a `prakriya` compiled in another object (`--object`, `--separate`) is assumed to return a number.
+
+Up to v300 the compiler marked a name only from a bare variable, never cleared the mark and did not see control
+flow: `examples/348`-`350` crashed (SIGSEGV) or read past a `kosh`'s length; they are refused now.
+
 ## 17. Function values, methods and slices (R23)
 
 The smallest working version of each; what is not done is listed at the end.

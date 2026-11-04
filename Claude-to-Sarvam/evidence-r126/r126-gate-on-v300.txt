@@ -1,0 +1,45 @@
+FAIL  refused, no output: t2: a kosh name given a raw buffer (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 981 baait sankalit\n'
+FAIL  refused, no output: t3: a raw name given a kosh in one branch (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 1069 baait sankalit\n'
+FAIL  refused, no output: t4: a mala name given a kosh (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 1001 baait sankalit\n'
+FAIL  refused, no output: the inverse: a kosh name given a mala (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 759 baait sankalit\n'
+FAIL  refused, no output: a number, then a kosh (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 784 baait sankalit\n'
+PASS  refused, no output: no initial value, then a kosh (already refused: a vitti needs a value) (E_MULYA_VINA)
+FAIL  refused, no output: a kosh given inside a loop that may not run (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 1086 baait sankalit\n'
+FAIL  refused, no output: a kosh, then a mala-kosh of the other element kind (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 634 baait sankalit\n'
+FAIL  refused, no output: two sibling blocks, two kinds (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 1118 baait sankalit\n'
+FAIL  refused, no output: an untyped parameter given a kosh (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 451 baait sankalit\n'
+FAIL  refused, no output: a chakra counter that is a kosh (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 700 baait sankalit\n'
+FAIL  refused, no output: t6: a kosh stored in a mala cell (E_KOSH_DVARA) -- got rc=0 'Siddh: 874 baait sankalit\n'
+FAIL  refused, no output: a kosh stored in a rachana field (E_KOSH_DVARA) -- got rc=0 'Siddh: 762 baait sankalit\n'
+FAIL  refused, no output: a kosh stored in a module vitti (E_KOSH_DVARA) -- got rc=0 'Siddh: 563 baait sankalit\n'
+FAIL  refused, no output: a kosh passed to an untyped parameter (E_KOSH_DVARA) -- got rc=0 'Siddh: 832 baait sankalit\n'
+FAIL  refused, no output: a kosh passed through a function value (E_KOSH_DVARA) -- got rc=0 'Siddh: 842 baait sankalit\n'
+FAIL  refused, no output: a kosh as pad8's address (E_KOSH_DVARA) -- got rc=0 'Siddh: 668 baait sankalit\n'
+FAIL  refused, no output: a kosh as likh8's value (E_KOSH_DVARA) -- got rc=0 'Siddh: 750 baait sankalit\n'
+FAIL  refused, no output: a kosh as kosh_kship's value (a kosh in a kosh) (E_KOSH_DVARA) -- got rc=0 'Siddh: 976 baait sankalit\n'
+FAIL  refused, no output: a kosh printed as a number (E_KOSH_DVARA) -- got rc=0 'Siddh: 662 baait sankalit\n'
+FAIL  refused, no output: a kosh in ?: (E_KOSH_DVARA) -- got rc=0 'Siddh: 723 baait sankalit\n'
+FAIL  refused, no output: t5: k + 0 (E_KOSH_GANIT) -- got rc=0 'Siddh: 685 baait sankalit\n'
+FAIL  refused, no output: k - 0 (E_KOSH_GANIT) -- got rc=0 'Siddh: 539 baait sankalit\n'
+FAIL  refused, no output: k * 1 (E_KOSH_GANIT) -- got rc=0 'Siddh: 539 baait sankalit\n'
+FAIL  refused, no output: a prakriya returning a second name of its kosh (E_KOSH_DVARA) -- got rc=0 'Siddh: 698 baait sankalit\n'
+FAIL  refused, no output: a prakriya that returns a kosh on one path only (E_KOSH_DVARA) -- got rc=0 'Siddh: 726 baait sankalit\n'
+FAIL  refused, no output: a kosh as a phal-prakriya's siddhi value (E_KOSH_DVARA) -- got rc=0 'Siddh: 989 baait sankalit\n'
+FAIL  refused, no output: a kosh as a dosh code (E_KOSH_DVARA) -- got rc=0 'Siddh: 863 baait sankalit\n'
+FAIL  refused, no output: a kosh-returning prakriya's result into a number (E_VITTI_PRAKAR) -- got rc=0 'Siddh: 714 baait sankalit\n'
+PASS  runs (ELF): vitti a = k: a is the kosh: '41\n2\n' exit 0
+PASS  runs (ELF): a kosh alias is bounds-checked: 'Sutram truti: mala ank seema atikram\n' exit 1
+PASS  runs (ELF): vitti a = (k), and a chain b = a: '41\n' exit 0
+PASS  runs (ELF): a = a and a = k again: the same kind: '5\n' exit 0
+FAIL  a prakriya returning its kosh parameter: the result is a checked kosh: did not compile: Sutram truti: kosh prakriya hetu kosh-vitti avashyak
+
+FAIL  a prakriya returning a kosh it declares: did not compile: Sutram truti: kosh prakriya hetu kosh-vitti avashyak
+
+PASS  runs (ELF): a chain of returns: g returns f(k), f returns k: '41\n' exit 0
+PASS  runs (ELF): a recursive prakriya returning its kosh: '41\n' exit 0
+PASS  runs (ELF): a kosh to a kosh parameter, a dasham kosh to a dasham one: '41\n2.500000\n' exit 0
+PASS  runs (ELF): a mala alias and a mala to an untyped parameter (unchanged): '6\n6\n' exit 0
+PASS  runs (ELF): a slice alias: '4\n' exit 0
+PASS  runs (ELF): a raw buffer reassigned raw, and a number reassigned: '4\n2\n' exit 0
+PASS  runs (ELF): two prakriyas, one name, two kinds (each prakriya its own): '41\n5\n' exit 0
+r126 kinds: 42 checks, 30 failed

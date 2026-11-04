@@ -3,7 +3,7 @@ mukhya() {
     mala a[10]
     a[0] = 1
     vitti s = a[3:7]
-    vitti t = 0
-    t = s
+    vitti t = a[0:1]               # R126: t is a vibhag from its declaration (it was vitti t = 0,
+    t = s                          # a number that then held a slice - refused from v301, E_VITTI_PRAKAR)
     likha(t[5])
 }

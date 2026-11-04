@@ -1,0 +1,12 @@
+prakriya f(kosh k) {
+    nivartanam siddhi(k)
+}
+mukhya() {
+    kosh k[8]
+    kosh_kship(k, 41)
+    yadi dosh (q = f(k)) {
+        likha(0)
+    } anya {
+        likha(q[5])
+    }
+}

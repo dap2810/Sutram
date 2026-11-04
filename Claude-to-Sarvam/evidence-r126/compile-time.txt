@@ -1,0 +1,13 @@
+# compile time, v300 vs v301 (Linux, this container)
+715 programs, each compiled once per run, 3 runs alternating
+v300 1.19s 1.32s 1.21s min 1.19s
+new 1.30s 1.36s 1.35s min 1.30s
+v300 largest program examples/105_block_nesting_capacity.sm 20 compiles 0.054s
+new largest program examples/105_block_nesting_capacity.sm 20 compiles 0.045s
+# stress: 11 prakriya x 240 statements, 100 names each, 58 KB (programs/compile_stress.sm); 20 compiles
+sutram_compiler 20x: 478 ms
+sc_new 20x: 493 ms
+sutram_compiler 20x: 478 ms
+sc_new 20x: 446 ms
+sutram_compiler 20x: 473 ms
+sc_new 20x: 481 ms

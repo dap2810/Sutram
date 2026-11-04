@@ -3,7 +3,8 @@ mukhya() {
     kosh dasham v[4]
     kosh_kship(v, 1.5)
     kosh_kship(v, 2.5)
-    vitti w = 0
+    kosh dasham u[1]               # R126: w is a kosh dasham from its declaration (it was vitti w = 0,
+    vitti w = u                    # a number that then held a kosh - refused from v301, E_VITTI_PRAKAR)
     w = v
     w[5] = 9.9
     likha(999)

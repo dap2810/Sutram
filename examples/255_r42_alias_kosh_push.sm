@@ -3,7 +3,8 @@
 mukhya()
     kosh v[4]
     kosh_kship(v, 3)
-    vitti w = 0
+    kosh u[1]                      # R126: w is a kosh from its declaration (it was vitti w = 0,
+    vitti w = u                    # a number that then held a kosh - refused from v301, E_VITTI_PRAKAR)
     w = v
     kosh_kship(w, 4)
     likha(kosh_gan(v))

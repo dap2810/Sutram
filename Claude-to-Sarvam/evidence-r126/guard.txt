@@ -1,0 +1,39 @@
+# R126 guard: main 0fd2530 (v300) -> this tree (v301), tools/guard_pair.py, every example and test program
+## Linux elf
+DIFFER       examples/252_r38_alias_kosh_oob.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/253_r38_alias_slice_oob.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/255_r42_alias_kosh_push.sm (source changed) old rc=0 new rc=0
+NEW          examples/348_r126_kosh_then_raw.sm
+NEW          examples/349_r126_kosh_in_one_branch.sm
+NEW          examples/350_r126_mala_then_kosh.sm
+source files whose text changed: 3
+728 programs: 579 byte-identical, 143 refused identically, 3 DIFFER, 3 new
+## Linux pe
+DIFFER       examples/252_r38_alias_kosh_oob.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/253_r38_alias_slice_oob.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/255_r42_alias_kosh_push.sm (source changed) old rc=0 new rc=0
+NEW          examples/348_r126_kosh_then_raw.sm
+NEW          examples/349_r126_kosh_in_one_branch.sm
+NEW          examples/350_r126_mala_then_kosh.sm
+source files whose text changed: 3
+728 programs: 579 byte-identical, 143 refused identically, 3 DIFFER, 3 new
+## The Windows compiler under Wine (PE)
+DIFFER       examples/252_r38_alias_kosh_oob.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/253_r38_alias_slice_oob.sm (source changed) old rc=0 new rc=0
+DIFFER       examples/255_r42_alias_kosh_push.sm (source changed) old rc=0 new rc=0
+NEW          examples/348_r126_kosh_then_raw.sm
+NEW          examples/349_r126_kosh_in_one_branch.sm
+NEW          examples/350_r126_mala_then_kosh.sm
+source files whose text changed: 3
+728 programs: 579 byte-identical, 143 refused identically, 3 DIFFER, 3 new
+## the three changed sources, compiled from today's text by v300 and v301
+252_r38_alias_kosh_oob: today's source, v300 = v301 bytes
+252_r38_alias_kosh_oob.exe: today's source, v300 = v301 bytes
+253_r38_alias_slice_oob: today's source, v300 = v301 bytes
+253_r38_alias_slice_oob.exe: today's source, v300 = v301 bytes
+255_r42_alias_kosh_push: today's source, v300 = v301 bytes
+255_r42_alias_kosh_push.exe: today's source, v300 = v301 bytes
+## the 143 refusals, message text old vs new
+143 refused programs, 0 with a different message
+## Wine compiler vs Linux compiler PE outputs
+1164 Wine-compiler outputs compared with the Linux compiler's PE outputs, 0 differ

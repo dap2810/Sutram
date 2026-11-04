@@ -1,0 +1,11 @@
+# R126 (R125's t2): a name that held a kosh is given a raw nirmmita buffer. v300 kept the name marked
+# kosh, so a[0] read a kosh length at [a-16] - below the buffer - and the program died with SIGSEGV.
+# From v301 a name keeps the kind its first binding gave it: the second assignment is refused.
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 41)
+    vitti a = k
+    a = nirmmita(64)
+    likh(a, 7)
+    likha(a[0])
+}

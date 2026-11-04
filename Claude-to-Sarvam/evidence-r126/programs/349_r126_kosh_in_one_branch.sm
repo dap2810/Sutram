@@ -1,0 +1,15 @@
+# R126 (R125's t3): a raw buffer's name is given a kosh inside a yadi. v300 marked the name kosh on every
+# path after it, so with the branch not taken a[0] read a kosh length below the raw buffer: SIGSEGV on
+# input 0 (and 41 on input 1). From v301 the assignment is refused - no path decides a name's kind.
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 41)
+    vitti p = nirmmita(64)
+    likh(p, 7)
+    vitti a = p
+    vitti x = grahan()
+    yadi (x == 1) {
+        a = k
+    }
+    likha(a[0])
+}

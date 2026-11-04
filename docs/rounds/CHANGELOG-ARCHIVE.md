@@ -1,5 +1,21 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v283 (Claude, R96) - a `chakra` with a decimal end is refused instead of running for ever
+
+- **Why it hung (disassembly):** the loop is whole-number code - `inc` the counter, `cmp` with the end, `jle`. A
+  decimal end was compared as its IEEE-754 bits: 3.0 is `0x4008000000000000` = 4613937818241073152, so
+  `chakra i = 0 tak 3.0` counted toward 4.6 x 10^18. A decimal start counted from its bits (0.5 printed
+  4602678819172646912, ...); a `dasham` variable as the counter got whole-number bits (printed 0.000000).
+- **`E_CHAKRA_DASHAM`** (`r96_check_for_float`): a decimal start or end (written or a `dasham` variable), or a
+  `dasham` counter, is refused when compiled, with a caret under a written decimal. Decimals step with `yavat`.
+- **The installer gate also checks the tree's binaries** (R95 WS1): `sutram_compiler`, `sutram.exe`,
+  `win/sutram.exe` must carry the source's version.
+- **Goldens:** 300, 301 (refusals), 302 (decimals with `yavat`).
+- **v438 below says it was an off-by-one, not a hang. Measured again on v282: it does not stop.**
+  `chakra i = 0 tak 3.0` printed 6,625,058 lines in 3 seconds (ELF), 16-17 million in 10 s (PE, from both the
+  Linux and the Windows compiler), still counting; it would end near 4.6 x 10^18. `0 1 2 3 4` is what its first
+  five lines look like (evidence-r96/v282-remeasured.txt).
+
 ## v438 - CORRECTION to v437: a decimal loop bound is an off-by-one, not a hang
 
 ### What I got wrong

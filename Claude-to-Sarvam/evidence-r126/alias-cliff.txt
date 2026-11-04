@@ -1,0 +1,5 @@
+# v301 alias cliff (Linux ELF): kosh k[1]; vitti a = k; N pushes; k[0] = 99; likha(kosh_gan(k), a[0])
+pushes 4194304: 4194304 99 
+pushes 4194305: 4194305 1 
+pushes 8388603: 8388603 1 
+pushes 8388604: 8388604 1 

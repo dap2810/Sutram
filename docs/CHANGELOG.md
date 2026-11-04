@@ -1,4 +1,20 @@
-> **The 20 newest entries.** Older ones, from "v438" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v283" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v301 (Claude, R126) - a name keeps one kind; the three defects R125 found are refused
+
+- **A name keeps the kind its first binding gave it, for the whole `prakriya`:** `kosh`, `kosh dasham`, `mala`,
+  `vibhag`, or a number / raw address. Every later declaration or assignment of that name must give the same
+  kind, or it is **`E_VITTI_PRAKAR`** - in any branch, any loop, any block. Up to v300 the compiler marked a name
+  from a bare variable only, never cleared the mark and did not see control flow, which gave **two SIGSEGVs and a
+  silent read past a `kosh`'s length** (R125's t2, t3, t4; now `examples/348`, `349`, `350`, refused).
+- **A `kosh` leaves its tracking only by doors that keep the kind:** its own name (`vitti b = k`, `(k)`), a `kosh`
+  parameter, a `kosh` builtin's first argument, or a `prakriya` that returns a `kosh` parameter or a `kosh` it
+  declares, by its own name, on every `nivartanam` (its caller's name is then marked and bounds-checked). A `kosh`
+  into a cell, a field, a module `vitti`, an untyped parameter, a raw builtin (`likha`, `pad8`, `likh8`, a value
+  of `kosh_kship`), `?:` or a `siddhi` / `dosh` value is **`E_KOSH_DVARA`**; `k + 0`, `k - 0`, `k * 1` are `E_KOSH_GANIT` like `k + 8`.
+- **No emitted byte changed:** every program v300 compiles, v301 compiles to the same bytes (ELF and PE); three
+  R38/R42 examples that wrote `vitti w = 0` and then `w = v` now declare `w` from a collection of `v`'s kind.
+  Gate `R126 kinds` (53 checks, ELF and PE under Wine).
 
 ## v300 (Claude, R124) - Windows commits what a program touches, not what it reserves
 
@@ -314,19 +330,3 @@
 **Refusing a `dasham` loop bound is still right. But the reason is not "it runs one extra time" - it is "the iteration count is wrong and unpredictable, and it produces no error".**
 
 **And the test matrix must include fractional bounds.** `3.0` was the one value that looked like an off-by-one.
-
-## v283 (Claude, R96) - a `chakra` with a decimal end is refused instead of running for ever
-
-- **Why it hung (disassembly):** the loop is whole-number code - `inc` the counter, `cmp` with the end, `jle`. A
-  decimal end was compared as its IEEE-754 bits: 3.0 is `0x4008000000000000` = 4613937818241073152, so
-  `chakra i = 0 tak 3.0` counted toward 4.6 x 10^18. A decimal start counted from its bits (0.5 printed
-  4602678819172646912, ...); a `dasham` variable as the counter got whole-number bits (printed 0.000000).
-- **`E_CHAKRA_DASHAM`** (`r96_check_for_float`): a decimal start or end (written or a `dasham` variable), or a
-  `dasham` counter, is refused when compiled, with a caret under a written decimal. Decimals step with `yavat`.
-- **The installer gate also checks the tree's binaries** (R95 WS1): `sutram_compiler`, `sutram.exe`,
-  `win/sutram.exe` must carry the source's version.
-- **Goldens:** 300, 301 (refusals), 302 (decimals with `yavat`).
-- **v438 below says it was an off-by-one, not a hang. Measured again on v282: it does not stop.**
-  `chakra i = 0 tak 3.0` printed 6,625,058 lines in 3 seconds (ELF), 16-17 million in 10 s (PE, from both the
-  Linux and the Windows compiler), still counting; it would end near 4.6 x 10^18. `0 1 2 3 4` is what its first
-  five lines look like (evidence-r96/v282-remeasured.txt).

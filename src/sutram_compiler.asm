@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v300) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v301) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -558,6 +558,30 @@ r54_builtin_arity_table:
     r108_msg_keep db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
     db "Sanket: prakriya kosh-tarkam k[i], kosh_gan(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
     r108_msg_full db "Sutram truti: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
+    ; R126: a name keeps one kind for its whole prakriya (kosh, kosh dasham, mala, vibhag, or a number /
+    ; raw address); a kosh leaves only by its own name, to a kosh parameter or a kosh builtin.
+    r126_k_hdr db "Sutram truti [E_VITTI_PRAKAR]: '", 0
+    r126_k_mid db "' ", 0
+    r126_k_is db " asti; ", 0
+    r126_k_end db " tasyam na sthapyate", 10
+    db "Sanket: ekasya vitteh prakarah sthirah - kosh, mala, vibhag athava sankhya; bhinnaya prakaraya anyam vittim ghoshaya", 10, 0
+    r126_kn1 db "vibhag", 0
+    r126_kn2 db "kosh dasham", 0
+    r126_kn3 db "kosh", 0
+    r126_kn4 db "mala", 0
+    r126_kn5 db "sankhya (smriti-sthanam va)", 0
+    r126_kn6 db "kadachit kosh", 0
+    r126_d_hdr db "Sutram truti [E_KOSH_DVARA]: kosh '", 0
+    r126_d_cell db "' koshthe, kshetre athava smritau na likhyate", 10, 0
+    r126_d_glob db "' vaishvika-vittau na sthapyate", 10, 0
+    r126_d_par db "' asankhyita-tarke na preshyate - prakriya: ", 0
+    r126_d_raw db "' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...)", 10, 0
+    r126_d_ret db "Sutram truti [E_KOSH_DVARA]: prakriya '", 0
+    r126_d_ret2 db "' kosh nivartayati - kevalam kosh-tarkam athava atraiva ghoshitam kosh, tasya namna, pratyeka-nivartane", 10, 0
+    r126_d_mix db "Sutram truti [E_KOSH_DVARA]: '", 0
+    r126_d_mix2 db "' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - tat na sthapyate", 10, 0
+    r126_d_hint db "Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena", 10, 0
+    r126_nl db 10, 0
     rfx_bc_hdr_mala db ": Sutram truti [E_MALA_GANIT]: ", 0
     r113_hdr db ": Sutram truti [E_RACHANA_GANIT]: ", 0
     ; R116: nishedha(cond, msg)'s message write: rsi = msg, rdx = its length, edi = 2, eax = 1
@@ -1451,6 +1475,12 @@ section .bss
     array_var_cnt resq 1
     kosh_vars   resq KOSH_VAR_CAP ; T18 growable-array names in current generated-function scope
     kosh_var_cnt resq 1
+    r126_rk_cache resb FUNC_DEFS_CAP ; R126: what each prakriya returns (0: not yet worked out)
+    r126_rets   resq 256          ; R126: one prakriya's nivartanam expressions, while working it out
+    r126_ret_n  resq 1
+    r126_kdec   resq 256          ; R126: and the names it declares kosh (name, marker) pairs
+    r126_kdec_n resq 1
+    r126_cur_fn resq 1            ; R126: the func_defs index being generated, -1 for mukhya
     kosh_param_vars resq KOSH_PARAM_VAR_CAP ; T18: kosh parameters (growth cannot replace caller ptr)
     kosh_param_var_cnt resq 1
     float_kosh_vars resq KOSH_VAR_CAP ; T18: kosh dasham element-type names in current scope
@@ -17936,6 +17966,7 @@ gen_code:
     mov qword [rel blob_call_cnt], 0
     mov qword [rel in_function], 0
     mov qword [rel current_func_float], 0
+    mov qword [rel r126_cur_fn], -1   ; R126: mukhya
 
     ; Get function body (block node)
     mov rax, [rel root_node]
@@ -18302,6 +18333,7 @@ gen_all_functions:
     call rfx3_global               ; R105: (already done unless there is no mukhya)
     mov rdi, [rbx+8]               ; R105: which of this prakriya's names hold strings; its
     call rfx3_fn_index             ; parameters hold what every caller passes
+    mov [rel r126_cur_fn], rax     ; R126: the prakriya being generated
     mov rdi, rax
     mov esi, 1
     call rfx3_seed
@@ -18986,6 +19018,7 @@ gen_stmt:
 .gs_decl:
     ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
     call r87_check_float_literal  ; R87: vitti f = 3.5 - a fraction into a whole-number vitti
+    call r126_check_decl          ; R126: the name keeps one kind
     mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice
     call r23_mark_slice_decl
     ; R38: vitti b = a (a is a mala/kosh) marks b the same kind, so b[i] is
@@ -19281,6 +19314,7 @@ gen_stmt:
     call os_exit
 
 .gs_assign:
+    call r126_check_assign      ; R126: the name keeps one kind; a kosh into no cell / global
     ; FIXALL (b/c): track whether the assigned scalar now holds a string.
     ; Runs before every fast path (they all return from here) and before the
     ; generic path; global targets and index/field targets are skipped by
@@ -20055,6 +20089,10 @@ gen_stmt:
     ; forward-exit + backward-unconditional branch pair from hot loops.
     mov rdi, rbx                   ; R96: a chakra counts whole numbers
     call r96_check_for_float
+    mov rdi, [rbx+8]               ; R126: the chakra variable is a number
+    mov esi, 5
+    xor edx, edx
+    call r126_bind
     push r12
     push r13
     push r14
@@ -20746,6 +20784,7 @@ gen_stmt:
 
 .gs_return:
     call r25_check_plain_return   ; R25: in a phal-prakriya every prati is siddhi / dosh
+    call r126_check_return        ; R126: a kosh is returned as the callers were told
     mov rax, [rbx+8]         ; return expr
     test rax, rax
     jz .gs_ret_none
@@ -21635,6 +21674,7 @@ gen_expr:
     ; rbx = AST_CALL node: [8][builtin_id][arg_count][arg1][arg2]
     ; gen_expr emits CODE that leaves the value in rax at runtime.
     ; We emit push/pop to save args between evaluations.
+    call r126_check_builtin  ; R126: a kosh only as a kosh builtin's first argument
     push r12
     mov r12, [rbx+8]         ; builtin id
     cmp r12, BN_VYOJ         ; R105: string + string
@@ -26382,6 +26422,7 @@ gen_expr:
 .ge_writemem:
     ; [AST_WRITEMEM][arg_count][arg1_addr_node][arg2_val_node]
     ; Evaluate address -> rax, push, evaluate value -> rax, pop rdi, store
+    call r126_check_writemem ; R126: a kosh is no raw address
     push r12
     ; Evaluate arg1 (address)
     mov rax, [rbx+16]        ; address node
@@ -27050,6 +27091,9 @@ gen_typed_call_arg:
     cmp r14, PARAM_KOSH
     jae .gtca_kosh
     ; Scalar path: infer source scalar type then apply int<->dasham conversion.
+    mov rdi, rbx             ; R126: a kosh only to a kosh parameter
+    mov rsi, r13
+    call r126_check_untyped_arg
     mov rdi, r13
     call expr_is_float
     push rax
@@ -27534,6 +27578,826 @@ r38_mark_alias:
     pop r13
     pop r12
     pop rbx
+    ret
+
+; ---------------------------------------------------------------- R126
+; A name keeps ONE kind for its whole prakriya: vibhag (1), kosh dasham (2), kosh (3), mala (4) or a number /
+; raw address (5). The kind is the one its first binding gives it - a declaration, a parameter, a chakra
+; variable - and every later binding (declaration or assignment) must give the same kind, or it is
+; E_VITTI_PRAKAR. That is flow-insensitive on purpose: no assignment anywhere in the function may change a
+; kind, so the kind is the same at every program point, whatever path reaches it. And a kosh leaves its
+; tracking only through doors that keep the kind: its own name (vitti b = k), a kosh parameter, a kosh
+; builtin's first argument, or a prakriya that returns a kosh parameter or a kosh it declares, by its own
+; name, on every nivartanam. Anything else that would turn a kosh into a raw number - a cell, a global, an
+; untyped parameter, a raw builtin, ?: - is E_KOSH_DVARA. Every helper preserves every register but rax.
+
+%macro R126_SAVE 0
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r11
+%endmacro
+%macro R126_REST 0
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+%endmacro
+
+; r126_is_local(rdi = name) -> rax = 1 if the name has a slot in this function's var_table.
+r126_is_local:
+    R126_SAVE
+    push rbx
+    push r12
+    mov rbx, rdi
+    xor r12, r12
+.l:
+    cmp r12, [rel var_cnt]
+    jae .no
+    mov rcx, r12
+    shl rcx, 4
+    lea rdx, [rel var_table]
+    mov rdi, [rdx+rcx]
+    mov rsi, rbx
+    call strcmp
+    test rax, rax
+    jz .yes
+    inc r12
+    jmp .l
+.yes:
+    mov eax, 1
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop r12
+    pop rbx
+    R126_REST
+    ret
+
+; r126_kind(rdi = name) -> rax = the name's kind (1-5), or 0 if this function has not bound it yet.
+r126_kind:
+    R126_SAVE
+    push rbx
+    mov rbx, rdi
+    call r23_is_slice_var
+    test rax, rax
+    mov eax, 1
+    jnz .out
+    mov rdi, rbx
+    call is_float_kosh_var
+    test rax, rax
+    mov eax, 2
+    jnz .out
+    mov rdi, rbx
+    call is_kosh_var
+    test rax, rax
+    mov eax, 3
+    jnz .out
+    mov rdi, rbx
+    call is_array_var
+    test rax, rax
+    mov eax, 4
+    jnz .out
+    mov rdi, rbx
+    call r126_is_local
+    test rax, rax
+    mov eax, 5
+    jnz .out
+    xor eax, eax
+.out:
+    pop rbx
+    R126_REST
+    ret
+
+; r126_value_kind(rdi = expression or 0) -> rax = the kind of value it gives (1-5), or 6: a kosh on some
+; paths and not on others (?: with a collection arm; a prakriya whose nivartanam do not agree).
+r126_value_kind:
+    R126_SAVE
+    push rbx
+    mov rbx, rdi
+    test rbx, rbx
+    jz .raw
+    mov rax, [rbx]
+    cmp rax, AST_VAR
+    je .var
+    cmp rax, AST_SLICE
+    je .slice
+    cmp rax, AST_FUNCALL
+    je .call
+    cmp rax, AST_TERNARY
+    je .tern
+.raw:
+    mov eax, 5
+    jmp .out
+.slice:
+    mov eax, 1
+    jmp .out
+.var:
+    mov rdi, [rbx+8]
+    call r126_kind
+    test eax, eax
+    jnz .out
+    jmp .raw
+.call:
+    mov rdi, [rbx+8]
+    call r23_call_is_indirect
+    test rax, rax
+    jnz .raw
+    mov rdi, [rbx+8]
+    call rfx3_fn_index
+    cmp rax, -1
+    je .raw
+    mov rdi, rax
+    call r126_ret_kind
+    jmp .out
+.tern:
+    mov rdi, [rbx+16]
+    call r126_value_kind
+    cmp eax, 5
+    jne .mixed
+    mov rdi, [rbx+24]
+    call r126_value_kind
+    cmp eax, 5
+    je .out
+.mixed:
+    mov eax, 6
+.out:
+    pop rbx
+    R126_REST
+    ret
+
+; r126_ret_kind(rdi = func_defs index) -> rax = what the prakriya returns: 5 a number, 2 / 3 a kosh (every
+; nivartanam returns a kosh parameter or a kosh the prakriya declares, by its own name), 6 they disagree.
+; Worked out once per prakriya from its AST (the walk of rfx2_analyse, on its scratch stack).
+r126_ret_kind:
+    R126_SAVE
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
+    mov r12, rdi
+    lea rax, [rel r126_rk_cache]
+    movzx eax, byte [rax+r12]
+    test eax, eax
+    jnz .out
+    lea rax, [rel func_defs]
+    mov r13, [rax+r12*8]
+    mov qword [rel r126_ret_n], 0
+    mov qword [rel r126_kdec_n], 0
+    xor r14d, r14d                 ; 1: more nivartanam than the table holds
+    lea rdi, [rel rfx2_seen]
+    xor eax, eax
+    mov ecx, AST_HEAP_CAP / 64
+    rep stosb
+    xor r15, r15
+    mov rdi, [r13+24]
+    call rfx2_push
+.walk:
+    test r15, r15
+    jz .sum
+    dec r15
+    lea rax, [rel rfx2_stack]
+    mov rbx, [rax+r15*8]
+    lea rax, [rel ast_heap]
+    cmp rbx, rax
+    jb .walk
+    cmp rbx, [rel ast_ptr]
+    jae .walk
+    mov rcx, rbx
+    sub rcx, rax
+    test ecx, 7
+    jnz .walk
+    shr rcx, 3
+    mov rdx, rcx
+    shr rdx, 3
+    and ecx, 7
+    lea rax, [rel rfx2_seen]
+    movzx r8d, byte [rax+rdx]
+    bt r8d, ecx
+    jc .walk
+    bts r8d, ecx
+    mov [rax+rdx], r8b
+    mov rax, [rbx]
+    test rax, rax
+    jz .walk
+    cmp rax, 128
+    ja .walk
+    cmp rax, AST_NUM
+    je .walk
+    cmp rax, AST_FLOAT
+    je .walk
+    cmp rax, AST_STR
+    je .walk
+    cmp rax, AST_VAR
+    je .walk
+    cmp rax, AST_FUNCDEF
+    je .walk
+    cmp rax, AST_BLOCK
+    je .blk
+    cmp rax, AST_RETURN
+    je .ret
+    cmp rax, AST_DECL
+    jne .gen
+    mov rax, [rbx+32]
+    cmp rax, 2
+    jb .gen
+    cmp rax, 3
+    ja .gen
+    mov rcx, [rel r126_kdec_n]
+    cmp rcx, 128
+    jae .gen                       ; not recorded: its nivartanam then disagree (refused, never wrong)
+    lea rdx, [rel r126_kdec]
+    shl rcx, 4
+    mov rsi, [rbx+8]
+    mov [rdx+rcx], rsi
+    mov [rdx+rcx+8], rax
+    inc qword [rel r126_kdec_n]
+    jmp .gen
+.ret:
+    mov rcx, [rel r126_ret_n]
+    cmp rcx, 256
+    jae .ret_full
+    lea rdx, [rel r126_rets]
+    mov rsi, [rbx+8]
+    mov [rdx+rcx*8], rsi
+    inc qword [rel r126_ret_n]
+    jmp .gen
+.ret_full:
+    mov r14d, 1
+    jmp .gen
+.gen:
+    mov r9d, 8
+.gl:
+    cmp r9d, 72
+    jae .walk
+    mov rdi, [rbx+r9]
+    call rfx2_push
+    add r9d, 8
+    jmp .gl
+.blk:
+    mov r10, [rbx+8]
+    cmp r10, BLOCK_STMT_CAP
+    ja .walk
+    xor r9, r9
+.bl:
+    cmp r9, r10
+    jae .walk
+    mov rdi, [rbx+16+r9*8]
+    call rfx2_push
+    inc r9
+    jmp .bl
+.sum:
+    lea rax, [rel r126_rk_cache]
+    mov byte [rax+r12], 7          ; being worked out: a call back to it adds nothing (see below)
+    xor ebx, ebx                   ; the kind so far (0: no nivartanam yet)
+    xor r15, r15
+    push rbp
+    mov rbp, rsp                   ; the prakriyas its nivartanam call, pushed below rbp
+.sl:
+    cmp r15, [rel r126_ret_n]
+    jae .calls
+    lea rax, [rel r126_rets]
+    mov rdi, [rax+r15*8]
+    mov eax, 5
+    test rdi, rdi
+    jz .sk
+    cmp qword [rdi], AST_FUNCALL
+    je .scall
+    cmp qword [rdi], AST_VAR
+    jne .sk
+    mov rdi, [rdi+8]
+    call r126_own_kind
+.sk:
+    call .comb
+.snext:
+    inc r15
+    jmp .sl
+.scall:                            ; nivartanam g(...): what g returns, once this list is done with
+    push rdi
+    mov rdi, [rdi+8]
+    call r23_call_is_indirect
+    pop rdi
+    test rax, rax
+    jnz .raw5
+    push rdi
+    mov rdi, [rdi+8]
+    call rfx3_fn_index
+    pop rdi
+    cmp rax, -1
+    je .raw5
+    push rax
+    jmp .snext
+.raw5:
+    mov eax, 5
+    jmp .sk
+.calls:                            ; the list is consumed: r126_ret_kind may now be called again
+    cmp rsp, rbp
+    je .cdone
+    pop rdi
+    call r126_ret_kind
+    cmp eax, 7                     ; a prakriya still being worked out (recursion): no information.
+    je .calls                      ; Its own nivartanam check, when it is generated, is the guard.
+    call .comb
+    jmp .calls
+.cdone:
+    pop rbp
+    test r14d, r14d
+    jz .s2
+    cmp ebx, 5
+    je .s2
+    mov ebx, 6
+.s2:
+    test ebx, ebx
+    jnz .s3
+    mov ebx, 5
+.s3:
+    lea rax, [rel r126_rk_cache]
+    mov [rax+r12], bl
+    mov eax, ebx
+    jmp .out
+.comb:                             ; ebx = ebx combined with eax
+    test ebx, ebx
+    jnz .cc
+    mov ebx, eax
+    ret
+.cc:
+    cmp ebx, eax
+    je .cr
+    mov ebx, 6
+.cr:
+    ret
+.out:
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
+    R126_REST
+    ret
+
+; r126_own_kind(rdi = name; r13 = the funcdef) -> rax = 3 / 2 if the name is one of its kosh parameters or a
+; name it declares kosh, else 5. (Used by r126_ret_kind only.)
+r126_own_kind:
+    push rbx
+    push r12
+    mov rbx, rdi
+    mov rdi, r13
+    call rfx3_params_of            ; rsi = names, rdx = count
+    xor r12, r12
+.pl:
+    cmp r12, rdx
+    jae .decls
+    push rsi
+    push rdx
+    mov rdi, [rsi+r12*8]
+    mov rsi, rbx
+    call strcmp
+    pop rdx
+    pop rsi
+    test rax, rax
+    jz .par
+    inc r12
+    jmp .pl
+.par:
+    mov rdi, [r13+8]
+    mov rsi, r12
+    call func_param_type
+    cmp rax, PARAM_KOSH
+    je .k
+    cmp rax, PARAM_KOSH_DASHAM
+    je .kd
+    jmp .raw
+.decls:
+    xor r12, r12
+.dl:
+    cmp r12, [rel r126_kdec_n]
+    jae .raw
+    mov rcx, r12
+    shl rcx, 4
+    lea rax, [rel r126_kdec]
+    mov rdi, [rax+rcx]
+    mov rsi, rbx
+    push rcx
+    call strcmp
+    pop rcx
+    test rax, rax
+    jz .dfound
+    inc r12
+    jmp .dl
+.dfound:
+    lea rax, [rel r126_kdec]
+    cmp qword [rax+rcx+8], 3
+    je .kd
+.k:
+    mov eax, 3
+    jmp .out
+.kd:
+    mov eax, 2
+    jmp .out
+.raw:
+    mov eax, 5
+.out:
+    pop r12
+    pop rbx
+    ret
+
+; r126_kname(rdi = kind) -> rdi = its name, for a message.
+r126_kname:
+    lea rax, [rel r126_kn5]
+    cmp rdi, 1
+    jne .2
+    lea rax, [rel r126_kn1]
+.2: cmp rdi, 2
+    jne .3
+    lea rax, [rel r126_kn2]
+.3: cmp rdi, 3
+    jne .4
+    lea rax, [rel r126_kn3]
+.4: cmp rdi, 4
+    jne .6
+    lea rax, [rel r126_kn4]
+.6: cmp rdi, 6
+    jne .r
+    lea rax, [rel r126_kn6]
+.r: mov rdi, rax
+    ret
+
+; r126_fail_kind(rdi = name, rsi = its kind, rdx = the kind given to it): E_VITTI_PRAKAR. Exits 1.
+r126_fail_kind:
+    mov rbx, rdi
+    mov r12, rsi
+    mov r13, rdx
+    lea rdi, [rel r126_k_hdr]
+    call print_str_z
+    mov rdi, rbx
+    call print_str_z
+    lea rdi, [rel r126_k_mid]
+    call print_str_z
+    mov rdi, r12
+    call r126_kname
+    call print_str_z
+    lea rdi, [rel r126_k_is]
+    call print_str_z
+    mov rdi, r13
+    call r126_kname
+    call print_str_z
+    lea rdi, [rel r126_k_end]
+    jmp capacity_fail
+
+; r126_fail_door(rdi = the expression, rsi = the rest of the message, rdx = a prakriya name or 0):
+; E_KOSH_DVARA, naming the kosh when it is a bare name. Exits 1.
+r126_fail_door:
+    mov rbx, rdi
+    mov r12, rsi
+    mov r13, rdx
+    call r126_value_kind
+    cmp eax, 6
+    je .mix
+    lea rdi, [rel r126_d_hdr]
+    call print_str_z
+    test rbx, rbx
+    jz .noname
+    cmp qword [rbx], AST_VAR
+    jne .noname
+    mov rdi, [rbx+8]
+    call print_str_z
+.noname:
+    mov rdi, r12
+    call print_str_z
+    test r13, r13
+    jz .hint
+    mov rdi, r13
+    call print_str_z
+    lea rdi, [rel r126_nl]
+    call print_str_z
+.hint:
+    lea rdi, [rel r126_d_hint]
+    jmp capacity_fail
+.mix:
+    lea rdi, [rel r126_d_mix]
+    call print_str_z
+    test rbx, rbx
+    jz .mn
+    cmp qword [rbx], AST_FUNCALL
+    jne .mn
+    mov rdi, [rbx+8]
+    call print_str_z
+    jmp .m2
+.mn:
+    lea rdi, [rel r126_kn6]        ; ?: - no name to give
+    call print_str_z
+.m2:
+    lea rdi, [rel r126_d_mix2]
+    call print_str_z
+    jmp .hint
+
+; r126_is_kosh_value(rdi = expression) -> rax = 1 if it gives a kosh on some path (kinds 2, 3, 6).
+r126_is_kosh_value:
+    call r126_value_kind
+    cmp eax, 2
+    je .y
+    cmp eax, 3
+    je .y
+    cmp eax, 6
+    je .y
+    xor eax, eax
+    ret
+.y:
+    mov eax, 1
+    ret
+
+; r126_bind(rdi = name, rsi = the kind given to it, rdx = the value expression or 0): the name keeps one
+; kind. A kosh from a prakriya's result marks the name a kosh (a bare name is marked by r38_mark_alias).
+r126_bind:
+    R126_SAVE
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    mov r12, rsi
+    mov r13, rdx
+    cmp r12, 6
+    je .mixed
+    call r126_kind
+    test eax, eax
+    jz .new
+    cmp rax, r12
+    je .out
+    mov rdi, rbx
+    mov rsi, rax
+    mov rdx, r12
+    jmp r126_fail_kind
+.mixed:
+    mov rdi, r13
+    lea rsi, [rel r126_d_cell]
+    xor edx, edx
+    jmp r126_fail_door
+.new:
+    test r13, r13
+    jz .out
+    cmp qword [r13], AST_FUNCALL
+    jne .out
+    cmp r12, 2
+    je .newk
+    cmp r12, 3
+    jne .out
+.newk:
+    mov rdi, rbx
+    call mark_kosh_var
+    cmp r12, 2
+    jne .out
+    mov rdi, rbx
+    call mark_float_kosh_var
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    R126_REST
+    ret
+
+; r126_check_decl(rbx = AST_DECL): the declaration's kind against the name's.
+r126_check_decl:
+    R126_SAVE
+    push rax
+    mov rax, [rbx+32]
+    mov esi, 3
+    cmp rax, 2
+    je .bind0
+    mov esi, 2
+    cmp rax, 3
+    je .bind0
+    mov esi, 4
+    cmp qword [rbx+24], 0
+    jne .bind0
+    mov rdi, [rbx+16]
+    call r126_value_kind
+    mov rsi, rax
+    mov rdx, [rbx+16]
+    jmp .bind
+.bind0:
+    xor edx, edx
+.bind:
+    mov rdi, [rbx+8]
+    call r126_bind
+    pop rax
+    R126_REST
+    ret
+
+; r126_check_assign(rbx = AST_ASSIGN): a name keeps its kind; a kosh goes into no cell, field or global.
+r126_check_assign:
+    R126_SAVE
+    push rax
+    mov rax, [rbx+8]
+    test rax, rax
+    jz .out
+    mov rcx, [rax]
+    cmp rcx, AST_VAR
+    je .var
+    cmp rcx, AST_INDEX
+    je .cell
+    cmp rcx, AST_FIELD
+    jne .out
+.cell:
+    mov rdi, [rbx+16]
+    call r126_is_kosh_value
+    test eax, eax
+    jz .out
+    mov rdi, [rbx+16]
+    lea rsi, [rel r126_d_cell]
+    xor edx, edx
+    jmp r126_fail_door
+.var:
+    mov rdi, [rax+8]
+    call r126_is_local
+    test eax, eax
+    jnz .local
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call r56_global_index
+    test rax, rax
+    jz .local
+    mov rdi, [rbx+16]
+    call r126_is_kosh_value
+    test eax, eax
+    jz .out
+    mov rdi, [rbx+16]
+    lea rsi, [rel r126_d_glob]
+    xor edx, edx
+    jmp r126_fail_door
+.local:
+    mov rdi, [rbx+16]
+    call r126_value_kind
+    mov rsi, rax
+    mov rdx, [rbx+16]
+    mov rax, [rbx+8]
+    mov rdi, [rax+8]
+    call r126_bind
+.out:
+    pop rax
+    R126_REST
+    ret
+
+; r126_check_builtin(rbx = AST_CALL): a kosh is the first argument of a kosh builtin, nothing else.
+r126_check_builtin:
+    R126_SAVE
+    push rax
+    push r12
+    xor r12, r12
+.l:
+    cmp r12, [rbx+16]
+    jae .out
+    cmp r12, 6
+    jae .out
+    mov rdi, [rbx+24+r12*8]
+    call r126_is_kosh_value
+    test eax, eax
+    jz .next
+    test r12, r12
+    jnz .bad
+    mov rax, [rbx+8]
+    cmp rax, BN_PANKTILEN
+    jb .bad
+    cmp rax, BN_KOSHDEQUEUE
+    ja .bad
+    cmp rax, BN_SETCHAR
+    je .bad
+.next:
+    inc r12
+    jmp .l
+.bad:
+    mov rdi, [rbx+24+r12*8]
+    lea rsi, [rel r126_d_raw]
+    xor edx, edx
+    jmp r126_fail_door
+.out:
+    pop r12
+    pop rax
+    R126_REST
+    ret
+
+; r126_check_writemem(rbx = AST_WRITEMEM): a kosh is neither the address nor the value.
+r126_check_writemem:
+    R126_SAVE
+    push rax
+    mov rdi, [rbx+16]
+    call r126_is_kosh_value
+    test eax, eax
+    jnz .bad16
+    mov rdi, [rbx+24]
+    call r126_is_kosh_value
+    test eax, eax
+    jz .out
+    mov rdi, [rbx+24]
+    jmp .bad
+.bad16:
+    mov rdi, [rbx+16]
+.bad:
+    lea rsi, [rel r126_d_raw]
+    xor edx, edx
+    jmp r126_fail_door
+.out:
+    pop rax
+    R126_REST
+    ret
+
+; r126_check_untyped_arg(rdi = the prakriya's name, rsi = the argument): a kosh to a parameter that is not
+; declared kosh is refused (the prakriya would index it as raw memory).
+r126_check_untyped_arg:
+    R126_SAVE
+    push rax
+    push rbx
+    mov rbx, rdi
+    push rsi
+    call r23_call_is_indirect      ; through a function value: its parameters have no kinds
+    test rax, rax
+    jnz .known
+    mov rdi, rbx
+    call rfx3_fn_index             ; not a prakriya of this program: its own error comes first
+    cmp rax, -1
+    pop rsi
+    je .out
+    push rsi
+.known:
+    pop rsi
+    mov rdi, rsi
+    push rsi
+    call r126_is_kosh_value
+    pop rdi
+    test eax, eax
+    jz .out
+    lea rsi, [rel r126_d_par]
+    mov rdx, rbx
+    jmp r126_fail_door
+.out:
+    pop rbx
+    pop rax
+    R126_REST
+    ret
+
+; r126_check_return(rbx = AST_RETURN): inside a prakriya, what this nivartanam gives must be what the
+; prakriya's callers were told it returns (r126_ret_kind), whenever either is a kosh.
+r126_check_return:
+    R126_SAVE
+    push rax
+    push r12
+    cmp qword [rel in_function], 0
+    je .out
+    mov rax, [rel r126_cur_fn]
+    cmp rax, -1
+    je .out
+    cmp qword [rbx+16], 0          ; siddhi(v) / dosh(c): a phal result is a number - never a kosh
+    je .plain
+    mov rdi, [rbx+8]
+    call r126_is_kosh_value
+    test eax, eax
+    jnz .bad
+    jmp .out
+.plain:
+    mov rdi, rax
+    call r126_ret_kind
+    mov r12, rax
+    mov rdi, [rbx+8]
+    call r126_value_kind
+    cmp rax, r12
+    je .same
+    cmp eax, 2
+    je .bad
+    cmp eax, 3
+    je .bad
+    cmp eax, 6
+    je .bad
+    cmp r12, 5
+    je .out
+    jmp .bad
+.same:
+    cmp eax, 6
+    jne .out
+.bad:
+    lea rdi, [rel r126_d_ret]
+    call print_str_z
+    mov rax, [rel r126_cur_fn]
+    lea rcx, [rel func_defs]
+    mov rax, [rcx+rax*8]
+    mov rdi, [rax+8]
+    call print_str_z
+    lea rdi, [rel r126_d_ret2]
+    call print_str_z
+    lea rdi, [rel r126_d_hint]
+    jmp capacity_fail
+.out:
+    pop r12
+    pop rax
+    R126_REST
     ret
 
 is_kosh_var:
@@ -29879,6 +30743,18 @@ r58_fold_tree:
     cmp qword [rbx+8],OP_SUB
     jne .r58_ft_original
 .r58_ft_check_type:
+    mov rdi,[rbx+16]               ; R126: k + 0 is no identity for a kosh, mala or rachana: it
+    call rfx_is_kosh_operand       ; stays a binop, and the binop check refuses it
+    test rax,rax
+    jnz .r58_ft_original
+    mov rdi,[rbx+16]
+    call rfx_is_mala_operand
+    test rax,rax
+    jnz .r58_ft_original
+    mov rdi,[rbx+16]
+    call r113_is_rname
+    test rax,rax
+    jnz .r58_ft_original
     mov rdi,rbx
     call binop_needs_float
     test rax,rax

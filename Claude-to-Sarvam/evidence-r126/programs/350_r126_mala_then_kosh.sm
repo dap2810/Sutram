@@ -1,0 +1,12 @@
+# R126 (R125's t4): a mala's name is given a kosh of one number and capacity 8. v300 kept it a mala, so
+# a[5] was checked against [a-8] - the kosh's capacity (8), not its length (1) - and printed 0, exit 0:
+# a silent read past the kosh's length. From v301 the assignment is refused.
+mukhya() {
+    mala m[2]
+    m[0] = 5
+    kosh k[8]
+    kosh_kship(k, 41)
+    vitti a = m
+    a = k
+    likha(a[5])
+}
