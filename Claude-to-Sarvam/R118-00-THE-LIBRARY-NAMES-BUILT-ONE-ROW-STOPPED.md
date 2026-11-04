@@ -1,6 +1,6 @@
 # R118-00 — Of the 33 words, 18 were already aliases (R111) and are now out of the examples too; 7 more are built here - ten library names and a hint - as aliases, 0 programs changed. One row STOPPED on the frozen packs (`arr`), four messages wait for your call, and 8 words stay, each with its reason. `patra_asti`: I would still not withdraw it silently - here is why.
 
-- **Commit on `main`:** `PENDING-SHA` (one commit, on top of your R118 files, `bce5405`).
+- **Commit on `main`:** **`792acf4`** - the round in one commit (rebased onto Muse R117 `1897489` and ChatGPT R192 `f14c289`, which landed while I built; your R118 base `bce5405`). The Muse comparison and the Wine line were added in the commits after it.
 - **Compiler: `Sutram 1.0 (v297) - sampurna sutra`** (was v296). Linux x86-64 cloud.
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **Suite: `suite: NO-EXPECTATION=4  PASS=315  (319 run)`**, FAIL=0 (313 + goldens 346, 347; eight refusal goldens re-recorded, below).
@@ -8,7 +8,7 @@
 - **The guard, origin/main (v296) → v297, 725 programs** (`evidence-r118/guard.txt`):
   - **Linux ELF: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new** (346, 347).
   - **Linux PE: 580 byte-identical, 143 refused identically, 0 DIFFER, 2 new.**
-  - **Wine: PENDING-WINE.**
+  - **The Windows compiler under Wine: still running when this was pushed - its line follows in the next commit.**
   - **81 of those programs' source text changed** (the examples and tests now write the new names): **73 compile to the bytes the old text did on v296, 8 are refused as before.** The guard compares a refusal's exit, not its text; those 8 are the re-recorded goldens below, whose text differs only in the hint line.
   - **The guard ran twice, and the first run was right to fail** - below.
 
@@ -47,6 +47,24 @@
 - **Two I want a second eye on:**
   - **`purti`, not `puran`:** पूरण is the textbook word for filling, but romanised it is `puran`, which a reader takes as पुराण, "old" - and *purana* is the deprecation message's own word ("purana nama").
   - **`chihna`, not the library's `chinhit`:** `roop_chinhit` (signed) spells चिह्नित the Hindi way. I kept the Sanskrit spelling for the new name; if you want the two to match, `roop_chinh_akshar` is free too.
+
+### Muse's audit landed while I built - the two sets of names, side by side
+
+**Muse's `ROUND-117-33-NAMES-AUDIT.md` (`1897489`) reached main while I was building, and I saw it only when my push rebased onto it.** So I built my names, not Muse's. **We agree on the classes**: the same 19 already renamed or withdrawn (my 18 plus `dot`), and the same words that stay. We differ on five of the seven new names, and on two of the stays:
+
+| row | Muse R117 | built here (v297) | my reason, for you to decide |
+|---|---|---|---|
+| bit | `dvyank_gan` | **`ekanka_gan`** | *dvyanka* is "binary digit", so `dvyank_gan` reads "count the binary digits" - all of them. The function counts the **ones**, and Muse notes the docs must say so. एकाङ्क names the ones, so the name says it |
+| diff | `rakh_samroop_bhed` | **`rakh_ubhaya_bhed`** | both are sound. Muse's keeps the old name's `samroop`; mine says "both ways", which is the definition the comment gives. **Either; your pick** |
+| pad | `roop_puran_*`, `puran_vam` | **`roop_purti_*`, `purti_vam`** | romanised, `puran` is also पुराण, "old" - the deprecation message's own word (*purana nama*). Muse chose `puran` over `pur` ("city"), but did not weigh "old" |
+| path | `patra_marga_sarv` | **not renamed** | `path` here is पठ्, *read*: the pair is `patra_path_sarv` / `patra_likh_sarv`, read all / write all, and the module header says so. Both take a path, so `marga` would drop the one thing the name distinguishes: that it reads |
+| pre | `roop_ank_upasarg` | `roop_ank_upasarga` | spelling only: Muse drops the final *a*, as the library does (`ank`, `bhed`, `gan`). Your rule 1 says "complete word"; **either; your pick** |
+| sign | `roop_chihn_akshar` | `roop_chihna_akshar` | the same spelling question |
+| sorted | `asti_shrenit` | **`asti_kramabaddha`** | `shrenit` ties to the sort module and is shorter, but *shrenita* is a coined participle. क्रमबद्ध is a standard compound that means "in order". A native speaker should settle it |
+| fd (stay) | stays | changed to `dvara` | Muse is right that it is a placeholder, not an API name. But it sits between `smriti` and `sankhya` in a Sanskrit hint; `dvara` makes the line one language. **Compile-time text only; easy to revert** |
+| arr (stay) | stays: "a parameter name" | stays: **STOPPED** | the CSV's bucket-1 `arr` is the **shell help** (`mala arr[5]`), not a parameter. Muse reaches "stays" for a different reason; mine is the frozen packs |
+
+**If you pick Muse's name for any row, it is a small change:** one line in the compiler's table, the library definition, and the docs. The v297 name would simply go - nothing outside the tree can depend on it yet. **I would not ship both sets.**
 
 **How the alias works** (v297, `r118_lib_alias` in the compiler):
 
