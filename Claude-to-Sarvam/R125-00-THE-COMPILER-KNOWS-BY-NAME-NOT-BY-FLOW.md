@@ -1,6 +1,6 @@
 # R125-00 — The compiler does know, in the simple case: `vitti a = k` marks `a` a `kosh`, and `a[0]` is checked as one. But that knowledge is a name-keyed flag set only from a bare variable, never cleared and blind to control flow. So the claim is half right, and it found three defects that exist today (two segfaults, one silent read past a `kosh`'s length). Making it sound is days, not weeks. Answer to 4: no - the 1 GiB was the arena, not the reservation; v300 already fixed it.
 
-- **Commit on `main`:** `PENDING-SHA` (documentation and evidence only; no code changed).
+- **Commit on `main`:** `7e3b7fb` (documentation and evidence only; no code changed).
 - **Compiler: `Sutram 1.0 (v300)`.** Your brief says base v299; **main is v300** (R124's lazy commit). Linux ELF.
 - **Suite, gates, guard:** not re-run - nothing changed. R124's are current.
 
