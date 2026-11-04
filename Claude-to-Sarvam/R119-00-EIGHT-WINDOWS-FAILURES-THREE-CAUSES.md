@@ -1,6 +1,6 @@
 # R119-00 — The eight Windows failures have three causes, and none is a compile failure: two are the native harness, four are Linux-only memory features the reference already says are Linux-only, and two (322/323) are two old builtin defects - `anka_akshar` and `vartani_sandhi` - that are wrong on Linux too, which Linux happens to hide. Diagnosis only; nothing fixed.
 
-- **Commit on `main`:** `PENDING` (documentation and evidence only; on top of the Windows v297 results `e316585` and your R119 files `b7439d8`).
+- **Commit on `main`:** `3b8af54` (documentation and evidence only; on top of the Windows v297 results `e316585` and your R119 files `b7439d8`).
 - **Compiler: `Sutram 1.0 (v297) - sampurna sutra`, unchanged.** Linux x86-64 cloud, with Wine 64 for PE runs.
 - **`crash corpus: 227 cases + manifest, 0 failed`.** **Suite: `suite: NO-EXPECTATION=4  PASS=315  (319 run)`**, FAIL=0 (re-run on this tree).
 - **Gates:** not re-run - no compiler, library, example or test changed. R118's run (62 PASS / 1 FAIL / 1 NOT-RUN, Xvfb, Linux) is the current one.
