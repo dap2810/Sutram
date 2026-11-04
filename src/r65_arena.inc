@@ -65,10 +65,13 @@ section .data
     r65_t9 db 0x48,0x89,0xF0
     ; kosh extension, after newcap is in r11 (r8 = user ptr, r9 = len, r10 = cap):
     ;   lea rax,[r8+r10*8] ; add rax,15 ; and rax,-16 ; mov rdx,rax
-    r65_k1 db 0x4B,0x8D,0x04,0xD0, 0x48,0x83,0xC0,0x0F, 0x48,0x83,0xE0,0xF0, 0x48,0x89,0xC2
+    ; R127: r8 is the descriptor; the elements are at [r8]:
+    ;   mov rax,[r8] ; lea rax,[rax+r10*8] ; add rax,15 ; and rax,-16 ; mov rdx,rax
+    r65_k1 db 0x49,0x8B,0x00, 0x4A,0x8D,0x04,0xD0, 0x48,0x83,0xC0,0x0F, 0x48,0x83,0xE0,0xF0, 0x48,0x89,0xC2
     ;   (mov rax,[cur])  cmp rax,rdx ; jne .no_ext(+46) ; new cursor = align16(user + newcap*8):
     ;   lea rdx,[r8+r11*8] ; add rdx,15 ; and rdx,-16
-    r65_k2 db 0x48,0x39,0xD0, 0x75,0x2E, 0x4B,0x8D,0x14,0xD8, 0x48,0x83,0xC2,0x0F, 0x48,0x83,0xE2,0xF0
+    ;   R127: mov rdx,[r8] ; lea rdx,[rdx+r11*8] (the elements, not the descriptor; jne +49)
+    r65_k2 db 0x48,0x39,0xD0, 0x75,0x31, 0x49,0x8B,0x10, 0x4A,0x8D,0x14,0xDA, 0x48,0x83,0xC2,0x0F, 0x48,0x83,0xE2,0xF0
     ;   (mov rax,[end])  cmp rdx,rax ; ja .no_ext(+22) ; mov rax,rdx
     r65_k3 db 0x48,0x39,0xC2, 0x77,0x16, 0x48,0x89,0xD0
     ;   (mov [cur],rax)  mov [r8-8],r11 ; mov r10,r11 ; jmp .space (rel32, patched)
@@ -208,8 +211,8 @@ r65_t1_len equ 3
 r65_t4_len equ 4
 r65_t5_len equ 34
 r65_t9_len equ 3
-r65_k1_len equ 15
-r65_k2_len equ 17
+r65_k1_len equ 18
+r65_k2_len equ 20
 r65_k3_len equ 8
 r65_k4_len equ 8
 r69_n2_len equ 5
@@ -546,4 +549,158 @@ r73_gen_ret_rewind:
     mov dil, 0x58                  ; pop rax
     call emit_byte
 .r:
+    ret
+
+; ============================================================
+; ROUND-127: the kosh descriptor - its growth.
+;
+; A kosh value is a descriptor d that never moves: [d-16] length, [d-8] capacity (R82's line,
+; slot and generation before them when on), [d] the elements, [d+8] the bytes of the region the
+; elements are in (0: they are in the arena, or right after the descriptor). Every name of the
+; kosh holds d, so whatever growth does to the elements, every name sees it.
+;
+; Growth, with r8 = d, r9 = length, r10 = capacity, r11 = the new capacity (newcap * 8 = new):
+;   - elements in a region that still has room (new <= [d+8]): the capacity changes, nothing moves;
+;   - small (new < R127_BIG) and the elements end at the arena cursor: R65's in-place extension;
+;   - else new elements: in the arena when small, else a region of max(2 * new, R101A_REGION)
+;     reserved (MAP_NORESERVE: only touched pages cost); the old ones copied; an old region given
+;     back (munmap); then [d] / [d-8] / [d+8]. Memory not given: a message, the kosh untouched.
+; So a small kosh costs a few bytes of the arena (no 64 MiB region each: no ceiling on how many),
+; and a large one grows in place inside its region and moves rarely - safely, through d.
+; ============================================================
+R127_BIG equ 65536
+
+section .bss
+    r127_sp_patch resq 1
+section .text
+
+; r127_emit_grow: emitted in kosh_kship after r11 = newcap. Ends at the append path (.space) or
+; with a jmp to it whose rel32 is recorded in r127_sp_patch / r65_ext_patch for the caller.
+r127_emit_grow:
+    push r12
+    push r13
+    push r14
+    ; mov rax,r11 ; shl rax,3 ; mov rcx,[r8+8] ; test rcx,rcx ; jz .notreg
+    R23_EMIT 0x4C,0x89,0xD8, 0x48,0xC1,0xE0,0x03, 0x49,0x8B,0x48,0x08, 0x48,0x85,0xC9, 0x0F,0x84
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; cmp rax,rcx ; ja .move
+    R23_EMIT 0x48,0x39,0xC8, 0x0F,0x87
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    cmp qword [rel r107_used], 0
+    je .no_count1
+    R23_EMIT 0x4C,0x89,0xD9, 0x4C,0x29,0xD1, 0x48,0xC1,0xE1,0x03   ; mov rcx,r11 ; sub rcx,r10 ; shl rcx,3
+    call r107_emit_count_rcx
+.no_count1:
+    ; mov [r8-8],r11 ; mov r10,r11 ; jmp .space
+    R23_EMIT 0x4D,0x89,0x58,0xF8, 0x4D,0x89,0xDA, 0xE9
+    mov rax, [rel code_sz]
+    mov [rel r127_sp_patch], rax
+    xor edi, edi
+    call emit_u32
+    mov rdi, r12                       ; .notreg:
+    call r73_patch32
+    ; cmp rax,R127_BIG ; jae .move
+    R23_EMIT 0x48,0x3D
+    mov edi, R127_BIG
+    call emit_u32
+    R23_EMIT 0x0F,0x83
+    mov r14, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    call r65_emit_kosh_extend          ; in place at the arena cursor, or falls through
+    mov rdi, r13                       ; .move:
+    call r73_patch32
+    mov rdi, r14
+    call r73_patch32
+    ; push r8 ; push r9 ; push r11 ; mov rax,r11 ; shl rax,3 ; cmp rax,R127_BIG ; jae .big
+    R23_EMIT 0x41,0x50, 0x41,0x51, 0x41,0x53, 0x4C,0x89,0xD8, 0x48,0xC1,0xE0,0x03, 0x48,0x3D
+    mov edi, R127_BIG
+    call emit_u32
+    R23_EMIT 0x0F,0x83
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    call emit_nirmmita_from_rax        ; small: the arena (persistent side)
+    R23_EMIT 0x31,0xD2, 0xE9           ; xor edx,edx ; jmp .got
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    mov rdi, r12                       ; .big:
+    call r73_patch32
+    R23_EMIT 0x48,0xD1,0xE0            ; shl rax,1
+    cmp qword [rel r38_fail_n], 0      ; --fail-alloc: the counted allocation, no region
+    jne .big_counted
+%ifdef GUARD_PAGES
+    jmp .big_counted
+%endif
+    lea rsi, [rel r101a_a1]            ; mmap(max(rax, R101A_REGION), NORESERVE) -> rax, rsi = size
+    mov rcx, r101a_a1_len
+    call r23_emit_bytes
+    call emit_syscall
+    lea rsi, [rel r101a_a2]
+    mov rcx, r101a_a2_len
+    call r23_emit_bytes
+    R23_EMIT 0x48,0x89,0xF2            ; mov rdx,rsi
+    cmp qword [rel r107_used], 0
+    je .got_here
+    R23_EMIT 0x48,0x85,0xC0, 0x74,0x00 ; test rax,rax ; jz .uncounted (rel8): not given, not counted
+    mov rax, [rel code_sz]
+    dec rax
+    push rax
+    R23_EMIT 0x4C,0x89,0xD9, 0x48,0xC1,0xE1,0x03   ; mov rcx,r11 ; shl rcx,3: its elements' bytes
+    call r107_emit_count_rcx
+    pop rdi
+    call r69_patch8
+    jmp .got_here
+.big_counted:
+    call emit_nirmmita_from_rax
+    R23_EMIT 0x31,0xD2                 ; xor edx,edx (not a region)
+.got_here:
+    mov rdi, r13                       ; .got:
+    call r73_patch32
+    call r127_emit_grow_check
+    ; pop r11 ; pop r9 ; pop r8 ; mov r10,rax ; mov rsi,[r8] ; xor ecx,ecx
+    R23_EMIT 0x41,0x5B, 0x41,0x59, 0x41,0x58, 0x49,0x89,0xC2, 0x49,0x8B,0x30, 0x31,0xC9
+    mov r14, [rel code_sz]             ; .copy: cmp rcx,r9 ; jae .copied
+    R23_EMIT 0x4C,0x39,0xC9, 0x0F,0x83
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    ; mov rax,[rsi+rcx*8] ; mov [r10+rcx*8],rax ; inc rcx ; jmp .copy
+    R23_EMIT 0x48,0x8B,0x04,0xCE, 0x49,0x89,0x04,0xCA, 0x48,0xFF,0xC1, 0xE9
+    mov rax, r14
+    sub rax, [rel code_sz]
+    sub rax, 4
+    mov edi, eax
+    call emit_u32
+    mov rdi, r12                       ; .copied:
+    call r73_patch32
+    ; mov rcx,[r8+8] ; test rcx,rcx ; jz .kept (rel32)
+    R23_EMIT 0x49,0x8B,0x48,0x08, 0x48,0x85,0xC9, 0x0F,0x84
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    cmp qword [rel r107_used], 0
+    je .no_count3
+    ; parimana: the old region's elements leave it - capacity r11 / 2 (a region's kosh always doubled)
+    R23_EMIT 0x51, 0x4C,0x89,0xD9, 0x48,0xC1,0xE1,0x02, 0x48,0xF7,0xD9   ; push rcx ; mov rcx,r11 ; shl rcx,2 ; neg rcx
+    call r107_emit_count_rcx
+    R23_EMIT 0x59                      ; pop rcx
+.no_count3:
+    ; the old region back: push rdx ; push r10 ; push r11 ; push r9 ; push r8 ;
+    ; mov rdi,rsi ; mov rsi,rcx ; mov eax,11 ; syscall ; pop r8 ; pop r9 ; pop r11 ; pop r10 ; pop rdx
+    R23_EMIT 0x52, 0x41,0x52, 0x41,0x53, 0x41,0x51, 0x41,0x50, 0x48,0x89,0xF7, 0x48,0x89,0xCE, 0xB8,0x0B,0x00,0x00,0x00
+    call emit_syscall
+    R23_EMIT 0x41,0x58, 0x41,0x59, 0x41,0x5B, 0x41,0x5A, 0x5A
+    mov rdi, r12                       ; .kept:
+    call r73_patch32
+    ; mov [r8],r10 ; mov [r8-8],r11 ; mov [r8+8],rdx
+    R23_EMIT 0x4D,0x89,0x10, 0x4D,0x89,0x58,0xF8, 0x49,0x89,0x50,0x08
+    pop r14
+    pop r13
+    pop r12
     ret

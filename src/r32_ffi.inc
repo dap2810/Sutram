@@ -717,6 +717,21 @@ r33_gen_foreign_funcall:
     call expr_is_float
     test rax, rax
     jnz .bad
+    cmp qword [r12], AST_VAR          ; R127: a kosh passes its elements, not its descriptor
+    jne .gen
+    mov rdi, [r12 + 8]
+    call is_kosh_var
+    test rax, rax
+    jz .gen
+    mov rax, r12
+    call gen_expr
+    mov dil, 0x48                     ; mov rax,[rax]
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x00
+    call emit_byte
+    jmp .push
 .gen:
     mov rax, r12
     call gen_expr

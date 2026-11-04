@@ -76,6 +76,8 @@ rt_syscall:
     je .close
     cmp r12,9
     je .alloc
+    cmp r12,11
+    je .free
     cmp r12,60
     je .exit
     mov rax,-38                   ; ENOSYS, never fake success.
@@ -159,6 +161,16 @@ rt_syscall:
     call qword [rbx+RT_VirtualAlloc]
     test rax,rax
     jz .error
+    jmp .done
+.free:
+    ; R127: munmap(addr, len) - a kosh's old region; VirtualFree releases the whole reservation
+    mov rcx,r13
+    xor edx,edx
+    mov r8d,0x8000
+    call qword [rbx+RT_VirtualFree]
+    test eax,eax
+    jz .error
+    xor eax,eax
     jmp .done
 .exit:
     mov ecx,[rbx+RT_ORIGINAL_CP]

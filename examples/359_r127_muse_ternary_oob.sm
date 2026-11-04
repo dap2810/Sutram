@@ -1,0 +1,12 @@
+# R127: Muse R127's O5 a kosh through ?: - printed 0 on v300 (Muse-to-Sarvam/r127_ws1_ternary_oob.sm, unchanged below).
+# v301 refuses it, or bounds-checks it; this golden keeps it so.
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 11)
+    vitti p = nirmmita(16)
+    p[0] = 77
+    vitti c = 1
+    vitti a = c ? k : p
+    likha(a[100])
+    likha("\n")
+}

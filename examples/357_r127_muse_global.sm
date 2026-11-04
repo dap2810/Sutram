@@ -1,0 +1,14 @@
+# R127: Muse R127's O4 a kosh in a module vitti, set in another prakriya - printed 0 on v300 (Muse-to-Sarvam/r127_ws1_global.sm, unchanged below).
+# v301 refuses it, or bounds-checks it; this golden keeps it so.
+vitti holder = 0
+prakriya set_holder() {
+    kosh k[4]
+    kosh_kship(k, 11)
+    holder = k
+    nivartanam 0
+}
+mukhya() {
+    set_holder()
+    likha(holder[100])
+    likha("\n")
+}

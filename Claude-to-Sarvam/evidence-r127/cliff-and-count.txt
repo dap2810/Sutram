@@ -1,0 +1,13 @@
+# the alias cliff and the kosh count: v301 vs v302 (Linux ELF)
+v301 9000000: 4194304 1 
+v301 20000000: 4194304 1 
+v302 4194305: 4194305 99 
+v302 9000000: 9000000 99 
+v302 20000000: 20000000 99 
+/bin/bash: line 1: 23075 Segmentation fault      $G/m2 2>&1
+(v301): 1000 koshes under ulimit -v 300000 KB: exit 139 
+(v302): 1000 koshes under ulimit -v 300000 KB: 2000 exit 0 
+# --fail-alloc 3 on programs/grow_fail.sm
+/bin/bash: line 1: 23093 Segmentation fault      $G/f 2>&1
+(v301): exit 139 
+(v302): Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva exit 1 

@@ -1,6 +1,7 @@
 # R107: parimana() - the bytes the program's nirmmita and kosh hold right now. A block gives its
-# bytes back at its end; a kosh holds its header and capacity (8 bytes a number) for the program's
-# life. Every nirmmita is rounded up to 16 bytes. Linux; a Windows program reads 0.
+# bytes back at its end; a kosh holds its descriptor and capacity (8 bytes a number) for the program's
+# life. Every nirmmita is rounded up to 16 bytes. From v302 (R127) a kosh is a 32-byte descriptor in
+# the arena with its first elements after it, so "a kosh of 1000" is 64 + 8,224 (it was 64 + 8,208).
 mukhya() {
     likha("start ", parimana(), "\n")
     vitti a = nirmmita(64)

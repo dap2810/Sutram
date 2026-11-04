@@ -1,0 +1,48 @@
+# R127 guard: main 34dc7cf (v301) -> this tree (v302), tools/guard_pair.py, every example and test program
+## Linux elf
+NEW          examples/351_r127_muse_reassign.sm
+NEW          examples/352_r127_muse_assign_kosh_mala.sm
+NEW          examples/353_r127_muse_loop.sm
+NEW          examples/354_r127_muse_callresult.sm
+NEW          examples/355_r127_muse_malacell.sm
+NEW          examples/356_r127_muse_koshcell.sm
+NEW          examples/357_r127_muse_global.sm
+NEW          examples/358_r127_muse_global_samefn.sm
+NEW          examples/359_r127_muse_ternary_oob.sm
+source files whose text changed: 2
+737 programs: 483 byte-identical, 146 refused identically, 99 DIFFER, 9 new
+## Linux pe
+NEW          examples/351_r127_muse_reassign.sm
+NEW          examples/352_r127_muse_assign_kosh_mala.sm
+NEW          examples/353_r127_muse_loop.sm
+NEW          examples/354_r127_muse_callresult.sm
+NEW          examples/355_r127_muse_malacell.sm
+NEW          examples/356_r127_muse_koshcell.sm
+NEW          examples/357_r127_muse_global.sm
+NEW          examples/358_r127_muse_global_samefn.sm
+NEW          examples/359_r127_muse_ternary_oob.sm
+source files whose text changed: 2
+737 programs: 0 byte-identical, 146 refused identically, 582 DIFFER, 9 new
+## ELF: the 99 DIFFER are the programs with a kosh (or yoj sankhyiki, which uses one); run old and new
+97 same output and exit
+CHANGED examples/317_r107_parimana.sm: rc 0 -> 0
+        line 5: old 'a kosh of 1000 8272'  new 'a kosh of 1000 8288'
+CHANGED examples/318_r108_parimana_moves.sm: rc 0 -> 0
+        line 2: old 'a kosh of 1 48'  new 'a kosh of 1 64'
+        line 3: old 'grown to capacity 4 72'  new 'grown to capacity 4 96'
+        line 4: old "a block's nirmmita(100) 184"  new "a block's nirmmita(100) 208"
+        line 5: old 'and a kosh of 8 in it 288'  new 'and a kosh of 8 in it 336'
+        line 6: old 'after the block 176'  new 'after the block 224'
+SAME    examples/322_r111_new_names.sm: rc 0 -> 0
+SAME    examples/323_r111_old_names.sm: rc 0 -> 0
+## PE: all 582 DIFFER (the runtime) run old and new under Wine
+pe: 582 DIFFER run old and new under Wine: 580 same output and exit, 2 changed
+CHANGED examples/317_r107_parimana.sm: exit 0 -> 0; new = Linux golden: True
+    old b'start 0\nafter nirmmita(64) 64\nin a block, nirmmita(1000) 1072\nafter the block 64\na kosh of 1000 8272\n'
+    new b'start 0\nafter nirmmita(64) 64\nin a block, nirmmita(1000) 1072\nafter the block 64\na kosh of 1000 8288\n'
+CHANGED examples/318_r108_parimana_moves.sm: exit 0 -> 0; new = Linux golden: True
+    old b"start 0\na kosh of 1 48\ngrown to capacity 4 72\na block's nirmmita(100) 184\nand a kosh of 8 in it 288\nafter the block 176\n"
+    new b"start 0\na kosh of 1 64\ngrown to capacity 4 96\na block's nirmmita(100) 208\nand a kosh of 8 in it 336\nafter the block 224\n"
+## The Windows compiler (v302 sutram.exe) under Wine
+guard_pair with the Windows compiler was stopped at its 2-hour limit after 671 programs (516 DIFFER, 146 refused identically, 9 new - the same classification as Linux PE);
+the remaining programs were compiled with it separately (wine_rest.py): every one of the 737 programs, Wine compiler output byte-identical to the Linux compiler's PE output, or refused by both: 0 differ

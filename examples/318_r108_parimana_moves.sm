@@ -1,6 +1,8 @@
 # R108: parimana() - one number, the bytes the program's nirmmita and kosh hold now - moving as
 # allocations happen. A block gives back its nirmmita; a kosh (made inside a block or not) keeps its
-# header and capacity for the program's life: kosh storage is not reclaimed yet.
+# descriptor and elements for the program's life: kosh storage is not reclaimed yet. From v302 (R127)
+# a small kosh lives in the arena: when it grows past something allocated after it, its elements move
+# and the old ones stay behind (the arena never reuses), so the numbers are a little larger than v301's.
 mukhya() {
     likha("start ", parimana(), "\n")
     kosh k[1]

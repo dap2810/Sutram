@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v301) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v302) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -558,6 +558,25 @@ r54_builtin_arity_table:
     r108_msg_keep db "Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)", 10
     db "Sanket: prakriya kosh-tarkam k[i], kosh_gan(k) iti eva pathatu; kosh mandapat bahih na jivati", 10, 0
     r108_msg_full db "Sutram truti: mandapa-kosh-suchi seema atikram", 10, 0   ; R109: refused, not unchecked
+    ; R127: a kosh is a descriptor d: [d-16] length, [d-8] capacity (and R82's three before them),
+    ; [d] the elements. The descriptor never moves; growth moves the elements and updates [d].
+    r127_dk db 0x48,0x8D,0x48,0x10, 0x48,0x89,0x08, 0x48,0xC7,0x40,0x08,0x00,0x00,0x00,0x00
+    ; lea rcx,[rax+16] ; mov [rax],rcx ; mov qword [rax+8],0 - the elements right after, no region
+    r127_dk_len equ $ - r127_dk
+    r127_ix db 0x48,0x8B,0x48,0xF0, 0x48,0x8B,0x00, 0x48,0x89,0x04,0x24, 0x51
+    r127_ix_len equ $ - r127_ix   ; mov rcx,[rax-16] ; mov rax,[rax] ; mov [rsp],rax ; push rcx
+    r127_g1 db 0x41,0x50, 0x41,0x51, 0x41,0x53, 0x4C,0x89,0xD8, 0x48,0xC1,0xE0,0x03
+    r127_g1_len equ $ - r127_g1
+    r127_g2 db 0x41,0x5B, 0x41,0x59, 0x41,0x58, 0x49,0x89,0xC2, 0x49,0x8B,0x30, 0x31,0xC9
+    r127_g2_len equ $ - r127_g2
+    r127_g3 db 0x48,0x8B,0x14,0xCE, 0x49,0x89,0x14,0xCA, 0x48,0xFF,0xC1
+    r127_g3_len equ $ - r127_g3
+    r127_g4 db 0x4D,0x89,0x10, 0x4D,0x89,0x58,0xF8
+    r127_g4_len equ $ - r127_g4
+    r127_ap db 0x49,0x8B,0x00, 0x4A,0x89,0x14,0xC8
+    r127_ap_len equ $ - r127_ap
+    r127_sl db 0x48,0x8B,0x48,0xF0, 0x48,0x8B,0x00          ; mov rcx,[rax-16] ; mov rax,[rax]
+    r127_sl_len equ $ - r127_sl
     ; R126: a name keeps one kind for its whole prakriya (kosh, kosh dasham, mala, vibhag, or a number /
     ; raw address); a kosh leaves only by its own name, to a kosh parameter or a kosh builtin.
     r126_k_hdr db "Sutram truti [E_VITTI_PRAKAR]: '", 0
@@ -582,6 +601,11 @@ r54_builtin_arity_table:
     r126_d_mix2 db "' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - tat na sthapyate", 10, 0
     r126_d_hint db "Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena", 10, 0
     r126_nl db 10, 0
+    r127_paren db "(...)", 0
+    r127_tern db "?:", 0
+    r127_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh '", 0
+    r127_vb_txt db "' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti", 10
+    db "Sanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)", 10, 0
     rfx_bc_hdr_mala db ": Sutram truti [E_MALA_GANIT]: ", 0
     r113_hdr db ": Sutram truti [E_RACHANA_GANIT]: ", 0
     ; R116: nishedha(cond, msg)'s message write: rsi = msg, rdx = its length, edi = 2, eax = 1
@@ -635,6 +659,8 @@ r54_builtin_arity_table:
     r65_msg_mod_overflow db ": shesh atipravah",10,0
 %endif
     msg_kosh_empty db "Sutram truti: riktat koshat kosh_pop", 10, 0
+    r127_msg_grow db "Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva", 10, 0
+    r127_msg_make db "Sutram truti: kosh rachayitum smritih na labdha", 10, 0
     msg_kosh_peek_empty db "Sutram truti: riktat koshat kosh_peek", 10, 0
     msg_kosh_dequeue_empty db "Sutram truti: riktat koshat kosh_dequeue", 10, 0
     msg_kosh_param_type db "Sutram truti: kosh tark: tatv prakar bhinn", 10, 0
@@ -8968,7 +8994,9 @@ r103_emit_lkhb_num:
     jmp gen_expr
 
 ;; ============================================================
-;; R101A (Option A, R101): every kosh has a region of its own.
+;; R101A (Option A, R101): every kosh has a region of its own. SUPERSEDED in R127 (v302): a kosh is
+;; a descriptor (src/r65_arena.inc, r127_emit_grow); only a kosh past 64 KiB of elements takes a region.
+;; The text below is R101A's, kept for its history; r101a_emit_kosh_alloc now jumps to nirmmita.
 ;; A kosh used to be a block in the arena: when it grew and something had been allocated
 ;; after it, it moved - the old block was abandoned (R101: about one more kosh), and a
 ;; second name (`vitti a = k`) kept the old block (section 16). Now, on ELF and PE (PE from R123), a kosh
@@ -8999,6 +9027,8 @@ r101a_regions_on:
 ; r101a_emit_kosh_alloc: generated code, rax = bytes for the header and the initial capacity ->
 ; rax = the region (or 0 if mmap failed, as nirmmita). Off: the ordinary nirmmita.
 r101a_emit_kosh_alloc:
+    jmp emit_nirmmita_from_rax     ; R127: no region - the descriptor and its first elements are
+                                   ; one ordinary allocation; growth moves the elements, not it
     call r101a_regions_on
     test rax, rax
     jz emit_nirmmita_from_rax
@@ -19135,16 +19165,16 @@ gen_stmt:
     call emit_byte
     mov dil, 0x50             ; push capacity
     call emit_byte
-    mov dil, 0x48             ; add rax,2 header qwords
+    mov dil, 0x48             ; add rax,4: 2 header qwords + R127's elements pointer and region size
     call emit_byte
     mov dil, 0x83
     call emit_byte
     mov dil, 0xC0
     call emit_byte
-    mov dil, 0x02
+    mov dil, 0x04
     cmp qword [rel r82_on], 0 ; R82: 5 - line, liveness slot, generation, length, capacity
     je .r82_dk_2
-    mov dil, 0x05
+    mov dil, 0x07
 .r82_dk_2:
     call emit_byte
     mov dil, 0x48             ; shl rax,3
@@ -19156,6 +19186,7 @@ gen_stmt:
     mov dil, 0x03
     call emit_byte
     call r108_kosh_alloc         ; R108: in a mandapa, a slot of the block's arena; else R101A's region
+    call r127_emit_make_check    ; R127: no memory - a message, not a write through 0
     mov dil, 0x59             ; pop cap -> rcx
     call emit_byte
     cmp qword [rel r82_on], 0
@@ -19188,6 +19219,9 @@ gen_stmt:
     mov dil, 0x10
     call emit_byte
 .r82_dk_store:
+    lea rsi, [rel r127_dk]    ; R127: the descriptor - [d] = the elements, first right after it
+    mov rcx, r127_dk_len
+    call r23_emit_bytes
     mov rdi, [rbx+8]
     call alloc_var
     test rax, rax
@@ -19629,16 +19663,9 @@ gen_stmt:
     test rax, rax
     jz .gs_ai_check_pankti
     mov r12, 2
-    mov dil, 0x48             ; mov rcx,[rax-16]
-    call emit_byte
-    mov dil, 0x8B
-    call emit_byte
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xF0
-    call emit_byte
-    mov dil, 0x51
-    call emit_byte
+    lea rsi, [rel r127_ix]    ; R127: mov rcx,[rax-16] ; mov rax,[rax] ; mov [rsp],rax ; push rcx
+    mov rcx, r127_ix_len
+    call r23_emit_bytes
     jmp .gs_ai_no_len
 .gs_ai_check_pankti:
     mov rax, [rbx+8]
@@ -21069,6 +21096,72 @@ emit_kosh_empty_check_r9:
     pop rbx
     ret
 
+; r127_emit_grow_check: after the allocation of a kosh's new elements (rax = 0 when the memory
+; was not given): stop with a message. The descriptor is not touched before this point, so the
+; kosh is as it was; the program does not go on with it half-grown (R127, R201).
+r127_emit_make_check:
+    push r12
+    push r14
+    push r15
+    push r13
+    lea r12, [rel r127_msg_make]
+    jmp r127_emit_grow_check.go
+r127_emit_grow_check:
+    push r12
+    push r14
+    push r15
+    push r13
+    lea r12, [rel r127_msg_grow]
+.go:
+    mov dil, 0x48             ; test rax,rax
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F             ; jnz ok rel32
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    call alloc_ast
+    mov qword [rax], AST_STR
+    mov rcx, r12
+    call r11_tr_rcx
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    push rbx
+    mov rbx, rax
+    call gen_expr
+    pop rbx
+    mov dil, 0xB8
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov rax, [rel code_sz]
+    sub rax, r13
+    sub rax, 4
+    lea rcx, [rel code_buf]
+    mov [rcx+r13], eax
+    pop r13
+    pop r15
+    pop r14
+    pop r12
+    ret
+
 ; R46 compiler-time call liveness: 1 if any caller local occupies r12..r15.
 ; Argument parameters in stack slots and rbx do not require these saves.
 ; No generated runtime code executes this helper.
@@ -21520,16 +21613,9 @@ gen_expr:
     test rax, rax
     jz .ge_index_check_pankti
     mov r12, 2               ; kosh length header at [ptr-16]
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x8B
-    call emit_byte
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xF0
-    call emit_byte
-    mov dil, 0x51
-    call emit_byte
+    lea rsi, [rel r127_ix]   ; R127: the length, then the elements through the descriptor
+    mov rcx, r127_ix_len
+    call r23_emit_bytes
     jmp .ge_index_no_len
 .ge_index_check_pankti:
     mov rdi, [rbx+8]
@@ -21959,6 +22045,12 @@ gen_expr:
     mov dil, 0xC9
     call emit_byte
 .ge_koshpop_load:
+    mov dil, 0x4D             ; R127: mov r8,[r8] - the elements, through the descriptor
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    mov dil, 0x00
+    call emit_byte
     mov dil, 0x4B             ; mov rax,[r8+r9*8]
     call emit_byte
     mov dil, 0x8B
@@ -21975,13 +22067,7 @@ gen_expr:
     ; The first element's raw 64 bits remain in RAX while the other qwords
     ; shift down one slot. rep movsq copies forward (dest < source) safely.
     ; CLD establishes the required copy direction even after user inline ASM.
-    ; mov rax,[r8]      49 8B 00
-    mov dil, 0x49
-    call emit_byte
-    mov dil, 0x8B
-    call emit_byte
-    xor edi, edi
-    call emit_byte
+    ; R127: the length first (in the descriptor), then r8 = the elements.
     ; dec r9             49 FF C9
     mov dil, 0x49
     call emit_byte
@@ -21997,6 +22083,20 @@ gen_expr:
     mov dil, 0x48
     call emit_byte
     mov dil, 0xF0
+    call emit_byte
+    ; mov r8,[r8]        4D 8B 00
+    mov dil, 0x4D
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    xor edi, edi
+    call emit_byte
+    ; mov rax,[r8]      49 8B 00
+    mov dil, 0x49
+    call emit_byte
+    mov dil, 0x8B
+    call emit_byte
+    xor edi, edi
     call emit_byte
     ; mov rdi,r8         4C 89 C7
     mov dil, 0x4C
@@ -22145,159 +22245,7 @@ gen_expr:
     call emit_byte
     mov dil, 0xD8
     call emit_byte
-    call r101a_emit_kosh_extend ; R101A: grow in place inside the kosh's own region
-    test rax, rax
-    jnz .r101a_extended
-    call r65_emit_kosh_extend  ; R65: grow in place when the kosh ends at the arena cursor
-.r101a_extended:
-    ; Preserve old pointer, length, and new capacity across allocation.
-    mov dil, 0x41
-    call emit_byte
-    mov dil, 0x50
-    call emit_byte
-    mov dil, 0x41
-    call emit_byte
-    mov dil, 0x51
-    call emit_byte
-    mov dil, 0x41
-    call emit_byte
-    mov dil, 0x53
-    call emit_byte
-    mov dil, 0x4C             ; mov rax,r11
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xD8
-    call emit_byte
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0x83
-    call emit_byte
-    mov dil, 0xC0
-    call emit_byte
-    mov dil, 0x02
-    cmp qword [rel r82_on], 0 ; R82: the 5-qword header
-    je .r82_pg_2
-    mov dil, 0x05
-.r82_pg_2:
-    call emit_byte
-    mov dil, 0x48
-    call emit_byte
-    mov dil, 0xC1
-    call emit_byte
-    mov dil, 0xE0
-    call emit_byte
-    mov dil, 0x03
-    call emit_byte
-    call emit_nirmmita_from_rax
-    mov dil, 0x41
-    call emit_byte
-    mov dil, 0x5B
-    call emit_byte
-    mov dil, 0x41
-    call emit_byte
-    mov dil, 0x59
-    call emit_byte
-    mov dil, 0x41
-    call emit_byte
-    mov dil, 0x58
-    call emit_byte
-    cmp qword [rel r82_on], 0
-    je .r82_pg_plain
-    call r82_emit_grow_header ; R82: line, slot and generation carried to the new block
-    jmp .r82_pg_done
-.r82_pg_plain:
-    mov dil, 0x4C             ; mov [rax],r9
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0x08
-    call emit_byte
-    mov dil, 0x4C             ; mov [rax+8],r11
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0x58
-    call emit_byte
-    mov dil, 0x08
-    call emit_byte
-    mov dil, 0x4C             ; lea r10,[rax+16]
-    call emit_byte
-    mov dil, 0x8D
-    call emit_byte
-    mov dil, 0x50
-    call emit_byte
-    mov dil, 0x10
-    call emit_byte
-.r82_pg_done:
-    mov dil, 0x31             ; xor ecx,ecx
-    call emit_byte
-    mov dil, 0xC9
-    call emit_byte
-    mov r14, [rel code_sz]
-    mov dil, 0x4C             ; cmp rcx,r9
-    call emit_byte
-    mov dil, 0x39
-    call emit_byte
-    mov dil, 0xC9
-    call emit_byte
-    mov dil, 0x0F             ; jae copy_done rel32
-    call emit_byte
-    mov dil, 0x83
-    call emit_byte
-    mov r12, [rel code_sz]
-    xor edi, edi
-    call emit_u32
-    mov dil, 0x49             ; mov rdx,[r8+rcx*8]
-    call emit_byte
-    mov dil, 0x8B
-    call emit_byte
-    mov dil, 0x14
-    call emit_byte
-    mov dil, 0xC8
-    call emit_byte
-    mov dil, 0x49             ; mov [r10+rcx*8],rdx
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0x14
-    call emit_byte
-    mov dil, 0xCA
-    call emit_byte
-    mov dil, 0x48             ; inc rcx
-    call emit_byte
-    mov dil, 0xFF
-    call emit_byte
-    mov dil, 0xC1
-    call emit_byte
-    mov dil, 0xE9             ; jmp copy_loop
-    call emit_byte
-    mov rax, r14
-    sub rax, [rel code_sz]
-    sub rax, 4
-    mov edi, eax
-    call emit_u32
-    ; Patch jae to copy_done.
-    mov rax, [rel code_sz]
-    sub rax, r12
-    sub rax, 4
-    lea rcx, [rel code_buf]
-    mov [rcx+r12], eax
-    ; Update Sutram variable to new user pointer.
-    mov dil, 0x4C             ; mov rax,r10
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xD0
-    call emit_byte
-    mov rdi, r13
-    call emit_store_named_var
-    mov dil, 0x4D             ; mov r8,r10
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0xD0
-    call emit_byte
+    call r127_emit_grow        ; R127: grow the elements; the descriptor (every name) stays
     ; Patch initial jb to append path.
     mov rax, [rel code_sz]
     sub rax, r15
@@ -22312,16 +22260,16 @@ gen_expr:
     sub rax, 4
     mov [rcx+rdx], eax
 .r65_no_ext_patch:
+    mov rdx, [rel r127_sp_patch] ; R127: the in-region growth's jmp .space
+    mov rax, [rel code_sz]
+    sub rax, rdx
+    sub rax, 4
+    mov [rcx+rdx], eax
     mov dil, 0x5A             ; pop value -> rdx
     call emit_byte
-    mov dil, 0x4B             ; mov [r8+r9*8],rdx
-    call emit_byte
-    mov dil, 0x89
-    call emit_byte
-    mov dil, 0x14
-    call emit_byte
-    mov dil, 0xC8
-    call emit_byte
+    lea rsi, [rel r127_ap]    ; R127: mov rax,[r8] ; mov [rax+r9*8],rdx - the elements
+    mov rcx, r127_ap_len
+    call r23_emit_bytes
     mov dil, 0x49             ; inc r9
     call emit_byte
     mov dil, 0xFF
@@ -28067,9 +28015,17 @@ r126_fail_door:
     call print_str_z
     test rbx, rbx
     jz .noname
+    cmp qword [rbx], AST_FUNCALL   ; R127: a prakriya's result: its name and (...)
+    je .callname
     cmp qword [rbx], AST_VAR
     jne .noname
     mov rdi, [rbx+8]
+    call print_str_z
+    jmp .noname
+.callname:
+    mov rdi, [rbx+8]
+    call print_str_z
+    lea rdi, [rel r127_paren]
     call print_str_z
 .noname:
     mov rdi, r12
@@ -28094,7 +28050,7 @@ r126_fail_door:
     call print_str_z
     jmp .m2
 .mn:
-    lea rdi, [rel r126_kn6]        ; ?: - no name to give
+    lea rdi, [rel r127_tern]       ; R127: ?: - no name to give
     call print_str_z
 .m2:
     lea rdi, [rel r126_d_mix2]
@@ -28165,10 +28121,40 @@ r126_bind:
     R126_REST
     ret
 
+; r127_check_slice_value(rdi = a value): a slice of a kosh is not kept in a name. Its element pointer
+; is the kosh's elements at the moment it is made, and a later kosh_kship may move them (R127).
+r127_check_slice_value:
+    test rdi, rdi
+    jz .r
+    cmp qword [rdi], AST_SLICE
+    jne .r
+    R126_SAVE
+    push rax
+    push rbx
+    mov rbx, [rdi+8]
+    mov rdi, rbx
+    call is_kosh_var
+    test rax, rax
+    jz .ok
+    lea rdi, [rel r127_vb_hdr]
+    call print_str_z
+    mov rdi, rbx
+    call print_str_z
+    lea rdi, [rel r127_vb_txt]
+    jmp capacity_fail
+.ok:
+    pop rbx
+    pop rax
+    R126_REST
+.r:
+    ret
+
 ; r126_check_decl(rbx = AST_DECL): the declaration's kind against the name's.
 r126_check_decl:
     R126_SAVE
     push rax
+    mov rdi, [rbx+16]
+    call r127_check_slice_value
     mov rax, [rbx+32]
     mov esi, 3
     cmp rax, 2
@@ -28235,6 +28221,8 @@ r126_check_assign:
     xor edx, edx
     jmp r126_fail_door
 .local:
+    mov rdi, [rbx+16]
+    call r127_check_slice_value
     mov rdi, [rbx+16]
     call r126_value_kind
     mov rsi, rax

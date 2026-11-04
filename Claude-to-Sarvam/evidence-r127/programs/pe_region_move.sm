@@ -1,0 +1,10 @@
+mukhya() {
+    kosh k[1]
+    vitti z = nirmmita(8)
+    chakra i = 1 tak 20000000 {
+        kosh_kship(k, i)
+    }
+    likha("ready\n")
+    vitti x = grahan()
+    likha(k[19999999])
+}

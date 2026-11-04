@@ -1,0 +1,12 @@
+# R127: Muse R127's S2 a kosh name reassigned a mala (library mala_nava) - SIGSEGV on v300 (Muse-to-Sarvam/r127_ws1_assign_kosh_mala.sm, unchanged below).
+# v301 refuses it, or bounds-checks it; this golden keeps it so.
+yoj mala
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 11)
+    vitti m = mala_nava(4)
+    vitti a = k
+    a = m
+    likha(a[100])
+    likha("\n")
+}

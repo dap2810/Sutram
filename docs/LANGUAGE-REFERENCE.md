@@ -947,15 +947,17 @@ abort with their own diagnostics — `rikta kosh se kosh_pop`,
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
 
-### Two names for one `kosh`: `vitti a = k` is not a copy (v278; on Linux the names stay one from v284)
+### Two names for one `kosh`: `vitti a = k` is not a copy (v278; the names stay one from v302)
 
 **`vitti a = k` (or `a = k`) makes a second name for the same `kosh`, not a copy.** Both names read and write
-the same cells.
+the same cells, however the `kosh` grows.
 
-**On Linux (from v284) a `kosh` never moves**, so the two names stay one however `k` grows. Every `kosh` is made
-in a region of its own - 64 MB of address space, of which only the pages it touches are used - and grows in
-place inside it, doubling its capacity as before. Only a `kosh` past **8,388,603 elements** leaves its region:
-then it moves once, as below.
+**From v302 (R127) a `kosh` is a descriptor that never moves.** It holds the length, the capacity and the
+address of the elements; every name of the `kosh` holds the descriptor. When the `kosh` grows past its capacity
+its elements may move - into the arena while they are small, into a region of their own past 64 KiB - and the
+descriptor is updated, so every name sees the move. A region is reserved, not committed (only the pages used
+cost, on Linux and on Windows), and when a `kosh` outgrows it the elements move to a larger one and the old
+region is given back.
 
 ```
 mukhya() {
@@ -963,7 +965,7 @@ mukhya() {
     kosh_kship(k, 41)
     vitti a = k
     vitti obstacle = nirmmita(64)     # something allocated in between
-    kosh_kship(k, 42)                  # k grows - in its own region, in place
+    kosh_kship(k, 42)                  # k grows - its elements move, the descriptor does not
     k[0] = 99
     likha("a[0]=", a[0], " k[0]=", k[0])
     a[0] = 7
@@ -971,24 +973,26 @@ mukhya() {
 }
 ```
 
-prints on Linux (`examples/288`, which pins it):
+prints, on Linux and Windows (`examples/288`, which pins it):
 
 ```
 a[0]=99 k[0]=99
 a[0]=7 k[0]=7
 ```
 
-**On Windows the same from v299 (R123, the Windows round 4):** a `kosh` has its region there too and prints
-`a[0]=99 k[0]=99` / `a[0]=7 k[0]=7`. Up to v298 a Windows `kosh` always moved and `a` kept the old buffer
-(`a[0]=41 k[0]=99`); up to v283 Linux did the same whenever something had been allocated after the `kosh`.
-**On Windows, from v300 (R124), it commits only what it touches,** as Linux does: the runtime reserves the arena and each `kosh` region, and commits 64 KiB at a time where the program first touches it (one `nirmmita(64)`: about 0 MB; it was 1 GiB in v299, and 64 MiB per `kosh`).
-
-**What a region costs (R101A, measured with `tools/peak_rss.py`):** at least one 4 KB page per `kosh` that is
-used, and one `mmap` (about 4 microseconds) when a `kosh` is made. For the tree's programs that is nothing - all
-86 programs with a `kosh` use the same memory or less (one: 78 MB down to 70 MB). A loop that makes a new
-100-number `kosh` 100,000 times uses 400 MB instead of 100 MB and 0.45 s instead of 0.05 s: make the `kosh`
-once, before the loop, and `kosh_clear` it each pass (0 MB). A `kosh` that grows no longer leaves its old
-copies behind: grown to 100,000 past an allocation it used 1.8 MB, now 0.8 MB, the same as growing alone.
+- **No limit on how many:** a small `kosh` is 32 bytes of the arena and its elements (20,000 koshes: one `mmap`).
+  Up to v301 each `kosh` was a 64 MiB region of its own, so a program under a 1 GiB address limit could make about
+  15, and a second name parted from the `kosh` at 4,194,305 numbers; up to v283 it parted whenever something had
+  been allocated after the `kosh`.
+- **What it costs:** a `kosh` that grows past something allocated after it leaves its old (small) elements in the
+  arena, which is never reused - at most about as much again as the `kosh`, under 64 KiB; `parimana()` counts them.
+  A read is one more load, from the same cache line (200 million `k[i]`: 552 ms, 601 ms on v301).
+- **When memory runs out**, making or growing a `kosh` stops the program with `Sutram truti: kosh rachayitum
+  smritih na labdha` / `kosh vardhayitum smritih na labdha` (exit 1); the `kosh` is not left half-grown.
+- **A slice of a `kosh` is not kept in a name** (`vitti s = k[1:4]` is `E_KOSH_VIBHAG`): its element address is
+  the elements' address when it was made, and a later `kosh_kship` may move them. Pass the slice on directly -
+  `f(k[1:4])` - as before. A foreign function's `ptr` parameter receives the elements' address too, valid until
+  the `kosh` next grows.
 
 ### A name keeps one kind (v301, R126) — `E_VITTI_PRAKAR`, `E_KOSH_DVARA`
 

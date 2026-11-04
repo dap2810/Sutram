@@ -1,0 +1,16 @@
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 41)
+    vitti a = k
+    vitti obstacle = nirmmita(64)
+    chakra i = 1 tak 20 {
+        kosh_kship(k, i)
+    }
+    k[0] = 99
+    likha(a[0], k[0], kosh_gan(a), kosh_ksham(k), a[20])
+    likha(kosh_hri(k), kosh_iksh(a), kosh_apanay(k), k[0], kosh_gan(k))
+    kosh dasham d[0]
+    kosh_kship(d, 1.5)
+    kosh_kship(d, 2.5)
+    likha(d[1])
+}

@@ -118,6 +118,7 @@ run_gate() {                      # name, then the command
     "R123 PE memory")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r123 pe memory: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R124 lazy commit")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r124 lazy commit: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R126 kinds")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r126 kinds: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R127 descriptor")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r127 descriptor: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R93 installer gate") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r93 installer gate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "installer version") case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS //; s/ (.*//'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-100)";; esac ;;
     "version string")   case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS version //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-90)";; esac ;;
@@ -230,6 +231,7 @@ run_gate "R121 builtins"     python3 -B tests/r121/test_builtins.py --compiler .
 run_gate "R123 PE memory"    python3 -B tests/r123/test_pe_memory.py --compiler ./sutram_compiler   # R123: the memory model on PE as on ELF - parimana, mandapa parimita, kosh regions (PE run under Wine when present)
 run_gate "R124 lazy commit"  python3 -B tests/r124/test_lazy_commit.py --compiler ./sutram_compiler   # R124: Windows commits what a program touches - one nirmmita < 1 MB (was 1 GiB); runs and commit measured under Wine
 run_gate "R126 kinds"        python3 -B tests/r126/test_kinds.py --compiler ./sutram_compiler --pe   # R126: a name keeps one kind (E_VITTI_PRAKAR); a kosh leaves only by doors that keep it (E_KOSH_DVARA); runs ELF and PE (Wine)
+run_gate "R127 descriptor"   python3 -B tests/r127/test_descriptor.py --compiler ./sutram_compiler --pe   # R127: a kosh is a descriptor - names stay one past any growth, no region per kosh, failures are messages
 run_gate "R93 installer gate" python3 -B tests/r93/test_installer_version.py   # R93: the installer check passes a current installer and fails each stale shape
 run_gate "installer version" python3 tools/check_installer_version.py   # R93: Sutram-Setup.exe must embed the compiler of this version (bin/ and win/sutram.exe), and Sutram-Setup.sha256 must be its hash - the installer fell behind twice with nothing failing
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3

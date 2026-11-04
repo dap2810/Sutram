@@ -1,0 +1,13 @@
+mukhya() {
+    kosh k[1000]
+    chakra i = 0 tak 999 {
+        kosh_kship(k, i)
+    }
+    vitti s = 0
+    chakra r = 1 tak 200000 {
+        chakra i = 0 tak 999 {
+            s = s + k[i]
+        }
+    }
+    likha(s)
+}

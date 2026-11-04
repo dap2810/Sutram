@@ -616,6 +616,7 @@ r23_gen_slice:
     jmp .have
 .len_kosh:
     R23_EMIT 0x48,0x8B,0x48,0xF0       ; mov rcx,[rax-16]
+    R23_EMIT 0x48,0x8B,0x00            ; R127: mov rax,[rax] - the elements, through the descriptor
 .have:
     R23_EMIT 0x50,0x51                 ; push rax (elements); push rcx (length)
     ; lo -> push

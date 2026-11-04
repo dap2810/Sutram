@@ -1,5 +1,33 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v439 - CORRECTION 2: the decimal loop bound count is unpredictable
+
+### Measured on v282, all forms, correct syntax
+
+| Form | Output | Iterations |
+|---|---|---|
+| `chakra i = 0 tak 2` | `0 1 2` | 3 correct |
+| `chakra i = 0.0 tak 3` | `0 1 2 3` | 4 correct |
+| `chakra i = 0 tak 3.0` | `0 1 2 3 4` | 5 wrong |
+| `chakra i = 0 tak 2.5` | `0 1 2 3 4 5 6 7` | 8 wrong |
+| `chakra i = 0 tak 2.9` | `0 1 2 3 4 5 6 7` | 8 wrong |
+| `chakra i = 0 tak 0.5` | `0 1 2 3 4 5 6 7` | 8 wrong |
+
+**The count does not track the bound. `tak 0.5` and `tak 2.9` both run eight times; `tak 3.0` runs five.**
+
+**A decimal COUNTER with an integer bound is correct.** So the counter type is fine and the bound type is the defect.
+
+### I have been wrong about this twice in two turns
+**v437 said HANG.** My test was invalid syntax and printed nothing; I read nothing as non-termination.
+**v438 said OFF-BY-ONE.** I had tested only `tak 3.0`, which happens to be one extra, and generalised from one value.
+
+**The second error was worse than the first, because I made it while correcting the first.** **Both are the same failure: describing one observation as if it were the class.**
+
+### What the fix is, and what the reason is
+**Refusing a `dasham` loop bound is still right. But the reason is not "it runs one extra time" - it is "the iteration count is wrong and unpredictable, and it produces no error".**
+
+**And the test matrix must include fractional bounds.** `3.0` was the one value that looked like an off-by-one.
+
 ## v283 (Claude, R96) - a `chakra` with a decimal end is refused instead of running for ever
 
 - **Why it hung (disassembly):** the loop is whole-number code - `inc` the counter, `cmp` with the end, `jle`. A
