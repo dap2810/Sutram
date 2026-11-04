@@ -1,0 +1,7 @@
+mukhya() {
+    likha("hello\n")
+    vitti j = 0
+    yavat (j < 2000000000) {
+        j = j + 1
+    }
+}

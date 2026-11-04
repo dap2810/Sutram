@@ -1,0 +1,7 @@
+mukhya() {
+    mandapa parimita 16 {
+        kosh k[4]
+        kosh_push(k, 1)
+        likha("reached\n")
+    }
+}
