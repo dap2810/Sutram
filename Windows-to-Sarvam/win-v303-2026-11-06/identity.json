@@ -1,0 +1,48 @@
+{
+  "installed_path": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+  "installed_sha256": "4c05d5cbad99b32be1a38459f1b4b794e00f8b34f89a662ef1ca363c92ec1603",
+  "source_sha256": "4c05d5cbad99b32be1a38459f1b4b794e00f8b34f89a662ef1ca363c92ec1603",
+  "installer_sha256": "0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0",
+  "source_commit": "27f4fa74d22d6b246d955941b6e375a7a073c782",
+  "windows": [
+    10,
+    0,
+    26100
+  ],
+  "direct": {
+    "command": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "--version"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v303-review\\build\\v303-probes",
+    "timeout_seconds": 30,
+    "exit": 0,
+    "stdout": "Sutram 1.0 (v303) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+    "stderr": "",
+    "timed_out": false,
+    "elapsed_seconds": 0.0545
+  },
+  "fresh_cmd": {
+    "command": [
+      "C:\\WINDOWS\\system32\\cmd.exe",
+      "/d",
+      "/c",
+      "where sutram && sutram --version"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v303-review\\build\\v303-probes",
+    "timeout_seconds": 30,
+    "exit": 0,
+    "stdout": "C:\\Users\\dmech\\AppData\\Local\\Sutram\\bin\\sutram.exe\r\nC:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\r\nSutram 1.4.0\r\n",
+    "stderr": "",
+    "timed_out": false,
+    "elapsed_seconds": 0.2097
+  },
+  "shell_method": "New cmd.exe /d /c with PATH reconstructed from machine/user registry; captured pipes, not an interactive console.",
+  "pass": false,
+  "direct_version_pass": true,
+  "fresh_cmd_version_pass": false,
+  "path_shadow": {
+    "path": "C:\\Users\\dmech\\AppData\\Local\\Sutram\\bin\\sutram.exe",
+    "sha256": "441db69c3bcc04576bebfc4d87b1d43a53d3b1e7497ccaeb7a00bfac6e78c2a8"
+  }
+}
