@@ -16,7 +16,7 @@ Sutram 1.0 (v312) - sampurna sutra
   - **Linux PE: 587 identical, 181 refused identically, 0 DIFFER.**
   - **The 181 refusals print v311's exact messages** (paths and version normalised).
   - **No existing program changes or is newly refused.** The runtime and `sutram-link.exe` are byte-unchanged.
-  - **The Windows compiler (v312) under Wine:** RUNNING when this file was first pushed; its line is added in the next commit.
+  - **The Windows compiler (v312) under Wine:** = the Linux PE output for all 768 (587 identical, 181 refused by both), 0 differ.
 
 **Not done:**
 - **No native Windows run of v312.** Nobody has yet seen the licence page drawn, an uninstall without a window, or the registry after a v312 uninstall.
