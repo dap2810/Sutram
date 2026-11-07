@@ -16,4 +16,5 @@ RT_GetConsoleOutputCP equ RT_IAT_OFF + 72
 RT_AddVectoredExceptionHandler equ RT_IAT_OFF + 80   ; R124: lazy commit
 RT_VirtualQuery equ RT_IAT_OFF + 88
 RT_VirtualFree equ RT_IAT_OFF + 96         ; R127: munmap - a kosh's old region given back
+RT_OOM_RESERVE equ 496       ; R135: 64 KiB committed at start, given back before the out-of-memory message
 RT_ORIGINAL_CP equ 508

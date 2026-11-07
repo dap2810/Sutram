@@ -1,5 +1,19 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v288 (Claude, R106) - `likha` prints a string's text; a string condition and a kosh operand are refused; a dasham into a mala is converted
+
+- **`likha` on a string value prints its text** (a variable, `s + t`, a string-returning `prakriya`), with no
+  newline, as a literal: `likha("concat: ", s + "cd")` prints `concat: abcd` (it printed `139381365014528`). The
+  dispatch is at compile time from R105's kinds; numbers print as before. `--debug` ends a string value's trace
+  line itself. Golden 312.
+- **Muse's R101 traps**, the ones outside the `likha` emitter: a string as a condition (`yadi (s)`, `&&`/`||`,
+  `?:`; `""` was true) is `E_VARTANI_SATYA` (313); a bare `kosh` in any binop (`a == b` compared addresses) is
+  `E_KOSH_GANIT` (314); a `dasham` stored into a whole-number `mala` is converted exactly, `E_DASHAM_VITTI` for a
+  fraction (315; it stored the IEEE-754 bits). Traps 1, 2 and 7 were closed by v286/v287. Not changed: 5
+  (`likha(k)` - the `likha` emitter, left out of this commit as the brief asked) and 6 (a string in a `mala` - its
+  element is untyped; `shabda(a[0])` prints it).
+- A `kosh` made in a `mandapa` keeps its region for the program's life (unchanged; reasons in R106-00).
+
 ## v287 (Claude, R105) - strings work: `==` `!=` `<` `>` compare text, `+` makes a new string, `likha(a, " ", b)` prints three values
 
 - **`==` / `!=`** between two strings compare bytes to the NUL (the node becomes `vartani_tul(a, b) ==/!= 0`, so

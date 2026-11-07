@@ -184,6 +184,11 @@ try {
         Remove-Item -LiteralPath $part -Force -ErrorAction SilentlyContinue
     }
     Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.pending.sha256') -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $InstallDir 'install-journal.log') -Force -ErrorAction SilentlyContinue
+    # R134: an installation that stopped part-way keeps the previous files in <folder>.sutram-transaction\backup;
+    # they are the user's only copy of that installation, so uninstall leaves that folder and says where it is.
+    $txnDir = $InstallDir + '.sutram-transaction'
+    if (Test-Path -LiteralPath $txnDir -PathType Container) { Log ('Left in place (a stopped installation''s journal and backups): ' + $txnDir) }
     Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath (Join-Path $InstallDir 'install-state.ini') -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath (Join-Path $InstallDir '.sutram-install') -Force -ErrorAction SilentlyContinue

@@ -1,0 +1,13 @@
+# R134: ChatGPT R207's cell store: box[0] = k[0:1], then a growth, then a write through the stored slice - v307 printed 7 (the write went to the abandoned elements). Refused from v308.
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    mala box[1]
+    box[0] = k[0:1]
+    kosh_kship(k, 8)
+    vitti descriptor = box[0]
+    vitti old_data = descriptor[0]
+    old_data[0] = 99
+    likha(k[0])
+}

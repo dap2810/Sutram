@@ -84,7 +84,7 @@ type Sutram-Setup.sha256
   fixed one.
 
 Other inputs the payload copies from the tree unchanged, for reference: `sutram-link.exe`
-`fef35252407786b50e78eb0e0ce3bb102f4362f0b437c3f104b4526d297e2a29`, `sutram-ide-gui.exe`
+`814cb11ae1c9111be3cfaf0812a3a4e40ba8fd26f24a48ae263a11282defde2d`, `sutram-ide-gui.exe`
 `635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0`, `icons\sutram.ico`
 `b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1`.
 
@@ -106,3 +106,6 @@ and no console window, and stops it after 15 minutes (`ENGINE_WAIT_MS` in `sutra
 
 **R133 (v307):** the runtime changed again (the handler registration is checked), so `sutram-link.exe` is rebuilt
 the same way. The engine (`install-core.ps1`) and uninstaller changed; the wizard did not.
+
+**R134-R135 (v308):** the runtime and the PE layout changed (a 64 KiB commit reserve), so `sutram-link.exe` is rebuilt
+again; the engine, the uninstaller and the wizard (it logs its 15-minute stop) changed.

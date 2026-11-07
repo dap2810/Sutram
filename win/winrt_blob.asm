@@ -22,6 +22,16 @@ rt_init:
 %endif
     test rax,rax
     jz rt_init_noveh              ; R133: see rt_init_noveh, after rt_veh
+    ; R135: keep 64 KiB of commit in hand for the out-of-memory exit. Under a commit limit the failed commit can
+    ; leave less than the thread's stack needs to grow while the message is written and the process exits
+    ; (native v306: STATUS_STACK_OVERFLOW after the message at 512 MiB, and for mandapa at 64 MiB). .v_nomem
+    ; releases this first. If it cannot be had, the slot stays 0 and the exit goes on without it.
+    xor ecx,ecx
+    mov edx,0x10000
+    mov r8d,0x3000                ; MEM_COMMIT | MEM_RESERVE
+    mov r9d,4                     ; PAGE_READWRITE
+    call qword [rbx+RT_VirtualAlloc]
+    mov [rbx+RT_OOM_RESERVE],rax
     mov rsp,rbp
     pop rbp
     pop rbx
@@ -278,6 +288,9 @@ rt_veh:
     mov r8d,0x1000                ; MEM_COMMIT
     mov r9d,4
     call qword [rbx+RT_VirtualAlloc]
+%ifdef R135_FAIL_COMMIT
+    xor eax,eax                   ; test runtime only: every lazy commit fails
+%endif
     test rax,rax
     jz .v_nomem
     mov eax,-1                    ; EXCEPTION_CONTINUE_EXECUTION
@@ -286,6 +299,15 @@ rt_veh:
     ; Do not allocate, retry the fault, or use rt_syscall/rt_touch here. The
     ; diagnostic is static image data; output is best effort if stderr is closed.
     ; This path serves both kosh and nirmmita, so its message is not kosh-specific.
+    ; R135: first give back the 64 KiB rt_init kept, so the stack can grow for the rest.
+    mov rcx,[rbx+RT_OOM_RESERVE]
+    test rcx,rcx
+    jz .v_noreserve
+    mov qword [rbx+RT_OOM_RESERVE],0
+    xor edx,edx
+    mov r8d,0x8000                ; MEM_RELEASE
+    call qword [rbx+RT_VirtualFree]
+.v_noreserve:
     mov ecx,-12                   ; STD_ERROR_HANDLE
     call qword [rbx+RT_GetStdHandle]
     mov rcx,rax

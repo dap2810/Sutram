@@ -1,7 +1,7 @@
-# Sutram 1.0 (v307) — release notes
+# Sutram 1.0 (v308) — release notes
 
-**Compiler `Sutram 1.0 (v307) - sampurna sutra`, 6 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v307). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v308) - sampurna sutra`, 6 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v308). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -94,10 +94,14 @@ succeeded; use the checked form when the program must detect a failure and go on
 - **A slice of a `kosh` is a view of the elements as they are when it is made.** So (`E_KOSH_VIBHAG`):
   - it cannot be kept in a name (`vitti s = k[1:4]`);
   - it cannot be given to a `prakriya` that may grow a `kosh` (it, or one it calls, runs `kosh_kship`);
-  - it cannot be given beside another argument that has a call in it (the call could grow the `kosh` first) - to a
-    `prakriya` called by its name, **or through a function value** (`vitti f = badal; f(k[0:1], kosh_kship(k, 8))`:
-    v306 compiled that, and the callee wrote into the old elements or read a released region - ChatGPT R205-206 S3,
-    refused from v307).
+  - it cannot be given beside another argument that has a call in it (the call could grow the `kosh` first);
+  - **it goes through no door a `kosh` may not** (v308, ChatGPT R207): not into a cell or field (`box[0] = k[0:1]`),
+    a module `vitti`, another `kosh` (`kosh_kship(h, k[0:1])`), a raw store, nor to an untyped parameter
+    (`keep(k[0:1])` with `prakriya keep(x)`) - **and so not through a function value at all**, whose parameters are
+    untyped (v306 compiled `f(k[0:1], kosh_kship(k, 8))` and lost the write or crashed, R205-206 S3; v307 refused
+    that form; v308 refuses every slice of a `kosh` to a function value). A `vibhag` parameter keeps the slice's
+    kind, so forwarding it does not open a door. Up to v307 these printed the old value: the write went to elements
+    the `kosh` had left.
   Passed on directly, to a `prakriya` that only reads, it is safe: `yog(k[1:4])`. In `k[lo:]` the end is the length
   after `lo` is evaluated (v305).
 - **`parimana()` counts:** occupied arena storage (including temporary buffers in open blocks, `kosh` descriptors and
@@ -119,7 +123,11 @@ succeeded; use the checked form when the program must detect a failure and go on
     0 MB (measured under Wine; native Windows commit is the owner's measurement).
   - **When Windows refuses that commit** (a commit limit, or the system out of memory), the program stops with
     `Sutram truti: smritih na labdha` on stderr and exit 1 (v306). Up to v305 it died with an access violation and
-    printed nothing (native Windows, 64-640 MiB job commit limits). **It is fatal:** there is no recovery, and no
+    printed nothing (native Windows, 64-640 MiB job commit limits). Under v306 two cases printed the message and then
+    died with `STATUS_STACK_OVERFLOW` (512 MiB, and a `mandapa` at 64 MiB: the commit left after the failure was too
+    little for the thread's stack to grow while exiting); **from v308 the runtime keeps 64 KiB of commit from the
+    start and gives it back before the message**, so the exit has room - native confirmation is the owner's.
+    **It is fatal:** there is no recovery, and no
     promise that the operation in progress was left whole. It applies after the runtime's memory handler is
     installed; **if Windows refuses to install that handler**, the program stops at once with
     `Sutram truti: smriti-prabandhah na arabdhah` and exit 1 (v307; up to v306 it ran on and died at the first touch
@@ -175,13 +183,20 @@ succeeded; use the checked form when the program must detect a failure and go on
     new terminal would get and compares `sutram --version`;
   - **it cannot wait forever:** the engine runs without a console window, with `-NonInteractive`, no progress bars
     and no prompts, and the wizard stops it after 15 minutes and reports a failure (v306);
-  - **an installation that stops part-way is finished by the next run** (v307). The v303 copy stopped inside file
-    132 of 657 (left empty), after deleting the previous installation's 643 files; every later run refused it as "a
-    user file". Now the first change to the folder records what is being installed (`payload.pending.sha256`), the
-    next run treats those files as its own, each file is named in the log before it is copied and written under a
-    temporary name first, and an upgrade overwrites files in place and deletes only those the new payload lacks.
-    **Why the v303 copy stopped is still not known** (security software that watches mass deletes is the leading
-    candidate; not confirmed);
+  - **an installation is a journaled transaction** (v308, after ChatGPT R207). A folder beside the installation
+    (`<folder>.sutram-transaction`, same volume) holds a journal written through to disk before anything in the
+    installation changes, the staged files (each logged when its copy starts and ends, and checked by hash) and the
+    backups; every file reaches the installation by a rename, so none is ever half-written; a replaced file is
+    backed up first; files the new version lacks go to the backup. **A run that stops is finished by the next**,
+    which reads the journal. A file that is not what the installer wrote is never replaced: all such files are
+    listed, with a way out (move them, or the folder, aside), and nothing changes. The backups are removed once the
+    installation is complete;
+  - **the stops themselves:** the v303 copy stopped inside file 132 of 657 (left empty) and the v306 same-folder
+    upgrade after about 117 files (native, 6 November); both had just deleted the previous installation's files,
+    and in the v306 stop Windows reported **every thread of the engine, and the wizard's original threads, suspended**. Nothing in
+    Sutram suspends a thread; security software that holds a process after a mass delete is the leading
+    explanation, **not confirmed**. v307-v308 no longer delete first. A wizard that is itself suspended cannot run
+    its 15-minute stop; when the stop does fire, it now writes a line to the engine's log (v308);
   - Windows' list of installed apps shows the compiler's version (`1.0.307`), not `0.1.0` (v307);
   - **its PowerShell scripts are unsigned, and run with `-ExecutionPolicy Bypass`** for that process only. A policy
     set by Group Policy still overrides it;
@@ -231,6 +246,10 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v308:** a slice of a `kosh` goes through no door a `kosh` may not - cells, fields, module `vitti`, another `kosh`,
+  raw stores, untyped and function-value parameters - by one predicate (ChatGPT R207); the Windows out-of-memory exit
+  keeps 64 KiB of commit in hand, so it no longer overflows the stack after the message; the installer is a
+  journaled transaction beside the installation; the wizard logs its 15-minute stop.
 - **v307:** a `kosh` slice given through a function value beside an argument with a call is refused, as for a
   direct call (ChatGPT R205-206 S3: v306 lost the write or crashed); the Windows runtime stops with a message if its
   memory handler cannot be installed (R205-206 W1); an interrupted installation is finished by the next run, the log

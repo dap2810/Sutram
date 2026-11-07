@@ -1,0 +1,11 @@
+# R134: Control: a slice given directly to a vibhag parameter and written - prints 99 (a view).
+prakriya badal(vibhag s) {
+    s[0] = 99
+    nivartanam 0
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    badal(k[0:1])
+    likha(k[0])
+}

@@ -1,0 +1,17 @@
+# R134: a slice forwarded through a vibhag parameter, then stored in the caller's mala - v307 printed 7. Refused from v308 (the vibhag parameter keeps the slice's kind).
+prakriya rakh(vibhag s, m) {
+    m[0] = s
+    nivartanam 0
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    mala box[1]
+    rakh(k[0:1], box)
+    kosh_kship(k, 8)
+    vitti d = box[0]
+    vitti old_data = d[0]
+    old_data[0] = 99
+    likha(k[0])
+}

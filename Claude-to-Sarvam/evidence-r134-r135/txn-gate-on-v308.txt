@@ -1,0 +1,20 @@
+PASS  the transaction folder is beside the target (same volume): <target>.sutram-transaction
+PASS  the journal is written through and flushed
+PASS  BEGIN is journaled before the pending hint, the staging and any change to the target
+PASS  one installer at a time: the transaction folder is locked
+PASS  each file is logged START before its copy and DONE after it, verified by hash between
+PASS  a staged file is journaled
+PASS  a replaced file is journaled and backed up before the new one is renamed in, then PUBLISHED
+PASS  files reach the target by rename only; the previous payload is not deleted first
+PASS  files the new payload lacks go to the backup, not deleted
+PASS  a rerun reads what the journal staged, published and committed
+PASS  a file is the installer's own if it matches the previous manifest, the pending one, the new payload or the journal
+PASS  every other file is preserved and listed, with a way out, before anything changes
+PASS  COMMITTED after the state, then the hint is removed, then the folder is cleaned up
+PASS  a rerun that finds a committed journal only cleans up
+PASS  uninstall leaves a stopped installation's backups and says where
+PASS  the wizard writes to the engine log when its 15-minute stop fires
+PASS  Windows is told the compiler's version
+PASS  Sutram-Setup.exe embeds this install-core.ps1
+PASS  Sutram-Setup.exe embeds this uninstall-core.ps1
+r134 install transaction: 19 checks, 0 failed

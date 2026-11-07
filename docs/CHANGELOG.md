@@ -1,4 +1,27 @@
-> **The 20 newest entries.** Older ones, from "v287" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v288" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v308 (Claude, R134 + R135) - one predicate for the slice's doors; the stack after the OOM message; a journaled install
+
+- **A slice of a `kosh` goes through no door a `kosh` may not** (ChatGPT R207). Each door - a cell or field store,
+  a module `vitti`, an untyped or function-value parameter, a raw store, a builtin's other argument, a phal
+  result - asked `r126_is_kosh_value` (kinds 2, 3, 6), which does not know a slice (kind 1). Reproduced on v307:
+  `box[0] = k[0:1]`, `keep(k[0:1])` with an untyped `keep`, `G = k[0:1]`, `kosh_kship(h, k[0:1])` and a slice
+  forwarded through a `vibhag` parameter into the caller's `mala` all compiled, and a write through the kept slice
+  was lost (printed 7). Now every door calls `r134_holds_kosh` (a kosh, or a slice of a kosh, of a slice name or
+  of a `vibhag` parameter, or such a name), and only it calls `r126_is_kosh_value` - gate `R134 one predicate`
+  fails if a new door asks the old question. A slice to a function value is now refused outright (its parameters
+  are untyped): `tests/r133/indirect/safe1.sm`, which compiled in v307, is the one program the guard shows changed.
+- **Windows out-of-memory exit:** the runtime commits 64 KiB at start and releases it before writing
+  `smritih na labdha` (native v306: `STATUS_STACK_OVERFLOW` after the message at 512 MiB and for `mandapa` at 64 MiB,
+  6 of 6 - the commit left after the failure could not grow the stack for the exit). Gate `R133 handler
+  registration` adds a test runtime whose every lazy commit fails (message, exit 1, under Wine). Every PE changes.
+- **The installer is a journaled transaction** (R207 WS3): `<folder>.sutram-transaction` beside the installation
+  holds a write-through journal (BEGIN before any change), the staged files (START/DONE per file, hash-checked)
+  and backups; files reach the installation only by rename; a rerun finishes from the journal; files that are not
+  the installer's are listed and kept. Replaces v307's pending-manifest-and-partial-copy scheme. Gate `R134 install
+  transaction` (replaces `R133 interrupted install`; v307 fails 16 of 19). The wizard writes to the engine log when
+  its 15-minute stop fires. `tests/windows/test_installer_e2e.py` adds a user-file conflict case.
+- `sutram-link.exe` rebuilt. No Linux program changes bytes except `safe1` (now refused).
 
 ## v307 (Claude, R133) - a slice through a function value, the handler that was never checked, the interrupted install
 
@@ -290,17 +313,3 @@
 - R107-00 prices the block-arena `kosh` design (not built): a slot costs about 21 instructions and no system call
   against a region's 14 and an `mmap`; kb1 0.02 s / 0 KB against 0.48-0.99 s / 400 MB; a `kosh` grown to 1,000 in a
   block leaves 8,656 dead bytes.
-
-## v288 (Claude, R106) - `likha` prints a string's text; a string condition and a kosh operand are refused; a dasham into a mala is converted
-
-- **`likha` on a string value prints its text** (a variable, `s + t`, a string-returning `prakriya`), with no
-  newline, as a literal: `likha("concat: ", s + "cd")` prints `concat: abcd` (it printed `139381365014528`). The
-  dispatch is at compile time from R105's kinds; numbers print as before. `--debug` ends a string value's trace
-  line itself. Golden 312.
-- **Muse's R101 traps**, the ones outside the `likha` emitter: a string as a condition (`yadi (s)`, `&&`/`||`,
-  `?:`; `""` was true) is `E_VARTANI_SATYA` (313); a bare `kosh` in any binop (`a == b` compared addresses) is
-  `E_KOSH_GANIT` (314); a `dasham` stored into a whole-number `mala` is converted exactly, `E_DASHAM_VITTI` for a
-  fraction (315; it stored the IEEE-754 bits). Traps 1, 2 and 7 were closed by v286/v287. Not changed: 5
-  (`likha(k)` - the `likha` emitter, left out of this commit as the brief asked) and 6 (a string in a `mala` - its
-  element is untyped; `shabda(a[0])` prints it).
-- A `kosh` made in a `mandapa` keeps its region for the program's life (unchanged; reasons in R106-00).

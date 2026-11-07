@@ -1023,7 +1023,10 @@ such a `prakriya` the `kosh` itself; give a slice to one that only reads. **The 
 value** (v307, R133): `vitti f = badal` then `f(k[0:1], kosh_kship(k, 8))` is `E_KOSH_VIBHAG`. A function value's
 target is not known when compiling, but it can reach a `kosh` only through its arguments (a whole `kosh` is never
 given to one, `E_KOSH_DVARA`), so the rule for it is the argument-order one: no argument with a call beside the slice.
-`f(k[0:1], 5)` is allowed and writes through.
+`f(k[0:1], 5)` was allowed in v307. **From v308 (R134) a slice of a `kosh` goes through no door a `kosh` may not:**
+a cell or field, a module `vitti`, another `kosh`, a raw store, an untyped parameter - and so no function value,
+whose parameters are untyped. A `vibhag` parameter keeps the kind: `prakriya rakh(vibhag s, m) { m[0] = s }` is
+refused. All are `E_KOSH_VIBHAG`. To keep values, copy them; to share them, pass the `kosh`.
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.

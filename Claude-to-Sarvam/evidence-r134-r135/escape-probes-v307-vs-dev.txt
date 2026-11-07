@@ -1,0 +1,19 @@
+# R134: the escape probes with v307 (./sutram_compiler then) and the v308 source before the version bump (dev).
+##### Sutram 1.0 (v307) - sampurna sutra /home/claude/sutram/sutram_compiler
+c1_direct_read: refused truti: agyat prakriya: vibhag_aayam
+c2_direct_write: runs -> 99 (exit 0)
+c3_mala_cell: runs -> 5 (exit 0)
+e1_cell: runs -> 7 (exit 0)
+e2_keep: runs -> 7 (exit 0)
+e3_global: runs -> 7 (exit 0)
+e4_fwd: runs -> 7 (exit 0)
+e5_pushslice: runs -> 7 (exit 0)
+##### Sutram 1.0 (v307) - sampurna sutra /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r134/dev
+c1_direct_read: refused truti: agyat prakriya: vibhag_aayam
+c2_direct_write: runs -> 99 (exit 0)
+c3_mala_cell: runs -> 5 (exit 0)
+e1_cell: refused truti 
+e2_keep: refused truti 
+e3_global: refused truti 
+e4_fwd: refused truti 
+e5_pushslice: refused truti 

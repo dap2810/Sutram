@@ -1,4 +1,5 @@
-# R133: Control: a kosh slice through a function value with no call beside it - writes through, prints 0 and 99.
+# R133: a kosh slice through a function value with no call beside it - wrote through (0, 99) up to v307.
+# R134: refused from v308 - a function value's parameters are untyped, and an untyped parameter can keep a slice (E_KOSH_VIBHAG).
 prakriya badal(vibhag s, ignored) {
     s[0] = 99
     nivartanam 0

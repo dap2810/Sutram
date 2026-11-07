@@ -1,0 +1,14 @@
+# R134: Control: a slice given directly to a vibhag parameter and read - prints 7.
+prakriya yogam(vibhag s) {
+    vitti t = 0
+    chakra i = 0 tak pankti_gan(s) - 1 {
+        t = t + s[i]
+    }
+    nivartanam t
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 3)
+    kosh_kship(k, 4)
+    likha(yogam(k[0:2]))
+}

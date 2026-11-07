@@ -121,7 +121,8 @@ run_gate() {                      # name, then the command
     "R127 descriptor")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r127 descriptor: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R130 installer engine")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r130 installer engine: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R133 indirect slice")    line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r133 indirect slice: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
-    "R133 interrupted install") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r133 interrupted install: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R134 install transaction") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r134 install transaction: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R134 one predicate")     line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r134 one predicate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R133 handler registration") line=$(tail -1 /tmp/g_out.$$); case "$line" in *"NOT RUN"*) skip "$name" "$(echo "$line" | cut -c1-80)";; *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r133 handler registration: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R93 installer gate") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r93 installer gate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "installer version") case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS //; s/ (.*//'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-100)";; esac ;;
@@ -238,7 +239,8 @@ run_gate "R126 kinds"        python3 -B tests/r126/test_kinds.py --compiler ./su
 run_gate "R127 descriptor"   python3 -B tests/r127/test_descriptor.py --compiler ./sutram_compiler --pe   # R127: a kosh is a descriptor - names stay one past any growth, no region per kosh, failures are messages
 run_gate "R130 installer engine" python3 -B tests/r130/test_installer_engine.py   # R130: the engine cannot wait forever, refuses a second Sutram, and checks a new terminal; Sutram-Setup.exe embeds it
 run_gate "R133 indirect slice" python3 -B tests/r133/test_indirect_slice.py   # R133 (ChatGPT S3): a kosh slice to a function value beside a call is refused
-run_gate "R133 interrupted install" python3 -B tests/r133/test_installer_recovery.py   # R133: an installation that stops part-way is finished by the next run; the log names each file
+run_gate "R134 install transaction" python3 -B tests/r134/test_install_transaction.py   # R134-R135: a journaled transaction beside the target; each file logged START/DONE; a stop is finished by the next run
+run_gate "R134 one predicate" python3 -B tests/r134/test_one_predicate.py   # R134 (ChatGPT R207): every door a kosh may not pass refuses a slice of one too, through one predicate
 run_gate "R133 handler registration" python3 -B tests/r133/test_veh_registration.py   # R133 (ChatGPT W1): a failed AddVectoredExceptionHandler stops with a message, not an access violation (Wine)
 run_gate "R93 installer gate" python3 -B tests/r93/test_installer_version.py   # R93: the installer check passes a current installer and fails each stale shape
 run_gate "installer version" python3 tools/check_installer_version.py   # R93: Sutram-Setup.exe must embed the compiler of this version (bin/ and win/sutram.exe), and Sutram-Setup.sha256 must be its hash - the installer fell behind twice with nothing failing
@@ -258,7 +260,7 @@ fi
 # Windows cannot be run here. R34: it HAS been run, on real Windows 11 (Windows-to-Sarvam/,
 # Claude-to-Sarvam/evidence-r34/): there, run tests/r34/test_link_windows.py,
 # tools/ide_examples_windows.ps1 and tools/accept-windows.ps1. Say plainly it is not run here.
-skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1, tests/windows/test_commit_oom.py (R131), tests/windows/test_installer_e2e.py --i-understand-this-installs (R130, R133: a stopped installation finished)"
+skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1, tests/windows/test_commit_oom.py (R131), tests/windows/test_installer_e2e.py --i-understand-this-installs (R130, R133-R134: a stopped installation finished, a user file kept)"
 
 # R38: doc counts, LAST. doc_counts_gate.py normally runs gates.sh itself, which
 # would recurse if called from here. It now accepts --totals/--suite-pass (see its

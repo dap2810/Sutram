@@ -1,0 +1,6 @@
+# R134: Control: an ordinary mala cell store - prints 5.
+mukhya() {
+    mala m[4]
+    m[0] = 5
+    likha(m[0])
+}

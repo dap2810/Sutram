@@ -30,13 +30,15 @@ setting, so on a machine managed that way the scripts are still refused and the 
 reports the failure. Signing the scripts is the remaining step for such machines.
 End users need no NASM, linker or Python.
 
-An installation that stops part-way (R133: a hang, a closed window, a machine that
-slept) leaves `payload.pending.sha256` in the folder, written before any other change.
-Running the installer again finishes it: files that match the previous manifest, the
-pending one, or the new payload are the installer's own and are replaced; a file that
-matches none of them is refused as changed since installation. Each file is named in the
-log before it is copied, and copied under `<name>.sutram-partial` first, so a stop never
-leaves a half-written file under the real name.
+An installation is a journaled transaction (R134, after ChatGPT R207). A folder beside the
+installation, on the same volume (`<folder>.sutram-transaction`), holds a journal that is
+written through to disk before anything in the installation changes, the staged files (each
+logged START and DONE, and checked by hash) and backups of the files it replaces. Files reach
+the installation only by a rename, so none is ever half-written. Running the installer again
+after a stop finishes the transaction from its journal. A file that is not what the installer
+wrote is never replaced: such files are listed with a way out, and nothing changes. The
+transaction folder is removed once the installation is complete; uninstall leaves an
+unfinished one in place, because its backups may be the only copy of the previous installation.
 
 Developer-only verification: install-core.ps1 accepts -VerifyOnly. It extracts to
 TEMP, checks every payload hash and starts compiler --version/--help, then exits

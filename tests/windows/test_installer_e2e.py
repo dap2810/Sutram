@@ -6,8 +6,9 @@ bare `sutram` to the installed compiler and prints this version. It runs the ins
 (install-core.ps1, with the wizard's own PowerShell flags) on the payload of the tree's Sutram-Setup.exe, with
 -AddPath, into %LOCALAPPDATA%\\Programs\\Sutram, then checks:
 
-  0. (R133) an installation stopped at file 132 - the engine killed as soon as its log names that file, as the v303
-     copy stopped - leaves payload.pending.sha256, and the next run finishes it rather than refusing;
+  0. (R133-R134) an installation stopped at file 132 - the engine killed as soon as its log says START 132/, as the
+     v303 copy stopped - leaves its journal (<folder>.sutram-transaction); a file the user then changes is refused and
+     kept; and the next run finishes the installation rather than refusing it;
   1. the engine exits 0 within 15 minutes and its log ends with 'Installation complete', with no pending record or
      unfinished '*.sutram-partial' copy left;
   2. a new `cmd.exe /d /c "where sutram & sutram --version"`, with PATH rebuilt from the registry (machine, then user)
@@ -76,15 +77,25 @@ def main():
     p = subprocess.Popen(engine(stop_log), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     t0, seen = time.time(), False
     while time.time() - t0 < 600 and p.poll() is None:
-        if os.path.exists(stop_log) and 'Copying 132/' in open(stop_log, encoding='utf-8-sig', errors='replace').read():
+        if os.path.exists(stop_log) and 'START 132/' in open(stop_log, encoding='utf-8-sig', errors='replace').read():
             seen = True
             break
         time.sleep(0.05)
     subprocess.run(['taskkill', '/F', '/T', '/PID', str(p.pid)], capture_output=True)
     p.wait(timeout=60)
     check(seen, 'an installation is stopped while its log names file 132')
-    check(os.path.exists(os.path.join(install_dir, 'payload.pending.sha256')),
-          'the stopped installation left payload.pending.sha256')
+    check(os.path.exists(os.path.join(install_dir + '.sutram-transaction', 'journal.txt')),
+          'the stopped installation left its journal beside the folder (R134)')
+    # R134: a user's own file where the payload would put one is preserved, not overwritten: expect a refusal that
+    # names it and changes nothing; then remove it and let the next run finish.
+    users = os.path.join(install_dir, 'README.md')
+    os.makedirs(install_dir, exist_ok=True)
+    open(users, 'w', encoding='utf-8').write('my own notes\n')
+    rr = subprocess.run(engine(os.path.join(work, 'install-conflict.log')), capture_output=True, text=True, timeout=900)
+    ctext = open(os.path.join(work, 'install-conflict.log'), encoding='utf-8-sig', errors='replace').read()
+    check(rr.returncode != 0 and 'preserved' in ctext and open(users, encoding='utf-8').read() == 'my own notes\n',
+          'a user file at a payload path is refused, named and left as it was')
+    os.remove(users)
     log = os.path.join(work, 'install.log')
     t0 = time.time()
     try:
@@ -97,6 +108,7 @@ def main():
     check('Installation complete' in text, 'its log records the completion; last line: ' + (text.strip().split('\n') or [''])[-1])
     left = [os.path.join(d, f) for d, _, fs in os.walk(install_dir) for f in fs
             if f.endswith('.sutram-partial') or f == 'payload.pending.sha256']
+    left += [install_dir + '.sutram-transaction'] if os.path.exists(install_dir + '.sutram-transaction') else []
     check(not left, f'no pending record or unfinished copy is left ({left[:3]})')
     env = dict(os.environ, PATH=fresh_path())
     w = subprocess.run(['cmd.exe', '/d', '/c', 'where sutram & sutram --version'], capture_output=True, text=True,

@@ -73,8 +73,8 @@ pe_name_VirtualFree: dw 0
 db "VirtualFree",0
 align 2, db 0
 pe_import_dll: db "KERNEL32.dll",0
-%if ($-pe_import_template) > RT_ORIGINAL_CP
-%error "PE import block overlaps RT_ORIGINAL_CP"
+%if ($-pe_import_template) > RT_OOM_RESERVE
+%error "PE import block overlaps RT_OOM_RESERVE / RT_ORIGINAL_CP"
 %endif
 times RT_IMPORT_BYTES-($-pe_import_template) db 0
 pe_import_fixups:

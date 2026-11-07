@@ -8,10 +8,13 @@ slice, grew k, and the callee wrote into the abandoned buffer (prints 0 and 7) o
 
   refused (E_KOSH_VIBHAG): s3small, s3big, st1 (statement form), ind_fv_arg (growth inside another call),
                            alias_sl (slice of an alias), and the direct controls s3small_direct, s3big_direct, ind_wrap;
-  refused (E_KOSH_DVARA):  ind_k (a whole kosh to a function value - unchanged);
-  compiles and writes through: safe1 (a slice to a function value with nothing beside it) prints 0 and 99.
+  ind_k (a whole kosh to a function value, beside a slice of it): E_KOSH_DVARA up to v307; from v308 the slice,
+                           the first argument, is refused first (E_KOSH_VIBHAG);
+  safe1 (a slice to a function value with nothing beside it): compiled and wrote through up to v307; from v308
+  (R134, one predicate) refused - a function value's parameters are untyped, and an untyped parameter can keep a
+  slice past its kosh's growth (tests/r134/escape/e2_keep.sm).
 
-  python3 tests/r133/test_indirect_slice.py [--compiler PATH]     (v306 fails 5 of the 10)
+  python3 tests/r133/test_indirect_slice.py [--compiler PATH]     (v306 fails 6 of the 10; v307 fails 1, safe1)
 Last line: "r133 indirect slice: N checks, M failed".
 """
 import os, subprocess, sys, tempfile
@@ -21,7 +24,7 @@ DIR = os.path.join(ROOT, 'tests', 'r133', 'indirect')
 WANT = {
     's3small': 'E_KOSH_VIBHAG', 's3big': 'E_KOSH_VIBHAG', 'st1': 'E_KOSH_VIBHAG', 'ind_fv_arg': 'E_KOSH_VIBHAG',
     'alias_sl': 'E_KOSH_VIBHAG', 's3small_direct': 'E_KOSH_VIBHAG', 's3big_direct': 'E_KOSH_VIBHAG',
-    'ind_wrap': 'E_KOSH_VIBHAG', 'ind_k': 'E_KOSH_DVARA', 'safe1': '0\n99\n',
+    'ind_wrap': 'E_KOSH_VIBHAG', 'ind_k': 'E_KOSH_VIBHAG', 'safe1': 'E_KOSH_VIBHAG',
 }
 
 

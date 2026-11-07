@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v307) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v308) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -615,6 +615,8 @@ r54_builtin_arity_table:
     r129_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: prakriya '", 0
     r129_vb_grow db "' koshan vardhayitum shaknoti - kosh-vibhagah tasyai na diyate (vriddhau tasya mulyani anyatra gacchanti)", 10, 0
     r129_vb_call db "' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)", 10, 0
+    r134_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah '", 0
+    r134_vb_hint db "Sanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru", 10, 0
     r129_vb_hint db "Sanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat", 10, 0
     r127_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh '", 0
     r127_vb_txt db "' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti", 10
@@ -28151,6 +28153,10 @@ r126_fail_door:
     mov rbx, rdi
     mov r12, rsi
     mov r13, rdx
+    call r134_kosh_slice           ; R134: a slice is named as one, E_KOSH_VIBHAG
+    test eax, eax
+    jnz .slice
+    mov rdi, rbx
     call r126_value_kind
     cmp eax, 6
     je .mix
@@ -28181,6 +28187,22 @@ r126_fail_door:
     call print_str_z
 .hint:
     lea rdi, [rel r126_d_hint]
+    jmp capacity_fail
+.slice:
+    lea rdi, [rel r134_vb_hdr]
+    call print_str_z
+    mov rdi, [rbx+8]               ; the slice's base, or the slice name
+    call print_str_z
+    mov rdi, r12
+    call print_str_z
+    test r13, r13
+    jz .shint
+    mov rdi, r13
+    call print_str_z
+    lea rdi, [rel r126_nl]
+    call print_str_z
+.shint:
+    lea rdi, [rel r134_vb_hint]
     jmp capacity_fail
 .mix:
     lea rdi, [rel r126_d_mix]
@@ -28213,6 +28235,59 @@ r126_is_kosh_value:
     ret
 .y:
     mov eax, 1
+    ret
+
+; R134 (ChatGPT R207): THE predicate for every door a kosh must not pass - a cell, a field, a module vitti, an
+; untyped (or unknown, or function-value) parameter, a raw store, a builtin's other argument, a phal result.
+; Up to v307 each door asked r126_is_kosh_value, which knows kinds 2, 3 and 6 and not a slice (kind 1), so a
+; slice of a kosh went into a cell (box[0] = k[0:1]) or an untyped parameter (keep(k[0:1])) and outlived the
+; elements it points at. A slice holds a kosh's elements' address as they were when it was made: it is the
+; kosh's borrow, and goes through no door the kosh may not. Every door calls this one; a gate (R134 one
+; predicate) fails if anything else calls r126_is_kosh_value.
+; r134_holds_kosh(rdi = expression) -> rax = 1 if it is a kosh on some path (kinds 2, 3, 6), or may borrow one's
+; elements: a slice of a kosh or of a kosh's alias (k[lo:hi]), a slice of a slice name or vibhag parameter (s[lo:hi],
+; whose source may be a kosh), or a slice name / vibhag parameter itself. A slice of a mala, made in place,
+; is not a kosh's borrow.
+r134_holds_kosh:
+    push rdi
+    call r126_is_kosh_value
+    pop rdi
+    test eax, eax
+    jnz .y
+    call r134_kosh_slice
+    ret
+.y:
+    mov eax, 1
+    ret
+
+; r134_kosh_slice(rdi = expression) -> rax = 1 for the slice half of r134_holds_kosh. Preserves rdi.
+r134_kosh_slice:
+    push rdi
+    push rbx
+    xor eax, eax
+    test rdi, rdi
+    jz .out
+    mov rbx, rdi
+    cmp qword [rbx], AST_VAR
+    je .name
+    cmp qword [rbx], AST_SLICE
+    jne .out
+    mov rdi, [rbx+8]
+    call is_kosh_var
+    test rax, rax
+    jnz .yes
+    mov rdi, [rbx+8]
+    call r23_is_slice_var
+    jmp .out
+.name:
+    mov rdi, [rbx+8]
+    call r23_is_slice_var
+    jmp .out
+.yes:
+    mov eax, 1
+.out:
+    pop rbx
+    pop rdi
     ret
 
 ; r126_bind(rdi = name, rsi = the kind given to it, rdx = the value expression or 0): the name keeps one
@@ -28626,7 +28701,7 @@ r126_check_assign:
     jne .out
 .cell:
     mov rdi, [rbx+16]
-    call r126_is_kosh_value
+    call r134_holds_kosh
     test eax, eax
     jz .out
     mov rdi, [rbx+16]
@@ -28644,7 +28719,7 @@ r126_check_assign:
     test rax, rax
     jz .local
     mov rdi, [rbx+16]
-    call r126_is_kosh_value
+    call r134_holds_kosh
     test eax, eax
     jz .out
     mov rdi, [rbx+16]
@@ -28678,7 +28753,7 @@ r126_check_builtin:
     cmp r12, 6
     jae .out
     mov rdi, [rbx+24+r12*8]
-    call r126_is_kosh_value
+    call r134_holds_kosh
     test eax, eax
     jz .next
     test r12, r12
@@ -28709,11 +28784,11 @@ r126_check_writemem:
     R126_SAVE
     push rax
     mov rdi, [rbx+16]
-    call r126_is_kosh_value
+    call r134_holds_kosh
     test eax, eax
     jnz .bad16
     mov rdi, [rbx+24]
-    call r126_is_kosh_value
+    call r134_holds_kosh
     test eax, eax
     jz .out
     mov rdi, [rbx+24]
@@ -28750,7 +28825,7 @@ r126_check_untyped_arg:
     pop rsi
     mov rdi, rsi
     push rsi
-    call r126_is_kosh_value
+    call r134_holds_kosh
     pop rdi
     test eax, eax
     jz .out
@@ -28777,7 +28852,7 @@ r126_check_return:
     cmp qword [rbx+16], 0          ; siddhi(v) / dosh(c): a phal result is a number - never a kosh
     je .plain
     mov rdi, [rbx+8]
-    call r126_is_kosh_value
+    call r134_holds_kosh
     test eax, eax
     jnz .bad
     jmp .out

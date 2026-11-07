@@ -1,0 +1,14 @@
+# R134: an untyped identity prakriya keep(x) given k[0:1] - v307 printed 7. Refused from v308 (a slice to an untyped parameter).
+prakriya keep(x) {
+    nivartanam x
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    vitti d = keep(k[0:1])
+    kosh_kship(k, 8)
+    vitti old_data = d[0]
+    old_data[0] = 99
+    likha(k[0])
+}

@@ -1,0 +1,2 @@
+REFUSED-NOW tests/r133/indirect/safe1.sm: v308 refuses it (old compiled it)
+pe: 584 DIFFER run old and new under Wine: 584 same output and exit, 0 changed

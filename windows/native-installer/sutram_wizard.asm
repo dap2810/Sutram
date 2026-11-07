@@ -84,6 +84,9 @@ default rel
 %define ENGINE_WAIT_MS        900000        ; R130: 15 minutes, then the engine is stopped and setup fails
 %define WAIT_TIMEOUT_CODE     0x102
 %define CREATE_NO_WINDOW      0x08000000
+%define OPEN_ALWAYS_CODE      4
+%define FILE_APPEND_DATA_CODE 4
+%define FILE_SHARE_RW         3
 %define MB_YESNO              0x00000004
 %define MB_OK                 0x00000000
 %define MB_ICONQUESTION       0x00000020
@@ -464,6 +467,8 @@ flag_installdir:  u16 " -InstallDir "
 align 2
 flag_setupexepath: u16 " -SetupExePath "
 align 2
+msg_engine_timeout: db 13,10,'[setup] The installation engine was still running after 15 minutes (ENGINE_WAIT_MS); setup stopped it and reports a failure.',13,10
+msg_engine_timeout_len equ $-msg_engine_timeout
 flag_logpath:  u16 " -LogPath "
 align 2
 flag_addpath:  u16 " -AddPath"
@@ -841,6 +846,32 @@ init_apis:
 .end:
     EPILOG
 
+; --- R135: append to a file.  rcx = UTF-16 path, rdx = data, r8 = size; best effort -----------------
+append_file:
+    PROLOG 96
+    mov  [rbp-8], rdx
+    mov  [rbp-16], r8
+    mov  edx, FILE_APPEND_DATA_CODE
+    mov  r8d, FILE_SHARE_RW
+    xor  r9d, r9d
+    mov  qword [rsp+32], OPEN_ALWAYS_CODE
+    mov  qword [rsp+40], FILE_ATTRIBUTE_NORMAL
+    mov  qword [rsp+48], 0
+    API  CreateFileW
+    cmp  rax, INVALID_HANDLE_VALUE
+    je   .done
+    mov  [rbp-24], rax
+    mov  rcx, rax
+    mov  rdx, [rbp-8]
+    mov  r8d, dword [rbp-16]
+    PTR  r9, written
+    mov  qword [rsp+32], 0
+    API  WriteFile
+    mov  rcx, [rbp-24]
+    API  CloseHandle
+.done:
+    EPILOG
+
 ; --- write a file.  rcx = UTF-16 path, rdx = data, r8 = size ---------------------
 ;     returns eax = 1 ok / 0 fail
 write_file:
@@ -1159,6 +1190,10 @@ do_install_staged:
     mov  rcx, [rel procinfo]
     mov  edx, 5000
     API  WaitForSingleObject
+    PTR  rcx, log_path           ; R135: say so in the engine's log, so the next run shows the stop fired
+    PTR  rdx, msg_engine_timeout
+    mov  r8d, msg_engine_timeout_len
+    call append_file
     mov  dword [rel exit_code], 1
     jmp  .engine_code
 .engine_ended:

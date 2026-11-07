@@ -1,0 +1,13 @@
+# R134: a slice pushed into another kosh - v307 printed 7. Refused from v308.
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    kosh h[1]
+    vitti obstacle = nirmmita(16)
+    kosh_kship(h, k[0:1])
+    kosh_kship(k, 8)
+    vitti d = h[0]
+    vitti old_data = d[0]
+    old_data[0] = 99
+    likha(k[0])
+}

@@ -8,6 +8,8 @@ param(
     [switch]$VerifyOnly
 )
 $ErrorActionPreference = 'Stop'
+$script:txnLock = $null       # R134: the transaction folder's lock, held while this run installs
+$script:journalPath = $null
 # R130: no progress bars (Expand-Archive and Copy-Item draw one, which a console can stall) and no confirmation
 # prompts: the wizard runs this with -NonInteractive and no console window, and waits at most 15 minutes.
 $ProgressPreference = 'SilentlyContinue'
@@ -50,29 +52,73 @@ function Invoke-SutramSelfTest([string]$ExePath,[string]$Argument,[string]$Stage
         $p.Dispose()
     }
 }
-# R130: copy the staged payload file by file. R133: each file is named in the log BEFORE it is copied, so a copy
-# that stops leaves the file it stopped in as the log's last line (v303 stopped in file 132 of 657 and its log said
-# only 'Copying Sutram files.'). The payload manifest is not copied here: it is written when the copy is complete.
-function Copy-StagedFiles([string]$From,[string]$To) {
+# R134 (ChatGPT R207 WS3): the installation transaction. A private folder beside the target, on the same volume
+# (<target>.sutram-transaction), holds a durable journal, the staged files and the backups of replaced files.
+# Nothing in the target is deleted, truncated or replaced before the journal says what will happen to it; every
+# file reaches the target by a rename on the same volume, so a target file is never half-written; a rerun reads the
+# journal and finishes what an interrupted run began. The v303 and v306 stalls each left a folder no later run could
+# classify (an empty file under a real name, the previous payload deleted, the new one partly written).
+function Write-Durable([string]$Path,[string]$Text,[bool]$Append) {
+    $mode = [IO.FileMode]::Create
+    if ($Append) { $mode = [IO.FileMode]::Append }
+    $fs = New-Object IO.FileStream($Path,$mode,[IO.FileAccess]::Write,[IO.FileShare]::Read,4096,[IO.FileOptions]::WriteThrough)
+    try {
+        $bytes = ([Text.UTF8Encoding]::new($false)).GetBytes($Text)
+        $fs.Write($bytes,0,$bytes.Length)
+        $fs.Flush($true)
+    } finally { $fs.Dispose() }
+}
+function Journal([string]$Line) { Write-Durable $script:journalPath ($Line + "`r`n") $true }
+function Get-Sha([string]$Path) { return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToUpperInvariant() }
+function Move-Into([string]$From,[string]$To) {
+    $dir = [IO.Path]::GetDirectoryName($To)
+    if (-not [IO.Directory]::Exists($dir)) { [void][IO.Directory]::CreateDirectory($dir) }
+    [IO.File]::Move($From,$To)
+}
+# Read-Journal(path) -> what an earlier run recorded: whether it committed, and every hash it staged or published
+# for each file (those files are this installer's own, whatever version wrote them).
+function Read-Journal([string]$Path) {
+    $j = @{ Exists = $false; Committed = $false; Known = @{} }
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $j }
+    $j.Exists = $true
+    foreach ($line in [IO.File]::ReadAllLines($Path)) {
+        $f = $line.Split("`t")
+        if ($f[0] -eq 'COMMITTED') { $j.Committed = $true; $j.Known = @{} }
+        elseif ($f[0] -eq 'BEGIN') { $j.Committed = $false }
+        elseif (($f[0] -eq 'STAGED' -or $f[0] -eq 'PUBLISHED') -and $f.Length -ge 3) {
+            if (-not $j.Known.ContainsKey($f[1])) { $j.Known[$f[1]] = @() }
+            $j.Known[$f[1]] += $f[2].ToUpperInvariant()
+        }
+    }
+    return $j
+}
+# Stage-Payload(stage, txnStage, newFiles): copy every payload file into the transaction folder, verified by hash.
+# Each file is logged when its copy starts and when it is done, so a stop names the file it stopped in.
+function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles) {
     $files = @([IO.Directory]::GetFiles($From,'*',[IO.SearchOption]::AllDirectories) | Where-Object {
-        -not [string]::Equals([IO.Path]::GetFileName($_),'payload.manifest.sha256',[StringComparison]::OrdinalIgnoreCase) })
-    Log ('Copying ' + $files.Length + ' Sutram files.')
+        -not [string]::Equals([IO.Path]::GetFileName($_),'payload.manifest.sha256',[StringComparison]::OrdinalIgnoreCase) } | Sort-Object)
+    Log ('Staging ' + $files.Length + ' Sutram files in ' + $To + '.')
     $n = 0
     foreach ($src in $files) {
         $rel = $src.Substring($From.Length).TrimStart('\')
-        $dst = Join-Path $To $rel
         $n++
-        Log ('Copying ' + $n + '/' + $files.Length + ': ' + $rel)
-        $dir = [IO.Path]::GetDirectoryName($dst)
+        $staged = Join-Path $To $rel
+        if ((Test-Path -LiteralPath $staged -PathType Leaf) -and (Get-Sha $staged) -eq $NewFiles[$rel]) {
+            Log ('Already staged ' + $n + '/' + $files.Length + ': ' + $rel)
+            continue
+        }
+        Log ('START ' + $n + '/' + $files.Length + ': ' + $rel)
+        $part = $staged + '.part'
+        $dir = [IO.Path]::GetDirectoryName($staged)
         if (-not [IO.Directory]::Exists($dir)) { [void][IO.Directory]::CreateDirectory($dir) }
-        # Copy beside it, then put it in place: a copy that stops leaves '<name>.sutram-partial', never a
-        # half-written file under the real name (v303 left an empty PROJECT-OVERVIEW.md).
-        $part = $dst + '.sutram-partial'
         [IO.File]::Copy($src,$part,$true)
-        if ([IO.File]::Exists($dst)) { [IO.File]::Delete($dst) }
-        [IO.File]::Move($part,$dst)
+        if ((Get-Sha $part) -ne $NewFiles[$rel]) { throw ('The staged copy of ' + $rel + ' does not match the payload.') }
+        if ([IO.File]::Exists($staged)) { [IO.File]::Delete($staged) }
+        [IO.File]::Move($part,$staged)
+        Journal ("STAGED`t" + $rel + "`t" + $NewFiles[$rel])
+        Log ('DONE  ' + $n + '/' + $files.Length + ': ' + $rel)
     }
-    Log ('Copied all ' + $n + ' files.')
+    return ,$files
 }
 # R133: a manifest file ('<sha256> *<relative path>' per line) as a table, relative path -> upper-case hash.
 function Read-Manifest([string]$Path) {
@@ -363,9 +409,25 @@ try {
     # written before anything else was changed: the payload it was installing. Its files are this installer's own.
     $pendingPath = Join-Path $InstallDir 'payload.pending.sha256'
     $pending = Test-Path -LiteralPath $pendingPath -PathType Leaf
+    # R134: the transaction folder beside the target, and what its journal says.
+    $txnDir = Join-Path ([IO.Path]::GetDirectoryName($InstallDir)) ([IO.Path]::GetFileName($InstallDir) + '.sutram-transaction')
+    Assert-NoReparsePath $txnDir
+    $script:journalPath = Join-Path $txnDir 'journal.txt'
+    $earlier = Read-Journal $script:journalPath
+    if ($earlier.Exists -and $earlier.Committed) {
+        Log ('Removing the folder of an installation that completed: ' + $txnDir)
+        Remove-Item -LiteralPath $txnDir -Recurse -Force
+        $earlier = Read-Journal $script:journalPath
+    }
+    if ($earlier.Exists) {
+        Log ('A previous installation stopped part-way (its journal is ' + $script:journalPath + '); this run finishes it.')
+        $pending = $true
+    }
     if ($pending) {
         Log ('A previous installation stopped part-way (it left ' + $pendingPath + '); this run finishes it.')
-        foreach ($part in [IO.Directory]::GetFiles($InstallDir,'*.sutram-partial',[IO.SearchOption]::AllDirectories)) {
+        $parts = @()
+        if ([IO.Directory]::Exists($InstallDir)) { $parts = [IO.Directory]::GetFiles($InstallDir,'*.sutram-partial',[IO.SearchOption]::AllDirectories) }
+        foreach ($part in $parts) {
             Assert-NoReparsePath $part
             Log ('Removing an unfinished copy: ' + $part)
             [IO.File]::Delete($part)
@@ -422,50 +484,107 @@ try {
         $previousFiles = Read-Manifest $previousManifest
         $pendingFiles = Read-Manifest $pendingPath
         $newFiles = Read-Manifest (Join-Path $stage 'payload.manifest.sha256')
-        if ($previousFiles.Count -gt 0 -or $pendingFiles.Count -gt 0) {
+        # R134: and what an interrupted run's journal says it staged or published. A file that matches none of these
+        # is not this installer's to replace (changed since installation, or not ours at all): it is preserved, and
+        # every such file is listed with a way out, before anything changes.
+        $conflicts = New-Object System.Collections.Generic.List[string]
+        if ($previousFiles.Count -gt 0 -or $pendingFiles.Count -gt 0 -or $earlier.Exists) {
             foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
                 $relative=$file.FullName.Substring($stage.Length+1)
                 if ($relative -eq 'payload.manifest.sha256') { continue }
                 $target=Join-Path $InstallDir $relative
                 if (Test-Path -LiteralPath $target -PathType Leaf) {
-                    $have = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToUpperInvariant()
+                    $have = Get-Sha $target
                     $ours = ($previousFiles.ContainsKey($relative) -and $have -eq $previousFiles[$relative].ToUpperInvariant()) -or
                             ($pendingFiles.ContainsKey($relative) -and $have -eq $pendingFiles[$relative]) -or
-                            ($newFiles.ContainsKey($relative) -and $have -eq $newFiles[$relative])
-                    if (-not $ours) {
-                        throw ("Upgrade would overwrite a file that is not this installer's (changed since it was installed); preserve it elsewhere first: " + $target)
-                    }
+                            ($newFiles.ContainsKey($relative) -and $have -eq $newFiles[$relative]) -or
+                            ($earlier.Known.ContainsKey($relative) -and ($earlier.Known[$relative] -contains $have))
+                    if (-not $ours) { $conflicts.Add($target) }
                 }
             }
+        }
+        if ($conflicts.Count -gt 0) {
+            foreach ($c in $conflicts) { Log ('Not this installer''s file (preserved): ' + $c) }
+            $recovery = $InstallDir + '-recovery-' + [DateTime]::Now.ToString('yyyyMMdd-HHmmss')
+            throw ($conflicts.Count.ToString() + " file(s) in the installation folder are not what this installer wrote (changed since installation, or not Sutram's), so it will not replace them: " +
+                   (($conflicts | Select-Object -First 5) -join '; ') + '. Nothing was changed. Move those files elsewhere, or move the whole folder aside (for example to ' + $recovery + '), then run this installer again.')
         }
         foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
             Assert-NoReparsePath (Join-Path $InstallDir $file.FullName.Substring($stage.Length+1))
         }
         New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-        # R133: the first change to the folder says what is being installed; it is removed only when the
-        # installation is complete. If this run stops, the next one knows these files are its own.
-        $earlierPending = $null
-        if ($pendingFiles.Count -gt 0) {   # keep what the stopped run was installing, to remove its leftovers below
-            $earlierPending = [IO.Path]::GetTempFileName()
-            [IO.File]::Copy($pendingPath,$earlierPending,$true)
+        $txnStage = Join-Path $txnDir 'stage'
+        $txnBackup = Join-Path $txnDir 'backup'
+        foreach ($d in @($txnDir,$txnStage,$txnBackup)) { if (-not [IO.Directory]::Exists($d)) { [void][IO.Directory]::CreateDirectory($d) } }
+        # One installer at a time for this folder: the lock is held until this run ends.
+        try {
+            $script:txnLock = [IO.File]::Open((Join-Path $txnDir 'lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
+        } catch { throw ('Another Sutram installer is working on ' + $InstallDir + '. Let it finish, then run this one again.') }
+        $txid = [guid]::NewGuid().ToString('N')
+        $oldManifestSha = 'none'
+        if (Test-Path -LiteralPath $previousManifest -PathType Leaf) { $oldManifestSha = Get-Sha $previousManifest }
+        # R134: the journal is durably written before anything in the target is changed.
+        Journal ("BEGIN`t" + $txid + "`t" + $InstallDir + "`t" + (Get-Sha (Join-Path $stage 'payload.manifest.sha256')) + "`t" + $oldManifestSha)
+        Log ('Transaction ' + $txid + ' begun (journal ' + $script:journalPath + ').')
+        foreach ($meta in @('payload.manifest.sha256','install-state.ini','.sutram-install','Sutram-Uninstall.exe')) {
+            $m = Join-Path $InstallDir $meta
+            $mb = Join-Path (Join-Path $txnBackup '_previous') $meta
+            if ((Test-Path -LiteralPath $m -PathType Leaf) -and -not (Test-Path -LiteralPath $mb -PathType Leaf)) {
+                $mbDir = [IO.Path]::GetDirectoryName($mb)
+                if (-not [IO.Directory]::Exists($mbDir)) { [void][IO.Directory]::CreateDirectory($mbDir) }
+                [IO.File]::Copy($m,$mb,$false)
+            }
         }
         Log 'Recording the payload being installed (payload.pending.sha256).'
         [IO.File]::Copy((Join-Path $stage 'payload.manifest.sha256'),$pendingPath,$true)
-        # R133: the new files overwrite the old in place; only files the new payload no longer has are deleted,
-        # after the copy. v303-v306 first deleted every file of the previous payload (643 in 3 s on the owner's
-        # machine) and then wrote the new ones - the mass delete-then-write that security software watches for.
-        Copy-StagedFiles $stage $InstallDir
-        if (Test-Path -LiteralPath $previousManifest -PathType Leaf) {
-            Log 'Removing files of the previous Sutram payload that this one no longer has.'
-            Remove-ManifestFiles $InstallDir $previousManifest $newFiles
+        # Stage every file beside the target first (the target is not touched while the payload is copied).
+        $files = Stage-Payload $stage $txnStage $newFiles
+        # Publish: the old file, if any, goes to the backup (journaled first), then the staged file is renamed in.
+        # v303-v306 deleted the whole previous payload first, then wrote the new one into the target.
+        Log ('Publishing ' + $files.Length + ' files into ' + $InstallDir + '.')
+        $n = 0
+        foreach ($src in $files) {
+            $rel = $src.Substring($stage.Length).TrimStart('\')
+            $n++
+            $target = Join-Path $InstallDir $rel
+            $staged = Join-Path $txnStage $rel
+            $prior = 'absent'
+            if (Test-Path -LiteralPath $target -PathType Leaf) {
+                $have = Get-Sha $target
+                if ($have -eq $newFiles[$rel]) {
+                    if (Test-Path -LiteralPath $staged -PathType Leaf) { [IO.File]::Delete($staged) }
+                    Journal ("PUBLISHED`t" + $rel + "`t" + $newFiles[$rel])
+                    continue
+                }
+                $bk = Join-Path $txnBackup $rel
+                if (Test-Path -LiteralPath $bk -PathType Leaf) {
+                    [IO.File]::Delete($target)   # an earlier run kept the original; this is that run's own copy
+                } else {
+                    Journal ("BACKUP`t" + $rel + "`t" + $have)
+                    Move-Into $target $bk
+                }
+                $prior = $have
+            }
+            Journal ("PUBLISH`t" + $rel + "`t" + $prior)
+            Log ('PUBLISH ' + $n + '/' + $files.Length + ': ' + $rel)
+            Move-Into $staged $target
+            Journal ("PUBLISHED`t" + $rel + "`t" + $newFiles[$rel])
         }
-        if ($earlierPending) {
-            Log 'Removing files of the stopped installation that this payload does not have.'
-            Remove-ManifestFiles $InstallDir $earlierPending $newFiles
-            Remove-Item -LiteralPath $earlierPending -Force -ErrorAction SilentlyContinue
+        # Files of the previous payload (or of a stopped run) that this one does not have go to the backup too,
+        # if they are still as installed; a changed one stays where it is.
+        foreach ($known in @($previousFiles,$pendingFiles)) {
+            foreach ($rel in @($known.Keys)) {
+                if ($newFiles.ContainsKey($rel)) { continue }
+                $target = Join-Path $InstallDir $rel
+                if (-not (Test-Path -LiteralPath $target -PathType Leaf)) { continue }
+                if ((Get-Sha $target) -ne $known[$rel].ToUpperInvariant()) { Log ('Preserved a changed file the new payload does not have: ' + $target); continue }
+                Journal ("OBSOLETE`t" + $rel + "`t" + $known[$rel])
+                Move-Into $target (Join-Path $txnBackup $rel)
+            }
         }
         Log 'Writing the payload manifest.'
-        [IO.File]::Copy((Join-Path $stage 'payload.manifest.sha256'),$previousManifest,$true)
+        Write-Durable $previousManifest ([IO.File]::ReadAllText((Join-Path $stage 'payload.manifest.sha256'))) $false
+        Journal "FINALIZE"
         Log 'Copying the uninstaller.'
         [IO.File]::Copy($SetupExePath,(Join-Path $InstallDir 'Sutram-Uninstall.exe'),$true)
         Log 'Writing the installation marker.'
@@ -587,14 +706,24 @@ try {
         )
         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))
 
+        Journal ("COMMITTED`t" + $txid)
         if ($pending -or (Test-Path -LiteralPath $pendingPath -PathType Leaf)) { Remove-Item -LiteralPath $pendingPath -Force }
         Log ('Installation complete: ' + $InstallDir)
+        # R134: the committed transaction's folder goes: its journal is kept as install-journal.log, the backups
+        # (the previous installation's files) are removed once the new one is complete. A stop here leaves a
+        # committed journal, which the next run only cleans up.
+        try {
+            [IO.File]::Copy($script:journalPath,(Join-Path $InstallDir 'install-journal.log'),$true)
+            if ($script:txnLock) { $script:txnLock.Dispose(); $script:txnLock = $null }
+            Remove-Item -LiteralPath $txnDir -Recurse -Force
+        } catch { Log ('The transaction folder could not be removed now (the next run removes it): ' + $txnDir) }
         # The wizard deletes its temporary staging directory after success.
         # Preserve the actual installer log under this user's installed tree
         # so the Round 62 auditor can examine real installation events.
         Copy-Item -LiteralPath $LogPath -Destination (Join-Path $InstallDir 'install.log') -Force
         Add-Content -LiteralPath $statePath -Encoding UTF8 -Value ('InstallLogSHA256='+(Get-FileHash -LiteralPath (Join-Path $InstallDir 'install.log') -Algorithm SHA256).Hash)
     } finally {
+        if ($script:txnLock) { $script:txnLock.Dispose(); $script:txnLock = $null }
         $stageFull=[IO.Path]::GetFullPath($stage)
         $tempFull=[IO.Path]::GetFullPath($env:TEMP).TrimEnd('\')
         if (-not $stageFull.StartsWith($tempFull+'\Sutram-Payload-',[StringComparison]::OrdinalIgnoreCase)) { throw 'Unsafe stage cleanup path.' }

@@ -1,0 +1,9 @@
+FAIL  e1_cell: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e2_keep: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e3_global: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e4_fwd: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e5_pushslice: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+PASS  c1_direct_read: want '7\n'; compiles and prints '7\n'
+PASS  c2_direct_write: want '99\n'; compiles and prints '99\n'
+PASS  c3_mala_cell: want '5\n'; compiles and prints '5\n'
+r134 one predicate: 8 checks, 5 failed

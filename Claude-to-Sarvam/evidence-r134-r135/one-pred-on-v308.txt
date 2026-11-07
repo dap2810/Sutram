@@ -1,0 +1,15 @@
+PASS  only r134_holds_kosh asks r126_is_kosh_value (1 call sites)
+PASS  r126_check_assign asks r134_holds_kosh
+PASS  r126_check_builtin asks r134_holds_kosh
+PASS  r126_check_writemem asks r134_holds_kosh
+PASS  r126_check_untyped_arg asks r134_holds_kosh
+PASS  r126_check_return asks r134_holds_kosh
+PASS  e1_cell: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' koshthe, kshetre athava smritau na likhyate
+PASS  e2_keep: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' asankhyita-tarke na preshyate - prakriya: keep
+PASS  e3_global: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' vaishvika-vittau na sthapyate
+PASS  e4_fwd: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 's' koshthe, kshetre athava smritau na likhyate
+PASS  e5_pushslice: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...)
+PASS  c1_direct_read: want '7\n'; compiles and prints '7\n'
+PASS  c2_direct_write: want '99\n'; compiles and prints '99\n'
+PASS  c3_mala_cell: want '5\n'; compiles and prints '5\n'
+r134 one predicate: 14 checks, 0 failed

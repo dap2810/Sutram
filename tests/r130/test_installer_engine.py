@@ -48,8 +48,9 @@ def main():
           'the engine turns off progress bars and confirmations')
     code = re.sub(r'(?m)#.*$', '', eng)
     check(not re.search(r'Read-Host|PromptForChoice|\$host\.UI|Pause\b|-Wait\b', code), 'the engine never waits for input')
-    check('Copy-StagedFiles $stage $InstallDir' in eng and "Copy-Item -Path (Join-Path $stage '*')" not in eng,
-          'the payload is copied file by file, logged every 100 files')
+    check(('Copy-StagedFiles $stage $InstallDir' in eng or 'Stage-Payload $stage $txnStage $newFiles' in eng)
+          and "Copy-Item -Path (Join-Path $stage '*')" not in eng,
+          'the payload is copied file by file and logged (R134: each start and finish, tests/r134)')
     i_other, i_stage = eng.find('Find-OtherSutram (Join-Path $InstallDir'), eng.find("$stage = Join-Path $env:TEMP")
     check(0 < i_other < i_stage, 'another Sutram installation is refused before anything is changed')
     check("'Sutram\\bin\\sutram.exe'" in eng, 'the older installers\' folder (%LOCALAPPDATA%\\Sutram) is looked at')
