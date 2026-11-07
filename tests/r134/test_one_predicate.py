@@ -12,7 +12,12 @@ slice name / vibhag parameter, or such a name itself).
      the old question fails this gate; each door check calls r134_holds_kosh;
   2. tests/r134/escape/e*.sm are refused (E_KOSH_VIBHAG); c*.sm compile and print 7, 99 and 5.
 
-  python3 tests/r134/test_one_predicate.py [--compiler PATH]     (v307 fails 5 of the 8 programs)
+  3. (R136) Muse's thirteen programs for the eight escape shapes - a mala cell (two forms), an untyped parameter, an
+     untyped result, a function value (two forms), a module vitti, a rachana field, raw nirmmita memory, a dasham
+     parameter (two forms) - are refused; its two controls (?:, an assignment in a block) stay refused.
+
+  python3 tests/r134/test_one_predicate.py [--compiler PATH]     (v306 fails 16 of the 21 programs, every escape;
+                                                                  v307 fails 14)
 Last line: "r134 one predicate: N checks, M failed".
 """
 import os, re, subprocess, sys, tempfile
@@ -20,7 +25,15 @@ import os, re, subprocess, sys, tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DIR = os.path.join(ROOT, 'tests', 'r134', 'escape')
 WANT = {'e1_cell': 'E_KOSH_VIBHAG', 'e2_keep': 'E_KOSH_VIBHAG', 'e3_global': 'E_KOSH_VIBHAG', 'e4_fwd': 'E_KOSH_VIBHAG',
-        'e5_pushslice': 'E_KOSH_VIBHAG', 'c1_direct_read': '7\n', 'c2_direct_write': '99\n', 'c3_mala_cell': '5\n'}
+        'e5_pushslice': 'E_KOSH_VIBHAG', 'c1_direct_read': '7\n', 'c2_direct_write': '99\n', 'c3_mala_cell': '5\n',
+        # R136: Muse's eight shapes (thirteen programs, Muse-to-Sarvam/r136_*.sm): every one an escape on v306
+        'm_r136_ws1_cell_minimal': 'E_KOSH_VIBHAG', 'm_r136_ws1_cell_write': 'E_KOSH_VIBHAG',
+        'm_r136_ws1_untyped_param': 'E_KOSH_VIBHAG', 'm_r136_ws1_untyped_return': 'E_KOSH_VIBHAG',
+        'm_r136_ws1_funcval_small': 'E_KOSH_VIBHAG', 'm_r136_ws1_funcval_large': 'E_KOSH_VIBHAG',
+        'm_r136_ws2_global': 'E_KOSH_VIBHAG', 'm_r136_ws2_field': 'E_KOSH_VIBHAG', 'm_r136_ws2_rawmem': 'E_KOSH_VIBHAG',
+        'm_r136_ws2_dasham_param': 'E_KOSH_VIBHAG', 'm_r136_ws2_dasham_diag': 'E_KOSH_VIBHAG',
+        # closed already on v306, by other checks (Muse's two controls)
+        'm_r136_ws2_cond_assign': 'E_KOSH_VIBHAG', 'm_r136_ws2_ternary': 'E_KOSH_DVARA'}
 DOORS = ['r126_check_assign', 'r126_check_builtin', 'r126_check_writemem', 'r126_check_untyped_arg', 'r126_check_return']
 
 

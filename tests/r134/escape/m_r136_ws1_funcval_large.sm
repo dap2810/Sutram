@@ -1,0 +1,13 @@
+# R136: Muse R136's probe r136_ws1_funcval_large (Muse-to-Sarvam/r136_ws1_funcval_large.sm, unchanged below). v306 and v307 compile the escapes; v308 refuses them.
+prakriya pratham(vibhag s, ignored) {
+    nivartanam s[0]
+}
+mukhya() {
+    kosh k[1]
+    vitti obstacle = nirmmita(8)
+    chakra i = 1 tak 8388608 {
+        kosh_kship(k, i)
+    }
+    vitti f = pratham
+    likha(f(k[0:1], kosh_kship(k, 9)))
+}

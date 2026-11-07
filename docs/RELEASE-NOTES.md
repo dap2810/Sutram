@@ -193,9 +193,12 @@ succeeded; use the checked form when the program must detect a failure and go on
     installation is complete;
   - **the stops themselves:** the v303 copy stopped inside file 132 of 657 (left empty) and the v306 same-folder
     upgrade after about 117 files (native, 6 November); both had just deleted the previous installation's files,
-    and in the v306 stop Windows reported **every thread of the engine, and the wizard's original threads, suspended**. Nothing in
-    Sutram suspends a thread; security software that holds a process after a mass delete is the leading
-    explanation, **not confirmed**. v307-v308 no longer delete first. A wizard that is itself suspended cannot run
+    and in the v306 stop Windows reported **every thread of the engine, and the wizard's original threads, suspended**.
+    **Acronis Active Protection did it:** its own log records suspending the engine and the wizard at those moments
+    (heuristic "Create Delete Full Read", native follow-up, 6 November). The v307 upgrade, which no longer deleted
+    the old files first but replaced them one by one, was suspended too (at file 87). Whether v308's staged,
+    renamed upgrade is suspended on such a machine is **not yet measured**; a clean install into an empty folder has
+    not been suspended in any run. On a machine with such protection, the installer may need to be allowed; A wizard that is itself suspended cannot run
     its 15-minute stop; when the stop does fire, it now writes a line to the engine's log (v308);
   - Windows' list of installed apps shows the compiler's version (`1.0.307`), not `0.1.0` (v307);
   - **its PowerShell scripts are unsigned, and run with `-ExecutionPolicy Bypass`** for that process only. A policy
@@ -204,6 +207,8 @@ succeeded; use the checked form when the program must detect a failure and go on
     not yet done for v307 (`tests/windows/test_installer_e2e.py` runs them); so is the upgrade over the owner's
     existing v305 installation, with the wizard;
   - the installer's hashes detect corruption, not the publisher.
+  - its logs are appended with full sharing, and a log line that cannot be written does not stop the installation
+    (up to v308's first build, a program reading the log made the engine fail: ChatGPT's v307 fixture).
 - **The linker:** `sutram-link` and the object tools still print `Sutram Error` where the compiler prints
   `Sutram truti` (v294 renamed only the compiler's).
 

@@ -1,0 +1,22 @@
+FAIL  e1_cell: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e2_keep: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e3_global: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e4_fwd: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  e5_pushslice: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+PASS  c1_direct_read: want '7\n'; compiles and prints '7\n'
+PASS  c2_direct_write: want '99\n'; compiles and prints '99\n'
+PASS  c3_mala_cell: want '5\n'; compiles and prints '5\n'
+FAIL  m_r136_ws1_cell_minimal: want 'E_KOSH_VIBHAG'; compiles and prints '140726556776352\n'
+FAIL  m_r136_ws1_cell_write: want 'E_KOSH_VIBHAG'; compiles and prints '7\n'
+FAIL  m_r136_ws1_untyped_param: want 'E_KOSH_VIBHAG'; compiles and prints '77\n7\n'
+FAIL  m_r136_ws1_untyped_return: want 'E_KOSH_VIBHAG'; compiles and prints '7\n99\n'
+PASS  m_r136_ws1_funcval_small: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a
+PASS  m_r136_ws1_funcval_large: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a
+FAIL  m_r136_ws2_global: want 'E_KOSH_VIBHAG'; compiles and prints '7\n99\n'
+FAIL  m_r136_ws2_field: want 'E_KOSH_VIBHAG'; compiles and prints '7\n99\n'
+FAIL  m_r136_ws2_rawmem: want 'E_KOSH_VIBHAG'; compiles and prints '7\n99\n'
+FAIL  m_r136_ws2_dasham_param: want 'E_KOSH_VIBHAG'; compiles and prints "'' exit -11"
+FAIL  m_r136_ws2_dasham_diag: want 'E_KOSH_VIBHAG'; compiles and prints '140726913904976.000000\n0\n'
+PASS  m_r136_ws2_cond_assign: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra 
+PASS  m_r136_ws2_ternary: want 'E_KOSH_DVARA'; refused: Sutram truti [E_KOSH_DVARA]: '?:' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - tat na sthapy
+r134 one predicate: 21 checks, 14 failed

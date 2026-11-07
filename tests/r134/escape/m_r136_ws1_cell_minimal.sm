@@ -1,0 +1,10 @@
+# R136: Muse R136's probe r136_ws1_cell_minimal (Muse-to-Sarvam/r136_ws1_cell_minimal.sm, unchanged below). v306 and v307 compile the escapes; v308 refuses them.
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    mala box[1]
+    box[0] = k[0:1]
+    kosh_kship(k, 8)
+    likha(box[0])
+}

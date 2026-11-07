@@ -21,7 +21,9 @@ previous payload first and were writing the new one into the target. What makes 
     transaction folder is removed idempotently (a rerun finding a committed journal only cleans up);
   * the uninstaller leaves an uncommitted transaction's backups and says where they are;
   * the wizard appends a line to the engine log when its 15-minute stop fires (R135 WS4);
-  * Windows is told the compiler's version; Sutram-Setup.exe embeds exactly these scripts.
+  * Windows is told the compiler's version; (R136) the logs are appended with full sharing and a failed log line
+    never stops the run (Add-Content failed while a reader held the log, ChatGPT's v307 fixture);
+  * Sutram-Setup.exe embeds exactly these scripts.
 On Windows, tests/windows/test_installer_e2e.py stops an installation while it stages file 132 and runs it again.
 Last line: "r134 install transaction: N checks, M failed".
 """
@@ -98,6 +100,10 @@ def main():
     check('call append_file' in wiz and 'msg_engine_timeout' in wiz and 'ENGINE_WAIT_MS' in wiz,
           'the wizard writes to the engine log when its 15-minute stop fires')
     check("'0.1.0'" not in code and "$displayVersion = $Matches[1] + '.' + $Matches[2]" in code, "Windows is told the compiler's version")
+    lg, ulg = func(code, 'Log'), func(re.sub(r'(?m)#.*$', '', uni), 'Log')
+    check('Add-Content' not in lg and '[IO.FileShare]::Delete' in lg and 'catch' in lg and 'Add-Content' not in ulg
+          and '[IO.FileShare]::Delete' in ulg,
+          'R136: the logs are appended with full sharing, and a log line that cannot be written never stops the run')
     setup = os.path.join(ROOT, 'Sutram-Setup.exe')
     if os.path.exists(setup):
         b = open(setup, 'rb').read()

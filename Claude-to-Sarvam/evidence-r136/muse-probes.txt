@@ -1,0 +1,42 @@
+##### c306 Sutram 1.0 (v306) - sampurna sutra
+  r136_ws1_cell_minimal: compiles -> 140724001243200 (exit 0)
+  r136_ws1_cell_write: compiles -> 7 (exit 0)
+  r136_ws1_funcval_large: compiles -> (exit 139)
+  r136_ws1_funcval_small: compiles -> 0 7 (exit 0)
+  r136_ws1_untyped_param: compiles -> 77 7 (exit 0)
+  r136_ws1_untyped_return: compiles -> 7 99 (exit 0)
+  r136_ws2_cond_assign: refused E_KOSH_VIBHAG
+  r136_ws2_dasham_diag: compiles -> 140736146604544.000000 0 (exit 0)
+  r136_ws2_dasham_param: compiles -> (exit 139)
+  r136_ws2_field: compiles -> 7 99 (exit 0)
+  r136_ws2_global: compiles -> 7 99 (exit 0)
+  r136_ws2_rawmem: compiles -> 7 99 (exit 0)
+  r136_ws2_ternary: refused E_KOSH_DVARA
+##### c307 Sutram 1.0 (v307) - sampurna sutra
+  r136_ws1_cell_minimal: compiles -> 140733731909472 (exit 0)
+  r136_ws1_cell_write: compiles -> 7 (exit 0)
+  r136_ws1_funcval_large: refused E_KOSH_VIBHAG
+  r136_ws1_funcval_small: refused E_KOSH_VIBHAG
+  r136_ws1_untyped_param: compiles -> 77 7 (exit 0)
+  r136_ws1_untyped_return: compiles -> 7 99 (exit 0)
+  r136_ws2_cond_assign: refused E_KOSH_VIBHAG
+  r136_ws2_dasham_diag: compiles -> 140728205804064.000000 0 (exit 0)
+  r136_ws2_dasham_param: compiles -> (exit 139)
+  r136_ws2_field: compiles -> 7 99 (exit 0)
+  r136_ws2_global: compiles -> 7 99 (exit 0)
+  r136_ws2_rawmem: compiles -> 7 99 (exit 0)
+  r136_ws2_ternary: refused E_KOSH_DVARA
+##### c308 Sutram 1.0 (v308) - sampurna sutra
+  r136_ws1_cell_minimal: refused E_KOSH_VIBHAG
+  r136_ws1_cell_write: refused E_KOSH_VIBHAG
+  r136_ws1_funcval_large: refused E_KOSH_VIBHAG
+  r136_ws1_funcval_small: refused E_KOSH_VIBHAG
+  r136_ws1_untyped_param: refused E_KOSH_VIBHAG
+  r136_ws1_untyped_return: refused E_KOSH_VIBHAG
+  r136_ws2_cond_assign: refused E_KOSH_VIBHAG
+  r136_ws2_dasham_diag: refused E_KOSH_VIBHAG
+  r136_ws2_dasham_param: refused E_KOSH_VIBHAG
+  r136_ws2_field: refused E_KOSH_VIBHAG
+  r136_ws2_global: refused E_KOSH_VIBHAG
+  r136_ws2_rawmem: refused E_KOSH_VIBHAG
+  r136_ws2_ternary: refused E_KOSH_DVARA

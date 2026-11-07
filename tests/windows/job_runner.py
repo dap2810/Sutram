@@ -103,6 +103,13 @@ def run_limited(executable, directory, limit_mib, timeout=60, invalid_stderr=Fal
             code = W.DWORD()
             checked(get_exit(info.process, C.byref(code)))
             result['exit'] = code.value
+            # R136: the commit the process reached, and what the limit left at that peak - the number a
+            # teardown's stack page is measured against (Muse R137), not the limit itself.
+            peak = ExtendedLimits()
+            if query_job(job, 9, C.byref(peak), C.sizeof(peak), None):
+                result['peak_process_bytes'] = peak.PeakProcess
+                result['peak_job_bytes'] = peak.PeakJob
+                result['headroom_bytes'] = result['limit_bytes'] - peak.PeakProcess
         result['stdout'] = (directory/'stdout').read_text(encoding='utf8', errors='replace')
         result['stderr'] = (directory/'stderr').read_text(encoding='utf8', errors='replace')
         return result

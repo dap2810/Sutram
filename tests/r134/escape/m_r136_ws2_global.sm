@@ -1,0 +1,14 @@
+# R136: Muse R136's probe r136_ws2_global (Muse-to-Sarvam/r136_ws2_global.sm, unchanged below). v306 and v307 compile the escapes; v308 refuses them.
+vitti g = 0
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    g = k[0:1]
+    kosh_kship(k, 8)
+    k[0] = 99
+    vitti s = g
+    vitti addr = s[0]
+    likha(addr[0])
+    likha(k[0])
+}

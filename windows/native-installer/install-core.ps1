@@ -16,9 +16,24 @@ $ProgressPreference = 'SilentlyContinue'
 $ConfirmPreference = 'None'
 Set-StrictMode -Version 2.0
 
+# R136: the log is appended through a stream that shares read, write and delete with anyone else, and a log line
+# that cannot be written never stops the installation. Windows PowerShell 5.1's Add-Content refuses while another
+# process holds the log open, even a reader that shares everything (ChatGPT's native fixture, v307), and with
+# ErrorActionPreference = Stop that refusal ended the install.
 function Log([string]$Message) {
     $stamp = [DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss')
-    Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f $stamp,$Message) -Encoding UTF8
+    $line = "[{0}] {1}`r`n" -f $stamp,$Message
+    for ($try = 0; $try -lt 3; $try++) {
+        try {
+            $share = [IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete
+            $fs = New-Object IO.FileStream($LogPath,[IO.FileMode]::Append,[IO.FileAccess]::Write,$share)
+            try {
+                $bytes = ([Text.UTF8Encoding]::new($false)).GetBytes($line)
+                $fs.Write($bytes,0,$bytes.Length)
+            } finally { $fs.Dispose() }
+            return
+        } catch { Start-Sleep -Milliseconds 50 }
+    }
 }
 # No unbounded compiler preflights: a broken native compiler must not
 # freeze the Windows wizard forever inside WaitForSingleObject(INFINITE).

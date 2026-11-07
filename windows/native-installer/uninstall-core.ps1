@@ -5,7 +5,16 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version 2.0
-function Log([string]$Message) { Add-Content -LiteralPath $LogPath -Value (([DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss')) + ' ' + $Message) -Encoding UTF8 }
+function Log([string]$Message) {   # R136: as install-core.ps1 - shared append; a log line never stops the uninstall
+    $line = ([DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss')) + ' ' + $Message + "`r`n"
+    for ($try = 0; $try -lt 3; $try++) {
+        try {
+            $fs = New-Object IO.FileStream($LogPath,[IO.FileMode]::Append,[IO.FileAccess]::Write,([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
+            try { $bytes = ([Text.UTF8Encoding]::new($false)).GetBytes($line); $fs.Write($bytes,0,$bytes.Length) } finally { $fs.Dispose() }
+            return
+        } catch { Start-Sleep -Milliseconds 50 }
+    }
+}
 function Normalize-PathEntry([string]$Value) {
     if ($null -eq $Value) { return '' }
     $clean = $Value.Trim().Trim('"').TrimEnd('\')

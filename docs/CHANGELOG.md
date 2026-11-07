@@ -22,6 +22,11 @@
   transaction` (replaces `R133 interrupted install`; v307 fails 16 of 19). The wizard writes to the engine log when
   its 15-minute stop fires. `tests/windows/test_installer_e2e.py` adds a user-file conflict case.
 - `sutram-link.exe` rebuilt. No Linux program changes bytes except `safe1` (now refused).
+- **R136 follow-up, same compiler (v308), installer rebuilt:** the engine's and uninstaller's log is appended through a
+  fully shared stream, and a line that cannot be written no longer stops the run (Add-Content failed while a reader
+  held the log - ChatGPT's v307 fixture). Muse R136's thirteen escape programs join gate `R134 one predicate`
+  (v306 fails all sixteen escapes, v308 none). The release notes name Acronis Active Protection as what suspended
+  the v306 and v307 upgrades (its own log).
 
 ## v307 (Claude, R133) - a slice through a function value, the handler that was never checked, the interrupted install
 
