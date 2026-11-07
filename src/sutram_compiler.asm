@@ -619,6 +619,7 @@ r54_builtin_arity_table:
     r137_txt db "' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya", 10, 0
     r137_khdr db "Sutram truti [E_KOSH_GANIT]: ", 0
     r137_hint db "Sanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya", 10, 0
+    r137_limit db "Sutram truti [E_VISHLESHANA_SEEMA]: abhivyakti-vishleshana seema atikram", 10, 0
     r134_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah '", 0
     r134_vb_hint db "Sanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru", 10, 0
     r129_vb_hint db "Sanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat", 10, 0
@@ -1546,6 +1547,7 @@ section .bss
     rfx2_asg_n  resq 1
     rfx2_stack  resq RFX2_STACK_CAP
     r137_budget resq 1                ; R137: the expression walk's node budget
+    r137_stack resq RFX2_STACK_CAP    ; return-kind analysis uses rfx2_stack while this walk is active
     rfx2_seen   resb AST_HEAP_CAP / 64
     rfx2_calls  resq RFX2_ASG_CAP          ; R105: the AST_FUNCALLs met in the walk
     rfx2_calls_n resq 1
@@ -18007,8 +18009,7 @@ gen_code:
     mov rdi, -1
     mov esi, 1
     call rfx3_seed
-    mov rdi, [rel root_node]       ; R105: which of mukhya's names hold strings
-    mov rdi, [rdi+8]
+    xor edi, edi                 ; globals execute before mukhya: no local name analysis yet
     xor esi, esi
     xor edx, edx
     call rfx2_analyse
@@ -18084,6 +18085,14 @@ gen_code:
     ; R56: once-only ordered global initialization at process entry.
     ; This runs before mukhya and before any user function can be called.
     call r56_gen_global_initializers
+    mov rdi, -1
+    mov esi, 1
+    call rfx3_seed
+    mov rdi, [rel root_node]       ; R105: now analyse mukhya in its own scope
+    mov rdi, [rdi+8]
+    xor esi, esi
+    xor edx, edx
+    call rfx2_analyse
     mov rax, [rel root_node]
     mov rax, [rax+8]
     ; Generate body
@@ -18320,6 +18329,13 @@ r56_gen_global_initializers:
     mov rax, [rbx+16]
     test rax, rax
     jz .r56_init_next
+    mov rdi, rax                   ; global declarations bypass gen_stmt
+    call r137_check_stmt
+    mov rdi, [rbx+16]
+    call r134_holds_kosh           ; the global store is the same ownership door as assignment
+    test eax, eax
+    jnz .r56_init_kosh
+    mov rax, [rbx+16]
     call gen_expr
     mov rdi, r12
     call r56_emit_global_store
@@ -18330,6 +18346,11 @@ r56_gen_global_initializers:
     pop r12
     pop rbx
     ret
+.r56_init_kosh:
+    mov rdi, [rbx+16]
+    lea rsi, [rel r126_d_glob]
+    xor edx, edx
+    jmp r126_fail_door
 
 gen_all_functions:
     push rbx
@@ -28327,14 +28348,14 @@ r137_check_stmt:
     push r15
     xor r15, r15
     mov qword [rel r137_budget], 200000
-    call rfx2_push
+    call .push
 .walk:
     test r15, r15
     jz .out
     dec qword [rel r137_budget]
-    js .out                            ; a node budget, not a proof of anything: a tree this size is not real
+    js .limit                          ; incomplete validation must never be accepted
     dec r15
-    lea rax, [rel rfx2_stack]
+    lea rax, [rel r137_stack]
     mov rbx, [rax+r15*8]
     lea rax, [rel ast_heap]
     cmp rbx, rax
@@ -28485,9 +28506,9 @@ r137_check_stmt:
     mov rdi, [rbx+24]
     call .num
     mov rdi, [rbx+16]
-    call rfx2_push
+    call .push
     mov rdi, [rbx+24]
-    call rfx2_push
+    call .push
     jmp .walk
 .gen:                                  ; every field that may be a node (the r129 walk's rule)
     mov r9d, 8
@@ -28495,9 +28516,22 @@ r137_check_stmt:
     cmp r9d, 72
     jae .walk
     mov rdi, [rbx+r9]
-    call rfx2_push
+    call .push
     add r9d, 8
     jmp .gl
+.push:
+    test rdi, rdi
+    jz .push_done
+    cmp r15, RFX2_STACK_CAP
+    jae .limit
+    lea rax, [rel r137_stack]
+    mov [rax+r15*8], rdi
+    inc r15
+.push_done:
+    ret
+.limit:
+    lea rdi, [rel r137_limit]
+    jmp capacity_fail
 .num:                                  ; rdi = a value used as a number: refuse a slice there
     test rdi, rdi
     jz .numok

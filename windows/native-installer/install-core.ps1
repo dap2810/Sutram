@@ -405,6 +405,16 @@ try {
         if ($unsafe -and [string]::Equals($InstallDir,[IO.Path]::GetFullPath($unsafe).TrimEnd('\'),[StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe installation folder: $InstallDir" }
     }
 
+    # Lock this destination before reading registry, ownership, pending or journal state.
+    # The handle lives until process exit, outside the transaction folder cleanup removes.
+    $txnDir = Join-Path ([IO.Path]::GetDirectoryName($InstallDir)) ([IO.Path]::GetFileName($InstallDir) + '.sutram-transaction')
+    Assert-NoReparsePath $txnDir
+    $lockPath = Join-Path ([IO.Path]::GetDirectoryName($InstallDir)) ([IO.Path]::GetFileName($InstallDir) + '.sutram-lock')
+    Assert-NoReparsePath $lockPath
+    try {
+        $script:txnLock = New-Object IO.FileStream($lockPath,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
+    } catch { throw ('Another Sutram installer or uninstaller is working on ' + $InstallDir + '. Let it finish, then run this one again.') }
+
     $unKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram'
     $registered = Get-ItemProperty -LiteralPath $unKey -ErrorAction SilentlyContinue
     if ($registered -and $registered.InstallLocation) {
@@ -430,18 +440,6 @@ try {
     # written before anything else was changed: the payload it was installing. Its files are this installer's own.
     $pendingPath = Join-Path $InstallDir 'payload.pending.sha256'
     $pending = Test-Path -LiteralPath $pendingPath -PathType Leaf
-    # R134: the transaction folder beside the target, and what its journal says.
-    $txnDir = Join-Path ([IO.Path]::GetDirectoryName($InstallDir)) ([IO.Path]::GetFileName($InstallDir) + '.sutram-transaction')
-    Assert-NoReparsePath $txnDir
-    # R137 (ChatGPT R207 follow-up I2): one installer at a time, from before anything is read until the process
-    # ends. The lock is a file beside the target, outside the transaction folder (which cleanup removes), opened
-    # with no sharing and deleted when its handle closes - so a second installer cannot read state the first is
-    # changing, nor act on a check made before the first finished.
-    $lockPath = Join-Path ([IO.Path]::GetDirectoryName($InstallDir)) ([IO.Path]::GetFileName($InstallDir) + '.sutram-lock')
-    Assert-NoReparsePath $lockPath
-    try {
-        $script:txnLock = New-Object IO.FileStream($lockPath,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
-    } catch { throw ('Another Sutram installer or uninstaller is working on ' + $InstallDir + '. Let it finish, then run this one again.') }
     $script:journalPath = Join-Path $txnDir 'journal.txt'
     $earlier = Read-Journal $script:journalPath
     if ($earlier.Exists -and $earlier.Committed) {

@@ -68,7 +68,10 @@ def main():
     i_lock, i_read = code.find("$script:txnLock = New-Object IO.FileStream($lockPath"), code.find('$earlier = Read-Journal $script:journalPath')
     check(0 < i_lock < i_read and "+ '.sutram-lock')" in code and '[IO.FileOptions]::DeleteOnClose' in code
           and "Join-Path $txnDir 'lock'" not in code,
-          'R137 (I2): one installer at a time, locked beside the target before any state is read, until the process ends')
+          'R137 (I2): one installer at a time, locked beside the target before the journal is read, until the process ends')
+    for read in ('$registered = Get-ItemProperty', '$others = Find-OtherSutram',
+                 '$oldState = Read-State $statePath', '$pending = Test-Path -LiteralPath $pendingPath'):
+        check(0 < i_lock < code.find(read), f'ownership snapshot is read under the lock: {read}')
     check('.sutram-lock' in re.sub(r'(?m)#.*$', '', uni) and '[IO.FileShare]::None' in uni,
           'R137: the uninstaller takes the same lock')
     part = code[code.find("'*.sutram-partial'"):code.find("'*.sutram-partial'") + 300]
