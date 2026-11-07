@@ -1,0 +1,60 @@
+{
+  "checks": [
+    {
+      "command": [
+        "python",
+        "tools/build_windows_runtime.py",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "RUNTIME_OK bytes=1165 syscall_offset=84 check=True\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "tools/r69_build.py",
+        "--check-only"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "R69_BUILD_REFUSED: input drift: win/rtblob.inc: expected 8c77ba287386c14db37d725e7f883c2b4e931ed1, got 218a6fd3541fc6b7bed04da8d8546271ab2b3ae3\n"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "py_compile",
+        "tests/windows/job_runner.py",
+        "tests/windows/test_commit_oom.py",
+        "Windows-to-Sarvam/win-commit-oom-2026-11-06/linux_parity.py",
+        "Windows-to-Sarvam/win-commit-oom-2026-11-06/regression.py"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "pin_mismatches": [
+    {
+      "path": "win/rtblob.inc",
+      "expected": "8c77ba287386c14db37d725e7f883c2b4e931ed1",
+      "actual": "218a6fd3541fc6b7bed04da8d8546271ab2b3ae3"
+    },
+    {
+      "path": "win/winrt_blob.asm",
+      "expected": "f704cf40ec82af3a86bf123880478eb91a6c4912",
+      "actual": "3782524b1400426d9b8bc16eed7d434c45868b1a"
+    }
+  ]
+}
