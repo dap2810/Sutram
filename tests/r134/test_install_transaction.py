@@ -89,6 +89,9 @@ def main():
                           sp.find("(Get-Sha $part) -ne $NewFiles[$rel]"), sp.find("Log ('DONE  "))
     check(0 < i_s < i_c < i_v < i_d, 'each file is logged START before its copy and DONE after it, verified by hash between')
     check('Journal ("STAGED`t"' in sp, 'a staged file is journaled')
+    i_inst, i_cp = sp.find("Log ('Already installed "), sp.find('[IO.File]::Copy($src,$part,$true)')
+    check(0 < i_inst < i_cp and '(Get-Sha $target) -eq $NewFiles[$rel]' in sp,
+          'R140: a file already installed with the payload\'s bytes is not copied again (a late retry restaged all 657)')
     pub = body[body.find("Log ('Publishing "):body.find('Log \'Writing the payload manifest.\'')]
     i_bj, i_bm = pub.find('Journal ("BACKUP`t"'), pub.find('Move-Into $target $bk')
     i_pj, i_mv, i_pd = pub.find('Journal ("PUBLISH`t"'), pub.find('Move-Into $staged $target'), pub.find('Journal ("PUBLISHED`t"', pub.find('Move-Into $staged $target'))

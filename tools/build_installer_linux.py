@@ -33,6 +33,8 @@ import tempfile
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# R140: the payload's text, normalized to LF (the payload's other files are .exe, .ico and .sha256)
+TEXT_EXT = ('.md', '.html', '.txt', '.out', '.exit', '.sm', '.smlib', '.lang', '.sandesh')
 NI = os.path.join(ROOT, 'windows', 'native-installer')
 
 
@@ -42,7 +44,7 @@ def sha(path):
 
 def normalize_payload_text(path):
     """Match build-installer.ps1; preserve every byte outside declared text files."""
-    if os.path.splitext(path)[1].lower() in {'.md', '.html', '.txt', '.out', '.exit'}:
+    if os.path.splitext(path)[1].lower() in TEXT_EXT:
         with open(path, 'rb') as f:
             raw = f.read()
         raw.decode('utf-8', errors='strict')
@@ -140,13 +142,22 @@ def main():
     zpath = os.path.join(work, 'payload.zip')
     with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for r in sorted(files, key=path_order):
-            z.write(os.path.join(stage, r), r.replace('/', '\\'))
+            info = zipfile.ZipInfo(r.replace('/', '\\'), date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 0
+            info.external_attr = 0x20          # FILE_ATTRIBUTE_ARCHIVE, as Windows tools write it
+            z.writestr(info, open(os.path.join(stage, r), 'rb').read(), compresslevel=9)
     if a.payload_only:
         print(f'PAYLOAD PASS: {len(files) - 1} files; manifest {sha(os.path.join(stage, "payload.manifest.sha256"))}; {zpath}')
         return
     for f in ('install-core.ps1', 'uninstall-core.ps1'):
         shutil.copy2(os.path.join(NI, f), work)
     shutil.copy2(os.path.join(ROOT, 'LICENSE.txt'), work)
+    for f in ('install-core.ps1', 'uninstall-core.ps1', 'LICENSE.txt'):   # R140: the wizard embeds these too: LF
+        fp = os.path.join(work, f)
+        b = open(fp, 'rb').read()
+        if b'\r\n' in b:
+            open(fp, 'wb').write(b.replace(b'\r\n', b'\n'))
     lines = ['section .data']
     for f, name in (('payload.zip', 'payload'), ('install-core.ps1', 'install'), ('uninstall-core.ps1', 'uninst'),
                     ('LICENSE.txt', 'license')):
@@ -163,7 +174,7 @@ def main():
     if r.returncode:
         raise SystemExit('SETUP FAIL nasm: ' + (r.stdout + r.stderr)[-600:])
     out = os.path.join(ROOT, 'Sutram-Setup.exe')
-    r = subprocess.run(['x86_64-w64-mingw32-ld', '-mi386pep', '--subsystem', 'windows', '--entry=_start', '-o', out, obj,
+    r = subprocess.run(['x86_64-w64-mingw32-ld', '-mi386pep', '--subsystem', 'windows', '--entry=_start', '--no-insert-timestamp', '-s', '-o', out, obj,
                         '-L/usr/x86_64-w64-mingw32/lib', '-lkernel32', '-lbcrypt'], cwd=work, capture_output=True, text=True)
     if r.returncode:
         raise SystemExit('SETUP FAIL ld: ' + (r.stdout + r.stderr)[-600:])

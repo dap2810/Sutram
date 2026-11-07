@@ -1,0 +1,8 @@
+PASS  the manifest lists every entry once (657 lines, 657 entries, 0 duplicates, 0 unmatched)
+PASS  every embedded entry hashes to its manifest line (657/657; [])
+PASS  no text entry contains CR LF (0: [])
+FAIL  every entry equals the tree file it was made from (649/657; differ ['docs/CHANGELOG.md', 'docs/INSTALLER-REBUILD.md', 'docs/PATH-TO-COMPLETION.md'], no source ['LICENSE.txt', 'README.md', 'bin/sutram-link.exe'])
+FAIL  every payload text path is eol=lf in .gitattributes (407/560; ['LICENSE.txt', 'README.md', 'docs/AI-WORK-DIVISION.md'])
+FAIL  every ZIP entry has the fixed date 1980-01-01 (658 do not: ['assets\\sutram.ico', 'bin\\lang\\bengali.lang'])
+PASS  Sutram-Setup.sha256 is the setup's hash
+r140 package: 7 checks, 3 failed

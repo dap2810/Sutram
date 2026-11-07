@@ -1,0 +1,6 @@
+a11098537e1d5b4247fb188df95a51c16d99802d30cb3c22e4c37598ca752cf2  <scratch>/r140/A.exe
+a11098537e1d5b4247fb188df95a51c16d99802d30cb3c22e4c37598ca752cf2  <scratch>/r140/crlf-tree/Sutram-Setup.exe
+a11098537e1d5b4247fb188df95a51c16d99802d30cb3c22e4c37598ca752cf2  Sutram-Setup.exe
+# A.exe: built from this tree. crlf-tree/Sutram-Setup.exe: built from a copy at another path, with 516 text files
+# (docs, examples, README.md, LICENSE.txt, both installer scripts) converted to CRLF and every file dated 400 days
+# earlier. Sutram-Setup.exe: the one in this commit (the first build). All three the same SHA-256.

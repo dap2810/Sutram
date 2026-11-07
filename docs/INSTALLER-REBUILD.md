@@ -2,9 +2,9 @@
 
 ## Payload line-ending contract
 
-The builders canonicalise declared UTF-8 documentation/fixture text (`.md`, `.html`,
-`.txt`, `.out`, `.exit`) to LF **in staging before hashing**. The checkout rules also
-force LF for those extensions; frozen test fixtures and native evidence retain their
+The builders canonicalise declared UTF-8 payload text (`.md`, `.html`, `.txt`, `.out`,
+`.exit`, `.sm`, `.smlib`, `.lang`, `.sandesh`) to LF **in staging before hashing**.
+Checkout rules cover payload paths; frozen test fixtures and native evidence retain their
 recorded bytes. Existing Windows checkouts may still have CRLF until refreshed, so
 staging normalization is required as well. Compiler, linker, GUI and icon bytes are
 copied unchanged. Invalid UTF-8 in a declared text input fails the build.
@@ -16,8 +16,9 @@ the Linux payload step without requiring a PE linker or Wine. This is a develope
 verification mode, not an installer or Windows execution test.
 
 Payload file bytes and manifest bytes are intended to match across checkouts and
-platforms. **The complete ZIP/setup executables are not claimed byte reproducible**:
-ZIP metadata/compression and platform linkers can differ. The historical instructions
+platforms. **Cross-platform ZIP/setup identity is not claimed**: Windows ZIP dates and
+platform linkers can differ. The Linux builder preserves R140's fixed ZIP metadata
+and timestamp-free link for same-platform reproducibility. The historical instructions
 below describe the existing full builds and older pinned versions.
 
 > **R128 (v302): there is now a Linux route as well** - `python3 tools/build_installer_linux.py`, a step-for-step
@@ -132,3 +133,7 @@ again; the engine, the uninstaller and the wizard (it logs its 15-minute stop) c
 
 **R137-R138 (v309):** the runtime's shipped bytes and `sutram-link.exe` are unchanged; the engine and the uninstaller
 changed (the lock beside the installation, the re-check before each replacement).
+
+**R140:** the Linux build is deterministic - LF text, fixed ZIP dates, no link timestamp - so building the same tree
+twice, from checkouts with different file times, gives the same `Sutram-Setup.exe`. Gate `R140 package` checks
+the built file. The Windows builder normalizes text to LF but does not fix the ZIP dates.

@@ -23,11 +23,11 @@ foreach ($destination in @('bin','win')) {
     }
 }
 # Old Windows checkouts may retain CRLF even after pulling the LF attributes.
-# Canonicalise only declared UTF-8 documentation/fixture text in the staged copy;
+# Canonicalise only declared UTF-8 payload text in the staged copy;
 # never rewrite the checkout, executables, icons or other binary payloads.
 $utf8=[Text.UTF8Encoding]::new($false,$true)
 foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
-    if ($file.Extension.ToLowerInvariant() -in @('.md','.html','.txt','.out','.exit')) {
+    if ($file.Extension.ToLowerInvariant() -in @('.md','.html','.txt','.out','.exit','.sm','.smlib','.lang','.sandesh')) {
         $value=$utf8.GetString([IO.File]::ReadAllBytes($file.FullName))
         if ($value.Contains("`r`n")) { [IO.File]::WriteAllBytes($file.FullName,$utf8.GetBytes($value.Replace("`r`n","`n"))) }
     }
