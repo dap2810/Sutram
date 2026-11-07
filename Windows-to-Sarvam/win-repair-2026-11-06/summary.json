@@ -1,0 +1,15 @@
+{
+  "installer_finished": true,
+  "installer_closed": true,
+  "package": {
+    "entries": 657,
+    "matching": 657,
+    "failures": []
+  },
+  "native_checks_pass": true,
+  "installed_ide_pass": true,
+  "installed_ide_closed": true,
+  "backup_intact": true,
+  "user_path_unchanged": true,
+  "machine_path_unchanged": true
+}

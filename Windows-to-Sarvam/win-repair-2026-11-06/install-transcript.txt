@@ -1,0 +1,26 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261106205233
+Username: DHRUV\dmech
+RunAs User: DHRUV\dmech
+Configuration Name: 
+Machine: DHRUV (Microsoft Windows NT 10.0.26300.0)
+Host Application: c:\windows\system32\windowspowershell\v1.0\powershell.exe -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
+& .\Windows-to-Sarvam\win-repair-2026-11-06\install.ps1
+Process ID: 9200
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is E:\Github_Projects\Sutram\Windows-to-Sarvam\win-repair-2026-11-06\install-transcript.txt
+Snapshot after saved; installed files: 662
+Installer result: WIZARD_FINISHED
+**********************
+Windows PowerShell transcript end
+End time: 20261106205254
+**********************

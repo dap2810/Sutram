@@ -1,0 +1,25 @@
+{
+    "shortcut":  "C:\\Users\\dmech\\OneDrive\\Desktop\\Sutram IDE.lnk",
+    "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+    "target_sha256":  "829F8658DE55BE045C6273339244D099022B373725EAD3681228C00BA3D5C051",
+    "started":  "2026-11-06T20:54:26.8182084-05:00",
+    "cases":  [
+                  {
+                      "output":  "Namaste, Sutram!\r\n",
+                      "title":  "01_hello.sm - Sutram sampadak",
+                      "screenshot":  "installed-01_hello.png",
+                      "example":  "01_hello.sm",
+                      "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n"
+                  },
+                  {
+                      "output":  "x + y = 30\r\n",
+                      "title":  "02_arith.sm - Sutram sampadak",
+                      "screenshot":  "installed-02_arith.png",
+                      "example":  "02_arith.sm",
+                      "editor":  "# Variables and arithmetic\r\nmukhya()\r\n    vitti x = 10\r\n    vitti y = 20\r\n    vitti z = x + y\r\n    likha(\"x + y = \", z)\r\n"
+                  }
+              ],
+    "pid":  14608,
+    "pass":  true,
+    "closed":  true
+}

@@ -1,0 +1,45 @@
+{
+    "source":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "backup":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-recovery-20261106-205221",
+    "time":  "2026-11-06T20:52:21.9112036-05:00",
+    "shortcuts_before":  [
+                             {
+                                 "path":  "C:\\Users\\dmech\\OneDrive\\Desktop\\Sutram IDE.lnk",
+                                 "sha256":  "90C5696539E358249D64ECF620685324C2591EFD1083917EB834C88FA726CCD0",
+                                 "arguments":  "",
+                                 "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                                 "working_directory":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+                             },
+                             {
+                                 "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Documentation.lnk",
+                                 "sha256":  "A9105E4F5003A885E58377671F44C6A1FF959E4FC7DE237F9C156FFD435E5BBE",
+                                 "arguments":  "",
+                                 "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
+                                 "working_directory":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+                             },
+                             {
+                                 "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram IDE.lnk",
+                                 "sha256":  "6582BC5A846AD3A38AD4566C66AB563DE7BD9519BC32334AC9C1E5DE697BFE56",
+                                 "arguments":  "",
+                                 "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                                 "working_directory":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+                             },
+                             {
+                                 "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Terminal.lnk",
+                                 "sha256":  "9A0979C3D10A17E370181A4736DE619FC2E643EEC04CBA792F2ABFC5BD2A7B36",
+                                 "arguments":  "/K \"set \"PATH=C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin;%PATH%\" \u0026\u0026 sutram --version\"",
+                                 "target":  "C:\\Windows\\System32\\cmd.exe",
+                                 "working_directory":  "C:\\Users\\dmech"
+                             },
+                             {
+                                 "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Uninstall Sutram.lnk",
+                                 "sha256":  "A2AC3335F442CE943A6078F83F403405D9ECF4A1BEEF1811A399911F16BEC7BF",
+                                 "arguments":  "--uninstall",
+                                 "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
+                                 "working_directory":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+                             }
+                         ],
+    "operation":  "Move-Item of validated canonical directory to a new sibling; no deletion",
+    "verified_files":  137,
+    "status":  "PRESERVED"
+}

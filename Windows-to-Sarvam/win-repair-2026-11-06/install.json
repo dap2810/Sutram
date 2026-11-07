@@ -1,0 +1,57 @@
+{
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "99D26A89F355A2B20BDF7FE1FBD94AA8E304C3EAE3A9B54C8364ECF8F1E6E6F5",
+    "started":  "2026-11-06T20:52:33.0901458-05:00",
+    "elevated":  false,
+    "observations":  [
+                         {
+                             "seconds":  2.2,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "seconds":  4.3,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "seconds":  6.4,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "seconds":  8.5,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "seconds":  10.7,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "seconds":  12.8,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "seconds":  14.9,
+                             "next_label":  "Finish",
+                             "children":  0
+                         }
+                     ],
+    "pid":  16388,
+    "main_hwnd":  2230960,
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready":  "ready.png",
+    "child":  {
+                  "ProcessId":  27600,
+                  "ParentProcessId":  16388,
+                  "CommandLine":  "powershell.exe -NoProfile -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1F66.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1F66.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1F66.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1F66.tmp\\install.log",
+    "finished":  true,
+    "screenshot":  "installer-finished.png",
+    "closed":  true,
+    "status":  "WIZARD_FINISHED"
+}
