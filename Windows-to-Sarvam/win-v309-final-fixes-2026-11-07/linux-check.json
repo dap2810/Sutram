@@ -1,0 +1,93 @@
+[
+  {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit": 0,
+    "stdout": "664ff1889d23d37e10318a4c2d1950ce6cdb115e\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "tools/build_installer_linux.py",
+      "--payload-only",
+      "--work",
+      "build/linux-payload-final"
+    ],
+    "exit": 0,
+    "stdout": "PAYLOAD PASS: 657 files; manifest 53d8102fde97f51e43deda3c03232ab7e25226096d254a797c9cd32e5e8ce12d; build/linux-payload-final/payload.zip\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "nasm",
+      "-f",
+      "elf64",
+      "-I/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/",
+      "src/r68_compiler_entry.asm",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "ld",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/compiler.o"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "Sutram 1.0 (v309) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "tests/r137/test_global_initializers.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "--report",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-fixes/Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/global-linux.json"
+    ],
+    "exit": 0,
+    "stdout": "PASS global +\nPASS local +\nPASS global -\nPASS local -\nPASS global *\nPASS local *\nPASS global /\nPASS local /\nPASS global %\nPASS local %\nPASS global ==\nPASS local ==\nPASS global !=\nPASS local !=\nPASS global <\nPASS local <\nPASS global <=\nPASS local <=\nPASS global >\nPASS local >\nPASS global >=\nPASS local >=\nPASS global &\nPASS local &\nPASS global |\nPASS local |\nPASS global ^\nPASS local ^\nPASS global &&\nPASS local &&\nPASS global ||\nPASS local ||\nPASS global <<\nPASS local <<\nPASS global >>\nPASS local >>\nPASS scalar global calls\nPASS global conditional kosh arithmetic\nPASS direct global kosh\nPASS global scope ignores local string\nPASS global nested expression with return analysis\nPASS local nested expression with return analysis\nglobal initializer validation: 42 checks, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "tests/r137/test_slice_number.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler"
+    ],
+    "exit": 0,
+    "stdout": "PASS  every operator the compiler defines has a case here (all)\nPASS  OP_ADD: k[0:1] + zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_ADD: one + m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_SUB: k[0:1] - zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_SUB: one - m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_MUL: k[0:1] * zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_MUL: one * m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_DIV: k[0:1] / zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_DIV: one / m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_EQ: k[0:1] == zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_EQ: one == m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LE: k[0:1] <= zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LE: one <= m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LT: k[0:1] < zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LT: one < m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_GT: k[0:1] > zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_GT: one > m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_GE: k[0:1] >= zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_GE: one >= m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_NE: k[0:1] != zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_NE: one != m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_MOD: k[0:1] % zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_MOD: one % m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_AND: k[0:1] & zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_AND: one & m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_OR: k[0:1] | zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_OR: one | m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_XOR: k[0:1] ^ zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_XOR: one ^ m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LAND: k[0:1] && zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LAND: one && m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LOR: k[0:1] || zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_LOR: one || m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_SHL: k[0:1] << zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_SHL: one << m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_SHR: k[0:1] >> zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  OP_SHR: one >> m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  unary -: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  unary !: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  likha(mala slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  yadi (slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  yavat (slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  ?: condition: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  ?: arm + zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  for bound: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  index: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  cell store: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  raw store: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  untyped parameter: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  function value: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  declared from arithmetic: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA\nPASS  kosh result + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT\nPASS  ?: of kosh + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT\nPASS  bare kosh + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT\nPASS  control: vib(k[0:1]): want '7\\n'; prints '7\\n'\nPASS  control: pankti_gan(m[0:3]): want '3\\n'; prints '3\\n'\nPASS  control: a slice name passed on: want '5\\n'; prints '5\\n'\nPASS  control: element arithmetic: want '12\\n'; prints '12\\n'\nPASS  ChatGPT S4 laundering probe: want 'E_'; refused E_VIBHAG_ANKA\nr137 slice is not a number: 59 checks, 0 failed\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "tests/r134/test_one_predicate.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler"
+    ],
+    "exit": 0,
+    "stdout": "PASS  e1_cell: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' koshthe, kshetre athava smritau na likhyate\nPASS  e2_keep: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' asankhyita-tarke na preshyate - prakriya: keep\nPASS  e3_global: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' vaishvika-vittau na sthapyate\nPASS  e4_fwd: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 's' koshthe, kshetre athava smritau na likhyate\nPASS  e5_pushslice: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...)\nPASS  c1_direct_read: want '7\\n'; compiles and prints '7\\n'\nPASS  c2_direct_write: want '99\\n'; compiles and prints '99\\n'\nPASS  c3_mala_cell: want '5\\n'; compiles and prints '5\\n'\nPASS  m_r136_ws1_cell_minimal: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' koshthe, kshetre athava smritau na likhyate\nPASS  m_r136_ws1_cell_write: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' koshthe, kshetre athava smritau na likhyate\nPASS  m_r136_ws1_untyped_param: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' asankhyita-tarke na preshyate - prakriya: use_untyped\nPASS  m_r136_ws1_untyped_return: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' asankhyita-tarke na preshyate - prakriya: keep\nPASS  m_r136_ws1_funcval_small: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a\nPASS  m_r136_ws1_funcval_large: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a\nPASS  m_r136_ws2_global: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' vaishvika-vittau na sthapyate\nPASS  m_r136_ws2_field: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' koshthe, kshetre athava smritau na likhyate\nPASS  m_r136_ws2_rawmem: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' koshthe, kshetre athava smritau na likhyate\nPASS  m_r136_ws2_dasham_param: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' asankhyita-tarke na preshyate - prakriya: use_dasham\nPASS  m_r136_ws2_dasham_diag: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' asankhyita-tarke na preshyate - prakriya: show_dasham\nPASS  m_r136_ws2_cond_assign: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra \nPASS  m_r136_ws2_ternary: want 'E_KOSH_DVARA'; refused: Sutram truti [E_KOSH_DVARA]: '?:' kadachit kosh dadati kadachit na (?: athava prakriya-phalam) - tat na sthapy\nr134 one predicate: 21 checks, 0 failed\n",
+    "stderr": ""
+  }
+]

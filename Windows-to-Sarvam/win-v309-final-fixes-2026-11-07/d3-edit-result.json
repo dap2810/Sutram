@@ -1,0 +1,14 @@
+{
+    "retry_status":  "ERROR_DIALOG",
+    "original_sha256":  "0F75F06BAC0F014B9FB6B790BF97B0DCE2699C19730FDC3DFB4DB616CA1D4135",
+    "child_exit":  1,
+    "after_retry_sha256":  "ECF1DE53B67CB8CDFC1550AAABB17CBA074173B32FA3A356102574AA31C9BCD9",
+    "time":  "2026-11-07T12:20:30.9675929-05:00",
+    "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
+    "warning":  [
+                    "OK",
+                    "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."
+                ],
+    "edit_preserved":  true,
+    "edited_sha256":  "ECF1DE53B67CB8CDFC1550AAABB17CBA074173B32FA3A356102574AA31C9BCD9"
+}

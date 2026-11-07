@@ -1,0 +1,61 @@
+{
+    "name":  "capture-confirmation",
+    "moment":  "complete",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe",
+    "setup_sha256":  "9DFE6B5EA185A6915918BB1D76ABFF474CEC7D0D2C34D8A82D76E8850E00886F",
+    "started":  "2026-11-07T11:38:15.5360752-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.3675351,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.7083892999999994,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  11.048292799999999,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  16.4042958,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  21.757709,
+                             "next_label":  "Install",
+                             "child_exited":  true
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  28084,
+    "process_started":  "2026-11-07T11:38:15.6109756-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "capture-confirmation-ready.png",
+    "child":  {
+                  "parent":  28084,
+                  "pid":  14968,
+                  "started":  "2026-11-07T11:38:17.2793439-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3C7.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3C7.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3C7.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3C7.tmp\\install.log",
+    "status":  "FINISH",
+    "finish_seconds":  22.1458728,
+    "finish_screenshot":  "capture-confirmation-finish.png",
+    "closed_after_finish_click":  true,
+    "observed_seconds":  23.519806199999998,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  0,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  657,
+    "ended":  "2026-11-07T11:38:41.0005055-05:00"
+}

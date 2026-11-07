@@ -1,0 +1,114 @@
+{
+  "candidate": {
+    "source_commit": "664ff1889d23d37e10318a4c2d1950ce6cdb115e",
+    "setup_sha256": "2751711704d0c48e4623ce0e700fa7e58e868764f8363ba4baf78986acbb2299",
+    "compiler_sha256": "bcb33e6dbb58c1e8556d29057c2f20128cc00f54e48cf860c7ea5496c0972532",
+    "engine_sha256": "9eb6174c35ef43e3a02ff792b1e3b187558f693c005a93d66719fe65dadd3e53",
+    "payload_entries": 657,
+    "manifest_sha256": "53d8102fde97f51e43deda3c03232ab7e25226096d254a797c9cd32e5e8ce12d"
+  },
+  "phases": [
+    {
+      "name": "initial",
+      "status": "FINISH",
+      "seconds": 22.4630094,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 655,
+      "copies": 2,
+      "capture_warnings": []
+    },
+    {
+      "name": "d1-stop",
+      "status": "INTERRUPTED",
+      "seconds": 0.36749509999999996,
+      "engine_exit": -1,
+      "files": 0,
+      "reused": 0,
+      "copies": 0,
+      "capture_warnings": []
+    },
+    {
+      "name": "d1-retry",
+      "status": "FINISH",
+      "seconds": 27.303939399999997,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 0,
+      "copies": 657,
+      "capture_warnings": []
+    },
+    {
+      "name": "d2-stop",
+      "status": "INTERRUPTED",
+      "seconds": 26.0874377,
+      "engine_exit": -1,
+      "files": 657,
+      "reused": 0,
+      "copies": 657,
+      "capture_warnings": []
+    },
+    {
+      "name": "d2-retry",
+      "status": "FINISH",
+      "seconds": 22.7659494,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 657,
+      "copies": 0,
+      "capture_warnings": []
+    },
+    {
+      "name": "d3-stop",
+      "status": "INTERRUPTED",
+      "seconds": 17.403446199999998,
+      "engine_exit": -1,
+      "files": 56,
+      "reused": 0,
+      "copies": 657,
+      "capture_warnings": []
+    },
+    {
+      "name": "d3-retry",
+      "status": "ERROR_DIALOG",
+      "seconds": 9.7162326,
+      "engine_exit": 1,
+      "files": 56,
+      "reused": 0,
+      "copies": 0,
+      "capture_warnings": []
+    },
+    {
+      "name": "final-upgrade",
+      "status": "FINISH",
+      "seconds": 22.4412532,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 657,
+      "copies": 0,
+      "capture_warnings": []
+    }
+  ],
+  "owned_process_count": 21,
+  "all_owned_processes_closed": true,
+  "installed_identity_pass": true,
+  "native_cases": {
+    "NO_EXPECTATION": 3,
+    "PASS": 322,
+    "SKIP_LINUX_RAW_SYSCALL": 1,
+    "SKIP_SIDE_EFFECT_OR_INLINE_ASM": 5
+  },
+  "arithmetic": {
+    "total": 7,
+    "passed": 7
+  },
+  "oom": {
+    "total": 32,
+    "passed": 32
+  },
+  "global_before_failed": 21,
+  "global_after_passed": 42,
+  "ide_pass": true,
+  "edit_preserved": true,
+  "payloads_equal": true
+}

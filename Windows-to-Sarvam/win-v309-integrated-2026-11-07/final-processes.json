@@ -1,0 +1,25 @@
+{
+    "all_owned_processes_closed":  true,
+    "checked_at":  "2026-11-07T12:33:38.2087928-05:00",
+    "processes":  [
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:32:54.7938289-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "initial.json",
+                          "same_process_alive":  false,
+                          "pid":  5940
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:32:55.8055695-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "initial.json",
+                          "same_process_alive":  false,
+                          "pid":  19972
+                      }
+                  ],
+    "installer_lock_exists":  false
+}

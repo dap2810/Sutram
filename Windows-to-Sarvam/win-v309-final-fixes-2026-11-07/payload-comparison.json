@@ -1,0 +1,4009 @@
+{
+  "windows_source_commit": "664ff1889d23d37e10318a4c2d1950ce6cdb115e",
+  "linux_source_commit": "664ff1889d23d37e10318a4c2d1950ce6cdb115e",
+  "payload_files": 657,
+  "manifest_sha256": "53d8102fde97f51e43deda3c03232ab7e25226096d254a797c9cd32e5e8ce12d",
+  "all_entries_equal": true,
+  "samples": [
+    {
+      "file": "README.md",
+      "windows_fresh_sha256": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "linux_fresh_sha256": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "payload_sha256": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "fresh_windows_crlf": false,
+      "stale_windows_crlf": true,
+      "match": true
+    },
+    {
+      "file": "docs/LANGUAGE-REFERENCE.md",
+      "windows_fresh_sha256": "0ea21b639c17be6956fbb02e516eccaf8235dc6cfd0b1cef5354af170650a830",
+      "linux_fresh_sha256": "0ea21b639c17be6956fbb02e516eccaf8235dc6cfd0b1cef5354af170650a830",
+      "payload_sha256": "0ea21b639c17be6956fbb02e516eccaf8235dc6cfd0b1cef5354af170650a830",
+      "fresh_windows_crlf": false,
+      "stale_windows_crlf": true,
+      "match": true
+    },
+    {
+      "file": "lang/sanskrit.lang",
+      "windows_fresh_sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "linux_fresh_sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "payload_sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "fresh_windows_crlf": false,
+      "stale_windows_crlf": false,
+      "match": true
+    }
+  ],
+  "binaries": [
+    {
+      "file": "bin/sutram.exe",
+      "unchanged": true
+    },
+    {
+      "file": "win/sutram.exe",
+      "unchanged": true
+    },
+    {
+      "file": "bin/sutram-link.exe",
+      "unchanged": true
+    },
+    {
+      "file": "sutram-ide-gui.exe",
+      "unchanged": true
+    },
+    {
+      "file": "assets/sutram.ico",
+      "unchanged": true
+    }
+  ],
+  "entries": [
+    {
+      "file": "LICENSE.txt",
+      "windows": "df5c9726f24b0d12e511c4abf4017fc3c4bff7d8ac38cf2ccc67ee52977fc920",
+      "linux": "df5c9726f24b0d12e511c4abf4017fc3c4bff7d8ac38cf2ccc67ee52977fc920",
+      "match": true
+    },
+    {
+      "file": "README.md",
+      "windows": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "linux": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "match": true
+    },
+    {
+      "file": "assets/sutram.ico",
+      "windows": "b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1",
+      "linux": "b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1",
+      "match": true
+    },
+    {
+      "file": "bin/lang/bengali.lang",
+      "windows": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "linux": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "match": true
+    },
+    {
+      "file": "bin/lang/bengali.sandesh",
+      "windows": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "linux": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "match": true
+    },
+    {
+      "file": "bin/lang/gujarati.lang",
+      "windows": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "linux": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "match": true
+    },
+    {
+      "file": "bin/lang/gujarati.sandesh",
+      "windows": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "linux": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "match": true
+    },
+    {
+      "file": "bin/lang/hindi.lang",
+      "windows": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "linux": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "match": true
+    },
+    {
+      "file": "bin/lang/hindi.sandesh",
+      "windows": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "linux": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "match": true
+    },
+    {
+      "file": "bin/lang/kannada.lang",
+      "windows": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "linux": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "match": true
+    },
+    {
+      "file": "bin/lang/kannada.sandesh",
+      "windows": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "linux": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "match": true
+    },
+    {
+      "file": "bin/lang/malayalam.lang",
+      "windows": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "linux": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "match": true
+    },
+    {
+      "file": "bin/lang/malayalam.sandesh",
+      "windows": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "linux": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "match": true
+    },
+    {
+      "file": "bin/lang/marathi.lang",
+      "windows": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "linux": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "match": true
+    },
+    {
+      "file": "bin/lang/marathi.sandesh",
+      "windows": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "linux": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "match": true
+    },
+    {
+      "file": "bin/lang/odia.lang",
+      "windows": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "linux": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "match": true
+    },
+    {
+      "file": "bin/lang/odia.sandesh",
+      "windows": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "linux": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "match": true
+    },
+    {
+      "file": "bin/lang/punjabi.lang",
+      "windows": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "linux": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "match": true
+    },
+    {
+      "file": "bin/lang/punjabi.sandesh",
+      "windows": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "linux": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "match": true
+    },
+    {
+      "file": "bin/lang/sanskrit.lang",
+      "windows": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "linux": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "match": true
+    },
+    {
+      "file": "bin/lang/sanskrit.sandesh",
+      "windows": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "linux": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "match": true
+    },
+    {
+      "file": "bin/lang/tamil.lang",
+      "windows": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "linux": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "match": true
+    },
+    {
+      "file": "bin/lang/tamil.sandesh",
+      "windows": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "linux": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "match": true
+    },
+    {
+      "file": "bin/lang/telugu.lang",
+      "windows": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "linux": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "match": true
+    },
+    {
+      "file": "bin/lang/telugu.sandesh",
+      "windows": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "linux": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "match": true
+    },
+    {
+      "file": "bin/lib/aadhar.smlib",
+      "windows": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "linux": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "match": true
+    },
+    {
+      "file": "bin/lib/ank.smlib",
+      "windows": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "linux": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "match": true
+    },
+    {
+      "file": "bin/lib/anukram.smlib",
+      "windows": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "linux": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "match": true
+    },
+    {
+      "file": "bin/lib/brihat.smlib",
+      "windows": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "linux": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "match": true
+    },
+    {
+      "file": "bin/lib/chandas.smlib",
+      "windows": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "linux": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "match": true
+    },
+    {
+      "file": "bin/lib/ganit.smlib",
+      "windows": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "linux": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "match": true
+    },
+    {
+      "file": "bin/lib/ganita.smlib",
+      "windows": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "linux": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "match": true
+    },
+    {
+      "file": "bin/lib/gudh.smlib",
+      "windows": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "linux": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "match": true
+    },
+    {
+      "file": "bin/lib/kalana.smlib",
+      "windows": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "linux": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "match": true
+    },
+    {
+      "file": "bin/lib/khand.smlib",
+      "windows": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "linux": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "match": true
+    },
+    {
+      "file": "bin/lib/madhava.smlib",
+      "windows": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "linux": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "match": true
+    },
+    {
+      "file": "bin/lib/mala.smlib",
+      "windows": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "linux": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "match": true
+    },
+    {
+      "file": "bin/lib/nighantu.smlib",
+      "windows": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "linux": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "match": true
+    },
+    {
+      "file": "bin/lib/patra.smlib",
+      "windows": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "linux": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "match": true
+    },
+    {
+      "file": "bin/lib/phal.smlib",
+      "windows": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "linux": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "match": true
+    },
+    {
+      "file": "bin/lib/roop.smlib",
+      "windows": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "linux": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "match": true
+    },
+    {
+      "file": "bin/lib/sadhan.smlib",
+      "windows": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "linux": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "match": true
+    },
+    {
+      "file": "bin/lib/samanvaya.smlib",
+      "windows": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "linux": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "match": true
+    },
+    {
+      "file": "bin/lib/sangrah.smlib",
+      "windows": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "linux": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "match": true
+    },
+    {
+      "file": "bin/lib/sankhyiki.smlib",
+      "windows": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "linux": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "match": true
+    },
+    {
+      "file": "bin/lib/shreni.smlib",
+      "windows": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "linux": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "match": true
+    },
+    {
+      "file": "bin/lib/suchi.smlib",
+      "windows": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "linux": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "match": true
+    },
+    {
+      "file": "bin/lib/vakyank.smlib",
+      "windows": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "linux": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "match": true
+    },
+    {
+      "file": "bin/lib/varna.smlib",
+      "windows": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "linux": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "match": true
+    },
+    {
+      "file": "bin/sutram-link.exe",
+      "windows": "814cb11ae1c9111be3cfaf0812a3a4e40ba8fd26f24a48ae263a11282defde2d",
+      "linux": "814cb11ae1c9111be3cfaf0812a3a4e40ba8fd26f24a48ae263a11282defde2d",
+      "match": true
+    },
+    {
+      "file": "bin/sutram.exe",
+      "windows": "bcb33e6dbb58c1e8556d29057c2f20128cc00f54e48cf860c7ea5496c0972532",
+      "linux": "bcb33e6dbb58c1e8556d29057c2f20128cc00f54e48cf860c7ea5496c0972532",
+      "match": true
+    },
+    {
+      "file": "docs/AI-WORK-DIVISION.md",
+      "windows": "1eb75fc320ecf1b2f1873780e6d5dc85d34d89a1626120105f816bf4f4b223cf",
+      "linux": "1eb75fc320ecf1b2f1873780e6d5dc85d34d89a1626120105f816bf4f4b223cf",
+      "match": true
+    },
+    {
+      "file": "docs/BUILDING.md",
+      "windows": "0f75f06bac0f014b9fb6b790bf97b0dce2699c19730fdc3dfb4db616ca1d4135",
+      "linux": "0f75f06bac0f014b9fb6b790bf97b0dce2699c19730fdc3dfb4db616ca1d4135",
+      "match": true
+    },
+    {
+      "file": "docs/CHANGELOG.md",
+      "windows": "1e9212591fdc777704f5cf7963c2dc18e740c5596275ae2f08a9a1f01d831892",
+      "linux": "1e9212591fdc777704f5cf7963c2dc18e740c5596275ae2f08a9a1f01d831892",
+      "match": true
+    },
+    {
+      "file": "docs/CI-NOTIFICATION-POLICY.md",
+      "windows": "b593dd44de6ba57be732c712863c7a3c153f68eda7814c98bf0b8e5cf44789c3",
+      "linux": "b593dd44de6ba57be732c712863c7a3c153f68eda7814c98bf0b8e5cf44789c3",
+      "match": true
+    },
+    {
+      "file": "docs/ERROR-CONVENTION.md",
+      "windows": "69918e3fc11bfd218f12c5f1c91f89b0d519f135472db73f202bc6dd9a136b27",
+      "linux": "69918e3fc11bfd218f12c5f1c91f89b0d519f135472db73f202bc6dd9a136b27",
+      "match": true
+    },
+    {
+      "file": "docs/FREESTANDING.md",
+      "windows": "79030a81d671b38238881f45f838816c8b01dff3501fd89da9c701060c5b56c5",
+      "linux": "79030a81d671b38238881f45f838816c8b01dff3501fd89da9c701060c5b56c5",
+      "match": true
+    },
+    {
+      "file": "docs/INSTALLATION-ROUTES.md",
+      "windows": "074cac248c7796cb977ea1f5a54bfcab24ee73d915930b38c24970e910abe326",
+      "linux": "074cac248c7796cb977ea1f5a54bfcab24ee73d915930b38c24970e910abe326",
+      "match": true
+    },
+    {
+      "file": "docs/INSTALLER-REBUILD.md",
+      "windows": "46ba971604a56c54290731b8dac1595bf24fe719a4e1a97c16bfa65575b61f4e",
+      "linux": "46ba971604a56c54290731b8dac1595bf24fe719a4e1a97c16bfa65575b61f4e",
+      "match": true
+    },
+    {
+      "file": "docs/LANGUAGE-REFERENCE.md",
+      "windows": "0ea21b639c17be6956fbb02e516eccaf8235dc6cfd0b1cef5354af170650a830",
+      "linux": "0ea21b639c17be6956fbb02e516eccaf8235dc6cfd0b1cef5354af170650a830",
+      "match": true
+    },
+    {
+      "file": "docs/LIBRARY-BOUNDARY.md",
+      "windows": "379df84b463a017a0f6dfc493af421a6c3383af74f0c3045207c42542532e83b",
+      "linux": "379df84b463a017a0f6dfc493af421a6c3383af74f0c3045207c42542532e83b",
+      "match": true
+    },
+    {
+      "file": "docs/MEMORY-MODEL.md",
+      "windows": "633612cf2675e306bc93e4214aef178b29f7ecc934e2f02b86539ed190ff5f5c",
+      "linux": "633612cf2675e306bc93e4214aef178b29f7ecc934e2f02b86539ed190ff5f5c",
+      "match": true
+    },
+    {
+      "file": "docs/NUMERIC-CONTRACT.md",
+      "windows": "c5ef3de813577614c54d02f443044918fa29dfa6f7788af8361f4b338fb3a8a2",
+      "linux": "c5ef3de813577614c54d02f443044918fa29dfa6f7788af8361f4b338fb3a8a2",
+      "match": true
+    },
+    {
+      "file": "docs/OBJECT-FORMAT.md",
+      "windows": "91b32a130fd089cd949c8d64cba98044316799177002e163f17a0afa91333c8d",
+      "linux": "91b32a130fd089cd949c8d64cba98044316799177002e163f17a0afa91333c8d",
+      "match": true
+    },
+    {
+      "file": "docs/OPEN-ISSUES.md",
+      "windows": "121e3320efd494f69cb14fabd059b5717683dc304be78406ced721c92289b77b",
+      "linux": "121e3320efd494f69cb14fabd059b5717683dc304be78406ced721c92289b77b",
+      "match": true
+    },
+    {
+      "file": "docs/OVERFLOW-SAFETY.md",
+      "windows": "5dbf11285530cbe1e84919cc14095c06c58fe03d479ccc12b942f17583f00847",
+      "linux": "5dbf11285530cbe1e84919cc14095c06c58fe03d479ccc12b942f17583f00847",
+      "match": true
+    },
+    {
+      "file": "docs/PATH-TO-COMPLETION.md",
+      "windows": "831ce6c9da0d816ee357baf38689800df349138af42973fe9a6023528a655678",
+      "linux": "831ce6c9da0d816ee357baf38689800df349138af42973fe9a6023528a655678",
+      "match": true
+    },
+    {
+      "file": "docs/RELEASE-NOTES.md",
+      "windows": "df603026933697de4b21a581e5db3754ea79601692f6bc72278925653b2a7d86",
+      "linux": "df603026933697de4b21a581e5db3754ea79601692f6bc72278925653b2a7d86",
+      "match": true
+    },
+    {
+      "file": "docs/SANDESH.md",
+      "windows": "07fed7d8ce6833622c23763dff0eab75a32a28cb7b7969495d3270e28ff8cb38",
+      "linux": "07fed7d8ce6833622c23763dff0eab75a32a28cb7b7969495d3270e28ff8cb38",
+      "match": true
+    },
+    {
+      "file": "docs/SPECIFICATION.md",
+      "windows": "0b2df79dfb155333e6d320dc1e0a57ee6139d16c7a2fe10b920b453d786dd53f",
+      "linux": "0b2df79dfb155333e6d320dc1e0a57ee6139d16c7a2fe10b920b453d786dd53f",
+      "match": true
+    },
+    {
+      "file": "docs/WHATS-LEFT.md",
+      "windows": "3b90c5f2ebb338987abeeb541dddc3bb9e6a1812140bebf396f505453e52b780",
+      "linux": "3b90c5f2ebb338987abeeb541dddc3bb9e6a1812140bebf396f505453e52b780",
+      "match": true
+    },
+    {
+      "file": "docs/WINDOWS-PORT-PLAN.md",
+      "windows": "78a53479c91375cfa33cdd005af9b47fd8c939a76a19ac1798eb565673abafbc",
+      "linux": "78a53479c91375cfa33cdd005af9b47fd8c939a76a19ac1798eb565673abafbc",
+      "match": true
+    },
+    {
+      "file": "docs/WINDOWS-SETUP.md",
+      "windows": "e22395f1971fdf3fd145586f693c91db62905d3aa74855853b4958f52baf80c7",
+      "linux": "e22395f1971fdf3fd145586f693c91db62905d3aa74855853b4958f52baf80c7",
+      "match": true
+    },
+    {
+      "file": "docs/_newchapter_en.html",
+      "windows": "3f43e9b351511bc06fc7943700e9b9ef155fa9417a56064be378f4e7b69feb38",
+      "linux": "3f43e9b351511bc06fc7943700e9b9ef155fa9417a56064be378f4e7b69feb38",
+      "match": true
+    },
+    {
+      "file": "docs/ai-handoff-notes/HANDOFF.md",
+      "windows": "f783d14d292c1c819d45cffd57e88743f757f3ede7cf9bb5a3604aa542e2b5b8",
+      "linux": "f783d14d292c1c819d45cffd57e88743f757f3ede7cf9bb5a3604aa542e2b5b8",
+      "match": true
+    },
+    {
+      "file": "docs/ai-handoff-notes/NEXT_TASK_NATIVE_PE64.md",
+      "windows": "33e2ca4b123332c15ce16de431250aa189be1317b074097c00403833a7e01f45",
+      "linux": "33e2ca4b123332c15ce16de431250aa189be1317b074097c00403833a7e01f45",
+      "match": true
+    },
+    {
+      "file": "docs/ai-handoff-notes/REAL_MACHINE_RESULTS_2026-10-01.md",
+      "windows": "90787aec2d1499f318fe3bb2a1d7cfcebf535c1be88dd9bbf366f79ef1a7cf2e",
+      "linux": "90787aec2d1499f318fe3bb2a1d7cfcebf535c1be88dd9bbf366f79ef1a7cf2e",
+      "match": true
+    },
+    {
+      "file": "docs/ai-handoff-notes/START_HERE_FOR_AI.md",
+      "windows": "eb7dcd0ee38c8ea04e31c393e8a72e6f82cba647374e25c24d1ac76a9710d40a",
+      "linux": "eb7dcd0ee38c8ea04e31c393e8a72e6f82cba647374e25c24d1ac76a9710d40a",
+      "match": true
+    },
+    {
+      "file": "docs/decisions/ALIAS-DESIGN.md",
+      "windows": "ed11a700ea40fc2be7309a068479587abf9a325136a7321f5b21f335f2fcec40",
+      "linux": "ed11a700ea40fc2be7309a068479587abf9a325136a7321f5b21f335f2fcec40",
+      "match": true
+    },
+    {
+      "file": "docs/decisions/MEMORY-DECISION.md",
+      "windows": "d62044fe53bdcf0a1241e3447e2015fdf9acc7ee893d5cb176696f63d459556f",
+      "linux": "d62044fe53bdcf0a1241e3447e2015fdf9acc7ee893d5cb176696f63d459556f",
+      "match": true
+    },
+    {
+      "file": "docs/decisions/MEMORY-DESIGN.md",
+      "windows": "b84ac7c956bb248d727ed0221049fdbf0ccb7c8309c9a64f08da777915b81e2f",
+      "linux": "b84ac7c956bb248d727ed0221049fdbf0ccb7c8309c9a64f08da777915b81e2f",
+      "match": true
+    },
+    {
+      "file": "docs/decisions/MEMORY-IMPROVEMENTS.md",
+      "windows": "3693b18eccb2df31f205b8edd791b7aa5863da08e795290c3a8d4b5741c0ac3a",
+      "linux": "3693b18eccb2df31f205b8edd791b7aa5863da08e795290c3a8d4b5741c0ac3a",
+      "match": true
+    },
+    {
+      "file": "docs/decisions/MEMORY-MY-IDEA.md",
+      "windows": "6e86af206c14e6b6e3b363033ed3835015ba7243b77a66a227ac185f29a12c82",
+      "linux": "6e86af206c14e6b6e3b363033ed3835015ba7243b77a66a227ac185f29a12c82",
+      "match": true
+    },
+    {
+      "file": "docs/decisions/MEMORY-UNIQUE-HYBRID.md",
+      "windows": "97eb887ad92d802f31826dedde20e649f97c89600f28ad6f94901384ba0256ad",
+      "linux": "97eb887ad92d802f31826dedde20e649f97c89600f28ad6f94901384ba0256ad",
+      "match": true
+    },
+    {
+      "file": "docs/decisions/R114-SUTRAM-TRUTI.md",
+      "windows": "324de9a9068788b3ddb07922bb996d56bcec96f79ab1c19dce6785491fc8b060",
+      "linux": "324de9a9068788b3ddb07922bb996d56bcec96f79ab1c19dce6785491fc8b060",
+      "match": true
+    },
+    {
+      "file": "docs/mockup-setup.html",
+      "windows": "38dffeb434c69f0bd5d3be4ba754e1448bfabc3273ed70e3c43f34b1ba8cbfae",
+      "linux": "38dffeb434c69f0bd5d3be4ba754e1448bfabc3273ed70e3c43f34b1ba8cbfae",
+      "match": true
+    },
+    {
+      "file": "docs/reports/COVERAGE-AUDIT.md",
+      "windows": "a5859a0cb29189a99f59d6dd4134f800531482f40a938b94129ee70b00238fbf",
+      "linux": "a5859a0cb29189a99f59d6dd4134f800531482f40a938b94129ee70b00238fbf",
+      "match": true
+    },
+    {
+      "file": "docs/reports/EDGE-COVERAGE-30.md",
+      "windows": "1cf606c0afbb501909d671bf92500d546a480f333874f2fbf6919140e40e4d07",
+      "linux": "1cf606c0afbb501909d671bf92500d546a480f333874f2fbf6919140e40e4d07",
+      "match": true
+    },
+    {
+      "file": "docs/reports/FAIL-ALLOC.md",
+      "windows": "1353e03df2617ae4a9f43346d15512ecadd3715055aedbeeceef28796593d1c1",
+      "linux": "1353e03df2617ae4a9f43346d15512ecadd3715055aedbeeceef28796593d1c1",
+      "match": true
+    },
+    {
+      "file": "docs/reports/HOW-DEFECTS-WERE-FOUND.md",
+      "windows": "ad5aea7f369945853bf12caedca6216ccbe26570f026b37e889b88e004b0ccdc",
+      "linux": "ad5aea7f369945853bf12caedca6216ccbe26570f026b37e889b88e004b0ccdc",
+      "match": true
+    },
+    {
+      "file": "docs/reports/INDIC-COVERAGE.md",
+      "windows": "a437fc71e856c8f3c99622aafcd245ed7efeb1007851e68d21cd3e6f3ccc53db",
+      "linux": "a437fc71e856c8f3c99622aafcd245ed7efeb1007851e68d21cd3e6f3ccc53db",
+      "match": true
+    },
+    {
+      "file": "docs/reports/KOSH-BUILTINS.md",
+      "windows": "8c642b74fa347a74783b46cf4a52de39ccd033db73b9a3da226f882db131b342",
+      "linux": "8c642b74fa347a74783b46cf4a52de39ccd033db73b9a3da226f882db131b342",
+      "match": true
+    },
+    {
+      "file": "docs/reports/KOSH-REUSE.md",
+      "windows": "c6938e311cb248b6719fb863c3a9b5c3e638d3d3c7de45365867d43f9ff53464",
+      "linux": "c6938e311cb248b6719fb863c3a9b5c3e638d3d3c7de45365867d43f9ff53464",
+      "match": true
+    },
+    {
+      "file": "docs/reports/LAGHU-EXAMPLE.md",
+      "windows": "d61c3d263193e374b30d3a38ab5c16fbb52f4e5aaa584f9aaf7989b32b1f220d",
+      "linux": "d61c3d263193e374b30d3a38ab5c16fbb52f4e5aaa584f9aaf7989b32b1f220d",
+      "match": true
+    },
+    {
+      "file": "docs/reports/LANG-PACK-AUDIT.md",
+      "windows": "58fccb71bafb99478981ba9c7174cfc7124e9abbe3a6085d7ab1197fce861f4b",
+      "linux": "58fccb71bafb99478981ba9c7174cfc7124e9abbe3a6085d7ab1197fce861f4b",
+      "match": true
+    },
+    {
+      "file": "docs/reports/LEXER-BOUNDARY-TEST.md",
+      "windows": "41e3aa88f7155750108de8389356bf569bedee0c828fb7703b7889d3def1a8be",
+      "linux": "41e3aa88f7155750108de8389356bf569bedee0c828fb7703b7889d3def1a8be",
+      "match": true
+    },
+    {
+      "file": "docs/reports/LIBRARY-ENGLISH-AUDIT.md",
+      "windows": "54db396bbfb6d8f3df7256d902ce5c29198faca743c5cd044bac39eaf5321f54",
+      "linux": "54db396bbfb6d8f3df7256d902ce5c29198faca743c5cd044bac39eaf5321f54",
+      "match": true
+    },
+    {
+      "file": "docs/reports/LIBRARY-LAYERS.md",
+      "windows": "f8b4b31869673fa3dfcc662b0fcb5eac578f59accaff179a9f8f34a8d5de676b",
+      "linux": "f8b4b31869673fa3dfcc662b0fcb5eac578f59accaff179a9f8f34a8d5de676b",
+      "match": true
+    },
+    {
+      "file": "docs/reports/MEMORY-COMPOSITION-TEST.md",
+      "windows": "48e025679cb13ccb52e43077dcdb67ce67ee901f8cf3a17530c0d2aadb469e8e",
+      "linux": "48e025679cb13ccb52e43077dcdb67ce67ee901f8cf3a17530c0d2aadb469e8e",
+      "match": true
+    },
+    {
+      "file": "docs/reports/NEGATIVE-CORPUS.md",
+      "windows": "08c8fbce8584375e9ab0613eea6a4c02de5069a482379af9caf48b6fdd0b0ba2",
+      "linux": "08c8fbce8584375e9ab0613eea6a4c02de5069a482379af9caf48b6fdd0b0ba2",
+      "match": true
+    },
+    {
+      "file": "docs/reports/PARSER-CLASS-TEST.md",
+      "windows": "2382901582a83ad7f628b75464ec98f8732acd788aec659298c786904dc8d651",
+      "linux": "2382901582a83ad7f628b75464ec98f8732acd788aec659298c786904dc8d651",
+      "match": true
+    },
+    {
+      "file": "docs/reports/PROPERTY-NET.md",
+      "windows": "117ada25b286eb061b7e8f38df02f8de247c7b86f8be4a0da8091770f8d0fb63",
+      "linux": "117ada25b286eb061b7e8f38df02f8de247c7b86f8be4a0da8091770f8d0fb63",
+      "match": true
+    },
+    {
+      "file": "docs/reports/SANSKRIT-AND-AI-BRIGGS-1985.md",
+      "windows": "65dfabb90bbcdfc0ad86de6157fcc9ef6bf73e94c4f66d212ff5561e15140c0f",
+      "linux": "65dfabb90bbcdfc0ad86de6157fcc9ef6bf73e94c4f66d212ff5561e15140c0f",
+      "match": true
+    },
+    {
+      "file": "docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md",
+      "windows": "ab304d323cf9dc81dd5d95da1a5fdd359bb76e5ed43ec3de9f59758df6595084",
+      "linux": "ab304d323cf9dc81dd5d95da1a5fdd359bb76e5ed43ec3de9f59758df6595084",
+      "match": true
+    },
+    {
+      "file": "docs/reports/SECURITY-AUDIT.md",
+      "windows": "dce6d48beb18a667f522eed9b9786a65620f26058a50dc1f4930f058eb0f29fa",
+      "linux": "dce6d48beb18a667f522eed9b9786a65620f26058a50dc1f4930f058eb0f29fa",
+      "match": true
+    },
+    {
+      "file": "docs/reports/STRING-BYTE-PARITY.md",
+      "windows": "732c9665cffd07be97475557b8cf53613c0302c238f405524e001483451c77ee",
+      "linux": "732c9665cffd07be97475557b8cf53613c0302c238f405524e001483451c77ee",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/CHANGELOG-ARCHIVE.md",
+      "windows": "8001ebebcf553098e0cac2c41df96cceb6f412f65c9fdc8ef5aa7d93271bad67",
+      "linux": "8001ebebcf553098e0cac2c41df96cceb6f412f65c9fdc8ef5aa7d93271bad67",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/F7-SCALAR-INDEX-CRASH.md",
+      "windows": "7cf1f8d5efb34f7ee5cda65682527ae56ac69ccb2feb31d7914406430687c161",
+      "linux": "7cf1f8d5efb34f7ee5cda65682527ae56ac69ccb2feb31d7914406430687c161",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md",
+      "windows": "43132face4ced2fd01c9c45dc0b3c9cc68476b3ae9126195b37cfb5051c568b0",
+      "linux": "43132face4ced2fd01c9c45dc0b3c9cc68476b3ae9126195b37cfb5051c568b0",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/ITEM-6-X11-INDIC-ASSESSMENT.md",
+      "windows": "95dc20e8229a9446f4c0217a3c3071c47d98ed8b01e8e8a1ab1806f92aaa7ea6",
+      "linux": "95dc20e8229a9446f4c0217a3c3071c47d98ed8b01e8e8a1ab1806f92aaa7ea6",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/PLAN-TO-FINISH.md",
+      "windows": "bb7050c47bc6c3bad92b094f2ebac31dc212d1015cf376ba87e41e221c72a491",
+      "linux": "bb7050c47bc6c3bad92b094f2ebac31dc212d1015cf376ba87e41e221c72a491",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/PROJECT-OVERVIEW.md",
+      "windows": "6245f162dd631559a8fc8757727266080177a51037142d6d73a939e93b69e2ff",
+      "linux": "6245f162dd631559a8fc8757727266080177a51037142d6d73a939e93b69e2ff",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R34-ACKNOWLEDGE.md",
+      "windows": "ad9926d9b95a2c7cbe2139193754d241ba76d55cc366d647e95cc22e58503de7",
+      "linux": "ad9926d9b95a2c7cbe2139193754d241ba76d55cc366d647e95cc22e58503de7",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R50-BYTE-PACKED-TEXT.md",
+      "windows": "7a5cd8fe1e7d780da928057c15c688322f78e073991f81be19e0e50ea754377d",
+      "linux": "7a5cd8fe1e7d780da928057c15c688322f78e073991f81be19e0e50ea754377d",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R52-BUILTIN-FIXES.md",
+      "windows": "7d1e23e8d00b9ad96405acda231fd53df1938091810562dc5d564e4d8a0433c7",
+      "linux": "7d1e23e8d00b9ad96405acda231fd53df1938091810562dc5d564e4d8a0433c7",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R54-BUILTIN-BOUNDS.md",
+      "windows": "50571c6e0db44ad67ebaac81531e49762cccd586182513f9615622c3156c0324",
+      "linux": "50571c6e0db44ad67ebaac81531e49762cccd586182513f9615622c3156c0324",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R56-MODULE-GLOBALS.md",
+      "windows": "90a05b17b8f3c3cd5e16ca038171d68b121e175354274883abbba7a3b042a1a0",
+      "linux": "90a05b17b8f3c3cd5e16ca038171d68b121e175354274883abbba7a3b042a1a0",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R57-REGISTER-EVALUATOR.md",
+      "windows": "a7d284b377e99dbcdb62268db46c2ae09791af5fda6cebf7711eced619860c31",
+      "linux": "a7d284b377e99dbcdb62268db46c2ae09791af5fda6cebf7711eced619860c31",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R58-CONSTANT-FOLDING.md",
+      "windows": "3b1cb3190237140403aca19d0bc1b08392ab1a192fd09859efcdde84d1d5de07",
+      "linux": "3b1cb3190237140403aca19d0bc1b08392ab1a192fd09859efcdde84d1d5de07",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R59-PREEMISSION-PEEPHOLE.md",
+      "windows": "eee7a58a3c07e1eb8f868c5ce5bb4168c04524642f473ed43f610674f4079958",
+      "linux": "eee7a58a3c07e1eb8f868c5ce5bb4168c04524642f473ed43f610674f4079958",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R62-WINDOWS-ACCEPTANCE.md",
+      "windows": "74fd8000af03c95d0bd3d287a41cfe110b65d93a3d21358e9f3bfdbd6bd399c1",
+      "linux": "74fd8000af03c95d0bd3d287a41cfe110b65d93a3d21358e9f3bfdbd6bd399c1",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R63-KOSH-BUILTINS.md",
+      "windows": "4562bf86114f8a6099b73a2847720dd6c9e7a949485a92945c9bda8c60b5dddb",
+      "linux": "4562bf86114f8a6099b73a2847720dd6c9e7a949485a92945c9bda8c60b5dddb",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R64-KOSH-DIAGNOSTICS.md",
+      "windows": "8c948868e66c7a522839a13c9712ce52f663225026710021d7df97a7433e26e0",
+      "linux": "8c948868e66c7a522839a13c9712ce52f663225026710021d7df97a7433e26e0",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R65-DEVANAGARI-SURFACE.md",
+      "windows": "cc9c377bcbde1db3c71060bddd39a3b7a95877382501b83152bec81604e6341e",
+      "linux": "cc9c377bcbde1db3c71060bddd39a3b7a95877382501b83152bec81604e6341e",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R65-FINISH-REVIEW.md",
+      "windows": "ff4a94707c3c026e1044e381346359a2b849fd39deca0432158b162bab0a7c30",
+      "linux": "ff4a94707c3c026e1044e381346359a2b849fd39deca0432158b162bab0a7c30",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md",
+      "windows": "cc80e028665d51e253e138365ebc6022b5aa2eca3f99a51b1ea15ed1dfb51fac",
+      "linux": "cc80e028665d51e253e138365ebc6022b5aa2eca3f99a51b1ea15ed1dfb51fac",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R65-SOURCE-REVIEW.md",
+      "windows": "8cc24fbb66e9888fe3f8995d623e429dc36a23e29b62c902bc565d83e5cc0621",
+      "linux": "8cc24fbb66e9888fe3f8995d623e429dc36a23e29b62c902bc565d83e5cc0621",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R67-SOURCE-REVIEW.md",
+      "windows": "9c54b430b2b8a84744b2f890ed8d46975cab14fac3a41a6e8a6c58b7036cb5a6",
+      "linux": "9c54b430b2b8a84744b2f890ed8d46975cab14fac3a41a6e8a6c58b7036cb5a6",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R68-INDIC-DEVICES.md",
+      "windows": "102ce13d97a114c67bbfe8323e1beff01a322667413d0f5136fe94f12a36aa62",
+      "linux": "102ce13d97a114c67bbfe8323e1beff01a322667413d0f5136fe94f12a36aa62",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R68-LEXICAL-DIAGNOSTICS.md",
+      "windows": "77b8caf7fa74b999bebdd89ea52bd2e2250fa7be90a31e6e2758775b6807cecc",
+      "linux": "77b8caf7fa74b999bebdd89ea52bd2e2250fa7be90a31e6e2758775b6807cecc",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R68-PURE-PAIR-PROBE.md",
+      "windows": "549ba152086eb377b7eeba30dc5a4b805428380afbcaada527ee7df6b374578a",
+      "linux": "549ba152086eb377b7eeba30dc5a4b805428380afbcaada527ee7df6b374578a",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R68-SOURCE-REVIEW.md",
+      "windows": "34cfdfe8d04dae770604659dee889c07acae48286d4f8bc4a6553947dea328b1",
+      "linux": "34cfdfe8d04dae770604659dee889c07acae48286d4f8bc4a6553947dea328b1",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R68-WINDOWS-GUI-CHECKLIST.md",
+      "windows": "a5d310865c5a0225d0bbcb54acdff83b43957d3a44349840c968622b31d6e95f",
+      "linux": "a5d310865c5a0225d0bbcb54acdff83b43957d3a44349840c968622b31d6e95f",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R69-PURE-PAIR-MEASUREMENT.md",
+      "windows": "08bb4bdef520d4c0ed7437dc7195f9592b78913a4d07ac7e2a9acab85d8ee053",
+      "linux": "08bb4bdef520d4c0ed7437dc7195f9592b78913a4d07ac7e2a9acab85d8ee053",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R71-BOOT-PATH.md",
+      "windows": "7a1e9943da07c39602863235f6308dd818b97e1df2b9b652c96e207e9de6467a",
+      "linux": "7a1e9943da07c39602863235f6308dd818b97e1df2b9b652c96e207e9de6467a",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R71-CANONICAL-BUILD.md",
+      "windows": "312314476bc1002af7137aa04e5853eda20e8dd6b2671b197ce4fc4164d505ae",
+      "linux": "312314476bc1002af7137aa04e5853eda20e8dd6b2671b197ce4fc4164d505ae",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R71-MEMORY-BOUNDARY.md",
+      "windows": "106d50d3bc2af0cef260a6d034306bf7a333338e880d62331b1706d40b839804",
+      "linux": "106d50d3bc2af0cef260a6d034306bf7a333338e880d62331b1706d40b839804",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R71-MODULES.md",
+      "windows": "4d6821dabd1543fcb205f96be007b343717396007c11a99308c206114ff66dbc",
+      "linux": "4d6821dabd1543fcb205f96be007b343717396007c11a99308c206114ff66dbc",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R71-SPECIFICATION-EVIDENCE.md",
+      "windows": "119d110795dfe613bd8bacd904e4d37e3d6cc745e78717fa0ea7f921775f5742",
+      "linux": "119d110795dfe613bd8bacd904e4d37e3d6cc745e78717fa0ea7f921775f5742",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/R72-BASELINE-OBSERVED.md",
+      "windows": "beef71de98f275bf61b0dcfbde9b838b44e9f210adefe510c262a40bbd75a9f4",
+      "linux": "beef71de98f275bf61b0dcfbde9b838b44e9f210adefe510c262a40bbd75a9f4",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/ROADMAP-TO-V1.0.md",
+      "windows": "8382abb7239448bf161a40a980e19feab884a952bb7e1dc9b08f00fe61e7056d",
+      "linux": "8382abb7239448bf161a40a980e19feab884a952bb7e1dc9b08f00fe61e7056d",
+      "match": true
+    },
+    {
+      "file": "docs/rounds/TEST-ME.md",
+      "windows": "70a40c6a52b3add22a85846fd30cf61136ed4f9f70ffcd32699a6cfe17027180",
+      "linux": "70a40c6a52b3add22a85846fd30cf61136ed4f9f70ffcd32699a6cfe17027180",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-audit.html",
+      "windows": "e82085f9c2ea0063db99398d136143d97caac92f3cf201110123f40c7cb0c119",
+      "linux": "e82085f9c2ea0063db99398d136143d97caac92f3cf201110123f40c7cb0c119",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-benchmark-report.html",
+      "windows": "de9c902cd98323b84f9af5c91c162a36d79dcdb2f42cf93a37986b0da6da3eb9",
+      "linux": "de9c902cd98323b84f9af5c91c162a36d79dcdb2f42cf93a37986b0da6da3eb9",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-2.html",
+      "windows": "3298ee2ebbcacaf4697d3908402839402771e6c3d862d6b085281903a67464b7",
+      "linux": "3298ee2ebbcacaf4697d3908402839402771e6c3d862d6b085281903a67464b7",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-3.html",
+      "windows": "3bc7f63f618147f630abf88d550186d4bbe7af0135d2a0f9404e192e652bc2ba",
+      "linux": "3bc7f63f618147f630abf88d550186d4bbe7af0135d2a0f9404e192e652bc2ba",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-english.html",
+      "windows": "c10cf13e001c16c0ebad036615ee7f55f88fd61bbe126b71e639a6d997027700",
+      "linux": "c10cf13e001c16c0ebad036615ee7f55f88fd61bbe126b71e639a6d997027700",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-gujarati.html",
+      "windows": "f0b849b010ac293cb2efe3c256adcb4254c30edbf74229111ad358116471de77",
+      "linux": "f0b849b010ac293cb2efe3c256adcb4254c30edbf74229111ad358116471de77",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-hindi.html",
+      "windows": "a0b6b36f7077e6403f3deb8e34cc8d355da63269c10e8fc94fafa377fcf55930",
+      "linux": "a0b6b36f7077e6403f3deb8e34cc8d355da63269c10e8fc94fafa377fcf55930",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-sanskrit.html",
+      "windows": "b22e406aafe0e96026ce5fbc0f5c289904e41c5de2fe5e0579289356f839a3b0",
+      "linux": "b22e406aafe0e96026ce5fbc0f5c289904e41c5de2fe5e0579289356f839a3b0",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-tamil.html",
+      "windows": "5d9a63b7890d6c88eb2e14fe576a258fd0bf7af5e5f4746e4f66678ca109ba5f",
+      "linux": "5d9a63b7890d6c88eb2e14fe576a258fd0bf7af5e5f4746e4f66678ca109ba5f",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book-telugu.html",
+      "windows": "9f87a30b5e9a41c9566e84691a7412a12dee2f0bc7e0f6eadf0c21264ad1dda0",
+      "linux": "9f87a30b5e9a41c9566e84691a7412a12dee2f0bc7e0f6eadf0c21264ad1dda0",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-book.html",
+      "windows": "a35e5dc5c7604fef1e38ec5050f1ea209e30b7df56b3cd3252a04a0fc398167f",
+      "linux": "a35e5dc5c7604fef1e38ec5050f1ea209e30b7df56b3cd3252a04a0fc398167f",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-design-parameters.html",
+      "windows": "4b6e749e269b19ced86452caf7e22a4941ba12d5f90a8b63b37f899a41944060",
+      "linux": "4b6e749e269b19ced86452caf7e22a4941ba12d5f90a8b63b37f899a41944060",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-icon-thread.html",
+      "windows": "c8602eb3a84e6cb7c4bf24720eddf3e287b5a1f2dffbaaa898726a99076ce4e5",
+      "linux": "c8602eb3a84e6cb7c4bf24720eddf3e287b5a1f2dffbaaa898726a99076ce4e5",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-ide.html",
+      "windows": "b24231ac4380f15203419765ed1da44d4e9e710df8f93906ae2475dec84f0a60",
+      "linux": "b24231ac4380f15203419765ed1da44d4e9e710df8f93906ae2475dec84f0a60",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-keyword-words.html",
+      "windows": "b441e44bdb8f96054737e285a118b3781dbf0379b3b90dd0f0dd9e941b5745c9",
+      "linux": "b441e44bdb8f96054737e285a118b3781dbf0379b3b90dd0f0dd9e941b5745c9",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-performance.html",
+      "windows": "0eeb8064d5e6021de691d8b94a8e67beb18b35d443500577019a71a00cb7c1b4",
+      "linux": "0eeb8064d5e6021de691d8b94a8e67beb18b35d443500577019a71a00cb7c1b4",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-philosophy.html",
+      "windows": "cf5b4704b432f317aaed0b7859a93f5df9c48f07cea804f6549fcd9758a5dfe2",
+      "linux": "cf5b4704b432f317aaed0b7859a93f5df9c48f07cea804f6549fcd9758a5dfe2",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-project-status.html",
+      "windows": "46b903e3b980129dffcfd4d07456cce26bf407f2c8baeef805b50afa7f4b6a25",
+      "linux": "46b903e3b980129dffcfd4d07456cce26bf407f2c8baeef805b50afa7f4b6a25",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-roadmap.html",
+      "windows": "44976aa611e78fda5f0d7000c8d954e271f169935ea01031fc34b677b59ab08e",
+      "linux": "44976aa611e78fda5f0d7000c8d954e271f169935ea01031fc34b677b59ab08e",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-scorecard.html",
+      "windows": "d38fd7b1a6bc04dee6009ad64d3df83f115407284939a2526272ae9abb376bce",
+      "linux": "d38fd7b1a6bc04dee6009ad64d3df83f115407284939a2526272ae9abb376bce",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-stdlib-reference.html",
+      "windows": "df2686c98a7f89da2e4438107e2635f052a50998b9e8efc8e6be4ecc2c38f70c",
+      "linux": "df2686c98a7f89da2e4438107e2635f052a50998b9e8efc8e6be4ecc2c38f70c",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-stdlib.html",
+      "windows": "6865c5491f403e93819b0df2b7cf058b3b19d30730dc0c66f58a49a0d8293ec8",
+      "linux": "6865c5491f403e93819b0df2b7cf058b3b19d30730dc0c66f58a49a0d8293ec8",
+      "match": true
+    },
+    {
+      "file": "docs/sutram-vocabulary.html",
+      "windows": "facf4e0826f03fcf415b16f9644ec77642cafa4443c7d7a7c07de080daa8274b",
+      "linux": "facf4e0826f03fcf415b16f9644ec77642cafa4443c7d7a7c07de080daa8274b",
+      "match": true
+    },
+    {
+      "file": "docs/vocabulary/VOCABULARY-COMPLETE.md",
+      "windows": "d9735018ce7a7ffa81d3d0c8feacc4a0c008315c5e543f63c499f0641847fe13",
+      "linux": "d9735018ce7a7ffa81d3d0c8feacc4a0c008315c5e543f63c499f0641847fe13",
+      "match": true
+    },
+    {
+      "file": "docs/vocabulary/VOCABULARY-DERIVATION.md",
+      "windows": "b11de73c4339bf4d072d379e618b9e0a3de9b5066e8df1949bd7f6c6b1c5c46a",
+      "linux": "b11de73c4339bf4d072d379e618b9e0a3de9b5066e8df1949bd7f6c6b1c5c46a",
+      "match": true
+    },
+    {
+      "file": "docs/vocabulary/VOCABULARY-RULE.md",
+      "windows": "45cbc08503dc4a222c942834950aab742ed8c8b5e4b7548eda45e58aac4078c1",
+      "linux": "45cbc08503dc4a222c942834950aab742ed8c8b5e4b7548eda45e58aac4078c1",
+      "match": true
+    },
+    {
+      "file": "docs/vocabulary/VOCABULARY-SHORT.md",
+      "windows": "5448e29dc4fac48787236773790418455d05e906f09c25a1d2d16de8561df9ba",
+      "linux": "5448e29dc4fac48787236773790418455d05e906f09c25a1d2d16de8561df9ba",
+      "match": true
+    },
+    {
+      "file": "docs/vocabulary/VOCABULARY-TABLE.md",
+      "windows": "2e41efea7a4fa0bccd823ac005e20596e127f8935d8aad8413b20efc09a03e2f",
+      "linux": "2e41efea7a4fa0bccd823ac005e20596e127f8935d8aad8413b20efc09a03e2f",
+      "match": true
+    },
+    {
+      "file": "examples/01_hello.sm",
+      "windows": "6f92d201342a8db12a68dba9137f282145696a94762f6ecc4d756582f3a64edd",
+      "linux": "6f92d201342a8db12a68dba9137f282145696a94762f6ecc4d756582f3a64edd",
+      "match": true
+    },
+    {
+      "file": "examples/02_arith.sm",
+      "windows": "a57dd05e5e5207a38faeed35d330c16e83901a6d9fd1c0101a92c93df0eafa76",
+      "linux": "a57dd05e5e5207a38faeed35d330c16e83901a6d9fd1c0101a92c93df0eafa76",
+      "match": true
+    },
+    {
+      "file": "examples/03_if_else.sm",
+      "windows": "90641fc6d346861a3fb534c616ac8c005caa2fe01842be869a0740e745c6cc33",
+      "linux": "90641fc6d346861a3fb534c616ac8c005caa2fe01842be869a0740e745c6cc33",
+      "match": true
+    },
+    {
+      "file": "examples/04_while.sm",
+      "windows": "b1b2d6354e315f5fc1f7bbbc6b0841969d17198278a4ab6f37e4517afc3b0dae",
+      "linux": "b1b2d6354e315f5fc1f7bbbc6b0841969d17198278a4ab6f37e4517afc3b0dae",
+      "match": true
+    },
+    {
+      "file": "examples/05_func_params.sm",
+      "windows": "5ae97eeb68502baba1c4cb56aec8c7f82fbccc28f6be2770b9b9f17b507d7f7e",
+      "linux": "5ae97eeb68502baba1c4cb56aec8c7f82fbccc28f6be2770b9b9f17b507d7f7e",
+      "match": true
+    },
+    {
+      "file": "examples/06_rachana.sm",
+      "windows": "654baade8f1b99ec5c11b698c19ce547ee86ab0c2b32bf2bbab36bf5f75fabc7",
+      "linux": "654baade8f1b99ec5c11b698c19ce547ee86ab0c2b32bf2bbab36bf5f75fabc7",
+      "match": true
+    },
+    {
+      "file": "examples/07_module.sm",
+      "windows": "5a180916abd56a65738c65376eae0b73c343df43387338ee686018a4955683ff",
+      "linux": "5a180916abd56a65738c65376eae0b73c343df43387338ee686018a4955683ff",
+      "match": true
+    },
+    {
+      "file": "examples/08_demo.sm",
+      "windows": "c5ebc7c9b0f6fce148d35afaa6cb5fd8b331d793e6afc6b99f4bfab3c671e2cf",
+      "linux": "c5ebc7c9b0f6fce148d35afaa6cb5fd8b331d793e6afc6b99f4bfab3c671e2cf",
+      "match": true
+    },
+    {
+      "file": "examples/09_comparisons.sm",
+      "windows": "b46ba459a8bc9d90ff40ab17576af55e3fbc0d981bb03b60be829f43f45538b6",
+      "linux": "b46ba459a8bc9d90ff40ab17576af55e3fbc0d981bb03b60be829f43f45538b6",
+      "match": true
+    },
+    {
+      "file": "examples/100_t18_kosh_bounds.sm",
+      "windows": "a94a91f2b0aed410a6b3e5a5188a4c75fa7e9d3816a9c6c9930e777c7457da00",
+      "linux": "a94a91f2b0aed410a6b3e5a5188a4c75fa7e9d3816a9c6c9930e777c7457da00",
+      "match": true
+    },
+    {
+      "file": "examples/100_t18_kosh_devanagari.sm",
+      "windows": "2fca1e52e4e2d7e190f77aacc9aac1e973c20113a7508d5d352f4b53fcb03e2a",
+      "linux": "2fca1e52e4e2d7e190f77aacc9aac1e973c20113a7508d5d352f4b53fcb03e2a",
+      "match": true
+    },
+    {
+      "file": "examples/101_t18_kosh_empty.sm",
+      "windows": "0167cd99bed3d3ff5205d45e07dca58c2b889e9dee24242100c14a270391ce74",
+      "linux": "0167cd99bed3d3ff5205d45e07dca58c2b889e9dee24242100c14a270391ce74",
+      "match": true
+    },
+    {
+      "file": "examples/102_ast_multimodule_capacity.sm",
+      "windows": "4f5fdbcc5e7a8fda2c2b1fd197bd3973b8201e6db5cad65bc29aeeabd699b0ce",
+      "linux": "4f5fdbcc5e7a8fda2c2b1fd197bd3973b8201e6db5cad65bc29aeeabd699b0ce",
+      "match": true
+    },
+    {
+      "file": "examples/103_b10_nested_break_patches.sm",
+      "windows": "2a5a5b866e43e867a32f3ed5720d3e401190b42c8c9223152c9a0bd59b462818",
+      "linux": "2a5a5b866e43e867a32f3ed5720d3e401190b42c8c9223152c9a0bd59b462818",
+      "match": true
+    },
+    {
+      "file": "examples/104_b10_nested_continue_patches.sm",
+      "windows": "20ececd7d633341c266dd64c2f469e58892f6de3ab206825595b8d878129165d",
+      "linux": "20ececd7d633341c266dd64c2f469e58892f6de3ab206825595b8d878129165d",
+      "match": true
+    },
+    {
+      "file": "examples/105_block_nesting_capacity.sm",
+      "windows": "0b3827dfa439da9b642ac2463f1ba3abec66ae301c037f57ddad7183b5a1f4cc",
+      "linux": "0b3827dfa439da9b642ac2463f1ba3abec66ae301c037f57ddad7183b5a1f4cc",
+      "match": true
+    },
+    {
+      "file": "examples/106_rachana_field_capacity.sm",
+      "windows": "4dadb00877a47d866764d8e3b6e3b2b80efd25efa1c784b2dfd5a700c0d6fbb9",
+      "linux": "4dadb00877a47d866764d8e3b6e3b2b80efd25efa1c784b2dfd5a700c0d6fbb9",
+      "match": true
+    },
+    {
+      "file": "examples/107_b11_block_65_statements.sm",
+      "windows": "74fb899c043244b514129ed65399c2cb618365174e9a8e3de625dcbd37845928",
+      "linux": "74fb899c043244b514129ed65399c2cb618365174e9a8e3de625dcbd37845928",
+      "match": true
+    },
+    {
+      "file": "examples/108_b11_block_statement_capacity.sm",
+      "windows": "e81380cecf9ab0b0e3cbb81ac9dc341aaa132c07bb68939e2b1eee7cfb6840a2",
+      "linux": "e81380cecf9ab0b0e3cbb81ac9dc341aaa132c07bb68939e2b1eee7cfb6840a2",
+      "match": true
+    },
+    {
+      "file": "examples/109_t18_kosh_dasham.sm",
+      "windows": "305ada040ef360e44f85ec1b879750976e9609ddd76539280e3427bef3dbb44a",
+      "linux": "305ada040ef360e44f85ec1b879750976e9609ddd76539280e3427bef3dbb44a",
+      "match": true
+    },
+    {
+      "file": "examples/10_mathlib.sm",
+      "windows": "1f5fa226fed9dabcc5f3d66872edfa57a322b661627c1bdcfa2a595d595b14a1",
+      "linux": "1f5fa226fed9dabcc5f3d66872edfa57a322b661627c1bdcfa2a595d595b14a1",
+      "match": true
+    },
+    {
+      "file": "examples/110_t18_kosh_dasham_devanagari.sm",
+      "windows": "b47d6c981ec0e3da7423c8072ac5b4dddc6a9e66aef8a8bcdf5c20f4a487d285",
+      "linux": "b47d6c981ec0e3da7423c8072ac5b4dddc6a9e66aef8a8bcdf5c20f4a487d285",
+      "match": true
+    },
+    {
+      "file": "examples/111_t18_kosh_dasham_function_return.sm",
+      "windows": "b2cdf100158b8e1ad0de8d7c7d837e67b2455a4915b3d43b73349f0a050a1fe9",
+      "linux": "b2cdf100158b8e1ad0de8d7c7d837e67b2455a4915b3d43b73349f0a050a1fe9",
+      "match": true
+    },
+    {
+      "file": "examples/112_t18_kosh_integer_conversion.sm",
+      "windows": "6227e316090030f672761109f2baefab6b73a3b7409e53d4f859500d76ff63cb",
+      "linux": "6227e316090030f672761109f2baefab6b73a3b7409e53d4f859500d76ff63cb",
+      "match": true
+    },
+    {
+      "file": "examples/113_perf_self_update.sm",
+      "windows": "f4d838c5a1bd24a9227b8b405d138413a8701c6f43f1243bf4b825bcf267bca2",
+      "linux": "f4d838c5a1bd24a9227b8b405d138413a8701c6f43f1243bf4b825bcf267bca2",
+      "match": true
+    },
+    {
+      "file": "examples/114_perf_loop_fastpaths.sm",
+      "windows": "5d27fba6014e390991f60299fe370a3cf54ad0ce9f4a2a2c700d9ffd439cc86e",
+      "linux": "5d27fba6014e390991f60299fe370a3cf54ad0ce9f4a2a2c700d9ffd439cc86e",
+      "match": true
+    },
+    {
+      "file": "examples/115_perf_loop_bottom.sm",
+      "windows": "80f75bd70030843ed86d1a65d78030431cb120b04d5ff6575b0f9cb76b946007",
+      "linux": "80f75bd70030843ed86d1a65d78030431cb120b04d5ff6575b0f9cb76b946007",
+      "match": true
+    },
+    {
+      "file": "examples/116_perf_reg_destination.sm",
+      "windows": "1f037d5c57d52794c8b689764fd7d53a859fdbac825920f9b634194138db8714",
+      "linux": "1f037d5c57d52794c8b689764fd7d53a859fdbac825920f9b634194138db8714",
+      "match": true
+    },
+    {
+      "file": "examples/117_perf_constant_literals.sm",
+      "windows": "883790221ac4a134d1c7e907e6ed63d289af5eece2c7ecb7335e877f065f410a",
+      "linux": "883790221ac4a134d1c7e907e6ed63d289af5eece2c7ecb7335e877f065f410a",
+      "match": true
+    },
+    {
+      "file": "examples/118_t18_kosh_param.sm",
+      "windows": "d9bf6ea1c5184e356f0795b14a9757f342faa29dc25a380f10aebd5f3d30428a",
+      "linux": "d9bf6ea1c5184e356f0795b14a9757f342faa29dc25a380f10aebd5f3d30428a",
+      "match": true
+    },
+    {
+      "file": "examples/119_t18_kosh_param_forward.sm",
+      "windows": "ba0d361ab3befc9d85718c62afe035a1f0b3d43b31a33318122ca6f37adb89f3",
+      "linux": "ba0d361ab3befc9d85718c62afe035a1f0b3d43b31a33318122ca6f37adb89f3",
+      "match": true
+    },
+    {
+      "file": "examples/11_forloop.sm",
+      "windows": "25dbec3b360cbfaff52b3140e8db0d43afe1d83ef7161235395384d04051530c",
+      "linux": "25dbec3b360cbfaff52b3140e8db0d43afe1d83ef7161235395384d04051530c",
+      "match": true
+    },
+    {
+      "file": "examples/120_t18_kosh_param_mismatch.sm",
+      "windows": "838ebc6b8c82258ffe6f50abbf43cf0e41bbf002d56fe4d17889d329a2254853",
+      "linux": "838ebc6b8c82258ffe6f50abbf43cf0e41bbf002d56fe4d17889d329a2254853",
+      "match": true
+    },
+    {
+      "file": "examples/121_t18_kosh_param_push_reject.sm",
+      "windows": "c6dc578efb76e74b67ac21bdf32e31045c9328781e58ce32a7dc36131c6326b2",
+      "linux": "c6dc578efb76e74b67ac21bdf32e31045c9328781e58ce32a7dc36131c6326b2",
+      "match": true
+    },
+    {
+      "file": "examples/122_t18_kosh_param_devanagari.sm",
+      "windows": "6cc138b88058ee69021cb1a8579a3a8c1329da4c5e437afe8f7af73526fe3189",
+      "linux": "6cc138b88058ee69021cb1a8579a3a8c1329da4c5e437afe8f7af73526fe3189",
+      "match": true
+    },
+    {
+      "file": "examples/123_t18_kosh_param_statement_call.sm",
+      "windows": "feac1010d53a7178ea3d89c2dcf4f3a6573f1f4457308640feabe0e8bd4d5549",
+      "linux": "feac1010d53a7178ea3d89c2dcf4f3a6573f1f4457308640feabe0e8bd4d5549",
+      "match": true
+    },
+    {
+      "file": "examples/124_perf_wide_immediate.sm",
+      "windows": "68d4369e4d374754abe4304f8580c548be33bb9a8f90adf82b346d3e67612177",
+      "linux": "68d4369e4d374754abe4304f8580c548be33bb9a8f90adf82b346d3e67612177",
+      "match": true
+    },
+    {
+      "file": "examples/125_perf_register_immediate_destination.sm",
+      "windows": "63f23786f453f6f487dcd0f31680392665e5b3bebe045cac6d79a2211a51a410",
+      "linux": "63f23786f453f6f487dcd0f31680392665e5b3bebe045cac6d79a2211a51a410",
+      "match": true
+    },
+    {
+      "file": "examples/126_numeric_pipeline.sm",
+      "windows": "b5d7712b25e18474e9ffb247b2b7fa0bba9691a2e6c588e25d92faf5d5e66b0b",
+      "linux": "b5d7712b25e18474e9ffb247b2b7fa0bba9691a2e6c588e25d92faf5d5e66b0b",
+      "match": true
+    },
+    {
+      "file": "examples/127_perf_float_self_register.sm",
+      "windows": "d3b0e99f4177b310ffc01f60f264569d4f7aeb010cbce7dccfebebd9f8c68d86",
+      "linux": "d3b0e99f4177b310ffc01f60f264569d4f7aeb010cbce7dccfebebd9f8c68d86",
+      "match": true
+    },
+    {
+      "file": "examples/128_perf_float_self_fallback.sm",
+      "windows": "588a9fd3e63aa7f6b1b1e206d8165193f891581b1b8f369a8e517e87be54800d",
+      "linux": "588a9fd3e63aa7f6b1b1e206d8165193f891581b1b8f369a8e517e87be54800d",
+      "match": true
+    },
+    {
+      "file": "examples/129_perf_float_destination.sm",
+      "windows": "b32278f523426413c82a29d1391202cf9bbacc3bfa81646262030ec538db5f65",
+      "linux": "b32278f523426413c82a29d1391202cf9bbacc3bfa81646262030ec538db5f65",
+      "match": true
+    },
+    {
+      "file": "examples/12_elif.sm",
+      "windows": "909a187f4998cf13c579af314de0d188db3890135cce76a000cfff3aec851523",
+      "linux": "909a187f4998cf13c579af314de0d188db3890135cce76a000cfff3aec851523",
+      "match": true
+    },
+    {
+      "file": "examples/130_perf_float_destination_alias.sm",
+      "windows": "21708bb8ea9faeed3eaa6a09131fda9260fd7f03b66f9846aa05c02e10d51c48",
+      "linux": "21708bb8ea9faeed3eaa6a09131fda9260fd7f03b66f9846aa05c02e10d51c48",
+      "match": true
+    },
+    {
+      "file": "examples/131_perf_float_compare_register.sm",
+      "windows": "eee4eb6e4c716e62803041157a4b6bf6637819d6f2767013cc681c8c6c255c7b",
+      "linux": "eee4eb6e4c716e62803041157a4b6bf6637819d6f2767013cc681c8c6c255c7b",
+      "match": true
+    },
+    {
+      "file": "examples/132_perf_float_compare_fallback.sm",
+      "windows": "afc0a93883dcfd790bd2465976834ad73155270cd43d8c5a57efbe5a17782a72",
+      "linux": "afc0a93883dcfd790bd2465976834ad73155270cd43d8c5a57efbe5a17782a72",
+      "match": true
+    },
+    {
+      "file": "examples/133_perf_float_scalar_call_rhs.sm",
+      "windows": "1409268bc5f104510f0402ae6e3b45ad189eeecd457792e1b3244d04a353bc05",
+      "linux": "1409268bc5f104510f0402ae6e3b45ad189eeecd457792e1b3244d04a353bc05",
+      "match": true
+    },
+    {
+      "file": "examples/134_perf_float_complex_fallback.sm",
+      "windows": "effba35468a58a4d2f5cfe59a71b3159ab545eef9a62e17cae0e46aa5abb0154",
+      "linux": "effba35468a58a4d2f5cfe59a71b3159ab545eef9a62e17cae0e46aa5abb0154",
+      "match": true
+    },
+    {
+      "file": "examples/135_r30_float_index_scalar.sm",
+      "windows": "dc35c56366b2c1bcbdd15edbd60b47d0145623508a85703d590a19264cdecba8",
+      "linux": "dc35c56366b2c1bcbdd15edbd60b47d0145623508a85703d590a19264cdecba8",
+      "match": true
+    },
+    {
+      "file": "examples/136_r30_float_complex_left.sm",
+      "windows": "883727a2e543d2a8f4120c7b0e4e6f72b10c44061169837631f1fdbc0f80751e",
+      "linux": "883727a2e543d2a8f4120c7b0e4e6f72b10c44061169837631f1fdbc0f80751e",
+      "match": true
+    },
+    {
+      "file": "examples/137_r30_float_literal_rhs.sm",
+      "windows": "e09e699610ba8ff5122c04c26f68ee69c2607eff219da7ab47256e62c137c4b2",
+      "linux": "e09e699610ba8ff5122c04c26f68ee69c2607eff219da7ab47256e62c137c4b2",
+      "match": true
+    },
+    {
+      "file": "examples/138_r30_float_comparison_index.sm",
+      "windows": "490cdb951e3fc1dd912badeef6fb6f64260921ab4be6a4e7db67446a36f00caa",
+      "linux": "490cdb951e3fc1dd912badeef6fb6f64260921ab4be6a4e7db67446a36f00caa",
+      "match": true
+    },
+    {
+      "file": "examples/139_r30_float_mixed_fallback.sm",
+      "windows": "5fe00509669675baf55e29f8e3cfc1c944da58f7518c0dcd7e600e88b80a0fe3",
+      "linux": "5fe00509669675baf55e29f8e3cfc1c944da58f7518c0dcd7e600e88b80a0fe3",
+      "match": true
+    },
+    {
+      "file": "examples/13_negatives.sm",
+      "windows": "52b31669e725c995fe43385001c4ecfa8827fac58ce69e1df9b1bad86f2e0bd5",
+      "linux": "52b31669e725c995fe43385001c4ecfa8827fac58ce69e1df9b1bad86f2e0bd5",
+      "match": true
+    },
+    {
+      "file": "examples/140_r30_index_side_effect.sm",
+      "windows": "5e7728bbeacc29fa3b8eaa8d9ca82595f49f82e82378c01e22eb981090381649",
+      "linux": "5e7728bbeacc29fa3b8eaa8d9ca82595f49f82e82378c01e22eb981090381649",
+      "match": true
+    },
+    {
+      "file": "examples/141_xmm_cache_basic.sm",
+      "windows": "3a2b18854a2b7b99fde02bff485ecb93d7504cd17e040bbd061a8004fa7979e1",
+      "linux": "3a2b18854a2b7b99fde02bff485ecb93d7504cd17e040bbd061a8004fa7979e1",
+      "match": true
+    },
+    {
+      "file": "examples/142_xmm_cache_alias.sm",
+      "windows": "74c4052c1f0628df94dbeec0ed615333b566a1f0d999f6bddcaae7752ed72180",
+      "linux": "74c4052c1f0628df94dbeec0ed615333b566a1f0d999f6bddcaae7752ed72180",
+      "match": true
+    },
+    {
+      "file": "examples/143_xmm_cache_barriers.sm",
+      "windows": "a2e57e0ab17c631da8b6b475de865a19042c197cd246312dd8c587c4e10ba684",
+      "linux": "a2e57e0ab17c631da8b6b475de865a19042c197cd246312dd8c587c4e10ba684",
+      "match": true
+    },
+    {
+      "file": "examples/144_xmm_cache_fallback.sm",
+      "windows": "0067d3854cde3fdd1ac09ca546579297622604dc6cfa25e1be8d93a32e9403c6",
+      "linux": "0067d3854cde3fdd1ac09ca546579297622604dc6cfa25e1be8d93a32e9403c6",
+      "match": true
+    },
+    {
+      "file": "examples/145_xmm_cache_nested_calls.sm",
+      "windows": "6a4232fbb2e46757dabe45ab3fd08f96f12d9c73212f8da130db55be4f50afb5",
+      "linux": "6a4232fbb2e46757dabe45ab3fd08f96f12d9c73212f8da130db55be4f50afb5",
+      "match": true
+    },
+    {
+      "file": "examples/146_stage2_loop_call_boundary.sm",
+      "windows": "ee708213d1237c223c439b1ee158bd12558331f0fa5523d33edf3e8043ab8552",
+      "linux": "ee708213d1237c223c439b1ee158bd12558331f0fa5523d33edf3e8043ab8552",
+      "match": true
+    },
+    {
+      "file": "examples/147_stage2_recursive_float_boundary.sm",
+      "windows": "49517a85f2f3dc8346db170964dfae034db723b758e2e8f9f8bf0ac93047c251",
+      "linux": "49517a85f2f3dc8346db170964dfae034db723b758e2e8f9f8bf0ac93047c251",
+      "match": true
+    },
+    {
+      "file": "examples/148_stage2_array_mutation_call.sm",
+      "windows": "5e67eb8088b2852d55d56dc5f48d4cb6d8d5e7973821a454a4ec4278aca988b3",
+      "linux": "5e67eb8088b2852d55d56dc5f48d4cb6d8d5e7973821a454a4ec4278aca988b3",
+      "match": true
+    },
+    {
+      "file": "examples/149_namespaced_colliding_imports.sm",
+      "windows": "6f89dbff3315c8e1adbd12b8b71c63a9e0d4232069d5911cfce83b948d464982",
+      "linux": "6f89dbff3315c8e1adbd12b8b71c63a9e0d4232069d5911cfce83b948d464982",
+      "match": true
+    },
+    {
+      "file": "examples/14_strings.sm",
+      "windows": "95d74db7b609dc06334edc1a256410683ffd22fa8b25520864617bdd6a451ae7",
+      "linux": "95d74db7b609dc06334edc1a256410683ffd22fa8b25520864617bdd6a451ae7",
+      "match": true
+    },
+    {
+      "file": "examples/150_namespaced_same_module_two_aliases.sm",
+      "windows": "4b8d4da12ee3e94b5fd2fdf05a3c5ce533f72943ee923332760d8e116e256f90",
+      "linux": "4b8d4da12ee3e94b5fd2fdf05a3c5ce533f72943ee923332760d8e116e256f90",
+      "match": true
+    },
+    {
+      "file": "examples/151_namespaced_and_legacy_import.sm",
+      "windows": "3d8778f55dd0698742871eabc137bb5e0fa6a66feb106a6fb19baa62706bc6df",
+      "linux": "3d8778f55dd0698742871eabc137bb5e0fa6a66feb106a6fb19baa62706bc6df",
+      "match": true
+    },
+    {
+      "file": "examples/152_namespaced_comment_string_preservation.sm",
+      "windows": "5761c94c8da2f849f8b3f2193198ed7e14d17d5e088d22ef318f8427976c9220",
+      "linux": "5761c94c8da2f849f8b3f2193198ed7e14d17d5e088d22ef318f8427976c9220",
+      "match": true
+    },
+    {
+      "file": "examples/153_namespaced_devanagari_function.sm",
+      "windows": "668844098a7f907e95e858c8fdf764f86923d98cf3fce113ef8bcc4bc043cbc0",
+      "linux": "668844098a7f907e95e858c8fdf764f86923d98cf3fce113ef8bcc4bc043cbc0",
+      "match": true
+    },
+    {
+      "file": "examples/154_namespaced_duplicate_idempotent.sm",
+      "windows": "a6945339b79fd6ad79baa629c8ae9a09e2a75a263668af4c3f95ffe73d2af43f",
+      "linux": "a6945339b79fd6ad79baa629c8ae9a09e2a75a263668af4c3f95ffe73d2af43f",
+      "match": true
+    },
+    {
+      "file": "examples/155_namespaced_multi_alias_composition.sm",
+      "windows": "239e984df1a3f9ead2698e42332a830b9c61ed165f381e69cb77b4acd05b1aa9",
+      "linux": "239e984df1a3f9ead2698e42332a830b9c61ed165f381e69cb77b4acd05b1aa9",
+      "match": true
+    },
+    {
+      "file": "examples/156_namespaced_alias_collision.sm",
+      "windows": "25f7d19988dcc51321e2055384494dab99bb8a19f92e313b3bd4e4ac59c7e950",
+      "linux": "25f7d19988dcc51321e2055384494dab99bb8a19f92e313b3bd4e4ac59c7e950",
+      "match": true
+    },
+    {
+      "file": "examples/157_namespaced_missing_module.sm",
+      "windows": "c4703d4eb2b74c10d474634efc776d548e072e9796c4a55fdd82efb2b5b3255f",
+      "linux": "c4703d4eb2b74c10d474634efc776d548e072e9796c4a55fdd82efb2b5b3255f",
+      "match": true
+    },
+    {
+      "file": "examples/158_namespaced_alias_digit.sm",
+      "windows": "23c03bbcc8c4eaa4c531894406db46b151a7cfd46e6a97361c5719fcbbe5a86b",
+      "linux": "23c03bbcc8c4eaa4c531894406db46b151a7cfd46e6a97361c5719fcbbe5a86b",
+      "match": true
+    },
+    {
+      "file": "examples/159_namespaced_path_traversal.sm",
+      "windows": "daecbc8ac96055734f0a291bca4bb67ce7f9074edc7812aaf50b1e13a58e9f3c",
+      "linux": "daecbc8ac96055734f0a291bca4bb67ce7f9074edc7812aaf50b1e13a58e9f3c",
+      "match": true
+    },
+    {
+      "file": "examples/15_sutra_const.sm",
+      "windows": "363c0b098689e3da26714b1796b5bb733cb554f71d65f27d512125c5061fbbeb",
+      "linux": "363c0b098689e3da26714b1796b5bb733cb554f71d65f27d512125c5061fbbeb",
+      "match": true
+    },
+    {
+      "file": "examples/160_namespaced_empty_alias.sm",
+      "windows": "7f6ef507d09f9c1f720418a9647d058b6a411c53ffc02875cb0939fb069bc4bd",
+      "linux": "7f6ef507d09f9c1f720418a9647d058b6a411c53ffc02875cb0939fb069bc4bd",
+      "match": true
+    },
+    {
+      "file": "examples/161_namespaced_overlong_alias.sm",
+      "windows": "75ef09964b53fe269844045762af69586293fc49dc7adfff0d285d5cb86e5704",
+      "linux": "75ef09964b53fe269844045762af69586293fc49dc7adfff0d285d5cb86e5704",
+      "match": true
+    },
+    {
+      "file": "examples/162_namespaced_import_capacity.sm",
+      "windows": "a4ce70f4a4fab4730edd86cf868da96310eb6e14a29a0df432eff2dba524a1d3",
+      "linux": "a4ce70f4a4fab4730edd86cf868da96310eb6e14a29a0df432eff2dba524a1d3",
+      "match": true
+    },
+    {
+      "file": "examples/163_r40_transitive_diamond.sm",
+      "windows": "095c6c75f8948e7afc411b0d9cc7a0b219c524a6b69277b5356c201a8369d5d5",
+      "linux": "095c6c75f8948e7afc411b0d9cc7a0b219c524a6b69277b5356c201a8369d5d5",
+      "match": true
+    },
+    {
+      "file": "examples/164_r41_cycle_reject.sm",
+      "windows": "f17c3436d77b7c91ffb6dedf217bcaa635c0006df88e5faf1a145ed463d18c36",
+      "linux": "f17c3436d77b7c91ffb6dedf217bcaa635c0006df88e5faf1a145ed463d18c36",
+      "match": true
+    },
+    {
+      "file": "examples/165_r41_missing_reject.sm",
+      "windows": "affc79452b1e061b734a94a99191ba6ea2517b90ba5a59d370ee9ff9bf927c64",
+      "linux": "affc79452b1e061b734a94a99191ba6ea2517b90ba5a59d370ee9ff9bf927c64",
+      "match": true
+    },
+    {
+      "file": "examples/166_r41_optin_diamond.sm",
+      "windows": "6c9f8f28d6f50fdb5c92aa4a0dd22879fe88d19e3b45ecce3ae6b78566a6bcf5",
+      "linux": "6c9f8f28d6f50fdb5c92aa4a0dd22879fe88d19e3b45ecce3ae6b78566a6bcf5",
+      "match": true
+    },
+    {
+      "file": "examples/16_advanced.sm",
+      "windows": "80d3fa0f1aeaf0a942a0cf268a2aba2ca087c5285ab5d2e00f4b365f7808e17e",
+      "linux": "80d3fa0f1aeaf0a942a0cf268a2aba2ca087c5285ab5d2e00f4b365f7808e17e",
+      "match": true
+    },
+    {
+      "file": "examples/17_booleans.sm",
+      "windows": "f857a335cf77011c9a6fb8e038ce129b342c368f9b3baca9d77423fac3041e01",
+      "linux": "f857a335cf77011c9a6fb8e038ce129b342c368f9b3baca9d77423fac3041e01",
+      "match": true
+    },
+    {
+      "file": "examples/18_guna_switch.sm",
+      "windows": "9b885a350e32e3db3de2eaa24c3ed4d7064909ea123d61773637c1ee1493e05f",
+      "linux": "9b885a350e32e3db3de2eaa24c3ed4d7064909ea123d61773637c1ee1493e05f",
+      "match": true
+    },
+    {
+      "file": "examples/19_srijana_enum.sm",
+      "windows": "d3cc38a93c4e3a39148e4943916070392c235c664fd463458137ec45901049c1",
+      "linux": "d3cc38a93c4e3a39148e4943916070392c235c664fd463458137ec45901049c1",
+      "match": true
+    },
+    {
+      "file": "examples/200_madhava_series.sm",
+      "windows": "b60ad44c72211db4095e6629a0d4b7707101dc08d425dd18556ce3f7dd8f881c",
+      "linux": "b60ad44c72211db4095e6629a0d4b7707101dc08d425dd18556ce3f7dd8f881c",
+      "match": true
+    },
+    {
+      "file": "examples/201_madhava_library.sm",
+      "windows": "7f5fb9408df5d4ce88f5a1f883f4bac296a54296bcba20046a122269c46d576e",
+      "linux": "7f5fb9408df5d4ce88f5a1f883f4bac296a54296bcba20046a122269c46d576e",
+      "match": true
+    },
+    {
+      "file": "examples/202_brahmagupta_area.sm",
+      "windows": "f5b4cf1a35bcc8041c91289f346d5380e91309feaa2a82e8e9871fa535afa448",
+      "linux": "f5b4cf1a35bcc8041c91289f346d5380e91309feaa2a82e8e9871fa535afa448",
+      "match": true
+    },
+    {
+      "file": "examples/203_meru_with_kosh.sm",
+      "windows": "169e5bd24bb57703f8f4bf014230507f33fb0d14c12e08cbf3099bd252794390",
+      "linux": "169e5bd24bb57703f8f4bf014230507f33fb0d14c12e08cbf3099bd252794390",
+      "match": true
+    },
+    {
+      "file": "examples/204_b11_block_statement_capacity.sm",
+      "windows": "4b2230466fcd45f25b722e92bbd8c1074a17d5562530922ccca753e35cd489b6",
+      "linux": "4b2230466fcd45f25b722e92bbd8c1074a17d5562530922ccca753e35cd489b6",
+      "match": true
+    },
+    {
+      "file": "examples/205_madhava_pi_kosh.sm",
+      "windows": "66a86ef1f96cb1ff17283c26d7d30c54d1c1637191bf01171844b0389cf2f722",
+      "linux": "66a86ef1f96cb1ff17283c26d7d30c54d1c1637191bf01171844b0389cf2f722",
+      "match": true
+    },
+    {
+      "file": "examples/206_sankhyiki.sm",
+      "windows": "c916476c6d9997541df82c7e44a5991122816dfaa6834bdfef7881b9cbb6faa3",
+      "linux": "c916476c6d9997541df82c7e44a5991122816dfaa6834bdfef7881b9cbb6faa3",
+      "match": true
+    },
+    {
+      "file": "examples/207_sankhyiki_vector.sm",
+      "windows": "21916abf8a290c038801cd319704478c7c2dc3afddf0f58d11db783aeff95235",
+      "linux": "21916abf8a290c038801cd319704478c7c2dc3afddf0f58d11db783aeff95235",
+      "match": true
+    },
+    {
+      "file": "examples/208_kalana.sm",
+      "windows": "3835911450284ba24168aada4b9e30c77d80e8b2e23b9ea2f6ae7dc7408bd5c5",
+      "linux": "3835911450284ba24168aada4b9e30c77d80e8b2e23b9ea2f6ae7dc7408bd5c5",
+      "match": true
+    },
+    {
+      "file": "examples/209_samanvaya.sm",
+      "windows": "f2aa0bb8b1792dd0f46d4c65eb848d9eb8122460a52147639b5fb7684ee33b37",
+      "linux": "f2aa0bb8b1792dd0f46d4c65eb848d9eb8122460a52147639b5fb7684ee33b37",
+      "match": true
+    },
+    {
+      "file": "examples/20_pankti_array.sm",
+      "windows": "ac032ea1d495aced4159c67f04e62572d983918412e1a2a4948957dc4a52b5d9",
+      "linux": "ac032ea1d495aced4159c67f04e62572d983918412e1a2a4948957dc4a52b5d9",
+      "match": true
+    },
+    {
+      "file": "examples/210_r41_cycle.sm",
+      "windows": "2329759b0fabf6049db85d0755cc2de000197ef0163de79c146d1e8c3b407318",
+      "linux": "2329759b0fabf6049db85d0755cc2de000197ef0163de79c146d1e8c3b407318",
+      "match": true
+    },
+    {
+      "file": "examples/211_r41_v1_public.sm",
+      "windows": "33aa38a28f80951e216ad86efc459da82a1901872dc6dfba423245d80b0f61ca",
+      "linux": "33aa38a28f80951e216ad86efc459da82a1901872dc6dfba423245d80b0f61ca",
+      "match": true
+    },
+    {
+      "file": "examples/212_r41_v1_private.sm",
+      "windows": "a342959c8fe31b7e59a88f8247395a47b05d312eb8e9d25a727dbb0e772372cb",
+      "linux": "a342959c8fe31b7e59a88f8247395a47b05d312eb8e9d25a727dbb0e772372cb",
+      "match": true
+    },
+    {
+      "file": "examples/213_r41_v1_dupexp.sm",
+      "windows": "b82ed9bf028b2954cb5a38cb3cff6ce5d174b1d179b71e44b2778dedcd266fa8",
+      "linux": "b82ed9bf028b2954cb5a38cb3cff6ce5d174b1d179b71e44b2778dedcd266fa8",
+      "match": true
+    },
+    {
+      "file": "examples/214_r41_v1_noalias.sm",
+      "windows": "f8b71cb01c8759eeacaeecc7cc7e062a1f36533b9dc6891e8bb647b0a48576e9",
+      "linux": "f8b71cb01c8759eeacaeecc7cc7e062a1f36533b9dc6891e8bb647b0a48576e9",
+      "match": true
+    },
+    {
+      "file": "examples/215_r12_wordfreq.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/215_r12_wordfreq.out",
+      "windows": "ed9b62eb8043788ebf17fa620f1652c1358eba4069380af760dda8cc2acbf85f",
+      "linux": "ed9b62eb8043788ebf17fa620f1652c1358eba4069380af760dda8cc2acbf85f",
+      "match": true
+    },
+    {
+      "file": "examples/215_r12_wordfreq.sm",
+      "windows": "5b12c887544a32ca8cf841b8b827bb317ef7ca3b69eb3a90ccf79688c4f0a3f0",
+      "linux": "5b12c887544a32ca8cf841b8b827bb317ef7ca3b69eb3a90ccf79688c4f0a3f0",
+      "match": true
+    },
+    {
+      "file": "examples/216_r12_expr.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/216_r12_expr.out",
+      "windows": "d588c61bacba19324dfac7ba70c429d51e3c0873c64e072705e1ae1f3e0232bd",
+      "linux": "d588c61bacba19324dfac7ba70c429d51e3c0873c64e072705e1ae1f3e0232bd",
+      "match": true
+    },
+    {
+      "file": "examples/216_r12_expr.sm",
+      "windows": "412e7558579a99e110e29c536e591fe9a277db0265b61b699db779603d386bdd",
+      "linux": "412e7558579a99e110e29c536e591fe9a277db0265b61b699db779603d386bdd",
+      "match": true
+    },
+    {
+      "file": "examples/217_r12_report.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/217_r12_report.out",
+      "windows": "97e53acccde3c967a3a0a16ff9d90ab1cf65eac1c91584aefa0665efb590366f",
+      "linux": "97e53acccde3c967a3a0a16ff9d90ab1cf65eac1c91584aefa0665efb590366f",
+      "match": true
+    },
+    {
+      "file": "examples/217_r12_report.sm",
+      "windows": "d93b4110524116bf59334d947224e7cb8e7fa4cd7e44fc06c14d6ea429384ae2",
+      "linux": "d93b4110524116bf59334d947224e7cb8e7fa4cd7e44fc06c14d6ea429384ae2",
+      "match": true
+    },
+    {
+      "file": "examples/218_sanskrit_devanagari.sm",
+      "windows": "d3b5c11cd50066feefcb8f96345c72ebe282118d70543ccd201eb3dff59b0268",
+      "linux": "d3b5c11cd50066feefcb8f96345c72ebe282118d70543ccd201eb3dff59b0268",
+      "match": true
+    },
+    {
+      "file": "examples/219_sanskrit_kosh_aliases.sm",
+      "windows": "51681b59d5992155f3c4f01c89ae1e34f55869ff3f62c0f6e4f4503896fd59de",
+      "linux": "51681b59d5992155f3c4f01c89ae1e34f55869ff3f62c0f6e4f4503896fd59de",
+      "match": true
+    },
+    {
+      "file": "examples/21_break_continue.sm",
+      "windows": "049e40ad4fc8c590e4685214181d13052e03658b34174db489e579fc5d22bd38",
+      "linux": "049e40ad4fc8c590e4685214181d13052e03658b34174db489e579fc5d22bd38",
+      "match": true
+    },
+    {
+      "file": "examples/220_hindi_parse_error.sm",
+      "windows": "91ac2ba7f466cfdc1ae1592b4cd5124c541b0dc221a9bd417ace9c8bc5706983",
+      "linux": "91ac2ba7f466cfdc1ae1592b4cd5124c541b0dc221a9bd417ace9c8bc5706983",
+      "match": true
+    },
+    {
+      "file": "examples/221_eof_location.sm",
+      "windows": "163f2adab991834c6c90e3fd3ac6420e559557cefc3cc5a09fb19c817ccd5b21",
+      "linux": "163f2adab991834c6c90e3fd3ac6420e559557cefc3cc5a09fb19c817ccd5b21",
+      "match": true
+    },
+    {
+      "file": "examples/222_old_keyword_name.sm",
+      "windows": "e21882a25ab3192e07b88df263d99498f404d466ad53888fef9abddb522ef249",
+      "linux": "e21882a25ab3192e07b88df263d99498f404d466ad53888fef9abddb522ef249",
+      "match": true
+    },
+    {
+      "file": "examples/223_undefined_name.sm",
+      "windows": "0e75fda78fe3b9f1acf52d9b4bd556b00a7a4ede6877d7cc951b09b682204025",
+      "linux": "0e75fda78fe3b9f1acf52d9b4bd556b00a7a4ede6877d7cc951b09b682204025",
+      "match": true
+    },
+    {
+      "file": "examples/224_unknown_field.sm",
+      "windows": "ab2c5ed74dbe78e225452e8c477c998e576f4de91f49f737447709b90d632c97",
+      "linux": "ab2c5ed74dbe78e225452e8c477c998e576f4de91f49f737447709b90d632c97",
+      "match": true
+    },
+    {
+      "file": "examples/225_undeclared_array.sm",
+      "windows": "773fd7a8e6e3b38a3151b1c9a1f4e41b761cb4357ab20aff5b8e7b4a0b8e8ca5",
+      "linux": "773fd7a8e6e3b38a3151b1c9a1f4e41b761cb4357ab20aff5b8e7b4a0b8e8ca5",
+      "match": true
+    },
+    {
+      "file": "examples/226_long_field_names.sm",
+      "windows": "1b1703d2d6caa6686ac2139c4031b8dc4c96994b0c3808b632f051cd9800f91f",
+      "linux": "1b1703d2d6caa6686ac2139c4031b8dc4c96994b0c3808b632f051cd9800f91f",
+      "match": true
+    },
+    {
+      "file": "examples/227_assign_undeclared.sm",
+      "windows": "33dbdbe38c819a0b8c38f8639ced0b59e565cad8aadcb9aa676db709d0b366c5",
+      "linux": "33dbdbe38c819a0b8c38f8639ced0b59e565cad8aadcb9aa676db709d0b366c5",
+      "match": true
+    },
+    {
+      "file": "examples/228_block_scope.sm",
+      "windows": "6193cd09ac719fb5a25cb4638aad95b52a713f110edea241137740ac82114ea2",
+      "linux": "6193cd09ac719fb5a25cb4638aad95b52a713f110edea241137740ac82114ea2",
+      "match": true
+    },
+    {
+      "file": "examples/229_loop_var_scope.sm",
+      "windows": "805ec7ed65afc2fbef64ae615bee72c7d7aa28a6c4499d8cc5f0a1609151db01",
+      "linux": "805ec7ed65afc2fbef64ae615bee72c7d7aa28a6c4499d8cc5f0a1609151db01",
+      "match": true
+    },
+    {
+      "file": "examples/22_precedence.sm",
+      "windows": "5b266ce1861cbaf1545b7042662b0827a29a2fa5f42f295d0267af1c9d2a7933",
+      "linux": "5b266ce1861cbaf1545b7042662b0827a29a2fa5f42f295d0267af1c9d2a7933",
+      "match": true
+    },
+    {
+      "file": "examples/230_redeclare_after_block.sm",
+      "windows": "247a7e1db1d938be1a045f8b566f642fdd96a7dc489b70d98f1b875f8fc19094",
+      "linux": "247a7e1db1d938be1a045f8b566f642fdd96a7dc489b70d98f1b875f8fc19094",
+      "match": true
+    },
+    {
+      "file": "examples/231_duplicate_name.sm",
+      "windows": "bc1fef9eb5f065a5d9272421b3826b0bf88d038936c353a9a218d0beb403f90f",
+      "linux": "bc1fef9eb5f065a5d9272421b3826b0bf88d038936c353a9a218d0beb403f90f",
+      "match": true
+    },
+    {
+      "file": "examples/232_arity.sm",
+      "windows": "e13aa232a7914db30a912df01ce51b091ed701c40e7a7e1c86e84694b6393643",
+      "linux": "e13aa232a7914db30a912df01ce51b091ed701c40e7a7e1c86e84694b6393643",
+      "match": true
+    },
+    {
+      "file": "examples/233_missing_module.sm",
+      "windows": "ab72fc21d5610e1672356c483aab70d6b868359dca2d8436cab7e5ffb1983395",
+      "linux": "ab72fc21d5610e1672356c483aab70d6b868359dca2d8436cab7e5ffb1983395",
+      "match": true
+    },
+    {
+      "file": "examples/234_ambiguous_field.sm",
+      "windows": "54fb490a07d2fe4435fc962f9cdc20926c362e5048732d7715a74c8f616dac47",
+      "linux": "54fb490a07d2fe4435fc962f9cdc20926c362e5048732d7715a74c8f616dac47",
+      "match": true
+    },
+    {
+      "file": "examples/235_duplicate_field.sm",
+      "windows": "ac8d1d90075a578618930a70831b74bdd0ca60f97bc0b9350b015a5a42802bf2",
+      "linux": "ac8d1d90075a578618930a70831b74bdd0ca60f97bc0b9350b015a5a42802bf2",
+      "match": true
+    },
+    {
+      "file": "examples/236_guna_once.sm",
+      "windows": "9f4c4bd32f9385a13f4798d73a17b3318bcc2e4f27f9b164039bcb1d91f8517c",
+      "linux": "9f4c4bd32f9385a13f4798d73a17b3318bcc2e4f27f9b164039bcb1d91f8517c",
+      "match": true
+    },
+    {
+      "file": "examples/237_many_variables.sm",
+      "windows": "e7ab426296a61fd9e16f6b85d9a3dbcd33ce49778ee72cf60fbdf82b2cdd2659",
+      "linux": "e7ab426296a61fd9e16f6b85d9a3dbcd33ce49778ee72cf60fbdf82b2cdd2659",
+      "match": true
+    },
+    {
+      "file": "examples/238_r17_d1_unary_not.sm",
+      "windows": "970ef8efdf69e368d60eadeac89483448b0332bdacf7a3015f8bb029812b0c09",
+      "linux": "970ef8efdf69e368d60eadeac89483448b0332bdacf7a3015f8bb029812b0c09",
+      "match": true
+    },
+    {
+      "file": "examples/239_r17_d2_anya_loop_krama.sm",
+      "windows": "53f4ddb8ea5932a0977bfd44184df637849325e98af74bdc274d444ba1efc317",
+      "linux": "53f4ddb8ea5932a0977bfd44184df637849325e98af74bdc274d444ba1efc317",
+      "match": true
+    },
+    {
+      "file": "examples/23_grahan_input.sm",
+      "windows": "c9fb17c70946edd8490dbd88c477d722763cb0b71cc1454425378a375aba7955",
+      "linux": "c9fb17c70946edd8490dbd88c477d722763cb0b71cc1454425378a375aba7955",
+      "match": true
+    },
+    {
+      "file": "examples/240_r17_d3_anya_self_assign.sm",
+      "windows": "80bf654c8e5e669e1012c3ac51a890920cf5c57293771c1e596445ea1237b04e",
+      "linux": "80bf654c8e5e669e1012c3ac51a890920cf5c57293771c1e596445ea1237b04e",
+      "match": true
+    },
+    {
+      "file": "examples/241_r17_d4_precedence.sm",
+      "windows": "8191e843b67f73257b769d72b9388c893197fee62d66b8dbd12b42df45dcef17",
+      "linux": "8191e843b67f73257b769d72b9388c893197fee62d66b8dbd12b42df45dcef17",
+      "match": true
+    },
+    {
+      "file": "examples/242_r17_empty_guna.sm",
+      "windows": "91407de45b0deee3d7c9e654552d82f66239ddeac2d51e912721b347cf8cd01d",
+      "linux": "91407de45b0deee3d7c9e654552d82f66239ddeac2d51e912721b347cf8cd01d",
+      "match": true
+    },
+    {
+      "file": "examples/243_r18_sthagita.sm",
+      "windows": "2d5088e95941b074189bf03b71d5ecab01cae5f30f9d5ad1d56c4520445edcd3",
+      "linux": "2d5088e95941b074189bf03b71d5ecab01cae5f30f9d5ad1d56c4520445edcd3",
+      "match": true
+    },
+    {
+      "file": "examples/244_r18_rachana_in_function.sm",
+      "windows": "5e47bc5b5a2adfc1ea35ece04f079a3c243214e52d6348c544410ff96527540a",
+      "linux": "5e47bc5b5a2adfc1ea35ece04f079a3c243214e52d6348c544410ff96527540a",
+      "match": true
+    },
+    {
+      "file": "examples/245_r18_netsock.sm",
+      "windows": "bfcd73fea0189e02c7bfe41f69cf236bad6d88c282e46869b25851a9ce26cc0b",
+      "linux": "bfcd73fea0189e02c7bfe41f69cf236bad6d88c282e46869b25851a9ce26cc0b",
+      "match": true
+    },
+    {
+      "file": "examples/246_r23_comparator_sort.sm",
+      "windows": "cf1fd1c78c86b2118d6b0286fddb3552cffcc6993b0c4b511e7ee1fbfec106d4",
+      "linux": "cf1fd1c78c86b2118d6b0286fddb3552cffcc6993b0c4b511e7ee1fbfec106d4",
+      "match": true
+    },
+    {
+      "file": "examples/247_r23_methods.sm",
+      "windows": "47f8d1d12c074a8fb6b3cf519a2df0063d63d303933326d13a6322b3c4801781",
+      "linux": "47f8d1d12c074a8fb6b3cf519a2df0063d63d303933326d13a6322b3c4801781",
+      "match": true
+    },
+    {
+      "file": "examples/248_r23_slices.sm",
+      "windows": "309ca3a426af77246ce91018500e50e5dc469c77bab812d752fd306867b351d7",
+      "linux": "309ca3a426af77246ce91018500e50e5dc469c77bab812d752fd306867b351d7",
+      "match": true
+    },
+    {
+      "file": "examples/249_r25_phal.sm",
+      "windows": "1ddb215b61692a47f0fdcb334dbe5d0a8a4c17153ddafd64c368579be595e1e2",
+      "linux": "1ddb215b61692a47f0fdcb334dbe5d0a8a4c17153ddafd64c368579be595e1e2",
+      "match": true
+    },
+    {
+      "file": "examples/24_guess_game.sm",
+      "windows": "ebb8a935bb0be99f29099a97353c621aaaf203be1fcdc3063989149c7ccfd4fe",
+      "linux": "ebb8a935bb0be99f29099a97353c621aaaf203be1fcdc3063989149c7ccfd4fe",
+      "match": true
+    },
+    {
+      "file": "examples/250_r26_dosh_handler.sm",
+      "windows": "af0dc3d0cda96cbdd52f44b906cd677eea6adc6f5a734279b1cb75084823d6f8",
+      "linux": "af0dc3d0cda96cbdd52f44b906cd677eea6adc6f5a734279b1cb75084823d6f8",
+      "match": true
+    },
+    {
+      "file": "examples/251_r38_alias_mala_oob.sm",
+      "windows": "f0c17263cddcb7cf3d492a23f2353a7dcbcb868126a7cb047fddb269ce8e1e27",
+      "linux": "f0c17263cddcb7cf3d492a23f2353a7dcbcb868126a7cb047fddb269ce8e1e27",
+      "match": true
+    },
+    {
+      "file": "examples/252_r38_alias_kosh_oob.sm",
+      "windows": "b171efc13b1dbf975f52b8ae1f2657f61a844713419ad262f424b10c28a7d6ee",
+      "linux": "b171efc13b1dbf975f52b8ae1f2657f61a844713419ad262f424b10c28a7d6ee",
+      "match": true
+    },
+    {
+      "file": "examples/253_r38_alias_slice_oob.sm",
+      "windows": "a9e6977478668864b93d5cf6dd399550e1c93069507fca79c8ad50c562f3eed7",
+      "linux": "a9e6977478668864b93d5cf6dd399550e1c93069507fca79c8ad50c562f3eed7",
+      "match": true
+    },
+    {
+      "file": "examples/254_r42_alias_pankti_len.sm",
+      "windows": "484e26f7045f67c5e04cdff039eb51583f08491e0911676e581760f86239d102",
+      "linux": "484e26f7045f67c5e04cdff039eb51583f08491e0911676e581760f86239d102",
+      "match": true
+    },
+    {
+      "file": "examples/255_r42_alias_kosh_push.sm",
+      "windows": "efc47ad0c5169531bccc51435e426c18103fa0ab01916ae80cd0b69c83dc31c8",
+      "linux": "efc47ad0c5169531bccc51435e426c18103fa0ab01916ae80cd0b69c83dc31c8",
+      "match": true
+    },
+    {
+      "file": "examples/256_r44_vartani_sanskrit_names.sm",
+      "windows": "4486560ad6e30b4e6121072483de8abdb3d27d7c8436d7fb4dac14d92810f92f",
+      "linux": "4486560ad6e30b4e6121072483de8abdb3d27d7c8436d7fb4dac14d92810f92f",
+      "match": true
+    },
+    {
+      "file": "examples/257_r48_kosh_empty.sm",
+      "windows": "5aa68dc9afc65c650e0fa7525db0e976aa82a44183d7d2e850eee2670080b58a",
+      "linux": "5aa68dc9afc65c650e0fa7525db0e976aa82a44183d7d2e850eee2670080b58a",
+      "match": true
+    },
+    {
+      "file": "examples/258_r70_loop_indent.sm",
+      "windows": "33de60573575f81b16c3e8db74b1d318eeecee015fd553f9180730d704e47c0b",
+      "linux": "33de60573575f81b16c3e8db74b1d318eeecee015fd553f9180730d704e47c0b",
+      "match": true
+    },
+    {
+      "file": "examples/259_r70_indent_ambiguous.sm",
+      "windows": "1b3acb6bc075dc664004318e7f9a74941c9f58f7812c2ff1eed85d722d5aee32",
+      "linux": "1b3acb6bc075dc664004318e7f9a74941c9f58f7812c2ff1eed85d722d5aee32",
+      "match": true
+    },
+    {
+      "file": "examples/25_patterns.sm",
+      "windows": "23db93b0ac8ffe366589bfc950c5c83286cdae4071e0f8ff7fabbf245bf3f12d",
+      "linux": "23db93b0ac8ffe366589bfc950c5c83286cdae4071e0f8ff7fabbf245bf3f12d",
+      "match": true
+    },
+    {
+      "file": "examples/260_r71_indented_bodies.sm",
+      "windows": "a50ae5ea5eed965f8807b90b9f31be54d7848387b4d13f079a588f997da347a0",
+      "linux": "a50ae5ea5eed965f8807b90b9f31be54d7848387b4d13f079a588f997da347a0",
+      "match": true
+    },
+    {
+      "file": "examples/261_r71_after_mukhya.sm",
+      "windows": "001c9ef94863c383176787fcb7e3e45b6943e5e254b21f63b4c32c8195d1abfa",
+      "linux": "001c9ef94863c383176787fcb7e3e45b6943e5e254b21f63b4c32c8195d1abfa",
+      "match": true
+    },
+    {
+      "file": "examples/262_r71_same_line_body.sm",
+      "windows": "5e6df6854e7f25ab372c27143db69d885d2221b7c763fc3e02c9ef32a47519a3",
+      "linux": "5e6df6854e7f25ab372c27143db69d885d2221b7c763fc3e02c9ef32a47519a3",
+      "match": true
+    },
+    {
+      "file": "examples/263_r72_mandapa.sm",
+      "windows": "3911c80940d0c53187e38624e54dd337aac6c9edb95e739af979c5788b98e13b",
+      "linux": "3911c80940d0c53187e38624e54dd337aac6c9edb95e739af979c5788b98e13b",
+      "match": true
+    },
+    {
+      "file": "examples/264_r73_escape_arith.sm",
+      "windows": "5e48abaa04d65e7447c4919e4840fb32a3f55353f6fed355b6260d200a6acfb5",
+      "linux": "5e48abaa04d65e7447c4919e4840fb32a3f55353f6fed355b6260d200a6acfb5",
+      "match": true
+    },
+    {
+      "file": "examples/265_r73_escape_mala.sm",
+      "windows": "b1df8480ee8f23ebd641e5debdd2894f162e6f6ee23a441c21cd58ccdfa8134d",
+      "linux": "b1df8480ee8f23ebd641e5debdd2894f162e6f6ee23a441c21cd58ccdfa8134d",
+      "match": true
+    },
+    {
+      "file": "examples/266_r73_inside_only.sm",
+      "windows": "39bd918df57a962e6d0f3625500a45b6db355ab18552eccf0e35f9111f406d1c",
+      "linux": "39bd918df57a962e6d0f3625500a45b6db355ab18552eccf0e35f9111f406d1c",
+      "match": true
+    },
+    {
+      "file": "examples/267_r73_outer_number.sm",
+      "windows": "f25ae6c7b4f415d9abd33eb9a62abaf830c166d3db7c2b6741e32d32a31ade33",
+      "linux": "f25ae6c7b4f415d9abd33eb9a62abaf830c166d3db7c2b6741e32d32a31ade33",
+      "match": true
+    },
+    {
+      "file": "examples/268_r73_return_value.sm",
+      "windows": "9e62b6182684eed4dac43c2c7348f122406d427ed05cfe3e0b6179ce991341eb",
+      "linux": "9e62b6182684eed4dac43c2c7348f122406d427ed05cfe3e0b6179ce991341eb",
+      "match": true
+    },
+    {
+      "file": "examples/269_r73_copy_out.sm",
+      "windows": "d6a010ef813dcead5b79d98761b20f2a9d23e474ecd8fce89522610faa7ac888",
+      "linux": "d6a010ef813dcead5b79d98761b20f2a9d23e474ecd8fce89522610faa7ac888",
+      "match": true
+    },
+    {
+      "file": "examples/26_calculator.sm",
+      "windows": "871438732c50b40e37fa8e5710695d15a943980b0583b1f1d7e5884842762dfa",
+      "linux": "871438732c50b40e37fa8e5710695d15a943980b0583b1f1d7e5884842762dfa",
+      "match": true
+    },
+    {
+      "file": "examples/270_r75_nested_store.sm",
+      "windows": "03c02e8277956544581bf67803cc90860710810354a2e4df16a9acdfccd69e1a",
+      "linux": "03c02e8277956544581bf67803cc90860710810354a2e4df16a9acdfccd69e1a",
+      "match": true
+    },
+    {
+      "file": "examples/271_r75_nested_store_data.sm",
+      "windows": "5b43415231dd0f1241c5ba7af45f7ce04e9e4c8a44672fbb61ea9d12f540c60f",
+      "linux": "5b43415231dd0f1241c5ba7af45f7ce04e9e4c8a44672fbb61ea9d12f540c60f",
+      "match": true
+    },
+    {
+      "file": "examples/272_r75_negative_size.sm",
+      "windows": "3027bc9f3f54b9026c141bed8e8c0ce271df73aad2346d6185311cb9e45ffbc4",
+      "linux": "3027bc9f3f54b9026c141bed8e8c0ce271df73aad2346d6185311cb9e45ffbc4",
+      "match": true
+    },
+    {
+      "file": "examples/273_r77_bytes_not_cells.sm",
+      "windows": "2cfc0e7b484847495e89dd816584199271faa9556112e261c6b9c3f92d465489",
+      "linux": "2cfc0e7b484847495e89dd816584199271faa9556112e261c6b9c3f92d465489",
+      "match": true
+    },
+    {
+      "file": "examples/274_r77_bytes_loop_stops.sm",
+      "windows": "dd19f664c34f1ba766584bd2b63fffd26b87cf2dae7285dd994945642ec65b5b",
+      "linux": "dd19f664c34f1ba766584bd2b63fffd26b87cf2dae7285dd994945642ec65b5b",
+      "match": true
+    },
+    {
+      "file": "examples/275_r77_cells_times_eight.sm",
+      "windows": "60d1b6425ec0cbc3c49ee7b163f5d8e02f6952fb7568112c19dc07ca0c9df424",
+      "linux": "60d1b6425ec0cbc3c49ee7b163f5d8e02f6952fb7568112c19dc07ca0c9df424",
+      "match": true
+    },
+    {
+      "file": "examples/276_r77_mixed_indentation.sm",
+      "windows": "b36957a3eccdf4da393a7f11b69ad510422e1822c0a170332de808db2895fd7b",
+      "linux": "b36957a3eccdf4da393a7f11b69ad510422e1822c0a170332de808db2895fd7b",
+      "match": true
+    },
+    {
+      "file": "examples/277_r80_divide_by_zero.sm",
+      "windows": "f3346c51ade7153154e7be2b4c944df7ed1d002744b27b9a152c9ae49f4506a8",
+      "linux": "f3346c51ade7153154e7be2b4c944df7ed1d002744b27b9a152c9ae49f4506a8",
+      "match": true
+    },
+    {
+      "file": "examples/278_r80_literal_too_large.sm",
+      "windows": "5facb4e2cc5e77fed854266879ea81c3d2fd8247e33ad2e0c25e7a2a81f89f49",
+      "linux": "5facb4e2cc5e77fed854266879ea81c3d2fd8247e33ad2e0c25e7a2a81f89f49",
+      "match": true
+    },
+    {
+      "file": "examples/279_r80_constant_overflow.sm",
+      "windows": "c5217cc6566635b3b9d51ac85ad21b86ef63335407ac7c830619f485d156ef0f",
+      "linux": "c5217cc6566635b3b9d51ac85ad21b86ef63335407ac7c830619f485d156ef0f",
+      "match": true
+    },
+    {
+      "file": "examples/27_even_odd.sm",
+      "windows": "c437089da7ab97e0c5d59c6a5d14c2aab2b91d43187b063da03a2950accc3dd4",
+      "linux": "c437089da7ab97e0c5d59c6a5d14c2aab2b91d43187b063da03a2950accc3dd4",
+      "match": true
+    },
+    {
+      "file": "examples/280_r80_runtime_wraps.sm",
+      "windows": "af8c4792d32ee2e50fabb3647d7f94a28e1e68819670081d4a3826640e1245b5",
+      "linux": "af8c4792d32ee2e50fabb3647d7f94a28e1e68819670081d4a3826640e1245b5",
+      "match": true
+    },
+    {
+      "file": "examples/281_r80_divide_in_module.sm",
+      "windows": "0764441fbc1f9e0bf610441c2cc27ac5935e28c4abfd7dda3daa7bcee7348cf2",
+      "linux": "0764441fbc1f9e0bf610441c2cc27ac5935e28c4abfd7dda3daa7bcee7348cf2",
+      "match": true
+    },
+    {
+      "file": "examples/282_r81_parikshita_sort.sm",
+      "windows": "35df9ffa70e42578d2c759de2d53325d2c0c46d134f48014b28312cfacbdb025",
+      "linux": "35df9ffa70e42578d2c759de2d53325d2c0c46d134f48014b28312cfacbdb025",
+      "match": true
+    },
+    {
+      "file": "examples/283_r81_parikshita_refuses_library.sm",
+      "windows": "7d81a6a7371a43bf4e4ba53809d51de41700b80adf66f97c8ab917221905782e",
+      "linux": "7d81a6a7371a43bf4e4ba53809d51de41700b80adf66f97c8ab917221905782e",
+      "match": true
+    },
+    {
+      "file": "examples/284_r81_parikshita_transitive.sm",
+      "windows": "b20ca1e70410fcfcde363a4cdcd32a6172541ce06ff73fb6d7b7fdd5257214c3",
+      "linux": "b20ca1e70410fcfcde363a4cdcd32a6172541ce06ff73fb6d7b7fdd5257214c3",
+      "match": true
+    },
+    {
+      "file": "examples/285_r81_parikshita_address_param.sm",
+      "windows": "36d5bb6f9034dfb825edd9a17c821682f7ce723ff5c297a35ba4297691b6584c",
+      "linux": "36d5bb6f9034dfb825edd9a17c821682f7ce723ff5c297a35ba4297691b6584c",
+      "match": true
+    },
+    {
+      "file": "examples/286_r82_kosh_in_mandapa.sm",
+      "windows": "cb9f6ed83fcc59175d93e48b334ed5dc3560f7d12f7c6490cb310c70e5f82376",
+      "linux": "cb9f6ed83fcc59175d93e48b334ed5dc3560f7d12f7c6490cb310c70e5f82376",
+      "match": true
+    },
+    {
+      "file": "examples/287_r82_kosh_after_mandapa.sm",
+      "windows": "150b6c2808582b66010eba5e41d79cceb110730d91cffb2b99156dda2ac6a5c0",
+      "linux": "150b6c2808582b66010eba5e41d79cceb110730d91cffb2b99156dda2ac6a5c0",
+      "match": true
+    },
+    {
+      "file": "examples/288_r86_kosh_alias_moves.sm",
+      "windows": "8b91baf5b692335fc737f715e7f41329196ac3ec51d6da093eaa9d64a7998663",
+      "linux": "8b91baf5b692335fc737f715e7f41329196ac3ec51d6da093eaa9d64a7998663",
+      "match": true
+    },
+    {
+      "file": "examples/289_r87_float_print.sm",
+      "windows": "e099ec4f61112f4ce061181f1bcfdd1917729bec9db9ede2e75e19e80c62a8a0",
+      "linux": "e099ec4f61112f4ce061181f1bcfdd1917729bec9db9ede2e75e19e80c62a8a0",
+      "match": true
+    },
+    {
+      "file": "examples/28_compound.sm",
+      "windows": "f92d01c284cdc62be9be5f545520c4deee5c64b98edd684f08e51fef6f781d2f",
+      "linux": "f92d01c284cdc62be9be5f545520c4deee5c64b98edd684f08e51fef6f781d2f",
+      "match": true
+    },
+    {
+      "file": "examples/290_r87_fraction_into_vitti.sm",
+      "windows": "8cbd316bad7ab56604f0b101f724aa7e9f1f29788cc33da9f77acf4ee18cebce",
+      "linux": "8cbd316bad7ab56604f0b101f724aa7e9f1f29788cc33da9f77acf4ee18cebce",
+      "match": true
+    },
+    {
+      "file": "examples/291_r90_nan_compare.sm",
+      "windows": "861d925c1b189b8b5d4e1ccb2931a0259df31c48abdb270a98f77c69fbfe1991",
+      "linux": "861d925c1b189b8b5d4e1ccb2931a0259df31c48abdb270a98f77c69fbfe1991",
+      "match": true
+    },
+    {
+      "file": "examples/292_r90_likha_after_division.sm",
+      "windows": "338fa1fa094c6ea328f1cd00227e8f86ce79ee83aae0e1b7e44631f41a0dac8d",
+      "linux": "338fa1fa094c6ea328f1cd00227e8f86ce79ee83aae0e1b7e44631f41a0dac8d",
+      "match": true
+    },
+    {
+      "file": "examples/293_r90_float_divide_by_zero.sm",
+      "windows": "1c2c971910ca6db8f6eaaba47c7f3b3eb43a4570bc4338ecd4aa27a1f7faaf44",
+      "linux": "1c2c971910ca6db8f6eaaba47c7f3b3eb43a4570bc4338ecd4aa27a1f7faaf44",
+      "match": true
+    },
+    {
+      "file": "examples/294_r160_nan_comparisons.sm",
+      "windows": "3039db5d19828b3d5450eb7612151750d8af00d1d5a06849c6fd884f3cff1381",
+      "linux": "3039db5d19828b3d5450eb7612151750d8af00d1d5a06849c6fd884f3cff1381",
+      "match": true
+    },
+    {
+      "file": "examples/295_r92_computed_fraction_into_vitti.sm",
+      "windows": "d01eca947f6e4bb863b29eff87e2bd7f57f56c049fd68dc1dc33710e3a14a8b2",
+      "linux": "d01eca947f6e4bb863b29eff87e2bd7f57f56c049fd68dc1dc33710e3a14a8b2",
+      "match": true
+    },
+    {
+      "file": "examples/296_r93_float_e_notation.sm",
+      "windows": "be5f228a143cb903f6fd7091f0507527e9d246e4ad5c240212a423718c97b185",
+      "linux": "be5f228a143cb903f6fd7091f0507527e9d246e4ad5c240212a423718c97b185",
+      "match": true
+    },
+    {
+      "file": "examples/297_r94_whole_number_operators.sm",
+      "windows": "86824b717aae459b6ae5d78a92ca2302b5a5ee0cde2886487bd7ed4d745d1276",
+      "linux": "86824b717aae459b6ae5d78a92ca2302b5a5ee0cde2886487bd7ed4d745d1276",
+      "match": true
+    },
+    {
+      "file": "examples/298_r94_dasham_remainder_refused.sm",
+      "windows": "f28cda5c7dd514a7228bd81772669907ad1ecb6695b94661cb356c6f2dde3f14",
+      "linux": "f28cda5c7dd514a7228bd81772669907ad1ecb6695b94661cb356c6f2dde3f14",
+      "match": true
+    },
+    {
+      "file": "examples/299_r94_nonfinite_kosh_mandapa.sm",
+      "windows": "2cc807996adee21c49f6eff53a972c493bc61cdb209786b265ccfe485e6b2c26",
+      "linux": "2cc807996adee21c49f6eff53a972c493bc61cdb209786b265ccfe485e6b2c26",
+      "match": true
+    },
+    {
+      "file": "examples/29_nishkriya.sm",
+      "windows": "1e50609ed69c524bd083829ba6e456b9c865ecf3b2cc9beda8337418731f9c27",
+      "linux": "1e50609ed69c524bd083829ba6e456b9c865ecf3b2cc9beda8337418731f9c27",
+      "match": true
+    },
+    {
+      "file": "examples/300_r96_chakra_decimal_bound.sm",
+      "windows": "4330809cdf64c486b9521ee7d404469eb68fe60e22f812546c824e82204c5eba",
+      "linux": "4330809cdf64c486b9521ee7d404469eb68fe60e22f812546c824e82204c5eba",
+      "match": true
+    },
+    {
+      "file": "examples/301_r96_chakra_dasham_counter.sm",
+      "windows": "552d66bd77ebca9ded68b8207cd30d5b8d01d60d65d2d3aab61d3b1d26ddab16",
+      "linux": "552d66bd77ebca9ded68b8207cd30d5b8d01d60d65d2d3aab61d3b1d26ddab16",
+      "match": true
+    },
+    {
+      "file": "examples/302_r96_decimal_loop_with_yavat.sm",
+      "windows": "ce0f9a66cd583e15988c2361ac4300c43aa4bd31da0288880b59b411f610ad7a",
+      "linux": "ce0f9a66cd583e15988c2361ac4300c43aa4bd31da0288880b59b411f610ad7a",
+      "match": true
+    },
+    {
+      "file": "examples/303_r103_parimita_refuses.sm",
+      "windows": "0b96d6a3096665296f24a3176cc22df82231fe0fc1a37134dda3be64478d0377",
+      "linux": "0b96d6a3096665296f24a3176cc22df82231fe0fc1a37134dda3be64478d0377",
+      "match": true
+    },
+    {
+      "file": "examples/304_r103_parimita_within.sm",
+      "windows": "8ca189a36614edfb003994782168dcd971ba78787b4e0bc42bbd4612e89bd954",
+      "linux": "8ca189a36614edfb003994782168dcd971ba78787b4e0bc42bbd4612e89bd954",
+      "match": true
+    },
+    {
+      "file": "examples/305_r103_parimita_needs_number.sm",
+      "windows": "26a1b77f24a1b46473cd428c22007ff345df273742cc4b6f04476e5f3be447d4",
+      "linux": "26a1b77f24a1b46473cd428c22007ff345df273742cc4b6f04476e5f3be447d4",
+      "match": true
+    },
+    {
+      "file": "examples/306_r105_string_equal.sm",
+      "windows": "49b379c16dd750efcfd68666064338cbe1b9258405c699642ffceadcaad2a011",
+      "linux": "49b379c16dd750efcfd68666064338cbe1b9258405c699642ffceadcaad2a011",
+      "match": true
+    },
+    {
+      "file": "examples/307_r105_string_join.sm",
+      "windows": "ccd63f24e4e3320a9eee5cf810debb67780ef85b75607cdbec37551bf887af6d",
+      "linux": "ccd63f24e4e3320a9eee5cf810debb67780ef85b75607cdbec37551bf887af6d",
+      "match": true
+    },
+    {
+      "file": "examples/308_r105_likha_three.sm",
+      "windows": "b2450fd63e0f5f623b9b8b7016970e6923064d356d746e0f5ab3e033faeeec57",
+      "linux": "b2450fd63e0f5f623b9b8b7016970e6923064d356d746e0f5ab3e033faeeec57",
+      "match": true
+    },
+    {
+      "file": "examples/309_r105_string_order.sm",
+      "windows": "07e06f130be2569d7426ad784ff16fcd59e66b8b8252ae921c259ee0b3553222",
+      "linux": "07e06f130be2569d7426ad784ff16fcd59e66b8b8252ae921c259ee0b3553222",
+      "match": true
+    },
+    {
+      "file": "examples/30_lkhb.sm",
+      "windows": "861f1adeb3fed4b28206d82f76a0f0ac9af0c73c70ce3816039cd096b47c9b2a",
+      "linux": "861f1adeb3fed4b28206d82f76a0f0ac9af0c73c70ce3816039cd096b47c9b2a",
+      "match": true
+    },
+    {
+      "file": "examples/310_r105_string_beside_number.sm",
+      "windows": "0c5124b705e2ac90c42af0209b8e50353fac37091ca21b078b9f85ac2e5d4e5f",
+      "linux": "0c5124b705e2ac90c42af0209b8e50353fac37091ca21b078b9f85ac2e5d4e5f",
+      "match": true
+    },
+    {
+      "file": "examples/311_r105_string_arithmetic.sm",
+      "windows": "a0f783e181b4b6eb210503fda97c70ac7ddfaf441ba221963f7c53cc4d956c00",
+      "linux": "a0f783e181b4b6eb210503fda97c70ac7ddfaf441ba221963f7c53cc4d956c00",
+      "match": true
+    },
+    {
+      "file": "examples/312_r106_likha_string.sm",
+      "windows": "2f7b6ce725fd24201ebc592b225e7701728438135e1114bca2332c0ce67f8a9e",
+      "linux": "2f7b6ce725fd24201ebc592b225e7701728438135e1114bca2332c0ce67f8a9e",
+      "match": true
+    },
+    {
+      "file": "examples/313_r106_string_condition.sm",
+      "windows": "60644b21efaa72adce65ffc49ccae28831a73f29e030689355049117a9a39d77",
+      "linux": "60644b21efaa72adce65ffc49ccae28831a73f29e030689355049117a9a39d77",
+      "match": true
+    },
+    {
+      "file": "examples/314_r106_kosh_operand.sm",
+      "windows": "6d9670fe4cbec0a36ffed501f176468aa230e293837c90225afdee3b9cb8e924",
+      "linux": "6d9670fe4cbec0a36ffed501f176468aa230e293837c90225afdee3b9cb8e924",
+      "match": true
+    },
+    {
+      "file": "examples/315_r106_dasham_into_mala.sm",
+      "windows": "83fe67d56c6d64790874154112d6f2688d231ed7ad0c8fbd3f38f3773b47c608",
+      "linux": "83fe67d56c6d64790874154112d6f2688d231ed7ad0c8fbd3f38f3773b47c608",
+      "match": true
+    },
+    {
+      "file": "examples/316_r107_kosh_kept_by_a_prakriya.sm",
+      "windows": "bc91c22c6ba35d65b07fbf8bee6154587ecf8469919d30dabd25bfc9fb4833b1",
+      "linux": "bc91c22c6ba35d65b07fbf8bee6154587ecf8469919d30dabd25bfc9fb4833b1",
+      "match": true
+    },
+    {
+      "file": "examples/317_r107_parimana.sm",
+      "windows": "63a12caa68fcf0faecea3dee150ddc6f06e2f41eb62f4ac72e83f27ab6ae5c65",
+      "linux": "63a12caa68fcf0faecea3dee150ddc6f06e2f41eb62f4ac72e83f27ab6ae5c65",
+      "match": true
+    },
+    {
+      "file": "examples/318_r108_parimana_moves.sm",
+      "windows": "665a1a0909b4d793507507bac5bf5e0b255f480983cfe450b2f20185628e532f",
+      "linux": "665a1a0909b4d793507507bac5bf5e0b255f480983cfe450b2f20185628e532f",
+      "match": true
+    },
+    {
+      "file": "examples/319_r108_mala_operand.sm",
+      "windows": "f8fdf860cc77f664bed009d3dd30d65a96c126dc2a15147b4342da799c860272",
+      "linux": "f8fdf860cc77f664bed009d3dd30d65a96c126dc2a15147b4342da799c860272",
+      "match": true
+    },
+    {
+      "file": "examples/31_strcat.sm",
+      "windows": "cf4bcbc381fdcbb689d9a0f367b91a7cc2cf98d89ca6e793e78df5138010b602",
+      "linux": "cf4bcbc381fdcbb689d9a0f367b91a7cc2cf98d89ca6e793e78df5138010b602",
+      "match": true
+    },
+    {
+      "file": "examples/320_r109_kosh_alias_kept.sm",
+      "windows": "ae416a0c8f69f0289692dd9866dfe1e129363635951239b7337e50e5449b0d87",
+      "linux": "ae416a0c8f69f0289692dd9866dfe1e129363635951239b7337e50e5449b0d87",
+      "match": true
+    },
+    {
+      "file": "examples/321_r109_kosh_long_chain.sm",
+      "windows": "b25712d04fcd4c1ecec085faffbbabd078e57ad08ebe7648161d745a8e057d42",
+      "linux": "b25712d04fcd4c1ecec085faffbbabd078e57ad08ebe7648161d745a8e057d42",
+      "match": true
+    },
+    {
+      "file": "examples/322_r111_new_names.sm",
+      "windows": "425ec0a3e6d1c0219b23a076cbbcf326333c2f5b6d5853ffe54f569cb7f30acc",
+      "linux": "425ec0a3e6d1c0219b23a076cbbcf326333c2f5b6d5853ffe54f569cb7f30acc",
+      "match": true
+    },
+    {
+      "file": "examples/323_r111_old_names.sm",
+      "windows": "cf92f1ed13c3827fa9e33eeec093b41730cd4c3546cd32443a93c8b90fccc8e6",
+      "linux": "cf92f1ed13c3827fa9e33eeec093b41730cd4c3546cd32443a93c8b90fccc8e6",
+      "match": true
+    },
+    {
+      "file": "examples/324_r111_asti_true.sm",
+      "windows": "ac71933fd3f7f52e3fa209c32b8bb75a6c26b69ddbce5d88e4f371fd84d53b51",
+      "linux": "ac71933fd3f7f52e3fa209c32b8bb75a6c26b69ddbce5d88e4f371fd84d53b51",
+      "match": true
+    },
+    {
+      "file": "examples/325_r111_asti_false.sm",
+      "windows": "50a1a798097951e8925f59e804ca3b20d7dee201418736241a3a6a1d4edbe509",
+      "linux": "50a1a798097951e8925f59e804ca3b20d7dee201418736241a3a6a1d4edbe509",
+      "match": true
+    },
+    {
+      "file": "examples/326_r111_nasti_true.sm",
+      "windows": "5ff831d500fe6d029856cd0a62af2f8e560dd16d9642007df5d0689233eb2e5a",
+      "linux": "5ff831d500fe6d029856cd0a62af2f8e560dd16d9642007df5d0689233eb2e5a",
+      "match": true
+    },
+    {
+      "file": "examples/327_r111_nasti_false.sm",
+      "windows": "c5a00ac70d1f829eaa6b9865a9f4ed671a6ced55733b4d2ddaa8e34904611637",
+      "linux": "c5a00ac70d1f829eaa6b9865a9f4ed671a6ced55733b4d2ddaa8e34904611637",
+      "match": true
+    },
+    {
+      "file": "examples/328_r113_rachana_operand.sm",
+      "windows": "1d880c8019a8db9e90b28b375163fd2f546aa6b1d2f0296bb64e5e9f05fbe240",
+      "linux": "1d880c8019a8db9e90b28b375163fd2f546aa6b1d2f0296bb64e5e9f05fbe240",
+      "match": true
+    },
+    {
+      "file": "examples/329_r113_sankhya_bindu.sm",
+      "windows": "3b12aa064f3464b10a57cde93b682d3a9d76f8ba67852eb0fde6e38c3fed0f67",
+      "linux": "3b12aa064f3464b10a57cde93b682d3a9d76f8ba67852eb0fde6e38c3fed0f67",
+      "match": true
+    },
+    {
+      "file": "examples/32_bank_interest.sm",
+      "windows": "453206e5038c29089e19835a9bd7ada5c0b947c3b6e751e0e72c8d48623313f4",
+      "linux": "453206e5038c29089e19835a9bd7ada5c0b947c3b6e751e0e72c8d48623313f4",
+      "match": true
+    },
+    {
+      "file": "examples/330_r116_dvigun.sm",
+      "windows": "038ba012f45e9603188194e9844753b1781550f584a944b392b89aacde198eca",
+      "linux": "038ba012f45e9603188194e9844753b1781550f584a944b392b89aacde198eca",
+      "match": true
+    },
+    {
+      "file": "examples/331_r116_trigun.sm",
+      "windows": "1c5058276c8de56e57a60a8218bd39c34c163d6bdbccb48ce4a5c08dcf39e408",
+      "linux": "1c5058276c8de56e57a60a8218bd39c34c163d6bdbccb48ce4a5c08dcf39e408",
+      "match": true
+    },
+    {
+      "file": "examples/332_r116_vardh.sm",
+      "windows": "b0251bdc4858aebeab291d07b068765e180f1dedb9fe69a516e8fa01efefd2b7",
+      "linux": "b0251bdc4858aebeab291d07b068765e180f1dedb9fe69a516e8fa01efefd2b7",
+      "match": true
+    },
+    {
+      "file": "examples/333_r116_nirapeksh_mulya.sm",
+      "windows": "be02cabfa85037e982ba26742390e744427d2772743f946912a1ec53d815282b",
+      "linux": "be02cabfa85037e982ba26742390e744427d2772743f946912a1ec53d815282b",
+      "match": true
+    },
+    {
+      "file": "examples/334_r116_mahattam_samapavartak.sm",
+      "windows": "e104d19d24a6548ef636163a38e8c1188b16371b46ed01f419964edb7c62f44e",
+      "linux": "e104d19d24a6548ef636163a38e8c1188b16371b46ed01f419964edb7c62f44e",
+      "match": true
+    },
+    {
+      "file": "examples/335_r116_viparyay_ank.sm",
+      "windows": "67efb63da1c76ce66317aa08fb611ba6a729aa24d1ac8b00c398099581d046db",
+      "linux": "67efb63da1c76ce66317aa08fb611ba6a729aa24d1ac8b00c398099581d046db",
+      "match": true
+    },
+    {
+      "file": "examples/336_r116_ganita_nirapeksh.sm",
+      "windows": "e275a8da7822142c6a31a146ceebce08ec7cad3376f978dc63a2ad10c732f9b6",
+      "linux": "e275a8da7822142c6a31a146ceebce08ec7cad3376f978dc63a2ad10c732f9b6",
+      "match": true
+    },
+    {
+      "file": "examples/337_r116_brahmagupta_kshetr.sm",
+      "windows": "4c27ba7e6dcf30ed57d21453b1ce0ccf2e51c9c493ac207d266ebd80108fd081",
+      "linux": "4c27ba7e6dcf30ed57d21453b1ce0ccf2e51c9c493ac207d266ebd80108fd081",
+      "match": true
+    },
+    {
+      "file": "examples/338_r116_brihat_ank_se.sm",
+      "windows": "b57052332c96d9edbac522b0f529926fb7de008a27bc0f7eb7ecaa9318deba22",
+      "linux": "b57052332c96d9edbac522b0f529926fb7de008a27bc0f7eb7ecaa9318deba22",
+      "match": true
+    },
+    {
+      "file": "examples/339_r116_brihat_ank_tak_laghu.sm",
+      "windows": "6085e33f33c3168a6c65e6ec4ead1b091b1a043db0ed837fbf4f2fbde2b20066",
+      "linux": "6085e33f33c3168a6c65e6ec4ead1b091b1a043db0ed837fbf4f2fbde2b20066",
+      "match": true
+    },
+    {
+      "file": "examples/33_unit_conversion.sm",
+      "windows": "b0ada005caa520f990a699a91e027c4e7170c6098e24924c69cc6a8713593ed8",
+      "linux": "b0ada005caa520f990a699a91e027c4e7170c6098e24924c69cc6a8713593ed8",
+      "match": true
+    },
+    {
+      "file": "examples/340_r116_yog_seema.sm",
+      "windows": "e62a6e7756e93e0db5df02580a75d137080098348d4dcc8227bb314e83c2b9b0",
+      "linux": "e62a6e7756e93e0db5df02580a75d137080098348d4dcc8227bb314e83c2b9b0",
+      "match": true
+    },
+    {
+      "file": "examples/341_r116_adish_gunan.sm",
+      "windows": "79b83f0525ec1bcb0107fc99d139abd01ff32104a6ccd8c2c1b681f77587cf10",
+      "linux": "79b83f0525ec1bcb0107fc99d139abd01ff32104a6ccd8c2c1b681f77587cf10",
+      "match": true
+    },
+    {
+      "file": "examples/342_r116_bindu_gunan.sm",
+      "windows": "503319d1e853e4add6272bc23dd2082bc25fb97214818cef299dc7182f6ceb7a",
+      "linux": "503319d1e853e4add6272bc23dd2082bc25fb97214818cef299dc7182f6ceb7a",
+      "match": true
+    },
+    {
+      "file": "examples/343_r116_suchi_shreni.sm",
+      "windows": "4c75b21aa764e69dc01a21e76ab2928b8326e2183e9f97ba39667b6b8e1b0a17",
+      "linux": "4c75b21aa764e69dc01a21e76ab2928b8326e2183e9f97ba39667b6b8e1b0a17",
+      "match": true
+    },
+    {
+      "file": "examples/344_r116_varna_tak_dashm.sm",
+      "windows": "78e2f746e0caf8dc4ac692800b29d2b1dd91b27e89119c0dc904cd1c99098a27",
+      "linux": "78e2f746e0caf8dc4ac692800b29d2b1dd91b27e89119c0dc904cd1c99098a27",
+      "match": true
+    },
+    {
+      "file": "examples/345_r116_long_literal.sm",
+      "windows": "5a19967bc6b2ebe535d6958e51d1759bf2e6d357d9744e954d4fd190062ccb33",
+      "linux": "5a19967bc6b2ebe535d6958e51d1759bf2e6d357d9744e954d4fd190062ccb33",
+      "match": true
+    },
+    {
+      "file": "examples/346_r118_old_library_names.sm",
+      "windows": "fce18f972eaaaffba613cfc3618b475e15cf64da202c577617c6656052c592db",
+      "linux": "fce18f972eaaaffba613cfc3618b475e15cf64da202c577617c6656052c592db",
+      "match": true
+    },
+    {
+      "file": "examples/347_r118_old_roop_names.sm",
+      "windows": "cf74099f7701a6c0c2391b119cee252ad061aa9d2c10dbe9631dc9b1d0122fd3",
+      "linux": "cf74099f7701a6c0c2391b119cee252ad061aa9d2c10dbe9631dc9b1d0122fd3",
+      "match": true
+    },
+    {
+      "file": "examples/348_r126_kosh_then_raw.sm",
+      "windows": "e175d8530bbae4bf007e32eb3b8efa3d82cafa2c65311f45ee778e077f323486",
+      "linux": "e175d8530bbae4bf007e32eb3b8efa3d82cafa2c65311f45ee778e077f323486",
+      "match": true
+    },
+    {
+      "file": "examples/349_r126_kosh_in_one_branch.sm",
+      "windows": "c4ed9e2eb52dd5ddef7b933ad6f4a640ea264fb7c9f4064977d55b1aac156967",
+      "linux": "c4ed9e2eb52dd5ddef7b933ad6f4a640ea264fb7c9f4064977d55b1aac156967",
+      "match": true
+    },
+    {
+      "file": "examples/34_incdec.sm",
+      "windows": "8269b15a56e06af7e9bc22b59b4621a60628cb55f99d3b4da2ce96004863d1e3",
+      "linux": "8269b15a56e06af7e9bc22b59b4621a60628cb55f99d3b4da2ce96004863d1e3",
+      "match": true
+    },
+    {
+      "file": "examples/350_r126_mala_then_kosh.sm",
+      "windows": "35a98df58df4f532ce93ecccdd67d5effbdbe65bf1debf30464462e9c48436fb",
+      "linux": "35a98df58df4f532ce93ecccdd67d5effbdbe65bf1debf30464462e9c48436fb",
+      "match": true
+    },
+    {
+      "file": "examples/351_r127_muse_reassign.sm",
+      "windows": "873375afa07cd944819b5de1cc966ce38025e4cc616d9630773e48ae747b9771",
+      "linux": "873375afa07cd944819b5de1cc966ce38025e4cc616d9630773e48ae747b9771",
+      "match": true
+    },
+    {
+      "file": "examples/352_r127_muse_assign_kosh_mala.sm",
+      "windows": "fce037ccdad43689ba9dd18df10ad0d1b79d3ec19ff66e67a35196c78bd6beeb",
+      "linux": "fce037ccdad43689ba9dd18df10ad0d1b79d3ec19ff66e67a35196c78bd6beeb",
+      "match": true
+    },
+    {
+      "file": "examples/353_r127_muse_loop.sm",
+      "windows": "0e1beed5a1b6a3cfa5f393bcc52349086fb1ef2485b5d5de3854342025850646",
+      "linux": "0e1beed5a1b6a3cfa5f393bcc52349086fb1ef2485b5d5de3854342025850646",
+      "match": true
+    },
+    {
+      "file": "examples/354_r127_muse_callresult.sm",
+      "windows": "7c975c41a06c72fa2d83788e475d1b85aa150c9a19a7fc3509db29cd3cc85cd0",
+      "linux": "7c975c41a06c72fa2d83788e475d1b85aa150c9a19a7fc3509db29cd3cc85cd0",
+      "match": true
+    },
+    {
+      "file": "examples/355_r127_muse_malacell.sm",
+      "windows": "49305608ecd63868e010ef2eb551ea1e511fa03d5ee59ed7ba2bef15d0e4bb37",
+      "linux": "49305608ecd63868e010ef2eb551ea1e511fa03d5ee59ed7ba2bef15d0e4bb37",
+      "match": true
+    },
+    {
+      "file": "examples/356_r127_muse_koshcell.sm",
+      "windows": "2bc4087dded6de6239c08ce12ba6d287485f3c5871c30c6b22748bc6b7428381",
+      "linux": "2bc4087dded6de6239c08ce12ba6d287485f3c5871c30c6b22748bc6b7428381",
+      "match": true
+    },
+    {
+      "file": "examples/357_r127_muse_global.sm",
+      "windows": "034964d27245fded0110dcd384417468e6e60fc2eca9d82556eaf3da23557c22",
+      "linux": "034964d27245fded0110dcd384417468e6e60fc2eca9d82556eaf3da23557c22",
+      "match": true
+    },
+    {
+      "file": "examples/358_r127_muse_global_samefn.sm",
+      "windows": "f49b11ea7fb6cb5fe6b3e2f845bbdd0b05960dd547832f1b310fbee33f8cf4f2",
+      "linux": "f49b11ea7fb6cb5fe6b3e2f845bbdd0b05960dd547832f1b310fbee33f8cf4f2",
+      "match": true
+    },
+    {
+      "file": "examples/359_r127_muse_ternary_oob.sm",
+      "windows": "7207da91edd083d52e21e03282f4dfb178a1654801e9c392c1fbba497bb2d842",
+      "linux": "7207da91edd083d52e21e03282f4dfb178a1654801e9c392c1fbba497bb2d842",
+      "match": true
+    },
+    {
+      "file": "examples/35_comments.sm",
+      "windows": "b527d387acae12db29238710b9416b93e1d049b75483d825ca6ea8ecc352afc8",
+      "linux": "b527d387acae12db29238710b9416b93e1d049b75483d825ca6ea8ecc352afc8",
+      "match": true
+    },
+    {
+      "file": "examples/36_descending.sm",
+      "windows": "cd4954cba1680c1304cebcaf4a38d98107e225fcc051098825c013220d0f1fa3",
+      "linux": "cd4954cba1680c1304cebcaf4a38d98107e225fcc051098825c013220d0f1fa3",
+      "match": true
+    },
+    {
+      "file": "examples/37_native_gujarati.sm",
+      "windows": "c6c946578938a4ac133bf911d0618c954705edd3ccbebc44e72b9c1386eb58b1",
+      "linux": "c6c946578938a4ac133bf911d0618c954705edd3ccbebc44e72b9c1386eb58b1",
+      "match": true
+    },
+    {
+      "file": "examples/38_native_hindi.sm",
+      "windows": "c7e127793b96aae5a93be6231fcd8c8e86b2f637661eae0ad6c6ab5b1f86183d",
+      "linux": "c7e127793b96aae5a93be6231fcd8c8e86b2f637661eae0ad6c6ab5b1f86183d",
+      "match": true
+    },
+    {
+      "file": "examples/39_native_tamil.sm",
+      "windows": "d1c98514dd582284385bfa38c662413d6545eef396ee339ed0e97888115e07e4",
+      "linux": "d1c98514dd582284385bfa38c662413d6545eef396ee339ed0e97888115e07e4",
+      "match": true
+    },
+    {
+      "file": "examples/40_functions_params.sm",
+      "windows": "c12fd76e9a7f771f0c586962ffc9853fd002273c6aa91782d73b4c4913750661",
+      "linux": "c12fd76e9a7f771f0c586962ffc9853fd002273c6aa91782d73b4c4913750661",
+      "match": true
+    },
+    {
+      "file": "examples/41_recursion.sm",
+      "windows": "901ec6c5fda5c200f62beaf1e33891a7aa43657591746ce902aa433e426347dd",
+      "linux": "901ec6c5fda5c200f62beaf1e33891a7aa43657591746ce902aa433e426347dd",
+      "match": true
+    },
+    {
+      "file": "examples/42_block_comments.sm",
+      "windows": "51da785f813c7011dae4a2ea88baf6a3389227ac5466291dc8797a4847ec01e7",
+      "linux": "51da785f813c7011dae4a2ea88baf6a3389227ac5466291dc8797a4847ec01e7",
+      "match": true
+    },
+    {
+      "file": "examples/43_nested_likha.sm",
+      "windows": "dc8bfec6e3881c27fce399190cce29d6213f183d28ead7b566667e6c7d390a21",
+      "linux": "dc8bfec6e3881c27fce399190cce29d6213f183d28ead7b566667e6c7d390a21",
+      "match": true
+    },
+    {
+      "file": "examples/44_shabda.sm",
+      "windows": "20853b3c23fea328c4f2a744ddf9fc83c9ac3618439c8ca51a57a95d0071235e",
+      "linux": "20853b3c23fea328c4f2a744ddf9fc83c9ac3618439c8ca51a57a95d0071235e",
+      "match": true
+    },
+    {
+      "file": "examples/45_shifts.sm",
+      "windows": "e3d613896a03b4a307088d9191227d07c3bd4d1bc20cb623dc157dbbfe7b5e88",
+      "linux": "e3d613896a03b4a307088d9191227d07c3bd4d1bc20cb623dc157dbbfe7b5e88",
+      "match": true
+    },
+    {
+      "file": "examples/46_language_reference.sm",
+      "windows": "b03fe93f8de6bf192b9bfc1fb0427e6522cc5c629d8556cf87f6685820d01f66",
+      "linux": "b03fe93f8de6bf192b9bfc1fb0427e6522cc5c629d8556cf87f6685820d01f66",
+      "match": true
+    },
+    {
+      "file": "examples/59_windows_grahan_runtime.sm",
+      "windows": "4a9de74db46bb1d47b28c627e607fe62d38993e925afe1fc8c841be4df44b24c",
+      "linux": "4a9de74db46bb1d47b28c627e607fe62d38993e925afe1fc8c841be4df44b24c",
+      "match": true
+    },
+    {
+      "file": "examples/60_six_func_args.sm",
+      "windows": "879e9eb33121b4ea84b4fef685dfa1c91495d6867b3e7565477cd6009b069ef0",
+      "linux": "879e9eb33121b4ea84b4fef685dfa1c91495d6867b3e7565477cd6009b069ef0",
+      "match": true
+    },
+    {
+      "file": "examples/61_stdlib_math.sm",
+      "windows": "67bdadd1079a12a344d4b655f47a875ac46caacb1754384545b5dfdbb98f46ff",
+      "linux": "67bdadd1079a12a344d4b655f47a875ac46caacb1754384545b5dfdbb98f46ff",
+      "match": true
+    },
+    {
+      "file": "examples/62_stdlib_num.sm",
+      "windows": "1882b6cc49c90a1b58a20b1b668fd86466b4785d48b180788ff4f5e1ea5f7a26",
+      "linux": "1882b6cc49c90a1b58a20b1b668fd86466b4785d48b180788ff4f5e1ea5f7a26",
+      "match": true
+    },
+    {
+      "file": "examples/63_stdlib_string.sm",
+      "windows": "a31deefc6ca2bafba8b0c43fc68c152414f492c8c3cc33371a258080f7a5d816",
+      "linux": "a31deefc6ca2bafba8b0c43fc68c152414f492c8c3cc33371a258080f7a5d816",
+      "match": true
+    },
+    {
+      "file": "examples/64_param_reassign.sm",
+      "windows": "78e68527501aeba6bee01fcd1ef13d470be2c7ce451d2664ae4062c40d73257a",
+      "linux": "78e68527501aeba6bee01fcd1ef13d470be2c7ce451d2664ae4062c40d73257a",
+      "match": true
+    },
+    {
+      "file": "examples/65_char_code_index.sm",
+      "windows": "66d0ed59e0108828a7f6ccbdb759519d21a7c293219a4e90c47db1d8888b2d8d",
+      "linux": "66d0ed59e0108828a7f6ccbdb759519d21a7c293219a4e90c47db1d8888b2d8d",
+      "match": true
+    },
+    {
+      "file": "examples/66_module_dedupe.sm",
+      "windows": "5fd69aaf57680b3c5dd60f63e2640cc5241aadbd515288696c3446d93d91f14d",
+      "linux": "5fd69aaf57680b3c5dd60f63e2640cc5241aadbd515288696c3446d93d91f14d",
+      "match": true
+    },
+    {
+      "file": "examples/67_array_len_bounds.sm",
+      "windows": "f98a01c85382c90d5511564daad8de398afcd703865887885d93bc2099d19478",
+      "linux": "f98a01c85382c90d5511564daad8de398afcd703865887885d93bc2099d19478",
+      "match": true
+    },
+    {
+      "file": "examples/68_array_oob.sm",
+      "windows": "eb57bccdb2dbcc3b8e9e895edce8bdea99838d0a6ce1f61de67cc6e57fb12b0a",
+      "linux": "eb57bccdb2dbcc3b8e9e895edce8bdea99838d0a6ce1f61de67cc6e57fb12b0a",
+      "match": true
+    },
+    {
+      "file": "examples/69_undefined_function.sm",
+      "windows": "4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e",
+      "linux": "4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e",
+      "match": true
+    },
+    {
+      "file": "examples/70_module_collision.sm",
+      "windows": "a8b7c86e58727fb7819e11d366a45439571d42a2896bc33a2b9988124470b9f2",
+      "linux": "a8b7c86e58727fb7819e11d366a45439571d42a2896bc33a2b9988124470b9f2",
+      "match": true
+    },
+    {
+      "file": "examples/71_array_negative_index.sm",
+      "windows": "9af3f30c9b199252c27324864a3178c809be0f9dadf33b85be292d11095d9fad",
+      "linux": "9af3f30c9b199252c27324864a3178c809be0f9dadf33b85be292d11095d9fad",
+      "match": true
+    },
+    {
+      "file": "examples/72_array_variable_index.sm",
+      "windows": "7dd6568ecb705bc87fad0d68f52b13e624cda31f132311195b88e5f34a6fe4fc",
+      "linux": "7dd6568ecb705bc87fad0d68f52b13e624cda31f132311195b88e5f34a6fe4fc",
+      "match": true
+    },
+    {
+      "file": "examples/73_array_equal_length.sm",
+      "windows": "8572e352e6b66af1aa85dfed420ba35e008b6f3688fe0f184ff211e33fb6ad41",
+      "linux": "8572e352e6b66af1aa85dfed420ba35e008b6f3688fe0f184ff211e33fb6ad41",
+      "match": true
+    },
+    {
+      "file": "examples/74_array_highest_valid.sm",
+      "windows": "7399db9013d324a1f8b650361ba01cc8ed563e410b469faa59aee4145d23da43",
+      "linux": "7399db9013d324a1f8b650361ba01cc8ed563e410b469faa59aee4145d23da43",
+      "match": true
+    },
+    {
+      "file": "examples/75_array_dynamic_length.sm",
+      "windows": "0c6f64b99d41ed4872ca97cb262ce8b2e432a320fce1a201da45fa03b4360a34",
+      "linux": "0c6f64b99d41ed4872ca97cb262ce8b2e432a320fce1a201da45fa03b4360a34",
+      "match": true
+    },
+    {
+      "file": "examples/76_array_function_scope.sm",
+      "windows": "7620185aa1c97e2083badc1bfa12b4600d020c647679f6c789af22ef8bc72fb8",
+      "linux": "7620185aa1c97e2083badc1bfa12b4600d020c647679f6c789af22ef8bc72fb8",
+      "match": true
+    },
+    {
+      "file": "examples/77_ternary.sm",
+      "windows": "9a00df76f7042d75f04edddd5d4e16f1de022f87ae4ad556bd5a87253f0b5a34",
+      "linux": "9a00df76f7042d75f04edddd5d4e16f1de022f87ae4ad556bd5a87253f0b5a34",
+      "match": true
+    },
+    {
+      "file": "examples/78_do_while.sm",
+      "windows": "da92e1e5b3d0b25dd7fd4349fc50051c0ccc6aa0b5da633cdd7cd8f0b46db681",
+      "linux": "da92e1e5b3d0b25dd7fd4349fc50051c0ccc6aa0b5da633cdd7cd8f0b46db681",
+      "match": true
+    },
+    {
+      "file": "examples/79_ayojan_cwd.sm",
+      "windows": "2a59d15d2da66923cb97e70797029f59f0f0331d4ac500ad455b82ace79b9d8d",
+      "linux": "2a59d15d2da66923cb97e70797029f59f0f0331d4ac500ad455b82ace79b9d8d",
+      "match": true
+    },
+    {
+      "file": "examples/80_b6_nested_call_loop.sm",
+      "windows": "1f7e6857ae653d557e78db99d3747e8e9361667cd1ff10a5375b3748437f848d",
+      "linux": "1f7e6857ae653d557e78db99d3747e8e9361667cd1ff10a5375b3748437f848d",
+      "match": true
+    },
+    {
+      "file": "examples/81_stdlib_num2.sm",
+      "windows": "7ade153937c855234654bd0b6b759f32426d019972e4d2547b1f5c9c2e514bec",
+      "linux": "7ade153937c855234654bd0b6b759f32426d019972e4d2547b1f5c9c2e514bec",
+      "match": true
+    },
+    {
+      "file": "examples/82_b7_stack_spill.sm",
+      "windows": "1fae8b8dd08757b2694e01190116386c9dbd744c9863168eefbe9c47dbdc23e6",
+      "linux": "1fae8b8dd08757b2694e01190116386c9dbd744c9863168eefbe9c47dbdc23e6",
+      "match": true
+    },
+    {
+      "file": "examples/83_stdlib_sort.sm",
+      "windows": "6c40b6338de1096cee5f04164bc01614b0075fef528cb308a65257c4f5a9c8ab",
+      "linux": "6c40b6338de1096cee5f04164bc01614b0075fef528cb308a65257c4f5a9c8ab",
+      "match": true
+    },
+    {
+      "file": "examples/84_stdlib_string2.sm",
+      "windows": "70ca7ad3bf424d89c97e9aec5787b08da041cdbddec7b2f857fac1b33866f870",
+      "linux": "70ca7ad3bf424d89c97e9aec5787b08da041cdbddec7b2f857fac1b33866f870",
+      "match": true
+    },
+    {
+      "file": "examples/85_stdlib_shellsort.sm",
+      "windows": "64c2fed5ea19da60bd2beb9cd1f4d2121de0bd44cfd7cabceb8f1f1b8bacfd8c",
+      "linux": "64c2fed5ea19da60bd2beb9cd1f4d2121de0bd44cfd7cabceb8f1f1b8bacfd8c",
+      "match": true
+    },
+    {
+      "file": "examples/86_b8_multi_modules.sm",
+      "windows": "b275b4dbce811f4766d031bb74e57da6b6bacd25803a0a80aa39fa9f89a84b61",
+      "linux": "b275b4dbce811f4766d031bb74e57da6b6bacd25803a0a80aa39fa9f89a84b61",
+      "match": true
+    },
+    {
+      "file": "examples/87_b8_all_modules.sm",
+      "windows": "15aac480535472fdfc19665e374de9649978767ea849620f5482fa19f7f74b08",
+      "linux": "15aac480535472fdfc19665e374de9649978767ea849620f5482fa19f7f74b08",
+      "match": true
+    },
+    {
+      "file": "examples/87_b8_func_params_capacity.sm",
+      "windows": "1fd7121cc06995ba4e81c374711dcdcdd1f125f2183959a19dd3676a920d3104",
+      "linux": "1fd7121cc06995ba4e81c374711dcdcdd1f125f2183959a19dd3676a920d3104",
+      "match": true
+    },
+    {
+      "file": "examples/87_b8_math_sort_string.sm",
+      "windows": "1fd7121cc06995ba4e81c374711dcdcdd1f125f2183959a19dd3676a920d3104",
+      "linux": "1fd7121cc06995ba4e81c374711dcdcdd1f125f2183959a19dd3676a920d3104",
+      "match": true
+    },
+    {
+      "file": "examples/88_pingala_chandas.sm",
+      "windows": "458a0024d03a86d0d71690fd7180954704304e2f5721ea0318a1132ce88ba3c9",
+      "linux": "458a0024d03a86d0d71690fd7180954704304e2f5721ea0318a1132ce88ba3c9",
+      "match": true
+    },
+    {
+      "file": "examples/89_b9_short_circuit.sm",
+      "windows": "40a6d2ffd569087b8a6ece60d9685258b327cde8271cd9e47e86965c0d4169c8",
+      "linux": "40a6d2ffd569087b8a6ece60d9685258b327cde8271cd9e47e86965c0d4169c8",
+      "match": true
+    },
+    {
+      "file": "examples/90_b9_short_circuit_bounds.sm",
+      "windows": "3b67a0cbd08568ff7bafb7dbe61084894adb13ba37f8843b3ca44a827b08d98f",
+      "linux": "3b67a0cbd08568ff7bafb7dbe61084894adb13ba37f8843b3ca44a827b08d98f",
+      "match": true
+    },
+    {
+      "file": "examples/91_indian_number_theory.sm",
+      "windows": "acd78cc001389660c1fbba28131c46a2fc1b30f83f79fbbe0ade5afc42d38ee8",
+      "linux": "acd78cc001389660c1fbba28131c46a2fc1b30f83f79fbbe0ade5afc42d38ee8",
+      "match": true
+    },
+    {
+      "file": "examples/92_t12_dasham_float.sm",
+      "windows": "5b7984a68bcbaa86e874def196c5a3702a9d8693202888a1a462ffd3c41506e4",
+      "linux": "5b7984a68bcbaa86e874def196c5a3702a9d8693202888a1a462ffd3c41506e4",
+      "match": true
+    },
+    {
+      "file": "examples/93_t12_float_functions.sm",
+      "windows": "ba8590bf9e2c16f2fb8e1547eda9eddea08ab85accff4e3419bd82ef4157bb3a",
+      "linux": "ba8590bf9e2c16f2fb8e1547eda9eddea08ab85accff4e3419bd82ef4157bb3a",
+      "match": true
+    },
+    {
+      "file": "examples/94_t12_float_functions.sm",
+      "windows": "9f30d2db5b788911b006a33674cfb5fd73ecff20718e6db86f170968ee06fda3",
+      "linux": "9f30d2db5b788911b006a33674cfb5fd73ecff20718e6db86f170968ee06fda3",
+      "match": true
+    },
+    {
+      "file": "examples/95_t12_madhava_functions.sm",
+      "windows": "9062b8dd288b1c1c34f44704a4054732c389794af4081c6dacbc1d1dcb5251f1",
+      "linux": "9062b8dd288b1c1c34f44704a4054732c389794af4081c6dacbc1d1dcb5251f1",
+      "match": true
+    },
+    {
+      "file": "examples/96_t18_kosh.sm",
+      "windows": "2f4e768b053d58e8465213b846c82f6a095eec482aa5a04127dcc4aea2d537c1",
+      "linux": "2f4e768b053d58e8465213b846c82f6a095eec482aa5a04127dcc4aea2d537c1",
+      "match": true
+    },
+    {
+      "file": "examples/97_t18_kosh_devanagari.sm",
+      "windows": "2fca1e52e4e2d7e190f77aacc9aac1e973c20113a7508d5d352f4b53fcb03e2a",
+      "linux": "2fca1e52e4e2d7e190f77aacc9aac1e973c20113a7508d5d352f4b53fcb03e2a",
+      "match": true
+    },
+    {
+      "file": "examples/98_t18_kosh_empty.sm",
+      "windows": "0167cd99bed3d3ff5205d45e07dca58c2b889e9dee24242100c14a270391ce74",
+      "linux": "0167cd99bed3d3ff5205d45e07dca58c2b889e9dee24242100c14a270391ce74",
+      "match": true
+    },
+    {
+      "file": "examples/99_ast_multimodule_capacity.sm",
+      "windows": "4f5fdbcc5e7a8fda2c2b1fd197bd3973b8201e6db5cad65bc29aeeabd699b0ce",
+      "linux": "4f5fdbcc5e7a8fda2c2b1fd197bd3973b8201e6db5cad65bc29aeeabd699b0ce",
+      "match": true
+    },
+    {
+      "file": "examples/99_t18_kosh.sm",
+      "windows": "2f4e768b053d58e8465213b846c82f6a095eec482aa5a04127dcc4aea2d537c1",
+      "linux": "2f4e768b053d58e8465213b846c82f6a095eec482aa5a04127dcc4aea2d537c1",
+      "match": true
+    },
+    {
+      "file": "examples/array_demo.sm",
+      "windows": "fe6fa5f3feb579a6f6dbe485ace3d1f7cd925485a66c562bf2cec03eff78ea26",
+      "linux": "fe6fa5f3feb579a6f6dbe485ace3d1f7cd925485a66c562bf2cec03eff78ea26",
+      "match": true
+    },
+    {
+      "file": "examples/char_ops.sm",
+      "windows": "a54d963b36dac7f7a45fd12bea705b37ae432084eaea9793fdd10958a8baced1",
+      "linux": "a54d963b36dac7f7a45fd12bea705b37ae432084eaea9793fdd10958a8baced1",
+      "match": true
+    },
+    {
+      "file": "examples/fizzbuzz.sm",
+      "windows": "84f3d4c7fdf4df6bcdca8f10db1ef28e4bc52c849a2eb1518fe53133691767e5",
+      "linux": "84f3d4c7fdf4df6bcdca8f10db1ef28e4bc52c849a2eb1518fe53133691767e5",
+      "match": true
+    },
+    {
+      "file": "examples/format_demo.sm",
+      "windows": "ec8dccc23b78c4a6221bd7092649e308c0ca311d5b55829234e77f1978d0d4e9",
+      "linux": "ec8dccc23b78c4a6221bd7092649e308c0ca311d5b55829234e77f1978d0d4e9",
+      "match": true
+    },
+    {
+      "file": "examples/full_demo.sm",
+      "windows": "f5379abc792114f08c8582beeb1f4cfe47ca4a2b5c659a63891ba5ade3e09cdd",
+      "linux": "f5379abc792114f08c8582beeb1f4cfe47ca4a2b5c659a63891ba5ade3e09cdd",
+      "match": true
+    },
+    {
+      "file": "examples/func_demo.sm",
+      "windows": "dca4498a8a51a5961cf039699b9ef05ec3eea0ac51660b3f9e249078df204be9",
+      "linux": "dca4498a8a51a5961cf039699b9ef05ec3eea0ac51660b3f9e249078df204be9",
+      "match": true
+    },
+    {
+      "file": "examples/hello.sm",
+      "windows": "f8e59cebac4a3448f734df89e96d04791c95d36e586337ecc55a4f47a6ed36fd",
+      "linux": "f8e59cebac4a3448f734df89e96d04791c95d36e586337ecc55a4f47a6ed36fd",
+      "match": true
+    },
+    {
+      "file": "examples/import_demo.sm",
+      "windows": "a01038b5d69fc9bd900906538c5bdccdaf78acfcb98891334936eebd98eeea08",
+      "linux": "a01038b5d69fc9bd900906538c5bdccdaf78acfcb98891334936eebd98eeea08",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r33_alpha.smlib",
+      "windows": "4ef0067417d02c2c7f371cda441371a536172546dc6f45e4fbafa9a4a5ed066b",
+      "linux": "4ef0067417d02c2c7f371cda441371a536172546dc6f45e4fbafa9a4a5ed066b",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r33_beta.smlib",
+      "windows": "1a374d2398ea680932bd6663ef2723e8236cc48b351caf2530f5a9fe43d92498",
+      "linux": "1a374d2398ea680932bd6663ef2723e8236cc48b351caf2530f5a9fe43d92498",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r33_devanagari.smlib",
+      "windows": "e82a22ba98336627521a1f806186a0588b7ecc070191dd8d8349dc4b8cee4033",
+      "linux": "e82a22ba98336627521a1f806186a0588b7ecc070191dd8d8349dc4b8cee4033",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r40_a.smlib",
+      "windows": "90e7b6979ebfe645d66a377fa2d33c29e5251833496f7a11a419154b39851054",
+      "linux": "90e7b6979ebfe645d66a377fa2d33c29e5251833496f7a11a419154b39851054",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r40_b.smlib",
+      "windows": "1c60bde23d3ca802a052dfe98ab5667fdb49e85a36208194ae269aec4ce86042",
+      "linux": "1c60bde23d3ca802a052dfe98ab5667fdb49e85a36208194ae269aec4ce86042",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r40_c.smlib",
+      "windows": "a400f0b033d3b10511c71c5c69bf82947d4ef9294a6be01abbd441a01ca271aa",
+      "linux": "a400f0b033d3b10511c71c5c69bf82947d4ef9294a6be01abbd441a01ca271aa",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r40_d.smlib",
+      "windows": "6e8e103eec48661bfe98add023e49b53bc5bcb5f4a36e31e4b37a2a252c8382d",
+      "linux": "6e8e103eec48661bfe98add023e49b53bc5bcb5f4a36e31e4b37a2a252c8382d",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r41_cyc_a.smlib",
+      "windows": "a717439ada1cd184f10c77467a00164782ef7667b7992a6902b105685df0358a",
+      "linux": "a717439ada1cd184f10c77467a00164782ef7667b7992a6902b105685df0358a",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r41_cyc_b.smlib",
+      "windows": "e0838b76b0c543f89eff134553eac2960843611583f3455b7cc8736c47fa8103",
+      "linux": "e0838b76b0c543f89eff134553eac2960843611583f3455b7cc8736c47fa8103",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r41_cycle_a.smlib",
+      "windows": "c12c5fe0e87dad7bce07801200f6abfecac5fd58a51eae9e274c064e20b00e0f",
+      "linux": "c12c5fe0e87dad7bce07801200f6abfecac5fd58a51eae9e274c064e20b00e0f",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r41_cycle_b.smlib",
+      "windows": "80ee4471f88eebfe36fb48675a431b7addb5412843c12a31b598e704739ef2da",
+      "linux": "80ee4471f88eebfe36fb48675a431b7addb5412843c12a31b598e704739ef2da",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r41_dup.smlib",
+      "windows": "dd89e0326bac95c89a011db0bb44f01212618a50c05fbbabdc21ff78b885b5b6",
+      "linux": "dd89e0326bac95c89a011db0bb44f01212618a50c05fbbabdc21ff78b885b5b6",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r41_vec.smlib",
+      "windows": "439c43c0281d4180514ca464ff30fe92f81c02f3c4c1bf9e335e9a9990856f95",
+      "linux": "439c43c0281d4180514ca464ff30fe92f81c02f3c4c1bf9e335e9a9990856f95",
+      "match": true
+    },
+    {
+      "file": "examples/lib/r80_ausat.smlib",
+      "windows": "1cf5db6fee65ad724a98fcbe90546e6ed679aae59c40608983277ebe2cf343af",
+      "linux": "1cf5db6fee65ad724a98fcbe90546e6ed679aae59c40608983277ebe2cf343af",
+      "match": true
+    },
+    {
+      "file": "examples/mem_safe.sm",
+      "windows": "4b6bec8cea033f12073113ddadd6d5bdf5ee11405351b758bcd8fa7bc2113af5",
+      "linux": "4b6bec8cea033f12073113ddadd6d5bdf5ee11405351b758bcd8fa7bc2113af5",
+      "match": true
+    },
+    {
+      "file": "examples/multable.sm",
+      "windows": "99e63f90811ab0c41d7096374638d6bfebea5901bb4b56932f2e5dc9bc669036",
+      "linux": "99e63f90811ab0c41d7096374638d6bfebea5901bb4b56932f2e5dc9bc669036",
+      "match": true
+    },
+    {
+      "file": "examples/number_game.sm",
+      "windows": "28984dba75b13459c40114619df03097b7409d97d7597312ef519e8acc5c34c4",
+      "linux": "28984dba75b13459c40114619df03097b7409d97d7597312ef519e8acc5c34c4",
+      "match": true
+    },
+    {
+      "file": "examples/prime.sm",
+      "windows": "ebd7bc81dd521d1c869fa5401d2e95860fc288ad15e9889ca786d75279cb0b1a",
+      "linux": "ebd7bc81dd521d1c869fa5401d2e95860fc288ad15e9889ca786d75279cb0b1a",
+      "match": true
+    },
+    {
+      "file": "examples/r67/bengali_native.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r67/bengali_native.out",
+      "windows": "4c261c0438ad5679433a3c46d70ee4f31e3dd04cf4ccec2e29ae48fa64cad9b5",
+      "linux": "4c261c0438ad5679433a3c46d70ee4f31e3dd04cf4ccec2e29ae48fa64cad9b5",
+      "match": true
+    },
+    {
+      "file": "examples/r67/bengali_native.sm",
+      "windows": "7ec3b338618d66e2059a2f2b031f45b21115081ff8b932210adb3a745654a07a",
+      "linux": "7ec3b338618d66e2059a2f2b031f45b21115081ff8b932210adb3a745654a07a",
+      "match": true
+    },
+    {
+      "file": "examples/r67/punjabi_native.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r67/punjabi_native.out",
+      "windows": "4c261c0438ad5679433a3c46d70ee4f31e3dd04cf4ccec2e29ae48fa64cad9b5",
+      "linux": "4c261c0438ad5679433a3c46d70ee4f31e3dd04cf4ccec2e29ae48fa64cad9b5",
+      "match": true
+    },
+    {
+      "file": "examples/r67/punjabi_native.sm",
+      "windows": "ab303de87a9dfa414919b6a37df76bb1383060ce630a2fc769cb116085f65ac0",
+      "linux": "ab303de87a9dfa414919b6a37df76bb1383060ce630a2fc769cb116085f65ac0",
+      "match": true
+    },
+    {
+      "file": "examples/r68/hindi.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/hindi.out",
+      "windows": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "linux": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "match": true
+    },
+    {
+      "file": "examples/r68/hindi.sm",
+      "windows": "1a283d9a788341ae431ab8632330380f7449387a16cbaa8c3a04a2d805cc0382",
+      "linux": "1a283d9a788341ae431ab8632330380f7449387a16cbaa8c3a04a2d805cc0382",
+      "match": true
+    },
+    {
+      "file": "examples/r68/kannada.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/kannada.out",
+      "windows": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "linux": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "match": true
+    },
+    {
+      "file": "examples/r68/kannada.sm",
+      "windows": "f79beced17752bbbf4aa904c743cf40279314293dd88827b61e7486a714a643d",
+      "linux": "f79beced17752bbbf4aa904c743cf40279314293dd88827b61e7486a714a643d",
+      "match": true
+    },
+    {
+      "file": "examples/r68/marathi.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/marathi.out",
+      "windows": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "linux": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "match": true
+    },
+    {
+      "file": "examples/r68/marathi.sm",
+      "windows": "1cbf5027a6632c9f8590eaefd8559a8eb575c418a83cdd8bcbac4ff64a276fa4",
+      "linux": "1cbf5027a6632c9f8590eaefd8559a8eb575c418a83cdd8bcbac4ff64a276fa4",
+      "match": true
+    },
+    {
+      "file": "examples/r68/odia.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/odia.out",
+      "windows": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "linux": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "match": true
+    },
+    {
+      "file": "examples/r68/odia.sm",
+      "windows": "1afc0332bf53815508e2c65cfe1fe127c0db4f96190ee690127b5b1be3efa053",
+      "linux": "1afc0332bf53815508e2c65cfe1fe127c0db4f96190ee690127b5b1be3efa053",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/all_registers.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/all_registers.out",
+      "windows": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "linux": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/all_registers.sm",
+      "windows": "41606f89258fc14c1f673a8607832327a0b0bf8f40222d123c90587eebae991d",
+      "linux": "41606f89258fc14c1f673a8607832327a0b0bf8f40222d123c90587eebae991d",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/no_pairs.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/no_pairs.out",
+      "windows": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "linux": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/no_pairs.sm",
+      "windows": "6c7c537179a6f70f3e8b3e38c029954de0c416c5aed22347bec6574e5ea50ac8",
+      "linux": "6c7c537179a6f70f3e8b3e38c029954de0c416c5aed22347bec6574e5ea50ac8",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/nonmatching.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/nonmatching.out",
+      "windows": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "linux": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "match": true
+    },
+    {
+      "file": "examples/r68/pairs/nonmatching.sm",
+      "windows": "e0b63c353ef47facbe1a389ae21a0df436c4bd1875dde2662778bb5793eea3d9",
+      "linux": "e0b63c353ef47facbe1a389ae21a0df436c4bd1875dde2662778bb5793eea3d9",
+      "match": true
+    },
+    {
+      "file": "examples/r68/tamil.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/tamil.out",
+      "windows": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "linux": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "match": true
+    },
+    {
+      "file": "examples/r68/tamil.sm",
+      "windows": "4e6fcfe721829945070c881f41a35a48f23257059ca9786cf17c8b1541b8364e",
+      "linux": "4e6fcfe721829945070c881f41a35a48f23257059ca9786cf17c8b1541b8364e",
+      "match": true
+    },
+    {
+      "file": "examples/r68/telugu.exit",
+      "windows": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "linux": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "match": true
+    },
+    {
+      "file": "examples/r68/telugu.out",
+      "windows": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "linux": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "match": true
+    },
+    {
+      "file": "examples/r68/telugu.sm",
+      "windows": "ff76005cb7bd90546557658e58d2417cf214a977762688c1a01ac6dc43cbcd77",
+      "linux": "ff76005cb7bd90546557658e58d2417cf214a977762688c1a01ac6dc43cbcd77",
+      "match": true
+    },
+    {
+      "file": "examples/r71/associativity.out",
+      "windows": "f1cddd5e992fa2ae2a060f42ec8b02e63b306433788b6c2f47add6e941492877",
+      "linux": "f1cddd5e992fa2ae2a060f42ec8b02e63b306433788b6c2f47add6e941492877",
+      "match": true
+    },
+    {
+      "file": "examples/r71/associativity.sm",
+      "windows": "1fe1b03b56c77a1051cf6290c9d178d294781bd09a1b219fed65d52168bfc664",
+      "linux": "1fe1b03b56c77a1051cf6290c9d178d294781bd09a1b219fed65d52168bfc664",
+      "match": true
+    },
+    {
+      "file": "examples/r71/boundary_bad.sm",
+      "windows": "c714317222eb3c84cf6165f86f8899b744c66b6f44cf24513ae583b1d610dba2",
+      "linux": "c714317222eb3c84cf6165f86f8899b744c66b6f44cf24513ae583b1d610dba2",
+      "match": true
+    },
+    {
+      "file": "examples/r71/boundary_good.out",
+      "windows": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0",
+      "linux": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0",
+      "match": true
+    },
+    {
+      "file": "examples/r71/boundary_good.sm",
+      "windows": "1d53705062ae29e718e55f8bb465dfa3f67db58acb1b029696a8268a74424b2e",
+      "linux": "1d53705062ae29e718e55f8bb465dfa3f67db58acb1b029696a8268a74424b2e",
+      "match": true
+    },
+    {
+      "file": "examples/r71/conversion.out",
+      "windows": "1a3ebc671e1dd344b9cd57f064d3315b5094d70c2e3816012f8fc8fe3fcf0451",
+      "linux": "1a3ebc671e1dd344b9cd57f064d3315b5094d70c2e3816012f8fc8fe3fcf0451",
+      "match": true
+    },
+    {
+      "file": "examples/r71/conversion.sm",
+      "windows": "8d3ba2b118dae01f0982c13bf3ff14bce72c6999fa1ac23e9f24d808dd62b6c2",
+      "linux": "8d3ba2b118dae01f0982c13bf3ff14bce72c6999fa1ac23e9f24d808dd62b6c2",
+      "match": true
+    },
+    {
+      "file": "examples/r71/evaluation_order.out",
+      "windows": "97c2c9cae194d0c1bd7589f07cb795447c8da8791cac7e2781fe39a897d91586",
+      "linux": "97c2c9cae194d0c1bd7589f07cb795447c8da8791cac7e2781fe39a897d91586",
+      "match": true
+    },
+    {
+      "file": "examples/r71/evaluation_order.sm",
+      "windows": "a3db52595d0377a1611c40ba9f1952234a168b8534ceab5f12730b488f13f6c4",
+      "linux": "a3db52595d0377a1611c40ba9f1952234a168b8534ceab5f12730b488f13f6c4",
+      "match": true
+    },
+    {
+      "file": "examples/strength_reduction.sm",
+      "windows": "d87918b10fa8f647a02a94478c130ab26fbd74bba8a7c04257a99b5751488fcf",
+      "linux": "d87918b10fa8f647a02a94478c130ab26fbd74bba8a7c04257a99b5751488fcf",
+      "match": true
+    },
+    {
+      "file": "lang/bengali.lang",
+      "windows": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "linux": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "match": true
+    },
+    {
+      "file": "lang/bengali.sandesh",
+      "windows": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "linux": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "match": true
+    },
+    {
+      "file": "lang/gujarati.lang",
+      "windows": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "linux": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "match": true
+    },
+    {
+      "file": "lang/gujarati.sandesh",
+      "windows": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "linux": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "match": true
+    },
+    {
+      "file": "lang/hindi.lang",
+      "windows": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "linux": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "match": true
+    },
+    {
+      "file": "lang/hindi.sandesh",
+      "windows": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "linux": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "match": true
+    },
+    {
+      "file": "lang/kannada.lang",
+      "windows": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "linux": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "match": true
+    },
+    {
+      "file": "lang/kannada.sandesh",
+      "windows": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "linux": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "match": true
+    },
+    {
+      "file": "lang/malayalam.lang",
+      "windows": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "linux": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "match": true
+    },
+    {
+      "file": "lang/malayalam.sandesh",
+      "windows": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "linux": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "match": true
+    },
+    {
+      "file": "lang/marathi.lang",
+      "windows": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "linux": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "match": true
+    },
+    {
+      "file": "lang/marathi.sandesh",
+      "windows": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "linux": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "match": true
+    },
+    {
+      "file": "lang/odia.lang",
+      "windows": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "linux": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "match": true
+    },
+    {
+      "file": "lang/odia.sandesh",
+      "windows": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "linux": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "match": true
+    },
+    {
+      "file": "lang/punjabi.lang",
+      "windows": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "linux": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "match": true
+    },
+    {
+      "file": "lang/punjabi.sandesh",
+      "windows": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "linux": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "match": true
+    },
+    {
+      "file": "lang/sanskrit.lang",
+      "windows": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "linux": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "match": true
+    },
+    {
+      "file": "lang/sanskrit.sandesh",
+      "windows": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "linux": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "match": true
+    },
+    {
+      "file": "lang/tamil.lang",
+      "windows": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "linux": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "match": true
+    },
+    {
+      "file": "lang/tamil.sandesh",
+      "windows": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "linux": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "match": true
+    },
+    {
+      "file": "lang/telugu.lang",
+      "windows": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "linux": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "match": true
+    },
+    {
+      "file": "lang/telugu.sandesh",
+      "windows": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "linux": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "match": true
+    },
+    {
+      "file": "lib/aadhar.smlib",
+      "windows": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "linux": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "match": true
+    },
+    {
+      "file": "lib/ank.smlib",
+      "windows": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "linux": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "match": true
+    },
+    {
+      "file": "lib/anukram.smlib",
+      "windows": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "linux": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "match": true
+    },
+    {
+      "file": "lib/brihat.smlib",
+      "windows": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "linux": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "match": true
+    },
+    {
+      "file": "lib/chandas.smlib",
+      "windows": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "linux": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "match": true
+    },
+    {
+      "file": "lib/ganit.smlib",
+      "windows": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "linux": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "match": true
+    },
+    {
+      "file": "lib/ganita.smlib",
+      "windows": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "linux": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "match": true
+    },
+    {
+      "file": "lib/gudh.smlib",
+      "windows": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "linux": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "match": true
+    },
+    {
+      "file": "lib/kalana.smlib",
+      "windows": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "linux": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "match": true
+    },
+    {
+      "file": "lib/khand.smlib",
+      "windows": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "linux": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "match": true
+    },
+    {
+      "file": "lib/madhava.smlib",
+      "windows": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "linux": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "match": true
+    },
+    {
+      "file": "lib/mala.smlib",
+      "windows": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "linux": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "match": true
+    },
+    {
+      "file": "lib/nighantu.smlib",
+      "windows": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "linux": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "match": true
+    },
+    {
+      "file": "lib/patra.smlib",
+      "windows": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "linux": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "match": true
+    },
+    {
+      "file": "lib/phal.smlib",
+      "windows": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "linux": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "match": true
+    },
+    {
+      "file": "lib/roop.smlib",
+      "windows": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "linux": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "match": true
+    },
+    {
+      "file": "lib/sadhan.smlib",
+      "windows": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "linux": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "match": true
+    },
+    {
+      "file": "lib/samanvaya.smlib",
+      "windows": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "linux": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "match": true
+    },
+    {
+      "file": "lib/sangrah.smlib",
+      "windows": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "linux": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "match": true
+    },
+    {
+      "file": "lib/sankhyiki.smlib",
+      "windows": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "linux": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "match": true
+    },
+    {
+      "file": "lib/shreni.smlib",
+      "windows": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "linux": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "match": true
+    },
+    {
+      "file": "lib/suchi.smlib",
+      "windows": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "linux": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "match": true
+    },
+    {
+      "file": "lib/vakyank.smlib",
+      "windows": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "linux": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "match": true
+    },
+    {
+      "file": "lib/varna.smlib",
+      "windows": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "linux": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "match": true
+    },
+    {
+      "file": "payload.manifest.sha256",
+      "windows": "53d8102fde97f51e43deda3c03232ab7e25226096d254a797c9cd32e5e8ce12d",
+      "linux": "53d8102fde97f51e43deda3c03232ab7e25226096d254a797c9cd32e5e8ce12d",
+      "match": true
+    },
+    {
+      "file": "sutram-ide-gui.exe",
+      "windows": "635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0",
+      "linux": "635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0",
+      "match": true
+    },
+    {
+      "file": "win/lang/bengali.lang",
+      "windows": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "linux": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "match": true
+    },
+    {
+      "file": "win/lang/bengali.sandesh",
+      "windows": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "linux": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "match": true
+    },
+    {
+      "file": "win/lang/gujarati.lang",
+      "windows": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "linux": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "match": true
+    },
+    {
+      "file": "win/lang/gujarati.sandesh",
+      "windows": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "linux": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "match": true
+    },
+    {
+      "file": "win/lang/hindi.lang",
+      "windows": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "linux": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "match": true
+    },
+    {
+      "file": "win/lang/hindi.sandesh",
+      "windows": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "linux": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "match": true
+    },
+    {
+      "file": "win/lang/kannada.lang",
+      "windows": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "linux": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "match": true
+    },
+    {
+      "file": "win/lang/kannada.sandesh",
+      "windows": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "linux": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "match": true
+    },
+    {
+      "file": "win/lang/malayalam.lang",
+      "windows": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "linux": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "match": true
+    },
+    {
+      "file": "win/lang/malayalam.sandesh",
+      "windows": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "linux": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "match": true
+    },
+    {
+      "file": "win/lang/marathi.lang",
+      "windows": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "linux": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "match": true
+    },
+    {
+      "file": "win/lang/marathi.sandesh",
+      "windows": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "linux": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "match": true
+    },
+    {
+      "file": "win/lang/odia.lang",
+      "windows": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "linux": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "match": true
+    },
+    {
+      "file": "win/lang/odia.sandesh",
+      "windows": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "linux": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "match": true
+    },
+    {
+      "file": "win/lang/punjabi.lang",
+      "windows": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "linux": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "match": true
+    },
+    {
+      "file": "win/lang/punjabi.sandesh",
+      "windows": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "linux": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "match": true
+    },
+    {
+      "file": "win/lang/sanskrit.lang",
+      "windows": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "linux": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "match": true
+    },
+    {
+      "file": "win/lang/sanskrit.sandesh",
+      "windows": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "linux": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "match": true
+    },
+    {
+      "file": "win/lang/tamil.lang",
+      "windows": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "linux": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "match": true
+    },
+    {
+      "file": "win/lang/tamil.sandesh",
+      "windows": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "linux": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "match": true
+    },
+    {
+      "file": "win/lang/telugu.lang",
+      "windows": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "linux": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "match": true
+    },
+    {
+      "file": "win/lang/telugu.sandesh",
+      "windows": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "linux": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "match": true
+    },
+    {
+      "file": "win/lib/aadhar.smlib",
+      "windows": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "linux": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "match": true
+    },
+    {
+      "file": "win/lib/ank.smlib",
+      "windows": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "linux": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "match": true
+    },
+    {
+      "file": "win/lib/anukram.smlib",
+      "windows": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "linux": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "match": true
+    },
+    {
+      "file": "win/lib/brihat.smlib",
+      "windows": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "linux": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "match": true
+    },
+    {
+      "file": "win/lib/chandas.smlib",
+      "windows": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "linux": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "match": true
+    },
+    {
+      "file": "win/lib/ganit.smlib",
+      "windows": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "linux": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "match": true
+    },
+    {
+      "file": "win/lib/ganita.smlib",
+      "windows": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "linux": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "match": true
+    },
+    {
+      "file": "win/lib/gudh.smlib",
+      "windows": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "linux": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "match": true
+    },
+    {
+      "file": "win/lib/kalana.smlib",
+      "windows": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "linux": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "match": true
+    },
+    {
+      "file": "win/lib/khand.smlib",
+      "windows": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "linux": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "match": true
+    },
+    {
+      "file": "win/lib/madhava.smlib",
+      "windows": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "linux": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "match": true
+    },
+    {
+      "file": "win/lib/mala.smlib",
+      "windows": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "linux": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "match": true
+    },
+    {
+      "file": "win/lib/nighantu.smlib",
+      "windows": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "linux": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "match": true
+    },
+    {
+      "file": "win/lib/patra.smlib",
+      "windows": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "linux": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "match": true
+    },
+    {
+      "file": "win/lib/phal.smlib",
+      "windows": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "linux": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "match": true
+    },
+    {
+      "file": "win/lib/roop.smlib",
+      "windows": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "linux": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "match": true
+    },
+    {
+      "file": "win/lib/sadhan.smlib",
+      "windows": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "linux": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "match": true
+    },
+    {
+      "file": "win/lib/samanvaya.smlib",
+      "windows": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "linux": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "match": true
+    },
+    {
+      "file": "win/lib/sangrah.smlib",
+      "windows": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "linux": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "match": true
+    },
+    {
+      "file": "win/lib/sankhyiki.smlib",
+      "windows": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "linux": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "match": true
+    },
+    {
+      "file": "win/lib/shreni.smlib",
+      "windows": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "linux": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "match": true
+    },
+    {
+      "file": "win/lib/suchi.smlib",
+      "windows": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "linux": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "match": true
+    },
+    {
+      "file": "win/lib/vakyank.smlib",
+      "windows": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "linux": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "match": true
+    },
+    {
+      "file": "win/lib/varna.smlib",
+      "windows": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "linux": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "match": true
+    },
+    {
+      "file": "win/sutram.exe",
+      "windows": "bcb33e6dbb58c1e8556d29057c2f20128cc00f54e48cf860c7ea5496c0972532",
+      "linux": "bcb33e6dbb58c1e8556d29057c2f20128cc00f54e48cf860c7ea5496c0972532",
+      "match": true
+    }
+  ],
+  "zip_bytes_equal": "not claimed; ZIP metadata/compression differ"
+}

@@ -1,0 +1,37 @@
+{
+    "name":  "d1-stop",
+    "moment":  "before",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe",
+    "setup_sha256":  "9DFE6B5EA185A6915918BB1D76ABFF474CEC7D0D2C34D8A82D76E8850E00886F",
+    "started":  "2026-11-07T11:31:30.8342894-05:00",
+    "observations":  [
+
+                     ],
+    "live_log_opened":  false,
+    "pid":  25620,
+    "process_started":  "2026-11-07T11:31:30.9140387-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "d1-stop-ready.png",
+    "child":  {
+                  "parent":  25620,
+                  "pid":  38740,
+                  "started":  "2026-11-07T11:31:32.3954779-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMD62C.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMD62C.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMD62C.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMD62C.tmp\\install.log",
+    "stop_observed_at":  "2026-11-07T11:31:32.7520462-05:00",
+    "seconds":  0.3709783,
+    "engine_age_seconds":  0.3575685,
+    "status":  "INTERRUPTED",
+    "observed_seconds":  0.3941481,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  0,
+    "ended":  "2026-11-07T11:31:32.8905225-05:00"
+}

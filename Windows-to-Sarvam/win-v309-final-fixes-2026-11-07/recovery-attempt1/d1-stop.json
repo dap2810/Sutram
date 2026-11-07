@@ -1,0 +1,37 @@
+{
+    "name":  "d1-stop",
+    "moment":  "before",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe",
+    "setup_sha256":  "2751711704D0C48E4623CE0E700FA7E58E868764F8363BA4BAF78986ACBB2299",
+    "started":  "2026-11-07T12:16:27.0114955-05:00",
+    "observations":  [
+
+                     ],
+    "live_log_opened":  false,
+    "pid":  37012,
+    "process_started":  "2026-11-07T12:16:27.0900202-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "d1-stop-ready.png",
+    "child":  {
+                  "parent":  37012,
+                  "pid":  35948,
+                  "started":  "2026-11-07T12:16:28.7403399-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMFAC4.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMFAC4.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMFAC4.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMFAC4.tmp\\install.log",
+    "stop_observed_at":  "2026-11-07T12:16:29.1236464-05:00",
+    "seconds":  0.3986357,
+    "engine_age_seconds":  0.3843068,
+    "status":  "INTERRUPTED",
+    "observed_seconds":  0.4226387,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  0,
+    "ended":  "2026-11-07T12:16:29.2597115-05:00"
+}

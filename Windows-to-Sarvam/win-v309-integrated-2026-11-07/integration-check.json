@@ -1,0 +1,14 @@
+{
+  "payload_changed_entries": [
+    "docs/CHANGELOG.md",
+    "docs/INSTALLER-REBUILD.md",
+    "docs/PATH-TO-COMPLETION.md",
+    "docs/RELEASE-NOTES.md",
+    "payload.manifest.sha256"
+  ],
+  "compiler_and_runtime_payloads_unchanged": true,
+  "linux_zip_all_dates_fixed": true,
+  "payload_text_attributes_lf": 560,
+  "attribute_check_stderr": "",
+  "source_head": "7ab8c439075b91278dd0e96bf000140a0ed26cf5"
+}

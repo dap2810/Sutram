@@ -1,0 +1,1 @@
+d1: System.Management.Automation.RuntimeException: Owned window is not foreground; refusing an unrelated screenshot

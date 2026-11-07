@@ -1,0 +1,69 @@
+{
+    "name":  "d1-retry",
+    "moment":  "complete",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe",
+    "setup_sha256":  "2751711704D0C48E4623CE0E700FA7E58E868764F8363BA4BAF78986ACBB2299",
+    "started":  "2026-11-07T12:16:29.3382147-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.2592898,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.5897175,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  10.9290855,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  16.2044149,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  21.512408,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  26.792620499999998,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  32.086917,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  39940,
+    "process_started":  "2026-11-07T12:16:29.3540024-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "d1-retry-ready.png",
+    "child":  {
+                  "parent":  39940,
+                  "pid":  2388,
+                  "started":  "2026-11-07T12:16:30.8612048-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM311.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM311.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM311.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM311.tmp\\install.log",
+    "status":  "OBSERVER_ERROR",
+    "finish_seconds":  33.6142167,
+    "observer_error":  "Owned window is not foreground; refusing an unrelated screenshot",
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  0,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  657,
+    "ended":  "2026-11-07T12:17:05.8774693-05:00"
+}

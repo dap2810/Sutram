@@ -1,0 +1,57 @@
+{
+  "source_sha256": "3dbd1fd9123331d4fb29ecfffc4b8a09988042ec9dcadd633c4f40219ee6567c",
+  "forced_budget": 0,
+  "commands": [
+    {
+      "command": [
+        "nasm",
+        "-f",
+        "win64",
+        "-dWINDOWS",
+        "-IE:/Github_Projects/Sutram/build/windows-v309-fixes/",
+        "entry.asm",
+        "-o",
+        "host.obj"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Program Files\\mingw64\\bin\\ld.exe",
+        "-mi386pep",
+        "--entry=_start",
+        "-o",
+        "host.exe",
+        "host.obj"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\host.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\local.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\local.exe"
+      ],
+      "exit": 1,
+      "stdout": "Sutram truti [E_VISHLESHANA_SEEMA]: abhivyakti-vishleshana seema atikram\n",
+      "stderr": "",
+      "output_exists": false
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\host.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\global.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\global.exe"
+      ],
+      "exit": 1,
+      "stdout": "Sutram truti [E_VISHLESHANA_SEEMA]: abhivyakti-vishleshana seema atikram\n",
+      "stderr": "",
+      "output_exists": false
+    }
+  ],
+  "source_unchanged": true
+}

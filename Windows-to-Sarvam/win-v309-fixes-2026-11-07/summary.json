@@ -1,0 +1,96 @@
+{
+  "candidate": {
+    "source_commit": "4536cc36a083a64a0382cfff14a78a298a5bae1b",
+    "setup_sha256": "9dfe6b5ea185a6915918bb1d76abff474cec7d0d2c34d8a82d76e8850e00886f",
+    "compiler_sha256": "05b23d56d40aaa4b71c6d67d13996d75da6e4d2e2b2ac47fbf4960a1a52fb481",
+    "engine_sha256": "c8a18505d40d5182d661acc165753eabed31d04efa0742f8ac4fc17a8a47690c",
+    "payload_entries": 657,
+    "manifest_sha256": "0523ff8050787c529777727998aaffd3d1c144e2fd8ed31100c0e220b559d096"
+  },
+  "runs": {
+    "initial": {
+      "status": "FINISH",
+      "seconds": 21.8088421,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 656,
+      "copied": 1,
+      "wizard_exited": true
+    },
+    "d1-stop": {
+      "status": "INTERRUPTED",
+      "seconds": 0.3709783,
+      "engine_exit": -1,
+      "files": 0,
+      "reused": 0,
+      "copied": 0,
+      "wizard_exited": true
+    },
+    "d1-retry": {
+      "status": "FINISH",
+      "seconds": 26.507952799999998,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 0,
+      "copied": 657,
+      "wizard_exited": true
+    },
+    "d2-stop": {
+      "status": "INTERRUPTED",
+      "seconds": 25.4032031,
+      "engine_exit": -1,
+      "files": 657,
+      "reused": 0,
+      "copied": 657,
+      "wizard_exited": true
+    },
+    "d2-retry": {
+      "status": "FINISH",
+      "seconds": 22.2953968,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 657,
+      "copied": 0,
+      "wizard_exited": true
+    },
+    "d3-stop": {
+      "status": "INTERRUPTED",
+      "seconds": 17.490300599999998,
+      "engine_exit": -1,
+      "files": 57,
+      "reused": 0,
+      "copied": 657,
+      "wizard_exited": true
+    },
+    "d3-retry": {
+      "status": "ERROR_DIALOG",
+      "seconds": null,
+      "engine_exit": 1,
+      "files": 57,
+      "reused": 0,
+      "copied": 0,
+      "wizard_exited": true
+    },
+    "final-upgrade": {
+      "status": "FINISH",
+      "seconds": 21.4338317,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 657,
+      "copied": 0,
+      "wizard_exited": true
+    },
+    "capture-confirmation": {
+      "status": "FINISH",
+      "seconds": 22.1458728,
+      "engine_exit": 0,
+      "files": 657,
+      "reused": 657,
+      "copied": 0,
+      "wizard_exited": true
+    }
+  },
+  "payload_equal": true,
+  "edited_file_preserved": true,
+  "owned_processes_closed": 18
+}

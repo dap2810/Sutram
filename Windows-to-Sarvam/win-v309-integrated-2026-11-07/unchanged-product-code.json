@@ -1,0 +1,22 @@
+{
+  "src/sutram_compiler.asm": {
+    "identical": true,
+    "sha256": "3dbd1fd9123331d4fb29ecfffc4b8a09988042ec9dcadd633c4f40219ee6567c"
+  },
+  "windows/native-installer/install-core.ps1": {
+    "identical": true,
+    "sha256": "b78783ddbc62a1e9676f2b34c4b40236c8046362eb2153b33e832831d12bf08b"
+  },
+  "windows/native-installer/uninstall-core.ps1": {
+    "identical": true,
+    "sha256": "3acf8a645e45f2d8dfb9be53d691b0336e165ff75a80aeae5bdbb89e3588e51d"
+  },
+  "windows/native-installer/sutram_wizard.asm": {
+    "identical": true,
+    "sha256": "8d773464fc42a3f746e913f3d6312b3dcf4c8eb184dcf1972b5e35ee5c584823"
+  },
+  "sutram-ide-gui.exe": {
+    "identical": true,
+    "sha256": "635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0"
+  }
+}

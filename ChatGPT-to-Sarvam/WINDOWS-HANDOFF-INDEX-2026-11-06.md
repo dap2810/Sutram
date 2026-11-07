@@ -1,11 +1,20 @@
 # Consolidated Windows handoffs for Sarvam
 
-**Latest machine state (7 November): canonical upstream v309 installed;
-657/657 hashes, 7 arithmetic checks, 32 OOM runs and 322 native suite cases pass.**
-Early/late interruption retries complete and an edited file is preserved.
-**Two gaps remain: Markdown checkout bytes still differ by CRLF, and late recovery
-restages all 657 files.** Read the [v309 handoff](WINDOWS-V309-2026-11-07.md) first.
-All recorded installer processes are closed; independent acceptance is pending.
+**Publication timing:** upstream v310 landed while these reports were being uploaded.
+Main preserves it; the installed, natively tested repair below is pinned to v309/PR #68.
+Its test totals are not v310 acceptance. Compare the remaining PR delta with v310
+before selectively integrating duplicated fixes.
+
+**Latest machine state (7 November): final v309 repair candidate from
+[draft PR #68](https://github.com/dap2810/Sutram/pull/68), commit `7ab8c439`, installed;
+657/657 hashes match.** Packaging/recovery fixes and the newly reproduced global-initializer
+and ownership-read gaps are fixed and verified. Native compiler, OOM, IDE and
+recovery checks pass; all recorded test processes are closed. Read the
+[final verified handoff](WINDOWS-V309-FINAL-FIXES-2026-11-07.md) first. Independent acceptance is pending.
+
+**Owner's standing Windows workflow: implement the fixes, verify them, then hand
+off to Sarvam.** Keep source in review branches and publish the verified evidence
+and instructions on main; do not stop at a diagnostic-only handoff when a fix is authorised.
 Earlier reports remain dated evidence and should not be rewritten
 as if their failures never occurred. This index collects all handoffs from this
 Windows install/diagnostic/repair sequence, as requested by the owner.
@@ -23,6 +32,9 @@ Windows install/diagnostic/repair sequence, as requested by the owner.
 | 9 | **[v307 native verification](WINDOWS-V307-2026-11-06.md)** | **[OOM](../Windows-to-Sarvam/win-v307-2026-11-06/OOM.md), [upgrade/recovery/security](../Windows-to-Sarvam/win-v307-2026-11-06/UPGRADE.md), [slice probes](../Windows-to-Sarvam/win-v307-2026-11-06/SLICE.md), [commands/limitations](../Windows-to-Sarvam/win-v307-2026-11-06/COMMANDS.md)** | **18/32 OOM runs crash despite complete stderr; three slice escapes fail while function-value refusals pass. Upgrade suspended by Acronis through 936.39 s. Final interrupted-install recovery passes in 16.57 s; working v307 remains, all test processes closed. PowerShell live-log-reader interference independently reproduced and disclosed.** |
 | 10 | **[Implemented repair and pinned v308 comparison](WINDOWS-V307-FIXES-2026-11-06.md)** | **[Draft PR #67](https://github.com/dap2810/Sutram/pull/67), [full evidence](../Windows-to-Sarvam/win-v307-fixes-2026-11-06/RESULTS.md)** | **Installed repair: upgrade 21.20 s, clean 9.47 s, recovery 8.65 s; 657/657 hashes, 36+8 OOM checks, 20 slice checks, 322 native suite passes. Corrected 153 CRLF-only package differences. Separate upstream v308 OOM 36/36 pass; arithmetic S4 failure confirmed. PR conflicts with concurrent v308 changes; independent port/review required.** |
 | 11 | **[v309 native verification](WINDOWS-V309-2026-11-07.md)** | **[Full results](../Windows-to-Sarvam/win-v309-2026-11-07/RESULTS.md), [commands/probes](../Windows-to-Sarvam/win-v309-2026-11-07/COMMANDS.md)** | **Canonical v309 installed; 657/657 hashes; 7 arithmetic, 32 OOM and 322 native suite passes. README/reference checkout CRLF mismatch remains. Early/late retries complete; late retry restages 657 files. Edited file preserved by refusal. Two helper errors disclosed; all owned processes closed.** |
+| 12 | **[v309 remaining issues fixed](WINDOWS-V309-FIXES-2026-11-07.md)** | **[Draft PR #68](https://github.com/dap2810/Sutram/pull/68), [verified evidence](../Windows-to-Sarvam/win-v309-fixes-2026-11-07/RESULTS.md)** | **Fixed candidate installed. 657 files plus manifest match across native Windows/Linux builds; late retry 657 reused / 0 staged. Upgrade/early/late retries Finish; edited bytes preserved. 14 behavioral + 40 existing installer checks pass; both installed compiler layouts run; all 18 owned processes closed. Full corrected wizard screenshot retained.** |
+| 13 | **[Final v309 fixes and native verification](WINDOWS-V309-FINAL-FIXES-2026-11-07.md)** | **[PR #68 at 664ff188](https://github.com/dap2810/Sutram/pull/68), [final evidence](../Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/RESULTS.md)** | **Final candidate installed. C1/I2 reproduced/fixed; 42/59/21 compiler checks pass on Windows and Linux; 322 native cases, 7 arithmetic, 32 OOM, 44 installer gate checks, 14 reuse checks and 7 lock checks pass. IDE Run/Save/refusal verified. Payload parity and early/late/edited recovery pass; all 21 owned processes closed. Observer failures retained.** |
+| 14 | **[Final integration with current main](WINDOWS-V309-FINAL-FIXES-2026-11-07.md)** | **[PR #68 at 7ab8c439](https://github.com/dap2810/Sutram/pull/68), [integration evidence](../Windows-to-Sarvam/win-v309-integrated-2026-11-07/RESULTS.md)** | **Concurrent R140 changes retained and conflicts resolved. Compiler/engine/wizard/IDE source and payload binaries unchanged from 664ff188; four docs updated. Rebuilt package installed in 22.67 s; 657/657 hashes and Linux parity; 14/7 fixtures and 16/29 gates pass again; both new processes closed.** |
 
 The owner-supplied instructions, exact commands, raw logs, probes and screenshots
 are linked within each evidence folder. Review-branch test scripts are named
@@ -32,10 +44,11 @@ in the repository for Sarvam to read and acknowledge.
 
 ## Decisions still requested
 
-- Acknowledge the latest v309 results. Complete/review deterministic Markdown
-  checkout/packaging, and decide whether late recovery should avoid repeating
-  staging after all payload files have already been published. See the v309
-  handoff for exact measured limits and remaining gaps.
+- Acknowledge and independently review PR #68 at 7ab8c439: payload determinism,
+  repeated staging, global initializer validation and ownership snapshot ordering
+  are implemented and verified. Rebuild and update
+  release artefacts/pins only after acceptance. The installed candidate is identified
+  by exact hashes in the latest fix handoff.
 - Compare the repair's self-termination OOM path with v308's reserve-based path:
   both now have the same 36/36 native boundary/control evidence. Exact original
   fault location and reserve-allocation-failure behavior remain unproven.

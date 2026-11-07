@@ -1,0 +1,196 @@
+{
+    "all_owned_processes_closed":  true,
+    "checked_at":  "2026-11-07T12:23:26.6144852-05:00",
+    "processes":  [
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:18:37.5802130-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "d1-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  18248
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:18:38.5909554-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "d1-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  34708
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:18:35.8246602-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "d1-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  23472
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:18:36.9641048-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "d1-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  7484
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:19:35.5758503-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "d2-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  15632
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:19:36.5349224-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "d2-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  19212
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:19:08.2370427-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "d2-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  15872
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:19:09.2006196-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "d2-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  5976
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:20:20.1278539-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "d3-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  16324
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:20:21.1257123-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "d3-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  33832
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:20:01.5376770-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "d3-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  15312
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:20:02.5130524-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "d3-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  29808
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:21:34.7532917-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "final-upgrade.json",
+                          "same_process_alive":  false,
+                          "pid":  13772
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:21:35.8510238-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "final-upgrade.json",
+                          "same_process_alive":  false,
+                          "pid":  33052
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:21:12.9591090-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "ide.json",
+                          "same_process_alive":  false,
+                          "pid":  25956
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:09:41.9462920-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "initial.json",
+                          "same_process_alive":  false,
+                          "pid":  37132
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:09:43.6556866-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "initial.json",
+                          "same_process_alive":  false,
+                          "pid":  24552
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:16:29.3540024-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "recovery-attempt1\\d1-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  39940
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:16:30.8612048-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "recovery-attempt1\\d1-retry.json",
+                          "same_process_alive":  false,
+                          "pid":  2388
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:16:27.0900202-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "recovery-attempt1\\d1-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  37012
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T12:16:28.7403399-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "recovery-attempt1\\d1-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  35948
+                      }
+                  ],
+    "installer_lock_exists":  false
+}
