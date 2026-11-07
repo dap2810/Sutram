@@ -1,0 +1,26 @@
+PASS  the transaction folder is beside the target (same volume): <target>.sutram-transaction
+PASS  the journal is written through and flushed
+PASS  BEGIN is journaled before the pending hint, the staging and any change to the target
+PASS  R137/R141 (I2): the lock is taken before every installation-state read - registration, other installations, state file, pending record, journal - and held until the process ends
+PASS  R137: the uninstaller takes the same lock
+PASS  R137 (I1): a '*.sutram-partial' file is not deleted on a suffix alone, by the installer or the uninstaller
+PASS  R137 (I2): each target is checked again just before it is moved, and a changed one is kept
+PASS  R137: a stopped run's own copy is moved aside under _superseded, not deleted
+PASS  each file is logged START before its copy and DONE after it, verified by hash between
+PASS  a staged file is journaled
+PASS  R140: a file already installed with the payload's bytes is not copied again (a late retry restaged all 657)
+PASS  a replaced file is journaled and backed up before the new one is renamed in, then PUBLISHED
+PASS  files reach the target by rename only; the previous payload is not deleted first
+PASS  files the new payload lacks go to the backup, not deleted
+PASS  a rerun reads what the journal staged, published and committed
+PASS  a file is the installer's own if it matches the previous manifest, the pending one, the new payload or the journal
+PASS  every other file is preserved and listed, with a way out, before anything changes
+PASS  COMMITTED after the state, then the hint is removed, then the folder is cleaned up
+PASS  a rerun that finds a committed journal only cleans up
+PASS  uninstall leaves a stopped installation's backups and says where
+PASS  the wizard writes to the engine log when its 15-minute stop fires
+PASS  Windows is told the compiler's version
+PASS  R136: the logs are appended with full sharing, and a log line that cannot be written never stops the run
+PASS  Sutram-Setup.exe embeds this install-core.ps1
+PASS  Sutram-Setup.exe embeds this uninstall-core.ps1
+r134 install transaction: 25 checks, 0 failed

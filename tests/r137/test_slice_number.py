@@ -14,6 +14,9 @@ number first. v309 refuses the use (r137_check_stmt, run on every statement befo
   * ChatGPT's laundering probe: refused;
   * controls compile and print the right values: a slice to a vibhag parameter, pankti_gan, a slice name passed on.
 
+R141: and the same at a module-level vitti initializer, which is not a statement (ChatGPT R208 C1): a kosh from a
+call in arithmetic there is E_KOSH_GANIT, a kosh bound to the module vitti E_KOSH_DVARA; a scalar call is fine.
+
 The gate fails if src/sutram_compiler.asm defines an OP_* this table does not spell, so a new operator cannot be
 added without a case here. A refusal must be an unsuccessful compiler exit, no output file and the code.
 
@@ -65,6 +68,17 @@ CHATGPT = ('prakriya keep(x) {\n    nivartanam x\n}\nmukhya() {\n    kosh k[1]\n
            '    k[0] = 99\n    vitti addr = t[0]\n    likha(addr[0])\n    likha(k[0])\n}\n')
 
 
+# R141 (ChatGPT R208 C1): a module-level initializer is checked as a statement is - it is not one.
+MK = 'prakriya make_kosh() {\n    kosh k[1]\n    kosh_kship(k, 7)\n    nivartanam k\n}\n'
+GLOBALS = [
+    ('global initializer: make_kosh() + zero (C1)', 'vitti zero = 0\nvitti leaked = make_kosh() + zero\n' + MK + 'mukhya() {\n    likha(leaked)\n}\n', 'E_KOSH_GANIT'),
+    ('global initializer: make_kosh() == 0', 'vitti leaked = make_kosh() == 0\n' + MK + 'mukhya() {\n    likha(leaked)\n}\n', 'E_KOSH_GANIT'),
+    ('global initializer: (1 ? make_kosh() : make_kosh()) + 0', 'vitti leaked = (1 ? make_kosh() : make_kosh()) + 0\n' + MK + 'mukhya() {\n    likha(leaked)\n}\n', 'E_KOSH_GANIT'),
+    ('global initializer: a kosh into a module vitti', 'vitti leaked = make_kosh()\n' + MK + 'mukhya() {\n    likha(leaked)\n}\n', 'E_KOSH_DVARA'),
+    ('global initializer control: 3 + f()', 'vitti g = 3 + f()\nprakriya f() {\n    nivartanam 4\n}\nmukhya() {\n    likha(g)\n}\n', '7\n'),
+]
+
+
 def run(exe):
     try:
         r = subprocess.run([exe], capture_output=True, text=True, timeout=10)
@@ -89,8 +103,19 @@ def main():
     src = open(os.path.join(ROOT, 'src', 'sutram_compiler.asm'), encoding='utf-8').read()
     defined = set(re.findall(r'(?m)^(OP_[A-Z_]+)\s+equ\b', src))
     check(defined == set(OPS), f'every operator the compiler defines has a case here ({sorted(defined ^ set(OPS)) or "all"})')
+    code = re.sub(r';[^\n]*', '', src)
+
+    def body_of(label):
+        i = code.find('\n' + label + ':')
+        m = re.search(r'\n[a-z_][a-z0-9_]*:', code[i + 1:]) if i >= 0 else None
+        return code[i:i + 1 + (m.start() if m else 0)] if i >= 0 else ''
+    entries = [l for l in ('gen_stmt', 'r56_gen_global_initializers') if 'call r137_check_stmt' in body_of(l)]
+    check(entries == ['gen_stmt', 'r56_gen_global_initializers'] and code.count('call r137_check_stmt') == 2,
+          f'R141: both entries into expression code generation run the check - every statement and every module-level '
+          f'initializer ({entries})')
     work = tempfile.mkdtemp(prefix='r137-')
     progs = [(n, HEAD + '    ' + b + '\n}\n', w) for n, b, w in cases()] + [('ChatGPT S4 laundering probe', CHATGPT, 'E_')]
+    progs += [(n, t, w) for n, t, w in GLOBALS]
     for i, (name, text, want) in enumerate(progs):
         sm, out = os.path.join(work, f'{i}.sm'), os.path.join(work, f'{i}')
         open(sm, 'w', encoding='utf-8').write(text)

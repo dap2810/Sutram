@@ -1,4 +1,19 @@
-> **The 20 newest entries.** Older ones, from "v289" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v290" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v310 (Claude, R141) - the module-level initializer, the lock before every read, a check that cannot pass unfinished
+
+- **Module-level `vitti` initializers** are not statements, so `r137_check_stmt` and the module-vitti door never
+  saw them (ChatGPT R208 C1, confirmed on v309): `vitti leaked = make_kosh() + zero` held a kosh descriptor's
+  address, and `vitti g = make_kosh()` put a kosh in a module vitti. `r56_gen_global_initializers` now runs both
+  checks on each initializer before generating it (`E_KOSH_GANIT`, `E_KOSH_DVARA`). Gate `R137 slice is not a
+  number`: 64 checks (v309 fails the 4 new negatives). No other non-statement expression exists in the language
+  (no constants, field defaults, default arguments, module-level kosh or mala - each a syntax error, measured).
+- **The expression walk's node budget** now refuses when it runs out (`E_VAKYA_SEEMA`) instead of passing. It is
+  not reachable today: the AST heap holds at most 43,690 nodes (3 MiB / 72 bytes), the budget is 200,000.
+- **Installer (R208 I2 follow-up):** the lock is taken before every installation-state read - the registration,
+  other installations, the state file, the pending record, the journal; gate `R134 install transaction` checks
+  each read, and fails on v309's engine.
+- Guard v309 -> v310: ELF and PE 587 identical / 181 refused / 0 DIFFER; the 181 refusal messages unchanged.
 
 ## v309 (Claude, R137 + R138) - a slice is not a number; the installer's lock and ownership
 
@@ -319,16 +334,3 @@
   tree. `docs/INSTALLER-REBUILD.md` is the Windows procedure, with the payload compiler's expected SHA-256.
 - **`tests/run_tests.py`** prints the failure details first and `suite: ... (N run)` last; a no-expectation
   program's output is indented and labelled. The gates read the last line.
-
-## v290 (Claude, R108 + its correction) - the outlives rule: a block's kosh never goes to a prakriya that keeps it; a mala operand is refused; the arena is NOT on main
-
-- **A `kosh` made in a `mandapa` may be passed only to a parameter that does not keep it** (does not return it,
-  store it, or pass it to one that does - a greatest fixpoint over every `prakriya`; function values and foreign
-  functions count as keeping). Otherwise `E_KOSH_MANDAPA` at compile time. With v289's escape error, no
-  reference to a block's `kosh` can outlive the block. Example 316 is now that refusal; the R82 gate's five
-  runtime cases are compile-time refusals (12/0).
-- **`mala == mala`, `mala + 1`** (ChatGPT R175's reference-type class): `E_MALA_GANIT` (319). `kosh` operands
-  were already `E_KOSH_GANIT` (v288).
-- **`parimana()`** is the arena and the regions together; golden 318 shows it move.
-- **Not on main:** the block-arena `kosh` (a slot of the block's arena, growth by a new slot). It was built before
-  Sarvam's ROUND-108-CORRECTION and is on the review branch `claude/r108-arena-review`, as the correction asks.

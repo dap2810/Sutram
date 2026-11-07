@@ -1,0 +1,12 @@
+C1 global: make_kosh() + zero        compiles -> '140303717629968' exit 0
+global: make_kosh() alone            compiles -> '140461668827152' exit 0
+global: make_kosh() == 0             compiles -> '0' exit 0
+global: ?: of make_kosh()            compiles -> '140358155501584' exit 0
+global: keep(make_kosh())            refused E_KOSH_DVARA
+global: likha in initializer?        refused E_KOSH_DVARA
+local twin: make_kosh() + zero       refused E_KOSH_GANIT
+control global call: 3 + f()         compiles -> '7' exit 0
+module-level kosh                    refused Sutram truti: vyakaran dosh, pankti 1:1, shabd 'kosh'
+constant sthira                      refused Sutram truti: vyakaran dosh, pankti 1:1, shabd 'sthira'
+rachana field default                refused Sutram truti: vyakaran dosh, pankti 1:11, shabd '{'
+prakriya default argument            refused Sutram truti: vyakaran dosh, pankti 1:14, shabd '='

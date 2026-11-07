@@ -65,10 +65,17 @@ def main():
     i_stage = body.find('Stage-Payload $stage $txnStage $newFiles')
     i_pub = body.find('Move-Into $staged $target')
     check(0 < i_begin < i_hint < i_stage < i_pub, 'BEGIN is journaled before the pending hint, the staging and any change to the target')
-    i_lock, i_read = code.find("$script:txnLock = New-Object IO.FileStream($lockPath"), code.find('$earlier = Read-Journal $script:journalPath')
-    check(0 < i_lock < i_read and "+ '.sutram-lock')" in code and '[IO.FileOptions]::DeleteOnClose' in code
-          and "Join-Path $txnDir 'lock'" not in code,
-          'R137 (I2): one installer at a time, locked beside the target before any state is read, until the process ends')
+    i_lock = code.find("$script:txnLock = New-Object IO.FileStream($lockPath")
+    reads = {'the registration': 'Get-ItemProperty -LiteralPath $unKey', 'other installations': '$others = Find-OtherSutram',
+             'the state file': '$oldState = Read-State $statePath', 'the pending record': '$pending = Test-Path -LiteralPath $pendingPath',
+             'the journal': '$earlier = Read-Journal $script:journalPath'}
+    first = {k: code.find(v) for k, v in reads.items()}
+    check(0 < i_lock and all(0 < i_lock < v for v in first.values()) and "+ '.sutram-lock')" in code
+          and '[IO.FileOptions]::DeleteOnClose' in code and "Join-Path $txnDir 'lock'" not in code,
+          'R137/R141 (I2): the lock is taken before every installation-state read (' + ', '.join(
+              k for k, v in first.items() if not 0 < i_lock < v) + ' read first)' if not all(0 < i_lock < v for v in first.values())
+          else 'R137/R141 (I2): the lock is taken before every installation-state read - registration, other installations, '
+               'state file, pending record, journal - and held until the process ends')
     check('.sutram-lock' in re.sub(r'(?m)#.*$', '', uni) and '[IO.FileShare]::None' in uni,
           'R137: the uninstaller takes the same lock')
     part = code[code.find("'*.sutram-partial'"):code.find("'*.sutram-partial'") + 300]

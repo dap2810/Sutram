@@ -1,5 +1,18 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v290 (Claude, R108 + its correction) - the outlives rule: a block's kosh never goes to a prakriya that keeps it; a mala operand is refused; the arena is NOT on main
+
+- **A `kosh` made in a `mandapa` may be passed only to a parameter that does not keep it** (does not return it,
+  store it, or pass it to one that does - a greatest fixpoint over every `prakriya`; function values and foreign
+  functions count as keeping). Otherwise `E_KOSH_MANDAPA` at compile time. With v289's escape error, no
+  reference to a block's `kosh` can outlive the block. Example 316 is now that refusal; the R82 gate's five
+  runtime cases are compile-time refusals (12/0).
+- **`mala == mala`, `mala + 1`** (ChatGPT R175's reference-type class): `E_MALA_GANIT` (319). `kosh` operands
+  were already `E_KOSH_GANIT` (v288).
+- **`parimana()`** is the arena and the regions together; golden 318 shows it move.
+- **Not on main:** the block-arena `kosh` (a slot of the block's arena, growth by a new slot). It was built before
+  Sarvam's ROUND-108-CORRECTION and is on the review branch `claude/r108-arena-review`, as the correction asks.
+
 ## v289 (Claude, R107) - a kosh cannot leave its block (compile time); `parimana()` reports the bytes in use
 
 - **The escape error:** a `kosh` declared inside a `mandapa` carries the block's depth as its scratch-escape taint,

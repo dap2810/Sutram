@@ -1033,7 +1033,8 @@ one - `+ - * / % == != < <= > >= & | ^ << >> && ||`, unary `-` and `!` - nor a c
 a loop bound, an index, a builtin other than `pankti_gan`, a cell or raw store, or an untyped or function-value
 parameter: `E_VIBHAG_ANKA`, for a `mala`'s slice as for a `kosh`'s. A slice is used as the argument for a `vibhag`
 parameter, in `pankti_gan(s)`, as the base of `s[i]` and `s[a:b]`, and (a `mala`'s) as a name's value. A `kosh`
-made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is.
+made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is. The same holds in a module-level `vitti` initializer (v310), and
+a `kosh` cannot be a module `vitti`'s initial value there either (`E_KOSH_DVARA`).
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.

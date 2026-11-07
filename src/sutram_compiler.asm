@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v309) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v310) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -618,6 +618,8 @@ r54_builtin_arity_table:
     r137_hdr db "Sutram truti [E_VIBHAG_ANKA]: vibhagah '", 0
     r137_txt db "' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya", 10, 0
     r137_khdr db "Sutram truti [E_KOSH_GANIT]: ", 0
+    r141_budget_hdr db "Sutram truti [E_VAKYA_SEEMA]: ekam vakyam 200000 granthibhyah adhikam - tasya parikshanam na samaptam, ato na sankalyate", 10, 0
+    r141_budget_hint db "Sanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya)", 10, 0
     r137_hint db "Sanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya", 10, 0
     r134_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah '", 0
     r134_vb_hint db "Sanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru", 10, 0
@@ -18320,6 +18322,22 @@ r56_gen_global_initializers:
     mov rax, [rbx+16]
     test rax, rax
     jz .r56_init_next
+    ; R141 (ChatGPT R208 C1): a module-level initializer is not a statement, so gen_stmt's checks never saw it:
+    ; `vitti leaked = make_kosh() + zero` held a kosh descriptor's address, and `vitti g = make_kosh()` put a
+    ; kosh in a module vitti (both compiled on v309). The same two checks a statement gets, at this entry: the
+    ; expression walk (no slice or kosh used as a number), and the module-vitti door for the bound value.
+    mov rdi, rbx
+    call r137_check_stmt
+    mov rdi, [rbx+16]
+    call r134_holds_kosh
+    test eax, eax
+    jz .r56_init_ok
+    mov rdi, [rbx+16]
+    lea rsi, [rel r126_d_glob]
+    xor edx, edx
+    jmp r126_fail_door
+.r56_init_ok:
+    mov rax, [rbx+16]
     call gen_expr
     mov rdi, r12
     call r56_emit_global_store
@@ -28332,7 +28350,7 @@ r137_check_stmt:
     test r15, r15
     jz .out
     dec qword [rel r137_budget]
-    js .out                            ; a node budget, not a proof of anything: a tree this size is not real
+    js .exhausted                      ; R141: an unfinished check refuses - it does not pass
     dec r15
     lea rax, [rel rfx2_stack]
     mov rbx, [rax+r15*8]
@@ -28558,6 +28576,11 @@ r137_check_stmt:
     lea rdi, [rel r137_txt]
     call print_str_z
     lea rdi, [rel r137_hint]
+    jmp capacity_fail
+.exhausted:
+    lea rdi, [rel r141_budget_hdr]
+    call print_str_z
+    lea rdi, [rel r141_budget_hint]
     jmp capacity_fail
 .out:
     pop r15

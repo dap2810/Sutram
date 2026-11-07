@@ -1,14 +1,19 @@
-# Sutram 1.0 (v309) — release notes
+# Sutram 1.0 (v310) — release notes
 
-**Compiler `Sutram 1.0 (v309) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v309). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v310) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v310). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
-## Status: what v309 closes, and what it does not (R140)
+## Status: what v310 closes, and what it does not (R140-R141)
+
+v310 is v309 plus three narrow fixes (R141): a module-level `vitti` initializer is checked as a statement is, the
+installer takes its lock before it reads any installation state, and an unfinished expression check refuses. The
+native measurements below are of v309; v310 has not yet been run on Windows.
+
 
 Measured, with where:
 - **On native Windows, on the tested v309 commit** (ChatGPT's v309 run, 7 November, `Windows-to-Sarvam/win-v309-2026-11-07/`):
@@ -23,10 +28,11 @@ Measured, with where:
 
 **Not closed, and not claimed:**
 - **A slice is refused in every form the gates test** (the R133, R134 and R137 gates); **that is not a proof that no
-  other form exists.** The check covers every statement, and every operator in one place. It does not cover the
-  one expression path outside a statement, the module-level `vitti` initializers: no slice can be formed there,
-  but **a `kosh` returned by a call can be made a number there** (`vitti leaked = make_kosh() + 0` compiles and
-  holds an address; inside a `prakriya` it is refused). Known, not yet fixed (ChatGPT R208 C1).
+  other form exists.** The check covers every statement, and every operator in one place. It covers every
+  statement and, from v310, the one expression path outside a statement, the module-level `vitti` initializers
+  (`vitti leaked = make_kosh() + 0` held an address on v309, ChatGPT R208 C1; a `kosh` bound to a module `vitti`
+  there was not refused either). The language has no other: no constants, no field defaults, no default
+  arguments, no module-level `kosh` or `mala`.
 - **The out-of-memory exit** is measured at those limits on one machine. Other allocation failures, a failed
   start-up reserve on Windows, and teardown in general are not.
 - **The installer** is safe to interrupt and retry, file by file. It is not one atomic step: the shortcuts,
@@ -301,6 +307,9 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v310:** module-level `vitti` initializers get a statement's checks (no `kosh` or slice used as a number, no
+  `kosh` in a module `vitti`); an expression check that cannot finish refuses (`E_VAKYA_SEEMA`); the installer
+  locks before any state read.
 - **v309:** a slice is not a number - no operator, condition, bound, index, builtin (but `pankti_gan`), store or
   untyped parameter takes one (`E_VIBHAG_ANKA`), and a `kosh` made a number by a call or `?:` is `E_KOSH_GANIT`;
   the installer locks the folder from its first read, checks each file again before replacing it, and no longer
