@@ -1,0 +1,154 @@
+{
+    "phase":  "interrupt",
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
+    "started":  "2026-11-06T23:09:21.6871880-05:00",
+    "elevated":  false,
+    "observations":  [
+                         {
+                             "dialogs":  0,
+                             "seconds":  0.57,
+                             "next_label":  "Install",
+                             "last_line":  "",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  5.6,
+                             "next_label":  "Install",
+                             "last_line":  "",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  10.62,
+                             "next_label":  "Install",
+                             "last_line":  "",
+                             "child_exited":  false
+                         }
+                     ],
+    "pid":  16540,
+    "process_started":  "2026-11-06T23:09:22.0215642-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready":  "interrupt-ready.png",
+    "child":  {
+                  "parent":  16540,
+                  "pid":  18272,
+                  "started":  "2026-11-06T23:09:23.6581235-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\install.log",
+    "interrupt_trigger":  "Filesystem count of complete payload filenames; live engine log deliberately unopened",
+    "payload_count_at_trigger":  15,
+    "interrupt_seconds":  10.852372599999999,
+    "status":  "INTERRUPTED_AS_REQUESTED",
+    "interruption_log_tail":  "[2026-11-06 23:09:34] Copying 19/657: bin\\lang\\odia.lang",
+    "observed_seconds":  11.05,
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  true,
+    "files":  [
+                  {
+                      "created":  "2026-11-06T23:09:34.5782648-05:00",
+                      "bytes":  1650,
+                      "relative":  "LICENSE.txt"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.5211844-05:00",
+                      "bytes":  63662,
+                      "relative":  "payload.pending.sha256"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.5872450-05:00",
+                      "bytes":  10893,
+                      "relative":  "README.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.5956761-05:00",
+                      "bytes":  142563,
+                      "relative":  "sutram-ide-gui.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6039951-05:00",
+                      "bytes":  36693,
+                      "relative":  "assets\\sutram.ico"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6079879-05:00",
+                      "bytes":  19870,
+                      "relative":  "bin\\sutram-link.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6119414-05:00",
+                      "bytes":  533366,
+                      "relative":  "bin\\sutram.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6159403-05:00",
+                      "bytes":  1014,
+                      "relative":  "bin\\lang\\bengali.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6209394-05:00",
+                      "bytes":  23206,
+                      "relative":  "bin\\lang\\bengali.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6239400-05:00",
+                      "bytes":  1588,
+                      "relative":  "bin\\lang\\gujarati.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6289430-05:00",
+                      "bytes":  22485,
+                      "relative":  "bin\\lang\\gujarati.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6320094-05:00",
+                      "bytes":  1110,
+                      "relative":  "bin\\lang\\hindi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6359340-05:00",
+                      "bytes":  22591,
+                      "relative":  "bin\\lang\\hindi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6399390-05:00",
+                      "bytes":  1166,
+                      "relative":  "bin\\lang\\kannada.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6449540-05:00",
+                      "bytes":  23266,
+                      "relative":  "bin\\lang\\kannada.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6492687-05:00",
+                      "bytes":  1148,
+                      "relative":  "bin\\lang\\malayalam.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6542830-05:00",
+                      "bytes":  24569,
+                      "relative":  "bin\\lang\\malayalam.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6592850-05:00",
+                      "bytes":  1115,
+                      "relative":  "bin\\lang\\marathi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6642857-05:00",
+                      "bytes":  23368,
+                      "relative":  "bin\\lang\\marathi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:09:34.6754484-05:00",
+                      "bytes":  1091,
+                      "relative":  "bin\\lang\\odia.lang"
+                  }
+              ],
+    "ended":  "2026-11-06T23:09:34.9274097-05:00"
+}

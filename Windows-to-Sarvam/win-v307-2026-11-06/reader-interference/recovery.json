@@ -1,0 +1,84 @@
+{
+    "phase":  "recovery",
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
+    "started":  "2026-11-06T23:04:16.7799849-05:00",
+    "elevated":  false,
+    "observations":  [
+                         {
+                             "dialogs":  0,
+                             "seconds":  0.68,
+                             "next_label":  "Install",
+                             "last_line":  "",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  5.96,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:21] Extracting embedded payload.",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  11.2,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:21] Extracting embedded payload.",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  16.46,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:31] Native self-test exit: pre-install --help code=0",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  21.63,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:31] Native self-test exit: pre-install --help code=0",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  26.82,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:31] Native self-test exit: pre-install --help code=0",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  32.02,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:50] Copying 236/657: examples\\14_strings.sm",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  37.15,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:55] Copying 605/657: lib\\sangrah.smlib",
+                             "child_exited":  false
+                         }
+                     ],
+    "pid":  21616,
+    "process_started":  "2026-11-06T23:04:16.8393800-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready":  "recovery-ready.png",
+    "child":  {
+                  "parent":  21616,
+                  "pid":  15264,
+                  "started":  "2026-11-06T23:04:18.3050696-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log",
+    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log\u0027 because it is being used by another process.\"",
+    "dialog_text":  [
+                        "OK",
+                        "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."
+                    ],
+    "error_screenshot":  "recovery-error.png",
+    "status":  "ERROR_DIALOG",
+    "error":  "Exception calling \"Send\" with \"5\" argument(s): \"SendMessageTimeout failed for message 0xF5\""
+}

@@ -1,0 +1,4 @@
+# Preserve the measured 32-byte stderr payload, including its single LF.
+streams/*.stderr -text
+interrupted-payload.pending.sha256 -text
+reader-interference/interrupted-payload.pending.sha256 -text

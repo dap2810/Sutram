@@ -1,0 +1,190 @@
+{
+  "read_at": "2026-11-06T22:48:24.425995-05:00",
+  "phases": [
+    {
+      "phase": "clean",
+      "started": "2026-11-06T22:39:01.8216403-05:00",
+      "pids": [
+        5584,
+        20260
+      ]
+    },
+    {
+      "phase": "upgrade-observer-failed",
+      "started": "2026-11-06T22:44:18.0183878-05:00",
+      "pids": [
+        27192,
+        43380
+      ]
+    },
+    {
+      "phase": "upgrade",
+      "started": "2026-11-06T22:47:23.4575853-05:00",
+      "pids": [
+        31584,
+        43868
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.79.log",
+      "size": 1283416,
+      "read_bytes_sha256": "732464fa67989543604a9817c6f8c849db15406ba68a90c5b2fc01f889c0f57b",
+      "matching_lines": [
+        5187,
+        5188,
+        5191
+      ],
+      "relevant_lines": [
+        {
+          "line": 5175,
+          "text": "2026-11-06 22:47:41.021452 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html.sutram-partial\" with operation flags [ UntrustedProcess ]"
+        },
+        {
+          "line": 5176,
+          "text": "2026-11-06 22:47:41.022451 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+        },
+        {
+          "line": 5177,
+          "text": "2026-11-06 22:47:41.027694 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is deleting \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\" after fully reading it (previous data = 08,DDC,3D8) with operation flags [ UntrustedProcess ]"
+        },
+        {
+          "line": 5178,
+          "text": "2026-11-06 22:47:41.027694 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html.sutram-partial\""
+        },
+        {
+          "line": 5179,
+          "text": "2026-11-06 22:47:41.027694 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+        },
+        {
+          "line": 5180,
+          "text": "2026-11-06 22:47:41.027694 6832 [info]: [heuristic] \"Create Delete Full Read (Deleted)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\""
+        },
+        {
+          "line": 5181,
+          "text": "2026-11-06 22:47:41.032013 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html.sutram-partial\" with operation flags [ UntrustedProcess ]"
+        },
+        {
+          "line": 5182,
+          "text": "2026-11-06 22:47:41.032013 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+        },
+        {
+          "line": 5183,
+          "text": "2026-11-06 22:47:41.038461 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is deleting \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\" after fully reading it (previous data = 04,6DF,C38) with operation flags [ UntrustedProcess ]"
+        },
+        {
+          "line": 5184,
+          "text": "2026-11-06 22:47:41.039460 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html.sutram-partial\""
+        },
+        {
+          "line": 5185,
+          "text": "2026-11-06 22:47:41.040461 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+        },
+        {
+          "line": 5186,
+          "text": "2026-11-06 22:47:41.040461 6832 [info]: [heuristic] \"Create Delete Full Read (Deleted)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\""
+        },
+        {
+          "line": 5187,
+          "text": "2026-11-06 22:47:41.040461 6832 [warning]: [heuristic] \"Create Delete Full Read\" found suspected malware: [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\", E6A9F4477B2C5E4915A93524A00D85346C314182]"
+        },
+        {
+          "line": 5188,
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: Process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\", E6A9F4477B2C5E4915A93524A00D85346C314182] suspended successfully"
+        },
+        {
+          "line": 5189,
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"'s certificate couldn't be verified (cache)"
+        },
+        {
+          "line": 5190,
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: Found suspicious parent process [34727 (internal), 31584 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"] of process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+        },
+        {
+          "line": 5191,
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: Process [34727 (internal), 31584 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\", E702EF40A7B40BF66AB5E09DC6054AF2793E334F] suspended successfully"
+        },
+        {
+          "line": 5192,
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: Successfully added restoration process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+        },
+        {
+          "line": 5193,
+          "text": "2026-11-06 22:47:41.057096 6832 [info]: Process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] has modified the following files: \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html\""
+        },
+        {
+          "line": 5194,
+          "text": "2026-11-06 22:47:41.057096 6832 [info]: Successfully populated affected files for process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+        },
+        {
+          "line": 5195,
+          "text": "2026-11-06 22:47:41.071550 6832 [info]: Posting request to cloud white list for process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] with a process hash: <60C9B29843624DD8AF6B6A7B26147753BE6AEEF65098B9A503CC50850AFE410F>"
+        },
+        {
+          "line": 5196,
+          "text": "2026-11-06 22:47:41.071550 6832 [info]: [Cloud Verdict Cache] Found cached verdict for process <60C9B29843624DD8AF6B6A7B26147753BE6AEEF65098B9A503CC50850AFE410F>: false"
+        },
+        {
+          "line": 5197,
+          "text": "2026-11-06 22:47:41.071550 6832 [info]: Process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is not found in the cloud white list."
+        },
+        {
+          "line": 5198,
+          "text": "2026-11-06 22:47:41.072552 6832 [info]: Successfully added Suspicious process threat id 4 into user action cache."
+        },
+        {
+          "line": 5199,
+          "text": "2026-11-06 22:47:41.072552 6832 [info]: Successfully retrieved icon(cached) for \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\""
+        },
+        {
+          "line": 5200,
+          "text": "2026-11-06 22:47:41.072552 6832 [info]: Raising alert for suspicious process."
+        },
+        {
+          "line": 5201,
+          "text": "2026-11-06 22:47:41.072552 6832 [info]: Successfully opened registry key. Key :SOFTWARE\\Acronis\\BackupAndRecovery\\Settings\\MachineManager"
+        },
+        {
+          "line": 5202,
+          "text": "2026-11-06 22:47:41.072552 6832 [warning]: Fail to query registry key SOFTWARE\\Acronis\\BackupAndRecovery\\Settings\\MachineManager\\InstanceID. Error: The system cannot find the file specified.  (Win32 error code = 2)"
+        }
+      ]
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.78.log.gz",
+      "size": 131276,
+      "read_bytes_sha256": "85481159d2d272bd52ccb4ec4b521dcaeb0452366889068b74ae1d413a966411",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.77.log.gz",
+      "size": 128903,
+      "read_bytes_sha256": "6e5ee21a4f3d4f23c9a6bf379ea1e330fa89483d9bc1c3f8ca4e338f818a2d9a",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.76.log.gz",
+      "size": 130308,
+      "read_bytes_sha256": "cc1d9443f0649c23f48798d32a04d8a51a58856b5f4d2064fde327c6f217eb51",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.75.log.gz",
+      "size": 118444,
+      "read_bytes_sha256": "58a15776462f650264678ac26e3b0ad00ce497d3e1441448e36a7ad180018d0d",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.74.log.gz",
+      "size": 137003,
+      "read_bytes_sha256": "ee9dfb61849f68cffc4454188eac2aef6e5c938c0b575434426e20b1841785e1",
+      "matching_lines": [],
+      "relevant_lines": []
+    }
+  ]
+}

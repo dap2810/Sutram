@@ -1,0 +1,141 @@
+{
+    "phase":  "interrupt",
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
+    "started":  "2026-11-06T23:03:42.0845231-05:00",
+    "elevated":  false,
+    "observations":  [
+                         {
+                             "dialogs":  0,
+                             "seconds":  0.47,
+                             "next_label":  "Install",
+                             "last_line":  "",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  5.54,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:03:46] Extracting embedded payload.",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  10.56,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:03:46] Extracting embedded payload.",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  15.59,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:03:46] Extracting embedded payload.",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  20.6,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:02] Native self-test exit: pre-install --help code=0",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  25.65,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:02] Native self-test exit: pre-install --help code=0",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  30.69,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 23:04:02] Native self-test exit: pre-install --help code=0",
+                             "child_exited":  false
+                         }
+                     ],
+    "pid":  31940,
+    "process_started":  "2026-11-06T23:03:42.4321290-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready":  "interrupt-ready.png",
+    "child":  {
+                  "parent":  31940,
+                  "pid":  16276,
+                  "started":  "2026-11-06T23:03:44.0364915-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install.log",
+    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install.log\u0027 because it is being used by another process.\"",
+    "interrupt_trigger":  "[2026-11-06 23:04:15] Copying 8/657: bin\\lang\\bengali.sandesh",
+    "interrupt_seconds":  31.7276812,
+    "status":  "INTERRUPTED_AS_REQUESTED",
+    "observed_seconds":  31.81,
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  true,
+    "files":  [
+                  {
+                      "created":  "2026-11-06T23:04:15.7130212-05:00",
+                      "bytes":  1650,
+                      "relative":  "LICENSE.txt"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.5333501-05:00",
+                      "bytes":  63662,
+                      "relative":  "payload.pending.sha256"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.7927817-05:00",
+                      "bytes":  10893,
+                      "relative":  "README.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.8067579-05:00",
+                      "bytes":  142563,
+                      "relative":  "sutram-ide-gui.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.8262038-05:00",
+                      "bytes":  36693,
+                      "relative":  "assets\\sutram.ico"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.8415809-05:00",
+                      "bytes":  19870,
+                      "relative":  "bin\\sutram-link.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.8556653-05:00",
+                      "bytes":  533366,
+                      "relative":  "bin\\sutram.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.8723000-05:00",
+                      "bytes":  1014,
+                      "relative":  "bin\\lang\\bengali.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.8857218-05:00",
+                      "bytes":  23206,
+                      "relative":  "bin\\lang\\bengali.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.8987275-05:00",
+                      "bytes":  1588,
+                      "relative":  "bin\\lang\\gujarati.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.9107300-05:00",
+                      "bytes":  22485,
+                      "relative":  "bin\\lang\\gujarati.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:04:15.9247855-05:00",
+                      "bytes":  1110,
+                      "relative":  "bin\\lang\\hindi.lang"
+                  }
+              ],
+    "ended":  "2026-11-06T23:04:16.0571705-05:00"
+}

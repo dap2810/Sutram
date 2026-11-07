@@ -1,0 +1,170 @@
+{
+  "compiler": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+  "compiler_sha256": "0444b43552f6140147ee4701aeac857d585086681bbe4e5bd71d8f90bedd3f7b",
+  "runs": [
+    {
+      "probe": "cell_minimal",
+      "source": "r136_ws1_cell_minimal.sm",
+      "source_sha256": "bb11d2cc21b0da13d795f38ebb403a810eabf9b1a046e14e93642b5d683a4773",
+      "expected": null,
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_cell_minimal.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_minimal.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 3378 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.05450269998982549
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_minimal.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "1441560\n",
+        "stderr": "",
+        "seconds": 0.27660219999961555
+      },
+      "verdict": "INFORMATIONAL_DESCRIPTOR_DISPLAY"
+    },
+    {
+      "probe": "cell_write",
+      "source": "r136_ws1_cell_write.sm",
+      "source_sha256": "908ad692d440182dde6d93664985e5cfd3543914bede4f8d3fa45d80022a94d1",
+      "expected": "99\n",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_cell_write.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_write.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 3560 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.05495459999656305
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_write.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "7\n",
+        "stderr": "",
+        "seconds": 0.26966010002070107
+      },
+      "verdict": "FAIL"
+    },
+    {
+      "probe": "untyped_param",
+      "source": "r136_ws1_untyped_param.sm",
+      "source_sha256": "bf83d33282ca256b70703a47f4a6dd05060df0d5cfb3ede999e48d23df851bcc",
+      "expected": "77\n77\n",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_untyped_param.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_param.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 3295 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.04764840001007542
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_param.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "77\n7\n",
+        "stderr": "",
+        "seconds": 0.27376519999234006
+      },
+      "verdict": "FAIL"
+    },
+    {
+      "probe": "untyped_return",
+      "source": "r136_ws1_untyped_return.sm",
+      "source_sha256": "7ae69119b92ff64c1cb4a84463625fd1c30e1e43811c04a274fe664fbd4e54d8",
+      "expected": "99\n99\n",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_untyped_return.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_return.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 3403 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.054972600017208606
+      },
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_return.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "7\n99\n",
+        "stderr": "",
+        "seconds": 0.20884949999162927
+      },
+      "verdict": "FAIL"
+    },
+    {
+      "probe": "funcval_small",
+      "source": "r136_ws1_funcval_small.sm",
+      "source_sha256": "4fe5de60af53900c9a6db9794e8151d6b198165f9d0dd4ed0bc21b709530a75d",
+      "expected": "0\n99\n",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_funcval_small.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\funcval_small.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
+        "stderr": "",
+        "seconds": 0.02346440000110306
+      },
+      "verdict": "PASS_REFUSAL"
+    },
+    {
+      "probe": "funcval_large",
+      "source": "r136_ws1_funcval_large.sm",
+      "source_sha256": "76508e722f21f6a266c1bbab0529d4b62cd6c7d0ba71a8f764589bbd51539e66",
+      "expected": "1\n",
+      "compile": {
+        "command": [
+          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_funcval_large.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\funcval_large.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
+        "stderr": "",
+        "seconds": 0.022011699998984113
+      },
+      "verdict": "PASS_REFUSAL"
+    }
+  ]
+}

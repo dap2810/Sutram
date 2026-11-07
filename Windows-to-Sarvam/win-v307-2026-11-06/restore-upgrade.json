@@ -1,0 +1,31 @@
+﻿{
+    "phase":  "upgrade",
+    "started":  "2026-11-06T23:03:12.5820831-05:00",
+    "backup":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-before-upgrade-20261106",
+    "partial":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-upgrade-partial-20261106",
+    "stopped":  [
+                    {
+                        "pid":  43868,
+                        "name":  "powershell.exe",
+                        "at":  "2026-11-06T23:03:13.7959327-05:00"
+                    },
+                    {
+                        "pid":  31584,
+                        "name":  "Sutram-Setup.exe",
+                        "at":  "2026-11-06T23:03:14.1730387-05:00"
+                    }
+                ],
+    "security_settings_changed":  false,
+    "engine_log_preserved_after_handles_closed":  true,
+    "partial_file_count":  663,
+    "files_verified":  662,
+    "restored_file_count":  662,
+    "user_path_unchanged":  true,
+    "machine_path_unchanged":  true,
+    "version":  [
+                    "Sutram 1.0 (v307) - sampurna sutra",
+                    "Samskrita-mukhya bhasha -\u003e x86-64 yantra-bhasha"
+                ],
+    "cli_exit":  0,
+    "pass":  true
+}

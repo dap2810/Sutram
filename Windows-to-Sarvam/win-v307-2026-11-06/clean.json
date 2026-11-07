@@ -1,0 +1,34 @@
+{
+  "phase": "clean",
+  "setup": "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+  "sha256": "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
+  "started": "2026-11-06T22:39:01.8216403-05:00",
+  "elevated": false,
+  "observations": [
+    {
+      "dialogs": 0,
+      "seconds": 1.08,
+      "next_label": "Install",
+      "last_line": "[2026-11-06 22:39:05] Extracting embedded payload.",
+      "child_exited": false
+    }
+  ],
+  "pid": 5584,
+  "process_started": "2026-11-06T22:39:02.2153830-05:00",
+  "destination": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+  "ready": "clean-ready.png",
+  "child": {
+    "parent": 5584,
+    "pid": 20260,
+    "started": "2026-11-06T22:39:04.0654998-05:00",
+    "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9DF4.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9DF4.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9DF4.tmp\\install.log\" -AddPath -DesktopShortcut"
+  },
+  "engine_log": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9DF4.tmp\\install.log",
+  "observer_issue": {
+    "description": "Get-Content returned an extended string; ConvertTo-Json expanded provider metadata, delaying observation. Observer stopped; Finish verified in clean-finish.json. Fixed by creating a plain .NET string.",
+    "raw_bytes": 111258037,
+    "raw_sha256": "e59c814483fb92d1f3bbfd8e9a53f8bd73db6732001de33bb03ce849fc43ec25",
+    "local_archive": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\clean-observer-provider-metadata.json",
+    "normalized_last_lines": 1
+  }
+}

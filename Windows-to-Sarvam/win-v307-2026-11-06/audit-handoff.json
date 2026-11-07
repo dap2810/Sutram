@@ -1,0 +1,10 @@
+{
+  "pass_": true,
+  "local_links_checked": 72,
+  "oom_runs": 32,
+  "abnormal_oom_exits": 18,
+  "suite_pass": 322,
+  "manifest_pass": 657,
+  "recovery_seconds": 16.57,
+  "upgrade_observed_seconds": 936.39
+}

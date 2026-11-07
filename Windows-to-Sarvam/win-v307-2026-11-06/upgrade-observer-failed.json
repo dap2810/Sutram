@@ -1,0 +1,41 @@
+{
+    "phase":  "upgrade",
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
+    "started":  "2026-11-06T22:44:18.0183878-05:00",
+    "elevated":  false,
+    "observations":  [
+                         {
+                             "dialogs":  0,
+                             "seconds":  1.2,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 22:44:21] Checking for another Sutram installation.",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  6.48,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 22:44:21] Extracting embedded payload.",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  11.58,
+                             "next_label":  "Install",
+                             "last_line":  "[2026-11-06 22:44:26] Native self-test exit: pre-install --help code=0",
+                             "child_exited":  false
+                         }
+                     ],
+    "pid":  27192,
+    "process_started":  "2026-11-06T22:44:18.3712633-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready":  "upgrade-ready.png",
+    "child":  {
+                  "parent":  27192,
+                  "pid":  43380,
+                  "started":  "2026-11-06T22:44:19.8270746-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM6F6A.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM6F6A.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM6F6A.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM6F6A.tmp\\install.log"
+}

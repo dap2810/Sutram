@@ -1,0 +1,101 @@
+﻿{
+    "observed_at":  "2026-11-06T23:10:04.5084958-05:00",
+    "owned_processes":  [
+                            {
+                                "phase":  "clean",
+                                "pid":  5584,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "clean",
+                                "pid":  20260,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "upgrade-observer-failed",
+                                "pid":  27192,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "upgrade-observer-failed",
+                                "pid":  43380,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "upgrade",
+                                "pid":  31584,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "upgrade",
+                                "pid":  43868,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "reader-interference/interrupt",
+                                "pid":  31940,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "reader-interference/interrupt",
+                                "pid":  16276,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "reader-interference/recovery",
+                                "pid":  21616,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "reader-interference/recovery",
+                                "pid":  15264,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "interrupt",
+                                "pid":  16540,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "interrupt",
+                                "pid":  18272,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "recovery",
+                                "pid":  40300,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            },
+                            {
+                                "phase":  "recovery",
+                                "pid":  26632,
+                                "same_process_still_running":  false,
+                                "pid_reused":  false
+                            }
+                        ],
+    "pending_exists":  false,
+    "partial_files":  [
+
+                      ],
+    "file_count":  662,
+    "display_version":  "1.0.307",
+    "cli":  [
+                "Sutram 1.0 (v307) - sampurna sutra",
+                "Samskrita-mukhya bhasha -\u003e x86-64 yantra-bhasha"
+            ],
+    "cli_exit":  0,
+    "pass":  true
+}

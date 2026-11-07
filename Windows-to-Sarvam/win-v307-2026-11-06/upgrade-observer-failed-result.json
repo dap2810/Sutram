@@ -1,0 +1,10 @@
+﻿{
+    "at":  "2026-11-06T22:47:05.7638071-05:00",
+    "status":  "ERROR_DIALOG",
+    "screenshot":  "upgrade-observer-failed-error.png",
+    "note":  "Observer hit a log sharing error during copy. Its catch also failed while copying the active log. Error dialog was captured after the engine exited. Causality is unproven; retry uses explicit FileShare ReadWrite/Delete and tolerates read errors.",
+    "backup":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-before-upgrade-20261106",
+    "partial":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-upgrade-first-partial-20261106",
+    "pending_before":  true,
+    "restored_files_verified":  662
+}

@@ -1,0 +1,264 @@
+{
+  "test_commit": "75586a754371dc27f9ed850f592df6194b8e11a6",
+  "checks": [
+    {
+      "check": "Sutram-Setup.exe",
+      "passed": true,
+      "sha256": "cbbfd0a66c0a9728c3fd88096631462430c0185cd8c6738964d5b885253e7481"
+    },
+    {
+      "check": "win/sutram.exe",
+      "passed": true,
+      "sha256": "0444b43552f6140147ee4701aeac857d585086681bbe4e5bd71d8f90bedd3f7b"
+    },
+    {
+      "check": "sutram.exe",
+      "passed": true,
+      "sha256": "0444b43552f6140147ee4701aeac857d585086681bbe4e5bd71d8f90bedd3f7b"
+    },
+    {
+      "check": "Embedded engine equals repository text after newline/BOM normalization",
+      "passed": true,
+      "embedded_sha256": "3d01b3e7a1f16746f87697ce552b1f00c5344e4b0d87ce9bb735797bbe882573",
+      "source_sha256": "307af7d43d9d55c3319a38afb37de1c54221843f683ac6c55f2a187412ac1531"
+    },
+    {
+      "check": "r136_ws1_cell_minimal.sm",
+      "passed": true,
+      "original": "Muse-to-Sarvam\\r136_ws1_cell_minimal.sm",
+      "sha256": "bb11d2cc21b0da13d795f38ebb403a810eabf9b1a046e14e93642b5d683a4773"
+    },
+    {
+      "check": "r136_ws1_cell_write.sm",
+      "passed": true,
+      "original": "Muse-to-Sarvam\\r136_ws1_cell_write.sm",
+      "sha256": "908ad692d440182dde6d93664985e5cfd3543914bede4f8d3fa45d80022a94d1"
+    },
+    {
+      "check": "r136_ws1_funcval_large.sm",
+      "passed": true,
+      "original": "Muse-to-Sarvam\\r136_ws1_funcval_large.sm",
+      "sha256": "76508e722f21f6a266c1bbab0529d4b62cd6c7d0ba71a8f764589bbd51539e66"
+    },
+    {
+      "check": "r136_ws1_funcval_small.sm",
+      "passed": true,
+      "original": "Muse-to-Sarvam\\r136_ws1_funcval_small.sm",
+      "sha256": "4fe5de60af53900c9a6db9794e8151d6b198165f9d0dd4ed0bc21b709530a75d"
+    },
+    {
+      "check": "r136_ws1_untyped_param.sm",
+      "passed": true,
+      "original": "Muse-to-Sarvam\\r136_ws1_untyped_param.sm",
+      "sha256": "bf83d33282ca256b70703a47f4a6dd05060df0d5cfb3ede999e48d23df851bcc"
+    },
+    {
+      "check": "r136_ws1_untyped_return.sm",
+      "passed": true,
+      "original": "Muse-to-Sarvam\\r136_ws1_untyped_return.sm",
+      "sha256": "7ae69119b92ff64c1cb4a84463625fd1c30e1e43811c04a274fe664fbd4e54d8"
+    },
+    {
+      "check": "Unchanged Job Object runner",
+      "passed": true,
+      "sha256": "f0b2581797ae5dad145ff498cb4f3745bd8bca306cb91f74ba5b060913a00a71"
+    },
+    {
+      "check": "streams/B3-448-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-448-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-448-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-480-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-480-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-480-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-512-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-512-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-512-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-544-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-544-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-544-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-576-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-576-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-576-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-608-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-608-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-608-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-640-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-640-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/B3-640-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-2.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-3.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-4.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-5.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-6.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-7.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-8.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-9.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-mandapa-64-10.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "streams/A3-nirmmita-touch-pages-64-1.stderr",
+      "passed": true,
+      "bytes": 32,
+      "ends_lf": true
+    },
+    {
+      "check": "Native harness unchanged since run",
+      "passed": true
+    }
+  ],
+  "pass": true
+}

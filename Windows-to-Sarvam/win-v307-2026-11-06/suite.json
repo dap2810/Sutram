@@ -1,0 +1,13 @@
+{
+  "exit": 0,
+  "elapsed_seconds": 59.972,
+  "harness_sha256": "4b9442225dec667a2b90ca493a9d9d8d0cf20f25d8183dc328feab2ac801a0d8",
+  "overrides": "none; original repository native harness",
+  "counts": {
+    "NO_EXPECTATION": 3,
+    "PASS": 322,
+    "SKIP_LINUX_RAW_SYSCALL": 1,
+    "SKIP_SIDE_EFFECT_OR_INLINE_ASM": 5
+  },
+  "failures": []
+}

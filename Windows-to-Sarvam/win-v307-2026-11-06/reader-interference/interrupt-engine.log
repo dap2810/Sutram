@@ -1,0 +1,21 @@
+Sutram Setup Log
+[2026-11-06 23:03:46] Starting installation.
+[2026-11-06 23:03:46] Checking for another Sutram installation.
+[2026-11-06 23:03:46] Extracting embedded payload.
+[2026-11-06 23:04:01] Native self-test start: pre-install --version
+[2026-11-06 23:04:01] Native self-test exit: pre-install --version code=0
+[2026-11-06 23:04:01] Native self-test start: pre-install --help
+[2026-11-06 23:04:02] Native self-test exit: pre-install --help code=0
+[2026-11-06 23:04:15] Recording the payload being installed (payload.pending.sha256).
+[2026-11-06 23:04:15] Copying 657 Sutram files.
+[2026-11-06 23:04:15] Copying 1/657: LICENSE.txt
+[2026-11-06 23:04:15] Copying 2/657: README.md
+[2026-11-06 23:04:15] Copying 3/657: sutram-ide-gui.exe
+[2026-11-06 23:04:15] Copying 4/657: assets\sutram.ico
+[2026-11-06 23:04:15] Copying 5/657: bin\sutram-link.exe
+[2026-11-06 23:04:15] Copying 6/657: bin\sutram.exe
+[2026-11-06 23:04:15] Copying 7/657: bin\lang\bengali.lang
+[2026-11-06 23:04:15] Copying 8/657: bin\lang\bengali.sandesh
+[2026-11-06 23:04:15] Copying 9/657: bin\lang\gujarati.lang
+[2026-11-06 23:04:15] Copying 10/657: bin\lang\gujarati.sandesh
+[2026-11-06 23:04:15] Copying 11/657: bin\lang\hindi.lang

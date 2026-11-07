@@ -1,8 +1,9 @@
 # Consolidated Windows handoffs for Sarvam
 
-**Latest machine state: working v306 restored after the follow-up; OOM failures remain.**
-**Acronis suspension now explains both observed upgrade freezes.** Read the v306
-follow-up first. Earlier reports remain dated evidence and should not be rewritten
+**Latest machine state: working v307, recovered from a deliberate interruption;
+657/657 hashes and 322 checked suite cases pass. OOM and three slice failures remain.**
+**Acronis also suspended the observed v307 upgrade.** Read the v307 handoff first.
+Earlier reports remain dated evidence and should not be rewritten
 as if their failures never occurred. This index collects all handoffs from this
 Windows install/diagnostic/repair sequence, as requested by the owner.
 
@@ -16,6 +17,7 @@ Windows install/diagnostic/repair sequence, as requested by the owner.
 | 6 | **[Installation repair](WINDOWS-REPAIR-2026-11-06.md)** | **[Verified results and screenshots](../Windows-to-Sarvam/win-repair-2026-11-06/RESULTS.md)** | **Original files preserved; current installer completed; all 657 package hashes match; installed CLI/desktop IDE work.** |
 | 7 | **[v306 native verification](WINDOWS-V306-2026-11-06.md)** | **[Full results](../Windows-to-Sarvam/win-v306-2026-11-06/RESULTS.md), [OOM reproductions](../Windows-to-Sarvam/win-v306-2026-11-06/OOM.md), [installation](../Windows-to-Sarvam/win-v306-2026-11-06/INSTALL.md), [IDE](../Windows-to-Sarvam/win-v306-2026-11-06/IDE.md)** | **Clean install, new-shell identity, IDE safeguard and 322 checked suite cases pass. B3 512 MiB and mandapa 64 MiB still crash after printing the refusal, 6/6 each. Automatic installer timeout not verified because the owner ended the stalled upgrade.** |
 | 8 | **[v306 follow-up](WINDOWS-V306-FOLLOWUP-2026-11-06.md)** | **[OOM boundary](../Windows-to-Sarvam/win-v306-followup-2026-11-06/OOM.md), [upgrade/security/timer evidence](../Windows-to-Sarvam/win-v306-followup-2026-11-06/UPGRADE.md)** | **Acronis explicitly suspended both upgrade processes in this and the prior round. No timeout action through 937.88 s under external suspension; working backup restored. B3 crashes at 448 MiB (2/3), 480/512 (3/3 each); 544–640 pass. Mandapa crashes 10/10; all messages complete.** |
+| 9 | **[v307 native verification](WINDOWS-V307-2026-11-06.md)** | **[OOM](../Windows-to-Sarvam/win-v307-2026-11-06/OOM.md), [upgrade/recovery/security](../Windows-to-Sarvam/win-v307-2026-11-06/UPGRADE.md), [slice probes](../Windows-to-Sarvam/win-v307-2026-11-06/SLICE.md), [commands/limitations](../Windows-to-Sarvam/win-v307-2026-11-06/COMMANDS.md)** | **18/32 OOM runs crash despite complete stderr; three slice escapes fail while function-value refusals pass. Upgrade suspended by Acronis through 936.39 s. Final interrupted-install recovery passes in 16.57 s; working v307 remains, all test processes closed. PowerShell live-log-reader interference independently reproduced and disclosed.** |
 
 The owner-supplied instructions, exact commands, raw logs, probes and screenshots
 are linked within each evidence folder. Review-branch test scripts are named
@@ -25,19 +27,19 @@ in the repository for Sarvam to read and acknowledge.
 
 ## Decisions still requested
 
-- The earlier OOM candidate is incorporated in the tested v306 build. Investigate
+- The earlier OOM candidate is incorporated in the tested v306/v307 builds. Investigate
   the expanded B3 448/480/512 MiB boundary and mandapa 64 MiB crash-after-message
   cases before treating the OOM behavior as closed.
 - Retain the non-project-CWD library test with a complete compiler bundle.
 - Preserve the now-verified v306 IDE refusal notice and previous-file Save
   protection; the isolated Save test left original examples unchanged.
-- Address automatic recovery from partial upgrades and stale DisplayVersion
-  metadata. The successful clean install does not establish the old stall's cause.
+- Preserve the v307 interrupted-install recovery pass and corrected DisplayVersion
+  1.0.307. Address the three remaining slice escapes and log-reader fragility.
 - Reconcile the handoff's A3 refusal expectation with the implementation's
   allowance for same-directory upgrades. Review the confirmed Acronis suspension
   and the recoverable-upgrade design. The runnable-wizard timeout remains unverified;
   no automatic action occurred while both processes were externally suspended.
-- Distinguish this machine's working v306 installation from general v1.0 release
+- Distinguish this machine's working v307 installation from general v1.0 release
   acceptance. No product code was changed in this verification round.
 
-Please acknowledge this consolidated index and the latest v306 follow-up evidence.
+Please acknowledge this consolidated index and the latest v307 evidence.

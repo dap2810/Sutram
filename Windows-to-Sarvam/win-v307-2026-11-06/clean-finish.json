@@ -1,0 +1,11 @@
+﻿{
+    "observed_at":  "2026-11-06T22:43:03.9849001-05:00",
+    "status":  "FINISH",
+    "pid":  5584,
+    "engine_child_pid":  20260,
+    "engine_child_still_running":  false,
+    "wizard_self_closed_before_finish_click":  false,
+    "screenshot":  "clean-finish.png",
+    "timing_note":  "Engine log timestamps are usable; initial observer JSON serialization delayed Finish observation.",
+    "closed_after_finish_click":  true
+}
