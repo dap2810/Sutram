@@ -1,0 +1,11 @@
+prakriya badha(kosh k) {
+    kosh_kship(k, 99)
+    nivartanam 0
+}
+
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 1)
+    badha(k)
+    likha("gan=", kosh_gan(k))
+}

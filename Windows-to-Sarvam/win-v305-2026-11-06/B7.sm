@@ -1,0 +1,10 @@
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    kosh_kship(k, 30)
+    vitti s = k[1 tak]
+    kosh_kship(k, 40)
+    kosh_kship(k, 50)
+    likha("slice_gan=", kosh_gan(s))
+}

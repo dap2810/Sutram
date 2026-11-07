@@ -1,0 +1,8 @@
+prakriya gan(vibhag s) {
+    nivartanam pankti_gan(s)
+}
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 1)
+    likha(gan(k[kosh_shodh(k):]))
+}

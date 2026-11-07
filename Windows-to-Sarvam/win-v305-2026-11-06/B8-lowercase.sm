@@ -1,0 +1,4 @@
+mukhya() {
+    vitti c = anka_akshar(97)
+    shabda(c)
+}
