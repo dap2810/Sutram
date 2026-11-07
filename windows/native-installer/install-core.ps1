@@ -121,6 +121,7 @@ function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles,[string]$T
         # R140 (ChatGPT's v309 run: a late retry restaged all 657): a file already installed with this payload's
         # bytes needs no copy at all; publishing records it as published and leaves it alone.
         $installed = Join-Path $Target $rel
+        Assert-NoReparsePath $installed      # R142 (from PR #68, Windows): no file reused through a reparse point
         if ((Test-Path -LiteralPath $installed -PathType Leaf) -and (Get-Sha $installed) -eq $NewFiles[$rel]) {
             Log ('Already installed ' + $n + '/' + $files.Length + ': ' + $rel)
             continue
@@ -577,6 +578,7 @@ try {
             $rel = $src.Substring($stage.Length).TrimStart('\')
             $n++
             $target = Join-Path $InstallDir $rel
+            Assert-NoReparsePath $target
             $staged = Join-Path $txnStage $rel
             $prior = 'absent'
             if (Test-Path -LiteralPath $target -PathType Leaf) {
@@ -595,18 +597,40 @@ try {
                     Log ('Changed since the check (preserved): ' + $target)
                     throw ('A file changed while the installer was working, and was not replaced: ' + $target + '. Move it elsewhere, then run this installer again.')
                 }
+                # R142 (from PR #68, Windows): a file staging reused because it was installed with the payload's bytes
+                # has no staged copy. If it changed since, it is not moved: there is no verified replacement yet.
+                if (-not (Test-Path -LiteralPath $staged -PathType Leaf)) {
+                    throw ('A file changed after its installed copy was verified; it was preserved: ' + $target + '. Run the installer again.')
+                }
                 $bk = Join-Path $txnBackup $rel
                 if (Test-Path -LiteralPath $bk -PathType Leaf) {
                     # An earlier run kept the original in the backup; this file is that run's own copy. It is moved
                     # aside too (R137: nothing in the target is deleted), under _superseded.
                     $sup = Join-Path (Join-Path $txnBackup '_superseded') ($rel + '.' + $have.Substring(0,12))
-                    Journal ("SUPERSEDED`t" + $rel + "`t" + $have)
-                    if (Test-Path -LiteralPath $sup -PathType Leaf) { [IO.File]::Delete($target) } else { Move-Into $target $sup }
+                    if (Test-Path -LiteralPath $sup -PathType Leaf) {
+                        # R142 (ChatGPT R209 I2c): a name is not the bytes. The target goes only when the copy kept
+                        # under that name has its full SHA-256; a different copy stops the run, and both are kept.
+                        $kept = Get-Sha $sup
+                        if ($kept -ne $have) {
+                            Log ('Not removed - the copy kept as ' + $sup + ' (' + $kept + ') is not this file (' + $have + '): ' + $target)
+                            throw ('A file was not moved aside, because the copy already kept under its name differs: ' + $target + ' and ' + $sup + '. Nothing was deleted. Move one of them elsewhere, then run this installer again.')
+                        }
+                        Journal ("SUPERSEDED`t" + $rel + "`t" + $have)
+                        Log ('Superseded (an identical copy, by full SHA-256, is kept as ' + $sup + '): ' + $target)
+                        [IO.File]::Delete($target)
+                    } else {
+                        Journal ("SUPERSEDED`t" + $rel + "`t" + $have)
+                        Move-Into $target $sup
+                    }
                 } else {
                     Journal ("BACKUP`t" + $rel + "`t" + $have)
                     Move-Into $target $bk
                 }
                 $prior = $have
+            }
+            # R142 (from PR #68): a reused file that disappeared since staging needs a new staging pass first.
+            if (-not (Test-Path -LiteralPath $staged -PathType Leaf)) {
+                throw ('A file disappeared after its installed copy was verified: ' + $target + '. Run the installer again.')
             }
             Journal ("PUBLISH`t" + $rel + "`t" + $prior)
             Log ('PUBLISH ' + $n + '/' + $files.Length + ': ' + $rel)

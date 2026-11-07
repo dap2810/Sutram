@@ -1,0 +1,69 @@
+# compiled with v310 (e7eb31d) and v311; output then run
+== d.sm
+prakriya g() {
+    mala m[4]
+    m[0] = 5
+    vitti zero = 0
+    likha(((m[0:2] * 1) * 1) + (f() + zero))
+    nivartanam 0
+}
+prakriya f() {
+    vitti a = 1
+    vitti b = 2
+    nivartanam a + b + 1
+}
+mukhya() {
+    g()
+}
+-- old/sutram_compiler: Siddh: 1166 baait sankalit
+140721656308124
+-- relbin/sutram_compiler: Sutram truti [E_VIBHAG_ANKA]: vibhagah 'm' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya
+== k.sm
+prakriya dek(kosh a) {
+    nivartanam a
+}
+prakriya g() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti zero = 0
+    likha(((dek(k) + zero) * 1) + (f() + zero))
+    nivartanam 0
+}
+prakriya f() {
+    vitti a = 1
+    nivartanam a + 3
+}
+mukhya() {
+    g()
+}
+-- old/sutram_compiler: Siddh: 2067 baait sankalit
+140173021020180
+-- relbin/sutram_compiler: Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na
+== s.sm
+prakriya keep(x) {
+    nivartanam x
+}
+prakriya g() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    vitti zero = 0
+    vitti t = keep((k[0:1] * 1) + (f() + zero))
+    kosh_kship(k, 8)
+    k[0] = 99
+    vitti addr = t[0]
+    likha(addr[0])
+    likha(k[0])
+    nivartanam 0
+}
+prakriya f() {
+    vitti a = 1
+    nivartanam a + 3 - 4
+}
+mukhya() {
+    g()
+}
+-- old/sutram_compiler: Siddh: 3795 baait sankalit
+7
+99
+-- relbin/sutram_compiler: Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya

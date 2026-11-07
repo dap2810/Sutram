@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v310) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v311) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1548,6 +1548,9 @@ section .bss
     rfx2_asg_n  resq 1
     rfx2_stack  resq RFX2_STACK_CAP
     r137_budget resq 1                ; R137: the expression walk's node budget
+    r142_wstack resq RFX2_STACK_CAP   ; R142: that walk's own stack (rfx2_stack is r126_ret_kind's, mid-walk)
+    r142_checked resq 1               ; R142: >0 while generating a statement or initializer the walk has checked
+    r142_value_mode resq 1            ; R142: 1 - the walk's root is also a value used as a number
     rfx2_seen   resb AST_HEAP_CAP / 64
     rfx2_calls  resq RFX2_ASG_CAP          ; R105: the AST_FUNCALLs met in the walk
     rfx2_calls_n resq 1
@@ -18326,8 +18329,10 @@ r56_gen_global_initializers:
     ; `vitti leaked = make_kosh() + zero` held a kosh descriptor's address, and `vitti g = make_kosh()` put a
     ; kosh in a module vitti (both compiled on v309). The same two checks a statement gets, at this entry: the
     ; expression walk (no slice or kosh used as a number), and the module-vitti door for the bound value.
+%ifndef R142_MUTANT_NO_GLOBAL_CHECK        ; (test builds only: the initializer entry forgets the walk)
     mov rdi, rbx
     call r137_check_stmt
+%endif
     mov rdi, [rbx+16]
     call r134_holds_kosh
     test eax, eax
@@ -18338,7 +18343,13 @@ r56_gen_global_initializers:
     jmp r126_fail_door
 .r56_init_ok:
     mov rax, [rbx+16]
+%ifndef R142_MUTANT_NO_GLOBAL_CHECK
+    inc qword [rel r142_checked]   ; R142: checked above - generated as a statement's expressions are
+%endif
     call gen_expr
+%ifndef R142_MUTANT_NO_GLOBAL_CHECK
+    dec qword [rel r142_checked]
+%endif
     mov rdi, r12
     call r56_emit_global_store
 .r56_init_next:
@@ -18821,11 +18832,33 @@ r45_gen_block_body:                 ; R45: gen_block is the wrapper in src/r45_d
     ret
 
 ; gen_stmt(rax = statement node)
+; R142 (Sarvam R142 WS1, ChatGPT R209): the expression walk and the code generator are one door. gen_stmt runs
+; the walk on its statement and then generates it with r142_checked raised; gen_expr (below) generates without a
+; walk of its own only while r142_checked is raised. Anything that reaches gen_expr outside a checked statement
+; or initializer - a new entry, an entry that forgets - is walked there, its root as a number. No entry can
+; reach expression code generation unchecked; a forgotten check can only refuse more, never pass a slice.
 gen_stmt:
+%ifndef R142_MUTANT_NO_STMT_CHECK          ; (test builds only: the statement entry forgets the walk)
+    mov rdi, rax                   ; R137: a slice is used as a number nowhere in this statement
+    call r137_check_stmt           ; (every register preserved)
+    pushfq
+    inc qword [rel r142_checked]
+    popfq
+%endif
+    lea rsp, [rsp-8]               ; (the body sees the stack as gen_stmt always did)
+    call r142_gen_stmt_body
+    lea rsp, [rsp+8]
+%ifndef R142_MUTANT_NO_STMT_CHECK
+    pushfq
+    dec qword [rel r142_checked]
+    popfq
+%endif
+    ret
+
+r142_gen_stmt_body:
     push rbx
     mov rbx, rax
-    mov rdi, rbx                   ; R137: a slice is used as a number nowhere in this statement
-    call r137_check_stmt
+    mov rdi, rbx
     call r108_note_alias           ; R109: a second name of an open block's kosh (no code emitted)
     cmp qword [rel r45_debug], 0   ; R45 --debug: the trap before the statement
     je .r45_no_trap
@@ -21362,7 +21395,27 @@ r46_live_callee_saved_vars:
     ret
 
 ; gen_expr(rax = expression node)
+; R142: inside a checked statement or initializer (r142_checked > 0) straight to the generator. Outside one,
+; the walk first, on this expression, with the expression itself counted as a number (its destination is not
+; known here, so the strictest reading); then the generator, with r142_checked raised for the nested calls.
 gen_expr:
+    cmp qword [rel r142_checked], 0
+    jne r142_gen_expr_body
+    push rdi
+    mov rdi, rax
+    mov qword [rel r142_value_mode], 1
+    call r137_check_stmt           ; refuses, or returns with every register preserved
+    pop rdi
+    inc qword [rel r142_checked]
+    lea rsp, [rsp-8]
+    call r142_gen_expr_body
+    lea rsp, [rsp+8]
+    pushfq
+    dec qword [rel r142_checked]
+    popfq
+    ret
+
+r142_gen_expr_body:
     push rbx
 %ifdef SUTRAM_R65_TRAP_INT
     ; Do not compile-fold operands before runtime overflow checks.
@@ -28345,14 +28398,14 @@ r137_check_stmt:
     push r15
     xor r15, r15
     mov qword [rel r137_budget], 200000
-    call rfx2_push
+    call r142_push
 .walk:
     test r15, r15
-    jz .out
+    jz .walked
     dec qword [rel r137_budget]
     js .exhausted                      ; R141: an unfinished check refuses - it does not pass
     dec r15
-    lea rax, [rel rfx2_stack]
+    lea rax, [rel r142_wstack]
     mov rbx, [rax+r15*8]
     lea rax, [rel ast_heap]
     cmp rbx, rax
@@ -28503,9 +28556,9 @@ r137_check_stmt:
     mov rdi, [rbx+24]
     call .num
     mov rdi, [rbx+16]
-    call rfx2_push
+    call r142_push
     mov rdi, [rbx+24]
-    call rfx2_push
+    call r142_push
     jmp .walk
 .gen:                                  ; every field that may be a node (the r129 walk's rule)
     mov r9d, 8
@@ -28513,7 +28566,7 @@ r137_check_stmt:
     cmp r9d, 72
     jae .walk
     mov rdi, [rbx+r9]
-    call rfx2_push
+    call r142_push
     add r9d, 8
     jmp .gl
 .num:                                  ; rdi = a value used as a number: refuse a slice there
@@ -28577,6 +28630,14 @@ r137_check_stmt:
     call print_str_z
     lea rdi, [rel r137_hint]
     jmp capacity_fail
+.walked:                               ; R142: an expression reached outside a checked statement - its
+    cmp qword [rel r142_value_mode], 0 ; own value is used as a number too (gen_expr, below)
+    je .out
+    mov qword [rel r142_value_mode], 0
+    mov rdi, [rsp+32]                  ; the root (the saved rdi)
+    xor r10d, r10d
+    call .num
+    jmp .out
 .exhausted:
     lea rdi, [rel r141_budget_hdr]
     call print_str_z
@@ -28593,6 +28654,21 @@ r137_check_stmt:
     pop rcx
     pop rbx
     pop rax
+    ret
+
+; r142_push(rdi = node or 0): onto r137_check_stmt's own stack (r15 = depth). Clobbers rax. R142: r137's walk
+; calls r134_holds_kosh, which may work out a prakriya's return kind for the first time (r126_ret_kind) on
+; rfx2_stack - the stack this walk used to share. That overwrote the walk's pending nodes: v310 compiled
+; `likha(((m[0:2] * 1) * 1) + (f() + zero))` in a prakriya defined before f, and printed an address.
+r142_push:
+    test rdi, rdi
+    jz .r
+    cmp r15, RFX2_STACK_CAP
+    jae rfx2_add.cap
+    lea rax, [rel r142_wstack]
+    mov [rax+r15*8], rdi
+    inc r15
+.r:
     ret
 
 ; r126_bind(rdi = name, rsi = the kind given to it, rdx = the value expression or 0): the name keeps one

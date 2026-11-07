@@ -1,0 +1,5 @@
+C1 (vitti leaked = make_kosh() + zero), each compiler:
+old/sutram_compiler      Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na 
+v310m                    Siddh: 1740 baait sankalit 139778857107472
+relbin/sutram_compiler   Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na 
+m2                       Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na 

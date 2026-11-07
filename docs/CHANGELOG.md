@@ -1,4 +1,23 @@
-> **The 20 newest entries.** Older ones, from "v290" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v291" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v311 (Claude, R142) - the check inside expression code generation, its own stack, no delete on a name
+
+- **`gen_expr` carries the expression check** (Sarvam R142 WS1; ChatGPT R209: the R141 gate counted two calls and
+  could not see a third entry that skipped them). `gen_stmt` and `r56_gen_global_initializers` walk, then generate
+  with `r142_checked` raised; `gen_expr` generates without a walk of its own only while it is raised, and walks
+  anything else first, its own value counted as a number. Over all 768 programs only two compiler-made diagnostic
+  calls reach it that way, and they pass. Gate `R137 slice is not a number`: 74 checks - the shape read from the
+  source, and two mutant compilers whose entries forget the walk (`-DR142_MUTANT_NO_STMT_CHECK`,
+  `-DR142_MUTANT_NO_GLOBAL_CHECK`) still refuse every negative; v310 with the initializer's walk removed compiles C1.
+- **The walk has its own stack.** `r126_ret_kind`, run for the first time in the middle of the walk, reused
+  `rfx2_stack` and overwrote the nodes still to be checked: on v310 `likha(((m[0:2] * 1) * 1) + (f() + zero))` in a
+  `prakriya` defined before `f` printed an address, and ChatGPT's S4 probe in that shape read 7 while `k[0]` was 99
+  (the shared stack was noted in the Windows branch, PR #68; reproduced on main here). Both refused now.
+- **Installer:** a target is deleted at publishing only when the copy kept under its `_superseded` name has the same
+  full SHA-256 (ChatGPT R209 I2c); otherwise the run stops and both are kept. From PR #68: a reused target that
+  changed or disappeared is refused before it is moved, and every target is checked for a reparse point. PR #68's
+  two native fixtures are in `tests/windows/`, with a new one for the interruption boundaries (not run here).
+- Guard v310 -> v311: ELF and PE 587 identical / 181 refused / 0 DIFFER; the 181 refusal messages unchanged.
 
 ## v310 (Claude, R141) - the module-level initializer, the lock before every read, a check that cannot pass unfinished
 
@@ -320,17 +339,3 @@
 - **The shell:** `tyaj` leaves; `exit`, `quit`, `help` still work, with the warning; `sahayata` is help.
 - **Sarvam's decisions applied:** `to` dropped; `vartani_sandhi`, `kosh_apanay`, `anka_akshar`, `likha_santat`;
   Muse's two: `smaran_pratilip` and `sahayata`. **Not changed:** `Sutram Error` (R111-00 says why).
-
-## v291 (Claude, R109) - the outlives rule follows a second name and a chain of any length; the installer gate names the payload; the suite's summary is its last line
-
-- **ChatGPT R178's branch findings, checked on main:** two were open on v290. `vitti a = k` then `rakh(a)` gave a
-  block's `kosh` to a `prakriya` that keeps it (only `k`'s own name was checked), and a chain of 33 or more
-  keeping `prakriya`s passed it out (the fixpoint stopped after 32 rounds). Both are `E_KOSH_MANDAPA` now:
-  an alias made by `vitti a = k` or `a = k` carries the block, and the fixpoint runs to convergence. Examples 320
-  and 321. A full table of open block `kosh`s now refuses instead of leaving the next one unchecked, and a walk
-  that overflows its stack counts the parameter as keeping (neither is reachable in the tree).
-- **`installer version`** now says what it read: `payload v243 inside Sutram-Setup.exe (the wizard has no
-  version of its own)`, the payload's packing date, and how many of its `lib`/`lang` files differ from the
-  tree. `docs/INSTALLER-REBUILD.md` is the Windows procedure, with the payload compiler's expected SHA-256.
-- **`tests/run_tests.py`** prints the failure details first and `suite: ... (N run)` last; a no-expectation
-  program's output is indented and labelled. The gates read the last line.

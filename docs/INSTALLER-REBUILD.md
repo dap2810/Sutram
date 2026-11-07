@@ -119,3 +119,7 @@ the built file. The Windows builder normalizes text to LF but does not fix the Z
 
 **R141 (v310):** compiler and engine changed (the lock before every state read); the runtime and `sutram-link.exe`
 are unchanged. Built with `tools/build_installer_linux.py` as in R140.
+
+**R142 (v311):** compiler and engine changed (a target deleted only when its kept copy has the same full SHA-256;
+a reused target that changed or disappeared is refused before it is moved, from PR #68); the runtime and
+`sutram-link.exe` are unchanged. Built with `tools/build_installer_linux.py` as in R140.

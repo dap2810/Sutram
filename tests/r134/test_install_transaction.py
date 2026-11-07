@@ -19,6 +19,8 @@ previous payload first and were writing the new one into the target. What makes 
     with a way out (move them, or the folder, aside), and nothing changes;
   * COMMITTED is journaled after the state is written, the pending hint is removed after it, and the committed
     transaction folder is removed idempotently (a rerun finding a committed journal only cleans up);
+  * (R142) a target is deleted at publishing only when the copy already kept under its _superseded name has the
+    target's full SHA-256 - a name is not the bytes; a different copy stops the run and both are kept;
   * the uninstaller leaves an uncommitted transaction's backups and says where they are;
   * the wizard appends a line to the engine log when its 15-minute stop fires (R135 WS4);
   * Windows is told the compiler's version; (R136) the logs are appended with full sharing and a failed log line
@@ -88,6 +90,19 @@ def main():
           'R137 (I2): each target is checked again just before it is moved, and a changed one is kept')
     check('Journal ("SUPERSEDED`t"' in pubtxt and "'_superseded'" in pubtxt,
           "R137: a stopped run's own copy is moved aside under _superseded, not deleted")
+    i_sup = pubtxt.find('if (Test-Path -LiteralPath $sup -PathType Leaf) {')
+    i_kept, i_cmp = pubtxt.find('$kept = Get-Sha $sup', i_sup), pubtxt.find('if ($kept -ne $have) {', i_sup)
+    i_thr, i_del = pubtxt.find('throw (', i_cmp), pubtxt.find('[IO.File]::Delete($target)', i_sup)
+    check(0 < i_sup < i_kept < i_cmp < i_thr < i_del and pubtxt.count('[IO.File]::Delete($target)') == 1
+          and pubtxt.count('Delete(') == 2 and 'Delete($staged)' in pubtxt,
+          'R142 (R209 I2c): a target is deleted only when the copy kept under its _superseded name has its full SHA-256; '
+          'a different copy stops the run before anything is deleted, and nothing else in publishing deletes a target')
+    i_c1 = pubtxt.find("throw ('A file changed after its installed copy was verified")
+    i_c2 = pubtxt.find("throw ('A file disappeared after its installed copy was verified")
+    i_bkj, i_pubj = pubtxt.find('$bk = Join-Path $txnBackup $rel'), pubtxt.find('Journal ("PUBLISH`t"')
+    check(0 < i_rv < i_c1 < i_bkj and 0 < i_c2 < i_pubj and pubtxt.count('Assert-NoReparsePath $target') == 1,
+          'R142 (from PR #68): a target staging reused, changed or gone since, is refused before it is moved and before '
+          'PUBLISH is journaled; every target is checked for a reparse point')
     sp = func(code, 'Stage-Payload')
     i_s, i_c, i_v, i_d = (sp.find("Log ('START "), sp.find('[IO.File]::Copy($src,$part,$true)'),
                           sp.find("(Get-Sha $part) -ne $NewFiles[$rel]"), sp.find("Log ('DONE  "))

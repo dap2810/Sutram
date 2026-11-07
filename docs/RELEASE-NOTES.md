@@ -1,18 +1,31 @@
-# Sutram 1.0 (v310) — release notes
+# Sutram 1.0 (v311) — release notes
 
-**Compiler `Sutram 1.0 (v310) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v310). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v311) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v311). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
-## Status: what v310 closes, and what it does not (R140-R141)
+## Status: what v311 closes, and what it does not (R140-R142)
 
-v310 is v309 plus three narrow fixes (R141): a module-level `vitti` initializer is checked as a statement is, the
-installer takes its lock before it reads any installation state, and an unfinished expression check refuses. The
-native measurements below are of v309; v310 has not yet been run on Windows.
+v311 is v310 plus (R142):
+- **the expression check is inside expression code generation.** `gen_expr` generates without a check of its own
+  only inside a statement or module-level initializer the check has already walked; anything reaching it another
+  way is checked there, its own value counted as a number. A new entry that forgets the check can refuse more; it
+  cannot let a slice through. The R137 gate builds two compilers whose entries forget it and shows every refusal
+  still refused.
+- **the check has its own stack.** It shared one with the analysis that works out what a `prakriya` returns, and
+  when that analysis ran for the first time in the middle of the check it overwrote the nodes still to be checked:
+  on v310, `likha(((m[0:2] * 1) * 1) + (f() + zero))` in a `prakriya` defined before `f` compiled and printed an
+  address, and ChatGPT's stale-read probe written the same way read 7 while `k[0]` was 99. Both are refused now.
+- **the installer deletes nothing on the strength of a name:** a stopped run's copy is deleted only when the copy
+  already kept under its `_superseded` name has the same full SHA-256; a different one stops the run and both are
+  kept. And (from the Windows branch, PR #68) a file staging reused that changed or disappeared before it was
+  published is refused before anything is moved.
+
+The native measurements below are of v309. **v310 and v311 have not yet been run on Windows.**
 
 
 Measured, with where:
@@ -28,8 +41,9 @@ Measured, with where:
 
 **Not closed, and not claimed:**
 - **A slice is refused in every form the gates test** (the R133, R134 and R137 gates); **that is not a proof that no
-  other form exists.** The check covers every statement, and every operator in one place. It covers every
-  statement and, from v310, the one expression path outside a statement, the module-level `vitti` initializers
+  other form exists.** The check covers every operator in one place, and from v311 every path into expression
+  code generation (an expression outside a checked statement or initializer is checked where it is generated). It
+  covers every statement and, from v310, the one expression path outside a statement, the module-level `vitti` initializers
   (`vitti leaked = make_kosh() + 0` held an address on v309, ChatGPT R208 C1; a `kosh` bound to a module `vitti`
   there was not refused either). The language has no other: no constants, no field defaults, no default
   arguments, no module-level `kosh` or `mala`.
@@ -37,7 +51,9 @@ Measured, with where:
   start-up reserve on Windows, and teardown in general are not.
 - **The installer** is safe to interrupt and retry, file by file. It is not one atomic step: the shortcuts,
   registry and PATH are finished by a rerun, not rolled back. Its stops between two journal records are not yet
-  tested natively. Acronis Active Protection suspended the v306 and v307 upgrades; the measured upgrades of the
+  tested natively: `tests/windows/test_installer_boundaries.ps1` (R142) stops the engine's own staging and
+  publishing code before every record and rename, with and without a torn last record, and reruns it - written for
+  the native run, not yet run. Acronis Active Protection suspended the v306 and v307 upgrades; the measured upgrades of the
   v309-era packages were not suspended. **Whether a security product suspends an installer is that product's
   decision, and no cause is established.**
 - **The package:** from R140 one exact package, its manifest checked against the embedded ZIP. A package built on

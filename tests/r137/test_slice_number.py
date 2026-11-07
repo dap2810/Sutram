@@ -17,13 +17,25 @@ number first. v309 refuses the use (r137_check_stmt, run on every statement befo
 R141: and the same at a module-level vitti initializer, which is not a statement (ChatGPT R208 C1): a kosh from a
 call in arithmetic there is E_KOSH_GANIT, a kosh bound to the module vitti E_KOSH_DVARA; a scalar call is fine.
 
+R142 (Sarvam R142 WS1, ChatGPT R209): the walk is inside expression code generation. gen_expr generates without
+a walk of its own only inside a statement or initializer the walk has checked (r142_checked); anything reaching it
+otherwise is walked there, its own value counted as a number. The gate proves the shape two ways:
+  * by reading the source: gen_expr's first instructions are that test and the walk; the generator's body is
+    reached from gen_expr alone; r142_checked is raised only after a walk; the walk keeps its own stack;
+  * by building the two entries' mutants (-DR142_MUTANT_NO_STMT_CHECK, -DR142_MUTANT_NO_GLOBAL_CHECK: the entry
+    forgets the walk, as a new entry might) and running every case above with them: every negative is still
+    refused, and a control may be refused (a forgotten check refuses more) but never compiles to a wrong value.
+And the walk's stack (R142): r126_ret_kind, working out a prakriya's return kind for the first time in the middle
+of the walk, used to overwrite the walk's pending nodes on the shared rfx2_stack: v310 printed an address, and
+read 7 while k[0] was 99, for a statement in a prakriya defined before the prakriya it called.
+
 The gate fails if src/sutram_compiler.asm defines an OP_* this table does not spell, so a new operator cannot be
 added without a case here. A refusal must be an unsuccessful compiler exit, no output file and the code.
 
   python3 tests/r137/test_slice_number.py [--compiler PATH]
 Last line: "r137 slice is not a number: N checks, M failed".
 """
-import os, re, subprocess, sys, tempfile
+import os, re, shutil, subprocess, sys, tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OPS = {'OP_ADD': '+', 'OP_SUB': '-', 'OP_MUL': '*', 'OP_DIV': '/', 'OP_EQ': '==', 'OP_LE': '<=', 'OP_LT': '<',
@@ -78,6 +90,23 @@ GLOBALS = [
     ('global initializer control: 3 + f()', 'vitti g = 3 + f()\nprakriya f() {\n    nivartanam 4\n}\nmukhya() {\n    likha(g)\n}\n', '7\n'),
 ]
 
+# R142: the walk's pending nodes, overwritten by a first r126_ret_kind of f (defined after g) on v310.
+LATE_F = 'prakriya f() {\n    vitti a = 1\n    nivartanam a + 3 - 4\n}\nmukhya() {\n    g()\n}\n'
+STACK = [
+    ('R142 walk stack: slice arithmetic beside a first call of f', 'prakriya g() {\n    mala m[4]\n    m[0] = 5\n'
+     '    vitti zero = 0\n    likha(((m[0:2] * 1) * 1) + (f() + zero))\n    nivartanam 0\n}\n' + LATE_F, 'E_VIBHAG_ANKA'),
+    ('R142 walk stack: kosh arithmetic beside a first call of f', 'prakriya dek(kosh a) {\n    nivartanam a\n}\n'
+     'prakriya g() {\n    kosh k[1]\n    kosh_kship(k, 7)\n    vitti zero = 0\n'
+     '    likha(((dek(k) + zero) * 1) + (f() + zero))\n    nivartanam 0\n}\n' + LATE_F, 'E_KOSH_GANIT'),
+    ('R142 walk stack: the S4 stale read beside a first call of f (v310: 7 and 99)',
+     'prakriya keep(x) {\n    nivartanam x\n}\nprakriya g() {\n    kosh k[1]\n    kosh_kship(k, 7)\n'
+     '    vitti obstacle = nirmmita(16)\n    vitti zero = 0\n    vitti t = keep((k[0:1] * 1) + (f() + zero))\n'
+     '    kosh_kship(k, 8)\n    k[0] = 99\n    vitti addr = t[0]\n    likha(addr[0])\n    likha(k[0])\n'
+     '    nivartanam 0\n}\n' + LATE_F, 'E_VIBHAG_ANKA'),
+    ('R142 walk stack control: the same with no slice prints 4', 'prakriya g() {\n    vitti zero = 0\n'
+     '    likha(((zero * 1) * 1) + (f() + 4))\n    nivartanam 0\n}\n' + LATE_F, '4\n'),
+]
+
 
 def run(exe):
     try:
@@ -109,18 +138,38 @@ def main():
         i = code.find('\n' + label + ':')
         m = re.search(r'\n[a-z_][a-z0-9_]*:', code[i + 1:]) if i >= 0 else None
         return code[i:i + 1 + (m.start() if m else 0)] if i >= 0 else ''
-    entries = [l for l in ('gen_stmt', 'r56_gen_global_initializers') if 'call r137_check_stmt' in body_of(l)]
-    check(entries == ['gen_stmt', 'r56_gen_global_initializers'] and code.count('call r137_check_stmt') == 2,
-          f'R141: both entries into expression code generation run the check - every statement and every module-level '
-          f'initializer ({entries})')
+    ge = [l.strip() for l in body_of('gen_expr').splitlines() if l.strip() and not l.strip().startswith('%')][1:]
+    check(ge[:2] == ['cmp qword [rel r142_checked], 0', 'jne r142_gen_expr_body']
+          and 0 < ''.join(ge).find('call r137_check_stmt') < ''.join(ge).find('call r142_gen_expr_body'),
+          'R142: gen_expr itself goes to the generator only inside a checked statement or initializer, and walks '
+          'anything else first')
+    refs = {b: [l for l in re.findall(r'(?m)^[a-z_][a-z0-9_.]*:|\b(?:call|jmp|j[a-z]+)\s+' + b + r'\b', code)
+                if not l.endswith(':')] for b in ('r142_gen_expr_body', 'r142_gen_stmt_body')}
+    outside = [b for b, w in (('r142_gen_expr_body', 'gen_expr'), ('r142_gen_stmt_body', 'gen_stmt'))
+               if code.count(b) != body_of(w).count(b) + 1]
+    check(not outside and refs['r142_gen_expr_body'] and refs['r142_gen_stmt_body'],
+          f'R142: the generators\' bodies are reached only through gen_expr and gen_stmt ({outside or "no other reference"})')
+    raised = []
+    for m in re.finditer(r'inc qword \[rel r142_checked\]', code):
+        fn = re.findall(r'(?m)^([a-z_][a-z0-9_]*):', code[:m.start()])[-1]
+        before = code[code.rfind('\n' + fn + ':', 0, m.start()):m.start()]
+        raised.append((fn, 'call r137_check_stmt' in before))
+    check(raised and all(ok for _, ok in raised),
+          f'R142: r142_checked is raised only after the walk, in the same function ({raised})')
+    walk = body_of('r137_check_stmt')
+    check('rfx2_stack' not in walk and 'rfx2_push' not in walk and 'r142_wstack' in walk,
+          'R142: the walk keeps its own stack (r126_ret_kind uses rfx2_stack in the middle of it)')
     work = tempfile.mkdtemp(prefix='r137-')
     progs = [(n, HEAD + '    ' + b + '\n}\n', w) for n, b, w in cases()] + [('ChatGPT S4 laundering probe', CHATGPT, 'E_')]
-    progs += [(n, t, w) for n, t, w in GLOBALS]
-    for i, (name, text, want) in enumerate(progs):
-        sm, out = os.path.join(work, f'{i}.sm'), os.path.join(work, f'{i}')
+    progs += [(n, t, w) for n, t, w in GLOBALS + STACK]
+
+    def compile_(comp, i, text, tag=''):
+        sm, out = os.path.join(work, f'{tag}{i}.sm'), os.path.join(work, f'{tag}{i}')
         open(sm, 'w', encoding='utf-8').write(text)
         c = subprocess.run([comp, sm, out], cwd=ROOT, capture_output=True, text=True)
-        said = c.stdout + c.stderr
+        return c, out, c.stdout + c.stderr
+    for i, (name, text, want) in enumerate(progs):
+        c, out, said = compile_(comp, i, text)
         if want.startswith('E_'):
             ok = c.returncode != 0 and not os.path.exists(out) and (want == 'E_' and '[E_' in said or f'[{want}]' in said)
             got = 'refused ' + (m.group(0) if (m := re.search(r'E_[A-Z_]+', said)) else repr(said.strip()[:60]))
@@ -132,6 +181,34 @@ def main():
                 rc, got = run(out)
                 ok = rc == 0 and got == f'prints {want!r}'
         check(ok, f'{name}: want {want!r}; {got}')
+    if not own:
+        print('NOT RUN  the mutant check (it builds this tree\'s compiler; --compiler names another)')
+    elif not (shutil.which('nasm') and shutil.which('ld')):
+        print('NOT RUN  the mutant check: nasm or ld is not installed')
+    else:
+        for define in ('R142_MUTANT_NO_STMT_CHECK', 'R142_MUTANT_NO_GLOBAL_CHECK'):
+            exe = os.path.join(work, define)
+            b = subprocess.run(f'nasm -f elf64 -I. -D{define} src/r68_compiler_entry.asm -o {exe}.o && ld -o {exe} {exe}.o',
+                               shell=True, cwd=ROOT, capture_output=True, text=True)
+            if b.returncode:
+                check(False, f'{define}: the mutant builds ({b.stderr.strip()[:80]})')
+                continue
+            leaked, over = [], []
+            for i, (name, text, want) in enumerate(progs):
+                c, out, said = compile_(exe, i, text, define)
+                made = os.path.exists(out)
+                if want.startswith('E_'):
+                    if c.returncode == 0 or made or '[E_' not in said:
+                        leaked.append(name)
+                elif made:
+                    rc, got = run(out)
+                    if not (rc == 0 and got == f'prints {want!r}'):
+                        leaked.append(name + ' (' + got + ')')
+                else:
+                    over.append(name)
+            check(not leaked, f'R142 mutant {define} (the entry forgets the walk): every negative still refused, no control '
+                  f'wrong ({len(progs) - len(over) - len(leaked)} as before, {len(over)} control(s) refused instead'
+                  + (f': {", ".join(over)}' if over else '') + (f'; LEAKED: {leaked}' if leaked else '') + ')')
     print(f'r137 slice is not a number: {checks} checks, {fails} failed')
     return 1 if fails else 0
 

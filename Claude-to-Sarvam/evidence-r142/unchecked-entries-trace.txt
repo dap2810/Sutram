@@ -1,0 +1,3 @@
+768 programs
+14 ('r80_emit_likha_tail', 8) 2 ['examples/286_r82_kosh_in_mandapa.sm', 'examples/299_r94_nonfinite_kosh_mandapa.sm']
+2 ('r82_emit_check.msg', 8) 2 ['examples/286_r82_kosh_in_mandapa.sm', 'examples/299_r94_nonfinite_kosh_mandapa.sm']

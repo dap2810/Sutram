@@ -1,5 +1,19 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v291 (Claude, R109) - the outlives rule follows a second name and a chain of any length; the installer gate names the payload; the suite's summary is its last line
+
+- **ChatGPT R178's branch findings, checked on main:** two were open on v290. `vitti a = k` then `rakh(a)` gave a
+  block's `kosh` to a `prakriya` that keeps it (only `k`'s own name was checked), and a chain of 33 or more
+  keeping `prakriya`s passed it out (the fixpoint stopped after 32 rounds). Both are `E_KOSH_MANDAPA` now:
+  an alias made by `vitti a = k` or `a = k` carries the block, and the fixpoint runs to convergence. Examples 320
+  and 321. A full table of open block `kosh`s now refuses instead of leaving the next one unchecked, and a walk
+  that overflows its stack counts the parameter as keeping (neither is reachable in the tree).
+- **`installer version`** now says what it read: `payload v243 inside Sutram-Setup.exe (the wizard has no
+  version of its own)`, the payload's packing date, and how many of its `lib`/`lang` files differ from the
+  tree. `docs/INSTALLER-REBUILD.md` is the Windows procedure, with the payload compiler's expected SHA-256.
+- **`tests/run_tests.py`** prints the failure details first and `suite: ... (N run)` last; a no-expectation
+  program's output is indented and labelled. The gates read the last line.
+
 ## v290 (Claude, R108 + its correction) - the outlives rule: a block's kosh never goes to a prakriya that keeps it; a mala operand is refused; the arena is NOT on main
 
 - **A `kosh` made in a `mandapa` may be passed only to a parameter that does not keep it** (does not return it,
