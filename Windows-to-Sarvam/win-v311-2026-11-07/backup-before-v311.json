@@ -1,0 +1,3326 @@
+{
+    "action":  "backup",
+    "name":  "before-v311",
+    "time":  "2026-11-07T13:28:24.4425153-05:00",
+    "user_path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin;C:\\Users\\dmech\\.cargo\\bin;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;\\msys64\\mingw64\\bin;C:\\msys64;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Mozilla Firefox;C:\\Users\\dmech\\go\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python311\\Scripts;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python313\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Python\\bin;C:\\Users\\dmech\\miniconda3\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Programs\\MovieBox-Tui\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Zed\\bin;C:\\Users\\dmech\\AppData\\Roaming\\npm;C:\\Users\\dmech\\AppData\\Local\\Programs\\Ollama;C:\\Users\\dmech\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Users\\dmech\\.local\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim;C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin",
+    "machine_path":  "C:\\Python314\\Scripts\\;C:\\Python314\\;C:\\Program Files\\Lapce\\;C:\\Program Files\\Python313\\Scripts\\;C:\\Program Files\\Python313\\;c:\\windows\\system32;c:\\windows;c:\\windows\\system32\\wbem;c:\\windows\\system32\\windowspowershell\\v1.0\\;c:\\windows\\system32\\openssh\\;c:\\program files\\microsoft sql server\\client sdk\\odbc\\110\\tools\\binn\\;c:\\program files (x86)\\microsoft sql server\\120\\tools\\binn\\;c:\\program files\\microsoft sql server\\120\\tools\\binn\\;c:\\program files\\microsoft sql server\\120\\dts\\binn\\;c:\\tdm-gcc-64\\bin;c:\\program files\\dotnet\\;c:\\program files\\nvidia corporation\\nvidia app\\nvdlisr;c:\\program files (x86)\\windows kits\\10\\windows performance toolkit\\;c:\\program files\\crucial\\crucial storage executive;c:\\program files\\microsoft sql server\\150\\tools\\binn\\;c:\\program files\\microsoft sql server\\client sdk\\odbc\\170\\tools\\binn\\;c:\\mingw\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files (x86)\\Common Files\\Acronis\\SnapAPI\\;C:\\Program Files (x86)\\Common Files\\Acronis\\VirtualFile\\;C:\\Program Files (x86)\\Common Files\\Acronis\\VirtualFile64\\;C:\\Program Files (x86)\\Common Files\\Acronis\\FileProtector\\;C:\\Program Files (x86)\\Common Files\\Acronis\\FileProtector64\\;C:\\msys64\\mingw64\\bin;C:\\libs\\libharu\\include;C:\\libs\\libharu\\build\\src;C:\\libs\\libharu\\build\\include;C:\\TDM-GCC-64\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Swift\\Toolchains\\6.0.2+Asserts\\usr\\bin\\swift.exe;C:\\Webdrivers;C:\\Program Files\\Mozilla Firefox;C:\\Program Files\\Go\\bin;C:\\Program Files\\mingw64\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs\\;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\WSL\\;C:\\Program Files\\Kraken Desktop\\",
+    "files":  [
+                  {
+                      "sha256":  "79471E8379143DB173FE9840A55D8DEF36EE30ACF78D650DD354223337AFE652",
+                      "bytes":  29,
+                      "relative":  ".sutram-install"
+                  },
+                  {
+                      "sha256":  "EAF682DB506C55BB4E6F154477DA704CC42527F1A3876D5AC69605D7F9B9D3E5",
+                      "bytes":  173358,
+                      "relative":  "install-journal.log"
+                  },
+                  {
+                      "sha256":  "1D465DACAFC0356613066BE50F94A81C11C2F0DF18E935A27EE9EFE48CE85197",
+                      "bytes":  250,
+                      "relative":  "install-state.ini"
+                  },
+                  {
+                      "sha256":  "F6342AA5EA504E0B8A69BFB17066F046725DA3FB114825A57DFF4AD515DAD393",
+                      "bytes":  95667,
+                      "relative":  "install.log"
+                  },
+                  {
+                      "sha256":  "DF5C9726F24B0D12E511C4ABF4017FC3C4BFF7D8AC38CF2CCC67EE52977FC920",
+                      "bytes":  1650,
+                      "relative":  "LICENSE.txt"
+                  },
+                  {
+                      "sha256":  "EB7E29272129507E162EC9D858662BE514DC58650E325FAEDEBA340B9B84F643",
+                      "bytes":  63662,
+                      "relative":  "payload.manifest.sha256"
+                  },
+                  {
+                      "sha256":  "AB0EA01B9E8E13A95E1BE50D36779F2153726308E7EAF7B4AFECB45E1E34B9BD",
+                      "bytes":  10893,
+                      "relative":  "README.md"
+                  },
+                  {
+                      "sha256":  "635C276B354C672925D460EAF6717C69333ED347EAA6084EDA08AE6B40A55AD0",
+                      "bytes":  142563,
+                      "relative":  "sutram-ide-gui.exe"
+                  },
+                  {
+                      "sha256":  "BB134603D70D49C4ABD08112B77A5309FF447280F8754CB4E6E24CB4626BBA47",
+                      "bytes":  1993216,
+                      "relative":  "Sutram-Uninstall.exe"
+                  },
+                  {
+                      "sha256":  "B48AEB52516433C3CCE51FFE436FA04355CB938AA0B5188C60FE7C02F2923EC1",
+                      "bytes":  36693,
+                      "relative":  "assets\\sutram.ico"
+                  },
+                  {
+                      "sha256":  "814CB11AE1C9111BE3CFAF0812A3A4E40BA8FD26F24A48AE263A11282DEFDE2D",
+                      "bytes":  19903,
+                      "relative":  "bin\\sutram-link.exe"
+                  },
+                  {
+                      "sha256":  "303D6EACA05AE01A1C8AC0A825D81A51965932CDA003B0D9E9421E3DF63F126C",
+                      "bytes":  537167,
+                      "relative":  "bin\\sutram.exe"
+                  },
+                  {
+                      "sha256":  "0B0848F61BB1B8473B9E0F746A6EDD6F39B46FB950A3BE6F24C2753EF7B14846",
+                      "bytes":  1014,
+                      "relative":  "bin\\lang\\bengali.lang"
+                  },
+                  {
+                      "sha256":  "AD88EA3F2EAB52D1EAF8092680608E3BD16F75A7DE866F4FCB912FB4C6266D50",
+                      "bytes":  23206,
+                      "relative":  "bin\\lang\\bengali.sandesh"
+                  },
+                  {
+                      "sha256":  "AF2178938604DBD8A7EDBA24AC0B4E1632E0DDCE0351F51FDC3678BAA187E7BA",
+                      "bytes":  1588,
+                      "relative":  "bin\\lang\\gujarati.lang"
+                  },
+                  {
+                      "sha256":  "D20C036F97C7CF34B73282E235CBC3F00BBC619498F060E9E78DF931B7878000",
+                      "bytes":  22485,
+                      "relative":  "bin\\lang\\gujarati.sandesh"
+                  },
+                  {
+                      "sha256":  "6CAEDBD349188A8C739E86286D8FF08AD4D750947F9AB60B5B136EDF98F51FBC",
+                      "bytes":  1110,
+                      "relative":  "bin\\lang\\hindi.lang"
+                  },
+                  {
+                      "sha256":  "D260895B0A73417518493F9D10E387495C99CD2DDAFA3A757DC97FD94A307548",
+                      "bytes":  22591,
+                      "relative":  "bin\\lang\\hindi.sandesh"
+                  },
+                  {
+                      "sha256":  "B19CE9DEDC9A9EA50F5CA486AABD8E89481A77D7DB58AE19BCCCC24D5CD766BC",
+                      "bytes":  1166,
+                      "relative":  "bin\\lang\\kannada.lang"
+                  },
+                  {
+                      "sha256":  "82E1B4DB44EA4C4D5849D70224195470A57C6764C9DB816661C0550510999EFB",
+                      "bytes":  23266,
+                      "relative":  "bin\\lang\\kannada.sandesh"
+                  },
+                  {
+                      "sha256":  "00288BFECF07A402049CF87D025C780E8C85F71C509EB84E36537E208F396F87",
+                      "bytes":  1148,
+                      "relative":  "bin\\lang\\malayalam.lang"
+                  },
+                  {
+                      "sha256":  "6F29D9F93F22BF8A2EBC8452847B021F875312A989B1E0F5A232228145C6AE28",
+                      "bytes":  24569,
+                      "relative":  "bin\\lang\\malayalam.sandesh"
+                  },
+                  {
+                      "sha256":  "338D92ED47CC81511F3A4E5B78A27EA4D23FB0ED8CA89E95E0C610D5C93AFAAF",
+                      "bytes":  1115,
+                      "relative":  "bin\\lang\\marathi.lang"
+                  },
+                  {
+                      "sha256":  "8E3E7067C1D7230C427F516EF1436C79F595DC82DB915F42F3A76FB0CF1E5F42",
+                      "bytes":  23368,
+                      "relative":  "bin\\lang\\marathi.sandesh"
+                  },
+                  {
+                      "sha256":  "B623CB6A9944C61281725C3B51CBED190AA57AC50276205658C12D6D2C424403",
+                      "bytes":  1091,
+                      "relative":  "bin\\lang\\odia.lang"
+                  },
+                  {
+                      "sha256":  "9D91CB202346DF38EBC14BCA2F79536998013699F8BCD26E64C799D13EB3DAD3",
+                      "bytes":  23510,
+                      "relative":  "bin\\lang\\odia.sandesh"
+                  },
+                  {
+                      "sha256":  "3A5C596A39F2A7CB4208F0AD444CD3FFFEC587AD9987B4F76254626BFA77CF3E",
+                      "bytes":  981,
+                      "relative":  "bin\\lang\\punjabi.lang"
+                  },
+                  {
+                      "sha256":  "101825BF0BB10E1B3128F79E2567777F35CB1777EB38E5948F9DD447E7CE7C74",
+                      "bytes":  22540,
+                      "relative":  "bin\\lang\\punjabi.sandesh"
+                  },
+                  {
+                      "sha256":  "0B1940860BBFD54C1A5EE65F45BF31FFD1D4E68A0D95C5B5106EF1ABDC1D0D9F",
+                      "bytes":  3032,
+                      "relative":  "bin\\lang\\sanskrit.lang"
+                  },
+                  {
+                      "sha256":  "C47A31EFDD12BD0C6F6FFD64505391373BCD6236B87C4549C96B807A4F4CE027",
+                      "bytes":  23684,
+                      "relative":  "bin\\lang\\sanskrit.sandesh"
+                  },
+                  {
+                      "sha256":  "98F46C9EAE99D6E80F776609C1DCC981367EC1921BC4C099DFE1151401635218",
+                      "bytes":  1418,
+                      "relative":  "bin\\lang\\tamil.lang"
+                  },
+                  {
+                      "sha256":  "90C6D14A730CC037EFF6D54742C04D3FB06148FCA06E0D32963F6C0608D48F30",
+                      "bytes":  25479,
+                      "relative":  "bin\\lang\\tamil.sandesh"
+                  },
+                  {
+                      "sha256":  "B92058D54DE8A83230C724C2BA180FC00FB964548A684F92F7791BBCA1032F6A",
+                      "bytes":  1186,
+                      "relative":  "bin\\lang\\telugu.lang"
+                  },
+                  {
+                      "sha256":  "2AE64BCB6951C50070264A4407199DD1F794B02E5D4AB761FE0414A8A4D9850C",
+                      "bytes":  24085,
+                      "relative":  "bin\\lang\\telugu.sandesh"
+                  },
+                  {
+                      "sha256":  "784B98A178B79B6856161AC2F474226C8121EE63D5236FF3F098A14AD0280876",
+                      "bytes":  3578,
+                      "relative":  "bin\\lib\\aadhar.smlib"
+                  },
+                  {
+                      "sha256":  "E3D262BBB3950CC0F567000732FC3C3319AFF9174385CD294E00ACBA53290C76",
+                      "bytes":  4631,
+                      "relative":  "bin\\lib\\ank.smlib"
+                  },
+                  {
+                      "sha256":  "789017ADE05175680644A9C8EBD8610BE5C4F001FE8CE2EA3794AE25A0402C26",
+                      "bytes":  4629,
+                      "relative":  "bin\\lib\\anukram.smlib"
+                  },
+                  {
+                      "sha256":  "FB8EC5094D4D14D98CCBBD126BAAB088A252DA892DFA4759C1A86EBAC5534479",
+                      "bytes":  10601,
+                      "relative":  "bin\\lib\\brihat.smlib"
+                  },
+                  {
+                      "sha256":  "0DBACAA0924254ED407235B49042D1751BAE264ACDF2114DA275B93187C1AD52",
+                      "bytes":  3844,
+                      "relative":  "bin\\lib\\chandas.smlib"
+                  },
+                  {
+                      "sha256":  "E736AD00F26DDDDDA89B24F8DF13CE165543C92BD13E8F163B8F7CE8564EB24E",
+                      "bytes":  9899,
+                      "relative":  "bin\\lib\\ganit.smlib"
+                  },
+                  {
+                      "sha256":  "ECA1D107DE2E5F2A9D1D9F10DF80371CB3617B938AD5C85B619103589AB78B09",
+                      "bytes":  22996,
+                      "relative":  "bin\\lib\\ganita.smlib"
+                  },
+                  {
+                      "sha256":  "56863804379068BFE2078C51652C3FD7A64975FDC4FCADD16D61AE3B23FE7379",
+                      "bytes":  1059,
+                      "relative":  "bin\\lib\\gudh.smlib"
+                  },
+                  {
+                      "sha256":  "ADD85A133C2CA27063AE6446DB53C38F9CD36B0C3C5CEA6C2CD269026FD6847A",
+                      "bytes":  5846,
+                      "relative":  "bin\\lib\\kalana.smlib"
+                  },
+                  {
+                      "sha256":  "EC39276F86A40D9B2EA0AF598781000B0FD20BC1A356F4D576815A2F3805101C",
+                      "bytes":  17692,
+                      "relative":  "bin\\lib\\khand.smlib"
+                  },
+                  {
+                      "sha256":  "F3E43D8238F84071ABDE2891B5048C959827215FF1F99D262827C310AEC2D8C1",
+                      "bytes":  4972,
+                      "relative":  "bin\\lib\\madhava.smlib"
+                  },
+                  {
+                      "sha256":  "D64D9EF51A55F1FEDE6803E5825209C70BE9C61253FE826FB36D63CE5DA8AFFE",
+                      "bytes":  2552,
+                      "relative":  "bin\\lib\\mala.smlib"
+                  },
+                  {
+                      "sha256":  "3EF007B04FC1AABBB4BC1328C0E9859EE50201B554613747D7CE50F840BC254E",
+                      "bytes":  15559,
+                      "relative":  "bin\\lib\\nighantu.smlib"
+                  },
+                  {
+                      "sha256":  "B13D64A5C8413AC4ECA7CF96CD4FF101E3368F42FBAF22634088F36757162398",
+                      "bytes":  2912,
+                      "relative":  "bin\\lib\\patra.smlib"
+                  },
+                  {
+                      "sha256":  "CF1CD9EDA5050EFFA84C128F92728B3830608523E918A03EA448AD722141A140",
+                      "bytes":  6154,
+                      "relative":  "bin\\lib\\phal.smlib"
+                  },
+                  {
+                      "sha256":  "40B9B487BCA41E3629242AF3B1E007C82260DE5B40C4CCA1C59793E829CE356A",
+                      "bytes":  20355,
+                      "relative":  "bin\\lib\\roop.smlib"
+                  },
+                  {
+                      "sha256":  "C403C105A6D085FC147A3084B6C6E9CDB0DB3CE278E83598B24FF529CFC74FC0",
+                      "bytes":  4692,
+                      "relative":  "bin\\lib\\sadhan.smlib"
+                  },
+                  {
+                      "sha256":  "48D491C0261716201637D34B4ADD8918D616937FC19A58C28B112241B3C17AFD",
+                      "bytes":  5343,
+                      "relative":  "bin\\lib\\samanvaya.smlib"
+                  },
+                  {
+                      "sha256":  "55FF91F5098161FF8EB205D49B3BC1924815CA2E2837E7F2A4970071E21617A4",
+                      "bytes":  9805,
+                      "relative":  "bin\\lib\\sangrah.smlib"
+                  },
+                  {
+                      "sha256":  "84F32473E3C03FB2A8641FD7F66AAD1C96706C51CD6C0010D5C8E30A60636A2E",
+                      "bytes":  6540,
+                      "relative":  "bin\\lib\\sankhyiki.smlib"
+                  },
+                  {
+                      "sha256":  "951DB41D7BFB85D34D7ECDEC7670D4CE424B791A7C08F36C0EB28EDDEA2394AE",
+                      "bytes":  5960,
+                      "relative":  "bin\\lib\\shreni.smlib"
+                  },
+                  {
+                      "sha256":  "296BAEDA1EE7F794E3A0787088C686974BF7D12EDE2ECB13E32CC5E9D073D424",
+                      "bytes":  15565,
+                      "relative":  "bin\\lib\\suchi.smlib"
+                  },
+                  {
+                      "sha256":  "9D9563112CD9C877A7BF6CC36324403FC4F3D027374D7B2B5CF6AB0A94ACF296",
+                      "bytes":  12583,
+                      "relative":  "bin\\lib\\vakyank.smlib"
+                  },
+                  {
+                      "sha256":  "1F75779507465E3CA11DE500A3AF54C907FE840ECFFFD89F55363D73E9E54352",
+                      "bytes":  16119,
+                      "relative":  "bin\\lib\\varna.smlib"
+                  },
+                  {
+                      "sha256":  "1EB75FC320ECF1B2F1873780E6D5DC85D34D89A1626120105F816BF4F4B223CF",
+                      "bytes":  3588,
+                      "relative":  "docs\\AI-WORK-DIVISION.md"
+                  },
+                  {
+                      "sha256":  "E40E82F0C36119362825540563FF4BA6B2D09BAD22E809EE4F34EB7B61C3BB69",
+                      "bytes":  5091,
+                      "relative":  "docs\\BUILDING.md"
+                  },
+                  {
+                      "sha256":  "5893906C1647D98EBCFFC7AEE7BF069C2EDC10CA67E19B18658AE89DEB52D970",
+                      "bytes":  30737,
+                      "relative":  "docs\\CHANGELOG.md"
+                  },
+                  {
+                      "sha256":  "B593DD44DE6BA57BE732C712863C7A3C153F68EDA7814C98BF0B8E5CF44789C3",
+                      "bytes":  4174,
+                      "relative":  "docs\\CI-NOTIFICATION-POLICY.md"
+                  },
+                  {
+                      "sha256":  "69918E3FC11BFD218F12C5F1C91F89B0D519F135472DB73F202BC6DD9A136B27",
+                      "bytes":  8634,
+                      "relative":  "docs\\ERROR-CONVENTION.md"
+                  },
+                  {
+                      "sha256":  "79030A81D671B38238881F45F838816C8B01DFF3501FD89DA9C701060C5B56C5",
+                      "bytes":  8600,
+                      "relative":  "docs\\FREESTANDING.md"
+                  },
+                  {
+                      "sha256":  "074CAC248C7796CB977EA1F5A54BFCAB24EE73D915930B38C24970E910ABE326",
+                      "bytes":  4740,
+                      "relative":  "docs\\INSTALLATION-ROUTES.md"
+                  },
+                  {
+                      "sha256":  "B39076B95C74E6100D410E2A4F5D77F75C26B90882A74DB090EF16A8ADCFE841",
+                      "bytes":  7094,
+                      "relative":  "docs\\INSTALLER-REBUILD.md"
+                  },
+                  {
+                      "sha256":  "DF6A968ABD06C346B18EBFEE71FB994581ED3349430F148B29A45BC5E46CA83E",
+                      "bytes":  93984,
+                      "relative":  "docs\\LANGUAGE-REFERENCE.md"
+                  },
+                  {
+                      "sha256":  "379DF84B463A017A0F6DFC493AF421A6C3383AF74F0C3045207C42542532E83B",
+                      "bytes":  6356,
+                      "relative":  "docs\\LIBRARY-BOUNDARY.md"
+                  },
+                  {
+                      "sha256":  "B2D54089C3A08D58A351ADE10B2FFBC604B842955783F01A31318E6F045A1997",
+                      "bytes":  15678,
+                      "relative":  "docs\\MEMORY-MODEL.md"
+                  },
+                  {
+                      "sha256":  "38DFFEB434C69F0BD5D3BE4BA754E1448BFABC3273ED70E3C43F34B1BA8CBFAE",
+                      "bytes":  9225,
+                      "relative":  "docs\\mockup-setup.html"
+                  },
+                  {
+                      "sha256":  "C5EF3DE813577614C54D02F443044918FA29DFA6F7788AF8361F4B338FB3A8A2",
+                      "bytes":  11155,
+                      "relative":  "docs\\NUMERIC-CONTRACT.md"
+                  },
+                  {
+                      "sha256":  "91B32A130FD089CD949C8D64CBA98044316799177002E163F17A0AFA91333C8D",
+                      "bytes":  17537,
+                      "relative":  "docs\\OBJECT-FORMAT.md"
+                  },
+                  {
+                      "sha256":  "121E3320EFD494F69CB14FABD059B5717683DC304BE78406CED721C92289B77B",
+                      "bytes":  10030,
+                      "relative":  "docs\\OPEN-ISSUES.md"
+                  },
+                  {
+                      "sha256":  "5DBF11285530CBE1E84919CC14095C06C58FE03D479CCC12B942F17583F00847",
+                      "bytes":  5486,
+                      "relative":  "docs\\OVERFLOW-SAFETY.md"
+                  },
+                  {
+                      "sha256":  "DD2CF71E2E845A682FD25393107BC01C9431D7BD538D391D9F45CBEF14A0E6B0",
+                      "bytes":  9299,
+                      "relative":  "docs\\PATH-TO-COMPLETION.md"
+                  },
+                  {
+                      "sha256":  "AF0A318A020CCB5A28D167396DEB67DAAF8E6F06575D8CFD90089FC340B17A28",
+                      "bytes":  28498,
+                      "relative":  "docs\\RELEASE-NOTES.md"
+                  },
+                  {
+                      "sha256":  "07FED7D8CE6833622C23763DFF0EAB75A32A28CB7B7969495D3270E28FF8CB38",
+                      "bytes":  3133,
+                      "relative":  "docs\\SANDESH.md"
+                  },
+                  {
+                      "sha256":  "0B2DF79DFB155333E6D320DC1E0A57EE6139D16C7A2FE10B920B453D786DD53F",
+                      "bytes":  15712,
+                      "relative":  "docs\\SPECIFICATION.md"
+                  },
+                  {
+                      "sha256":  "E82085F9C2EA0063DB99398D136143D97CAAC92F3CF201110123F40C7CB0C119",
+                      "bytes":  12778,
+                      "relative":  "docs\\sutram-audit.html"
+                  },
+                  {
+                      "sha256":  "DE9C902CD98323B84F9AF5C91C162A36D79DCDB2F42CF93A37986B0DA6DA3EB9",
+                      "bytes":  39573,
+                      "relative":  "docs\\sutram-benchmark-report.html"
+                  },
+                  {
+                      "sha256":  "3298EE2EBBCACAF4697D3908402839402771E6C3D862D6B085281903A67464B7",
+                      "bytes":  1709,
+                      "relative":  "docs\\sutram-book-2.html"
+                  },
+                  {
+                      "sha256":  "3BC7F63F618147F630ABF88D550186D4BBE7AF0135D2A0F9404E192E652BC2BA",
+                      "bytes":  1716,
+                      "relative":  "docs\\sutram-book-3.html"
+                  },
+                  {
+                      "sha256":  "C10CF13E001C16C0EBAD036615EE7F55F88FD61BBE126B71E639A6D997027700",
+                      "bytes":  62392,
+                      "relative":  "docs\\sutram-book-english.html"
+                  },
+                  {
+                      "sha256":  "F0B849B010AC293CB2EFE3C256ADCB4254C30EDBF74229111AD358116471DE77",
+                      "bytes":  85760,
+                      "relative":  "docs\\sutram-book-gujarati.html"
+                  },
+                  {
+                      "sha256":  "A0B6B36F7077E6403F3DEB8E34CC8D355DA63269C10E8FC94FAFA377FCF55930",
+                      "bytes":  95112,
+                      "relative":  "docs\\sutram-book-hindi.html"
+                  },
+                  {
+                      "sha256":  "B22E406AAFE0E96026CE5FBC0F5C289904E41C5DE2FE5E0579289356F839A3B0",
+                      "bytes":  80891,
+                      "relative":  "docs\\sutram-book-sanskrit.html"
+                  },
+                  {
+                      "sha256":  "5D9A63B7890D6C88EB2E14FE576A258FD0BF7AF5E5F4746E4F66678CA109BA5F",
+                      "bytes":  97554,
+                      "relative":  "docs\\sutram-book-tamil.html"
+                  },
+                  {
+                      "sha256":  "9F87A30B5E9A41C9566E84691A7412A12DEE2F0BC7E0F6EADF0C21264AD1DDA0",
+                      "bytes":  96942,
+                      "relative":  "docs\\sutram-book-telugu.html"
+                  },
+                  {
+                      "sha256":  "A35E5DC5C7604FEF1E38EC5050F1EA209E30B7DF56B3CD3252A04A0FC398167F",
+                      "bytes":  1710,
+                      "relative":  "docs\\sutram-book.html"
+                  },
+                  {
+                      "sha256":  "4B6E749E269B19CED86452CAF7E22A4941BA12D5F90A8B63B37F899A41944060",
+                      "bytes":  29177,
+                      "relative":  "docs\\sutram-design-parameters.html"
+                  },
+                  {
+                      "sha256":  "C8602EB3A84E6CB7C4BF24720EDDF3E287B5A1F2DFFBAAA898726A99076CE4E5",
+                      "bytes":  8020,
+                      "relative":  "docs\\sutram-icon-thread.html"
+                  },
+                  {
+                      "sha256":  "B24231AC4380F15203419765ED1DA44D4E9E710DF8F93906AE2475DEC84F0A60",
+                      "bytes":  5193,
+                      "relative":  "docs\\sutram-ide.html"
+                  },
+                  {
+                      "sha256":  "B441E44BDB8F96054737E285A118B3781DBF0379B3B90DD0F0DD9E941B5745C9",
+                      "bytes":  11614,
+                      "relative":  "docs\\sutram-keyword-words.html"
+                  },
+                  {
+                      "sha256":  "0EEB8064D5E6021DE691D8B94A8E67BEB18B35D443500577019A71A00CB7C1B4",
+                      "bytes":  16749,
+                      "relative":  "docs\\sutram-performance.html"
+                  },
+                  {
+                      "sha256":  "CF5B4704B432F317AAED0B7859A93F5DF9C48F07CEA804F6549FCD9758A5DFE2",
+                      "bytes":  11475,
+                      "relative":  "docs\\sutram-philosophy.html"
+                  },
+                  {
+                      "sha256":  "46B903E3B980129DFFCFD4D07456CCE26BF407F2C8BAEEF805B50AFA7F4B6A25",
+                      "bytes":  16467,
+                      "relative":  "docs\\sutram-project-status.html"
+                  },
+                  {
+                      "sha256":  "44976AA611E78FDA5F0D7000C8D954E271F169935EA01031FC34B677B59AB08E",
+                      "bytes":  9368,
+                      "relative":  "docs\\sutram-roadmap.html"
+                  },
+                  {
+                      "sha256":  "D38FD7B1A6BC04DEE6009AD64D3DF83F115407284939A2526272AE9ABB376BCE",
+                      "bytes":  14944,
+                      "relative":  "docs\\sutram-scorecard.html"
+                  },
+                  {
+                      "sha256":  "DF2686C98A7F89DA2E4438107E2635F052A50998B9E8EFC8E6BE4ECC2C38F70C",
+                      "bytes":  60771,
+                      "relative":  "docs\\sutram-stdlib-reference.html"
+                  },
+                  {
+                      "sha256":  "6865C5491F403E93819B0DF2B7CF058B3B19D30730DC0C66F58A49A0D8293EC8",
+                      "bytes":  96624,
+                      "relative":  "docs\\sutram-stdlib.html"
+                  },
+                  {
+                      "sha256":  "FACF4E0826F03FCF415B16F9644EC77642CAFA4443C7D7A7C07DE080DAA8274B",
+                      "bytes":  43841,
+                      "relative":  "docs\\sutram-vocabulary.html"
+                  },
+                  {
+                      "sha256":  "3B90C5F2EBB338987ABEEB541DDDC3BB9E6A1812140BEBF396F505453E52B780",
+                      "bytes":  6438,
+                      "relative":  "docs\\WHATS-LEFT.md"
+                  },
+                  {
+                      "sha256":  "78A53479C91375CFA33CDD005AF9B47FD8C939A76A19AC1798EB565673ABAFBC",
+                      "bytes":  2083,
+                      "relative":  "docs\\WINDOWS-PORT-PLAN.md"
+                  },
+                  {
+                      "sha256":  "E22395F1971FDF3FD145586F693C91DB62905D3AA74855853B4958F52BAF80C7",
+                      "bytes":  7252,
+                      "relative":  "docs\\WINDOWS-SETUP.md"
+                  },
+                  {
+                      "sha256":  "3F43E9B351511BC06FC7943700E9B9EF155FA9417A56064BE378F4E7B69FEB38",
+                      "bytes":  6571,
+                      "relative":  "docs\\_newchapter_en.html"
+                  },
+                  {
+                      "sha256":  "F783D14D292C1C819D45CFFD57E88743F757F3EDE7CF9BB5A3604AA542E2B5B8",
+                      "bytes":  2274,
+                      "relative":  "docs\\ai-handoff-notes\\HANDOFF.md"
+                  },
+                  {
+                      "sha256":  "33E2CA4B123332C15CE16DE431250AA189BE1317B074097C00403833A7E01F45",
+                      "bytes":  2701,
+                      "relative":  "docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md"
+                  },
+                  {
+                      "sha256":  "90787AEC2D1499F318FE3BB2A1D7CFCEBF535C1BE88DD9BBF366F79EF1A7CF2E",
+                      "bytes":  3024,
+                      "relative":  "docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md"
+                  },
+                  {
+                      "sha256":  "EB7DCD0EE38C8EA04E31C393E8A72E6F82CBA647374E25C24D1AC76A9710D40A",
+                      "bytes":  8595,
+                      "relative":  "docs\\ai-handoff-notes\\START_HERE_FOR_AI.md"
+                  },
+                  {
+                      "sha256":  "ED11A700EA40FC2BE7309A068479587ABF9A325136A7321F5B21F335F2FCEC40",
+                      "bytes":  8082,
+                      "relative":  "docs\\decisions\\ALIAS-DESIGN.md"
+                  },
+                  {
+                      "sha256":  "D62044FE53BDCF0A1241E3447E2015FDF9ACC7EE893D5CB176696F63D459556F",
+                      "bytes":  12662,
+                      "relative":  "docs\\decisions\\MEMORY-DECISION.md"
+                  },
+                  {
+                      "sha256":  "B84AC7C956BB248D727ED0221049FDBF0CCB7C8309C9A64F08DA777915B81E2F",
+                      "bytes":  6424,
+                      "relative":  "docs\\decisions\\MEMORY-DESIGN.md"
+                  },
+                  {
+                      "sha256":  "3693B18ECCB2DF31F205B8EDD791B7AA5863DA08E795290C3A8D4B5741C0AC3A",
+                      "bytes":  5528,
+                      "relative":  "docs\\decisions\\MEMORY-IMPROVEMENTS.md"
+                  },
+                  {
+                      "sha256":  "6E86AF206C14E6B6E3B363033ED3835015BA7243B77A66A227AC185F29A12C82",
+                      "bytes":  5968,
+                      "relative":  "docs\\decisions\\MEMORY-MY-IDEA.md"
+                  },
+                  {
+                      "sha256":  "97EB887AD92D802F31826DEDDE20E649F97C89600F28AD6F94901384BA0256AD",
+                      "bytes":  7640,
+                      "relative":  "docs\\decisions\\MEMORY-UNIQUE-HYBRID.md"
+                  },
+                  {
+                      "sha256":  "324DE9A9068788B3DDB07922BB996D56BCEC96F79AB1C19DCE6785491FC8B060",
+                      "bytes":  3288,
+                      "relative":  "docs\\decisions\\R114-SUTRAM-TRUTI.md"
+                  },
+                  {
+                      "sha256":  "A5859A0CB29189A99F59D6DD4134F800531482F40A938B94129EE70B00238FBF",
+                      "bytes":  2726,
+                      "relative":  "docs\\reports\\COVERAGE-AUDIT.md"
+                  },
+                  {
+                      "sha256":  "1CF606C0AFBB501909D671BF92500D546A480F333874F2FBF6919140E40E4D07",
+                      "bytes":  12691,
+                      "relative":  "docs\\reports\\EDGE-COVERAGE-30.md"
+                  },
+                  {
+                      "sha256":  "1353E03DF2617AE4A9F43346D15512ECADD3715055AEDBEECEEF28796593D1C1",
+                      "bytes":  3330,
+                      "relative":  "docs\\reports\\FAIL-ALLOC.md"
+                  },
+                  {
+                      "sha256":  "AD5AEA7F369945853BF12CAEDCA6216CCBE26570F026B37E889B88E004B0CCDC",
+                      "bytes":  4267,
+                      "relative":  "docs\\reports\\HOW-DEFECTS-WERE-FOUND.md"
+                  },
+                  {
+                      "sha256":  "A437FC71E856C8F3C99622AAFCD245ED7EFEB1007851E68D21CD3E6F3CCC53DB",
+                      "bytes":  2009,
+                      "relative":  "docs\\reports\\INDIC-COVERAGE.md"
+                  },
+                  {
+                      "sha256":  "8C642B74FA347A74783B46CF4A52DE39CCD033DB73B9A3DA226F882DB131B342",
+                      "bytes":  8197,
+                      "relative":  "docs\\reports\\KOSH-BUILTINS.md"
+                  },
+                  {
+                      "sha256":  "C6938E311CB248B6719FB863C3A9B5C3E638D3D3C7DE45365867D43F9FF53464",
+                      "bytes":  3395,
+                      "relative":  "docs\\reports\\KOSH-REUSE.md"
+                  },
+                  {
+                      "sha256":  "D61C3D263193E374B30D3A38AB5C16FBB52F4E5AAA584F9AAF7989B32B1F220D",
+                      "bytes":  2087,
+                      "relative":  "docs\\reports\\LAGHU-EXAMPLE.md"
+                  },
+                  {
+                      "sha256":  "58FCCB71BAFB99478981BA9C7174CFC7124E9ABBE3A6085D7AB1197FCE861F4B",
+                      "bytes":  4882,
+                      "relative":  "docs\\reports\\LANG-PACK-AUDIT.md"
+                  },
+                  {
+                      "sha256":  "41E3AA88F7155750108DE8389356BF569BEDEE0C828FB7703B7889D3DEF1A8BE",
+                      "bytes":  2826,
+                      "relative":  "docs\\reports\\LEXER-BOUNDARY-TEST.md"
+                  },
+                  {
+                      "sha256":  "54DB396BBFB6D8F3DF7256D902CE5C29198FACA743C5CD044BAC39EAF5321F54",
+                      "bytes":  7148,
+                      "relative":  "docs\\reports\\LIBRARY-ENGLISH-AUDIT.md"
+                  },
+                  {
+                      "sha256":  "F8B4B31869673FA3DFCC662B0FCB5EAC578F59ACCAFF179A9F8F34A8D5DE676B",
+                      "bytes":  4949,
+                      "relative":  "docs\\reports\\LIBRARY-LAYERS.md"
+                  },
+                  {
+                      "sha256":  "48E025679CB13CCB52E43077DCDB67CE67EE901F8CF3A17530C0D2AADB469E8E",
+                      "bytes":  3111,
+                      "relative":  "docs\\reports\\MEMORY-COMPOSITION-TEST.md"
+                  },
+                  {
+                      "sha256":  "7501C93CF29561D9FE06D5839490AF5C84D694E51DC82857A062C23829EA3F8F",
+                      "bytes":  9497,
+                      "relative":  "docs\\reports\\NEGATIVE-CORPUS.md"
+                  },
+                  {
+                      "sha256":  "2382901582A83AD7F628B75464EC98F8732ACD788AEC659298C786904DC8D651",
+                      "bytes":  3082,
+                      "relative":  "docs\\reports\\PARSER-CLASS-TEST.md"
+                  },
+                  {
+                      "sha256":  "117ADA25B286EB061B7E8F38DF02F8DE247C7B86F8BE4A0DA8091770F8D0FB63",
+                      "bytes":  11571,
+                      "relative":  "docs\\reports\\PROPERTY-NET.md"
+                  },
+                  {
+                      "sha256":  "65DFABB90BBCDFC0AD86DE6157FCC9EF6BF73E94C4F66D212FF5561E15140C0F",
+                      "bytes":  7395,
+                      "relative":  "docs\\reports\\SANSKRIT-AND-AI-BRIGGS-1985.md"
+                  },
+                  {
+                      "sha256":  "AB304D323CF9DC81DD5D95DA1A5FDD359BB76E5ED43EC3DE9F59758DF6595084",
+                      "bytes":  15791,
+                      "relative":  "docs\\reports\\SANSKRIT-FOR-LANGUAGE-DESIGN.md"
+                  },
+                  {
+                      "sha256":  "DCE6D48BEB18A667F522EED9B9786A65620F26058A50DC1F4930F058EB0F29FA",
+                      "bytes":  4998,
+                      "relative":  "docs\\reports\\SECURITY-AUDIT.md"
+                  },
+                  {
+                      "sha256":  "732C9665CFFD07BE97475557B8CF53613C0302C238F405524E001483451C77EE",
+                      "bytes":  5429,
+                      "relative":  "docs\\reports\\STRING-BYTE-PARITY.md"
+                  },
+                  {
+                      "sha256":  "8824CCEE5F0CDC629E4E5EDBA8DF43FCAD43FB1BF9AB0979C3C9C904A988E9C2",
+                      "bytes":  715300,
+                      "relative":  "docs\\rounds\\CHANGELOG-ARCHIVE.md"
+                  },
+                  {
+                      "sha256":  "7CF1F8D5EFB34F7EE5CDA65682527AE56AC69CCB2FEB31D7914406430687C161",
+                      "bytes":  2505,
+                      "relative":  "docs\\rounds\\F7-SCALAR-INDEX-CRASH.md"
+                  },
+                  {
+                      "sha256":  "43132FACE4CED2FD01C9C45DC0B3C9CC68476B3AE9126195B37CFB5051C568B0",
+                      "bytes":  3122,
+                      "relative":  "docs\\rounds\\F8-PACK-WARNING-FALSE-ALARM.md"
+                  },
+                  {
+                      "sha256":  "95DC20E8229A9446F4C0217A3C3071C47D98ED8B01E8E8A1AB1806F92AAA7EA6",
+                      "bytes":  3072,
+                      "relative":  "docs\\rounds\\ITEM-6-X11-INDIC-ASSESSMENT.md"
+                  },
+                  {
+                      "sha256":  "BB7050C47BC6C3BAD92B094F2EBAC31DC212D1015CF376BA87E41E221C72A491",
+                      "bytes":  4464,
+                      "relative":  "docs\\rounds\\PLAN-TO-FINISH.md"
+                  },
+                  {
+                      "sha256":  "6245F162DD631559A8FC8757727266080177A51037142D6D73A939E93B69E2FF",
+                      "bytes":  7633,
+                      "relative":  "docs\\rounds\\PROJECT-OVERVIEW.md"
+                  },
+                  {
+                      "sha256":  "AD9926D9B95A2C7CBE2139193754D241BA76D55CC366D647E95CC22E58503DE7",
+                      "bytes":  8220,
+                      "relative":  "docs\\rounds\\R34-ACKNOWLEDGE.md"
+                  },
+                  {
+                      "sha256":  "7A5CD8FE1E7D780DA928057C15C688322F78E073991F81BE19E0E50EA754377D",
+                      "bytes":  1228,
+                      "relative":  "docs\\rounds\\R50-BYTE-PACKED-TEXT.md"
+                  },
+                  {
+                      "sha256":  "7D1E23E8D00B9AD96405ACDA231FD53DF1938091810562DC5D564E4D8A0433C7",
+                      "bytes":  3027,
+                      "relative":  "docs\\rounds\\R52-BUILTIN-FIXES.md"
+                  },
+                  {
+                      "sha256":  "50571C6E0DB44AD67EBAAC81531E49762CCCD586182513F9615622C3156C0324",
+                      "bytes":  6886,
+                      "relative":  "docs\\rounds\\R54-BUILTIN-BOUNDS.md"
+                  },
+                  {
+                      "sha256":  "90A05B17B8F3C3CD5E16CA038171D68B121E175354274883ABBBA7A3B042A1A0",
+                      "bytes":  4998,
+                      "relative":  "docs\\rounds\\R56-MODULE-GLOBALS.md"
+                  },
+                  {
+                      "sha256":  "A7D284B377E99DBCDB62268DB46C2AE09791AF5FDA6CEBF7711ECED619860C31",
+                      "bytes":  3807,
+                      "relative":  "docs\\rounds\\R57-REGISTER-EVALUATOR.md"
+                  },
+                  {
+                      "sha256":  "3B1CB3190237140403ACA19D0BC1B08392AB1A192FD09859EFCDDE84D1D5DE07",
+                      "bytes":  6926,
+                      "relative":  "docs\\rounds\\R58-CONSTANT-FOLDING.md"
+                  },
+                  {
+                      "sha256":  "EEE7A58A3C07E1EB8F868C5CE5BB4168C04524642F473ED43F610674F4079958",
+                      "bytes":  5289,
+                      "relative":  "docs\\rounds\\R59-PREEMISSION-PEEPHOLE.md"
+                  },
+                  {
+                      "sha256":  "74FD8000AF03C95D0BD3D287A41CFE110B65D93A3D21358E9F3BFDBD6BD399C1",
+                      "bytes":  4615,
+                      "relative":  "docs\\rounds\\R62-WINDOWS-ACCEPTANCE.md"
+                  },
+                  {
+                      "sha256":  "4562BF86114F8A6099B73A2847720DD6C9E7A949485A92945C9BDA8C60B5DDDB",
+                      "bytes":  6894,
+                      "relative":  "docs\\rounds\\R63-KOSH-BUILTINS.md"
+                  },
+                  {
+                      "sha256":  "8C948868E66C7A522839A13C9712CE52F663225026710021D7DF97A7433E26E0",
+                      "bytes":  2756,
+                      "relative":  "docs\\rounds\\R64-KOSH-DIAGNOSTICS.md"
+                  },
+                  {
+                      "sha256":  "CC9C377BCBDE1DB3C71060BDDD39A3B7A95877382501B83152BEC81604E6341E",
+                      "bytes":  1486,
+                      "relative":  "docs\\rounds\\R65-DEVANAGARI-SURFACE.md"
+                  },
+                  {
+                      "sha256":  "FF4A94707C3C026E1044E381346359A2B849FD39DECA0432158B162BAB0A7C30",
+                      "bytes":  7169,
+                      "relative":  "docs\\rounds\\R65-FINISH-REVIEW.md"
+                  },
+                  {
+                      "sha256":  "CC80E028665D51E253E138365EBC6022B5AA2ECA3F99A51B1EA15ED1DFB51FAC",
+                      "bytes":  2908,
+                      "relative":  "docs\\rounds\\R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md"
+                  },
+                  {
+                      "sha256":  "8CC24FBB66E9888FE3F8995D623E429DC36A23E29B62C902BC565D83E5CC0621",
+                      "bytes":  6169,
+                      "relative":  "docs\\rounds\\R65-SOURCE-REVIEW.md"
+                  },
+                  {
+                      "sha256":  "9C54B430B2B8A84744B2F890ED8D46975CAB14FAC3A41A6E8A6C58B7036CB5A6",
+                      "bytes":  8772,
+                      "relative":  "docs\\rounds\\R67-SOURCE-REVIEW.md"
+                  },
+                  {
+                      "sha256":  "102CE13D97A114C67BBFE8323E1BEFF01A322667413D0F5136FE94F12A36AA62",
+                      "bytes":  3295,
+                      "relative":  "docs\\rounds\\R68-INDIC-DEVICES.md"
+                  },
+                  {
+                      "sha256":  "77B8CAF7FA74B999BEBDD89EA52BD2E2250FA7BE90A31E6E2758775B6807CECC",
+                      "bytes":  3611,
+                      "relative":  "docs\\rounds\\R68-LEXICAL-DIAGNOSTICS.md"
+                  },
+                  {
+                      "sha256":  "549BA152086EB377B7EEBA30DC5A4B805428380AFBCAADA527EE7DF6B374578A",
+                      "bytes":  2482,
+                      "relative":  "docs\\rounds\\R68-PURE-PAIR-PROBE.md"
+                  },
+                  {
+                      "sha256":  "34CFDFE8D04DAE770604659DEE889C07ACAE48286D4F8BC4A6553947DEA328B1",
+                      "bytes":  5056,
+                      "relative":  "docs\\rounds\\R68-SOURCE-REVIEW.md"
+                  },
+                  {
+                      "sha256":  "A5D310865C5A0225D0BBCB54ACDFF83B43957D3A44349840C968622B31D6E95F",
+                      "bytes":  5391,
+                      "relative":  "docs\\rounds\\R68-WINDOWS-GUI-CHECKLIST.md"
+                  },
+                  {
+                      "sha256":  "08BB4BDEF520D4C0ED7437DC7195F9592B78913A4D07AC7E2A9ACAB85D8EE053",
+                      "bytes":  1951,
+                      "relative":  "docs\\rounds\\R69-PURE-PAIR-MEASUREMENT.md"
+                  },
+                  {
+                      "sha256":  "7A1E9943DA07C39602863235F6308DD818B97E1DF2B9B652C96E207E9DE6467A",
+                      "bytes":  2889,
+                      "relative":  "docs\\rounds\\R71-BOOT-PATH.md"
+                  },
+                  {
+                      "sha256":  "312314476BC1002AF7137AA04E5853EDA20E8DD6B2671B197CE4FC4164D505AE",
+                      "bytes":  3971,
+                      "relative":  "docs\\rounds\\R71-CANONICAL-BUILD.md"
+                  },
+                  {
+                      "sha256":  "106D50D3BC2AF0CEF260A6D034306BF7A333338E880D62331B1706D40B839804",
+                      "bytes":  4408,
+                      "relative":  "docs\\rounds\\R71-MEMORY-BOUNDARY.md"
+                  },
+                  {
+                      "sha256":  "4D6821DABD1543FCB205F96BE007B343717396007C11A99308C206114FF66DBC",
+                      "bytes":  5930,
+                      "relative":  "docs\\rounds\\R71-MODULES.md"
+                  },
+                  {
+                      "sha256":  "119D110795DFE613BD8BACD904E4D37E3D6CC745E78717FA0EA7F921775F5742",
+                      "bytes":  3119,
+                      "relative":  "docs\\rounds\\R71-SPECIFICATION-EVIDENCE.md"
+                  },
+                  {
+                      "sha256":  "BEEF71DE98F275BF61B0DCFBDE9B838B44E9F210ADEFE510C262A40BBD75A9F4",
+                      "bytes":  2618,
+                      "relative":  "docs\\rounds\\R72-BASELINE-OBSERVED.md"
+                  },
+                  {
+                      "sha256":  "8382ABB7239448BF161A40A980E19FEAB884A952BB7E1DC9B08F00FE61E7056D",
+                      "bytes":  9942,
+                      "relative":  "docs\\rounds\\ROADMAP-TO-V1.0.md"
+                  },
+                  {
+                      "sha256":  "70A40C6A52B3ADD22A85846FD30CF61136ED4F9F70FFCD32699A6CFE17027180",
+                      "bytes":  3221,
+                      "relative":  "docs\\rounds\\TEST-ME.md"
+                  },
+                  {
+                      "sha256":  "D9735018CE7A7FFA81D3D0C8FEACC4A0C008315C5E543F63C499F0641847FE13",
+                      "bytes":  10459,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-COMPLETE.md"
+                  },
+                  {
+                      "sha256":  "B11DE73C4339BF4D072D379E618B9E0A3DE9B5066E8DF1949BD7F6C6B1C5C46A",
+                      "bytes":  4475,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-DERIVATION.md"
+                  },
+                  {
+                      "sha256":  "45CBC08503DC4A222C942834950AAB742ED8C8B5E4B7548EDA45E58AAC4078C1",
+                      "bytes":  6484,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-RULE.md"
+                  },
+                  {
+                      "sha256":  "5448E29DC4FAC48787236773790418455D05E906F09C25A1D2D16DE8561DF9BA",
+                      "bytes":  12272,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-SHORT.md"
+                  },
+                  {
+                      "sha256":  "2E41EFEA7A4FA0BCCD823AC005E20596E127F8935D8AAD8413B20EFC09A03E2F",
+                      "bytes":  19016,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-TABLE.md"
+                  },
+                  {
+                      "sha256":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD",
+                      "bytes":  64,
+                      "relative":  "examples\\01_hello.sm"
+                  },
+                  {
+                      "sha256":  "A57DD05E5E5207A38FAEED35D330C16E83901A6D9FD1C0101A92C93DF0EAFA76",
+                      "bytes":  115,
+                      "relative":  "examples\\02_arith.sm"
+                  },
+                  {
+                      "sha256":  "90641FC6D346861A3FB534C616AC8C005CAA2FE01842BE869A0740E745C6CC33",
+                      "bytes":  96,
+                      "relative":  "examples\\03_if_else.sm"
+                  },
+                  {
+                      "sha256":  "B1B2D6354E315F5FC1F7BBBC6B0841969D17198278A4AB6F37E4517AFC3B0DAE",
+                      "bytes":  133,
+                      "relative":  "examples\\04_while.sm"
+                  },
+                  {
+                      "sha256":  "5AE97EEB68502BABA1C4CB56AEC8C7F82FBCCC28F6BE2770B9B9F17B507D7F7E",
+                      "bytes":  240,
+                      "relative":  "examples\\05_func_params.sm"
+                  },
+                  {
+                      "sha256":  "654BAADE8F1B99EC5C11B698C19CE547EE86AB0C2B32BF2BBAB36BF5F75FABC7",
+                      "bytes":  239,
+                      "relative":  "examples\\06_rachana.sm"
+                  },
+                  {
+                      "sha256":  "5A180916ABD56A65738C65376EAE0B73C343DF43387338EE686018A4955683FF",
+                      "bytes":  148,
+                      "relative":  "examples\\07_module.sm"
+                  },
+                  {
+                      "sha256":  "C5EBC7C9B0F6FCE148D35AFAA6CB5FD8B331D793E6AFC6B99F4BFAB3C671E2CF",
+                      "bytes":  432,
+                      "relative":  "examples\\08_demo.sm"
+                  },
+                  {
+                      "sha256":  "B46BA459A8BC9D90FF40AB17576AF55E3FBC0D981BB03B60BE829F43F45538B6",
+                      "bytes":  779,
+                      "relative":  "examples\\09_comparisons.sm"
+                  },
+                  {
+                      "sha256":  "A94A91F2B0AED410A6B3E5A5188A4C75FA7E9D3816A9C6C9930E777C7457DA00",
+                      "bytes":  144,
+                      "relative":  "examples\\100_t18_kosh_bounds.sm"
+                  },
+                  {
+                      "sha256":  "2FCA1E52E4E2D7E190F77AACC9AAC1E973C20113A7508D5D352F4B53FCB03E2A",
+                      "bytes":  229,
+                      "relative":  "examples\\100_t18_kosh_devanagari.sm"
+                  },
+                  {
+                      "sha256":  "0167CD99BED3D3FF5205D45E07DCA58C2B889E9DEE24242100C14A270391CE74",
+                      "bytes":  117,
+                      "relative":  "examples\\101_t18_kosh_empty.sm"
+                  },
+                  {
+                      "sha256":  "4F5FDBCC5E7A8FDA2C2B1FD197BD3973B8201E6DB5CAD65BC29AEEABD699B0CE",
+                      "bytes":  183,
+                      "relative":  "examples\\102_ast_multimodule_capacity.sm"
+                  },
+                  {
+                      "sha256":  "2A5A5B866E43E867A32F3ED5720D3E401190B42C8C9223152C9A0BD59B462818",
+                      "bytes":  3080,
+                      "relative":  "examples\\103_b10_nested_break_patches.sm"
+                  },
+                  {
+                      "sha256":  "20ECECD7D633341C266DD64C2F469E58892F6DE3AB206825595B8D878129165D",
+                      "bytes":  3083,
+                      "relative":  "examples\\104_b10_nested_continue_patches.sm"
+                  },
+                  {
+                      "sha256":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC",
+                      "bytes":  70422,
+                      "relative":  "examples\\105_block_nesting_capacity.sm"
+                  },
+                  {
+                      "sha256":  "4DADB00877A47D866764D8E3B6E3B2B80EFD25EFA1C784B2DFD5A700C0D6FBB9",
+                      "bytes":  193,
+                      "relative":  "examples\\106_rachana_field_capacity.sm"
+                  },
+                  {
+                      "sha256":  "74FB899C043244B514129ED65399C2CB618365174E9A8E3DE625DCBD37845928",
+                      "bytes":  1266,
+                      "relative":  "examples\\107_b11_block_65_statements.sm"
+                  },
+                  {
+                      "sha256":  "E81380CECF9AB0B0E3CBB81AC9DC341AAA132C07BB68939E2B1EEE7CFB6840A2",
+                      "bytes":  4737,
+                      "relative":  "examples\\108_b11_block_statement_capacity.sm"
+                  },
+                  {
+                      "sha256":  "305ADA040EF360E44F85EC1B879750976E9609DDD76539280E3427BEF3DBB44A",
+                      "bytes":  339,
+                      "relative":  "examples\\109_t18_kosh_dasham.sm"
+                  },
+                  {
+                      "sha256":  "1F5FA226FED9DABCC5F3D66872EDFA57A322B661627C1BDCFA2A595D595B14A1",
+                      "bytes":  299,
+                      "relative":  "examples\\10_mathlib.sm"
+                  },
+                  {
+                      "sha256":  "B47D6C981EC0E3DA7423C8072AC5B4DDDC6A9E66AEF8A8BCDF5C20F4A487D285",
+                      "bytes":  254,
+                      "relative":  "examples\\110_t18_kosh_dasham_devanagari.sm"
+                  },
+                  {
+                      "sha256":  "B2CDF100158B8E1AD0DE8D7C7D837E67B2455A4915B3D43B73349F0A050A1FE9",
+                      "bytes":  352,
+                      "relative":  "examples\\111_t18_kosh_dasham_function_return.sm"
+                  },
+                  {
+                      "sha256":  "6227E316090030F672761109F2BAEFAB6B73A3B7409E53D4F859500D76FF63CB",
+                      "bytes":  335,
+                      "relative":  "examples\\112_t18_kosh_integer_conversion.sm"
+                  },
+                  {
+                      "sha256":  "F4D838C5A1BD24A9227B8B405D138413A8701C6F43F1243BF4B825BCF267BCA2",
+                      "bytes":  429,
+                      "relative":  "examples\\113_perf_self_update.sm"
+                  },
+                  {
+                      "sha256":  "5D27FBA6014E390991F60299FE370A3CF54AD0CE9F4A2A2C700D9FFD439CC86E",
+                      "bytes":  317,
+                      "relative":  "examples\\114_perf_loop_fastpaths.sm"
+                  },
+                  {
+                      "sha256":  "80F75BD70030843ED86D1A65D78030431CB120B04D5FF6575B0F9CB76B946007",
+                      "bytes":  777,
+                      "relative":  "examples\\115_perf_loop_bottom.sm"
+                  },
+                  {
+                      "sha256":  "1F037D5C57D52794C8B689764FD7D53A859FDBAC825920F9B634194138DB8714",
+                      "bytes":  320,
+                      "relative":  "examples\\116_perf_reg_destination.sm"
+                  },
+                  {
+                      "sha256":  "883790221AC4A134D1C7E907E6ED63D289AF5EECE2C7ECB7335E877F065F410A",
+                      "bytes":  254,
+                      "relative":  "examples\\117_perf_constant_literals.sm"
+                  },
+                  {
+                      "sha256":  "D9BF6EA1C5184E356F0795B14A9757F342FAA29DC25A380F10AEBD5F3D30428A",
+                      "bytes":  543,
+                      "relative":  "examples\\118_t18_kosh_param.sm"
+                  },
+                  {
+                      "sha256":  "BA0D361AB3BEFC9D85718C62AFE035A1F0B3D43B31A33318122CA6F37ADB89F3",
+                      "bytes":  499,
+                      "relative":  "examples\\119_t18_kosh_param_forward.sm"
+                  },
+                  {
+                      "sha256":  "25DBEC3B360CBFAFF52B3140E8DB0D43AFE1D83EF7161235395384D04051530C",
+                      "bytes":  564,
+                      "relative":  "examples\\11_forloop.sm"
+                  },
+                  {
+                      "sha256":  "838EBC6B8C82258FFE6F50ABBF43CF0E41BBF002D56FE4D17889D329A2254853",
+                      "bytes":  210,
+                      "relative":  "examples\\120_t18_kosh_param_mismatch.sm"
+                  },
+                  {
+                      "sha256":  "C6DC578EFB76E74B67AC21BDF32E31045C9328781E58CE32A7DC36131C6326B2",
+                      "bytes":  494,
+                      "relative":  "examples\\121_t18_kosh_param_push_reject.sm"
+                  },
+                  {
+                      "sha256":  "6CC138B88058EE69021CB1A8579A3A8C1329DA4C5E437AFE8F7AF73526FE3189",
+                      "bytes":  242,
+                      "relative":  "examples\\122_t18_kosh_param_devanagari.sm"
+                  },
+                  {
+                      "sha256":  "FEAC1010D53A7178EA3D89C2DCF4F3A6573F1F4457308640FEABE0E8BD4D5549",
+                      "bytes":  240,
+                      "relative":  "examples\\123_t18_kosh_param_statement_call.sm"
+                  },
+                  {
+                      "sha256":  "68D4369E4D374754ABE4304F8580C548BE33BB9A8F90ADF82B346D3E67612177",
+                      "bytes":  621,
+                      "relative":  "examples\\124_perf_wide_immediate.sm"
+                  },
+                  {
+                      "sha256":  "63F23786F453F6F487DCD0F31680392665E5B3BEBE045CAC6D79A2211A51A410",
+                      "bytes":  684,
+                      "relative":  "examples\\125_perf_register_immediate_destination.sm"
+                  },
+                  {
+                      "sha256":  "B5D7712B25E18474E9FFB247B2B7FA0BBA9691A2E6C588E25D92FAF5D5E66B0B",
+                      "bytes":  1073,
+                      "relative":  "examples\\126_numeric_pipeline.sm"
+                  },
+                  {
+                      "sha256":  "D3B0E99F4177B310FFC01F60F264569D4F7AEB010CBCE7DCCFEBEBD9F8C68D86",
+                      "bytes":  290,
+                      "relative":  "examples\\127_perf_float_self_register.sm"
+                  },
+                  {
+                      "sha256":  "588A9FD3E63AA7F6B1B1E206D8165193F891581B1B8F369A8E517E87BE54800D",
+                      "bytes":  302,
+                      "relative":  "examples\\128_perf_float_self_fallback.sm"
+                  },
+                  {
+                      "sha256":  "B32278F523426413C82A29D1391202CF9BBACC3BFA81646262030EC538DB5F65",
+                      "bytes":  313,
+                      "relative":  "examples\\129_perf_float_destination.sm"
+                  },
+                  {
+                      "sha256":  "909A187F4998CF13C579AF314DE0D188DB3890135CCE76A000CFFF3AEC851523",
+                      "bytes":  640,
+                      "relative":  "examples\\12_elif.sm"
+                  },
+                  {
+                      "sha256":  "21708BB8EA9FAEED3EAA6A09131FDA9260FD7F03B66F9846AA05C02E10D51C48",
+                      "bytes":  485,
+                      "relative":  "examples\\130_perf_float_destination_alias.sm"
+                  },
+                  {
+                      "sha256":  "EEE4EB6E4C716E62803041157A4B6BF6637819D6F2767013CC681C8C6C255C7B",
+                      "bytes":  289,
+                      "relative":  "examples\\131_perf_float_compare_register.sm"
+                  },
+                  {
+                      "sha256":  "AFC0A93883DCFD790BD2465976834AD73155270CD43D8C5A57EFBE5A17782A72",
+                      "bytes":  350,
+                      "relative":  "examples\\132_perf_float_compare_fallback.sm"
+                  },
+                  {
+                      "sha256":  "1409268BC5F104510F0402AE6E3B45AD189EEECD457792E1B3244D04A353BC05",
+                      "bytes":  624,
+                      "relative":  "examples\\133_perf_float_scalar_call_rhs.sm"
+                  },
+                  {
+                      "sha256":  "EFFBA35468A58A4D2F5CFE59A71B3159AB545EEF9A62E17CAE0E46AA5ABB0154",
+                      "bytes":  628,
+                      "relative":  "examples\\134_perf_float_complex_fallback.sm"
+                  },
+                  {
+                      "sha256":  "DC35C56366B2C1BCBDD15EDBD60B47D0145623508A85703D590A19264CDECBA8",
+                      "bytes":  667,
+                      "relative":  "examples\\135_r30_float_index_scalar.sm"
+                  },
+                  {
+                      "sha256":  "883727A2E543D2A8F4120C7B0E4E6F72B10C44061169837631F1FDBC0F80751E",
+                      "bytes":  535,
+                      "relative":  "examples\\136_r30_float_complex_left.sm"
+                  },
+                  {
+                      "sha256":  "E09E699610BA8FF5122C04C26F68EE69C2607EFF219DA7AB47256E62C137C4B2",
+                      "bytes":  452,
+                      "relative":  "examples\\137_r30_float_literal_rhs.sm"
+                  },
+                  {
+                      "sha256":  "490CDB951E3FC1DD912BADEEF6FB6F64260921AB4BE6A4E7DB67446A36F00CAA",
+                      "bytes":  462,
+                      "relative":  "examples\\138_r30_float_comparison_index.sm"
+                  },
+                  {
+                      "sha256":  "5FE00509669675BAF55E29F8E3CFC1C944DA58F7518C0DCD7E600E88B80A0FE3",
+                      "bytes":  461,
+                      "relative":  "examples\\139_r30_float_mixed_fallback.sm"
+                  },
+                  {
+                      "sha256":  "52B31669E725C995FE43385001C4ECFA8827FAC58CE69E1DF9B1BAD86F2E0BD5",
+                      "bytes":  757,
+                      "relative":  "examples\\13_negatives.sm"
+                  },
+                  {
+                      "sha256":  "5E7728BBEACC29FA3B8EAA8D9CA82595F49F82E82378C01E22EB981090381649",
+                      "bytes":  513,
+                      "relative":  "examples\\140_r30_index_side_effect.sm"
+                  },
+                  {
+                      "sha256":  "3A2B18854A2B7B99FDE02BFF485ECB93D7504CD17E040BBD061A8004FA7979E1",
+                      "bytes":  317,
+                      "relative":  "examples\\141_xmm_cache_basic.sm"
+                  },
+                  {
+                      "sha256":  "74C4052C1F0628DF94DBEEC0ED615333B566A1F0D999F6BDDCAAE7752ED72180",
+                      "bytes":  283,
+                      "relative":  "examples\\142_xmm_cache_alias.sm"
+                  },
+                  {
+                      "sha256":  "A2E57E0AB17C631DA8B6B475DE865A19042C197CD246312DD8C587C4E10BA684",
+                      "bytes":  494,
+                      "relative":  "examples\\143_xmm_cache_barriers.sm"
+                  },
+                  {
+                      "sha256":  "0067D3854CDE3FDD1AC09CA546579297622604DC6CFA25E1BE8D93A32E9403C6",
+                      "bytes":  383,
+                      "relative":  "examples\\144_xmm_cache_fallback.sm"
+                  },
+                  {
+                      "sha256":  "6A4232FBB2E46757DABE45AB3FD08F96F12D9C73212F8DA130DB55BE4F50AFB5",
+                      "bytes":  368,
+                      "relative":  "examples\\145_xmm_cache_nested_calls.sm"
+                  },
+                  {
+                      "sha256":  "EE708213D1237C223C439B1EE158BD12558331F0FA5523D33EDF3E8043AB8552",
+                      "bytes":  482,
+                      "relative":  "examples\\146_stage2_loop_call_boundary.sm"
+                  },
+                  {
+                      "sha256":  "49517A85F2F3DC8346DB170964DFAE034DB723B758E2E8F9F8BF0AC93047C251",
+                      "bytes":  396,
+                      "relative":  "examples\\147_stage2_recursive_float_boundary.sm"
+                  },
+                  {
+                      "sha256":  "5E67EB8088B2852D55D56DC5F48D4CB6D8D5E7973821A454A4EC4278ACA988B3",
+                      "bytes":  560,
+                      "relative":  "examples\\148_stage2_array_mutation_call.sm"
+                  },
+                  {
+                      "sha256":  "6F89DBFF3315C8E1ADBD12B8B71C63A9E0D4232069D5911CFCE83B948D464982",
+                      "bytes":  230,
+                      "relative":  "examples\\149_namespaced_colliding_imports.sm"
+                  },
+                  {
+                      "sha256":  "95D74DB7B609DC06334EDC1A256410683FFD22FA8B25520864617BDD6A451AE7",
+                      "bytes":  560,
+                      "relative":  "examples\\14_strings.sm"
+                  },
+                  {
+                      "sha256":  "4B8D4DA12EE3E94B5FD2FDF05A3C5CE533F72943EE923332760D8E116E256F90",
+                      "bytes":  164,
+                      "relative":  "examples\\150_namespaced_same_module_two_aliases.sm"
+                  },
+                  {
+                      "sha256":  "3D8778F55DD0698742871EABC137BB5E0FA6A66FEB106A6FB19BAA62706BC6DF",
+                      "bytes":  174,
+                      "relative":  "examples\\151_namespaced_and_legacy_import.sm"
+                  },
+                  {
+                      "sha256":  "5761C94C8DA2F849F8B3F2193198ED7E14D17D5E088D22EF318F8427976C9220",
+                      "bytes":  180,
+                      "relative":  "examples\\152_namespaced_comment_string_preservation.sm"
+                  },
+                  {
+                      "sha256":  "668844098A7F907E95E858C8FDF764F86923D98CF3FCE113EF8BCC4BC043CBC0",
+                      "bytes":  74,
+                      "relative":  "examples\\153_namespaced_devanagari_function.sm"
+                  },
+                  {
+                      "sha256":  "A6945339B79FD6AD79BAA629C8AE9A09E2A75A263668AF4C3F95FFE73D2AF43F",
+                      "bytes":  134,
+                      "relative":  "examples\\154_namespaced_duplicate_idempotent.sm"
+                  },
+                  {
+                      "sha256":  "239E984DF1A3F9EAD2698E42332A830B9C61ED165F381E69CB77B4ACD05B1AA9",
+                      "bytes":  245,
+                      "relative":  "examples\\155_namespaced_multi_alias_composition.sm"
+                  },
+                  {
+                      "sha256":  "25F7D19988DCC51321E2055384494DAB99BB8A19F92E313B3BD4E4AC59C7E950",
+                      "bytes":  121,
+                      "relative":  "examples\\156_namespaced_alias_collision.sm"
+                  },
+                  {
+                      "sha256":  "C4703D4EB2B74C10D474634EFC776D548E072E9796C4A55FDD82EFB2B5B3255F",
+                      "bytes":  53,
+                      "relative":  "examples\\157_namespaced_missing_module.sm"
+                  },
+                  {
+                      "sha256":  "23C03BBCC8C4EAA4C531894406DB46B151A7CFD46E6A97361C5719FCBBE5A86B",
+                      "bytes":  41,
+                      "relative":  "examples\\158_namespaced_alias_digit.sm"
+                  },
+                  {
+                      "sha256":  "DAECBC8AC96055734F0A291BCA4BB67CE7F9074EDC7812AAF50B1E13A58E9F3C",
+                      "bytes":  46,
+                      "relative":  "examples\\159_namespaced_path_traversal.sm"
+                  },
+                  {
+                      "sha256":  "363C0B098689E3DA26714B1796B5BB733CB554F71D65F27D512125C5061FBBEB",
+                      "bytes":  481,
+                      "relative":  "examples\\15_sutra_const.sm"
+                  },
+                  {
+                      "sha256":  "7F6EF507D09F9C1F720418A9647D058B6A411C53FFC02875CB0939FB069BC4BD",
+                      "bytes":  37,
+                      "relative":  "examples\\160_namespaced_empty_alias.sm"
+                  },
+                  {
+                      "sha256":  "75EF09964B53FE269844045762AF69586293FC49DC7ADFFF0D285D5CB86E5704",
+                      "bytes":  72,
+                      "relative":  "examples\\161_namespaced_overlong_alias.sm"
+                  },
+                  {
+                      "sha256":  "A4CE70F4A4FAB4730EDD86CF868DA96310EB6E14A29A0DF432EFF2DBA524A1D3",
+                      "bytes":  448,
+                      "relative":  "examples\\162_namespaced_import_capacity.sm"
+                  },
+                  {
+                      "sha256":  "095C6C75F8948E7AFC411B0D9CC7A0B219C524A6B69277B5356C201A8369D5D5",
+                      "bytes":  72,
+                      "relative":  "examples\\163_r40_transitive_diamond.sm"
+                  },
+                  {
+                      "sha256":  "F17C3436D77B7C91FFB6DEDF217BCAA635C0006DF88E5FAF1A145ED463D18C36",
+                      "bytes":  57,
+                      "relative":  "examples\\164_r41_cycle_reject.sm"
+                  },
+                  {
+                      "sha256":  "AFFC79452B1E061B734A94A99191BA6EA2517B90BA5A59D370EE9FF9BF927C64",
+                      "bytes":  61,
+                      "relative":  "examples\\165_r41_missing_reject.sm"
+                  },
+                  {
+                      "sha256":  "6C9F8F28D6F50FDB5C92AA4A0DD22879FE88D19E3B45ECCE3AE6B78566A6BCF5",
+                      "bytes":  91,
+                      "relative":  "examples\\166_r41_optin_diamond.sm"
+                  },
+                  {
+                      "sha256":  "80D3FA0F1AEAF0A942A0CF268A2ABA2CA087C5285AB5D2E00F4B365F7808E17E",
+                      "bytes":  782,
+                      "relative":  "examples\\16_advanced.sm"
+                  },
+                  {
+                      "sha256":  "F857A335CF77011C9A6FB8E038CE129B342C368F9B3BACA9D77423FAC3041E01",
+                      "bytes":  757,
+                      "relative":  "examples\\17_booleans.sm"
+                  },
+                  {
+                      "sha256":  "9B885A350E32E3DB3DE2EAA24C3ED4D7064909EA123D61773637C1EE1493E05F",
+                      "bytes":  384,
+                      "relative":  "examples\\18_guna_switch.sm"
+                  },
+                  {
+                      "sha256":  "D3CC38A93C4E3A39148E4943916070392C235C664FD463458137EC45901049C1",
+                      "bytes":  380,
+                      "relative":  "examples\\19_srijana_enum.sm"
+                  },
+                  {
+                      "sha256":  "B60AD44C72211DB4095E6629A0D4B7707101DC08D425DD18556CE3F7DD8F881C",
+                      "bytes":  1426,
+                      "relative":  "examples\\200_madhava_series.sm"
+                  },
+                  {
+                      "sha256":  "7F5FB9408DF5D4CE88F5A1F883F4BAC296A54296BCBA20046A122269C46D576E",
+                      "bytes":  353,
+                      "relative":  "examples\\201_madhava_library.sm"
+                  },
+                  {
+                      "sha256":  "F5B4CF1A35BCC8041C91289F346D5380E91309FEAA2A82E8E9871FA535AFA448",
+                      "bytes":  455,
+                      "relative":  "examples\\202_brahmagupta_area.sm"
+                  },
+                  {
+                      "sha256":  "169E5BD24BB57703F8F4BF014230507F33FB0D14C12E08CBF3099BD252794390",
+                      "bytes":  507,
+                      "relative":  "examples\\203_meru_with_kosh.sm"
+                  },
+                  {
+                      "sha256":  "4B2230466FCD45F25B722E92BBD8C1074A17D5562530922CCCA753E35CD489B6",
+                      "bytes":  5045,
+                      "relative":  "examples\\204_b11_block_statement_capacity.sm"
+                  },
+                  {
+                      "sha256":  "66A86EF1F96CB1FF17283C26D7D30C54D1C1637191BF01171844B0389CF2F722",
+                      "bytes":  679,
+                      "relative":  "examples\\205_madhava_pi_kosh.sm"
+                  },
+                  {
+                      "sha256":  "C916476C6D9997541DF82C7E44A5991122816DFAA6834BDFEF7881B9CBB6FAA3",
+                      "bytes":  716,
+                      "relative":  "examples\\206_sankhyiki.sm"
+                  },
+                  {
+                      "sha256":  "21916ABF8A290C038801CD319704478C7C2DC3AFDDF0F58D11DB783AEFF95235",
+                      "bytes":  633,
+                      "relative":  "examples\\207_sankhyiki_vector.sm"
+                  },
+                  {
+                      "sha256":  "3835911450284BA24168AADA4B9E30C77D80E8B2E23B9EA2F6AE7DC7408BD5C5",
+                      "bytes":  1281,
+                      "relative":  "examples\\208_kalana.sm"
+                  },
+                  {
+                      "sha256":  "F2AA0BB8B1792DD0F46D4C65EB848D9EB8122460A52147639B5FB7684EE33B37",
+                      "bytes":  1551,
+                      "relative":  "examples\\209_samanvaya.sm"
+                  },
+                  {
+                      "sha256":  "AC032EA1D495ACED4159C67F04E62572D983918412E1A2A4948957DC4A52B5D9",
+                      "bytes":  243,
+                      "relative":  "examples\\20_pankti_array.sm"
+                  },
+                  {
+                      "sha256":  "2329759B0FABF6049DB85D0755CC2DE000197EF0163DE79C146D1E8C3B407318",
+                      "bytes":  174,
+                      "relative":  "examples\\210_r41_cycle.sm"
+                  },
+                  {
+                      "sha256":  "33AA38A28F80951E216AD86EFC459DA82A1901872DC6DFBA423245D80B0F61CA",
+                      "bytes":  148,
+                      "relative":  "examples\\211_r41_v1_public.sm"
+                  },
+                  {
+                      "sha256":  "A342959C8FE31B7E59A88F8247395A47B05D312EB8E9D25A727DBB0E772372CB",
+                      "bytes":  158,
+                      "relative":  "examples\\212_r41_v1_private.sm"
+                  },
+                  {
+                      "sha256":  "B82ED9BF028B2954CB5A38CB3CFF6CE5D174B1D179B71E44B2778DEDCD266FA8",
+                      "bytes":  152,
+                      "relative":  "examples\\213_r41_v1_dupexp.sm"
+                  },
+                  {
+                      "sha256":  "F8B71CB01C8759EEACAEECC7CC7E062A1F36533B9DC6891E8BB647B0A48576E9",
+                      "bytes":  135,
+                      "relative":  "examples\\214_r41_v1_noalias.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\215_r12_wordfreq.exit"
+                  },
+                  {
+                      "sha256":  "ED9B62EB8043788EBF17FA620F1652C1358EBA4069380AF760DDA8CC2ACBF85F",
+                      "bytes":  72,
+                      "relative":  "examples\\215_r12_wordfreq.out"
+                  },
+                  {
+                      "sha256":  "5B12C887544A32CA8CF841B8B827BB317EF7CA3B69EB3A90CCF79688C4F0A3F0",
+                      "bytes":  2453,
+                      "relative":  "examples\\215_r12_wordfreq.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\216_r12_expr.exit"
+                  },
+                  {
+                      "sha256":  "D588C61BACBA19324DFAC7BA70C429D51E3C0873C64E072705E1AE1F3E0232BD",
+                      "bytes":  15,
+                      "relative":  "examples\\216_r12_expr.out"
+                  },
+                  {
+                      "sha256":  "412E7558579A99E110E29C536E591FE9A277DB0265B61B699DB779603D386BDD",
+                      "bytes":  2743,
+                      "relative":  "examples\\216_r12_expr.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\217_r12_report.exit"
+                  },
+                  {
+                      "sha256":  "97E53ACCCDE3C967A3A0A16FF9D90AB1CF65EAC1C91584AEFA0665EFB590366F",
+                      "bytes":  190,
+                      "relative":  "examples\\217_r12_report.out"
+                  },
+                  {
+                      "sha256":  "D93B4110524116BF59334D947224E7CB8E7FA4CD7E44FC06C14D6EA429384AE2",
+                      "bytes":  1820,
+                      "relative":  "examples\\217_r12_report.sm"
+                  },
+                  {
+                      "sha256":  "D3B5C11CD50066FEEFCB8F96345C72EBE282118D70543CCD201EB3DFF59B0268",
+                      "bytes":  636,
+                      "relative":  "examples\\218_sanskrit_devanagari.sm"
+                  },
+                  {
+                      "sha256":  "51681B59D5992155F3C4F01C89AE1E34F55869FF3F62C0F6E4F4503896FD59DE",
+                      "bytes":  290,
+                      "relative":  "examples\\219_sanskrit_kosh_aliases.sm"
+                  },
+                  {
+                      "sha256":  "049E40AD4FC8C590E4685214181D13052E03658B34174DB489E579FC5D22BD38",
+                      "bytes":  213,
+                      "relative":  "examples\\21_break_continue.sm"
+                  },
+                  {
+                      "sha256":  "91AC2BA7F466CFDC1AE1592B4CD5124C541B0DC221A9BD417ACE9C8BC5706983",
+                      "bytes":  224,
+                      "relative":  "examples\\220_hindi_parse_error.sm"
+                  },
+                  {
+                      "sha256":  "163F2ADAB991834C6C90E3FD3AC6420E559557CEFC3CC5A09FB19C817CCD5B21",
+                      "bytes":  421,
+                      "relative":  "examples\\221_eof_location.sm"
+                  },
+                  {
+                      "sha256":  "E21882A25AB3192E07B88DF263D99498F404D466AD53888FEF9ABDDB522EF249",
+                      "bytes":  430,
+                      "relative":  "examples\\222_old_keyword_name.sm"
+                  },
+                  {
+                      "sha256":  "0E75FDA78FE3B9F1ACF52D9B4BD556B00A7A4EDE6877D7CC951B09B682204025",
+                      "bytes":  193,
+                      "relative":  "examples\\223_undefined_name.sm"
+                  },
+                  {
+                      "sha256":  "AB2C5ED74DBE78E225452E8C477C998E576F4DE91F49F737447709B90D632C97",
+                      "bytes":  244,
+                      "relative":  "examples\\224_unknown_field.sm"
+                  },
+                  {
+                      "sha256":  "773FD7A8E6E3B38A3151B1C9A1F4E41B761CB4357AB20AFF5B8E7B4A0B8E8CA5",
+                      "bytes":  199,
+                      "relative":  "examples\\225_undeclared_array.sm"
+                  },
+                  {
+                      "sha256":  "1B1703D2D6CAA6686AC2139C4031B8DC4C96994B0C3808B632F051CD9800F91F",
+                      "bytes":  338,
+                      "relative":  "examples\\226_long_field_names.sm"
+                  },
+                  {
+                      "sha256":  "33DBDBE38C819A0B8C38F8639CED0B59E565CAD8AADCB9AA676DB709D0B366C5",
+                      "bytes":  257,
+                      "relative":  "examples\\227_assign_undeclared.sm"
+                  },
+                  {
+                      "sha256":  "6193CD09AC719FB5A25CB4638AAD95B52A713F110EDEA241137740AC82114EA2",
+                      "bytes":  222,
+                      "relative":  "examples\\228_block_scope.sm"
+                  },
+                  {
+                      "sha256":  "805EC7ED65AFC2FBEF64AE615BEE72C7D7AA28A6C4499D8CC5F0A1609151DB01",
+                      "bytes":  216,
+                      "relative":  "examples\\229_loop_var_scope.sm"
+                  },
+                  {
+                      "sha256":  "5B266CE1861CBAF1545B7042662B0827A29A2FA5F42F295D0267AF1C9D2A7933",
+                      "bytes":  275,
+                      "relative":  "examples\\22_precedence.sm"
+                  },
+                  {
+                      "sha256":  "247A7E1DB1D938BE1A045F8B566F642FDD96A7DC489B70D98F1B875F8FC19094",
+                      "bytes":  378,
+                      "relative":  "examples\\230_redeclare_after_block.sm"
+                  },
+                  {
+                      "sha256":  "BC1FEF9EB5F065A5D9272421B3826B0BF88D038936C353A9A218D0BEB403F90F",
+                      "bytes":  223,
+                      "relative":  "examples\\231_duplicate_name.sm"
+                  },
+                  {
+                      "sha256":  "E13AA232A7914DB30A912DF01CE51B091ED701C40E7A7E1C86E84694B6393643",
+                      "bytes":  208,
+                      "relative":  "examples\\232_arity.sm"
+                  },
+                  {
+                      "sha256":  "AB72FC21D5610E1672356C483AAB70D6B868359DCA2D8436CAB7E5FFB1983395",
+                      "bytes":  191,
+                      "relative":  "examples\\233_missing_module.sm"
+                  },
+                  {
+                      "sha256":  "54FB490A07D2FE4435FC962F9CDC20926C362E5048732D7715A74C8F616DAC47",
+                      "bytes":  359,
+                      "relative":  "examples\\234_ambiguous_field.sm"
+                  },
+                  {
+                      "sha256":  "AC8D1D90075A578618930A70831B74BDD0CA60F97BC0B9350B015A5A42802BF2",
+                      "bytes":  203,
+                      "relative":  "examples\\235_duplicate_field.sm"
+                  },
+                  {
+                      "sha256":  "9F4C4BD32F9385A13F4798D73A17B3318BCC2E4F27F9B164039BCB1D91F8517C",
+                      "bytes":  1157,
+                      "relative":  "examples\\236_guna_once.sm"
+                  },
+                  {
+                      "sha256":  "E7AB426296A61FD9E16F6B85D9A3DBCD33CE49778EE72CF60FBDF82B2CDD2659",
+                      "bytes":  2159,
+                      "relative":  "examples\\237_many_variables.sm"
+                  },
+                  {
+                      "sha256":  "970EF8EFDF69E368D60EADEAC89483448B0332BDACF7A3015F8BB029812B0C09",
+                      "bytes":  336,
+                      "relative":  "examples\\238_r17_d1_unary_not.sm"
+                  },
+                  {
+                      "sha256":  "53F4DDB8EA5932A0977BFD44184DF637849325E98AF74BDC274D444BA1EFC317",
+                      "bytes":  411,
+                      "relative":  "examples\\239_r17_d2_anya_loop_krama.sm"
+                  },
+                  {
+                      "sha256":  "C9FB17C70946EDD8490DBD88C477D722763CB0B71CC1454425378A375ABA7955",
+                      "bytes":  309,
+                      "relative":  "examples\\23_grahan_input.sm"
+                  },
+                  {
+                      "sha256":  "80BF654C8E5E669E1012C3AC51A890920CF5C57293771C1E596445EA1237B04E",
+                      "bytes":  251,
+                      "relative":  "examples\\240_r17_d3_anya_self_assign.sm"
+                  },
+                  {
+                      "sha256":  "8191E843B67F73257B769D72B9388C893197FEE62D66B8DBD12B42DF45DCEF17",
+                      "bytes":  358,
+                      "relative":  "examples\\241_r17_d4_precedence.sm"
+                  },
+                  {
+                      "sha256":  "91407DE45B0DEEE3D7C9E654552D82F66239DDEAC2D51E912721B347CF8CD01D",
+                      "bytes":  235,
+                      "relative":  "examples\\242_r17_empty_guna.sm"
+                  },
+                  {
+                      "sha256":  "2D5088E95941B074189BF03B71D5ECAB01CAE5F30F9D5AD1D56C4520445EDCD3",
+                      "bytes":  348,
+                      "relative":  "examples\\243_r18_sthagita.sm"
+                  },
+                  {
+                      "sha256":  "5E47BC5B5A2ADFC1EA35ECE04F079A3C243214E52D6348C544410FF96527540A",
+                      "bytes":  338,
+                      "relative":  "examples\\244_r18_rachana_in_function.sm"
+                  },
+                  {
+                      "sha256":  "BFCD73FEA0189E02C7BFE41F69CF236BAD6D88C282E46869B25851A9CE26CC0B",
+                      "bytes":  705,
+                      "relative":  "examples\\245_r18_netsock.sm"
+                  },
+                  {
+                      "sha256":  "CF1FD1C78C86B2118D6B0286FDDB3552CFFCC6993B0C4B511E7EE1FBFEC106D4",
+                      "bytes":  1648,
+                      "relative":  "examples\\246_r23_comparator_sort.sm"
+                  },
+                  {
+                      "sha256":  "47F8D1D12C074A8FB6B3CF519A2DF0063D63D303933326D13A6322B3C4801781",
+                      "bytes":  1201,
+                      "relative":  "examples\\247_r23_methods.sm"
+                  },
+                  {
+                      "sha256":  "309CA3A426AF77246CE91018500E50E5DC469C77BAB812D752FD306867B351D7",
+                      "bytes":  1325,
+                      "relative":  "examples\\248_r23_slices.sm"
+                  },
+                  {
+                      "sha256":  "1DDB215B61692A47F0FDCB334DBE5D0A8A4C17153DDAFD64C368579BE595E1E2",
+                      "bytes":  1545,
+                      "relative":  "examples\\249_r25_phal.sm"
+                  },
+                  {
+                      "sha256":  "EBB8A935BB0BE99F29099A97353C621AAAF203BE1FCDC3063989149C7CCFD4FE",
+                      "bytes":  503,
+                      "relative":  "examples\\24_guess_game.sm"
+                  },
+                  {
+                      "sha256":  "AF0DC3D0CDA96CBDD52F44B906CD677EEA6ADC6F5A734279B1CB75084823D6F8",
+                      "bytes":  1307,
+                      "relative":  "examples\\250_r26_dosh_handler.sm"
+                  },
+                  {
+                      "sha256":  "F0C17263CDDCB7CF3D492A23F2353A7DCBCB868126A7CB047FDDB269CE8E1E27",
+                      "bytes":  231,
+                      "relative":  "examples\\251_r38_alias_mala_oob.sm"
+                  },
+                  {
+                      "sha256":  "B171EFC13B1DBF975F52B8AE1F2657F61A844713419AD262F424B10C28A7D6EE",
+                      "bytes":  406,
+                      "relative":  "examples\\252_r38_alias_kosh_oob.sm"
+                  },
+                  {
+                      "sha256":  "A9E6977478668864B93D5CF6DD399550E1C93069507FCA79C8AD50C562F3EED7",
+                      "bytes":  361,
+                      "relative":  "examples\\253_r38_alias_slice_oob.sm"
+                  },
+                  {
+                      "sha256":  "484E26F7045F67C5E04CDFF039EB51583F08491E0911676E581760F86239D102",
+                      "bytes":  293,
+                      "relative":  "examples\\254_r42_alias_pankti_len.sm"
+                  },
+                  {
+                      "sha256":  "EFC47AD0C5169531BCCC51435E426C18103FA0AB01916AE80CD0B69C83DC31C8",
+                      "bytes":  469,
+                      "relative":  "examples\\255_r42_alias_kosh_push.sm"
+                  },
+                  {
+                      "sha256":  "4486560AD6E30B4E6121072483DE8ABDB3D27D7C8436D7FB4DAC14D92810F92F",
+                      "bytes":  720,
+                      "relative":  "examples\\256_r44_vartani_sanskrit_names.sm"
+                  },
+                  {
+                      "sha256":  "5AA68DC9AFC65C650E0FA7525DB0E976AA82A44183D7D2E850EEE2670080B58A",
+                      "bytes":  625,
+                      "relative":  "examples\\257_r48_kosh_empty.sm"
+                  },
+                  {
+                      "sha256":  "33DE60573575F81B16C3E8DB74B1D318EEECEE015FD553F9180730D704E47C0B",
+                      "bytes":  1126,
+                      "relative":  "examples\\258_r70_loop_indent.sm"
+                  },
+                  {
+                      "sha256":  "1B3ACB6BC075DC664004318E7F9A74941C9F58F7812C2FF1EED85D722D5AEE32",
+                      "bytes":  245,
+                      "relative":  "examples\\259_r70_indent_ambiguous.sm"
+                  },
+                  {
+                      "sha256":  "23DB93B0AC8FFE366589BFC950C5C83286CDAE4071E0F8FF7FABBF245BF3F12D",
+                      "bytes":  298,
+                      "relative":  "examples\\25_patterns.sm"
+                  },
+                  {
+                      "sha256":  "A50AE5EA5EED965F8807B90B9F31BE54D7848387B4D13F079A588F997DA347A0",
+                      "bytes":  2271,
+                      "relative":  "examples\\260_r71_indented_bodies.sm"
+                  },
+                  {
+                      "sha256":  "001C9EF94863C383176787FCB7E3E45B6943E5E254B21F63B4C32C8195D1ABFA",
+                      "bytes":  187,
+                      "relative":  "examples\\261_r71_after_mukhya.sm"
+                  },
+                  {
+                      "sha256":  "5E6DF6854E7F25AB372C27143DB69D885D2221B7C763FC3E02C9EF32A47519A3",
+                      "bytes":  304,
+                      "relative":  "examples\\262_r71_same_line_body.sm"
+                  },
+                  {
+                      "sha256":  "3911C80940D0C53187E38624E54DD337AAC6C9EDB95E739AF979C5788B98E13B",
+                      "bytes":  896,
+                      "relative":  "examples\\263_r72_mandapa.sm"
+                  },
+                  {
+                      "sha256":  "5E48ABAA04D65E7447C4919E4840FB32A3F55353F6FED355B6260D200A6ACFB5",
+                      "bytes":  246,
+                      "relative":  "examples\\264_r73_escape_arith.sm"
+                  },
+                  {
+                      "sha256":  "B1DF8480EE8F23EBD641E5DEBDD2894F162E6F6EE23A441C21CD58CCDFA8134D",
+                      "bytes":  239,
+                      "relative":  "examples\\265_r73_escape_mala.sm"
+                  },
+                  {
+                      "sha256":  "39BD918DF57A962E6D0F3625500A45B6DB355AB18552ECCF0E35F9111F406D1C",
+                      "bytes":  254,
+                      "relative":  "examples\\266_r73_inside_only.sm"
+                  },
+                  {
+                      "sha256":  "F25AE6C7B4F415D9ABD33EB9A62ABAF830C166D3DB7C2B6741E32D32A31ADE33",
+                      "bytes":  222,
+                      "relative":  "examples\\267_r73_outer_number.sm"
+                  },
+                  {
+                      "sha256":  "9E62B6182684EED4DAC43C2C7348F122406D427ED05CFE3E0B6179CE991341EB",
+                      "bytes":  654,
+                      "relative":  "examples\\268_r73_return_value.sm"
+                  },
+                  {
+                      "sha256":  "D6A010EF813DCEAD5B79D98761B20F2A9D23E474ECD8FCE89522610FAA7AC888",
+                      "bytes":  802,
+                      "relative":  "examples\\269_r73_copy_out.sm"
+                  },
+                  {
+                      "sha256":  "871438732C50B40E37FA8E5710695D15A943980B0583B1F1D7E5884842762DFA",
+                      "bytes":  844,
+                      "relative":  "examples\\26_calculator.sm"
+                  },
+                  {
+                      "sha256":  "03C02E8277956544581BF67803CC90860710810354A2E4DF16A9ACDFCCD69E1A",
+                      "bytes":  591,
+                      "relative":  "examples\\270_r75_nested_store.sm"
+                  },
+                  {
+                      "sha256":  "5B43415231DD0F1241C5BA7AF45F7CE04E9E4C8A44672FBB61EA9D12F540C60F",
+                      "bytes":  281,
+                      "relative":  "examples\\271_r75_nested_store_data.sm"
+                  },
+                  {
+                      "sha256":  "3027BC9F3F54B9026C141BED8E8C0CE271DF73AAD2346D6185311CB9E45FFBC4",
+                      "bytes":  162,
+                      "relative":  "examples\\272_r75_negative_size.sm"
+                  },
+                  {
+                      "sha256":  "2CFC0E7B484847495E89DD816584199271FAA9556112E261C6B9C3F92D465489",
+                      "bytes":  244,
+                      "relative":  "examples\\273_r77_bytes_not_cells.sm"
+                  },
+                  {
+                      "sha256":  "DD19F664C34F1BA766584BD2B63FFFD26B87CF2DAE7285DD994945642EC65B5B",
+                      "bytes":  427,
+                      "relative":  "examples\\274_r77_bytes_loop_stops.sm"
+                  },
+                  {
+                      "sha256":  "60D1B6425EC0CBC3C49EE7B163F5D8E02F6952FB7568112C19DC07CA0C9DF424",
+                      "bytes":  230,
+                      "relative":  "examples\\275_r77_cells_times_eight.sm"
+                  },
+                  {
+                      "sha256":  "B36957A3ECCDF4DA393A7F11B69AD510422E1822C0A170332DE808DB2895FD7B",
+                      "bytes":  464,
+                      "relative":  "examples\\276_r77_mixed_indentation.sm"
+                  },
+                  {
+                      "sha256":  "F3346C51ADE7153154E7BE2B4C944DF7ED1D002744B27B9A152C9AE49F4506A8",
+                      "bytes":  315,
+                      "relative":  "examples\\277_r80_divide_by_zero.sm"
+                  },
+                  {
+                      "sha256":  "5FACB4E2CC5E77FED854266879EA81C3D2FD8247E33AD2E0C25E7A2A81F89F49",
+                      "bytes":  231,
+                      "relative":  "examples\\278_r80_literal_too_large.sm"
+                  },
+                  {
+                      "sha256":  "C5217CC6566635B3B9D51AC85AD21B86EF63335407AC7C830619F485D156EF0F",
+                      "bytes":  214,
+                      "relative":  "examples\\279_r80_constant_overflow.sm"
+                  },
+                  {
+                      "sha256":  "C437089DA7AB97E0C5D59C6A5D14C2AAB2B91D43187B063DA03A2950ACCC3DD4",
+                      "bytes":  201,
+                      "relative":  "examples\\27_even_odd.sm"
+                  },
+                  {
+                      "sha256":  "AF8C4792D32EE2E50FABB3647D7F94A28E1E68819670081D4A3826640E1245B5",
+                      "bytes":  588,
+                      "relative":  "examples\\280_r80_runtime_wraps.sm"
+                  },
+                  {
+                      "sha256":  "0764441FBC1F9E0BF610441C2CC27AC5935E28C4ABFD7DDA3DAA7BCEE7348CF2",
+                      "bytes":  243,
+                      "relative":  "examples\\281_r80_divide_in_module.sm"
+                  },
+                  {
+                      "sha256":  "35DF9FFA70E42578D2C759DE2D53325D2C0C46D134F48014B28312CFACBDB025",
+                      "bytes":  1174,
+                      "relative":  "examples\\282_r81_parikshita_sort.sm"
+                  },
+                  {
+                      "sha256":  "7D81A6A7371A43BF4E4BA53809D51DE41700B80ADF66F97C8AB917221905782E",
+                      "bytes":  370,
+                      "relative":  "examples\\283_r81_parikshita_refuses_library.sm"
+                  },
+                  {
+                      "sha256":  "B20CA1E70410FCFCDE363A4CDCD32A6172541CE06FF73FB6D7B7FDD5257214C3",
+                      "bytes":  324,
+                      "relative":  "examples\\284_r81_parikshita_transitive.sm"
+                  },
+                  {
+                      "sha256":  "36D5BB6F9034DFB825EDD9A17C821682F7CE723FF5C297A35BA4297691B6584C",
+                      "bytes":  324,
+                      "relative":  "examples\\285_r81_parikshita_address_param.sm"
+                  },
+                  {
+                      "sha256":  "CB9F6ED83FCC59175D93E48B334ED5DC3560F7D12F7C6490CB310C70E5F82376",
+                      "bytes":  623,
+                      "relative":  "examples\\286_r82_kosh_in_mandapa.sm"
+                  },
+                  {
+                      "sha256":  "150B6C2808582B66010EBA5E41D79CCEB110730D91CFFB2B99156DDA2AC6A5C0",
+                      "bytes":  676,
+                      "relative":  "examples\\287_r82_kosh_after_mandapa.sm"
+                  },
+                  {
+                      "sha256":  "8B91BAF5B692335FC737F715E7F41329196AC3EC51D6DA093EAA9D64A7998663",
+                      "bytes":  624,
+                      "relative":  "examples\\288_r86_kosh_alias_moves.sm"
+                  },
+                  {
+                      "sha256":  "E099EC4F61112F4CE061181F1BCFDD1917729BEC9DB9EDE2E75E19E80C62A8A0",
+                      "bytes":  900,
+                      "relative":  "examples\\289_r87_float_print.sm"
+                  },
+                  {
+                      "sha256":  "F92D01C284CDC62BE9BE5F545520C4DEEE5C64B98EDD684F08E51FEF6F781D2F",
+                      "bytes":  623,
+                      "relative":  "examples\\28_compound.sm"
+                  },
+                  {
+                      "sha256":  "8CBD316BAD7AB56604F0B101F724AA7E9F1F29788CC33DA9F77ACF4EE18CEBCE",
+                      "bytes":  230,
+                      "relative":  "examples\\290_r87_fraction_into_vitti.sm"
+                  },
+                  {
+                      "sha256":  "861D925C1B189B8B5D4E1CCB2931A0259DF31C48ABDB270A98F77C69FBFE1991",
+                      "bytes":  850,
+                      "relative":  "examples\\291_r90_nan_compare.sm"
+                  },
+                  {
+                      "sha256":  "338FA1FA094C6EA328F1CD00227E8F86CE79EE83AAE0E1B7E44631F41A0DAC8D",
+                      "bytes":  292,
+                      "relative":  "examples\\292_r90_likha_after_division.sm"
+                  },
+                  {
+                      "sha256":  "1C2C971910CA6DB8F6EAABA47C7F3B3EB43A4570BC4338ECD4AA27A1F7FAAF44",
+                      "bytes":  317,
+                      "relative":  "examples\\293_r90_float_divide_by_zero.sm"
+                  },
+                  {
+                      "sha256":  "3039DB5D19828B3D5450EB7612151750D8AF00D1D5A06849C6FD884F3CFF1381",
+                      "bytes":  532,
+                      "relative":  "examples\\294_r160_nan_comparisons.sm"
+                  },
+                  {
+                      "sha256":  "D01ECA947F6E4BB863B29EFF87E2BD7F57F56C049FD68DC1DC33710E3A14A8B2",
+                      "bytes":  350,
+                      "relative":  "examples\\295_r92_computed_fraction_into_vitti.sm"
+                  },
+                  {
+                      "sha256":  "BE5F228A143CB903F6FD7091F0507527E9D246E4AD5C240212A423718C97B185",
+                      "bytes":  499,
+                      "relative":  "examples\\296_r93_float_e_notation.sm"
+                  },
+                  {
+                      "sha256":  "86824B717AAE459B6AE5D78A92CA2302B5A5EE0CDE2886487BD7ED4D745D1276",
+                      "bytes":  591,
+                      "relative":  "examples\\297_r94_whole_number_operators.sm"
+                  },
+                  {
+                      "sha256":  "F28CDA5C7DD514A7228BD81772669907AD1ECB6695B94661CB356C6F2DDE3F14",
+                      "bytes":  243,
+                      "relative":  "examples\\298_r94_dasham_remainder_refused.sm"
+                  },
+                  {
+                      "sha256":  "2CC807996ADEE21C49F6EFF53A972C493BC61CDB209786B265CCFE485E6B2C26",
+                      "bytes":  1456,
+                      "relative":  "examples\\299_r94_nonfinite_kosh_mandapa.sm"
+                  },
+                  {
+                      "sha256":  "1E50609ED69C524BD083829BA6E456B9C865ECF3B2CC9BEDA8337418731F9C27",
+                      "bytes":  460,
+                      "relative":  "examples\\29_nishkriya.sm"
+                  },
+                  {
+                      "sha256":  "4330809CDF64C486B9521EE7D404469EB68FE60E22F812546C824E82204C5EBA",
+                      "bytes":  237,
+                      "relative":  "examples\\300_r96_chakra_decimal_bound.sm"
+                  },
+                  {
+                      "sha256":  "552D66BD77EBCA9DED68B8207CD30D5B8D01D60D65D2D3AAB61D3B1D26DDAB16",
+                      "bytes":  261,
+                      "relative":  "examples\\301_r96_chakra_dasham_counter.sm"
+                  },
+                  {
+                      "sha256":  "CE0F9A66CD583E15988C2361AC4300C43AA4BD31DA0288880B59B411F610AD7A",
+                      "bytes":  312,
+                      "relative":  "examples\\302_r96_decimal_loop_with_yavat.sm"
+                  },
+                  {
+                      "sha256":  "0B96D6A3096665296F24A3176CC22DF82231FE0FC1A37134DDA3BE64478D0377",
+                      "bytes":  542,
+                      "relative":  "examples\\303_r103_parimita_refuses.sm"
+                  },
+                  {
+                      "sha256":  "8CA189A36614EDFB003994782168DCD971BA78787B4E0BC42BBD4612E89BD954",
+                      "bytes":  843,
+                      "relative":  "examples\\304_r103_parimita_within.sm"
+                  },
+                  {
+                      "sha256":  "26A1B77F24A1B46473CD428C22007FF345DF273742CC4B6F04476E5F3BE447D4",
+                      "bytes":  248,
+                      "relative":  "examples\\305_r103_parimita_needs_number.sm"
+                  },
+                  {
+                      "sha256":  "49B379C16DD750EFCFD68666064338CBE1B9258405C699642FFCEADCAAD2A011",
+                      "bytes":  697,
+                      "relative":  "examples\\306_r105_string_equal.sm"
+                  },
+                  {
+                      "sha256":  "CCD63F24E4E3320A9EEE5CF810DEBB67780EF85B75607CDBEC37551BF887AF6D",
+                      "bytes":  725,
+                      "relative":  "examples\\307_r105_string_join.sm"
+                  },
+                  {
+                      "sha256":  "B2450FD63E0F5F623B9B8B7016970E6923064D356D746E0F5AB3E033FAEEEC57",
+                      "bytes":  351,
+                      "relative":  "examples\\308_r105_likha_three.sm"
+                  },
+                  {
+                      "sha256":  "07E06F130BE2569D7426AD784FF16FCD59E66B8B8252AE921C259EE0B3553222",
+                      "bytes":  429,
+                      "relative":  "examples\\309_r105_string_order.sm"
+                  },
+                  {
+                      "sha256":  "861F1ADEB3FED4B28206D82F76A0F0AC9AF0C73C70CE3816039CD096B47C9B2A",
+                      "bytes":  592,
+                      "relative":  "examples\\30_lkhb.sm"
+                  },
+                  {
+                      "sha256":  "0C5124B705E2AC90C42AF0209B8E50353FAC37091CA21B078B9F85AC2E5D4E5F",
+                      "bytes":  355,
+                      "relative":  "examples\\310_r105_string_beside_number.sm"
+                  },
+                  {
+                      "sha256":  "A0F783E181B4B6EB210503FDA97C70AC7DDFAF441BA221963F7C53CC4D956C00",
+                      "bytes":  235,
+                      "relative":  "examples\\311_r105_string_arithmetic.sm"
+                  },
+                  {
+                      "sha256":  "2F7B6CE725FD24201EBC592B225E7701728438135E1114BCA2332C0CE67F8A9E",
+                      "bytes":  552,
+                      "relative":  "examples\\312_r106_likha_string.sm"
+                  },
+                  {
+                      "sha256":  "60644B21EFAA72ADCE65FFC49CCAE28831A73F29E030689355049117A9A39D77",
+                      "bytes":  266,
+                      "relative":  "examples\\313_r106_string_condition.sm"
+                  },
+                  {
+                      "sha256":  "6D9670FE4CBEC0A36FFED501F176468AA230E293837C90225AFDEE3B9CB8E924",
+                      "bytes":  278,
+                      "relative":  "examples\\314_r106_kosh_operand.sm"
+                  },
+                  {
+                      "sha256":  "83FE67D56C6D64790874154112D6F2688D231ED7AD0C8FBD3F38F3773B47C608",
+                      "bytes":  352,
+                      "relative":  "examples\\315_r106_dasham_into_mala.sm"
+                  },
+                  {
+                      "sha256":  "BC91C22C6BA35D65B07FBF8BEE6154587ECF8469919D30DABD25BFC9FB4833B1",
+                      "bytes":  695,
+                      "relative":  "examples\\316_r107_kosh_kept_by_a_prakriya.sm"
+                  },
+                  {
+                      "sha256":  "63A12CAA68FCF0FAECEA3DEE150DDC6F06E2F41EB62F4AC72E83F27AB6AE5C65",
+                      "bytes":  844,
+                      "relative":  "examples\\317_r107_parimana.sm"
+                  },
+                  {
+                      "sha256":  "665A1A0909B4D793507507BAC5BF5E0B255F480983CFE450B2F20185628E532F",
+                      "bytes":  966,
+                      "relative":  "examples\\318_r108_parimana_moves.sm"
+                  },
+                  {
+                      "sha256":  "F8FDF860CC77F664BED009D3DD30D65A96C126DC2A15147B4342DA799C860272",
+                      "bytes":  251,
+                      "relative":  "examples\\319_r108_mala_operand.sm"
+                  },
+                  {
+                      "sha256":  "CF4BCBC381FDCBB689D9A0F367B91A7CC2CF98D89CA6E793E78DF5138010B602",
+                      "bytes":  262,
+                      "relative":  "examples\\31_strcat.sm"
+                  },
+                  {
+                      "sha256":  "AE416A0C8F69F0289692DD9866DFE1E129363635951239B7337E50E5449B0D87",
+                      "bytes":  710,
+                      "relative":  "examples\\320_r109_kosh_alias_kept.sm"
+                  },
+                  {
+                      "sha256":  "B25712D04FCD4C1ECEC085FAFFBBABD078E57AD08EBE7648161D745A8E057D42",
+                      "bytes":  2124,
+                      "relative":  "examples\\321_r109_kosh_long_chain.sm"
+                  },
+                  {
+                      "sha256":  "425EC0A3E6D1C0219B23A076CBBCF326333C2F5B6D5853FFE54F569CB7F30ACC",
+                      "bytes":  990,
+                      "relative":  "examples\\322_r111_new_names.sm"
+                  },
+                  {
+                      "sha256":  "CF92F1ED13C3827FA9E33EEEC093B41730CD4C3546CD32443A93C8B90FCCC8E6",
+                      "bytes":  1017,
+                      "relative":  "examples\\323_r111_old_names.sm"
+                  },
+                  {
+                      "sha256":  "AC71933FD3F7F52E3FA209C32B8BB75A6C26B69DDBCE5D88E4F371FD84D53B51",
+                      "bytes":  351,
+                      "relative":  "examples\\324_r111_asti_true.sm"
+                  },
+                  {
+                      "sha256":  "50A1A798097951E8925F59E804CA3B20D7DEE201418736241A3A6A1D4EDBE509",
+                      "bytes":  351,
+                      "relative":  "examples\\325_r111_asti_false.sm"
+                  },
+                  {
+                      "sha256":  "5FF831D500FE6D029856CD0A62AF2F8E560DD16D9642007DF5D0689233EB2E5A",
+                      "bytes":  361,
+                      "relative":  "examples\\326_r111_nasti_true.sm"
+                  },
+                  {
+                      "sha256":  "C5A00AC70D1F829EAA6B9865A9F4ED671A6CED55733B4D2DDAA8E34904611637",
+                      "bytes":  361,
+                      "relative":  "examples\\327_r111_nasti_false.sm"
+                  },
+                  {
+                      "sha256":  "1D880C8019A8DB9E90B28B375163FD2F546AA6B1D2F0296BB64E5E9F05FBE240",
+                      "bytes":  537,
+                      "relative":  "examples\\328_r113_rachana_operand.sm"
+                  },
+                  {
+                      "sha256":  "3B12AA064F3464B10A57CDE93B682D3A9D76F8BA67852EB0FDE6E38C3FED0F67",
+                      "bytes":  411,
+                      "relative":  "examples\\329_r113_sankhya_bindu.sm"
+                  },
+                  {
+                      "sha256":  "453206E5038C29089E19835A9BD7ADA5C0B947C3B6E751E0E72C8D48623313F4",
+                      "bytes":  623,
+                      "relative":  "examples\\32_bank_interest.sm"
+                  },
+                  {
+                      "sha256":  "038BA012F45E9603188194E9844753B1781550F584A944B392B89AACDE198ECA",
+                      "bytes":  197,
+                      "relative":  "examples\\330_r116_dvigun.sm"
+                  },
+                  {
+                      "sha256":  "1C5058276C8DE56E57A60A8218BD39C34C163D6BDBCCB48CE4A5C08DCF39E408",
+                      "bytes":  187,
+                      "relative":  "examples\\331_r116_trigun.sm"
+                  },
+                  {
+                      "sha256":  "B0251BDC4858AEBEAB291D07B068765E180F1DEDB9FE69A516E8FA01EFEFD2B7",
+                      "bytes":  235,
+                      "relative":  "examples\\332_r116_vardh.sm"
+                  },
+                  {
+                      "sha256":  "BE02CABFA85037E982BA26742390E744427D2772743F946912A1EC53D815282B",
+                      "bytes":  293,
+                      "relative":  "examples\\333_r116_nirapeksh_mulya.sm"
+                  },
+                  {
+                      "sha256":  "E104D19D24A6548EF636163A38E8C1188B16371B46ED01F419964EDB7C62F44E",
+                      "bytes":  402,
+                      "relative":  "examples\\334_r116_mahattam_samapavartak.sm"
+                  },
+                  {
+                      "sha256":  "67EFB63DA1C76CE66317AA08FB611BA6A729AA24D1AC8B00C398099581D046DB",
+                      "bytes":  295,
+                      "relative":  "examples\\335_r116_viparyay_ank.sm"
+                  },
+                  {
+                      "sha256":  "E275A8DA7822142C6A31A146CEEBCE08EC7CAD3376F978DC63A2AD10C732F9B6",
+                      "bytes":  242,
+                      "relative":  "examples\\336_r116_ganita_nirapeksh.sm"
+                  },
+                  {
+                      "sha256":  "4C27BA7E6DCF30ED57D21453B1CE0CCF2E51C9C493AC207D266EBD80108FD081",
+                      "bytes":  510,
+                      "relative":  "examples\\337_r116_brahmagupta_kshetr.sm"
+                  },
+                  {
+                      "sha256":  "B57052332C96D9EDBAC522B0F529926FB7DE008A27BC0F7EB7ECAA9318DEBA22",
+                      "bytes":  463,
+                      "relative":  "examples\\338_r116_brihat_ank_se.sm"
+                  },
+                  {
+                      "sha256":  "6085E33F33C3168A6C65E6EC4EAD1B091B1A043DB0ED837FBF4F2FBDE2B20066",
+                      "bytes":  526,
+                      "relative":  "examples\\339_r116_brihat_ank_tak_laghu.sm"
+                  },
+                  {
+                      "sha256":  "B0ADA005CAA520F990A699A91E027C4E7170C6098E24924C69CC6A8713593ED8",
+                      "bytes":  714,
+                      "relative":  "examples\\33_unit_conversion.sm"
+                  },
+                  {
+                      "sha256":  "E62A6E7756E93E0DB5DF02580A75D137080098348D4DCC8227BB314E83C2B9B0",
+                      "bytes":  429,
+                      "relative":  "examples\\340_r116_yog_seema.sm"
+                  },
+                  {
+                      "sha256":  "79B83F0525EC1BCB0107FC99D139ABD01FF32104A6CCD8C2C1B681F77587CF10",
+                      "bytes":  459,
+                      "relative":  "examples\\341_r116_adish_gunan.sm"
+                  },
+                  {
+                      "sha256":  "503319D1E853E4ADD6272BC23DD2082BC25FB97214818CEF299DC7182F6CEB7A",
+                      "bytes":  459,
+                      "relative":  "examples\\342_r116_bindu_gunan.sm"
+                  },
+                  {
+                      "sha256":  "4C75B21AA764E69DC01A21E76AB2928B8326E2183E9F97BA39667B6B8E1B0A17",
+                      "bytes":  502,
+                      "relative":  "examples\\343_r116_suchi_shreni.sm"
+                  },
+                  {
+                      "sha256":  "78E2F746E0CAF8DC4AC692800B29D2B1DD91B27E89119C0DC904CD1C99098A27",
+                      "bytes":  802,
+                      "relative":  "examples\\344_r116_varna_tak_dashm.sm"
+                  },
+                  {
+                      "sha256":  "5A19967BC6B2EBE535D6958E51D1759BF2E6D357D9744E954D4FD190062CCB33",
+                      "bytes":  4070,
+                      "relative":  "examples\\345_r116_long_literal.sm"
+                  },
+                  {
+                      "sha256":  "FCE18F972EAAAFFBA613CFC3618B475E15CF64DA202C577617C6656052C592DB",
+                      "bytes":  1193,
+                      "relative":  "examples\\346_r118_old_library_names.sm"
+                  },
+                  {
+                      "sha256":  "CF74099F7701A6C0C2391B119CEE252AD061AA9D2C10DBE9631DC9B1D0122FD3",
+                      "bytes":  986,
+                      "relative":  "examples\\347_r118_old_roop_names.sm"
+                  },
+                  {
+                      "sha256":  "E175D8530BBAE4BF007E32EB3B8EFA3D82CAFA2C65311F45EE778E077F323486",
+                      "bytes":  415,
+                      "relative":  "examples\\348_r126_kosh_then_raw.sm"
+                  },
+                  {
+                      "sha256":  "C4ED9E2EB52DD5DDEF7B933AD6F4A640EA264FB7C9F4064977D55B1AAC156967",
+                      "bytes":  495,
+                      "relative":  "examples\\349_r126_kosh_in_one_branch.sm"
+                  },
+                  {
+                      "sha256":  "8269B15A56E06AF7E9BC22B59B4621A60628CB55F99D3B4DA2CE96004863D1E3",
+                      "bytes":  558,
+                      "relative":  "examples\\34_incdec.sm"
+                  },
+                  {
+                      "sha256":  "35A98DF58DF4F532CE93ECCCDD67D5EFFBDBE65BF1DEBF30464462E9C48436FB",
+                      "bytes":  403,
+                      "relative":  "examples\\350_r126_mala_then_kosh.sm"
+                  },
+                  {
+                      "sha256":  "873375AFA07CD944819B5DE1CC966CE38025E4CC616D9630773E48AE747B9771",
+                      "bytes":  346,
+                      "relative":  "examples\\351_r127_muse_reassign.sm"
+                  },
+                  {
+                      "sha256":  "FCE037CCDAD43689BA9DD18DF10AD0D1B79D3EC19FF66E67A35196C78BD6BEEB",
+                      "bytes":  365,
+                      "relative":  "examples\\352_r127_muse_assign_kosh_mala.sm"
+                  },
+                  {
+                      "sha256":  "0E1BEED5A1B6A3CFA5F393BCC52349086FB1EF2485B5D5DE3854342025850646",
+                      "bytes":  401,
+                      "relative":  "examples\\353_r127_muse_loop.sm"
+                  },
+                  {
+                      "sha256":  "7C975C41A06C72FA2D83788E475D1B85AA150C9A19A7FC3509DB29CD3CC85CD0",
+                      "bytes":  359,
+                      "relative":  "examples\\354_r127_muse_callresult.sm"
+                  },
+                  {
+                      "sha256":  "49305608ECD63868E010EF2EB551EA1E511FA03D5EE59ED7BA2BEF15D0E4BB37",
+                      "bytes":  358,
+                      "relative":  "examples\\355_r127_muse_malacell.sm"
+                  },
+                  {
+                      "sha256":  "2BC4087DDED6DE6239C08CE12BA6D287485F3C5871C30C6B22748BC6B7428381",
+                      "bytes":  387,
+                      "relative":  "examples\\356_r127_muse_koshcell.sm"
+                  },
+                  {
+                      "sha256":  "034964D27245FDED0110DCD384417468E6E60FC2ECA9D82556EAF3DA23557C22",
+                      "bytes":  392,
+                      "relative":  "examples\\357_r127_muse_global.sm"
+                  },
+                  {
+                      "sha256":  "F49B11EA7FB6CB5FE6B3E2F845BBDD0B05960DD547832F1B310FBEE33F8CF4F2",
+                      "bytes":  340,
+                      "relative":  "examples\\358_r127_muse_global_samefn.sm"
+                  },
+                  {
+                      "sha256":  "7207DA91EDD083D52E21E03282F4DFB178A1654801E9C392C1FBBA497BB2D842",
+                      "bytes":  349,
+                      "relative":  "examples\\359_r127_muse_ternary_oob.sm"
+                  },
+                  {
+                      "sha256":  "B527D387ACAE12DB29238710B9416B93E1D049B75483D825CA6EA8ECC352AFC8",
+                      "bytes":  324,
+                      "relative":  "examples\\35_comments.sm"
+                  },
+                  {
+                      "sha256":  "CD4954CBA1680C1304CEBCAF4A38D98107E225FCC051098825C013220D0F1FA3",
+                      "bytes":  392,
+                      "relative":  "examples\\36_descending.sm"
+                  },
+                  {
+                      "sha256":  "C6C946578938A4AC133BF911D0618C954705EDD3CCBEBC44E72B9C1386EB58B1",
+                      "bytes":  567,
+                      "relative":  "examples\\37_native_gujarati.sm"
+                  },
+                  {
+                      "sha256":  "C7E127793B96AAE5A93BE6231FCD8C8E86B2F637661EAE0AD6C6AB5B1F86183D",
+                      "bytes":  443,
+                      "relative":  "examples\\38_native_hindi.sm"
+                  },
+                  {
+                      "sha256":  "D1C98514DD582284385BFA38C662413D6545EEF396EE339ED0E97888115E07E4",
+                      "bytes":  575,
+                      "relative":  "examples\\39_native_tamil.sm"
+                  },
+                  {
+                      "sha256":  "C12FD76E9A7F771F0C586962FFC9853FD002273C6AA91782D73B4C4913750661",
+                      "bytes":  297,
+                      "relative":  "examples\\40_functions_params.sm"
+                  },
+                  {
+                      "sha256":  "901EC6C5FDA5C200F62BEAF1E33891A7AA43657591746CE902AA433E426347DD",
+                      "bytes":  460,
+                      "relative":  "examples\\41_recursion.sm"
+                  },
+                  {
+                      "sha256":  "51DA785F813C7011DAE4A2EA88BAF6A3389227AC5466291DC8797A4847EC01E7",
+                      "bytes":  136,
+                      "relative":  "examples\\42_block_comments.sm"
+                  },
+                  {
+                      "sha256":  "DC8BFEC6E3881C27FCE399190CCE29D6213F183D28EAD7B566667E6C7D390A21",
+                      "bytes":  355,
+                      "relative":  "examples\\43_nested_likha.sm"
+                  },
+                  {
+                      "sha256":  "20853B3C23FEA328C4F2A744DDF9FC83C9AC3618439C8CA51A57A95D0071235E",
+                      "bytes":  416,
+                      "relative":  "examples\\44_shabda.sm"
+                  },
+                  {
+                      "sha256":  "E3D613896A03B4A307088D9191227D07C3BD4D1BC20CB623DC157DBBFE7B5E88",
+                      "bytes":  342,
+                      "relative":  "examples\\45_shifts.sm"
+                  },
+                  {
+                      "sha256":  "B03FE93F8DE6BF192B9BFC1FB0427E6522CC5C629D8556CF87F6685820D01F66",
+                      "bytes":  1184,
+                      "relative":  "examples\\46_language_reference.sm"
+                  },
+                  {
+                      "sha256":  "4A9DE74DB46BB1D47B28C627E607FE62D38993E925AFE1FC8C841BE4DF44B24C",
+                      "bytes":  284,
+                      "relative":  "examples\\59_windows_grahan_runtime.sm"
+                  },
+                  {
+                      "sha256":  "879E9EB33121B4EA84B4FEF685DFA1C91495D6867B3E7565477CD6009B069EF0",
+                      "bytes":  267,
+                      "relative":  "examples\\60_six_func_args.sm"
+                  },
+                  {
+                      "sha256":  "67BDADD1079A12A344D4B655F47A875AC46CAACB1754384545B5DFDBB98F46FF",
+                      "bytes":  503,
+                      "relative":  "examples\\61_stdlib_math.sm"
+                  },
+                  {
+                      "sha256":  "1882B6CC49C90A1B58A20B1B668FD86466B4785D48B180788FF4F5E1EA5F7A26",
+                      "bytes":  422,
+                      "relative":  "examples\\62_stdlib_num.sm"
+                  },
+                  {
+                      "sha256":  "A31DEEFC6CA2BAFBA8B0C43FC68C152414F492C8C3CC33371A258080F7A5D816",
+                      "bytes":  538,
+                      "relative":  "examples\\63_stdlib_string.sm"
+                  },
+                  {
+                      "sha256":  "78E68527501AEBA6BEE01FCD1EF13D470BE2C7CE451D2664AE4062C40D73257A",
+                      "bytes":  87,
+                      "relative":  "examples\\64_param_reassign.sm"
+                  },
+                  {
+                      "sha256":  "66D0ED59E0108828A7F6CCBDB759519D21A7C293219A4E90C47DB1D8888B2D8D",
+                      "bytes":  43,
+                      "relative":  "examples\\65_char_code_index.sm"
+                  },
+                  {
+                      "sha256":  "5FD69AAF57680B3C5DD60F63E2640CC5241AADBD515288696C3446D93D91F14D",
+                      "bytes":  52,
+                      "relative":  "examples\\66_module_dedupe.sm"
+                  },
+                  {
+                      "sha256":  "F98A01C85382C90D5511564DAAD8DE398AFCD703865887885D93BC2099D19478",
+                      "bytes":  110,
+                      "relative":  "examples\\67_array_len_bounds.sm"
+                  },
+                  {
+                      "sha256":  "EB57BCCDB2DBCC3B8E9E895EDCE8BDEA99838D0A6CE1F61DE67CC6E57FB12B0A",
+                      "bytes":  56,
+                      "relative":  "examples\\68_array_oob.sm"
+                  },
+                  {
+                      "sha256":  "4EAEC3F63BB084E4AC4DCAA885B0FB41452D7040C8A45C465CB20CE5344DAE2E",
+                      "bytes":  42,
+                      "relative":  "examples\\69_undefined_function.sm"
+                  },
+                  {
+                      "sha256":  "A8B7C86E58727FB7819E11D366A45439571D42A2896BC33A2B9988124470B9F2",
+                      "bytes":  80,
+                      "relative":  "examples\\70_module_collision.sm"
+                  },
+                  {
+                      "sha256":  "9AF3F30C9B199252C27324864A3178C809BE0F9DADF33B85BE292D11095D9FAD",
+                      "bytes":  57,
+                      "relative":  "examples\\71_array_negative_index.sm"
+                  },
+                  {
+                      "sha256":  "7DD6568ECB705BC87FAD0D68F52B13E624CDA31F132311195B88E5F34A6FE4FC",
+                      "bytes":  98,
+                      "relative":  "examples\\72_array_variable_index.sm"
+                  },
+                  {
+                      "sha256":  "8572E352E6B66AF1AA85DFED420BA35E008B6F3688FE0F184FF211E33FB6AD41",
+                      "bytes":  56,
+                      "relative":  "examples\\73_array_equal_length.sm"
+                  },
+                  {
+                      "sha256":  "7399DB9013D324A1F8B650361BA01CC8ED563E410B469FAA59AEE4145D23DA43",
+                      "bytes":  82,
+                      "relative":  "examples\\74_array_highest_valid.sm"
+                  },
+                  {
+                      "sha256":  "0C6F64B99D41ED4872CA97CB262CE8B2E432A320FCE1A201DA45FA03B4360A34",
+                      "bytes":  102,
+                      "relative":  "examples\\75_array_dynamic_length.sm"
+                  },
+                  {
+                      "sha256":  "7620185AA1C97E2083BADC1BFA12B4600D020C647679F6C789AF22EF8BC72FB8",
+                      "bytes":  231,
+                      "relative":  "examples\\76_array_function_scope.sm"
+                  },
+                  {
+                      "sha256":  "9A00DF76F7042D75F04EDDDD5D4E16F1DE022F87AE4AD556BD5A87253F0B5A34",
+                      "bytes":  171,
+                      "relative":  "examples\\77_ternary.sm"
+                  },
+                  {
+                      "sha256":  "DA92E1E5B3D0B25DD7FD4349FC50051C0CCC6AA0B5DA633CDD7CD8F0B46DB681",
+                      "bytes":  266,
+                      "relative":  "examples\\78_do_while.sm"
+                  },
+                  {
+                      "sha256":  "2A59D15D2DA66923CB97E70797029F59F0F0331D4AC500AD455B82ACE79B9D8D",
+                      "bytes":  43,
+                      "relative":  "examples\\79_ayojan_cwd.sm"
+                  },
+                  {
+                      "sha256":  "1F7E6857AE653D557E78DB99D3747E8E9361667CD1FF10A5375B3748437F848D",
+                      "bytes":  502,
+                      "relative":  "examples\\80_b6_nested_call_loop.sm"
+                  },
+                  {
+                      "sha256":  "7ADE153937C855234654BD0B6B759F32426D019972E4D2547B1F5C9C2E514BEC",
+                      "bytes":  403,
+                      "relative":  "examples\\81_stdlib_num2.sm"
+                  },
+                  {
+                      "sha256":  "1FAE8B8DD08757B2694E01190116386C9DBD744C9863168EEFBE9C47DBDC23E6",
+                      "bytes":  600,
+                      "relative":  "examples\\82_b7_stack_spill.sm"
+                  },
+                  {
+                      "sha256":  "6C40B6338DE1096CEE5F04164BC01614B0075FEF528CB308A65257C4F5A9C8AB",
+                      "bytes":  711,
+                      "relative":  "examples\\83_stdlib_sort.sm"
+                  },
+                  {
+                      "sha256":  "70CA7AD3BF424D89C97E9AEC5787B08DA041CDBDDEC7B2F857FAC1B33866F870",
+                      "bytes":  607,
+                      "relative":  "examples\\84_stdlib_string2.sm"
+                  },
+                  {
+                      "sha256":  "64C2FED5EA19DA60BD2BEB9CD1F4D2121DE0BD44CFD7CABCEB8F1F1B8BACFD8C",
+                      "bytes":  455,
+                      "relative":  "examples\\85_stdlib_shellsort.sm"
+                  },
+                  {
+                      "sha256":  "B275B4DBCE811F4766D031BB74E57DA6B6BACD25803A0A80AA39FA9F89A84B61",
+                      "bytes":  156,
+                      "relative":  "examples\\86_b8_multi_modules.sm"
+                  },
+                  {
+                      "sha256":  "15AAC480535472FDFC19665E374DE9649978767EA849620F5482FA19F7F74B08",
+                      "bytes":  62,
+                      "relative":  "examples\\87_b8_all_modules.sm"
+                  },
+                  {
+                      "sha256":  "1FD7121CC06995BA4E81C374711DCDCDD1F125F2183959A19DD3676A920D3104",
+                      "bytes":  54,
+                      "relative":  "examples\\87_b8_func_params_capacity.sm"
+                  },
+                  {
+                      "sha256":  "1FD7121CC06995BA4E81C374711DCDCDD1F125F2183959A19DD3676A920D3104",
+                      "bytes":  54,
+                      "relative":  "examples\\87_b8_math_sort_string.sm"
+                  },
+                  {
+                      "sha256":  "458A0024D03A86D0D71690FD7180954704304E2F5721EA0318A1132CE88BA3C9",
+                      "bytes":  469,
+                      "relative":  "examples\\88_pingala_chandas.sm"
+                  },
+                  {
+                      "sha256":  "40A6D2FFD569087B8A6ECE60D9685258B327CDE8271CD9E47E86965C0D4169C8",
+                      "bytes":  311,
+                      "relative":  "examples\\89_b9_short_circuit.sm"
+                  },
+                  {
+                      "sha256":  "3B67A0CBD08568FF7BAFB7DBE61084894ADB13BA37F8843B3CA44A827B08D98F",
+                      "bytes":  154,
+                      "relative":  "examples\\90_b9_short_circuit_bounds.sm"
+                  },
+                  {
+                      "sha256":  "ACD78CC001389660C1FBBA28131C46A2FC1B30F83F79FBBE0ADE5AFC42D38EE8",
+                      "bytes":  561,
+                      "relative":  "examples\\91_indian_number_theory.sm"
+                  },
+                  {
+                      "sha256":  "5B7984A68BCBAA86E874DEF196C5A3702A9D8693202888A1A462FFD3C41506E4",
+                      "bytes":  507,
+                      "relative":  "examples\\92_t12_dasham_float.sm"
+                  },
+                  {
+                      "sha256":  "BA8590BF9E2C16F2FB8E1547EDA9EDDEA08AB85ACCFF4E3419BD82EF4157BB3A",
+                      "bytes":  667,
+                      "relative":  "examples\\93_t12_float_functions.sm"
+                  },
+                  {
+                      "sha256":  "9F30D2DB5B788911B006A33674CFB5FD73ECFF20718E6DB86F170968EE06FDA3",
+                      "bytes":  844,
+                      "relative":  "examples\\94_t12_float_functions.sm"
+                  },
+                  {
+                      "sha256":  "9062B8DD288B1C1C34F44704A4054732C389794AF4081C6DACBC1D1DCB5251F1",
+                      "bytes":  1340,
+                      "relative":  "examples\\95_t12_madhava_functions.sm"
+                  },
+                  {
+                      "sha256":  "2F4E768B053D58E8465213B846C82F6A095EEC482AA5A04127DCC4AEA2D537C1",
+                      "bytes":  410,
+                      "relative":  "examples\\96_t18_kosh.sm"
+                  },
+                  {
+                      "sha256":  "2FCA1E52E4E2D7E190F77AACC9AAC1E973C20113A7508D5D352F4B53FCB03E2A",
+                      "bytes":  229,
+                      "relative":  "examples\\97_t18_kosh_devanagari.sm"
+                  },
+                  {
+                      "sha256":  "0167CD99BED3D3FF5205D45E07DCA58C2B889E9DEE24242100C14A270391CE74",
+                      "bytes":  117,
+                      "relative":  "examples\\98_t18_kosh_empty.sm"
+                  },
+                  {
+                      "sha256":  "4F5FDBCC5E7A8FDA2C2B1FD197BD3973B8201E6DB5CAD65BC29AEEABD699B0CE",
+                      "bytes":  183,
+                      "relative":  "examples\\99_ast_multimodule_capacity.sm"
+                  },
+                  {
+                      "sha256":  "2F4E768B053D58E8465213B846C82F6A095EEC482AA5A04127DCC4AEA2D537C1",
+                      "bytes":  410,
+                      "relative":  "examples\\99_t18_kosh.sm"
+                  },
+                  {
+                      "sha256":  "FE6FA5F3FEB579A6F6DBE485ACE3D1F7CD925485A66C562BF2CEC03EFF78EA26",
+                      "bytes":  553,
+                      "relative":  "examples\\array_demo.sm"
+                  },
+                  {
+                      "sha256":  "A54D963B36DAC7F7A45FD12BEA705B37AE432084EAEA9793FDD10958A8BACED1",
+                      "bytes":  318,
+                      "relative":  "examples\\char_ops.sm"
+                  },
+                  {
+                      "sha256":  "84F3D4C7FDF4DF6BCDCA8F10DB1EF28E4BC52C849A2EB1518FE53133691767E5",
+                      "bytes":  525,
+                      "relative":  "examples\\fizzbuzz.sm"
+                  },
+                  {
+                      "sha256":  "EC8DCCC23B78C4A6221BD7092649E308C0CA311D5B55829234E77F1978D0D4E9",
+                      "bytes":  198,
+                      "relative":  "examples\\format_demo.sm"
+                  },
+                  {
+                      "sha256":  "F5379ABC792114F08C8582BEEB1F4CFE47CA4A2B5C659A63891BA5ADE3E09CDD",
+                      "bytes":  884,
+                      "relative":  "examples\\full_demo.sm"
+                  },
+                  {
+                      "sha256":  "DCA4498A8A51A5961CF039699B9EF05EC3EEA0AC51660B3F9E249078DF204BE9",
+                      "bytes":  442,
+                      "relative":  "examples\\func_demo.sm"
+                  },
+                  {
+                      "sha256":  "F8E59CEBAC4A3448F734DF89E96D04791C95D36E586337ECC55A4F47A6ED36FD",
+                      "bytes":  69,
+                      "relative":  "examples\\hello.sm"
+                  },
+                  {
+                      "sha256":  "A01038B5D69FC9BD900906538C5BDCCDAF78ACFCB98891334936EEBD98EEEA08",
+                      "bytes":  395,
+                      "relative":  "examples\\import_demo.sm"
+                  },
+                  {
+                      "sha256":  "4B6BEC8CEA033F12073113DDADD6D5BDF5EE11405351B758BCD8FA7BC2113AF5",
+                      "bytes":  358,
+                      "relative":  "examples\\mem_safe.sm"
+                  },
+                  {
+                      "sha256":  "99E63F90811AB0C41D7096374638D6BFEBEA5901BB4B56932F2E5DC9BC669036",
+                      "bytes":  246,
+                      "relative":  "examples\\multable.sm"
+                  },
+                  {
+                      "sha256":  "28984DBA75B13459C40114619DF03097B7409D97D7597312EF519E8ACC5C34C4",
+                      "bytes":  403,
+                      "relative":  "examples\\number_game.sm"
+                  },
+                  {
+                      "sha256":  "EBD7BC81DD521D1C869FA5401D2E95860FC288AD15E9889CA786D75279CB0B1A",
+                      "bytes":  479,
+                      "relative":  "examples\\prime.sm"
+                  },
+                  {
+                      "sha256":  "D87918B10FA8F647A02A94478C130AB26FBD74BBA8A7C04257A99B5751488FCF",
+                      "bytes":  261,
+                      "relative":  "examples\\strength_reduction.sm"
+                  },
+                  {
+                      "sha256":  "4EF0067417D02C2C7F371CDA441371A536172546DC6F45E4FBAFA9A4A5ED066B",
+                      "bytes":  143,
+                      "relative":  "examples\\lib\\r33_alpha.smlib"
+                  },
+                  {
+                      "sha256":  "1A374D2398EA680932BD6663EF2723E8236CC48B351CAF2530F5A9FE43D92498",
+                      "bytes":  153,
+                      "relative":  "examples\\lib\\r33_beta.smlib"
+                  },
+                  {
+                      "sha256":  "E82A22BA98336627521A1F806186A0588B7ECC070191DD8D8349DC4B8CEE4033",
+                      "bytes":  124,
+                      "relative":  "examples\\lib\\r33_devanagari.smlib"
+                  },
+                  {
+                      "sha256":  "90E7B6979EBFE645D66A377FA2D33C29E5251833496F7A11A419154B39851054",
+                      "bytes":  87,
+                      "relative":  "examples\\lib\\r40_a.smlib"
+                  },
+                  {
+                      "sha256":  "1C60BDE23D3CA802A052DFE98AB5667FDB49E85A36208194AE269AEC4CE86042",
+                      "bytes":  66,
+                      "relative":  "examples\\lib\\r40_b.smlib"
+                  },
+                  {
+                      "sha256":  "A400F0B033D3B10511C71C5C69BF82947D4EF9294A6BE01ABBD441A01CA271AA",
+                      "bytes":  67,
+                      "relative":  "examples\\lib\\r40_c.smlib"
+                  },
+                  {
+                      "sha256":  "6E8E103EEC48661BFE98ADD023E49B53BC5BCB5F4A36E31E4B37A2A252C8382D",
+                      "bytes":  87,
+                      "relative":  "examples\\lib\\r40_d.smlib"
+                  },
+                  {
+                      "sha256":  "C12C5FE0E87DAD7BCE07801200F6ABFECAC5FD58A51EAE9E274C064E20B00E0F",
+                      "bytes":  71,
+                      "relative":  "examples\\lib\\r41_cycle_a.smlib"
+                  },
+                  {
+                      "sha256":  "80EE4471F88EEBFE36FB48675A431B7ADDB5412843C12A31B598E704739EF2DA",
+                      "bytes":  71,
+                      "relative":  "examples\\lib\\r41_cycle_b.smlib"
+                  },
+                  {
+                      "sha256":  "A717439ADA1CD184F10C77467A00164782EF7667B7992A6902B105685DF0358A",
+                      "bytes":  129,
+                      "relative":  "examples\\lib\\r41_cyc_a.smlib"
+                  },
+                  {
+                      "sha256":  "E0838B76B0C543F89EFF134553EAC2960843611583F3455B7CC8736C47FA8103",
+                      "bytes":  129,
+                      "relative":  "examples\\lib\\r41_cyc_b.smlib"
+                  },
+                  {
+                      "sha256":  "DD89E0326BAC95C89A011DB0BB44F01212618A50C05FBBABDC21FF78B885B5B6",
+                      "bytes":  142,
+                      "relative":  "examples\\lib\\r41_dup.smlib"
+                  },
+                  {
+                      "sha256":  "439C43C0281D4180514CA464FF30FE92F81C02F3C4C1BF9E335E9A9990856F95",
+                      "bytes":  198,
+                      "relative":  "examples\\lib\\r41_vec.smlib"
+                  },
+                  {
+                      "sha256":  "1CF5DB6FEE65AD724A98FCBE90546E6ED679AAE59C40608983277EBE2CF343AF",
+                      "bytes":  148,
+                      "relative":  "examples\\lib\\r80_ausat.smlib"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r67\\bengali_native.exit"
+                  },
+                  {
+                      "sha256":  "4C261C0438AD5679433A3C46D70EE4F31E3DD04CF4CCEC2E29AE48FA64CAD9B5",
+                      "bytes":  33,
+                      "relative":  "examples\\r67\\bengali_native.out"
+                  },
+                  {
+                      "sha256":  "7EC3B338618D66E2059A2F2B031F45B21115081FF8B932210ADB3A745654A07A",
+                      "bytes":  400,
+                      "relative":  "examples\\r67\\bengali_native.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r67\\punjabi_native.exit"
+                  },
+                  {
+                      "sha256":  "4C261C0438AD5679433A3C46D70EE4F31E3DD04CF4CCEC2E29AE48FA64CAD9B5",
+                      "bytes":  33,
+                      "relative":  "examples\\r67\\punjabi_native.out"
+                  },
+                  {
+                      "sha256":  "AB303DE87A9DFA414919B6A37DF76BB1383060CE630A2FC769CB116085F65AC0",
+                      "bytes":  388,
+                      "relative":  "examples\\r67\\punjabi_native.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\hindi.exit"
+                  },
+                  {
+                      "sha256":  "33A7BC68FCD09559D1B8DDBD563CA877AE78EB07443D3CF5A7BC3062EDAD3472",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\hindi.out"
+                  },
+                  {
+                      "sha256":  "1A283D9A788341AE431AB8632330380F7449387A16CBAA8C3A04A2D805CC0382",
+                      "bytes":  238,
+                      "relative":  "examples\\r68\\hindi.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\kannada.exit"
+                  },
+                  {
+                      "sha256":  "33A7BC68FCD09559D1B8DDBD563CA877AE78EB07443D3CF5A7BC3062EDAD3472",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\kannada.out"
+                  },
+                  {
+                      "sha256":  "F79BECED17752BBBF4AA904C743CF40279314293DD88827B61E7486A714A643D",
+                      "bytes":  249,
+                      "relative":  "examples\\r68\\kannada.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\marathi.exit"
+                  },
+                  {
+                      "sha256":  "33A7BC68FCD09559D1B8DDBD563CA877AE78EB07443D3CF5A7BC3062EDAD3472",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\marathi.out"
+                  },
+                  {
+                      "sha256":  "1CBF5027A6632C9F8590EAEFD8559A8EB575C418A83CDD8BCBAC4FF64A276FA4",
+                      "bytes":  240,
+                      "relative":  "examples\\r68\\marathi.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\odia.exit"
+                  },
+                  {
+                      "sha256":  "33A7BC68FCD09559D1B8DDBD563CA877AE78EB07443D3CF5A7BC3062EDAD3472",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\odia.out"
+                  },
+                  {
+                      "sha256":  "1AFC0332BF53815508E2C65CFE1FE127C0DB4F96190EE690127B5B1BE3EFA053",
+                      "bytes":  246,
+                      "relative":  "examples\\r68\\odia.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\tamil.exit"
+                  },
+                  {
+                      "sha256":  "33A7BC68FCD09559D1B8DDBD563CA877AE78EB07443D3CF5A7BC3062EDAD3472",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\tamil.out"
+                  },
+                  {
+                      "sha256":  "4E6FCFE721829945070C881F41A35A48F23257059CA9786CF17C8B1541B8364E",
+                      "bytes":  271,
+                      "relative":  "examples\\r68\\tamil.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\telugu.exit"
+                  },
+                  {
+                      "sha256":  "33A7BC68FCD09559D1B8DDBD563CA877AE78EB07443D3CF5A7BC3062EDAD3472",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\telugu.out"
+                  },
+                  {
+                      "sha256":  "FF76005CB7BD90546557658E58D2417CF214A977762688C1A01AC6DC43CBCD77",
+                      "bytes":  284,
+                      "relative":  "examples\\r68\\telugu.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\pairs\\all_registers.exit"
+                  },
+                  {
+                      "sha256":  "C6EBC76BE5DC1F8B433F8D6FD9BD85CD9325086038442DB8614BB799FEC6FD85",
+                      "bytes":  3,
+                      "relative":  "examples\\r68\\pairs\\all_registers.out"
+                  },
+                  {
+                      "sha256":  "41606F89258FC14C1F673A8607832327A0B0BF8F40222D123C90587EEBAE991D",
+                      "bytes":  478,
+                      "relative":  "examples\\r68\\pairs\\all_registers.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\pairs\\nonmatching.exit"
+                  },
+                  {
+                      "sha256":  "C6EBC76BE5DC1F8B433F8D6FD9BD85CD9325086038442DB8614BB799FEC6FD85",
+                      "bytes":  3,
+                      "relative":  "examples\\r68\\pairs\\nonmatching.out"
+                  },
+                  {
+                      "sha256":  "E0B63C353EF47FACBE1A389AE21A0DF436C4BD1875DDE2662778BB5793EEA3D9",
+                      "bytes":  90,
+                      "relative":  "examples\\r68\\pairs\\nonmatching.sm"
+                  },
+                  {
+                      "sha256":  "9A271F2A916B0B6EE6CECB2426F0B3206EF074578BE55D9BC94F6F3FE3AB86AA",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\pairs\\no_pairs.exit"
+                  },
+                  {
+                      "sha256":  "C6EBC76BE5DC1F8B433F8D6FD9BD85CD9325086038442DB8614BB799FEC6FD85",
+                      "bytes":  3,
+                      "relative":  "examples\\r68\\pairs\\no_pairs.out"
+                  },
+                  {
+                      "sha256":  "6C7C537179A6F70F3E8B3E38C029954DE0C416C5AED22347BEC6574E5EA50AC8",
+                      "bytes":  252,
+                      "relative":  "examples\\r68\\pairs\\no_pairs.sm"
+                  },
+                  {
+                      "sha256":  "F1CDDD5E992FA2AE2A060F42EC8B02E63B306433788B6C2F47ADD6E941492877",
+                      "bytes":  9,
+                      "relative":  "examples\\r71\\associativity.out"
+                  },
+                  {
+                      "sha256":  "1FE1B03B56C77A1051CF6290C9D178D294781BD09A1B219FED65D52168BFC664",
+                      "bytes":  103,
+                      "relative":  "examples\\r71\\associativity.sm"
+                  },
+                  {
+                      "sha256":  "C714317222EB3C84CF6165F86F8899B744C66B6F44CF24513AE583B1D610DBA2",
+                      "bytes":  72,
+                      "relative":  "examples\\r71\\boundary_bad.sm"
+                  },
+                  {
+                      "sha256":  "084C799CD551DD1D8D5C5F9A5D593B2E931F5E36122EE5C793C1D08A19839CC0",
+                      "bytes":  3,
+                      "relative":  "examples\\r71\\boundary_good.out"
+                  },
+                  {
+                      "sha256":  "1D53705062AE29E718E55F8BB465DFA3F67DB58ACB1B029696A8268A74424B2E",
+                      "bytes":  135,
+                      "relative":  "examples\\r71\\boundary_good.sm"
+                  },
+                  {
+                      "sha256":  "1A3EBC671E1DD344B9CD57F064D3315B5094D70C2E3816012F8FC8FE3FCF0451",
+                      "bytes":  14,
+                      "relative":  "examples\\r71\\conversion.out"
+                  },
+                  {
+                      "sha256":  "8D3BA2B118DAE01F0982C13BF3FF14BCE72C6999FA1AC23E9F24D808DD62B6C2",
+                      "bytes":  398,
+                      "relative":  "examples\\r71\\conversion.sm"
+                  },
+                  {
+                      "sha256":  "97C2C9CAE194D0C1BD7589F07CB795447C8DA8791CAC7E2781FE39A897D91586",
+                      "bytes":  14,
+                      "relative":  "examples\\r71\\evaluation_order.out"
+                  },
+                  {
+                      "sha256":  "A3DB52595D0377A1611C40BA9F1952234A168B8534CEAB5F12730B488F13F6C4",
+                      "bytes":  327,
+                      "relative":  "examples\\r71\\evaluation_order.sm"
+                  },
+                  {
+                      "sha256":  "0B0848F61BB1B8473B9E0F746A6EDD6F39B46FB950A3BE6F24C2753EF7B14846",
+                      "bytes":  1014,
+                      "relative":  "lang\\bengali.lang"
+                  },
+                  {
+                      "sha256":  "AD88EA3F2EAB52D1EAF8092680608E3BD16F75A7DE866F4FCB912FB4C6266D50",
+                      "bytes":  23206,
+                      "relative":  "lang\\bengali.sandesh"
+                  },
+                  {
+                      "sha256":  "AF2178938604DBD8A7EDBA24AC0B4E1632E0DDCE0351F51FDC3678BAA187E7BA",
+                      "bytes":  1588,
+                      "relative":  "lang\\gujarati.lang"
+                  },
+                  {
+                      "sha256":  "D20C036F97C7CF34B73282E235CBC3F00BBC619498F060E9E78DF931B7878000",
+                      "bytes":  22485,
+                      "relative":  "lang\\gujarati.sandesh"
+                  },
+                  {
+                      "sha256":  "6CAEDBD349188A8C739E86286D8FF08AD4D750947F9AB60B5B136EDF98F51FBC",
+                      "bytes":  1110,
+                      "relative":  "lang\\hindi.lang"
+                  },
+                  {
+                      "sha256":  "D260895B0A73417518493F9D10E387495C99CD2DDAFA3A757DC97FD94A307548",
+                      "bytes":  22591,
+                      "relative":  "lang\\hindi.sandesh"
+                  },
+                  {
+                      "sha256":  "B19CE9DEDC9A9EA50F5CA486AABD8E89481A77D7DB58AE19BCCCC24D5CD766BC",
+                      "bytes":  1166,
+                      "relative":  "lang\\kannada.lang"
+                  },
+                  {
+                      "sha256":  "82E1B4DB44EA4C4D5849D70224195470A57C6764C9DB816661C0550510999EFB",
+                      "bytes":  23266,
+                      "relative":  "lang\\kannada.sandesh"
+                  },
+                  {
+                      "sha256":  "00288BFECF07A402049CF87D025C780E8C85F71C509EB84E36537E208F396F87",
+                      "bytes":  1148,
+                      "relative":  "lang\\malayalam.lang"
+                  },
+                  {
+                      "sha256":  "6F29D9F93F22BF8A2EBC8452847B021F875312A989B1E0F5A232228145C6AE28",
+                      "bytes":  24569,
+                      "relative":  "lang\\malayalam.sandesh"
+                  },
+                  {
+                      "sha256":  "338D92ED47CC81511F3A4E5B78A27EA4D23FB0ED8CA89E95E0C610D5C93AFAAF",
+                      "bytes":  1115,
+                      "relative":  "lang\\marathi.lang"
+                  },
+                  {
+                      "sha256":  "8E3E7067C1D7230C427F516EF1436C79F595DC82DB915F42F3A76FB0CF1E5F42",
+                      "bytes":  23368,
+                      "relative":  "lang\\marathi.sandesh"
+                  },
+                  {
+                      "sha256":  "B623CB6A9944C61281725C3B51CBED190AA57AC50276205658C12D6D2C424403",
+                      "bytes":  1091,
+                      "relative":  "lang\\odia.lang"
+                  },
+                  {
+                      "sha256":  "9D91CB202346DF38EBC14BCA2F79536998013699F8BCD26E64C799D13EB3DAD3",
+                      "bytes":  23510,
+                      "relative":  "lang\\odia.sandesh"
+                  },
+                  {
+                      "sha256":  "3A5C596A39F2A7CB4208F0AD444CD3FFFEC587AD9987B4F76254626BFA77CF3E",
+                      "bytes":  981,
+                      "relative":  "lang\\punjabi.lang"
+                  },
+                  {
+                      "sha256":  "101825BF0BB10E1B3128F79E2567777F35CB1777EB38E5948F9DD447E7CE7C74",
+                      "bytes":  22540,
+                      "relative":  "lang\\punjabi.sandesh"
+                  },
+                  {
+                      "sha256":  "0B1940860BBFD54C1A5EE65F45BF31FFD1D4E68A0D95C5B5106EF1ABDC1D0D9F",
+                      "bytes":  3032,
+                      "relative":  "lang\\sanskrit.lang"
+                  },
+                  {
+                      "sha256":  "C47A31EFDD12BD0C6F6FFD64505391373BCD6236B87C4549C96B807A4F4CE027",
+                      "bytes":  23684,
+                      "relative":  "lang\\sanskrit.sandesh"
+                  },
+                  {
+                      "sha256":  "98F46C9EAE99D6E80F776609C1DCC981367EC1921BC4C099DFE1151401635218",
+                      "bytes":  1418,
+                      "relative":  "lang\\tamil.lang"
+                  },
+                  {
+                      "sha256":  "90C6D14A730CC037EFF6D54742C04D3FB06148FCA06E0D32963F6C0608D48F30",
+                      "bytes":  25479,
+                      "relative":  "lang\\tamil.sandesh"
+                  },
+                  {
+                      "sha256":  "B92058D54DE8A83230C724C2BA180FC00FB964548A684F92F7791BBCA1032F6A",
+                      "bytes":  1186,
+                      "relative":  "lang\\telugu.lang"
+                  },
+                  {
+                      "sha256":  "2AE64BCB6951C50070264A4407199DD1F794B02E5D4AB761FE0414A8A4D9850C",
+                      "bytes":  24085,
+                      "relative":  "lang\\telugu.sandesh"
+                  },
+                  {
+                      "sha256":  "784B98A178B79B6856161AC2F474226C8121EE63D5236FF3F098A14AD0280876",
+                      "bytes":  3578,
+                      "relative":  "lib\\aadhar.smlib"
+                  },
+                  {
+                      "sha256":  "E3D262BBB3950CC0F567000732FC3C3319AFF9174385CD294E00ACBA53290C76",
+                      "bytes":  4631,
+                      "relative":  "lib\\ank.smlib"
+                  },
+                  {
+                      "sha256":  "789017ADE05175680644A9C8EBD8610BE5C4F001FE8CE2EA3794AE25A0402C26",
+                      "bytes":  4629,
+                      "relative":  "lib\\anukram.smlib"
+                  },
+                  {
+                      "sha256":  "FB8EC5094D4D14D98CCBBD126BAAB088A252DA892DFA4759C1A86EBAC5534479",
+                      "bytes":  10601,
+                      "relative":  "lib\\brihat.smlib"
+                  },
+                  {
+                      "sha256":  "0DBACAA0924254ED407235B49042D1751BAE264ACDF2114DA275B93187C1AD52",
+                      "bytes":  3844,
+                      "relative":  "lib\\chandas.smlib"
+                  },
+                  {
+                      "sha256":  "E736AD00F26DDDDDA89B24F8DF13CE165543C92BD13E8F163B8F7CE8564EB24E",
+                      "bytes":  9899,
+                      "relative":  "lib\\ganit.smlib"
+                  },
+                  {
+                      "sha256":  "ECA1D107DE2E5F2A9D1D9F10DF80371CB3617B938AD5C85B619103589AB78B09",
+                      "bytes":  22996,
+                      "relative":  "lib\\ganita.smlib"
+                  },
+                  {
+                      "sha256":  "56863804379068BFE2078C51652C3FD7A64975FDC4FCADD16D61AE3B23FE7379",
+                      "bytes":  1059,
+                      "relative":  "lib\\gudh.smlib"
+                  },
+                  {
+                      "sha256":  "ADD85A133C2CA27063AE6446DB53C38F9CD36B0C3C5CEA6C2CD269026FD6847A",
+                      "bytes":  5846,
+                      "relative":  "lib\\kalana.smlib"
+                  },
+                  {
+                      "sha256":  "EC39276F86A40D9B2EA0AF598781000B0FD20BC1A356F4D576815A2F3805101C",
+                      "bytes":  17692,
+                      "relative":  "lib\\khand.smlib"
+                  },
+                  {
+                      "sha256":  "F3E43D8238F84071ABDE2891B5048C959827215FF1F99D262827C310AEC2D8C1",
+                      "bytes":  4972,
+                      "relative":  "lib\\madhava.smlib"
+                  },
+                  {
+                      "sha256":  "D64D9EF51A55F1FEDE6803E5825209C70BE9C61253FE826FB36D63CE5DA8AFFE",
+                      "bytes":  2552,
+                      "relative":  "lib\\mala.smlib"
+                  },
+                  {
+                      "sha256":  "3EF007B04FC1AABBB4BC1328C0E9859EE50201B554613747D7CE50F840BC254E",
+                      "bytes":  15559,
+                      "relative":  "lib\\nighantu.smlib"
+                  },
+                  {
+                      "sha256":  "B13D64A5C8413AC4ECA7CF96CD4FF101E3368F42FBAF22634088F36757162398",
+                      "bytes":  2912,
+                      "relative":  "lib\\patra.smlib"
+                  },
+                  {
+                      "sha256":  "CF1CD9EDA5050EFFA84C128F92728B3830608523E918A03EA448AD722141A140",
+                      "bytes":  6154,
+                      "relative":  "lib\\phal.smlib"
+                  },
+                  {
+                      "sha256":  "40B9B487BCA41E3629242AF3B1E007C82260DE5B40C4CCA1C59793E829CE356A",
+                      "bytes":  20355,
+                      "relative":  "lib\\roop.smlib"
+                  },
+                  {
+                      "sha256":  "C403C105A6D085FC147A3084B6C6E9CDB0DB3CE278E83598B24FF529CFC74FC0",
+                      "bytes":  4692,
+                      "relative":  "lib\\sadhan.smlib"
+                  },
+                  {
+                      "sha256":  "48D491C0261716201637D34B4ADD8918D616937FC19A58C28B112241B3C17AFD",
+                      "bytes":  5343,
+                      "relative":  "lib\\samanvaya.smlib"
+                  },
+                  {
+                      "sha256":  "55FF91F5098161FF8EB205D49B3BC1924815CA2E2837E7F2A4970071E21617A4",
+                      "bytes":  9805,
+                      "relative":  "lib\\sangrah.smlib"
+                  },
+                  {
+                      "sha256":  "84F32473E3C03FB2A8641FD7F66AAD1C96706C51CD6C0010D5C8E30A60636A2E",
+                      "bytes":  6540,
+                      "relative":  "lib\\sankhyiki.smlib"
+                  },
+                  {
+                      "sha256":  "951DB41D7BFB85D34D7ECDEC7670D4CE424B791A7C08F36C0EB28EDDEA2394AE",
+                      "bytes":  5960,
+                      "relative":  "lib\\shreni.smlib"
+                  },
+                  {
+                      "sha256":  "296BAEDA1EE7F794E3A0787088C686974BF7D12EDE2ECB13E32CC5E9D073D424",
+                      "bytes":  15565,
+                      "relative":  "lib\\suchi.smlib"
+                  },
+                  {
+                      "sha256":  "9D9563112CD9C877A7BF6CC36324403FC4F3D027374D7B2B5CF6AB0A94ACF296",
+                      "bytes":  12583,
+                      "relative":  "lib\\vakyank.smlib"
+                  },
+                  {
+                      "sha256":  "1F75779507465E3CA11DE500A3AF54C907FE840ECFFFD89F55363D73E9E54352",
+                      "bytes":  16119,
+                      "relative":  "lib\\varna.smlib"
+                  },
+                  {
+                      "sha256":  "303D6EACA05AE01A1C8AC0A825D81A51965932CDA003B0D9E9421E3DF63F126C",
+                      "bytes":  537167,
+                      "relative":  "win\\sutram.exe"
+                  },
+                  {
+                      "sha256":  "0B0848F61BB1B8473B9E0F746A6EDD6F39B46FB950A3BE6F24C2753EF7B14846",
+                      "bytes":  1014,
+                      "relative":  "win\\lang\\bengali.lang"
+                  },
+                  {
+                      "sha256":  "AD88EA3F2EAB52D1EAF8092680608E3BD16F75A7DE866F4FCB912FB4C6266D50",
+                      "bytes":  23206,
+                      "relative":  "win\\lang\\bengali.sandesh"
+                  },
+                  {
+                      "sha256":  "AF2178938604DBD8A7EDBA24AC0B4E1632E0DDCE0351F51FDC3678BAA187E7BA",
+                      "bytes":  1588,
+                      "relative":  "win\\lang\\gujarati.lang"
+                  },
+                  {
+                      "sha256":  "D20C036F97C7CF34B73282E235CBC3F00BBC619498F060E9E78DF931B7878000",
+                      "bytes":  22485,
+                      "relative":  "win\\lang\\gujarati.sandesh"
+                  },
+                  {
+                      "sha256":  "6CAEDBD349188A8C739E86286D8FF08AD4D750947F9AB60B5B136EDF98F51FBC",
+                      "bytes":  1110,
+                      "relative":  "win\\lang\\hindi.lang"
+                  },
+                  {
+                      "sha256":  "D260895B0A73417518493F9D10E387495C99CD2DDAFA3A757DC97FD94A307548",
+                      "bytes":  22591,
+                      "relative":  "win\\lang\\hindi.sandesh"
+                  },
+                  {
+                      "sha256":  "B19CE9DEDC9A9EA50F5CA486AABD8E89481A77D7DB58AE19BCCCC24D5CD766BC",
+                      "bytes":  1166,
+                      "relative":  "win\\lang\\kannada.lang"
+                  },
+                  {
+                      "sha256":  "82E1B4DB44EA4C4D5849D70224195470A57C6764C9DB816661C0550510999EFB",
+                      "bytes":  23266,
+                      "relative":  "win\\lang\\kannada.sandesh"
+                  },
+                  {
+                      "sha256":  "00288BFECF07A402049CF87D025C780E8C85F71C509EB84E36537E208F396F87",
+                      "bytes":  1148,
+                      "relative":  "win\\lang\\malayalam.lang"
+                  },
+                  {
+                      "sha256":  "6F29D9F93F22BF8A2EBC8452847B021F875312A989B1E0F5A232228145C6AE28",
+                      "bytes":  24569,
+                      "relative":  "win\\lang\\malayalam.sandesh"
+                  },
+                  {
+                      "sha256":  "338D92ED47CC81511F3A4E5B78A27EA4D23FB0ED8CA89E95E0C610D5C93AFAAF",
+                      "bytes":  1115,
+                      "relative":  "win\\lang\\marathi.lang"
+                  },
+                  {
+                      "sha256":  "8E3E7067C1D7230C427F516EF1436C79F595DC82DB915F42F3A76FB0CF1E5F42",
+                      "bytes":  23368,
+                      "relative":  "win\\lang\\marathi.sandesh"
+                  },
+                  {
+                      "sha256":  "B623CB6A9944C61281725C3B51CBED190AA57AC50276205658C12D6D2C424403",
+                      "bytes":  1091,
+                      "relative":  "win\\lang\\odia.lang"
+                  },
+                  {
+                      "sha256":  "9D91CB202346DF38EBC14BCA2F79536998013699F8BCD26E64C799D13EB3DAD3",
+                      "bytes":  23510,
+                      "relative":  "win\\lang\\odia.sandesh"
+                  },
+                  {
+                      "sha256":  "3A5C596A39F2A7CB4208F0AD444CD3FFFEC587AD9987B4F76254626BFA77CF3E",
+                      "bytes":  981,
+                      "relative":  "win\\lang\\punjabi.lang"
+                  },
+                  {
+                      "sha256":  "101825BF0BB10E1B3128F79E2567777F35CB1777EB38E5948F9DD447E7CE7C74",
+                      "bytes":  22540,
+                      "relative":  "win\\lang\\punjabi.sandesh"
+                  },
+                  {
+                      "sha256":  "0B1940860BBFD54C1A5EE65F45BF31FFD1D4E68A0D95C5B5106EF1ABDC1D0D9F",
+                      "bytes":  3032,
+                      "relative":  "win\\lang\\sanskrit.lang"
+                  },
+                  {
+                      "sha256":  "C47A31EFDD12BD0C6F6FFD64505391373BCD6236B87C4549C96B807A4F4CE027",
+                      "bytes":  23684,
+                      "relative":  "win\\lang\\sanskrit.sandesh"
+                  },
+                  {
+                      "sha256":  "98F46C9EAE99D6E80F776609C1DCC981367EC1921BC4C099DFE1151401635218",
+                      "bytes":  1418,
+                      "relative":  "win\\lang\\tamil.lang"
+                  },
+                  {
+                      "sha256":  "90C6D14A730CC037EFF6D54742C04D3FB06148FCA06E0D32963F6C0608D48F30",
+                      "bytes":  25479,
+                      "relative":  "win\\lang\\tamil.sandesh"
+                  },
+                  {
+                      "sha256":  "B92058D54DE8A83230C724C2BA180FC00FB964548A684F92F7791BBCA1032F6A",
+                      "bytes":  1186,
+                      "relative":  "win\\lang\\telugu.lang"
+                  },
+                  {
+                      "sha256":  "2AE64BCB6951C50070264A4407199DD1F794B02E5D4AB761FE0414A8A4D9850C",
+                      "bytes":  24085,
+                      "relative":  "win\\lang\\telugu.sandesh"
+                  },
+                  {
+                      "sha256":  "784B98A178B79B6856161AC2F474226C8121EE63D5236FF3F098A14AD0280876",
+                      "bytes":  3578,
+                      "relative":  "win\\lib\\aadhar.smlib"
+                  },
+                  {
+                      "sha256":  "E3D262BBB3950CC0F567000732FC3C3319AFF9174385CD294E00ACBA53290C76",
+                      "bytes":  4631,
+                      "relative":  "win\\lib\\ank.smlib"
+                  },
+                  {
+                      "sha256":  "789017ADE05175680644A9C8EBD8610BE5C4F001FE8CE2EA3794AE25A0402C26",
+                      "bytes":  4629,
+                      "relative":  "win\\lib\\anukram.smlib"
+                  },
+                  {
+                      "sha256":  "FB8EC5094D4D14D98CCBBD126BAAB088A252DA892DFA4759C1A86EBAC5534479",
+                      "bytes":  10601,
+                      "relative":  "win\\lib\\brihat.smlib"
+                  },
+                  {
+                      "sha256":  "0DBACAA0924254ED407235B49042D1751BAE264ACDF2114DA275B93187C1AD52",
+                      "bytes":  3844,
+                      "relative":  "win\\lib\\chandas.smlib"
+                  },
+                  {
+                      "sha256":  "E736AD00F26DDDDDA89B24F8DF13CE165543C92BD13E8F163B8F7CE8564EB24E",
+                      "bytes":  9899,
+                      "relative":  "win\\lib\\ganit.smlib"
+                  },
+                  {
+                      "sha256":  "ECA1D107DE2E5F2A9D1D9F10DF80371CB3617B938AD5C85B619103589AB78B09",
+                      "bytes":  22996,
+                      "relative":  "win\\lib\\ganita.smlib"
+                  },
+                  {
+                      "sha256":  "56863804379068BFE2078C51652C3FD7A64975FDC4FCADD16D61AE3B23FE7379",
+                      "bytes":  1059,
+                      "relative":  "win\\lib\\gudh.smlib"
+                  },
+                  {
+                      "sha256":  "ADD85A133C2CA27063AE6446DB53C38F9CD36B0C3C5CEA6C2CD269026FD6847A",
+                      "bytes":  5846,
+                      "relative":  "win\\lib\\kalana.smlib"
+                  },
+                  {
+                      "sha256":  "EC39276F86A40D9B2EA0AF598781000B0FD20BC1A356F4D576815A2F3805101C",
+                      "bytes":  17692,
+                      "relative":  "win\\lib\\khand.smlib"
+                  },
+                  {
+                      "sha256":  "F3E43D8238F84071ABDE2891B5048C959827215FF1F99D262827C310AEC2D8C1",
+                      "bytes":  4972,
+                      "relative":  "win\\lib\\madhava.smlib"
+                  },
+                  {
+                      "sha256":  "D64D9EF51A55F1FEDE6803E5825209C70BE9C61253FE826FB36D63CE5DA8AFFE",
+                      "bytes":  2552,
+                      "relative":  "win\\lib\\mala.smlib"
+                  },
+                  {
+                      "sha256":  "3EF007B04FC1AABBB4BC1328C0E9859EE50201B554613747D7CE50F840BC254E",
+                      "bytes":  15559,
+                      "relative":  "win\\lib\\nighantu.smlib"
+                  },
+                  {
+                      "sha256":  "B13D64A5C8413AC4ECA7CF96CD4FF101E3368F42FBAF22634088F36757162398",
+                      "bytes":  2912,
+                      "relative":  "win\\lib\\patra.smlib"
+                  },
+                  {
+                      "sha256":  "CF1CD9EDA5050EFFA84C128F92728B3830608523E918A03EA448AD722141A140",
+                      "bytes":  6154,
+                      "relative":  "win\\lib\\phal.smlib"
+                  },
+                  {
+                      "sha256":  "40B9B487BCA41E3629242AF3B1E007C82260DE5B40C4CCA1C59793E829CE356A",
+                      "bytes":  20355,
+                      "relative":  "win\\lib\\roop.smlib"
+                  },
+                  {
+                      "sha256":  "C403C105A6D085FC147A3084B6C6E9CDB0DB3CE278E83598B24FF529CFC74FC0",
+                      "bytes":  4692,
+                      "relative":  "win\\lib\\sadhan.smlib"
+                  },
+                  {
+                      "sha256":  "48D491C0261716201637D34B4ADD8918D616937FC19A58C28B112241B3C17AFD",
+                      "bytes":  5343,
+                      "relative":  "win\\lib\\samanvaya.smlib"
+                  },
+                  {
+                      "sha256":  "55FF91F5098161FF8EB205D49B3BC1924815CA2E2837E7F2A4970071E21617A4",
+                      "bytes":  9805,
+                      "relative":  "win\\lib\\sangrah.smlib"
+                  },
+                  {
+                      "sha256":  "84F32473E3C03FB2A8641FD7F66AAD1C96706C51CD6C0010D5C8E30A60636A2E",
+                      "bytes":  6540,
+                      "relative":  "win\\lib\\sankhyiki.smlib"
+                  },
+                  {
+                      "sha256":  "951DB41D7BFB85D34D7ECDEC7670D4CE424B791A7C08F36C0EB28EDDEA2394AE",
+                      "bytes":  5960,
+                      "relative":  "win\\lib\\shreni.smlib"
+                  },
+                  {
+                      "sha256":  "296BAEDA1EE7F794E3A0787088C686974BF7D12EDE2ECB13E32CC5E9D073D424",
+                      "bytes":  15565,
+                      "relative":  "win\\lib\\suchi.smlib"
+                  },
+                  {
+                      "sha256":  "9D9563112CD9C877A7BF6CC36324403FC4F3D027374D7B2B5CF6AB0A94ACF296",
+                      "bytes":  12583,
+                      "relative":  "win\\lib\\vakyank.smlib"
+                  },
+                  {
+                      "sha256":  "1F75779507465E3CA11DE500A3AF54C907FE840ECFFFD89F55363D73E9E54352",
+                      "bytes":  16119,
+                      "relative":  "win\\lib\\varna.smlib"
+                  }
+              ],
+    "backup":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-before-v311-20261107",
+    "verified":  true
+}

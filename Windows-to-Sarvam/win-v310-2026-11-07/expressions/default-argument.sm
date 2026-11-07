@@ -1,0 +1,2 @@
+prakriya f(vitti n = 5) { nivartanam n }
+mukhya() { likha(f()) }

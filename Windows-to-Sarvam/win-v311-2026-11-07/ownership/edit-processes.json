@@ -1,0 +1,33 @@
+[
+  {
+    "name": "c3-edit",
+    "pid": 31348,
+    "command": [
+      "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "-NoLogo",
+      "-NoProfile",
+      "-NonInteractive",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\install-core.ps1",
+      "-PayloadZip",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\payload.zip",
+      "-InstallDir",
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+      "-SetupExePath",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe",
+      "-LogPath",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\ownership\\c3-edit-engine.log",
+      "-AddPath",
+      "-DesktopShortcut"
+    ],
+    "launched": 1794076168.8835595,
+    "start_perf": 239573.3692087,
+    "engine_sha256": "b08e8fcd14611f8e80385b4fc26b43189918a760a4318d2ca6da3083175f1820",
+    "setup_sha256": "134fae95dc9d79a0cc7e563bbf59e6fc69983eae950c2c2799e20dea911a286b",
+    "exit": 0,
+    "seconds": 29.722321400011424,
+    "process_exited": true
+  }
+]

@@ -1,0 +1,301 @@
+{
+  "compiler_sha256": "9740b045ef19ebcf0300010724803d61ecd8e4d3a1e0e23523b558d1dac974fb",
+  "version": {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+      "--version"
+    ],
+    "exit": 0,
+    "exit_hex": "0x00000000",
+    "stdout": "Sutram 1.0 (v311) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+    "stderr": "",
+    "seconds": 0.01213149999966845,
+    "timeout": false
+  },
+  "cases": [
+    {
+      "name": "global-direct",
+      "source_sha256": "6aaee1639f563b350695cd13262c4ae10e53dea1aae6167fb5057b2ba6bfc53f",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\global-direct.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\global-direct.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "Sutram truti [E_KOSH_DVARA]: kosh 'make_kosh(...)' vaishvika-vittau na sthapyate\nSanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena\n",
+        "stderr": "",
+        "seconds": 0.5635419999889564,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "refusal",
+      "pass": true
+    },
+    {
+      "name": "global-add",
+      "source_sha256": "6e0cb7843894b02466a3e721a18f18e1c4f1d055a7a46436ac5a8bb3f89d6257",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\global-add.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\global-add.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
+        "stderr": "",
+        "seconds": 0.28517920000012964,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "refusal",
+      "pass": true
+    },
+    {
+      "name": "valid-global",
+      "source_sha256": "3c851d2f4a72520f1dfa9e5967051b906d8e94750acac3e622670682cb2c997c",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\valid-global.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\valid-global.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 208 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.29940740001620725,
+        "timeout": false
+      },
+      "output_file_exists": true,
+      "expected": "7\n",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\valid-global.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "7\n",
+        "stderr": "",
+        "seconds": 0.3349148000124842,
+        "timeout": false
+      },
+      "pass": true
+    },
+    {
+      "name": "two-globals-no-main",
+      "source_sha256": "7a761f396e66ad81ff1a9396ec6963b008f76d7dd5cbf91c6f266fd271f15047",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\two-globals-no-main.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\two-globals-no-main.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "\nSutram truti: vyakaran dosh, pankti 3:1, shabd 'patra-ant'\n  \n  ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+        "stderr": "",
+        "seconds": 0.39809729999979027,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "syntax",
+      "pass": true
+    },
+    {
+      "name": "record-literal",
+      "source_sha256": "abdb981d241b8ccc8687ca7bd5a2fc80afcb81e5d789d6aaf31edb8c92a5f5ba",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\record-literal.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\record-literal.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "\nSutram truti: vyakaran dosh, pankti 1:20, shabd ':'\n  rachana Point = { x: 1, y: 2 }\n                     ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+        "stderr": "",
+        "seconds": 0.270992199977627,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "syntax",
+      "pass": true
+    },
+    {
+      "name": "default-argument",
+      "source_sha256": "9cfd678aff1d6ac9bf13a0eb1061b2b634c2de947f2fbfc30ed1807083279db9",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\default-argument.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\default-argument.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "\nSutram truti: vyakaran dosh, pankti 1:12, shabd 'vitti'\n  prakriya f(vitti n = 5) { nivartanam n }\n             ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+        "stderr": "",
+        "seconds": 0.2562564999971073,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "syntax",
+      "pass": true
+    },
+    {
+      "name": "two-globals-with-main",
+      "source_sha256": "05359b162522e859eff660c162a67ebca6ac78819d89b73409d0b3d1d9c184ff",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\two-globals-with-main.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\two-globals-with-main.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 230 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.2718773999949917,
+        "timeout": false
+      },
+      "output_file_exists": true,
+      "expected": "3\n",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\two-globals-with-main.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "3\n",
+        "stderr": "",
+        "seconds": 0.26869289999012835,
+        "timeout": false
+      },
+      "pass": true
+    },
+    {
+      "name": "local-direct",
+      "source_sha256": "aab0e432c4e5f2f04fea0f81a581992eff97b2f233fa02417c95aabe63015396",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\local-direct.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\local-direct.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 1717 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.0206297000113409,
+        "timeout": false
+      },
+      "output_file_exists": true,
+      "expected": "7\n",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\local-direct.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "7\n",
+        "stderr": "",
+        "seconds": 0.03447089999099262,
+        "timeout": false
+      },
+      "pass": true
+    },
+    {
+      "name": "local-add",
+      "source_sha256": "9201e43e5f50956973454d006a5b1a1120f777510b4ff0975d6aca3f2cfceebf",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\local-add.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\local-add.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
+        "stderr": "",
+        "seconds": 0.01531389998854138,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "refusal",
+      "pass": true
+    },
+    {
+      "name": "add",
+      "source_sha256": "2e47228236508b5dad0da4e2bad1b031b26b09608d4da7f0b99e1a79dd65b07e",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\add.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\add.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+        "stderr": "",
+        "seconds": 0.30407859999104403,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "refusal",
+      "pass": true
+    },
+    {
+      "name": "xor",
+      "source_sha256": "92914ca2c065b3e0b6e286e74743c476590e2e4728f434d9be2e9531e890b593",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\xor.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\xor.exe"
+        ],
+        "exit": 1,
+        "exit_hex": "0x00000001",
+        "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+        "stderr": "",
+        "seconds": 0.31420920000527985,
+        "timeout": false
+      },
+      "output_file_exists": false,
+      "expected": "refusal",
+      "pass": true
+    },
+    {
+      "name": "length",
+      "source_sha256": "837bf8e1d69a3ffa7618a1c11d946ec3b7c0a87d0f52bde514746d4d259b4778",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\expressions\\length.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\length.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "Siddh: 2701 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.27180600000428967,
+        "timeout": false
+      },
+      "output_file_exists": true,
+      "expected": "2\n",
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\expressions\\length.exe"
+        ],
+        "exit": 0,
+        "exit_hex": "0x00000000",
+        "stdout": "2\n",
+        "stderr": "",
+        "seconds": 0.27896749999490567,
+        "timeout": false
+      },
+      "pass": true
+    }
+  ]
+}

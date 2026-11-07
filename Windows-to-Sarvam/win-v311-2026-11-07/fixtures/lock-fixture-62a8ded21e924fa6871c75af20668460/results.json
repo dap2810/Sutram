@@ -1,0 +1,32 @@
+{
+    "fresh":  {
+                  "error":  null,
+                  "state":  {
+                                "ShortcutOwned":  "1",
+                                "PathAdded":  "1"
+                            },
+                  "pending":  true,
+                  "reads":  [
+                                "registry",
+                                "discovery",
+                                "state"
+                            ]
+              },
+    "checks":  {
+                   "concurrent_owner_refused":  true,
+                   "no_ownership_reads_while_locked":  true,
+                   "next_owner_succeeds":  true,
+                   "refreshed_state":  true,
+                   "refreshed_pending":  true,
+                   "all_reads_under_lock":  true,
+                   "lock_removed_after_exit":  true
+               },
+    "blocked":  {
+                    "error":  "Another Sutram installer or uninstaller is working on E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\lock-fixture-62a8ded21e924fa6871c75af20668460\\installed. Let it finish, then run this one again.",
+                    "state":  null,
+                    "pending":  null,
+                    "reads":  [
+
+                              ]
+                }
+}

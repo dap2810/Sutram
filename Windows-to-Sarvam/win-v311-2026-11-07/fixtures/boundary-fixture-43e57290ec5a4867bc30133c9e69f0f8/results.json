@@ -1,0 +1,26 @@
+{
+    "checks":  {
+                   "superseded_identical_completes":  true,
+                   "superseded_identical_copy_kept":  true,
+                   "superseded_identical_original_kept":  true,
+                   "superseded_differs_refused":  true,
+                   "superseded_differs_target_kept":  true,
+                   "superseded_differs_other_copy_kept":  true,
+                   "superseded_differs_original_kept":  true,
+                   "superseded_differs_not_journaled":  true,
+                   "superseded_absent_completes":  true,
+                   "superseded_absent_copy_kept":  true,
+                   "superseded_absent_original_kept":  true,
+                   "interruption_reference_run":  true,
+                   "interruption_every_boundary_recovers":  true,
+                   "suffix_file_left_by_installer_and_uninstaller":  true,
+                   "suffix_file_named_in_the_log":  true,
+                   "edit_ahead_stops_the_run":  true,
+                   "edit_ahead_kept":  true,
+                   "edit_ahead_earlier_file_published":  true,
+                   "edit_in_window_not_lost":  true
+               },
+    "failures":  [
+
+                 ]
+}

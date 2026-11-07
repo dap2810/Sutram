@@ -1,0 +1,99 @@
+{
+    "all_owned_processes_closed":  true,
+    "checked_at":  "2026-11-07T13:23:20.9795960-05:00",
+    "engine_handles":  [
+                           {
+                               "pid":  15200,
+                               "name":  "c2-first",
+                               "process_handle_reported_exit":  true,
+                               "exit":  0
+                           },
+                           {
+                               "pid":  36604,
+                               "name":  "c2-second",
+                               "process_handle_reported_exit":  true,
+                               "exit":  1
+                           },
+                           {
+                               "pid":  36868,
+                               "name":  "c3-edit",
+                               "process_handle_reported_exit":  true,
+                               "exit":  0
+                           },
+                           {
+                               "pid":  25860,
+                               "name":  "c1-suffix",
+                               "process_handle_reported_exit":  true,
+                               "exit":  1
+                           },
+                           {
+                               "pid":  31964,
+                               "name":  "c4-unequal-existing",
+                               "process_handle_reported_exit":  true,
+                               "exit":  1
+                           },
+                           {
+                               "pid":  24656,
+                               "name":  "ordinary-retry",
+                               "process_handle_reported_exit":  true,
+                               "exit":  0
+                           }
+                       ],
+    "installer_lock_exists":  false,
+    "processes":  [
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T13:21:08.6359790-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "c1-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  39380
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T13:21:09.7535369-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "c1-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  38380
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T13:16:44.0815818-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "initial.json",
+                          "same_process_alive":  false,
+                          "pid":  17540
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T13:16:45.3124950-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "initial.json",
+                          "same_process_alive":  false,
+                          "pid":  8892
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T13:22:37.2233349-05:00",
+                          "current_start":  null,
+                          "role":  "wizard",
+                          "phase":  "ordinary-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  44908
+                      },
+                      {
+                          "pid_present":  false,
+                          "recorded_start":  "2026-11-07T13:22:38.3095161-05:00",
+                          "current_start":  null,
+                          "role":  "engine",
+                          "phase":  "ordinary-stop.json",
+                          "same_process_alive":  false,
+                          "pid":  17180
+                      }
+                  ]
+}

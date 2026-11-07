@@ -1,0 +1,16 @@
+{
+  "exit": 0,
+  "diff": {
+    "disappeared": [
+      {
+        "file": "payload.pending.sha256",
+        "sha256": "eb7e29272129507e162ec9d858662be514dc58650e325faedeba340b9b84f643",
+        "bytes": 63662,
+        "copies_after": [
+          "target/payload.manifest.sha256"
+        ]
+      }
+    ],
+    "changed": []
+  }
+}

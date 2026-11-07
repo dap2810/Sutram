@@ -1,0 +1,59 @@
+{
+    "name":  "ordinary-stop",
+    "moment":  "middle",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe",
+    "setup_sha256":  "134FAE95DC9D79A0CC7E563BBF59E6FC69983EAE950C2C2799E20DEA911A286B",
+    "started":  "2026-11-07T13:31:17.2278969-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.3650502,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.3806186,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  10.399894,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  15.4026804,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  38668,
+    "process_started":  "2026-11-07T13:31:17.3160301-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "ordinary-stop-ready.png",
+    "child":  {
+                  "parent":  38668,
+                  "pid":  31540,
+                  "started":  "2026-11-07T13:31:18.4167059-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\install.log",
+    "stop_observed_at":  "2026-11-07T13:31:36.7529112-05:00",
+    "seconds":  18.3530998,
+    "engine_age_seconds":  18.3382056,
+    "status":  "INTERRUPTED",
+    "observed_seconds":  18.382907499999998,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  true,
+    "transaction_exists":  true,
+    "payload_files_present":  56,
+    "capture_warnings":  [
+
+                         ],
+    "ended":  "2026-11-07T13:31:36.9229985-05:00"
+}

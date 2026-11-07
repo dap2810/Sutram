@@ -1,0 +1,13 @@
+{
+    "error":  null,
+    "state":  {
+                  "ShortcutOwned":  "1",
+                  "PathAdded":  "1"
+              },
+    "pending":  true,
+    "reads":  [
+                  "registry",
+                  "discovery",
+                  "state"
+              ]
+}

@@ -1,0 +1,7 @@
+prakriya make_kosh() {
+ kosh k[1]
+ kosh_kship(k, 7)
+ nivartanam k
+}
+vitti g = make_kosh()
+mukhya() { likha(g[0]) }

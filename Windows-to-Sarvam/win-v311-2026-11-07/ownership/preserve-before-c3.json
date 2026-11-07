@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "-NoProfile",
+    "-NonInteractive",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\preserve.ps1",
+    "-Action",
+    "vacate",
+    "-Name",
+    "before-c3"
+  ],
+  "exit": 0,
+  "stdout": "vacate before-c3 completed; files preserved and no deletion performed.\n",
+  "stderr": ""
+}

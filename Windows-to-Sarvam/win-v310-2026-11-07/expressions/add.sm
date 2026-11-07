@@ -1,0 +1,9 @@
+prakriya keep(x) { nivartanam x }
+mukhya() {
+ kosh k[1]
+ kosh_kship(k, 7)
+ vitti zero = 0
+ vitti kept = keep(k[0:1] + zero)
+ kosh_kship(k, 8)
+ likha(kept)
+}

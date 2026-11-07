@@ -1,0 +1,8 @@
+prakriya make_kosh() {
+ kosh k[1]
+ kosh_kship(k, 7)
+ nivartanam k
+}
+mukhya() { vitti zero = 0
+ vitti leaked = make_kosh() + zero
+ likha(leaked) }

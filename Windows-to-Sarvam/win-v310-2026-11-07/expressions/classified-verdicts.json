@@ -1,0 +1,50 @@
+{
+  "global-direct": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "global-add": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "valid-global": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "two-globals-no-main": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "record-literal": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "default-argument": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "two-globals-with-main": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "local-direct": {
+    "pass_": true,
+    "note": "Valid local kosh binding, positive control; initial optional refusal expectation was wrong."
+  },
+  "local-add": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  },
+  "add": {
+    "pass_": true,
+    "note": "Exact slice-specific refusal is valid; initial generic kosh-only scorer was too narrow."
+  },
+  "xor": {
+    "pass_": true,
+    "note": "Exact slice-specific refusal is valid; initial generic kosh-only scorer was too narrow."
+  },
+  "length": {
+    "pass_": true,
+    "note": "Original observation/expectation retained."
+  }
+}

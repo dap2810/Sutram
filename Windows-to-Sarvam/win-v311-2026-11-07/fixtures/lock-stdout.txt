@@ -1,0 +1,8 @@
+PASS concurrent_owner_refused
+PASS no_ownership_reads_while_locked
+PASS next_owner_succeeds
+PASS refreshed_state
+PASS refreshed_pending
+PASS all_reads_under_lock
+PASS lock_removed_after_exit
+Evidence: E:\Github_Projects\Sutram\build\windows-v311-verification\build\lock-fixture-62a8ded21e924fa6871c75af20668460

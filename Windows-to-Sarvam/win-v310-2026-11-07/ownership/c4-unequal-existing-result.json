@@ -1,0 +1,20 @@
+{
+  "engine_exit": 1,
+  "owned_sha256": "31c7b5e5f5bd5decad64b3e34c9939e4f5c33c73149b22762bbdfebc249d4dce",
+  "owned_copies_after": [],
+  "superseded_after_sha256": "bb8f7f7405c17b55c3b8ce2adbc99b82ac39060a6d3931a8aa70cd7e55295f95",
+  "target_after_sha256": "e40e82f0c36119362825540563ff4ba6b2d09bad22e809ee4f34eb7b61c3bb69",
+  "expected_controlled_stop": "later win/sutram.exe rename fails because test holds a non-delete-sharing read handle",
+  "diff": {
+    "disappeared": [],
+    "changed": [
+      {
+        "file": "docs/BUILDING.md",
+        "sha256": "31c7b5e5f5bd5decad64b3e34c9939e4f5c33c73149b22762bbdfebc249d4dce",
+        "bytes": 58,
+        "new_sha256": "e40e82f0c36119362825540563ff4ba6b2d09bad22e809ee4f34eb7b61c3bb69",
+        "copies_after": []
+      }
+    ]
+  }
+}

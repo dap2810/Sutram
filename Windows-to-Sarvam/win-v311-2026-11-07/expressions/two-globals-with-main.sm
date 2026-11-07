@@ -1,0 +1,3 @@
+vitti a = 1
+vitti b = 2
+mukhya() { likha(a + b) }

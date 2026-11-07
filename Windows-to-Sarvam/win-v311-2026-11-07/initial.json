@@ -1,0 +1,64 @@
+{
+    "name":  "initial",
+    "moment":  "complete",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe",
+    "setup_sha256":  "134FAE95DC9D79A0CC7E563BBF59E6FC69983EAE950C2C2799E20DEA911A286B",
+    "started":  "2026-11-07T13:28:29.9169354-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.3794343,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.7556619,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  11.1188726,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  16.1599681,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  21.4576343,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  36224,
+    "process_started":  "2026-11-07T13:28:30.0125482-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "initial-ready.png",
+    "child":  {
+                  "parent":  36224,
+                  "pid":  36712,
+                  "started":  "2026-11-07T13:28:31.1980779-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\install.log",
+    "status":  "FINISH",
+    "finish_seconds":  23.722202199999998,
+    "finish_screenshot":  "initial-finish.png",
+    "closed_after_finish_click":  true,
+    "observed_seconds":  24.5661377,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  0,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  657,
+    "capture_warnings":  [
+
+                         ],
+    "ended":  "2026-11-07T13:28:55.9746237-05:00"
+}

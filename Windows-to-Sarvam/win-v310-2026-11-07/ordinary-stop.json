@@ -1,0 +1,54 @@
+{
+    "name":  "ordinary-stop",
+    "moment":  "middle",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\Sutram-Setup.exe",
+    "setup_sha256":  "BB134603D70D49C4ABD08112B77A5309FF447280F8754CB4E6E24CB4626BBA47",
+    "started":  "2026-11-07T13:22:37.1323578-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.4015276,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.4197393,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  10.7302465,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  44908,
+    "process_started":  "2026-11-07T13:22:37.2233349-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "ordinary-stop-ready.png",
+    "child":  {
+                  "parent":  44908,
+                  "pid":  17180,
+                  "started":  "2026-11-07T13:22:38.3095161-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM8CEE.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM8CEE.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM8CEE.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM8CEE.tmp\\install.log",
+    "stop_observed_at":  "2026-11-07T13:22:52.7941232-05:00",
+    "seconds":  14.498304099999999,
+    "engine_age_seconds":  14.485670599999999,
+    "status":  "INTERRUPTED",
+    "observed_seconds":  14.525030399999999,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  true,
+    "transaction_exists":  true,
+    "payload_files_present":  57,
+    "capture_warnings":  [
+
+                         ],
+    "ended":  "2026-11-07T13:22:52.9548466-05:00"
+}

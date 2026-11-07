@@ -1,0 +1,14 @@
+{
+  "engine_exit": 1,
+  "owned_sha256": "31c7b5e5f5bd5decad64b3e34c9939e4f5c33c73149b22762bbdfebc249d4dce",
+  "owned_copies_after": [
+    "target/docs/BUILDING.md"
+  ],
+  "superseded_after_sha256": "bb8f7f7405c17b55c3b8ce2adbc99b82ac39060a6d3931a8aa70cd7e55295f95",
+  "target_after_sha256": "31c7b5e5f5bd5decad64b3e34c9939e4f5c33c73149b22762bbdfebc249d4dce",
+  "fixture_guard": "Later win/sutram.exe rename is held if reached. In v311 C4 the unequal-copy check should refuse earlier; inspect engine log.",
+  "diff": {
+    "disappeared": [],
+    "changed": []
+  }
+}

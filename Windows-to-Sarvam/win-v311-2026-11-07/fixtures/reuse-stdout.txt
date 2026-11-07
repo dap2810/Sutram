@@ -1,0 +1,17 @@
+{
+    "all_files_returned":  true,
+    "matching_target_not_staged":  true,
+    "matching_target_unchanged":  true,
+    "missing_target_staged":  true,
+    "changed_target_preserved":  true,
+    "changed_target_replacement_staged":  true,
+    "staged_copy_reused":  true,
+    "only_two_copy_starts":  true,
+    "reuse_visible":  true,
+    "edit_after_reuse_refused":  true,
+    "known_changed_copy_not_moved_without_replacement":  true,
+    "removed_copy_requires_restage":  true,
+    "failed_publication_not_journaled":  true,
+    "retry_restages_and_publishes":  true
+}
+Fixture retained at E:\Github_Projects\Sutram\build\windows-v311-verification\build\reuse-fixture-fe0074582c524bf0af896b1ddc15e14a

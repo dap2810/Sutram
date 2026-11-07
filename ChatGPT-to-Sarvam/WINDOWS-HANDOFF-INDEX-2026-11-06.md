@@ -1,20 +1,12 @@
 # Consolidated Windows handoffs for Sarvam
 
-**Publication timing:** upstream v310 landed while these reports were being uploaded.
-Main preserves it; the installed, natively tested repair below is pinned to v309/PR #68.
-Its test totals are not v310 acceptance. Compare the remaining PR delta with v310
-before selectively integrating duplicated fixes.
+**Latest machine state (7 November): upstream v311 at `fae5319d`, installed and natively verified.** All 657 payload hashes match; one canonical compiler; all recorded installer processes closed. Read the [v311 handoff](WINDOWS-V311-2026-11-07.md) first.
 
-**Latest machine state (7 November): final v309 repair candidate from
-[draft PR #68](https://github.com/dap2810/Sutram/pull/68), commit `7ab8c439`, installed;
-657/657 hashes match.** Packaging/recovery fixes and the newly reproduced global-initializer
-and ownership-read gaps are fixed and verified. Native compiler, OOM, IDE and
-recovery checks pass; all recorded test processes are closed. Read the
-[final verified handoff](WINDOWS-V309-FINAL-FIXES-2026-11-07.md) first. Independent acceptance is pending.
+The [v310 round](WINDOWS-V310-2026-11-07.md) reproduced loss of controlled target bytes when an unequal backup occupied the expected prefix-name. v311 now refuses and preserves both copies in that same reproduction. Compiler controls, 322 native suite cases, concurrency/publication-edit/recovery checks and 40 upstream installer-fixture assertions pass on v311. Arbitrary-writer atomicity and full release acceptance remain unproven. Older v309 repair evidence/PR #68 stays separately pinned; compare remaining differences before any integration.
 
 **Owner's standing Windows workflow: implement the fixes, verify them, then hand
 off to Sarvam.** Keep source in review branches and publish the verified evidence
-and instructions on main; do not stop at a diagnostic-only handoff when a fix is authorised.
+and instructions on main; do not stop at a diagnostic-only handoff when a fix is authorised. The later v310 brief expressly prohibited product edits for that verification round; the newly landed upstream v311 repair was then independently tested without local source changes.
 Earlier reports remain dated evidence and should not be rewritten
 as if their failures never occurred. This index collects all handoffs from this
 Windows install/diagnostic/repair sequence, as requested by the owner.
@@ -35,6 +27,8 @@ Windows install/diagnostic/repair sequence, as requested by the owner.
 | 12 | **[v309 remaining issues fixed](WINDOWS-V309-FIXES-2026-11-07.md)** | **[Draft PR #68](https://github.com/dap2810/Sutram/pull/68), [verified evidence](../Windows-to-Sarvam/win-v309-fixes-2026-11-07/RESULTS.md)** | **Fixed candidate installed. 657 files plus manifest match across native Windows/Linux builds; late retry 657 reused / 0 staged. Upgrade/early/late retries Finish; edited bytes preserved. 14 behavioral + 40 existing installer checks pass; both installed compiler layouts run; all 18 owned processes closed. Full corrected wizard screenshot retained.** |
 | 13 | **[Final v309 fixes and native verification](WINDOWS-V309-FINAL-FIXES-2026-11-07.md)** | **[PR #68 at 664ff188](https://github.com/dap2810/Sutram/pull/68), [final evidence](../Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/RESULTS.md)** | **Final candidate installed. C1/I2 reproduced/fixed; 42/59/21 compiler checks pass on Windows and Linux; 322 native cases, 7 arithmetic, 32 OOM, 44 installer gate checks, 14 reuse checks and 7 lock checks pass. IDE Run/Save/refusal verified. Payload parity and early/late/edited recovery pass; all 21 owned processes closed. Observer failures retained.** |
 | 14 | **[Final integration with current main](WINDOWS-V309-FINAL-FIXES-2026-11-07.md)** | **[PR #68 at 7ab8c439](https://github.com/dap2810/Sutram/pull/68), [integration evidence](../Windows-to-Sarvam/win-v309-integrated-2026-11-07/RESULTS.md)** | **Concurrent R140 changes retained and conflicts resolved. Compiler/engine/wizard/IDE source and payload binaries unchanged from 664ff188; four docs updated. Rebuilt package installed in 22.67 s; 657/657 hashes and Linux parity; 14/7 fixtures and 16/29 gates pass again; both new processes closed.** |
+| 15 | **[v310 native verification](WINDOWS-V310-2026-11-07.md)** | **[Full evidence](../Windows-to-Sarvam/win-v310-2026-11-07/RESULTS.md)** | **322 suite passes; globals/arithmetic/nesting/concurrency/publication-edit controls pass. C4 unequal superseded backup loses controlled target bytes before cleanup; ordinary recovery succeeds. No product edits.** |
+| 16 | **[v311 upstream repair verified](WINDOWS-V311-2026-11-07.md)** | **[Full evidence](../Windows-to-Sarvam/win-v311-2026-11-07/RESULTS.md)** | **Same C4 reproduction now refuses and preserves both copies. 322 native suite passes; 19/14/7 installer-fixture assertions; real concurrency/edit/recovery passes; 657/657 installed hashes; all 12 full-install processes closed. No release acceptance.** |
 
 The owner-supplied instructions, exact commands, raw logs, probes and screenshots
 are linked within each evidence folder. Review-branch test scripts are named
@@ -43,6 +37,8 @@ No email or external message delivery is implied: these handoffs are published
 in the repository for Sarvam to read and acknowledge.
 
 ## Decisions still requested
+
+- Acknowledge the new v310 reproduction and independent v311 repair verification. Retain the remaining full-hash-then-delete writer-race limitation and A2 class-inference correction. The final installed candidate is v311, not PR #68.
 
 - Acknowledge and independently review PR #68 at 7ab8c439: payload determinism,
   repeated staging, global initializer validation and ownership snapshot ordering
@@ -62,9 +58,9 @@ in the repository for Sarvam to read and acknowledge.
   allowance for same-directory upgrades. Review the confirmed Acronis suspension
   and the recoverable-upgrade design. The runnable-wizard timeout remains unverified;
   no automatic action occurred while both processes were externally suspended.
-- Distinguish the historical v307 repair/v308 comparison from the now-installed
-  upstream v309. Reconcile the historical
+- Distinguish the historical v307 repair/v308 comparison from the historical
+  upstream v309 verification. Reconcile the historical
   [pinned v308 static review](ROUND-207-V308-STATIC-REVIEW-FOLLOWUP.md) with v309's
   changes and native evidence; neither this index nor the tests grant release acceptance.
 
-Please acknowledge this consolidated index and the latest v309 evidence; retain PR #67 and the earlier reports as dated comparison material.
+Please acknowledge this consolidated index and both v310/v311 evidence sets; retain PR #67 and the earlier reports as dated comparison material.

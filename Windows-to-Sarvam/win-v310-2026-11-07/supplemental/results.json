@@ -1,0 +1,57 @@
+[
+  {
+    "name": "original-add",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\supplemental\\original-add.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\supplemental\\original-add.exe"
+      ],
+      "exit": 1,
+      "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+      "stderr": ""
+    },
+    "output_exists": false,
+    "pass_": true
+  },
+  {
+    "name": "original-xor",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\supplemental\\original-xor.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\supplemental\\original-xor.exe"
+      ],
+      "exit": 1,
+      "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+      "stderr": ""
+    },
+    "output_exists": false,
+    "pass_": true
+  },
+  {
+    "name": "default-argument-untyped",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\supplemental\\default-argument-untyped.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\supplemental\\default-argument-untyped.exe"
+      ],
+      "exit": 1,
+      "stdout": "\nSutram truti: vyakaran dosh, pankti 1:14, shabd '='\n  prakriya f(n = 5) { nivartanam n }\n               ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+      "stderr": ""
+    },
+    "output_exists": false
+  },
+  {
+    "name": "local-kosh-binding-positive",
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\local-direct.exe"
+      ],
+      "exit": 0,
+      "stdout": "7\n",
+      "stderr": ""
+    }
+  }
+]

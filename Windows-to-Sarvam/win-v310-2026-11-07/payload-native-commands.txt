@@ -1,0 +1,14 @@
+> certutil -hashfile docs\LANGUAGE-REFERENCE.md SHA256
+SHA256 hash of E:\Github_Projects\Sutram\build\windows-v310-acceptance\docs\LANGUAGE-REFERENCE.md:
+df6a968abd06c346b18ebfee71fb994581ed3349430f148b29a45bc5e46ca83e
+CertUtil: -hashfile command completed successfully.
+> certutil -hashfile lang\sanskrit.lang SHA256
+SHA256 hash of E:\Github_Projects\Sutram\build\windows-v310-acceptance\lang\sanskrit.lang:
+0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f
+CertUtil: -hashfile command completed successfully.
+> certutil -hashfile README.md SHA256
+SHA256 hash of E:\Github_Projects\Sutram\build\windows-v310-acceptance\README.md:
+ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd
+CertUtil: -hashfile command completed successfully.
+> (Get-Content -Raw docs\LANGUAGE-REFERENCE.md) -match "`r`n"
+False

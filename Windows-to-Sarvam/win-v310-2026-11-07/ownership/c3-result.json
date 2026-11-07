@@ -1,0 +1,14 @@
+{
+  "edit": {
+    "target": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
+    "time": 1794075653.5028687,
+    "engine_still_running": true,
+    "last_target_absent": true,
+    "later_file_staged": true,
+    "original_sha256": "e40e82f0c36119362825540563ff4ba6b2d09bad22e809ee4f34eb7b61c3bb69",
+    "edited_sha256": "d488a9b854551d76dbc4c31d790bd5ab2e900e68a140e076cf4af60f603eb53f"
+  },
+  "exit": 0,
+  "after_sha256": "d488a9b854551d76dbc4c31d790bd5ab2e900e68a140e076cf4af60f603eb53f",
+  "edit_survived": true
+}

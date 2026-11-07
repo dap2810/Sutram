@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "-NoProfile",
+    "-NonInteractive",
+    "-ExecutionPolicy",
+    "Bypass",
+    "-File",
+    "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\preserve.ps1",
+    "-Action",
+    "backup",
+    "-Name",
+    "working-v310"
+  ],
+  "exit": 0,
+  "stdout": "backup working-v310 completed; files preserved and no deletion performed.\n",
+  "stderr": ""
+}

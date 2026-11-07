@@ -1,0 +1,40 @@
+{
+  "launch_gap_seconds": 0.021868099982384592,
+  "exit_codes": [
+    0,
+    1
+  ],
+  "lock_message": [
+    "[2026-11-07 13:18:50] ERROR: Another Sutram installer or uninstaller is working on C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram. Let it finish, then run this one again."
+  ],
+  "completion": [
+    "[2026-11-07 13:19:05] Installation complete: C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+  ],
+  "pass_": true,
+  "diff": {
+    "disappeared": [],
+    "changed": [
+      {
+        "file": "install-journal.log",
+        "sha256": "96c1afc36ee491d117efa33e920582f3350be4329fe3931e662f3c9e987dbc3f",
+        "bytes": 73023,
+        "new_sha256": "a63147e1703072cb56f07a7efa229396b59ca5541ef143e6d1aea1abb6224fbb",
+        "copies_after": []
+      },
+      {
+        "file": "install-state.ini",
+        "sha256": "774e46dae6b5b0820cb722227554f463bcccdcd38bd7914d607d09741246165a",
+        "bytes": 250,
+        "new_sha256": "f88875e55738403c4f25c1606aa22501f18116d79912c76c27030fcaef655315",
+        "copies_after": []
+      },
+      {
+        "file": "install.log",
+        "sha256": "017f2807cdf19632d4d7a7e118e628f5bc3d82bc9671c9518148697a3cd409d3",
+        "bytes": 56063,
+        "new_sha256": "52dd0f19a24601bf646658fcc00966f59f11412b2e92effb7ae360252e976fc3",
+        "copies_after": []
+      }
+    ]
+  }
+}

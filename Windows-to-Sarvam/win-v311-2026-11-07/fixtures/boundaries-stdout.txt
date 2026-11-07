@@ -1,0 +1,21 @@
+  18 boundaries, 36 stopped-and-rerun installations
+PASS superseded_identical_completes
+PASS superseded_identical_copy_kept
+PASS superseded_identical_original_kept
+PASS superseded_differs_refused
+PASS superseded_differs_target_kept
+PASS superseded_differs_other_copy_kept
+PASS superseded_differs_original_kept
+PASS superseded_differs_not_journaled
+PASS superseded_absent_completes
+PASS superseded_absent_copy_kept
+PASS superseded_absent_original_kept
+PASS interruption_reference_run
+PASS interruption_every_boundary_recovers
+PASS suffix_file_left_by_installer_and_uninstaller
+PASS suffix_file_named_in_the_log
+PASS edit_ahead_stops_the_run
+PASS edit_ahead_kept
+PASS edit_ahead_earlier_file_published
+PASS edit_in_window_not_lost
+Evidence: E:\Github_Projects\Sutram\build\windows-v311-verification\build\boundary-fixture-43e57290ec5a4867bc30133c9e69f0f8

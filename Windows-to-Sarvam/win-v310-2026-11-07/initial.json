@@ -1,0 +1,54 @@
+{
+    "name":  "initial",
+    "moment":  "complete",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\Sutram-Setup.exe",
+    "setup_sha256":  "BB134603D70D49C4ABD08112B77A5309FF447280F8754CB4E6E24CB4626BBA47",
+    "started":  "2026-11-07T13:16:43.9904739-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.35167339999999997,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.3627411999999994,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  10.3717423,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  17540,
+    "process_started":  "2026-11-07T13:16:44.0815818-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "initial-ready.png",
+    "child":  {
+                  "parent":  17540,
+                  "pid":  8892,
+                  "started":  "2026-11-07T13:16:45.3124950-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2A06.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2A06.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2A06.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2A06.tmp\\install.log",
+    "status":  "FINISH",
+    "finish_seconds":  15.6784552,
+    "finish_screenshot":  "initial-finish.png",
+    "closed_after_finish_click":  true,
+    "observed_seconds":  16.5177384,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  0,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  657,
+    "capture_warnings":  [
+
+                         ],
+    "ended":  "2026-11-07T13:17:02.0478080-05:00"
+}

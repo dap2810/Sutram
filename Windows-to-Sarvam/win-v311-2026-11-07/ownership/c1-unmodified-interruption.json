@@ -1,0 +1,2643 @@
+{
+  "target": {
+    "assets/sutram.ico": {
+      "sha256": "b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1",
+      "bytes": 36693
+    },
+    "bin/lang/bengali.lang": {
+      "sha256": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "bytes": 1014
+    },
+    "bin/lang/bengali.sandesh": {
+      "sha256": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "bytes": 23206
+    },
+    "bin/lang/gujarati.lang": {
+      "sha256": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "bytes": 1588
+    },
+    "bin/lang/gujarati.sandesh": {
+      "sha256": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "bytes": 22485
+    },
+    "bin/lang/hindi.lang": {
+      "sha256": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "bytes": 1110
+    },
+    "bin/lang/hindi.sandesh": {
+      "sha256": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "bytes": 22591
+    },
+    "bin/lang/kannada.lang": {
+      "sha256": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "bytes": 1166
+    },
+    "bin/lang/kannada.sandesh": {
+      "sha256": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "bytes": 23266
+    },
+    "bin/lang/malayalam.lang": {
+      "sha256": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "bytes": 1148
+    },
+    "bin/lang/malayalam.sandesh": {
+      "sha256": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "bytes": 24569
+    },
+    "bin/lang/marathi.lang": {
+      "sha256": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "bytes": 1115
+    },
+    "bin/lang/marathi.sandesh": {
+      "sha256": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "bytes": 23368
+    },
+    "bin/lang/odia.lang": {
+      "sha256": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "bytes": 1091
+    },
+    "bin/lang/odia.sandesh": {
+      "sha256": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "bytes": 23510
+    },
+    "bin/lang/punjabi.lang": {
+      "sha256": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "bytes": 981
+    },
+    "bin/lang/punjabi.sandesh": {
+      "sha256": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "bytes": 22540
+    },
+    "bin/lang/sanskrit.lang": {
+      "sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "bytes": 3032
+    },
+    "bin/lang/sanskrit.sandesh": {
+      "sha256": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "bytes": 23684
+    },
+    "bin/lang/tamil.lang": {
+      "sha256": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "bytes": 1418
+    },
+    "bin/lang/tamil.sandesh": {
+      "sha256": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "bytes": 25479
+    },
+    "bin/lang/telugu.lang": {
+      "sha256": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "bytes": 1186
+    },
+    "bin/lang/telugu.sandesh": {
+      "sha256": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "bytes": 24085
+    },
+    "bin/lib/aadhar.smlib": {
+      "sha256": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "bytes": 3578
+    },
+    "bin/lib/ank.smlib": {
+      "sha256": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "bytes": 4631
+    },
+    "bin/lib/anukram.smlib": {
+      "sha256": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "bytes": 4629
+    },
+    "bin/lib/brihat.smlib": {
+      "sha256": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "bytes": 10601
+    },
+    "bin/lib/chandas.smlib": {
+      "sha256": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "bytes": 3844
+    },
+    "bin/lib/ganit.smlib": {
+      "sha256": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "bytes": 9899
+    },
+    "bin/lib/ganita.smlib": {
+      "sha256": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "bytes": 22996
+    },
+    "bin/lib/gudh.smlib": {
+      "sha256": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "bytes": 1059
+    },
+    "bin/lib/kalana.smlib": {
+      "sha256": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "bytes": 5846
+    },
+    "bin/lib/khand.smlib": {
+      "sha256": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "bytes": 17692
+    },
+    "bin/lib/madhava.smlib": {
+      "sha256": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "bytes": 4972
+    },
+    "bin/lib/mala.smlib": {
+      "sha256": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "bytes": 2552
+    },
+    "bin/lib/nighantu.smlib": {
+      "sha256": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "bytes": 15559
+    },
+    "bin/lib/patra.smlib": {
+      "sha256": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "bytes": 2912
+    },
+    "bin/lib/phal.smlib": {
+      "sha256": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "bytes": 6154
+    },
+    "bin/lib/roop.smlib": {
+      "sha256": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "bytes": 20355
+    },
+    "bin/lib/sadhan.smlib": {
+      "sha256": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "bytes": 4692
+    },
+    "bin/lib/samanvaya.smlib": {
+      "sha256": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "bytes": 5343
+    },
+    "bin/lib/sangrah.smlib": {
+      "sha256": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "bytes": 9805
+    },
+    "bin/lib/sankhyiki.smlib": {
+      "sha256": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "bytes": 6540
+    },
+    "bin/lib/shreni.smlib": {
+      "sha256": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "bytes": 5960
+    },
+    "bin/lib/suchi.smlib": {
+      "sha256": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "bytes": 15565
+    },
+    "bin/lib/vakyank.smlib": {
+      "sha256": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "bytes": 12583
+    },
+    "bin/lib/varna.smlib": {
+      "sha256": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "bytes": 16119
+    },
+    "bin/sutram-link.exe": {
+      "sha256": "814cb11ae1c9111be3cfaf0812a3a4e40ba8fd26f24a48ae263a11282defde2d",
+      "bytes": 19903
+    },
+    "bin/sutram.exe": {
+      "sha256": "9740b045ef19ebcf0300010724803d61ecd8e4d3a1e0e23523b558d1dac974fb",
+      "bytes": 540985
+    },
+    "docs/_newchapter_en.html": {
+      "sha256": "3f43e9b351511bc06fc7943700e9b9ef155fa9417a56064be378f4e7b69feb38",
+      "bytes": 6571
+    },
+    "docs/ai-handoff-notes/HANDOFF.md": {
+      "sha256": "f783d14d292c1c819d45cffd57e88743f757f3ede7cf9bb5a3604aa542e2b5b8",
+      "bytes": 2274
+    },
+    "docs/ai-handoff-notes/NEXT_TASK_NATIVE_PE64.md": {
+      "sha256": "33e2ca4b123332c15ce16de431250aa189be1317b074097c00403833a7e01f45",
+      "bytes": 2701
+    },
+    "docs/ai-handoff-notes/REAL_MACHINE_RESULTS_2026-10-01.md": {
+      "sha256": "90787aec2d1499f318fe3bb2a1d7cfcebf535c1be88dd9bbf366f79ef1a7cf2e",
+      "bytes": 3024
+    },
+    "docs/ai-handoff-notes/START_HERE_FOR_AI.md": {
+      "sha256": "eb7dcd0ee38c8ea04e31c393e8a72e6f82cba647374e25c24d1ac76a9710d40a",
+      "bytes": 8595
+    },
+    "docs/AI-WORK-DIVISION.md": {
+      "sha256": "1eb75fc320ecf1b2f1873780e6d5dc85d34d89a1626120105f816bf4f4b223cf",
+      "bytes": 3588
+    },
+    "docs/BUILDING.md": {
+      "sha256": "257c2a6142c670bbf3266209abb9cb7945ec4a8f7be6c57ce64ee4cff05f9222",
+      "bytes": 5091
+    },
+    "docs/CHANGELOG.md": {
+      "sha256": "93eac7a42355dbe4ef4515cc90babd2a63e2d9d1d28a0fe6e71a05ffca77953a",
+      "bytes": 31311
+    },
+    "docs/CI-NOTIFICATION-POLICY.md": {
+      "sha256": "b593dd44de6ba57be732c712863c7a3c153f68eda7814c98bf0b8e5cf44789c3",
+      "bytes": 4174
+    },
+    "payload.pending.sha256": {
+      "sha256": "710e90b5fdd9bbac9655e45e45935a442902209062eb82a90da44f41e217300d",
+      "bytes": 63662
+    }
+  },
+  "transaction": {
+    "journal.txt": {
+      "sha256": "f321de15ea09bec1585474a46a2126cccaf500c54f6e81025d988ffcdf2d93a4",
+      "bytes": 75813
+    },
+    "stage/docs/decisions/ALIAS-DESIGN.md": {
+      "sha256": "ed11a700ea40fc2be7309a068479587abf9a325136a7321f5b21f335f2fcec40",
+      "bytes": 8082
+    },
+    "stage/docs/decisions/MEMORY-DECISION.md": {
+      "sha256": "d62044fe53bdcf0a1241e3447e2015fdf9acc7ee893d5cb176696f63d459556f",
+      "bytes": 12662
+    },
+    "stage/docs/decisions/MEMORY-DESIGN.md": {
+      "sha256": "b84ac7c956bb248d727ed0221049fdbf0ccb7c8309c9a64f08da777915b81e2f",
+      "bytes": 6424
+    },
+    "stage/docs/decisions/MEMORY-IMPROVEMENTS.md": {
+      "sha256": "3693b18eccb2df31f205b8edd791b7aa5863da08e795290c3a8d4b5741c0ac3a",
+      "bytes": 5528
+    },
+    "stage/docs/decisions/MEMORY-MY-IDEA.md": {
+      "sha256": "6e86af206c14e6b6e3b363033ed3835015ba7243b77a66a227ac185f29a12c82",
+      "bytes": 5968
+    },
+    "stage/docs/decisions/MEMORY-UNIQUE-HYBRID.md": {
+      "sha256": "97eb887ad92d802f31826dedde20e649f97c89600f28ad6f94901384ba0256ad",
+      "bytes": 7640
+    },
+    "stage/docs/decisions/R114-SUTRAM-TRUTI.md": {
+      "sha256": "324de9a9068788b3ddb07922bb996d56bcec96f79ab1c19dce6785491fc8b060",
+      "bytes": 3288
+    },
+    "stage/docs/ERROR-CONVENTION.md": {
+      "sha256": "69918e3fc11bfd218f12c5f1c91f89b0d519f135472db73f202bc6dd9a136b27",
+      "bytes": 8634
+    },
+    "stage/docs/FREESTANDING.md": {
+      "sha256": "79030a81d671b38238881f45f838816c8b01dff3501fd89da9c701060c5b56c5",
+      "bytes": 8600
+    },
+    "stage/docs/INSTALLATION-ROUTES.md": {
+      "sha256": "074cac248c7796cb977ea1f5a54bfcab24ee73d915930b38c24970e910abe326",
+      "bytes": 4740
+    },
+    "stage/docs/INSTALLER-REBUILD.md": {
+      "sha256": "b8d4ed79f5733e79f438a30a64050ce16b05d84a5398f00bf2475f783e028036",
+      "bytes": 7403
+    },
+    "stage/docs/LANGUAGE-REFERENCE.md": {
+      "sha256": "a866fea9333aeaff0c19f2ae4b5db3a4014d5083fa614a6705f81def72f93bec",
+      "bytes": 94135
+    },
+    "stage/docs/LIBRARY-BOUNDARY.md": {
+      "sha256": "379df84b463a017a0f6dfc493af421a6c3383af74f0c3045207c42542532e83b",
+      "bytes": 6356
+    },
+    "stage/docs/MEMORY-MODEL.md": {
+      "sha256": "157940d2bb34ce2eda0cd1954e34baad5a7cc313138bd22528a86a8e5abd6cbd",
+      "bytes": 15678
+    },
+    "stage/docs/mockup-setup.html": {
+      "sha256": "38dffeb434c69f0bd5d3be4ba754e1448bfabc3273ed70e3c43f34b1ba8cbfae",
+      "bytes": 9225
+    },
+    "stage/docs/NUMERIC-CONTRACT.md": {
+      "sha256": "c5ef3de813577614c54d02f443044918fa29dfa6f7788af8361f4b338fb3a8a2",
+      "bytes": 11155
+    },
+    "stage/docs/OBJECT-FORMAT.md": {
+      "sha256": "91b32a130fd089cd949c8d64cba98044316799177002e163f17a0afa91333c8d",
+      "bytes": 17537
+    },
+    "stage/docs/OPEN-ISSUES.md": {
+      "sha256": "121e3320efd494f69cb14fabd059b5717683dc304be78406ced721c92289b77b",
+      "bytes": 10030
+    },
+    "stage/docs/OVERFLOW-SAFETY.md": {
+      "sha256": "5dbf11285530cbe1e84919cc14095c06c58fe03d479ccc12b942f17583f00847",
+      "bytes": 5486
+    },
+    "stage/docs/PATH-TO-COMPLETION.md": {
+      "sha256": "2f91a058db51f6a3149f4054d8f8cafe554d20bb4432d96cc39d853eb7362af7",
+      "bytes": 9431
+    },
+    "stage/docs/RELEASE-NOTES.md": {
+      "sha256": "8144fe65c61a1d721948d78b2ecebf830ada9a55f8b0fa49510de71d0b0ba20d",
+      "bytes": 29992
+    },
+    "stage/docs/reports/COVERAGE-AUDIT.md": {
+      "sha256": "a5859a0cb29189a99f59d6dd4134f800531482f40a938b94129ee70b00238fbf",
+      "bytes": 2726
+    },
+    "stage/docs/reports/EDGE-COVERAGE-30.md": {
+      "sha256": "1cf606c0afbb501909d671bf92500d546a480f333874f2fbf6919140e40e4d07",
+      "bytes": 12691
+    },
+    "stage/docs/reports/FAIL-ALLOC.md": {
+      "sha256": "1353e03df2617ae4a9f43346d15512ecadd3715055aedbeeceef28796593d1c1",
+      "bytes": 3330
+    },
+    "stage/docs/reports/HOW-DEFECTS-WERE-FOUND.md": {
+      "sha256": "ad5aea7f369945853bf12caedca6216ccbe26570f026b37e889b88e004b0ccdc",
+      "bytes": 4267
+    },
+    "stage/docs/reports/INDIC-COVERAGE.md": {
+      "sha256": "a437fc71e856c8f3c99622aafcd245ed7efeb1007851e68d21cd3e6f3ccc53db",
+      "bytes": 2009
+    },
+    "stage/docs/reports/KOSH-BUILTINS.md": {
+      "sha256": "8c642b74fa347a74783b46cf4a52de39ccd033db73b9a3da226f882db131b342",
+      "bytes": 8197
+    },
+    "stage/docs/reports/KOSH-REUSE.md": {
+      "sha256": "c6938e311cb248b6719fb863c3a9b5c3e638d3d3c7de45365867d43f9ff53464",
+      "bytes": 3395
+    },
+    "stage/docs/reports/LAGHU-EXAMPLE.md": {
+      "sha256": "d61c3d263193e374b30d3a38ab5c16fbb52f4e5aaa584f9aaf7989b32b1f220d",
+      "bytes": 2087
+    },
+    "stage/docs/reports/LANG-PACK-AUDIT.md": {
+      "sha256": "58fccb71bafb99478981ba9c7174cfc7124e9abbe3a6085d7ab1197fce861f4b",
+      "bytes": 4882
+    },
+    "stage/docs/reports/LEXER-BOUNDARY-TEST.md": {
+      "sha256": "41e3aa88f7155750108de8389356bf569bedee0c828fb7703b7889d3def1a8be",
+      "bytes": 2826
+    },
+    "stage/docs/reports/LIBRARY-ENGLISH-AUDIT.md": {
+      "sha256": "54db396bbfb6d8f3df7256d902ce5c29198faca743c5cd044bac39eaf5321f54",
+      "bytes": 7148
+    },
+    "stage/docs/reports/LIBRARY-LAYERS.md": {
+      "sha256": "f8b4b31869673fa3dfcc662b0fcb5eac578f59accaff179a9f8f34a8d5de676b",
+      "bytes": 4949
+    },
+    "stage/docs/reports/MEMORY-COMPOSITION-TEST.md": {
+      "sha256": "48e025679cb13ccb52e43077dcdb67ce67ee901f8cf3a17530c0d2aadb469e8e",
+      "bytes": 3111
+    },
+    "stage/docs/reports/NEGATIVE-CORPUS.md": {
+      "sha256": "ac184e140e63a1d72ffa350797639706f87c8d1d2028e3f3edb4490e67c6f5f6",
+      "bytes": 9497
+    },
+    "stage/docs/reports/PARSER-CLASS-TEST.md": {
+      "sha256": "2382901582a83ad7f628b75464ec98f8732acd788aec659298c786904dc8d651",
+      "bytes": 3082
+    },
+    "stage/docs/reports/PROPERTY-NET.md": {
+      "sha256": "117ada25b286eb061b7e8f38df02f8de247c7b86f8be4a0da8091770f8d0fb63",
+      "bytes": 11571
+    },
+    "stage/docs/reports/SANSKRIT-AND-AI-BRIGGS-1985.md": {
+      "sha256": "65dfabb90bbcdfc0ad86de6157fcc9ef6bf73e94c4f66d212ff5561e15140c0f",
+      "bytes": 7395
+    },
+    "stage/docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md": {
+      "sha256": "ab304d323cf9dc81dd5d95da1a5fdd359bb76e5ed43ec3de9f59758df6595084",
+      "bytes": 15791
+    },
+    "stage/docs/reports/SECURITY-AUDIT.md": {
+      "sha256": "dce6d48beb18a667f522eed9b9786a65620f26058a50dc1f4930f058eb0f29fa",
+      "bytes": 4998
+    },
+    "stage/docs/reports/STRING-BYTE-PARITY.md": {
+      "sha256": "732c9665cffd07be97475557b8cf53613c0302c238f405524e001483451c77ee",
+      "bytes": 5429
+    },
+    "stage/docs/rounds/CHANGELOG-ARCHIVE.md": {
+      "sha256": "3dca77f6327cf5ab77023b17e307756f9c33a57c4fd6a8e134ee8a204da129fc",
+      "bytes": 716623
+    },
+    "stage/docs/rounds/F7-SCALAR-INDEX-CRASH.md": {
+      "sha256": "7cf1f8d5efb34f7ee5cda65682527ae56ac69ccb2feb31d7914406430687c161",
+      "bytes": 2505
+    },
+    "stage/docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md": {
+      "sha256": "43132face4ced2fd01c9c45dc0b3c9cc68476b3ae9126195b37cfb5051c568b0",
+      "bytes": 3122
+    },
+    "stage/docs/rounds/ITEM-6-X11-INDIC-ASSESSMENT.md": {
+      "sha256": "95dc20e8229a9446f4c0217a3c3071c47d98ed8b01e8e8a1ab1806f92aaa7ea6",
+      "bytes": 3072
+    },
+    "stage/docs/rounds/PLAN-TO-FINISH.md": {
+      "sha256": "bb7050c47bc6c3bad92b094f2ebac31dc212d1015cf376ba87e41e221c72a491",
+      "bytes": 4464
+    },
+    "stage/docs/rounds/PROJECT-OVERVIEW.md": {
+      "sha256": "6245f162dd631559a8fc8757727266080177a51037142d6d73a939e93b69e2ff",
+      "bytes": 7633
+    },
+    "stage/docs/rounds/R34-ACKNOWLEDGE.md": {
+      "sha256": "ad9926d9b95a2c7cbe2139193754d241ba76d55cc366d647e95cc22e58503de7",
+      "bytes": 8220
+    },
+    "stage/docs/rounds/R50-BYTE-PACKED-TEXT.md": {
+      "sha256": "7a5cd8fe1e7d780da928057c15c688322f78e073991f81be19e0e50ea754377d",
+      "bytes": 1228
+    },
+    "stage/docs/rounds/R52-BUILTIN-FIXES.md": {
+      "sha256": "7d1e23e8d00b9ad96405acda231fd53df1938091810562dc5d564e4d8a0433c7",
+      "bytes": 3027
+    },
+    "stage/docs/rounds/R54-BUILTIN-BOUNDS.md": {
+      "sha256": "50571c6e0db44ad67ebaac81531e49762cccd586182513f9615622c3156c0324",
+      "bytes": 6886
+    },
+    "stage/docs/rounds/R56-MODULE-GLOBALS.md": {
+      "sha256": "90a05b17b8f3c3cd5e16ca038171d68b121e175354274883abbba7a3b042a1a0",
+      "bytes": 4998
+    },
+    "stage/docs/rounds/R57-REGISTER-EVALUATOR.md": {
+      "sha256": "a7d284b377e99dbcdb62268db46c2ae09791af5fda6cebf7711eced619860c31",
+      "bytes": 3807
+    },
+    "stage/docs/rounds/R58-CONSTANT-FOLDING.md": {
+      "sha256": "3b1cb3190237140403aca19d0bc1b08392ab1a192fd09859efcdde84d1d5de07",
+      "bytes": 6926
+    },
+    "stage/docs/rounds/R59-PREEMISSION-PEEPHOLE.md": {
+      "sha256": "eee7a58a3c07e1eb8f868c5ce5bb4168c04524642f473ed43f610674f4079958",
+      "bytes": 5289
+    },
+    "stage/docs/rounds/R62-WINDOWS-ACCEPTANCE.md": {
+      "sha256": "74fd8000af03c95d0bd3d287a41cfe110b65d93a3d21358e9f3bfdbd6bd399c1",
+      "bytes": 4615
+    },
+    "stage/docs/rounds/R63-KOSH-BUILTINS.md": {
+      "sha256": "4562bf86114f8a6099b73a2847720dd6c9e7a949485a92945c9bda8c60b5dddb",
+      "bytes": 6894
+    },
+    "stage/docs/rounds/R64-KOSH-DIAGNOSTICS.md": {
+      "sha256": "8c948868e66c7a522839a13c9712ce52f663225026710021d7df97a7433e26e0",
+      "bytes": 2756
+    },
+    "stage/docs/rounds/R65-DEVANAGARI-SURFACE.md": {
+      "sha256": "cc9c377bcbde1db3c71060bddd39a3b7a95877382501b83152bec81604e6341e",
+      "bytes": 1486
+    },
+    "stage/docs/rounds/R65-FINISH-REVIEW.md": {
+      "sha256": "ff4a94707c3c026e1044e381346359a2b849fd39deca0432158b162bab0a7c30",
+      "bytes": 7169
+    },
+    "stage/docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md": {
+      "sha256": "cc80e028665d51e253e138365ebc6022b5aa2eca3f99a51b1ea15ed1dfb51fac",
+      "bytes": 2908
+    },
+    "stage/docs/rounds/R65-SOURCE-REVIEW.md": {
+      "sha256": "8cc24fbb66e9888fe3f8995d623e429dc36a23e29b62c902bc565d83e5cc0621",
+      "bytes": 6169
+    },
+    "stage/docs/rounds/R67-SOURCE-REVIEW.md": {
+      "sha256": "9c54b430b2b8a84744b2f890ed8d46975cab14fac3a41a6e8a6c58b7036cb5a6",
+      "bytes": 8772
+    },
+    "stage/docs/rounds/R68-INDIC-DEVICES.md": {
+      "sha256": "102ce13d97a114c67bbfe8323e1beff01a322667413d0f5136fe94f12a36aa62",
+      "bytes": 3295
+    },
+    "stage/docs/rounds/R68-LEXICAL-DIAGNOSTICS.md": {
+      "sha256": "77b8caf7fa74b999bebdd89ea52bd2e2250fa7be90a31e6e2758775b6807cecc",
+      "bytes": 3611
+    },
+    "stage/docs/rounds/R68-PURE-PAIR-PROBE.md": {
+      "sha256": "549ba152086eb377b7eeba30dc5a4b805428380afbcaada527ee7df6b374578a",
+      "bytes": 2482
+    },
+    "stage/docs/rounds/R68-SOURCE-REVIEW.md": {
+      "sha256": "34cfdfe8d04dae770604659dee889c07acae48286d4f8bc4a6553947dea328b1",
+      "bytes": 5056
+    },
+    "stage/docs/rounds/R68-WINDOWS-GUI-CHECKLIST.md": {
+      "sha256": "a5d310865c5a0225d0bbcb54acdff83b43957d3a44349840c968622b31d6e95f",
+      "bytes": 5391
+    },
+    "stage/docs/rounds/R69-PURE-PAIR-MEASUREMENT.md": {
+      "sha256": "08bb4bdef520d4c0ed7437dc7195f9592b78913a4d07ac7e2a9acab85d8ee053",
+      "bytes": 1951
+    },
+    "stage/docs/rounds/R71-BOOT-PATH.md": {
+      "sha256": "7a1e9943da07c39602863235f6308dd818b97e1df2b9b652c96e207e9de6467a",
+      "bytes": 2889
+    },
+    "stage/docs/rounds/R71-CANONICAL-BUILD.md": {
+      "sha256": "312314476bc1002af7137aa04e5853eda20e8dd6b2671b197ce4fc4164d505ae",
+      "bytes": 3971
+    },
+    "stage/docs/rounds/R71-MEMORY-BOUNDARY.md": {
+      "sha256": "106d50d3bc2af0cef260a6d034306bf7a333338e880d62331b1706d40b839804",
+      "bytes": 4408
+    },
+    "stage/docs/rounds/R71-MODULES.md": {
+      "sha256": "4d6821dabd1543fcb205f96be007b343717396007c11a99308c206114ff66dbc",
+      "bytes": 5930
+    },
+    "stage/docs/rounds/R71-SPECIFICATION-EVIDENCE.md": {
+      "sha256": "119d110795dfe613bd8bacd904e4d37e3d6cc745e78717fa0ea7f921775f5742",
+      "bytes": 3119
+    },
+    "stage/docs/rounds/R72-BASELINE-OBSERVED.md": {
+      "sha256": "beef71de98f275bf61b0dcfbde9b838b44e9f210adefe510c262a40bbd75a9f4",
+      "bytes": 2618
+    },
+    "stage/docs/rounds/ROADMAP-TO-V1.0.md": {
+      "sha256": "8382abb7239448bf161a40a980e19feab884a952bb7e1dc9b08f00fe61e7056d",
+      "bytes": 9942
+    },
+    "stage/docs/rounds/TEST-ME.md": {
+      "sha256": "70a40c6a52b3add22a85846fd30cf61136ed4f9f70ffcd32699a6cfe17027180",
+      "bytes": 3221
+    },
+    "stage/docs/SANDESH.md": {
+      "sha256": "07fed7d8ce6833622c23763dff0eab75a32a28cb7b7969495d3270e28ff8cb38",
+      "bytes": 3133
+    },
+    "stage/docs/SPECIFICATION.md": {
+      "sha256": "0b2df79dfb155333e6d320dc1e0a57ee6139d16c7a2fe10b920b453d786dd53f",
+      "bytes": 15712
+    },
+    "stage/docs/sutram-audit.html": {
+      "sha256": "e82085f9c2ea0063db99398d136143d97caac92f3cf201110123f40c7cb0c119",
+      "bytes": 12778
+    },
+    "stage/docs/sutram-benchmark-report.html": {
+      "sha256": "de9c902cd98323b84f9af5c91c162a36d79dcdb2f42cf93a37986b0da6da3eb9",
+      "bytes": 39573
+    },
+    "stage/docs/sutram-book-2.html": {
+      "sha256": "3298ee2ebbcacaf4697d3908402839402771e6c3d862d6b085281903a67464b7",
+      "bytes": 1709
+    },
+    "stage/docs/sutram-book-3.html": {
+      "sha256": "3bc7f63f618147f630abf88d550186d4bbe7af0135d2a0f9404e192e652bc2ba",
+      "bytes": 1716
+    },
+    "stage/docs/sutram-book-english.html": {
+      "sha256": "c10cf13e001c16c0ebad036615ee7f55f88fd61bbe126b71e639a6d997027700",
+      "bytes": 62392
+    },
+    "stage/docs/sutram-book-gujarati.html": {
+      "sha256": "f0b849b010ac293cb2efe3c256adcb4254c30edbf74229111ad358116471de77",
+      "bytes": 85760
+    },
+    "stage/docs/sutram-book-hindi.html": {
+      "sha256": "a0b6b36f7077e6403f3deb8e34cc8d355da63269c10e8fc94fafa377fcf55930",
+      "bytes": 95112
+    },
+    "stage/docs/sutram-book-sanskrit.html": {
+      "sha256": "b22e406aafe0e96026ce5fbc0f5c289904e41c5de2fe5e0579289356f839a3b0",
+      "bytes": 80891
+    },
+    "stage/docs/sutram-book-tamil.html": {
+      "sha256": "5d9a63b7890d6c88eb2e14fe576a258fd0bf7af5e5f4746e4f66678ca109ba5f",
+      "bytes": 97554
+    },
+    "stage/docs/sutram-book-telugu.html": {
+      "sha256": "9f87a30b5e9a41c9566e84691a7412a12dee2f0bc7e0f6eadf0c21264ad1dda0",
+      "bytes": 96942
+    },
+    "stage/docs/sutram-book.html": {
+      "sha256": "a35e5dc5c7604fef1e38ec5050f1ea209e30b7df56b3cd3252a04a0fc398167f",
+      "bytes": 1710
+    },
+    "stage/docs/sutram-design-parameters.html": {
+      "sha256": "4b6e749e269b19ced86452caf7e22a4941ba12d5f90a8b63b37f899a41944060",
+      "bytes": 29177
+    },
+    "stage/docs/sutram-icon-thread.html": {
+      "sha256": "c8602eb3a84e6cb7c4bf24720eddf3e287b5a1f2dffbaaa898726a99076ce4e5",
+      "bytes": 8020
+    },
+    "stage/docs/sutram-ide.html": {
+      "sha256": "b24231ac4380f15203419765ed1da44d4e9e710df8f93906ae2475dec84f0a60",
+      "bytes": 5193
+    },
+    "stage/docs/sutram-keyword-words.html": {
+      "sha256": "b441e44bdb8f96054737e285a118b3781dbf0379b3b90dd0f0dd9e941b5745c9",
+      "bytes": 11614
+    },
+    "stage/docs/sutram-performance.html": {
+      "sha256": "0eeb8064d5e6021de691d8b94a8e67beb18b35d443500577019a71a00cb7c1b4",
+      "bytes": 16749
+    },
+    "stage/docs/sutram-philosophy.html": {
+      "sha256": "cf5b4704b432f317aaed0b7859a93f5df9c48f07cea804f6549fcd9758a5dfe2",
+      "bytes": 11475
+    },
+    "stage/docs/sutram-project-status.html": {
+      "sha256": "46b903e3b980129dffcfd4d07456cce26bf407f2c8baeef805b50afa7f4b6a25",
+      "bytes": 16467
+    },
+    "stage/docs/sutram-roadmap.html": {
+      "sha256": "44976aa611e78fda5f0d7000c8d954e271f169935ea01031fc34b677b59ab08e",
+      "bytes": 9368
+    },
+    "stage/docs/sutram-scorecard.html": {
+      "sha256": "d38fd7b1a6bc04dee6009ad64d3df83f115407284939a2526272ae9abb376bce",
+      "bytes": 14944
+    },
+    "stage/docs/sutram-stdlib-reference.html": {
+      "sha256": "df2686c98a7f89da2e4438107e2635f052a50998b9e8efc8e6be4ecc2c38f70c",
+      "bytes": 60771
+    },
+    "stage/docs/sutram-stdlib.html": {
+      "sha256": "6865c5491f403e93819b0df2b7cf058b3b19d30730dc0c66f58a49a0d8293ec8",
+      "bytes": 96624
+    },
+    "stage/docs/sutram-vocabulary.html": {
+      "sha256": "facf4e0826f03fcf415b16f9644ec77642cafa4443c7d7a7c07de080daa8274b",
+      "bytes": 43841
+    },
+    "stage/docs/vocabulary/VOCABULARY-COMPLETE.md": {
+      "sha256": "d9735018ce7a7ffa81d3d0c8feacc4a0c008315c5e543f63c499f0641847fe13",
+      "bytes": 10459
+    },
+    "stage/docs/vocabulary/VOCABULARY-DERIVATION.md": {
+      "sha256": "b11de73c4339bf4d072d379e618b9e0a3de9b5066e8df1949bd7f6c6b1c5c46a",
+      "bytes": 4475
+    },
+    "stage/docs/vocabulary/VOCABULARY-RULE.md": {
+      "sha256": "45cbc08503dc4a222c942834950aab742ed8c8b5e4b7548eda45e58aac4078c1",
+      "bytes": 6484
+    },
+    "stage/docs/vocabulary/VOCABULARY-SHORT.md": {
+      "sha256": "5448e29dc4fac48787236773790418455d05e906f09c25a1d2d16de8561df9ba",
+      "bytes": 12272
+    },
+    "stage/docs/vocabulary/VOCABULARY-TABLE.md": {
+      "sha256": "2e41efea7a4fa0bccd823ac005e20596e127f8935d8aad8413b20efc09a03e2f",
+      "bytes": 19016
+    },
+    "stage/docs/WHATS-LEFT.md": {
+      "sha256": "3b90c5f2ebb338987abeeb541dddc3bb9e6a1812140bebf396f505453e52b780",
+      "bytes": 6438
+    },
+    "stage/docs/WINDOWS-PORT-PLAN.md": {
+      "sha256": "78a53479c91375cfa33cdd005af9b47fd8c939a76a19ac1798eb565673abafbc",
+      "bytes": 2083
+    },
+    "stage/docs/WINDOWS-SETUP.md": {
+      "sha256": "e22395f1971fdf3fd145586f693c91db62905d3aa74855853b4958f52baf80c7",
+      "bytes": 7252
+    },
+    "stage/examples/01_hello.sm": {
+      "sha256": "6f92d201342a8db12a68dba9137f282145696a94762f6ecc4d756582f3a64edd",
+      "bytes": 64
+    },
+    "stage/examples/02_arith.sm": {
+      "sha256": "a57dd05e5e5207a38faeed35d330c16e83901a6d9fd1c0101a92c93df0eafa76",
+      "bytes": 115
+    },
+    "stage/examples/03_if_else.sm": {
+      "sha256": "90641fc6d346861a3fb534c616ac8c005caa2fe01842be869a0740e745c6cc33",
+      "bytes": 96
+    },
+    "stage/examples/04_while.sm": {
+      "sha256": "b1b2d6354e315f5fc1f7bbbc6b0841969d17198278a4ab6f37e4517afc3b0dae",
+      "bytes": 133
+    },
+    "stage/examples/05_func_params.sm": {
+      "sha256": "5ae97eeb68502baba1c4cb56aec8c7f82fbccc28f6be2770b9b9f17b507d7f7e",
+      "bytes": 240
+    },
+    "stage/examples/06_rachana.sm": {
+      "sha256": "654baade8f1b99ec5c11b698c19ce547ee86ab0c2b32bf2bbab36bf5f75fabc7",
+      "bytes": 239
+    },
+    "stage/examples/07_module.sm": {
+      "sha256": "5a180916abd56a65738c65376eae0b73c343df43387338ee686018a4955683ff",
+      "bytes": 148
+    },
+    "stage/examples/08_demo.sm": {
+      "sha256": "c5ebc7c9b0f6fce148d35afaa6cb5fd8b331d793e6afc6b99f4bfab3c671e2cf",
+      "bytes": 432
+    },
+    "stage/examples/09_comparisons.sm": {
+      "sha256": "b46ba459a8bc9d90ff40ab17576af55e3fbc0d981bb03b60be829f43f45538b6",
+      "bytes": 779
+    },
+    "stage/examples/100_t18_kosh_bounds.sm": {
+      "sha256": "a94a91f2b0aed410a6b3e5a5188a4c75fa7e9d3816a9c6c9930e777c7457da00",
+      "bytes": 144
+    },
+    "stage/examples/100_t18_kosh_devanagari.sm": {
+      "sha256": "2fca1e52e4e2d7e190f77aacc9aac1e973c20113a7508d5d352f4b53fcb03e2a",
+      "bytes": 229
+    },
+    "stage/examples/101_t18_kosh_empty.sm": {
+      "sha256": "0167cd99bed3d3ff5205d45e07dca58c2b889e9dee24242100c14a270391ce74",
+      "bytes": 117
+    },
+    "stage/examples/102_ast_multimodule_capacity.sm": {
+      "sha256": "4f5fdbcc5e7a8fda2c2b1fd197bd3973b8201e6db5cad65bc29aeeabd699b0ce",
+      "bytes": 183
+    },
+    "stage/examples/103_b10_nested_break_patches.sm": {
+      "sha256": "2a5a5b866e43e867a32f3ed5720d3e401190b42c8c9223152c9a0bd59b462818",
+      "bytes": 3080
+    },
+    "stage/examples/104_b10_nested_continue_patches.sm": {
+      "sha256": "20ececd7d633341c266dd64c2f469e58892f6de3ab206825595b8d878129165d",
+      "bytes": 3083
+    },
+    "stage/examples/105_block_nesting_capacity.sm": {
+      "sha256": "0b3827dfa439da9b642ac2463f1ba3abec66ae301c037f57ddad7183b5a1f4cc",
+      "bytes": 70422
+    },
+    "stage/examples/106_rachana_field_capacity.sm": {
+      "sha256": "4dadb00877a47d866764d8e3b6e3b2b80efd25efa1c784b2dfd5a700c0d6fbb9",
+      "bytes": 193
+    },
+    "stage/examples/107_b11_block_65_statements.sm": {
+      "sha256": "74fb899c043244b514129ed65399c2cb618365174e9a8e3de625dcbd37845928",
+      "bytes": 1266
+    },
+    "stage/examples/108_b11_block_statement_capacity.sm": {
+      "sha256": "e81380cecf9ab0b0e3cbb81ac9dc341aaa132c07bb68939e2b1eee7cfb6840a2",
+      "bytes": 4737
+    },
+    "stage/examples/109_t18_kosh_dasham.sm": {
+      "sha256": "305ada040ef360e44f85ec1b879750976e9609ddd76539280e3427bef3dbb44a",
+      "bytes": 339
+    },
+    "stage/examples/10_mathlib.sm": {
+      "sha256": "1f5fa226fed9dabcc5f3d66872edfa57a322b661627c1bdcfa2a595d595b14a1",
+      "bytes": 299
+    },
+    "stage/examples/110_t18_kosh_dasham_devanagari.sm": {
+      "sha256": "b47d6c981ec0e3da7423c8072ac5b4dddc6a9e66aef8a8bcdf5c20f4a487d285",
+      "bytes": 254
+    },
+    "stage/examples/111_t18_kosh_dasham_function_return.sm": {
+      "sha256": "b2cdf100158b8e1ad0de8d7c7d837e67b2455a4915b3d43b73349f0a050a1fe9",
+      "bytes": 352
+    },
+    "stage/examples/112_t18_kosh_integer_conversion.sm": {
+      "sha256": "6227e316090030f672761109f2baefab6b73a3b7409e53d4f859500d76ff63cb",
+      "bytes": 335
+    },
+    "stage/examples/113_perf_self_update.sm": {
+      "sha256": "f4d838c5a1bd24a9227b8b405d138413a8701c6f43f1243bf4b825bcf267bca2",
+      "bytes": 429
+    },
+    "stage/examples/114_perf_loop_fastpaths.sm": {
+      "sha256": "5d27fba6014e390991f60299fe370a3cf54ad0ce9f4a2a2c700d9ffd439cc86e",
+      "bytes": 317
+    },
+    "stage/examples/115_perf_loop_bottom.sm": {
+      "sha256": "80f75bd70030843ed86d1a65d78030431cb120b04d5ff6575b0f9cb76b946007",
+      "bytes": 777
+    },
+    "stage/examples/116_perf_reg_destination.sm": {
+      "sha256": "1f037d5c57d52794c8b689764fd7d53a859fdbac825920f9b634194138db8714",
+      "bytes": 320
+    },
+    "stage/examples/117_perf_constant_literals.sm": {
+      "sha256": "883790221ac4a134d1c7e907e6ed63d289af5eece2c7ecb7335e877f065f410a",
+      "bytes": 254
+    },
+    "stage/examples/118_t18_kosh_param.sm": {
+      "sha256": "d9bf6ea1c5184e356f0795b14a9757f342faa29dc25a380f10aebd5f3d30428a",
+      "bytes": 543
+    },
+    "stage/examples/119_t18_kosh_param_forward.sm": {
+      "sha256": "ba0d361ab3befc9d85718c62afe035a1f0b3d43b31a33318122ca6f37adb89f3",
+      "bytes": 499
+    },
+    "stage/examples/11_forloop.sm": {
+      "sha256": "25dbec3b360cbfaff52b3140e8db0d43afe1d83ef7161235395384d04051530c",
+      "bytes": 564
+    },
+    "stage/examples/120_t18_kosh_param_mismatch.sm": {
+      "sha256": "838ebc6b8c82258ffe6f50abbf43cf0e41bbf002d56fe4d17889d329a2254853",
+      "bytes": 210
+    },
+    "stage/examples/121_t18_kosh_param_push_reject.sm": {
+      "sha256": "c6dc578efb76e74b67ac21bdf32e31045c9328781e58ce32a7dc36131c6326b2",
+      "bytes": 494
+    },
+    "stage/examples/122_t18_kosh_param_devanagari.sm": {
+      "sha256": "6cc138b88058ee69021cb1a8579a3a8c1329da4c5e437afe8f7af73526fe3189",
+      "bytes": 242
+    },
+    "stage/examples/123_t18_kosh_param_statement_call.sm": {
+      "sha256": "feac1010d53a7178ea3d89c2dcf4f3a6573f1f4457308640feabe0e8bd4d5549",
+      "bytes": 240
+    },
+    "stage/examples/124_perf_wide_immediate.sm": {
+      "sha256": "68d4369e4d374754abe4304f8580c548be33bb9a8f90adf82b346d3e67612177",
+      "bytes": 621
+    },
+    "stage/examples/125_perf_register_immediate_destination.sm": {
+      "sha256": "63f23786f453f6f487dcd0f31680392665e5b3bebe045cac6d79a2211a51a410",
+      "bytes": 684
+    },
+    "stage/examples/126_numeric_pipeline.sm": {
+      "sha256": "b5d7712b25e18474e9ffb247b2b7fa0bba9691a2e6c588e25d92faf5d5e66b0b",
+      "bytes": 1073
+    },
+    "stage/examples/127_perf_float_self_register.sm": {
+      "sha256": "d3b0e99f4177b310ffc01f60f264569d4f7aeb010cbce7dccfebebd9f8c68d86",
+      "bytes": 290
+    },
+    "stage/examples/128_perf_float_self_fallback.sm": {
+      "sha256": "588a9fd3e63aa7f6b1b1e206d8165193f891581b1b8f369a8e517e87be54800d",
+      "bytes": 302
+    },
+    "stage/examples/129_perf_float_destination.sm": {
+      "sha256": "b32278f523426413c82a29d1391202cf9bbacc3bfa81646262030ec538db5f65",
+      "bytes": 313
+    },
+    "stage/examples/12_elif.sm": {
+      "sha256": "909a187f4998cf13c579af314de0d188db3890135cce76a000cfff3aec851523",
+      "bytes": 640
+    },
+    "stage/examples/130_perf_float_destination_alias.sm": {
+      "sha256": "21708bb8ea9faeed3eaa6a09131fda9260fd7f03b66f9846aa05c02e10d51c48",
+      "bytes": 485
+    },
+    "stage/examples/131_perf_float_compare_register.sm": {
+      "sha256": "eee4eb6e4c716e62803041157a4b6bf6637819d6f2767013cc681c8c6c255c7b",
+      "bytes": 289
+    },
+    "stage/examples/132_perf_float_compare_fallback.sm": {
+      "sha256": "afc0a93883dcfd790bd2465976834ad73155270cd43d8c5a57efbe5a17782a72",
+      "bytes": 350
+    },
+    "stage/examples/133_perf_float_scalar_call_rhs.sm": {
+      "sha256": "1409268bc5f104510f0402ae6e3b45ad189eeecd457792e1b3244d04a353bc05",
+      "bytes": 624
+    },
+    "stage/examples/134_perf_float_complex_fallback.sm": {
+      "sha256": "effba35468a58a4d2f5cfe59a71b3159ab545eef9a62e17cae0e46aa5abb0154",
+      "bytes": 628
+    },
+    "stage/examples/135_r30_float_index_scalar.sm": {
+      "sha256": "dc35c56366b2c1bcbdd15edbd60b47d0145623508a85703d590a19264cdecba8",
+      "bytes": 667
+    },
+    "stage/examples/136_r30_float_complex_left.sm": {
+      "sha256": "883727a2e543d2a8f4120c7b0e4e6f72b10c44061169837631f1fdbc0f80751e",
+      "bytes": 535
+    },
+    "stage/examples/137_r30_float_literal_rhs.sm": {
+      "sha256": "e09e699610ba8ff5122c04c26f68ee69c2607eff219da7ab47256e62c137c4b2",
+      "bytes": 452
+    },
+    "stage/examples/138_r30_float_comparison_index.sm": {
+      "sha256": "490cdb951e3fc1dd912badeef6fb6f64260921ab4be6a4e7db67446a36f00caa",
+      "bytes": 462
+    },
+    "stage/examples/139_r30_float_mixed_fallback.sm": {
+      "sha256": "5fe00509669675baf55e29f8e3cfc1c944da58f7518c0dcd7e600e88b80a0fe3",
+      "bytes": 461
+    },
+    "stage/examples/13_negatives.sm": {
+      "sha256": "52b31669e725c995fe43385001c4ecfa8827fac58ce69e1df9b1bad86f2e0bd5",
+      "bytes": 757
+    },
+    "stage/examples/140_r30_index_side_effect.sm": {
+      "sha256": "5e7728bbeacc29fa3b8eaa8d9ca82595f49f82e82378c01e22eb981090381649",
+      "bytes": 513
+    },
+    "stage/examples/141_xmm_cache_basic.sm": {
+      "sha256": "3a2b18854a2b7b99fde02bff485ecb93d7504cd17e040bbd061a8004fa7979e1",
+      "bytes": 317
+    },
+    "stage/examples/142_xmm_cache_alias.sm": {
+      "sha256": "74c4052c1f0628df94dbeec0ed615333b566a1f0d999f6bddcaae7752ed72180",
+      "bytes": 283
+    },
+    "stage/examples/143_xmm_cache_barriers.sm": {
+      "sha256": "a2e57e0ab17c631da8b6b475de865a19042c197cd246312dd8c587c4e10ba684",
+      "bytes": 494
+    },
+    "stage/examples/144_xmm_cache_fallback.sm": {
+      "sha256": "0067d3854cde3fdd1ac09ca546579297622604dc6cfa25e1be8d93a32e9403c6",
+      "bytes": 383
+    },
+    "stage/examples/145_xmm_cache_nested_calls.sm": {
+      "sha256": "6a4232fbb2e46757dabe45ab3fd08f96f12d9c73212f8da130db55be4f50afb5",
+      "bytes": 368
+    },
+    "stage/examples/146_stage2_loop_call_boundary.sm": {
+      "sha256": "ee708213d1237c223c439b1ee158bd12558331f0fa5523d33edf3e8043ab8552",
+      "bytes": 482
+    },
+    "stage/examples/147_stage2_recursive_float_boundary.sm": {
+      "sha256": "49517a85f2f3dc8346db170964dfae034db723b758e2e8f9f8bf0ac93047c251",
+      "bytes": 396
+    },
+    "stage/examples/148_stage2_array_mutation_call.sm": {
+      "sha256": "5e67eb8088b2852d55d56dc5f48d4cb6d8d5e7973821a454a4ec4278aca988b3",
+      "bytes": 560
+    },
+    "stage/examples/149_namespaced_colliding_imports.sm": {
+      "sha256": "6f89dbff3315c8e1adbd12b8b71c63a9e0d4232069d5911cfce83b948d464982",
+      "bytes": 230
+    },
+    "stage/examples/14_strings.sm": {
+      "sha256": "95d74db7b609dc06334edc1a256410683ffd22fa8b25520864617bdd6a451ae7",
+      "bytes": 560
+    },
+    "stage/examples/150_namespaced_same_module_two_aliases.sm": {
+      "sha256": "4b8d4da12ee3e94b5fd2fdf05a3c5ce533f72943ee923332760d8e116e256f90",
+      "bytes": 164
+    },
+    "stage/examples/151_namespaced_and_legacy_import.sm": {
+      "sha256": "3d8778f55dd0698742871eabc137bb5e0fa6a66feb106a6fb19baa62706bc6df",
+      "bytes": 174
+    },
+    "stage/examples/152_namespaced_comment_string_preservation.sm": {
+      "sha256": "5761c94c8da2f849f8b3f2193198ed7e14d17d5e088d22ef318f8427976c9220",
+      "bytes": 180
+    },
+    "stage/examples/153_namespaced_devanagari_function.sm": {
+      "sha256": "668844098a7f907e95e858c8fdf764f86923d98cf3fce113ef8bcc4bc043cbc0",
+      "bytes": 74
+    },
+    "stage/examples/154_namespaced_duplicate_idempotent.sm": {
+      "sha256": "a6945339b79fd6ad79baa629c8ae9a09e2a75a263668af4c3f95ffe73d2af43f",
+      "bytes": 134
+    },
+    "stage/examples/155_namespaced_multi_alias_composition.sm": {
+      "sha256": "239e984df1a3f9ead2698e42332a830b9c61ed165f381e69cb77b4acd05b1aa9",
+      "bytes": 245
+    },
+    "stage/examples/156_namespaced_alias_collision.sm": {
+      "sha256": "25f7d19988dcc51321e2055384494dab99bb8a19f92e313b3bd4e4ac59c7e950",
+      "bytes": 121
+    },
+    "stage/examples/157_namespaced_missing_module.sm": {
+      "sha256": "c4703d4eb2b74c10d474634efc776d548e072e9796c4a55fdd82efb2b5b3255f",
+      "bytes": 53
+    },
+    "stage/examples/158_namespaced_alias_digit.sm": {
+      "sha256": "23c03bbcc8c4eaa4c531894406db46b151a7cfd46e6a97361c5719fcbbe5a86b",
+      "bytes": 41
+    },
+    "stage/examples/159_namespaced_path_traversal.sm": {
+      "sha256": "daecbc8ac96055734f0a291bca4bb67ce7f9074edc7812aaf50b1e13a58e9f3c",
+      "bytes": 46
+    },
+    "stage/examples/15_sutra_const.sm": {
+      "sha256": "363c0b098689e3da26714b1796b5bb733cb554f71d65f27d512125c5061fbbeb",
+      "bytes": 481
+    },
+    "stage/examples/160_namespaced_empty_alias.sm": {
+      "sha256": "7f6ef507d09f9c1f720418a9647d058b6a411c53ffc02875cb0939fb069bc4bd",
+      "bytes": 37
+    },
+    "stage/examples/161_namespaced_overlong_alias.sm": {
+      "sha256": "75ef09964b53fe269844045762af69586293fc49dc7adfff0d285d5cb86e5704",
+      "bytes": 72
+    },
+    "stage/examples/162_namespaced_import_capacity.sm": {
+      "sha256": "a4ce70f4a4fab4730edd86cf868da96310eb6e14a29a0df432eff2dba524a1d3",
+      "bytes": 448
+    },
+    "stage/examples/163_r40_transitive_diamond.sm": {
+      "sha256": "095c6c75f8948e7afc411b0d9cc7a0b219c524a6b69277b5356c201a8369d5d5",
+      "bytes": 72
+    },
+    "stage/examples/164_r41_cycle_reject.sm": {
+      "sha256": "f17c3436d77b7c91ffb6dedf217bcaa635c0006df88e5faf1a145ed463d18c36",
+      "bytes": 57
+    },
+    "stage/examples/165_r41_missing_reject.sm": {
+      "sha256": "affc79452b1e061b734a94a99191ba6ea2517b90ba5a59d370ee9ff9bf927c64",
+      "bytes": 61
+    },
+    "stage/examples/166_r41_optin_diamond.sm": {
+      "sha256": "6c9f8f28d6f50fdb5c92aa4a0dd22879fe88d19e3b45ecce3ae6b78566a6bcf5",
+      "bytes": 91
+    },
+    "stage/examples/16_advanced.sm": {
+      "sha256": "80d3fa0f1aeaf0a942a0cf268a2aba2ca087c5285ab5d2e00f4b365f7808e17e",
+      "bytes": 782
+    },
+    "stage/examples/17_booleans.sm": {
+      "sha256": "f857a335cf77011c9a6fb8e038ce129b342c368f9b3baca9d77423fac3041e01",
+      "bytes": 757
+    },
+    "stage/examples/18_guna_switch.sm": {
+      "sha256": "9b885a350e32e3db3de2eaa24c3ed4d7064909ea123d61773637c1ee1493e05f",
+      "bytes": 384
+    },
+    "stage/examples/19_srijana_enum.sm": {
+      "sha256": "d3cc38a93c4e3a39148e4943916070392c235c664fd463458137ec45901049c1",
+      "bytes": 380
+    },
+    "stage/examples/200_madhava_series.sm": {
+      "sha256": "b60ad44c72211db4095e6629a0d4b7707101dc08d425dd18556ce3f7dd8f881c",
+      "bytes": 1426
+    },
+    "stage/examples/201_madhava_library.sm": {
+      "sha256": "7f5fb9408df5d4ce88f5a1f883f4bac296a54296bcba20046a122269c46d576e",
+      "bytes": 353
+    },
+    "stage/examples/202_brahmagupta_area.sm": {
+      "sha256": "f5b4cf1a35bcc8041c91289f346d5380e91309feaa2a82e8e9871fa535afa448",
+      "bytes": 455
+    },
+    "stage/examples/203_meru_with_kosh.sm": {
+      "sha256": "169e5bd24bb57703f8f4bf014230507f33fb0d14c12e08cbf3099bd252794390",
+      "bytes": 507
+    },
+    "stage/examples/204_b11_block_statement_capacity.sm": {
+      "sha256": "4b2230466fcd45f25b722e92bbd8c1074a17d5562530922ccca753e35cd489b6",
+      "bytes": 5045
+    },
+    "stage/examples/205_madhava_pi_kosh.sm": {
+      "sha256": "66a86ef1f96cb1ff17283c26d7d30c54d1c1637191bf01171844b0389cf2f722",
+      "bytes": 679
+    },
+    "stage/examples/206_sankhyiki.sm": {
+      "sha256": "c916476c6d9997541df82c7e44a5991122816dfaa6834bdfef7881b9cbb6faa3",
+      "bytes": 716
+    },
+    "stage/examples/207_sankhyiki_vector.sm": {
+      "sha256": "21916abf8a290c038801cd319704478c7c2dc3afddf0f58d11db783aeff95235",
+      "bytes": 633
+    },
+    "stage/examples/208_kalana.sm": {
+      "sha256": "3835911450284ba24168aada4b9e30c77d80e8b2e23b9ea2f6ae7dc7408bd5c5",
+      "bytes": 1281
+    },
+    "stage/examples/209_samanvaya.sm": {
+      "sha256": "f2aa0bb8b1792dd0f46d4c65eb848d9eb8122460a52147639b5fb7684ee33b37",
+      "bytes": 1551
+    },
+    "stage/examples/20_pankti_array.sm": {
+      "sha256": "ac032ea1d495aced4159c67f04e62572d983918412e1a2a4948957dc4a52b5d9",
+      "bytes": 243
+    },
+    "stage/examples/210_r41_cycle.sm": {
+      "sha256": "2329759b0fabf6049db85d0755cc2de000197ef0163de79c146d1e8c3b407318",
+      "bytes": 174
+    },
+    "stage/examples/211_r41_v1_public.sm": {
+      "sha256": "33aa38a28f80951e216ad86efc459da82a1901872dc6dfba423245d80b0f61ca",
+      "bytes": 148
+    },
+    "stage/examples/212_r41_v1_private.sm": {
+      "sha256": "a342959c8fe31b7e59a88f8247395a47b05d312eb8e9d25a727dbb0e772372cb",
+      "bytes": 158
+    },
+    "stage/examples/213_r41_v1_dupexp.sm": {
+      "sha256": "b82ed9bf028b2954cb5a38cb3cff6ce5d174b1d179b71e44b2778dedcd266fa8",
+      "bytes": 152
+    },
+    "stage/examples/214_r41_v1_noalias.sm": {
+      "sha256": "f8b71cb01c8759eeacaeecc7cc7e062a1f36533b9dc6891e8bb647b0a48576e9",
+      "bytes": 135
+    },
+    "stage/examples/215_r12_wordfreq.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/215_r12_wordfreq.out": {
+      "sha256": "ed9b62eb8043788ebf17fa620f1652c1358eba4069380af760dda8cc2acbf85f",
+      "bytes": 72
+    },
+    "stage/examples/215_r12_wordfreq.sm": {
+      "sha256": "5b12c887544a32ca8cf841b8b827bb317ef7ca3b69eb3a90ccf79688c4f0a3f0",
+      "bytes": 2453
+    },
+    "stage/examples/216_r12_expr.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/216_r12_expr.out": {
+      "sha256": "d588c61bacba19324dfac7ba70c429d51e3c0873c64e072705e1ae1f3e0232bd",
+      "bytes": 15
+    },
+    "stage/examples/216_r12_expr.sm": {
+      "sha256": "412e7558579a99e110e29c536e591fe9a277db0265b61b699db779603d386bdd",
+      "bytes": 2743
+    },
+    "stage/examples/217_r12_report.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/217_r12_report.out": {
+      "sha256": "97e53acccde3c967a3a0a16ff9d90ab1cf65eac1c91584aefa0665efb590366f",
+      "bytes": 190
+    },
+    "stage/examples/217_r12_report.sm": {
+      "sha256": "d93b4110524116bf59334d947224e7cb8e7fa4cd7e44fc06c14d6ea429384ae2",
+      "bytes": 1820
+    },
+    "stage/examples/218_sanskrit_devanagari.sm": {
+      "sha256": "d3b5c11cd50066feefcb8f96345c72ebe282118d70543ccd201eb3dff59b0268",
+      "bytes": 636
+    },
+    "stage/examples/219_sanskrit_kosh_aliases.sm": {
+      "sha256": "51681b59d5992155f3c4f01c89ae1e34f55869ff3f62c0f6e4f4503896fd59de",
+      "bytes": 290
+    },
+    "stage/examples/21_break_continue.sm": {
+      "sha256": "049e40ad4fc8c590e4685214181d13052e03658b34174db489e579fc5d22bd38",
+      "bytes": 213
+    },
+    "stage/examples/220_hindi_parse_error.sm": {
+      "sha256": "91ac2ba7f466cfdc1ae1592b4cd5124c541b0dc221a9bd417ace9c8bc5706983",
+      "bytes": 224
+    },
+    "stage/examples/221_eof_location.sm": {
+      "sha256": "163f2adab991834c6c90e3fd3ac6420e559557cefc3cc5a09fb19c817ccd5b21",
+      "bytes": 421
+    },
+    "stage/examples/222_old_keyword_name.sm": {
+      "sha256": "e21882a25ab3192e07b88df263d99498f404d466ad53888fef9abddb522ef249",
+      "bytes": 430
+    },
+    "stage/examples/223_undefined_name.sm": {
+      "sha256": "0e75fda78fe3b9f1acf52d9b4bd556b00a7a4ede6877d7cc951b09b682204025",
+      "bytes": 193
+    },
+    "stage/examples/224_unknown_field.sm": {
+      "sha256": "ab2c5ed74dbe78e225452e8c477c998e576f4de91f49f737447709b90d632c97",
+      "bytes": 244
+    },
+    "stage/examples/225_undeclared_array.sm": {
+      "sha256": "773fd7a8e6e3b38a3151b1c9a1f4e41b761cb4357ab20aff5b8e7b4a0b8e8ca5",
+      "bytes": 199
+    },
+    "stage/examples/226_long_field_names.sm": {
+      "sha256": "1b1703d2d6caa6686ac2139c4031b8dc4c96994b0c3808b632f051cd9800f91f",
+      "bytes": 338
+    },
+    "stage/examples/227_assign_undeclared.sm": {
+      "sha256": "33dbdbe38c819a0b8c38f8639ced0b59e565cad8aadcb9aa676db709d0b366c5",
+      "bytes": 257
+    },
+    "stage/examples/228_block_scope.sm": {
+      "sha256": "6193cd09ac719fb5a25cb4638aad95b52a713f110edea241137740ac82114ea2",
+      "bytes": 222
+    },
+    "stage/examples/229_loop_var_scope.sm": {
+      "sha256": "805ec7ed65afc2fbef64ae615bee72c7d7aa28a6c4499d8cc5f0a1609151db01",
+      "bytes": 216
+    },
+    "stage/examples/22_precedence.sm": {
+      "sha256": "5b266ce1861cbaf1545b7042662b0827a29a2fa5f42f295d0267af1c9d2a7933",
+      "bytes": 275
+    },
+    "stage/examples/230_redeclare_after_block.sm": {
+      "sha256": "247a7e1db1d938be1a045f8b566f642fdd96a7dc489b70d98f1b875f8fc19094",
+      "bytes": 378
+    },
+    "stage/examples/231_duplicate_name.sm": {
+      "sha256": "bc1fef9eb5f065a5d9272421b3826b0bf88d038936c353a9a218d0beb403f90f",
+      "bytes": 223
+    },
+    "stage/examples/232_arity.sm": {
+      "sha256": "e13aa232a7914db30a912df01ce51b091ed701c40e7a7e1c86e84694b6393643",
+      "bytes": 208
+    },
+    "stage/examples/233_missing_module.sm": {
+      "sha256": "ab72fc21d5610e1672356c483aab70d6b868359dca2d8436cab7e5ffb1983395",
+      "bytes": 191
+    },
+    "stage/examples/234_ambiguous_field.sm": {
+      "sha256": "54fb490a07d2fe4435fc962f9cdc20926c362e5048732d7715a74c8f616dac47",
+      "bytes": 359
+    },
+    "stage/examples/235_duplicate_field.sm": {
+      "sha256": "ac8d1d90075a578618930a70831b74bdd0ca60f97bc0b9350b015a5a42802bf2",
+      "bytes": 203
+    },
+    "stage/examples/236_guna_once.sm": {
+      "sha256": "9f4c4bd32f9385a13f4798d73a17b3318bcc2e4f27f9b164039bcb1d91f8517c",
+      "bytes": 1157
+    },
+    "stage/examples/237_many_variables.sm": {
+      "sha256": "e7ab426296a61fd9e16f6b85d9a3dbcd33ce49778ee72cf60fbdf82b2cdd2659",
+      "bytes": 2159
+    },
+    "stage/examples/238_r17_d1_unary_not.sm": {
+      "sha256": "970ef8efdf69e368d60eadeac89483448b0332bdacf7a3015f8bb029812b0c09",
+      "bytes": 336
+    },
+    "stage/examples/239_r17_d2_anya_loop_krama.sm": {
+      "sha256": "53f4ddb8ea5932a0977bfd44184df637849325e98af74bdc274d444ba1efc317",
+      "bytes": 411
+    },
+    "stage/examples/23_grahan_input.sm": {
+      "sha256": "c9fb17c70946edd8490dbd88c477d722763cb0b71cc1454425378a375aba7955",
+      "bytes": 309
+    },
+    "stage/examples/240_r17_d3_anya_self_assign.sm": {
+      "sha256": "80bf654c8e5e669e1012c3ac51a890920cf5c57293771c1e596445ea1237b04e",
+      "bytes": 251
+    },
+    "stage/examples/241_r17_d4_precedence.sm": {
+      "sha256": "8191e843b67f73257b769d72b9388c893197fee62d66b8dbd12b42df45dcef17",
+      "bytes": 358
+    },
+    "stage/examples/242_r17_empty_guna.sm": {
+      "sha256": "91407de45b0deee3d7c9e654552d82f66239ddeac2d51e912721b347cf8cd01d",
+      "bytes": 235
+    },
+    "stage/examples/243_r18_sthagita.sm": {
+      "sha256": "2d5088e95941b074189bf03b71d5ecab01cae5f30f9d5ad1d56c4520445edcd3",
+      "bytes": 348
+    },
+    "stage/examples/244_r18_rachana_in_function.sm": {
+      "sha256": "5e47bc5b5a2adfc1ea35ece04f079a3c243214e52d6348c544410ff96527540a",
+      "bytes": 338
+    },
+    "stage/examples/245_r18_netsock.sm": {
+      "sha256": "bfcd73fea0189e02c7bfe41f69cf236bad6d88c282e46869b25851a9ce26cc0b",
+      "bytes": 705
+    },
+    "stage/examples/246_r23_comparator_sort.sm": {
+      "sha256": "cf1fd1c78c86b2118d6b0286fddb3552cffcc6993b0c4b511e7ee1fbfec106d4",
+      "bytes": 1648
+    },
+    "stage/examples/247_r23_methods.sm": {
+      "sha256": "47f8d1d12c074a8fb6b3cf519a2df0063d63d303933326d13a6322b3c4801781",
+      "bytes": 1201
+    },
+    "stage/examples/248_r23_slices.sm": {
+      "sha256": "309ca3a426af77246ce91018500e50e5dc469c77bab812d752fd306867b351d7",
+      "bytes": 1325
+    },
+    "stage/examples/249_r25_phal.sm": {
+      "sha256": "1ddb215b61692a47f0fdcb334dbe5d0a8a4c17153ddafd64c368579be595e1e2",
+      "bytes": 1545
+    },
+    "stage/examples/24_guess_game.sm": {
+      "sha256": "ebb8a935bb0be99f29099a97353c621aaaf203be1fcdc3063989149c7ccfd4fe",
+      "bytes": 503
+    },
+    "stage/examples/250_r26_dosh_handler.sm": {
+      "sha256": "af0dc3d0cda96cbdd52f44b906cd677eea6adc6f5a734279b1cb75084823d6f8",
+      "bytes": 1307
+    },
+    "stage/examples/251_r38_alias_mala_oob.sm": {
+      "sha256": "f0c17263cddcb7cf3d492a23f2353a7dcbcb868126a7cb047fddb269ce8e1e27",
+      "bytes": 231
+    },
+    "stage/examples/252_r38_alias_kosh_oob.sm": {
+      "sha256": "b171efc13b1dbf975f52b8ae1f2657f61a844713419ad262f424b10c28a7d6ee",
+      "bytes": 406
+    },
+    "stage/examples/253_r38_alias_slice_oob.sm": {
+      "sha256": "a9e6977478668864b93d5cf6dd399550e1c93069507fca79c8ad50c562f3eed7",
+      "bytes": 361
+    },
+    "stage/examples/254_r42_alias_pankti_len.sm": {
+      "sha256": "484e26f7045f67c5e04cdff039eb51583f08491e0911676e581760f86239d102",
+      "bytes": 293
+    },
+    "stage/examples/255_r42_alias_kosh_push.sm": {
+      "sha256": "efc47ad0c5169531bccc51435e426c18103fa0ab01916ae80cd0b69c83dc31c8",
+      "bytes": 469
+    },
+    "stage/examples/256_r44_vartani_sanskrit_names.sm": {
+      "sha256": "4486560ad6e30b4e6121072483de8abdb3d27d7c8436d7fb4dac14d92810f92f",
+      "bytes": 720
+    },
+    "stage/examples/257_r48_kosh_empty.sm": {
+      "sha256": "5aa68dc9afc65c650e0fa7525db0e976aa82a44183d7d2e850eee2670080b58a",
+      "bytes": 625
+    },
+    "stage/examples/258_r70_loop_indent.sm": {
+      "sha256": "33de60573575f81b16c3e8db74b1d318eeecee015fd553f9180730d704e47c0b",
+      "bytes": 1126
+    },
+    "stage/examples/259_r70_indent_ambiguous.sm": {
+      "sha256": "1b3acb6bc075dc664004318e7f9a74941c9f58f7812c2ff1eed85d722d5aee32",
+      "bytes": 245
+    },
+    "stage/examples/25_patterns.sm": {
+      "sha256": "23db93b0ac8ffe366589bfc950c5c83286cdae4071e0f8ff7fabbf245bf3f12d",
+      "bytes": 298
+    },
+    "stage/examples/260_r71_indented_bodies.sm": {
+      "sha256": "a50ae5ea5eed965f8807b90b9f31be54d7848387b4d13f079a588f997da347a0",
+      "bytes": 2271
+    },
+    "stage/examples/261_r71_after_mukhya.sm": {
+      "sha256": "001c9ef94863c383176787fcb7e3e45b6943e5e254b21f63b4c32c8195d1abfa",
+      "bytes": 187
+    },
+    "stage/examples/262_r71_same_line_body.sm": {
+      "sha256": "5e6df6854e7f25ab372c27143db69d885d2221b7c763fc3e02c9ef32a47519a3",
+      "bytes": 304
+    },
+    "stage/examples/263_r72_mandapa.sm": {
+      "sha256": "3911c80940d0c53187e38624e54dd337aac6c9edb95e739af979c5788b98e13b",
+      "bytes": 896
+    },
+    "stage/examples/264_r73_escape_arith.sm": {
+      "sha256": "5e48abaa04d65e7447c4919e4840fb32a3f55353f6fed355b6260d200a6acfb5",
+      "bytes": 246
+    },
+    "stage/examples/265_r73_escape_mala.sm": {
+      "sha256": "b1df8480ee8f23ebd641e5debdd2894f162e6f6ee23a441c21cd58ccdfa8134d",
+      "bytes": 239
+    },
+    "stage/examples/266_r73_inside_only.sm": {
+      "sha256": "39bd918df57a962e6d0f3625500a45b6db355ab18552eccf0e35f9111f406d1c",
+      "bytes": 254
+    },
+    "stage/examples/267_r73_outer_number.sm": {
+      "sha256": "f25ae6c7b4f415d9abd33eb9a62abaf830c166d3db7c2b6741e32d32a31ade33",
+      "bytes": 222
+    },
+    "stage/examples/268_r73_return_value.sm": {
+      "sha256": "9e62b6182684eed4dac43c2c7348f122406d427ed05cfe3e0b6179ce991341eb",
+      "bytes": 654
+    },
+    "stage/examples/269_r73_copy_out.sm": {
+      "sha256": "d6a010ef813dcead5b79d98761b20f2a9d23e474ecd8fce89522610faa7ac888",
+      "bytes": 802
+    },
+    "stage/examples/26_calculator.sm": {
+      "sha256": "871438732c50b40e37fa8e5710695d15a943980b0583b1f1d7e5884842762dfa",
+      "bytes": 844
+    },
+    "stage/examples/270_r75_nested_store.sm": {
+      "sha256": "03c02e8277956544581bf67803cc90860710810354a2e4df16a9acdfccd69e1a",
+      "bytes": 591
+    },
+    "stage/examples/271_r75_nested_store_data.sm": {
+      "sha256": "5b43415231dd0f1241c5ba7af45f7ce04e9e4c8a44672fbb61ea9d12f540c60f",
+      "bytes": 281
+    },
+    "stage/examples/272_r75_negative_size.sm": {
+      "sha256": "3027bc9f3f54b9026c141bed8e8c0ce271df73aad2346d6185311cb9e45ffbc4",
+      "bytes": 162
+    },
+    "stage/examples/273_r77_bytes_not_cells.sm": {
+      "sha256": "2cfc0e7b484847495e89dd816584199271faa9556112e261c6b9c3f92d465489",
+      "bytes": 244
+    },
+    "stage/examples/274_r77_bytes_loop_stops.sm": {
+      "sha256": "dd19f664c34f1ba766584bd2b63fffd26b87cf2dae7285dd994945642ec65b5b",
+      "bytes": 427
+    },
+    "stage/examples/275_r77_cells_times_eight.sm": {
+      "sha256": "60d1b6425ec0cbc3c49ee7b163f5d8e02f6952fb7568112c19dc07ca0c9df424",
+      "bytes": 230
+    },
+    "stage/examples/276_r77_mixed_indentation.sm": {
+      "sha256": "b36957a3eccdf4da393a7f11b69ad510422e1822c0a170332de808db2895fd7b",
+      "bytes": 464
+    },
+    "stage/examples/277_r80_divide_by_zero.sm": {
+      "sha256": "f3346c51ade7153154e7be2b4c944df7ed1d002744b27b9a152c9ae49f4506a8",
+      "bytes": 315
+    },
+    "stage/examples/278_r80_literal_too_large.sm": {
+      "sha256": "5facb4e2cc5e77fed854266879ea81c3d2fd8247e33ad2e0c25e7a2a81f89f49",
+      "bytes": 231
+    },
+    "stage/examples/279_r80_constant_overflow.sm": {
+      "sha256": "c5217cc6566635b3b9d51ac85ad21b86ef63335407ac7c830619f485d156ef0f",
+      "bytes": 214
+    },
+    "stage/examples/27_even_odd.sm": {
+      "sha256": "c437089da7ab97e0c5d59c6a5d14c2aab2b91d43187b063da03a2950accc3dd4",
+      "bytes": 201
+    },
+    "stage/examples/280_r80_runtime_wraps.sm": {
+      "sha256": "af8c4792d32ee2e50fabb3647d7f94a28e1e68819670081d4a3826640e1245b5",
+      "bytes": 588
+    },
+    "stage/examples/281_r80_divide_in_module.sm": {
+      "sha256": "0764441fbc1f9e0bf610441c2cc27ac5935e28c4abfd7dda3daa7bcee7348cf2",
+      "bytes": 243
+    },
+    "stage/examples/282_r81_parikshita_sort.sm": {
+      "sha256": "35df9ffa70e42578d2c759de2d53325d2c0c46d134f48014b28312cfacbdb025",
+      "bytes": 1174
+    },
+    "stage/examples/283_r81_parikshita_refuses_library.sm": {
+      "sha256": "7d81a6a7371a43bf4e4ba53809d51de41700b80adf66f97c8ab917221905782e",
+      "bytes": 370
+    },
+    "stage/examples/284_r81_parikshita_transitive.sm": {
+      "sha256": "b20ca1e70410fcfcde363a4cdcd32a6172541ce06ff73fb6d7b7fdd5257214c3",
+      "bytes": 324
+    },
+    "stage/examples/285_r81_parikshita_address_param.sm": {
+      "sha256": "36d5bb6f9034dfb825edd9a17c821682f7ce723ff5c297a35ba4297691b6584c",
+      "bytes": 324
+    },
+    "stage/examples/286_r82_kosh_in_mandapa.sm": {
+      "sha256": "cb9f6ed83fcc59175d93e48b334ed5dc3560f7d12f7c6490cb310c70e5f82376",
+      "bytes": 623
+    },
+    "stage/examples/287_r82_kosh_after_mandapa.sm": {
+      "sha256": "150b6c2808582b66010eba5e41d79cceb110730d91cffb2b99156dda2ac6a5c0",
+      "bytes": 676
+    },
+    "stage/examples/288_r86_kosh_alias_moves.sm": {
+      "sha256": "8b91baf5b692335fc737f715e7f41329196ac3ec51d6da093eaa9d64a7998663",
+      "bytes": 624
+    },
+    "stage/examples/289_r87_float_print.sm": {
+      "sha256": "e099ec4f61112f4ce061181f1bcfdd1917729bec9db9ede2e75e19e80c62a8a0",
+      "bytes": 900
+    },
+    "stage/examples/28_compound.sm": {
+      "sha256": "f92d01c284cdc62be9be5f545520c4deee5c64b98edd684f08e51fef6f781d2f",
+      "bytes": 623
+    },
+    "stage/examples/290_r87_fraction_into_vitti.sm": {
+      "sha256": "8cbd316bad7ab56604f0b101f724aa7e9f1f29788cc33da9f77acf4ee18cebce",
+      "bytes": 230
+    },
+    "stage/examples/291_r90_nan_compare.sm": {
+      "sha256": "861d925c1b189b8b5d4e1ccb2931a0259df31c48abdb270a98f77c69fbfe1991",
+      "bytes": 850
+    },
+    "stage/examples/292_r90_likha_after_division.sm": {
+      "sha256": "338fa1fa094c6ea328f1cd00227e8f86ce79ee83aae0e1b7e44631f41a0dac8d",
+      "bytes": 292
+    },
+    "stage/examples/293_r90_float_divide_by_zero.sm": {
+      "sha256": "1c2c971910ca6db8f6eaaba47c7f3b3eb43a4570bc4338ecd4aa27a1f7faaf44",
+      "bytes": 317
+    },
+    "stage/examples/294_r160_nan_comparisons.sm": {
+      "sha256": "3039db5d19828b3d5450eb7612151750d8af00d1d5a06849c6fd884f3cff1381",
+      "bytes": 532
+    },
+    "stage/examples/295_r92_computed_fraction_into_vitti.sm": {
+      "sha256": "d01eca947f6e4bb863b29eff87e2bd7f57f56c049fd68dc1dc33710e3a14a8b2",
+      "bytes": 350
+    },
+    "stage/examples/296_r93_float_e_notation.sm": {
+      "sha256": "be5f228a143cb903f6fd7091f0507527e9d246e4ad5c240212a423718c97b185",
+      "bytes": 499
+    },
+    "stage/examples/297_r94_whole_number_operators.sm": {
+      "sha256": "86824b717aae459b6ae5d78a92ca2302b5a5ee0cde2886487bd7ed4d745d1276",
+      "bytes": 591
+    },
+    "stage/examples/298_r94_dasham_remainder_refused.sm": {
+      "sha256": "f28cda5c7dd514a7228bd81772669907ad1ecb6695b94661cb356c6f2dde3f14",
+      "bytes": 243
+    },
+    "stage/examples/299_r94_nonfinite_kosh_mandapa.sm": {
+      "sha256": "2cc807996adee21c49f6eff53a972c493bc61cdb209786b265ccfe485e6b2c26",
+      "bytes": 1456
+    },
+    "stage/examples/29_nishkriya.sm": {
+      "sha256": "1e50609ed69c524bd083829ba6e456b9c865ecf3b2cc9beda8337418731f9c27",
+      "bytes": 460
+    },
+    "stage/examples/300_r96_chakra_decimal_bound.sm": {
+      "sha256": "4330809cdf64c486b9521ee7d404469eb68fe60e22f812546c824e82204c5eba",
+      "bytes": 237
+    },
+    "stage/examples/301_r96_chakra_dasham_counter.sm": {
+      "sha256": "552d66bd77ebca9ded68b8207cd30d5b8d01d60d65d2d3aab61d3b1d26ddab16",
+      "bytes": 261
+    },
+    "stage/examples/302_r96_decimal_loop_with_yavat.sm": {
+      "sha256": "ce0f9a66cd583e15988c2361ac4300c43aa4bd31da0288880b59b411f610ad7a",
+      "bytes": 312
+    },
+    "stage/examples/303_r103_parimita_refuses.sm": {
+      "sha256": "0b96d6a3096665296f24a3176cc22df82231fe0fc1a37134dda3be64478d0377",
+      "bytes": 542
+    },
+    "stage/examples/304_r103_parimita_within.sm": {
+      "sha256": "8ca189a36614edfb003994782168dcd971ba78787b4e0bc42bbd4612e89bd954",
+      "bytes": 843
+    },
+    "stage/examples/305_r103_parimita_needs_number.sm": {
+      "sha256": "26a1b77f24a1b46473cd428c22007ff345df273742cc4b6f04476e5f3be447d4",
+      "bytes": 248
+    },
+    "stage/examples/306_r105_string_equal.sm": {
+      "sha256": "49b379c16dd750efcfd68666064338cbe1b9258405c699642ffceadcaad2a011",
+      "bytes": 697
+    },
+    "stage/examples/307_r105_string_join.sm": {
+      "sha256": "ccd63f24e4e3320a9eee5cf810debb67780ef85b75607cdbec37551bf887af6d",
+      "bytes": 725
+    },
+    "stage/examples/308_r105_likha_three.sm": {
+      "sha256": "b2450fd63e0f5f623b9b8b7016970e6923064d356d746e0f5ab3e033faeeec57",
+      "bytes": 351
+    },
+    "stage/examples/309_r105_string_order.sm": {
+      "sha256": "07e06f130be2569d7426ad784ff16fcd59e66b8b8252ae921c259ee0b3553222",
+      "bytes": 429
+    },
+    "stage/examples/30_lkhb.sm": {
+      "sha256": "861f1adeb3fed4b28206d82f76a0f0ac9af0c73c70ce3816039cd096b47c9b2a",
+      "bytes": 592
+    },
+    "stage/examples/310_r105_string_beside_number.sm": {
+      "sha256": "0c5124b705e2ac90c42af0209b8e50353fac37091ca21b078b9f85ac2e5d4e5f",
+      "bytes": 355
+    },
+    "stage/examples/311_r105_string_arithmetic.sm": {
+      "sha256": "a0f783e181b4b6eb210503fda97c70ac7ddfaf441ba221963f7c53cc4d956c00",
+      "bytes": 235
+    },
+    "stage/examples/312_r106_likha_string.sm": {
+      "sha256": "2f7b6ce725fd24201ebc592b225e7701728438135e1114bca2332c0ce67f8a9e",
+      "bytes": 552
+    },
+    "stage/examples/313_r106_string_condition.sm": {
+      "sha256": "60644b21efaa72adce65ffc49ccae28831a73f29e030689355049117a9a39d77",
+      "bytes": 266
+    },
+    "stage/examples/314_r106_kosh_operand.sm": {
+      "sha256": "6d9670fe4cbec0a36ffed501f176468aa230e293837c90225afdee3b9cb8e924",
+      "bytes": 278
+    },
+    "stage/examples/315_r106_dasham_into_mala.sm": {
+      "sha256": "83fe67d56c6d64790874154112d6f2688d231ed7ad0c8fbd3f38f3773b47c608",
+      "bytes": 352
+    },
+    "stage/examples/316_r107_kosh_kept_by_a_prakriya.sm": {
+      "sha256": "bc91c22c6ba35d65b07fbf8bee6154587ecf8469919d30dabd25bfc9fb4833b1",
+      "bytes": 695
+    },
+    "stage/examples/317_r107_parimana.sm": {
+      "sha256": "63a12caa68fcf0faecea3dee150ddc6f06e2f41eb62f4ac72e83f27ab6ae5c65",
+      "bytes": 844
+    },
+    "stage/examples/318_r108_parimana_moves.sm": {
+      "sha256": "665a1a0909b4d793507507bac5bf5e0b255f480983cfe450b2f20185628e532f",
+      "bytes": 966
+    },
+    "stage/examples/319_r108_mala_operand.sm": {
+      "sha256": "f8fdf860cc77f664bed009d3dd30d65a96c126dc2a15147b4342da799c860272",
+      "bytes": 251
+    },
+    "stage/examples/31_strcat.sm": {
+      "sha256": "cf4bcbc381fdcbb689d9a0f367b91a7cc2cf98d89ca6e793e78df5138010b602",
+      "bytes": 262
+    },
+    "stage/examples/320_r109_kosh_alias_kept.sm": {
+      "sha256": "ae416a0c8f69f0289692dd9866dfe1e129363635951239b7337e50e5449b0d87",
+      "bytes": 710
+    },
+    "stage/examples/321_r109_kosh_long_chain.sm": {
+      "sha256": "b25712d04fcd4c1ecec085faffbbabd078e57ad08ebe7648161d745a8e057d42",
+      "bytes": 2124
+    },
+    "stage/examples/322_r111_new_names.sm": {
+      "sha256": "425ec0a3e6d1c0219b23a076cbbcf326333c2f5b6d5853ffe54f569cb7f30acc",
+      "bytes": 990
+    },
+    "stage/examples/323_r111_old_names.sm": {
+      "sha256": "cf92f1ed13c3827fa9e33eeec093b41730cd4c3546cd32443a93c8b90fccc8e6",
+      "bytes": 1017
+    },
+    "stage/examples/324_r111_asti_true.sm": {
+      "sha256": "ac71933fd3f7f52e3fa209c32b8bb75a6c26b69ddbce5d88e4f371fd84d53b51",
+      "bytes": 351
+    },
+    "stage/examples/325_r111_asti_false.sm": {
+      "sha256": "50a1a798097951e8925f59e804ca3b20d7dee201418736241a3a6a1d4edbe509",
+      "bytes": 351
+    },
+    "stage/examples/326_r111_nasti_true.sm": {
+      "sha256": "5ff831d500fe6d029856cd0a62af2f8e560dd16d9642007df5d0689233eb2e5a",
+      "bytes": 361
+    },
+    "stage/examples/327_r111_nasti_false.sm": {
+      "sha256": "c5a00ac70d1f829eaa6b9865a9f4ed671a6ced55733b4d2ddaa8e34904611637",
+      "bytes": 361
+    },
+    "stage/examples/328_r113_rachana_operand.sm": {
+      "sha256": "1d880c8019a8db9e90b28b375163fd2f546aa6b1d2f0296bb64e5e9f05fbe240",
+      "bytes": 537
+    },
+    "stage/examples/329_r113_sankhya_bindu.sm": {
+      "sha256": "3b12aa064f3464b10a57cde93b682d3a9d76f8ba67852eb0fde6e38c3fed0f67",
+      "bytes": 411
+    },
+    "stage/examples/32_bank_interest.sm": {
+      "sha256": "453206e5038c29089e19835a9bd7ada5c0b947c3b6e751e0e72c8d48623313f4",
+      "bytes": 623
+    },
+    "stage/examples/330_r116_dvigun.sm": {
+      "sha256": "038ba012f45e9603188194e9844753b1781550f584a944b392b89aacde198eca",
+      "bytes": 197
+    },
+    "stage/examples/331_r116_trigun.sm": {
+      "sha256": "1c5058276c8de56e57a60a8218bd39c34c163d6bdbccb48ce4a5c08dcf39e408",
+      "bytes": 187
+    },
+    "stage/examples/332_r116_vardh.sm": {
+      "sha256": "b0251bdc4858aebeab291d07b068765e180f1dedb9fe69a516e8fa01efefd2b7",
+      "bytes": 235
+    },
+    "stage/examples/333_r116_nirapeksh_mulya.sm": {
+      "sha256": "be02cabfa85037e982ba26742390e744427d2772743f946912a1ec53d815282b",
+      "bytes": 293
+    },
+    "stage/examples/334_r116_mahattam_samapavartak.sm": {
+      "sha256": "e104d19d24a6548ef636163a38e8c1188b16371b46ed01f419964edb7c62f44e",
+      "bytes": 402
+    },
+    "stage/examples/335_r116_viparyay_ank.sm": {
+      "sha256": "67efb63da1c76ce66317aa08fb611ba6a729aa24d1ac8b00c398099581d046db",
+      "bytes": 295
+    },
+    "stage/examples/336_r116_ganita_nirapeksh.sm": {
+      "sha256": "e275a8da7822142c6a31a146ceebce08ec7cad3376f978dc63a2ad10c732f9b6",
+      "bytes": 242
+    },
+    "stage/examples/337_r116_brahmagupta_kshetr.sm": {
+      "sha256": "4c27ba7e6dcf30ed57d21453b1ce0ccf2e51c9c493ac207d266ebd80108fd081",
+      "bytes": 510
+    },
+    "stage/examples/338_r116_brihat_ank_se.sm": {
+      "sha256": "b57052332c96d9edbac522b0f529926fb7de008a27bc0f7eb7ecaa9318deba22",
+      "bytes": 463
+    },
+    "stage/examples/339_r116_brihat_ank_tak_laghu.sm": {
+      "sha256": "6085e33f33c3168a6c65e6ec4ead1b091b1a043db0ed837fbf4f2fbde2b20066",
+      "bytes": 526
+    },
+    "stage/examples/33_unit_conversion.sm": {
+      "sha256": "b0ada005caa520f990a699a91e027c4e7170c6098e24924c69cc6a8713593ed8",
+      "bytes": 714
+    },
+    "stage/examples/340_r116_yog_seema.sm": {
+      "sha256": "e62a6e7756e93e0db5df02580a75d137080098348d4dcc8227bb314e83c2b9b0",
+      "bytes": 429
+    },
+    "stage/examples/341_r116_adish_gunan.sm": {
+      "sha256": "79b83f0525ec1bcb0107fc99d139abd01ff32104a6ccd8c2c1b681f77587cf10",
+      "bytes": 459
+    },
+    "stage/examples/342_r116_bindu_gunan.sm": {
+      "sha256": "503319d1e853e4add6272bc23dd2082bc25fb97214818cef299dc7182f6ceb7a",
+      "bytes": 459
+    },
+    "stage/examples/343_r116_suchi_shreni.sm": {
+      "sha256": "4c75b21aa764e69dc01a21e76ab2928b8326e2183e9f97ba39667b6b8e1b0a17",
+      "bytes": 502
+    },
+    "stage/examples/344_r116_varna_tak_dashm.sm": {
+      "sha256": "78e2f746e0caf8dc4ac692800b29d2b1dd91b27e89119c0dc904cd1c99098a27",
+      "bytes": 802
+    },
+    "stage/examples/345_r116_long_literal.sm": {
+      "sha256": "5a19967bc6b2ebe535d6958e51d1759bf2e6d357d9744e954d4fd190062ccb33",
+      "bytes": 4070
+    },
+    "stage/examples/346_r118_old_library_names.sm": {
+      "sha256": "fce18f972eaaaffba613cfc3618b475e15cf64da202c577617c6656052c592db",
+      "bytes": 1193
+    },
+    "stage/examples/347_r118_old_roop_names.sm": {
+      "sha256": "cf74099f7701a6c0c2391b119cee252ad061aa9d2c10dbe9631dc9b1d0122fd3",
+      "bytes": 986
+    },
+    "stage/examples/348_r126_kosh_then_raw.sm": {
+      "sha256": "e175d8530bbae4bf007e32eb3b8efa3d82cafa2c65311f45ee778e077f323486",
+      "bytes": 415
+    },
+    "stage/examples/349_r126_kosh_in_one_branch.sm": {
+      "sha256": "c4ed9e2eb52dd5ddef7b933ad6f4a640ea264fb7c9f4064977d55b1aac156967",
+      "bytes": 495
+    },
+    "stage/examples/34_incdec.sm": {
+      "sha256": "8269b15a56e06af7e9bc22b59b4621a60628cb55f99d3b4da2ce96004863d1e3",
+      "bytes": 558
+    },
+    "stage/examples/350_r126_mala_then_kosh.sm": {
+      "sha256": "35a98df58df4f532ce93ecccdd67d5effbdbe65bf1debf30464462e9c48436fb",
+      "bytes": 403
+    },
+    "stage/examples/351_r127_muse_reassign.sm": {
+      "sha256": "873375afa07cd944819b5de1cc966ce38025e4cc616d9630773e48ae747b9771",
+      "bytes": 346
+    },
+    "stage/examples/352_r127_muse_assign_kosh_mala.sm": {
+      "sha256": "fce037ccdad43689ba9dd18df10ad0d1b79d3ec19ff66e67a35196c78bd6beeb",
+      "bytes": 365
+    },
+    "stage/examples/353_r127_muse_loop.sm": {
+      "sha256": "0e1beed5a1b6a3cfa5f393bcc52349086fb1ef2485b5d5de3854342025850646",
+      "bytes": 401
+    },
+    "stage/examples/354_r127_muse_callresult.sm": {
+      "sha256": "7c975c41a06c72fa2d83788e475d1b85aa150c9a19a7fc3509db29cd3cc85cd0",
+      "bytes": 359
+    },
+    "stage/examples/355_r127_muse_malacell.sm": {
+      "sha256": "49305608ecd63868e010ef2eb551ea1e511fa03d5ee59ed7ba2bef15d0e4bb37",
+      "bytes": 358
+    },
+    "stage/examples/356_r127_muse_koshcell.sm": {
+      "sha256": "2bc4087dded6de6239c08ce12ba6d287485f3c5871c30c6b22748bc6b7428381",
+      "bytes": 387
+    },
+    "stage/examples/357_r127_muse_global.sm": {
+      "sha256": "034964d27245fded0110dcd384417468e6e60fc2eca9d82556eaf3da23557c22",
+      "bytes": 392
+    },
+    "stage/examples/358_r127_muse_global_samefn.sm": {
+      "sha256": "f49b11ea7fb6cb5fe6b3e2f845bbdd0b05960dd547832f1b310fbee33f8cf4f2",
+      "bytes": 340
+    },
+    "stage/examples/359_r127_muse_ternary_oob.sm": {
+      "sha256": "7207da91edd083d52e21e03282f4dfb178a1654801e9c392c1fbba497bb2d842",
+      "bytes": 349
+    },
+    "stage/examples/35_comments.sm": {
+      "sha256": "b527d387acae12db29238710b9416b93e1d049b75483d825ca6ea8ecc352afc8",
+      "bytes": 324
+    },
+    "stage/examples/36_descending.sm": {
+      "sha256": "cd4954cba1680c1304cebcaf4a38d98107e225fcc051098825c013220d0f1fa3",
+      "bytes": 392
+    },
+    "stage/examples/37_native_gujarati.sm": {
+      "sha256": "c6c946578938a4ac133bf911d0618c954705edd3ccbebc44e72b9c1386eb58b1",
+      "bytes": 567
+    },
+    "stage/examples/38_native_hindi.sm": {
+      "sha256": "c7e127793b96aae5a93be6231fcd8c8e86b2f637661eae0ad6c6ab5b1f86183d",
+      "bytes": 443
+    },
+    "stage/examples/39_native_tamil.sm": {
+      "sha256": "d1c98514dd582284385bfa38c662413d6545eef396ee339ed0e97888115e07e4",
+      "bytes": 575
+    },
+    "stage/examples/40_functions_params.sm": {
+      "sha256": "c12fd76e9a7f771f0c586962ffc9853fd002273c6aa91782d73b4c4913750661",
+      "bytes": 297
+    },
+    "stage/examples/41_recursion.sm": {
+      "sha256": "901ec6c5fda5c200f62beaf1e33891a7aa43657591746ce902aa433e426347dd",
+      "bytes": 460
+    },
+    "stage/examples/42_block_comments.sm": {
+      "sha256": "51da785f813c7011dae4a2ea88baf6a3389227ac5466291dc8797a4847ec01e7",
+      "bytes": 136
+    },
+    "stage/examples/43_nested_likha.sm": {
+      "sha256": "dc8bfec6e3881c27fce399190cce29d6213f183d28ead7b566667e6c7d390a21",
+      "bytes": 355
+    },
+    "stage/examples/44_shabda.sm": {
+      "sha256": "20853b3c23fea328c4f2a744ddf9fc83c9ac3618439c8ca51a57a95d0071235e",
+      "bytes": 416
+    },
+    "stage/examples/45_shifts.sm": {
+      "sha256": "e3d613896a03b4a307088d9191227d07c3bd4d1bc20cb623dc157dbbfe7b5e88",
+      "bytes": 342
+    },
+    "stage/examples/46_language_reference.sm": {
+      "sha256": "b03fe93f8de6bf192b9bfc1fb0427e6522cc5c629d8556cf87f6685820d01f66",
+      "bytes": 1184
+    },
+    "stage/examples/59_windows_grahan_runtime.sm": {
+      "sha256": "4a9de74db46bb1d47b28c627e607fe62d38993e925afe1fc8c841be4df44b24c",
+      "bytes": 284
+    },
+    "stage/examples/60_six_func_args.sm": {
+      "sha256": "879e9eb33121b4ea84b4fef685dfa1c91495d6867b3e7565477cd6009b069ef0",
+      "bytes": 267
+    },
+    "stage/examples/61_stdlib_math.sm": {
+      "sha256": "67bdadd1079a12a344d4b655f47a875ac46caacb1754384545b5dfdbb98f46ff",
+      "bytes": 503
+    },
+    "stage/examples/62_stdlib_num.sm": {
+      "sha256": "1882b6cc49c90a1b58a20b1b668fd86466b4785d48b180788ff4f5e1ea5f7a26",
+      "bytes": 422
+    },
+    "stage/examples/63_stdlib_string.sm": {
+      "sha256": "a31deefc6ca2bafba8b0c43fc68c152414f492c8c3cc33371a258080f7a5d816",
+      "bytes": 538
+    },
+    "stage/examples/64_param_reassign.sm": {
+      "sha256": "78e68527501aeba6bee01fcd1ef13d470be2c7ce451d2664ae4062c40d73257a",
+      "bytes": 87
+    },
+    "stage/examples/65_char_code_index.sm": {
+      "sha256": "66d0ed59e0108828a7f6ccbdb759519d21a7c293219a4e90c47db1d8888b2d8d",
+      "bytes": 43
+    },
+    "stage/examples/66_module_dedupe.sm": {
+      "sha256": "5fd69aaf57680b3c5dd60f63e2640cc5241aadbd515288696c3446d93d91f14d",
+      "bytes": 52
+    },
+    "stage/examples/67_array_len_bounds.sm": {
+      "sha256": "f98a01c85382c90d5511564daad8de398afcd703865887885d93bc2099d19478",
+      "bytes": 110
+    },
+    "stage/examples/68_array_oob.sm": {
+      "sha256": "eb57bccdb2dbcc3b8e9e895edce8bdea99838d0a6ce1f61de67cc6e57fb12b0a",
+      "bytes": 56
+    },
+    "stage/examples/69_undefined_function.sm": {
+      "sha256": "4eaec3f63bb084e4ac4dcaa885b0fb41452d7040c8a45c465cb20ce5344dae2e",
+      "bytes": 42
+    },
+    "stage/examples/70_module_collision.sm": {
+      "sha256": "a8b7c86e58727fb7819e11d366a45439571d42a2896bc33a2b9988124470b9f2",
+      "bytes": 80
+    },
+    "stage/examples/71_array_negative_index.sm": {
+      "sha256": "9af3f30c9b199252c27324864a3178c809be0f9dadf33b85be292d11095d9fad",
+      "bytes": 57
+    },
+    "stage/examples/72_array_variable_index.sm": {
+      "sha256": "7dd6568ecb705bc87fad0d68f52b13e624cda31f132311195b88e5f34a6fe4fc",
+      "bytes": 98
+    },
+    "stage/examples/73_array_equal_length.sm": {
+      "sha256": "8572e352e6b66af1aa85dfed420ba35e008b6f3688fe0f184ff211e33fb6ad41",
+      "bytes": 56
+    },
+    "stage/examples/74_array_highest_valid.sm": {
+      "sha256": "7399db9013d324a1f8b650361ba01cc8ed563e410b469faa59aee4145d23da43",
+      "bytes": 82
+    },
+    "stage/examples/75_array_dynamic_length.sm": {
+      "sha256": "0c6f64b99d41ed4872ca97cb262ce8b2e432a320fce1a201da45fa03b4360a34",
+      "bytes": 102
+    },
+    "stage/examples/76_array_function_scope.sm": {
+      "sha256": "7620185aa1c97e2083badc1bfa12b4600d020c647679f6c789af22ef8bc72fb8",
+      "bytes": 231
+    },
+    "stage/examples/77_ternary.sm": {
+      "sha256": "9a00df76f7042d75f04edddd5d4e16f1de022f87ae4ad556bd5a87253f0b5a34",
+      "bytes": 171
+    },
+    "stage/examples/78_do_while.sm": {
+      "sha256": "da92e1e5b3d0b25dd7fd4349fc50051c0ccc6aa0b5da633cdd7cd8f0b46db681",
+      "bytes": 266
+    },
+    "stage/examples/79_ayojan_cwd.sm": {
+      "sha256": "2a59d15d2da66923cb97e70797029f59f0f0331d4ac500ad455b82ace79b9d8d",
+      "bytes": 43
+    },
+    "stage/examples/80_b6_nested_call_loop.sm": {
+      "sha256": "1f7e6857ae653d557e78db99d3747e8e9361667cd1ff10a5375b3748437f848d",
+      "bytes": 502
+    },
+    "stage/examples/81_stdlib_num2.sm": {
+      "sha256": "7ade153937c855234654bd0b6b759f32426d019972e4d2547b1f5c9c2e514bec",
+      "bytes": 403
+    },
+    "stage/examples/82_b7_stack_spill.sm": {
+      "sha256": "1fae8b8dd08757b2694e01190116386c9dbd744c9863168eefbe9c47dbdc23e6",
+      "bytes": 600
+    },
+    "stage/examples/83_stdlib_sort.sm": {
+      "sha256": "6c40b6338de1096cee5f04164bc01614b0075fef528cb308a65257c4f5a9c8ab",
+      "bytes": 711
+    },
+    "stage/examples/84_stdlib_string2.sm": {
+      "sha256": "70ca7ad3bf424d89c97e9aec5787b08da041cdbddec7b2f857fac1b33866f870",
+      "bytes": 607
+    },
+    "stage/examples/85_stdlib_shellsort.sm": {
+      "sha256": "64c2fed5ea19da60bd2beb9cd1f4d2121de0bd44cfd7cabceb8f1f1b8bacfd8c",
+      "bytes": 455
+    },
+    "stage/examples/86_b8_multi_modules.sm": {
+      "sha256": "b275b4dbce811f4766d031bb74e57da6b6bacd25803a0a80aa39fa9f89a84b61",
+      "bytes": 156
+    },
+    "stage/examples/87_b8_all_modules.sm": {
+      "sha256": "15aac480535472fdfc19665e374de9649978767ea849620f5482fa19f7f74b08",
+      "bytes": 62
+    },
+    "stage/examples/87_b8_func_params_capacity.sm": {
+      "sha256": "1fd7121cc06995ba4e81c374711dcdcdd1f125f2183959a19dd3676a920d3104",
+      "bytes": 54
+    },
+    "stage/examples/87_b8_math_sort_string.sm": {
+      "sha256": "1fd7121cc06995ba4e81c374711dcdcdd1f125f2183959a19dd3676a920d3104",
+      "bytes": 54
+    },
+    "stage/examples/88_pingala_chandas.sm": {
+      "sha256": "458a0024d03a86d0d71690fd7180954704304e2f5721ea0318a1132ce88ba3c9",
+      "bytes": 469
+    },
+    "stage/examples/89_b9_short_circuit.sm": {
+      "sha256": "40a6d2ffd569087b8a6ece60d9685258b327cde8271cd9e47e86965c0d4169c8",
+      "bytes": 311
+    },
+    "stage/examples/90_b9_short_circuit_bounds.sm": {
+      "sha256": "3b67a0cbd08568ff7bafb7dbe61084894adb13ba37f8843b3ca44a827b08d98f",
+      "bytes": 154
+    },
+    "stage/examples/91_indian_number_theory.sm": {
+      "sha256": "acd78cc001389660c1fbba28131c46a2fc1b30f83f79fbbe0ade5afc42d38ee8",
+      "bytes": 561
+    },
+    "stage/examples/92_t12_dasham_float.sm": {
+      "sha256": "5b7984a68bcbaa86e874def196c5a3702a9d8693202888a1a462ffd3c41506e4",
+      "bytes": 507
+    },
+    "stage/examples/93_t12_float_functions.sm": {
+      "sha256": "ba8590bf9e2c16f2fb8e1547eda9eddea08ab85accff4e3419bd82ef4157bb3a",
+      "bytes": 667
+    },
+    "stage/examples/94_t12_float_functions.sm": {
+      "sha256": "9f30d2db5b788911b006a33674cfb5fd73ecff20718e6db86f170968ee06fda3",
+      "bytes": 844
+    },
+    "stage/examples/95_t12_madhava_functions.sm": {
+      "sha256": "9062b8dd288b1c1c34f44704a4054732c389794af4081c6dacbc1d1dcb5251f1",
+      "bytes": 1340
+    },
+    "stage/examples/96_t18_kosh.sm": {
+      "sha256": "2f4e768b053d58e8465213b846c82f6a095eec482aa5a04127dcc4aea2d537c1",
+      "bytes": 410
+    },
+    "stage/examples/97_t18_kosh_devanagari.sm": {
+      "sha256": "2fca1e52e4e2d7e190f77aacc9aac1e973c20113a7508d5d352f4b53fcb03e2a",
+      "bytes": 229
+    },
+    "stage/examples/98_t18_kosh_empty.sm": {
+      "sha256": "0167cd99bed3d3ff5205d45e07dca58c2b889e9dee24242100c14a270391ce74",
+      "bytes": 117
+    },
+    "stage/examples/99_ast_multimodule_capacity.sm": {
+      "sha256": "4f5fdbcc5e7a8fda2c2b1fd197bd3973b8201e6db5cad65bc29aeeabd699b0ce",
+      "bytes": 183
+    },
+    "stage/examples/99_t18_kosh.sm": {
+      "sha256": "2f4e768b053d58e8465213b846c82f6a095eec482aa5a04127dcc4aea2d537c1",
+      "bytes": 410
+    },
+    "stage/examples/array_demo.sm": {
+      "sha256": "fe6fa5f3feb579a6f6dbe485ace3d1f7cd925485a66c562bf2cec03eff78ea26",
+      "bytes": 553
+    },
+    "stage/examples/char_ops.sm": {
+      "sha256": "a54d963b36dac7f7a45fd12bea705b37ae432084eaea9793fdd10958a8baced1",
+      "bytes": 318
+    },
+    "stage/examples/fizzbuzz.sm": {
+      "sha256": "84f3d4c7fdf4df6bcdca8f10db1ef28e4bc52c849a2eb1518fe53133691767e5",
+      "bytes": 525
+    },
+    "stage/examples/format_demo.sm": {
+      "sha256": "ec8dccc23b78c4a6221bd7092649e308c0ca311d5b55829234e77f1978d0d4e9",
+      "bytes": 198
+    },
+    "stage/examples/full_demo.sm": {
+      "sha256": "f5379abc792114f08c8582beeb1f4cfe47ca4a2b5c659a63891ba5ade3e09cdd",
+      "bytes": 884
+    },
+    "stage/examples/func_demo.sm": {
+      "sha256": "dca4498a8a51a5961cf039699b9ef05ec3eea0ac51660b3f9e249078df204be9",
+      "bytes": 442
+    },
+    "stage/examples/hello.sm": {
+      "sha256": "f8e59cebac4a3448f734df89e96d04791c95d36e586337ecc55a4f47a6ed36fd",
+      "bytes": 69
+    },
+    "stage/examples/import_demo.sm": {
+      "sha256": "a01038b5d69fc9bd900906538c5bdccdaf78acfcb98891334936eebd98eeea08",
+      "bytes": 395
+    },
+    "stage/examples/lib/r33_alpha.smlib": {
+      "sha256": "4ef0067417d02c2c7f371cda441371a536172546dc6f45e4fbafa9a4a5ed066b",
+      "bytes": 143
+    },
+    "stage/examples/lib/r33_beta.smlib": {
+      "sha256": "1a374d2398ea680932bd6663ef2723e8236cc48b351caf2530f5a9fe43d92498",
+      "bytes": 153
+    },
+    "stage/examples/lib/r33_devanagari.smlib": {
+      "sha256": "e82a22ba98336627521a1f806186a0588b7ecc070191dd8d8349dc4b8cee4033",
+      "bytes": 124
+    },
+    "stage/examples/lib/r40_a.smlib": {
+      "sha256": "90e7b6979ebfe645d66a377fa2d33c29e5251833496f7a11a419154b39851054",
+      "bytes": 87
+    },
+    "stage/examples/lib/r40_b.smlib": {
+      "sha256": "1c60bde23d3ca802a052dfe98ab5667fdb49e85a36208194ae269aec4ce86042",
+      "bytes": 66
+    },
+    "stage/examples/lib/r40_c.smlib": {
+      "sha256": "a400f0b033d3b10511c71c5c69bf82947d4ef9294a6be01abbd441a01ca271aa",
+      "bytes": 67
+    },
+    "stage/examples/lib/r40_d.smlib": {
+      "sha256": "6e8e103eec48661bfe98add023e49b53bc5bcb5f4a36e31e4b37a2a252c8382d",
+      "bytes": 87
+    },
+    "stage/examples/lib/r41_cyc_a.smlib": {
+      "sha256": "a717439ada1cd184f10c77467a00164782ef7667b7992a6902b105685df0358a",
+      "bytes": 129
+    },
+    "stage/examples/lib/r41_cyc_b.smlib": {
+      "sha256": "e0838b76b0c543f89eff134553eac2960843611583f3455b7cc8736c47fa8103",
+      "bytes": 129
+    },
+    "stage/examples/lib/r41_cycle_a.smlib": {
+      "sha256": "c12c5fe0e87dad7bce07801200f6abfecac5fd58a51eae9e274c064e20b00e0f",
+      "bytes": 71
+    },
+    "stage/examples/lib/r41_cycle_b.smlib": {
+      "sha256": "80ee4471f88eebfe36fb48675a431b7addb5412843c12a31b598e704739ef2da",
+      "bytes": 71
+    },
+    "stage/examples/lib/r41_dup.smlib": {
+      "sha256": "dd89e0326bac95c89a011db0bb44f01212618a50c05fbbabdc21ff78b885b5b6",
+      "bytes": 142
+    },
+    "stage/examples/lib/r41_vec.smlib": {
+      "sha256": "439c43c0281d4180514ca464ff30fe92f81c02f3c4c1bf9e335e9a9990856f95",
+      "bytes": 198
+    },
+    "stage/examples/lib/r80_ausat.smlib": {
+      "sha256": "1cf5db6fee65ad724a98fcbe90546e6ed679aae59c40608983277ebe2cf343af",
+      "bytes": 148
+    },
+    "stage/examples/mem_safe.sm": {
+      "sha256": "4b6bec8cea033f12073113ddadd6d5bdf5ee11405351b758bcd8fa7bc2113af5",
+      "bytes": 358
+    },
+    "stage/examples/multable.sm": {
+      "sha256": "99e63f90811ab0c41d7096374638d6bfebea5901bb4b56932f2e5dc9bc669036",
+      "bytes": 246
+    },
+    "stage/examples/number_game.sm": {
+      "sha256": "28984dba75b13459c40114619df03097b7409d97d7597312ef519e8acc5c34c4",
+      "bytes": 403
+    },
+    "stage/examples/prime.sm": {
+      "sha256": "ebd7bc81dd521d1c869fa5401d2e95860fc288ad15e9889ca786d75279cb0b1a",
+      "bytes": 479
+    },
+    "stage/examples/r67/bengali_native.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r67/bengali_native.out": {
+      "sha256": "4c261c0438ad5679433a3c46d70ee4f31e3dd04cf4ccec2e29ae48fa64cad9b5",
+      "bytes": 33
+    },
+    "stage/examples/r67/bengali_native.sm": {
+      "sha256": "7ec3b338618d66e2059a2f2b031f45b21115081ff8b932210adb3a745654a07a",
+      "bytes": 400
+    },
+    "stage/examples/r67/punjabi_native.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r67/punjabi_native.out": {
+      "sha256": "4c261c0438ad5679433a3c46d70ee4f31e3dd04cf4ccec2e29ae48fa64cad9b5",
+      "bytes": 33
+    },
+    "stage/examples/r67/punjabi_native.sm": {
+      "sha256": "ab303de87a9dfa414919b6a37df76bb1383060ce630a2fc769cb116085f65ac0",
+      "bytes": 388
+    },
+    "stage/examples/r68/hindi.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/hindi.out": {
+      "sha256": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "bytes": 19
+    },
+    "stage/examples/r68/hindi.sm": {
+      "sha256": "1a283d9a788341ae431ab8632330380f7449387a16cbaa8c3a04a2d805cc0382",
+      "bytes": 238
+    },
+    "stage/examples/r68/kannada.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/kannada.out": {
+      "sha256": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "bytes": 19
+    },
+    "stage/examples/r68/kannada.sm": {
+      "sha256": "f79beced17752bbbf4aa904c743cf40279314293dd88827b61e7486a714a643d",
+      "bytes": 249
+    },
+    "stage/examples/r68/marathi.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/marathi.out": {
+      "sha256": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "bytes": 19
+    },
+    "stage/examples/r68/marathi.sm": {
+      "sha256": "1cbf5027a6632c9f8590eaefd8559a8eb575c418a83cdd8bcbac4ff64a276fa4",
+      "bytes": 240
+    },
+    "stage/examples/r68/odia.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/odia.out": {
+      "sha256": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "bytes": 19
+    },
+    "stage/examples/r68/odia.sm": {
+      "sha256": "1afc0332bf53815508e2c65cfe1fe127c0db4f96190ee690127b5b1be3efa053",
+      "bytes": 246
+    },
+    "stage/examples/r68/pairs/all_registers.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/pairs/all_registers.out": {
+      "sha256": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "bytes": 3
+    },
+    "stage/examples/r68/pairs/all_registers.sm": {
+      "sha256": "41606f89258fc14c1f673a8607832327a0b0bf8f40222d123c90587eebae991d",
+      "bytes": 478
+    },
+    "stage/examples/r68/pairs/no_pairs.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/pairs/no_pairs.out": {
+      "sha256": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "bytes": 3
+    },
+    "stage/examples/r68/pairs/no_pairs.sm": {
+      "sha256": "6c7c537179a6f70f3e8b3e38c029954de0c416c5aed22347bec6574e5ea50ac8",
+      "bytes": 252
+    },
+    "stage/examples/r68/pairs/nonmatching.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/pairs/nonmatching.out": {
+      "sha256": "c6ebc76be5dc1f8b433f8d6fd9bd85cd9325086038442db8614bb799fec6fd85",
+      "bytes": 3
+    },
+    "stage/examples/r68/pairs/nonmatching.sm": {
+      "sha256": "e0b63c353ef47facbe1a389ae21a0df436c4bd1875dde2662778bb5793eea3d9",
+      "bytes": 90
+    },
+    "stage/examples/r68/tamil.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/tamil.out": {
+      "sha256": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "bytes": 19
+    },
+    "stage/examples/r68/tamil.sm": {
+      "sha256": "4e6fcfe721829945070c881f41a35a48f23257059ca9786cf17c8b1541b8364e",
+      "bytes": 271
+    },
+    "stage/examples/r68/telugu.exit": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    "stage/examples/r68/telugu.out": {
+      "sha256": "33a7bc68fcd09559d1b8ddbd563ca877ae78eb07443d3cf5a7bc3062edad3472",
+      "bytes": 19
+    },
+    "stage/examples/r68/telugu.sm": {
+      "sha256": "ff76005cb7bd90546557658e58d2417cf214a977762688c1a01ac6dc43cbcd77",
+      "bytes": 284
+    },
+    "stage/examples/r71/associativity.out": {
+      "sha256": "f1cddd5e992fa2ae2a060f42ec8b02e63b306433788b6c2f47add6e941492877",
+      "bytes": 9
+    },
+    "stage/examples/r71/associativity.sm": {
+      "sha256": "1fe1b03b56c77a1051cf6290c9d178d294781bd09a1b219fed65d52168bfc664",
+      "bytes": 103
+    },
+    "stage/examples/r71/boundary_bad.sm": {
+      "sha256": "c714317222eb3c84cf6165f86f8899b744c66b6f44cf24513ae583b1d610dba2",
+      "bytes": 72
+    },
+    "stage/examples/r71/boundary_good.out": {
+      "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0",
+      "bytes": 3
+    },
+    "stage/examples/r71/boundary_good.sm": {
+      "sha256": "1d53705062ae29e718e55f8bb465dfa3f67db58acb1b029696a8268a74424b2e",
+      "bytes": 135
+    },
+    "stage/examples/r71/conversion.out": {
+      "sha256": "1a3ebc671e1dd344b9cd57f064d3315b5094d70c2e3816012f8fc8fe3fcf0451",
+      "bytes": 14
+    },
+    "stage/examples/r71/conversion.sm": {
+      "sha256": "8d3ba2b118dae01f0982c13bf3ff14bce72c6999fa1ac23e9f24d808dd62b6c2",
+      "bytes": 398
+    },
+    "stage/examples/r71/evaluation_order.out": {
+      "sha256": "97c2c9cae194d0c1bd7589f07cb795447c8da8791cac7e2781fe39a897d91586",
+      "bytes": 14
+    },
+    "stage/examples/r71/evaluation_order.sm": {
+      "sha256": "a3db52595d0377a1611c40ba9f1952234a168b8534ceab5f12730b488f13f6c4",
+      "bytes": 327
+    },
+    "stage/examples/strength_reduction.sm": {
+      "sha256": "d87918b10fa8f647a02a94478c130ab26fbd74bba8a7c04257a99b5751488fcf",
+      "bytes": 261
+    },
+    "stage/lang/bengali.lang": {
+      "sha256": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "bytes": 1014
+    },
+    "stage/lang/bengali.sandesh": {
+      "sha256": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "bytes": 23206
+    },
+    "stage/lang/gujarati.lang": {
+      "sha256": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "bytes": 1588
+    },
+    "stage/lang/gujarati.sandesh": {
+      "sha256": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "bytes": 22485
+    },
+    "stage/lang/hindi.lang": {
+      "sha256": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "bytes": 1110
+    },
+    "stage/lang/hindi.sandesh": {
+      "sha256": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "bytes": 22591
+    },
+    "stage/lang/kannada.lang": {
+      "sha256": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "bytes": 1166
+    },
+    "stage/lang/kannada.sandesh": {
+      "sha256": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "bytes": 23266
+    },
+    "stage/lang/malayalam.lang": {
+      "sha256": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "bytes": 1148
+    },
+    "stage/lang/malayalam.sandesh": {
+      "sha256": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "bytes": 24569
+    },
+    "stage/lang/marathi.lang": {
+      "sha256": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "bytes": 1115
+    },
+    "stage/lang/marathi.sandesh": {
+      "sha256": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "bytes": 23368
+    },
+    "stage/lang/odia.lang": {
+      "sha256": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "bytes": 1091
+    },
+    "stage/lang/odia.sandesh": {
+      "sha256": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "bytes": 23510
+    },
+    "stage/lang/punjabi.lang": {
+      "sha256": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "bytes": 981
+    },
+    "stage/lang/punjabi.sandesh": {
+      "sha256": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "bytes": 22540
+    },
+    "stage/lang/sanskrit.lang": {
+      "sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "bytes": 3032
+    },
+    "stage/lang/sanskrit.sandesh": {
+      "sha256": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "bytes": 23684
+    },
+    "stage/lang/tamil.lang": {
+      "sha256": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "bytes": 1418
+    },
+    "stage/lang/tamil.sandesh": {
+      "sha256": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "bytes": 25479
+    },
+    "stage/lang/telugu.lang": {
+      "sha256": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "bytes": 1186
+    },
+    "stage/lang/telugu.sandesh": {
+      "sha256": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "bytes": 24085
+    },
+    "stage/lib/aadhar.smlib": {
+      "sha256": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "bytes": 3578
+    },
+    "stage/lib/ank.smlib": {
+      "sha256": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "bytes": 4631
+    },
+    "stage/lib/anukram.smlib": {
+      "sha256": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "bytes": 4629
+    },
+    "stage/lib/brihat.smlib": {
+      "sha256": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "bytes": 10601
+    },
+    "stage/lib/chandas.smlib": {
+      "sha256": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "bytes": 3844
+    },
+    "stage/lib/ganit.smlib": {
+      "sha256": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "bytes": 9899
+    },
+    "stage/lib/ganita.smlib": {
+      "sha256": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "bytes": 22996
+    },
+    "stage/lib/gudh.smlib": {
+      "sha256": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "bytes": 1059
+    },
+    "stage/lib/kalana.smlib": {
+      "sha256": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "bytes": 5846
+    },
+    "stage/lib/khand.smlib": {
+      "sha256": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "bytes": 17692
+    },
+    "stage/lib/madhava.smlib": {
+      "sha256": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "bytes": 4972
+    },
+    "stage/lib/mala.smlib": {
+      "sha256": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "bytes": 2552
+    },
+    "stage/lib/nighantu.smlib": {
+      "sha256": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "bytes": 15559
+    },
+    "stage/lib/patra.smlib": {
+      "sha256": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "bytes": 2912
+    },
+    "stage/lib/phal.smlib": {
+      "sha256": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "bytes": 6154
+    },
+    "stage/lib/roop.smlib": {
+      "sha256": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "bytes": 20355
+    },
+    "stage/lib/sadhan.smlib": {
+      "sha256": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "bytes": 4692
+    },
+    "stage/lib/samanvaya.smlib": {
+      "sha256": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "bytes": 5343
+    },
+    "stage/lib/sangrah.smlib": {
+      "sha256": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "bytes": 9805
+    },
+    "stage/lib/sankhyiki.smlib": {
+      "sha256": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "bytes": 6540
+    },
+    "stage/lib/shreni.smlib": {
+      "sha256": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "bytes": 5960
+    },
+    "stage/lib/suchi.smlib": {
+      "sha256": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "bytes": 15565
+    },
+    "stage/lib/vakyank.smlib": {
+      "sha256": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "bytes": 12583
+    },
+    "stage/lib/varna.smlib": {
+      "sha256": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "bytes": 16119
+    },
+    "stage/LICENSE.txt": {
+      "sha256": "df5c9726f24b0d12e511c4abf4017fc3c4bff7d8ac38cf2ccc67ee52977fc920",
+      "bytes": 1650
+    },
+    "stage/README.md": {
+      "sha256": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "bytes": 10893
+    },
+    "stage/sutram-ide-gui.exe": {
+      "sha256": "635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0",
+      "bytes": 142563
+    },
+    "stage/win/lang/bengali.lang": {
+      "sha256": "0b0848f61bb1b8473b9e0f746a6edd6f39b46fb950a3be6f24c2753ef7b14846",
+      "bytes": 1014
+    },
+    "stage/win/lang/bengali.sandesh": {
+      "sha256": "ad88ea3f2eab52d1eaf8092680608e3bd16f75a7de866f4fcb912fb4c6266d50",
+      "bytes": 23206
+    },
+    "stage/win/lang/gujarati.lang": {
+      "sha256": "af2178938604dbd8a7edba24ac0b4e1632e0ddce0351f51fdc3678baa187e7ba",
+      "bytes": 1588
+    },
+    "stage/win/lang/gujarati.sandesh": {
+      "sha256": "d20c036f97c7cf34b73282e235cbc3f00bbc619498f060e9e78df931b7878000",
+      "bytes": 22485
+    },
+    "stage/win/lang/hindi.lang": {
+      "sha256": "6caedbd349188a8c739e86286d8ff08ad4d750947f9ab60b5b136edf98f51fbc",
+      "bytes": 1110
+    },
+    "stage/win/lang/hindi.sandesh": {
+      "sha256": "d260895b0a73417518493f9d10e387495c99cd2ddafa3a757dc97fd94a307548",
+      "bytes": 22591
+    },
+    "stage/win/lang/kannada.lang": {
+      "sha256": "b19ce9dedc9a9ea50f5ca486aabd8e89481a77d7db58ae19bcccc24d5cd766bc",
+      "bytes": 1166
+    },
+    "stage/win/lang/kannada.sandesh": {
+      "sha256": "82e1b4db44ea4c4d5849d70224195470a57c6764c9db816661c0550510999efb",
+      "bytes": 23266
+    },
+    "stage/win/lang/malayalam.lang": {
+      "sha256": "00288bfecf07a402049cf87d025c780e8c85f71c509eb84e36537e208f396f87",
+      "bytes": 1148
+    },
+    "stage/win/lang/malayalam.sandesh": {
+      "sha256": "6f29d9f93f22bf8a2ebc8452847b021f875312a989b1e0f5a232228145c6ae28",
+      "bytes": 24569
+    },
+    "stage/win/lang/marathi.lang": {
+      "sha256": "338d92ed47cc81511f3a4e5b78a27ea4d23fb0ed8ca89e95e0c610d5c93afaaf",
+      "bytes": 1115
+    },
+    "stage/win/lang/marathi.sandesh": {
+      "sha256": "8e3e7067c1d7230c427f516ef1436c79f595dc82db915f42f3a76fb0cf1e5f42",
+      "bytes": 23368
+    },
+    "stage/win/lang/odia.lang": {
+      "sha256": "b623cb6a9944c61281725c3b51cbed190aa57ac50276205658c12d6d2c424403",
+      "bytes": 1091
+    },
+    "stage/win/lang/odia.sandesh": {
+      "sha256": "9d91cb202346df38ebc14bca2f79536998013699f8bcd26e64c799d13eb3dad3",
+      "bytes": 23510
+    },
+    "stage/win/lang/punjabi.lang": {
+      "sha256": "3a5c596a39f2a7cb4208f0ad444cd3fffec587ad9987b4f76254626bfa77cf3e",
+      "bytes": 981
+    },
+    "stage/win/lang/punjabi.sandesh": {
+      "sha256": "101825bf0bb10e1b3128f79e2567777f35cb1777eb38e5948f9dd447e7ce7c74",
+      "bytes": 22540
+    },
+    "stage/win/lang/sanskrit.lang": {
+      "sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "bytes": 3032
+    },
+    "stage/win/lang/sanskrit.sandesh": {
+      "sha256": "c47a31efdd12bd0c6f6ffd64505391373bcd6236b87c4549c96b807a4f4ce027",
+      "bytes": 23684
+    },
+    "stage/win/lang/tamil.lang": {
+      "sha256": "98f46c9eae99d6e80f776609c1dcc981367ec1921bc4c099dfe1151401635218",
+      "bytes": 1418
+    },
+    "stage/win/lang/tamil.sandesh": {
+      "sha256": "90c6d14a730cc037eff6d54742c04d3fb06148fca06e0d32963f6c0608d48f30",
+      "bytes": 25479
+    },
+    "stage/win/lang/telugu.lang": {
+      "sha256": "b92058d54de8a83230c724c2ba180fc00fb964548a684f92f7791bbca1032f6a",
+      "bytes": 1186
+    },
+    "stage/win/lang/telugu.sandesh": {
+      "sha256": "2ae64bcb6951c50070264a4407199dd1f794b02e5d4ab761fe0414a8a4d9850c",
+      "bytes": 24085
+    },
+    "stage/win/lib/aadhar.smlib": {
+      "sha256": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+      "bytes": 3578
+    },
+    "stage/win/lib/ank.smlib": {
+      "sha256": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+      "bytes": 4631
+    },
+    "stage/win/lib/anukram.smlib": {
+      "sha256": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+      "bytes": 4629
+    },
+    "stage/win/lib/brihat.smlib": {
+      "sha256": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+      "bytes": 10601
+    },
+    "stage/win/lib/chandas.smlib": {
+      "sha256": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+      "bytes": 3844
+    },
+    "stage/win/lib/ganit.smlib": {
+      "sha256": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+      "bytes": 9899
+    },
+    "stage/win/lib/ganita.smlib": {
+      "sha256": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+      "bytes": 22996
+    },
+    "stage/win/lib/gudh.smlib": {
+      "sha256": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+      "bytes": 1059
+    },
+    "stage/win/lib/kalana.smlib": {
+      "sha256": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+      "bytes": 5846
+    },
+    "stage/win/lib/khand.smlib": {
+      "sha256": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+      "bytes": 17692
+    },
+    "stage/win/lib/madhava.smlib": {
+      "sha256": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+      "bytes": 4972
+    },
+    "stage/win/lib/mala.smlib": {
+      "sha256": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+      "bytes": 2552
+    },
+    "stage/win/lib/nighantu.smlib": {
+      "sha256": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+      "bytes": 15559
+    },
+    "stage/win/lib/patra.smlib": {
+      "sha256": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+      "bytes": 2912
+    },
+    "stage/win/lib/phal.smlib": {
+      "sha256": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+      "bytes": 6154
+    },
+    "stage/win/lib/roop.smlib": {
+      "sha256": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+      "bytes": 20355
+    },
+    "stage/win/lib/sadhan.smlib": {
+      "sha256": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+      "bytes": 4692
+    },
+    "stage/win/lib/samanvaya.smlib": {
+      "sha256": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+      "bytes": 5343
+    },
+    "stage/win/lib/sangrah.smlib": {
+      "sha256": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+      "bytes": 9805
+    },
+    "stage/win/lib/sankhyiki.smlib": {
+      "sha256": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+      "bytes": 6540
+    },
+    "stage/win/lib/shreni.smlib": {
+      "sha256": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+      "bytes": 5960
+    },
+    "stage/win/lib/suchi.smlib": {
+      "sha256": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+      "bytes": 15565
+    },
+    "stage/win/lib/vakyank.smlib": {
+      "sha256": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+      "bytes": 12583
+    },
+    "stage/win/lib/varna.smlib": {
+      "sha256": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352",
+      "bytes": 16119
+    },
+    "stage/win/sutram.exe": {
+      "sha256": "9740b045ef19ebcf0300010724803d61ecd8e4d3a1e0e23523b558d1dac974fb",
+      "bytes": 540985
+    }
+  },
+  "time": 1794076227.8184676
+}

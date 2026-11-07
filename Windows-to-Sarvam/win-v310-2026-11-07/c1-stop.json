@@ -1,0 +1,54 @@
+{
+    "name":  "c1-stop",
+    "moment":  "middle",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\Sutram-Setup.exe",
+    "setup_sha256":  "BB134603D70D49C4ABD08112B77A5309FF447280F8754CB4E6E24CB4626BBA47",
+    "started":  "2026-11-07T13:21:08.5583416-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.4173414,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.4619399999999994,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  10.7533449,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  39380,
+    "process_started":  "2026-11-07T13:21:08.6359790-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "c1-stop-ready.png",
+    "child":  {
+                  "parent":  39380,
+                  "pid":  38380,
+                  "started":  "2026-11-07T13:21:09.7535369-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM32FB.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM32FB.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM32FB.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM32FB.tmp\\install.log",
+    "stop_observed_at":  "2026-11-07T13:21:23.6902262-05:00",
+    "seconds":  13.951004399999999,
+    "engine_age_seconds":  13.937698999999999,
+    "status":  "INTERRUPTED",
+    "observed_seconds":  13.9788728,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  true,
+    "transaction_exists":  true,
+    "payload_files_present":  58,
+    "capture_warnings":  [
+
+                         ],
+    "ended":  "2026-11-07T13:21:23.8598618-05:00"
+}
