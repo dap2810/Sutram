@@ -24,8 +24,9 @@ Measured, with where:
 **Not closed, and not claimed:**
 - **A slice is refused in every form the gates test** (the R133, R134 and R137 gates); **that is not a proof that no
   other form exists.** The check covers every statement, and every operator in one place. It does not cover the
-  one expression path outside a statement, the module-level `vitti` initializers - no slice can be formed there
-  today (R140 hand-back).
+  one expression path outside a statement, the module-level `vitti` initializers: no slice can be formed there,
+  but **a `kosh` returned by a call can be made a number there** (`vitti leaked = make_kosh() + 0` compiles and
+  holds an address; inside a `prakriya` it is refused). Known, not yet fixed (ChatGPT R208 C1).
 - **The out-of-memory exit** is measured at those limits on one machine. Other allocation failures, a failed
   start-up reserve on Windows, and teardown in general are not.
 - **The installer** is safe to interrupt and retry, file by file. It is not one atomic step: the shortcuts,

@@ -1,4 +1,4 @@
-# R140-00 — WS1: every text file the installer carries is LF in every checkout. WS2: one exact package, with its manifest checked against the embedded ZIP - and the same bytes when built from a CRLF copy of the tree dated 400 days earlier. WS3: the release notes now open with what v309 closes and what it does not. WS4: the check covers every statement. The one expression path outside a statement is the module-level `vitti` initializers, where no slice can be formed today. That residual risk is stated, not closed.
+# R140-00 — WS1: every text file the installer carries is LF in every checkout. WS2: one exact package, with its manifest checked against the embedded ZIP - and the same bytes when built from a CRLF copy of the tree dated 400 days earlier. WS3: the release notes now open with what v309 closes and what it does not. WS4: the check covers every statement. The one expression path outside a statement is the module-level `vitti` initializers. **Correction below: that path is reachable today - a `kosh` from a call becomes a number there (ChatGPT's C1, confirmed on v309).**
 
 ## Release line
 
@@ -12,7 +12,7 @@ Sutram 1.0 (v309) - sampurna sutra      (compiler unchanged since 01f1171)
 
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **The guard: NOT re-run** (no compiler, runtime, library or pack byte changed).
-- **Installer:** `a11098537e1d5b4247fb188df95a51c16d99802d30cb3c22e4c37598ca752cf2`.
+- **Installer:** `ceb92682bc5faa7575a7f6b65efc05d4fe4c157a339ecb13fb5e5e4da67459a0` (rebuilt after the WS4 correction to the release notes; the determinism test ran on the build before it, `a1109853...`).
 
 ## WS1 - the `.gitattributes` rule
 
@@ -84,5 +84,21 @@ New first section: **"Status: what v309 closes, and what it does not"**.
 - **Today no slice can be formed there.** At module level there is no `mala` (a syntax error), no `kosh` (refused since R127, the global door), and no `vibhag`. Slicing a plain `vitti` is refused at code generation (`vibhag: mala, kosh va vibhag apekshita`), measured here with `vitti A = nirmmita(16)` and `vitti G = A[0:1] + 0`.
 - **The residual risk:** any future way to form a slice at module level, or any new path that calls `gen_expr` without a statement (an inliner, a new kind of global), would bypass the check until it gets one.
 - **The fix is one call** (`r137_check_stmt` on each initializer in `r56_gen_global_initializers`). **I have not made it:** it changes the compiler, and therefore the version, just after v309 was verified natively. It is ready for the next compiler change.
+
+**CORRECTION, after pushing this - ChatGPT's R208 follow-up (`9592069`, landed at the same time) is right, and I was wrong to call this path safe.** A *slice* cannot be formed at module level, but **a `kosh` made a number by a call can**:
+
+```
+vitti zero = 0
+vitti leaked = make_kosh() + zero      # make_kosh() returns a kosh
+```
+
+- **Run here on v309:** it compiles, and `likha(leaked)` prints the descriptor's address (`139858114773008`), exit 0.
+- **The same declaration inside `mukhya` is refused** (`E_KOSH_GANIT`).
+- **That is a type erasure on the path I named,** not a demonstrated stale read. The residual risk is not hypothetical: it is reachable today.
+- **The fix is the call above.** Global initializers are expressions with no statement, so `r137_check_stmt` should take the initializer as a declaration's value.
+- **With it, as ChatGPT also says:**
+  - the walk's node budget should refuse when it runs out, not pass;
+  - the installer's `Read-State` and pending check should move under the lock (two reads still come before it).
+- **All three are compiler or engine changes for the next candidate (v310). Not made in this round.**
 
 Evidence: `Claude-to-Sarvam/evidence-r139-r140/`.

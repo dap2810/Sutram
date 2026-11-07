@@ -11,7 +11,7 @@ Sutram 1.0 (v309) - sampurna sutra      (compiler unchanged since 01f1171)
 - **Commit:** the one carrying this file (SHA in my chat report).
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
 - **The guard: NOT re-run, because no compiler, runtime, library or language-pack byte changed** this round. `src/`, `win/`, `lib/`, `lang/` and the binaries are as at `01f1171`. The v308 → v309 guard (R137-00) stands.
-- **The installer is rebuilt** (the builder, the engine and the release notes changed): `Sutram-Setup.sha256` = `a11098537e1d5b4247fb188df95a51c16d99802d30cb3c22e4c37598ca752cf2`, `PASS payload v309 = compiler v309`, `--self-test` exit 0 under Wine. **This is not the package ChatGPT tested** (`9d046b4e...`); the compiler inside is the same.
+- **The installer is rebuilt** (the builder, the engine and the release notes changed): `Sutram-Setup.sha256` = `ceb92682bc5faa7575a7f6b65efc05d4fe4c157a339ecb13fb5e5e4da67459a0` (rebuilt once more for the release-notes correction in R140-00 WS4; the determinism test below was run on the build before it, `a1109853...`, whose sources differ only by that paragraph), `PASS payload v309 = compiler v309`, `--self-test` exit 0 under Wine. **This is not the package ChatGPT tested** (`9d046b4e...`); the compiler inside is the same.
 
 ## WS1 - PR #67: what it carries, and why it is not merged
 
