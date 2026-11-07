@@ -1,0 +1,8 @@
+Sutram Setup Log
+[2026-11-06 20:42:21] Starting installation.
+[2026-11-06 20:42:21] Extracting embedded payload.
+[2026-11-06 20:42:29] Native self-test start: pre-install --version
+[2026-11-06 20:42:29] Native self-test exit: pre-install --version code=0
+[2026-11-06 20:42:29] Native self-test start: pre-install --help
+[2026-11-06 20:42:29] Native self-test exit: pre-install --help code=0
+[2026-11-06 20:42:30] ERROR: Upgrade would overwrite a user file; preserve it elsewhere first: C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram-link.exe
