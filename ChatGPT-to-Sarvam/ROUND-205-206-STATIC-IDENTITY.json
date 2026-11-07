@@ -1,0 +1,69 @@
+{
+  "base_commit": "8edb8b90862f4a3b6140cbcf41c6271d8ab76cd9",
+  "method": "Static hashing, embedded ZIP inspection and exact text comparison only; no compiler/build/native execution",
+  "installer": {
+    "sha256": "e6006caf2bacebf378b9d3b8cd4527d63c1de6ac2e96efa630e5c268ff852e5f",
+    "matches_sha256_file": true,
+    "payload_files": 658
+  },
+  "payload_binaries": [
+    {
+      "path": "bin/sutram.exe",
+      "sha256": "d3f3dc157baddec973947a4d5f5b1760203542b6576b11c15aab6a757f48df77",
+      "tree_path": "win/sutram.exe",
+      "byte_identical": true,
+      "embedded_version": 306
+    },
+    {
+      "path": "win/sutram.exe",
+      "sha256": "d3f3dc157baddec973947a4d5f5b1760203542b6576b11c15aab6a757f48df77",
+      "tree_path": "win/sutram.exe",
+      "byte_identical": true,
+      "embedded_version": 306
+    },
+    {
+      "path": "bin/sutram-link.exe",
+      "sha256": "94a7bc2c8f8caaa83825ca2b797021fb86ef5784d67cab7b39972d419b8b7883",
+      "tree_path": "sutram-link.exe",
+      "byte_identical": true,
+      "embedded_version": null
+    },
+    {
+      "path": "sutram-ide-gui.exe",
+      "sha256": "635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0",
+      "tree_path": "sutram-ide-gui.exe",
+      "byte_identical": true,
+      "embedded_version": null
+    }
+  ],
+  "manifest": {
+    "lines": 657,
+    "missing": [],
+    "mismatched": [],
+    "unmanifested": []
+  },
+  "source_lock": {
+    "pins": 25,
+    "mismatched": []
+  },
+  "pr66_identity": {
+    "commit": "3426712b2726247a8661cf6bd5049bbd2512d5d2",
+    "method": "Exact decoded GitHub file text compared against pinned local files",
+    "identical_files": [
+      "win/winrt_blob.asm",
+      "win/rtblob.inc"
+    ]
+  },
+  "embedded_scripts": {
+    "windows/native-installer/install-core.ps1": {
+      "sha256": "ed301b9f2209c501c692166e8e8cd5b6c8718dc9803d03a02f4db0a0941b458c",
+      "tree_bytes_present_in_setup": true
+    },
+    "windows/native-installer/uninstall-core.ps1": {
+      "sha256": "1ac37228c8de8f5ea6926e0c80d5c6ebebe4780b80e9cc8772525c5874e94060",
+      "tree_bytes_present_in_setup": true
+    }
+  },
+  "native_checks": "NOT RUN - read-side role, no toolchain used",
+  "tree_windows_compilers_identical": true
+}
