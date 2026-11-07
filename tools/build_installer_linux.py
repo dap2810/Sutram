@@ -131,13 +131,15 @@ def main():
         for f in fs:
             normalize_payload_text(os.path.join(dp, f))
             files.append(os.path.relpath(os.path.join(dp, f), stage))
-    files.sort(key=lambda r: r.replace('/', '\\').lower())
+    # Match .NET StringComparer.Ordinal, including punctuation and non-BMP paths.
+    path_order = lambda r: r.replace('/', '\\').encode('utf-16-be')
+    files.sort(key=path_order)
     rows = [f'{sha(os.path.join(stage, r))} *{r.replace("/", chr(92))}' for r in files]
     open(os.path.join(stage, 'payload.manifest.sha256'), 'w', encoding='utf-8', newline='\r\n').write('\n'.join(rows) + '\n')
     files.append('payload.manifest.sha256')
     zpath = os.path.join(work, 'payload.zip')
     with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-        for r in sorted(files, key=lambda r: r.replace('/', '\\').lower()):
+        for r in sorted(files, key=path_order):
             z.write(os.path.join(stage, r), r.replace('/', '\\'))
     if a.payload_only:
         print(f'PAYLOAD PASS: {len(files) - 1} files; manifest {sha(os.path.join(stage, "payload.manifest.sha256"))}; {zpath}')

@@ -32,10 +32,10 @@ foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
         if ($value.Contains("`r`n")) { [IO.File]::WriteAllBytes($file.FullName,$utf8.GetBytes($value.Replace("`r`n","`n"))) }
     }
 }
-# Use ordinal, case-insensitive path order on both platforms, independent of the
+# Use ordinal UTF-16 path order on both platforms, independent of the
 # developer's locale. The manifest's newline is fixed even when built on Linux.
 [string[]]$payloadFiles=[IO.Directory]::GetFiles($stage,'*',[IO.SearchOption]::AllDirectories)
-[Array]::Sort($payloadFiles,[StringComparer]::OrdinalIgnoreCase)
+[Array]::Sort($payloadFiles,[StringComparer]::Ordinal)
 $rows=foreach ($path in $payloadFiles) {
     (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$path.Substring($stage.Length+1)
 }

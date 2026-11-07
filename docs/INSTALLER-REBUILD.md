@@ -9,7 +9,7 @@ recorded bytes. Existing Windows checkouts may still have CRLF until refreshed, 
 staging normalization is required as well. Compiler, linker, GUI and icon bytes are
 copied unchanged. Invalid UTF-8 in a declared text input fails the build.
 
-Both builders use case-insensitive ordinal path order and CRLF manifest separators.
+Both builders use ordinal UTF-16 path order and CRLF manifest separators.
 Compare the complete staged file map and manifest, not just three sample hashes.
 `python3 tools/build_installer_linux.py --work <new-directory> --payload-only` performs
 the Linux payload step without requiring a PE linker or Wine. This is a developer
