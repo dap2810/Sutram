@@ -1,0 +1,19 @@
+mukhya() {
+    kosh k[1]
+    chakra i = 1 tak 4194304 {
+        kosh_kship(k, i)
+    }
+    likha(parimana())
+    chakra i = 4194305 tak 8388608 {
+        kosh_kship(k, i)
+    }
+    likha(parimana())
+    chakra i = 8388609 tak 16777216 {
+        kosh_kship(k, i)
+    }
+    likha(parimana())
+    chakra i = 16777217 tak 33554432 {
+        kosh_kship(k, i)
+    }
+    likha(parimana())
+}

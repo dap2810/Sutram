@@ -1,0 +1,10 @@
+prakriya show_dasham(dasham d) {
+    likha(d)
+    nivartanam 0
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    likha(show_dasham(k[0:1]))
+}

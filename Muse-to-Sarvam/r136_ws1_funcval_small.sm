@@ -1,0 +1,12 @@
+prakriya badal(vibhag s, ignored) {
+    s[0] = 99
+    nivartanam 0
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    vitti f = badal
+    likha(f(k[0:1], kosh_kship(k, 8)))
+    likha(k[0])
+}

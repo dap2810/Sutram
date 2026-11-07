@@ -1,0 +1,10 @@
+# Same reservation as the requested first-page probe, but touch every 4 KiB page.
+mukhya() {
+    vitti p = nirmmita(100000000)
+    vitti i = 0
+    yavat (i < 12500000) {
+        p[i] = 1
+        i = i + 512
+    }
+    likha("done")
+}

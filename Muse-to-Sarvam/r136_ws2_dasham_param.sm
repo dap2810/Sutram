@@ -1,0 +1,13 @@
+prakriya use_dasham(dasham d, kosh k) {
+    kosh_kship(k, 99)
+    vitti addr = d[0]
+    addr[0] = 77
+    nivartanam addr[0]
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    likha(use_dasham(k[0:1], k))
+    likha(k[0])
+}

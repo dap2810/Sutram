@@ -1,0 +1,13 @@
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    vitti p = nirmmita(16)
+    p[0] = k[0:1]
+    kosh_kship(k, 8)
+    k[0] = 99
+    vitti s = p[0]
+    vitti addr = s[0]
+    likha(addr[0])
+    likha(k[0])
+}
