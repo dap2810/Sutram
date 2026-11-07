@@ -1,0 +1,56 @@
+{
+    "name":  "initial",
+    "moment":  "complete",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
+    "setup_sha256":  "9D046B4E1B3D95222523E78304E48CB5BC10A69F951B33822A2673F0DC3BB533",
+    "started":  "2026-11-07T10:10:59.7592023-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.6232751,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  6.0036384,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  11.3604614,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  16.665910099999998,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  20288,
+    "process_started":  "2026-11-07T10:10:59.8308224-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "initial-ready.png",
+    "child":  {
+                  "parent":  20288,
+                  "pid":  43692,
+                  "started":  "2026-11-07T10:11:00.7508742-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1C93.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1C93.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1C93.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1C93.tmp\\install.log",
+    "status":  "FINISH",
+    "finish_seconds":  21.2324537,
+    "finish_screenshot":  "initial-finish.png",
+    "closed_after_finish_click":  true,
+    "observed_seconds":  21.9371425,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  0,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  657,
+    "ended":  "2026-11-07T10:11:22.9043211-05:00"
+}

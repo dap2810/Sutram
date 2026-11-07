@@ -1,0 +1,2630 @@
+[
+  {
+    "file": "assets/sutram.ico",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/bengali.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/bengali.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/gujarati.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/gujarati.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/hindi.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/hindi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/kannada.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/kannada.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/malayalam.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/malayalam.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/marathi.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/marathi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/odia.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/odia.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/punjabi.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/punjabi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/sanskrit.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/sanskrit.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/tamil.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/tamil.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/telugu.lang",
+    "pass_": true
+  },
+  {
+    "file": "bin/lang/telugu.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/aadhar.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/ank.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/anukram.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/brihat.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/chandas.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/ganit.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/ganita.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/gudh.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/kalana.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/khand.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/madhava.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/mala.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/nighantu.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/patra.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/phal.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/roop.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/sadhan.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/samanvaya.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/sangrah.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/sankhyiki.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/shreni.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/suchi.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/vakyank.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/lib/varna.smlib",
+    "pass_": true
+  },
+  {
+    "file": "bin/sutram-link.exe",
+    "pass_": true
+  },
+  {
+    "file": "bin/sutram.exe",
+    "pass_": true
+  },
+  {
+    "file": "docs/_newchapter_en.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/ai-handoff-notes/HANDOFF.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/ai-handoff-notes/NEXT_TASK_NATIVE_PE64.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/ai-handoff-notes/REAL_MACHINE_RESULTS_2026-10-01.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/ai-handoff-notes/START_HERE_FOR_AI.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/AI-WORK-DIVISION.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/BUILDING.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/CHANGELOG.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/CI-NOTIFICATION-POLICY.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/decisions/ALIAS-DESIGN.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/decisions/MEMORY-DECISION.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/decisions/MEMORY-DESIGN.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/decisions/MEMORY-IMPROVEMENTS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/decisions/MEMORY-MY-IDEA.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/decisions/MEMORY-UNIQUE-HYBRID.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/decisions/R114-SUTRAM-TRUTI.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/ERROR-CONVENTION.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/FREESTANDING.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/INSTALLATION-ROUTES.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/INSTALLER-REBUILD.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/LANGUAGE-REFERENCE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/LIBRARY-BOUNDARY.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/MEMORY-MODEL.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/mockup-setup.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/NUMERIC-CONTRACT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/OBJECT-FORMAT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/OPEN-ISSUES.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/OVERFLOW-SAFETY.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/PATH-TO-COMPLETION.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/RELEASE-NOTES.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/COVERAGE-AUDIT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/EDGE-COVERAGE-30.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/FAIL-ALLOC.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/HOW-DEFECTS-WERE-FOUND.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/INDIC-COVERAGE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/KOSH-BUILTINS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/KOSH-REUSE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/LAGHU-EXAMPLE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/LANG-PACK-AUDIT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/LEXER-BOUNDARY-TEST.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/LIBRARY-ENGLISH-AUDIT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/LIBRARY-LAYERS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/MEMORY-COMPOSITION-TEST.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/NEGATIVE-CORPUS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/PARSER-CLASS-TEST.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/PROPERTY-NET.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/SANSKRIT-AND-AI-BRIGGS-1985.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/SANSKRIT-FOR-LANGUAGE-DESIGN.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/SECURITY-AUDIT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/reports/STRING-BYTE-PARITY.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/CHANGELOG-ARCHIVE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/F7-SCALAR-INDEX-CRASH.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/F8-PACK-WARNING-FALSE-ALARM.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/ITEM-6-X11-INDIC-ASSESSMENT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/PLAN-TO-FINISH.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/PROJECT-OVERVIEW.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R34-ACKNOWLEDGE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R50-BYTE-PACKED-TEXT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R52-BUILTIN-FIXES.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R54-BUILTIN-BOUNDS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R56-MODULE-GLOBALS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R57-REGISTER-EVALUATOR.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R58-CONSTANT-FOLDING.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R59-PREEMISSION-PEEPHOLE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R62-WINDOWS-ACCEPTANCE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R63-KOSH-BUILTINS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R64-KOSH-DIAGNOSTICS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R65-DEVANAGARI-SURFACE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R65-FINISH-REVIEW.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R65-SOURCE-REVIEW.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R67-SOURCE-REVIEW.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R68-INDIC-DEVICES.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R68-LEXICAL-DIAGNOSTICS.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R68-PURE-PAIR-PROBE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R68-SOURCE-REVIEW.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R68-WINDOWS-GUI-CHECKLIST.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R69-PURE-PAIR-MEASUREMENT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R71-BOOT-PATH.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R71-CANONICAL-BUILD.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R71-MEMORY-BOUNDARY.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R71-MODULES.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R71-SPECIFICATION-EVIDENCE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/R72-BASELINE-OBSERVED.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/ROADMAP-TO-V1.0.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/rounds/TEST-ME.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/SANDESH.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/SPECIFICATION.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-audit.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-benchmark-report.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-2.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-3.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-english.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-gujarati.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-hindi.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-sanskrit.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-tamil.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book-telugu.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-book.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-design-parameters.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-icon-thread.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-ide.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-keyword-words.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-performance.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-philosophy.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-project-status.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-roadmap.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-scorecard.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-stdlib-reference.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-stdlib.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/sutram-vocabulary.html",
+    "pass_": true
+  },
+  {
+    "file": "docs/vocabulary/VOCABULARY-COMPLETE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/vocabulary/VOCABULARY-DERIVATION.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/vocabulary/VOCABULARY-RULE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/vocabulary/VOCABULARY-SHORT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/vocabulary/VOCABULARY-TABLE.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/WHATS-LEFT.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/WINDOWS-PORT-PLAN.md",
+    "pass_": true
+  },
+  {
+    "file": "docs/WINDOWS-SETUP.md",
+    "pass_": true
+  },
+  {
+    "file": "examples/01_hello.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/02_arith.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/03_if_else.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/04_while.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/05_func_params.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/06_rachana.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/07_module.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/08_demo.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/09_comparisons.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/100_t18_kosh_bounds.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/100_t18_kosh_devanagari.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/101_t18_kosh_empty.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/102_ast_multimodule_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/103_b10_nested_break_patches.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/104_b10_nested_continue_patches.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/105_block_nesting_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/106_rachana_field_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/107_b11_block_65_statements.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/108_b11_block_statement_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/109_t18_kosh_dasham.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/10_mathlib.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/110_t18_kosh_dasham_devanagari.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/111_t18_kosh_dasham_function_return.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/112_t18_kosh_integer_conversion.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/113_perf_self_update.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/114_perf_loop_fastpaths.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/115_perf_loop_bottom.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/116_perf_reg_destination.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/117_perf_constant_literals.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/118_t18_kosh_param.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/119_t18_kosh_param_forward.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/11_forloop.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/120_t18_kosh_param_mismatch.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/121_t18_kosh_param_push_reject.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/122_t18_kosh_param_devanagari.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/123_t18_kosh_param_statement_call.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/124_perf_wide_immediate.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/125_perf_register_immediate_destination.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/126_numeric_pipeline.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/127_perf_float_self_register.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/128_perf_float_self_fallback.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/129_perf_float_destination.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/12_elif.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/130_perf_float_destination_alias.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/131_perf_float_compare_register.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/132_perf_float_compare_fallback.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/133_perf_float_scalar_call_rhs.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/134_perf_float_complex_fallback.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/135_r30_float_index_scalar.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/136_r30_float_complex_left.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/137_r30_float_literal_rhs.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/138_r30_float_comparison_index.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/139_r30_float_mixed_fallback.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/13_negatives.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/140_r30_index_side_effect.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/141_xmm_cache_basic.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/142_xmm_cache_alias.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/143_xmm_cache_barriers.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/144_xmm_cache_fallback.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/145_xmm_cache_nested_calls.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/146_stage2_loop_call_boundary.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/147_stage2_recursive_float_boundary.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/148_stage2_array_mutation_call.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/149_namespaced_colliding_imports.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/14_strings.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/150_namespaced_same_module_two_aliases.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/151_namespaced_and_legacy_import.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/152_namespaced_comment_string_preservation.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/153_namespaced_devanagari_function.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/154_namespaced_duplicate_idempotent.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/155_namespaced_multi_alias_composition.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/156_namespaced_alias_collision.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/157_namespaced_missing_module.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/158_namespaced_alias_digit.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/159_namespaced_path_traversal.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/15_sutra_const.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/160_namespaced_empty_alias.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/161_namespaced_overlong_alias.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/162_namespaced_import_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/163_r40_transitive_diamond.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/164_r41_cycle_reject.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/165_r41_missing_reject.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/166_r41_optin_diamond.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/16_advanced.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/17_booleans.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/18_guna_switch.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/19_srijana_enum.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/200_madhava_series.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/201_madhava_library.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/202_brahmagupta_area.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/203_meru_with_kosh.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/204_b11_block_statement_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/205_madhava_pi_kosh.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/206_sankhyiki.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/207_sankhyiki_vector.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/208_kalana.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/209_samanvaya.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/20_pankti_array.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/210_r41_cycle.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/211_r41_v1_public.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/212_r41_v1_private.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/213_r41_v1_dupexp.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/214_r41_v1_noalias.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/215_r12_wordfreq.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/215_r12_wordfreq.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/215_r12_wordfreq.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/216_r12_expr.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/216_r12_expr.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/216_r12_expr.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/217_r12_report.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/217_r12_report.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/217_r12_report.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/218_sanskrit_devanagari.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/219_sanskrit_kosh_aliases.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/21_break_continue.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/220_hindi_parse_error.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/221_eof_location.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/222_old_keyword_name.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/223_undefined_name.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/224_unknown_field.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/225_undeclared_array.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/226_long_field_names.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/227_assign_undeclared.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/228_block_scope.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/229_loop_var_scope.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/22_precedence.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/230_redeclare_after_block.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/231_duplicate_name.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/232_arity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/233_missing_module.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/234_ambiguous_field.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/235_duplicate_field.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/236_guna_once.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/237_many_variables.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/238_r17_d1_unary_not.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/239_r17_d2_anya_loop_krama.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/23_grahan_input.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/240_r17_d3_anya_self_assign.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/241_r17_d4_precedence.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/242_r17_empty_guna.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/243_r18_sthagita.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/244_r18_rachana_in_function.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/245_r18_netsock.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/246_r23_comparator_sort.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/247_r23_methods.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/248_r23_slices.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/249_r25_phal.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/24_guess_game.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/250_r26_dosh_handler.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/251_r38_alias_mala_oob.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/252_r38_alias_kosh_oob.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/253_r38_alias_slice_oob.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/254_r42_alias_pankti_len.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/255_r42_alias_kosh_push.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/256_r44_vartani_sanskrit_names.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/257_r48_kosh_empty.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/258_r70_loop_indent.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/259_r70_indent_ambiguous.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/25_patterns.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/260_r71_indented_bodies.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/261_r71_after_mukhya.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/262_r71_same_line_body.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/263_r72_mandapa.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/264_r73_escape_arith.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/265_r73_escape_mala.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/266_r73_inside_only.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/267_r73_outer_number.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/268_r73_return_value.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/269_r73_copy_out.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/26_calculator.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/270_r75_nested_store.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/271_r75_nested_store_data.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/272_r75_negative_size.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/273_r77_bytes_not_cells.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/274_r77_bytes_loop_stops.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/275_r77_cells_times_eight.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/276_r77_mixed_indentation.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/277_r80_divide_by_zero.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/278_r80_literal_too_large.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/279_r80_constant_overflow.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/27_even_odd.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/280_r80_runtime_wraps.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/281_r80_divide_in_module.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/282_r81_parikshita_sort.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/283_r81_parikshita_refuses_library.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/284_r81_parikshita_transitive.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/285_r81_parikshita_address_param.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/286_r82_kosh_in_mandapa.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/287_r82_kosh_after_mandapa.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/288_r86_kosh_alias_moves.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/289_r87_float_print.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/28_compound.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/290_r87_fraction_into_vitti.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/291_r90_nan_compare.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/292_r90_likha_after_division.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/293_r90_float_divide_by_zero.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/294_r160_nan_comparisons.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/295_r92_computed_fraction_into_vitti.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/296_r93_float_e_notation.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/297_r94_whole_number_operators.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/298_r94_dasham_remainder_refused.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/299_r94_nonfinite_kosh_mandapa.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/29_nishkriya.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/300_r96_chakra_decimal_bound.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/301_r96_chakra_dasham_counter.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/302_r96_decimal_loop_with_yavat.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/303_r103_parimita_refuses.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/304_r103_parimita_within.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/305_r103_parimita_needs_number.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/306_r105_string_equal.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/307_r105_string_join.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/308_r105_likha_three.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/309_r105_string_order.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/30_lkhb.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/310_r105_string_beside_number.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/311_r105_string_arithmetic.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/312_r106_likha_string.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/313_r106_string_condition.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/314_r106_kosh_operand.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/315_r106_dasham_into_mala.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/316_r107_kosh_kept_by_a_prakriya.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/317_r107_parimana.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/318_r108_parimana_moves.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/319_r108_mala_operand.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/31_strcat.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/320_r109_kosh_alias_kept.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/321_r109_kosh_long_chain.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/322_r111_new_names.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/323_r111_old_names.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/324_r111_asti_true.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/325_r111_asti_false.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/326_r111_nasti_true.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/327_r111_nasti_false.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/328_r113_rachana_operand.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/329_r113_sankhya_bindu.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/32_bank_interest.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/330_r116_dvigun.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/331_r116_trigun.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/332_r116_vardh.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/333_r116_nirapeksh_mulya.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/334_r116_mahattam_samapavartak.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/335_r116_viparyay_ank.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/336_r116_ganita_nirapeksh.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/337_r116_brahmagupta_kshetr.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/338_r116_brihat_ank_se.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/339_r116_brihat_ank_tak_laghu.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/33_unit_conversion.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/340_r116_yog_seema.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/341_r116_adish_gunan.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/342_r116_bindu_gunan.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/343_r116_suchi_shreni.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/344_r116_varna_tak_dashm.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/345_r116_long_literal.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/346_r118_old_library_names.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/347_r118_old_roop_names.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/348_r126_kosh_then_raw.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/349_r126_kosh_in_one_branch.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/34_incdec.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/350_r126_mala_then_kosh.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/351_r127_muse_reassign.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/352_r127_muse_assign_kosh_mala.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/353_r127_muse_loop.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/354_r127_muse_callresult.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/355_r127_muse_malacell.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/356_r127_muse_koshcell.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/357_r127_muse_global.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/358_r127_muse_global_samefn.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/359_r127_muse_ternary_oob.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/35_comments.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/36_descending.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/37_native_gujarati.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/38_native_hindi.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/39_native_tamil.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/40_functions_params.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/41_recursion.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/42_block_comments.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/43_nested_likha.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/44_shabda.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/45_shifts.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/46_language_reference.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/59_windows_grahan_runtime.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/60_six_func_args.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/61_stdlib_math.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/62_stdlib_num.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/63_stdlib_string.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/64_param_reassign.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/65_char_code_index.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/66_module_dedupe.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/67_array_len_bounds.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/68_array_oob.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/69_undefined_function.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/70_module_collision.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/71_array_negative_index.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/72_array_variable_index.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/73_array_equal_length.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/74_array_highest_valid.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/75_array_dynamic_length.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/76_array_function_scope.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/77_ternary.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/78_do_while.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/79_ayojan_cwd.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/80_b6_nested_call_loop.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/81_stdlib_num2.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/82_b7_stack_spill.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/83_stdlib_sort.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/84_stdlib_string2.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/85_stdlib_shellsort.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/86_b8_multi_modules.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/87_b8_all_modules.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/87_b8_func_params_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/87_b8_math_sort_string.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/88_pingala_chandas.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/89_b9_short_circuit.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/90_b9_short_circuit_bounds.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/91_indian_number_theory.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/92_t12_dasham_float.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/93_t12_float_functions.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/94_t12_float_functions.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/95_t12_madhava_functions.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/96_t18_kosh.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/97_t18_kosh_devanagari.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/98_t18_kosh_empty.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/99_ast_multimodule_capacity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/99_t18_kosh.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/array_demo.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/char_ops.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/fizzbuzz.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/format_demo.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/full_demo.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/func_demo.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/hello.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/import_demo.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r33_alpha.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r33_beta.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r33_devanagari.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r40_a.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r40_b.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r40_c.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r40_d.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r41_cyc_a.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r41_cyc_b.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r41_cycle_a.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r41_cycle_b.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r41_dup.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r41_vec.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/lib/r80_ausat.smlib",
+    "pass_": true
+  },
+  {
+    "file": "examples/mem_safe.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/multable.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/number_game.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/prime.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r67/bengali_native.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r67/bengali_native.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r67/bengali_native.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r67/punjabi_native.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r67/punjabi_native.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r67/punjabi_native.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/hindi.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/hindi.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/hindi.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/kannada.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/kannada.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/kannada.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/marathi.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/marathi.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/marathi.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/odia.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/odia.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/odia.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/all_registers.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/all_registers.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/all_registers.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/no_pairs.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/no_pairs.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/no_pairs.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/nonmatching.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/nonmatching.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/pairs/nonmatching.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/tamil.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/tamil.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/tamil.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/telugu.exit",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/telugu.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r68/telugu.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/associativity.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/associativity.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/boundary_bad.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/boundary_good.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/boundary_good.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/conversion.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/conversion.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/evaluation_order.out",
+    "pass_": true
+  },
+  {
+    "file": "examples/r71/evaluation_order.sm",
+    "pass_": true
+  },
+  {
+    "file": "examples/strength_reduction.sm",
+    "pass_": true
+  },
+  {
+    "file": "lang/bengali.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/bengali.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/gujarati.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/gujarati.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/hindi.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/hindi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/kannada.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/kannada.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/malayalam.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/malayalam.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/marathi.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/marathi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/odia.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/odia.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/punjabi.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/punjabi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/sanskrit.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/sanskrit.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/tamil.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/tamil.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lang/telugu.lang",
+    "pass_": true
+  },
+  {
+    "file": "lang/telugu.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "lib/aadhar.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/ank.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/anukram.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/brihat.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/chandas.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/ganit.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/ganita.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/gudh.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/kalana.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/khand.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/madhava.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/mala.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/nighantu.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/patra.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/phal.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/roop.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/sadhan.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/samanvaya.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/sangrah.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/sankhyiki.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/shreni.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/suchi.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/vakyank.smlib",
+    "pass_": true
+  },
+  {
+    "file": "lib/varna.smlib",
+    "pass_": true
+  },
+  {
+    "file": "LICENSE.txt",
+    "pass_": true
+  },
+  {
+    "file": "README.md",
+    "pass_": true
+  },
+  {
+    "file": "sutram-ide-gui.exe",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/bengali.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/bengali.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/gujarati.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/gujarati.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/hindi.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/hindi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/kannada.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/kannada.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/malayalam.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/malayalam.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/marathi.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/marathi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/odia.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/odia.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/punjabi.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/punjabi.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/sanskrit.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/sanskrit.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/tamil.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/tamil.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/telugu.lang",
+    "pass_": true
+  },
+  {
+    "file": "win/lang/telugu.sandesh",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/aadhar.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/ank.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/anukram.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/brihat.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/chandas.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/ganit.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/ganita.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/gudh.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/kalana.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/khand.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/madhava.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/mala.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/nighantu.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/patra.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/phal.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/roop.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/sadhan.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/samanvaya.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/sangrah.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/sankhyiki.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/shreni.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/suchi.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/vakyank.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/lib/varna.smlib",
+    "pass_": true
+  },
+  {
+    "file": "win/sutram.exe",
+    "pass_": true
+  }
+]

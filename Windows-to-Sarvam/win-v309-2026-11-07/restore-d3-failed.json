@@ -1,0 +1,303 @@
+{
+    "action":  "restore",
+    "name":  "d3-failed",
+    "time":  "2026-11-07T10:14:54.8432653-05:00",
+    "user_path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin;C:\\Users\\dmech\\.cargo\\bin;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;\\msys64\\mingw64\\bin;C:\\msys64;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Mozilla Firefox;C:\\Users\\dmech\\go\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python311\\Scripts;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python313\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Python\\bin;C:\\Users\\dmech\\miniconda3\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Programs\\MovieBox-Tui\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Zed\\bin;C:\\Users\\dmech\\AppData\\Roaming\\npm;C:\\Users\\dmech\\AppData\\Local\\Programs\\Ollama;C:\\Users\\dmech\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Users\\dmech\\.local\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim;C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin",
+    "machine_path":  "C:\\Python314\\Scripts\\;C:\\Python314\\;C:\\Program Files\\Lapce\\;C:\\Program Files\\Python313\\Scripts\\;C:\\Program Files\\Python313\\;c:\\windows\\system32;c:\\windows;c:\\windows\\system32\\wbem;c:\\windows\\system32\\windowspowershell\\v1.0\\;c:\\windows\\system32\\openssh\\;c:\\program files\\microsoft sql server\\client sdk\\odbc\\110\\tools\\binn\\;c:\\program files (x86)\\microsoft sql server\\120\\tools\\binn\\;c:\\program files\\microsoft sql server\\120\\tools\\binn\\;c:\\program files\\microsoft sql server\\120\\dts\\binn\\;c:\\tdm-gcc-64\\bin;c:\\program files\\dotnet\\;c:\\program files\\nvidia corporation\\nvidia app\\nvdlisr;c:\\program files (x86)\\windows kits\\10\\windows performance toolkit\\;c:\\program files\\crucial\\crucial storage executive;c:\\program files\\microsoft sql server\\150\\tools\\binn\\;c:\\program files\\microsoft sql server\\client sdk\\odbc\\170\\tools\\binn\\;c:\\mingw\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files (x86)\\Common Files\\Acronis\\SnapAPI\\;C:\\Program Files (x86)\\Common Files\\Acronis\\VirtualFile\\;C:\\Program Files (x86)\\Common Files\\Acronis\\VirtualFile64\\;C:\\Program Files (x86)\\Common Files\\Acronis\\FileProtector\\;C:\\Program Files (x86)\\Common Files\\Acronis\\FileProtector64\\;C:\\msys64\\mingw64\\bin;C:\\libs\\libharu\\include;C:\\libs\\libharu\\build\\src;C:\\libs\\libharu\\build\\include;C:\\TDM-GCC-64\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Swift\\Toolchains\\6.0.2+Asserts\\usr\\bin\\swift.exe;C:\\Webdrivers;C:\\Program Files\\Mozilla Firefox;C:\\Program Files\\Go\\bin;C:\\Program Files\\mingw64\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\Git\\cmd;C:\\Program Files\\nodejs\\;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\WSL\\;C:\\Program Files\\Kraken Desktop\\",
+    "files":  [
+                  {
+                      "sha256":  "B7EA179CE41257D84B7062FD59F9EC9089ED53AC22379A1E638C0E3E6AC5D9DA",
+                      "bytes":  63662,
+                      "relative":  "payload.pending.sha256"
+                  },
+                  {
+                      "sha256":  "B48AEB52516433C3CCE51FFE436FA04355CB938AA0B5188C60FE7C02F2923EC1",
+                      "bytes":  36693,
+                      "relative":  "assets\\sutram.ico"
+                  },
+                  {
+                      "sha256":  "814CB11AE1C9111BE3CFAF0812A3A4E40BA8FD26F24A48AE263A11282DEFDE2D",
+                      "bytes":  19903,
+                      "relative":  "bin\\sutram-link.exe"
+                  },
+                  {
+                      "sha256":  "05B23D56D40AAA4B71C6D67D13996D75DA6E4D2E2B2AC47FBF4960A1A52FB481",
+                      "bytes":  536484,
+                      "relative":  "bin\\sutram.exe"
+                  },
+                  {
+                      "sha256":  "0B0848F61BB1B8473B9E0F746A6EDD6F39B46FB950A3BE6F24C2753EF7B14846",
+                      "bytes":  1014,
+                      "relative":  "bin\\lang\\bengali.lang"
+                  },
+                  {
+                      "sha256":  "AD88EA3F2EAB52D1EAF8092680608E3BD16F75A7DE866F4FCB912FB4C6266D50",
+                      "bytes":  23206,
+                      "relative":  "bin\\lang\\bengali.sandesh"
+                  },
+                  {
+                      "sha256":  "AF2178938604DBD8A7EDBA24AC0B4E1632E0DDCE0351F51FDC3678BAA187E7BA",
+                      "bytes":  1588,
+                      "relative":  "bin\\lang\\gujarati.lang"
+                  },
+                  {
+                      "sha256":  "D20C036F97C7CF34B73282E235CBC3F00BBC619498F060E9E78DF931B7878000",
+                      "bytes":  22485,
+                      "relative":  "bin\\lang\\gujarati.sandesh"
+                  },
+                  {
+                      "sha256":  "6CAEDBD349188A8C739E86286D8FF08AD4D750947F9AB60B5B136EDF98F51FBC",
+                      "bytes":  1110,
+                      "relative":  "bin\\lang\\hindi.lang"
+                  },
+                  {
+                      "sha256":  "D260895B0A73417518493F9D10E387495C99CD2DDAFA3A757DC97FD94A307548",
+                      "bytes":  22591,
+                      "relative":  "bin\\lang\\hindi.sandesh"
+                  },
+                  {
+                      "sha256":  "B19CE9DEDC9A9EA50F5CA486AABD8E89481A77D7DB58AE19BCCCC24D5CD766BC",
+                      "bytes":  1166,
+                      "relative":  "bin\\lang\\kannada.lang"
+                  },
+                  {
+                      "sha256":  "82E1B4DB44EA4C4D5849D70224195470A57C6764C9DB816661C0550510999EFB",
+                      "bytes":  23266,
+                      "relative":  "bin\\lang\\kannada.sandesh"
+                  },
+                  {
+                      "sha256":  "00288BFECF07A402049CF87D025C780E8C85F71C509EB84E36537E208F396F87",
+                      "bytes":  1148,
+                      "relative":  "bin\\lang\\malayalam.lang"
+                  },
+                  {
+                      "sha256":  "6F29D9F93F22BF8A2EBC8452847B021F875312A989B1E0F5A232228145C6AE28",
+                      "bytes":  24569,
+                      "relative":  "bin\\lang\\malayalam.sandesh"
+                  },
+                  {
+                      "sha256":  "338D92ED47CC81511F3A4E5B78A27EA4D23FB0ED8CA89E95E0C610D5C93AFAAF",
+                      "bytes":  1115,
+                      "relative":  "bin\\lang\\marathi.lang"
+                  },
+                  {
+                      "sha256":  "8E3E7067C1D7230C427F516EF1436C79F595DC82DB915F42F3A76FB0CF1E5F42",
+                      "bytes":  23368,
+                      "relative":  "bin\\lang\\marathi.sandesh"
+                  },
+                  {
+                      "sha256":  "B623CB6A9944C61281725C3B51CBED190AA57AC50276205658C12D6D2C424403",
+                      "bytes":  1091,
+                      "relative":  "bin\\lang\\odia.lang"
+                  },
+                  {
+                      "sha256":  "9D91CB202346DF38EBC14BCA2F79536998013699F8BCD26E64C799D13EB3DAD3",
+                      "bytes":  23510,
+                      "relative":  "bin\\lang\\odia.sandesh"
+                  },
+                  {
+                      "sha256":  "3A5C596A39F2A7CB4208F0AD444CD3FFFEC587AD9987B4F76254626BFA77CF3E",
+                      "bytes":  981,
+                      "relative":  "bin\\lang\\punjabi.lang"
+                  },
+                  {
+                      "sha256":  "101825BF0BB10E1B3128F79E2567777F35CB1777EB38E5948F9DD447E7CE7C74",
+                      "bytes":  22540,
+                      "relative":  "bin\\lang\\punjabi.sandesh"
+                  },
+                  {
+                      "sha256":  "0B1940860BBFD54C1A5EE65F45BF31FFD1D4E68A0D95C5B5106EF1ABDC1D0D9F",
+                      "bytes":  3032,
+                      "relative":  "bin\\lang\\sanskrit.lang"
+                  },
+                  {
+                      "sha256":  "C47A31EFDD12BD0C6F6FFD64505391373BCD6236B87C4549C96B807A4F4CE027",
+                      "bytes":  23684,
+                      "relative":  "bin\\lang\\sanskrit.sandesh"
+                  },
+                  {
+                      "sha256":  "98F46C9EAE99D6E80F776609C1DCC981367EC1921BC4C099DFE1151401635218",
+                      "bytes":  1418,
+                      "relative":  "bin\\lang\\tamil.lang"
+                  },
+                  {
+                      "sha256":  "90C6D14A730CC037EFF6D54742C04D3FB06148FCA06E0D32963F6C0608D48F30",
+                      "bytes":  25479,
+                      "relative":  "bin\\lang\\tamil.sandesh"
+                  },
+                  {
+                      "sha256":  "B92058D54DE8A83230C724C2BA180FC00FB964548A684F92F7791BBCA1032F6A",
+                      "bytes":  1186,
+                      "relative":  "bin\\lang\\telugu.lang"
+                  },
+                  {
+                      "sha256":  "2AE64BCB6951C50070264A4407199DD1F794B02E5D4AB761FE0414A8A4D9850C",
+                      "bytes":  24085,
+                      "relative":  "bin\\lang\\telugu.sandesh"
+                  },
+                  {
+                      "sha256":  "784B98A178B79B6856161AC2F474226C8121EE63D5236FF3F098A14AD0280876",
+                      "bytes":  3578,
+                      "relative":  "bin\\lib\\aadhar.smlib"
+                  },
+                  {
+                      "sha256":  "E3D262BBB3950CC0F567000732FC3C3319AFF9174385CD294E00ACBA53290C76",
+                      "bytes":  4631,
+                      "relative":  "bin\\lib\\ank.smlib"
+                  },
+                  {
+                      "sha256":  "789017ADE05175680644A9C8EBD8610BE5C4F001FE8CE2EA3794AE25A0402C26",
+                      "bytes":  4629,
+                      "relative":  "bin\\lib\\anukram.smlib"
+                  },
+                  {
+                      "sha256":  "FB8EC5094D4D14D98CCBBD126BAAB088A252DA892DFA4759C1A86EBAC5534479",
+                      "bytes":  10601,
+                      "relative":  "bin\\lib\\brihat.smlib"
+                  },
+                  {
+                      "sha256":  "0DBACAA0924254ED407235B49042D1751BAE264ACDF2114DA275B93187C1AD52",
+                      "bytes":  3844,
+                      "relative":  "bin\\lib\\chandas.smlib"
+                  },
+                  {
+                      "sha256":  "E736AD00F26DDDDDA89B24F8DF13CE165543C92BD13E8F163B8F7CE8564EB24E",
+                      "bytes":  9899,
+                      "relative":  "bin\\lib\\ganit.smlib"
+                  },
+                  {
+                      "sha256":  "ECA1D107DE2E5F2A9D1D9F10DF80371CB3617B938AD5C85B619103589AB78B09",
+                      "bytes":  22996,
+                      "relative":  "bin\\lib\\ganita.smlib"
+                  },
+                  {
+                      "sha256":  "56863804379068BFE2078C51652C3FD7A64975FDC4FCADD16D61AE3B23FE7379",
+                      "bytes":  1059,
+                      "relative":  "bin\\lib\\gudh.smlib"
+                  },
+                  {
+                      "sha256":  "ADD85A133C2CA27063AE6446DB53C38F9CD36B0C3C5CEA6C2CD269026FD6847A",
+                      "bytes":  5846,
+                      "relative":  "bin\\lib\\kalana.smlib"
+                  },
+                  {
+                      "sha256":  "EC39276F86A40D9B2EA0AF598781000B0FD20BC1A356F4D576815A2F3805101C",
+                      "bytes":  17692,
+                      "relative":  "bin\\lib\\khand.smlib"
+                  },
+                  {
+                      "sha256":  "F3E43D8238F84071ABDE2891B5048C959827215FF1F99D262827C310AEC2D8C1",
+                      "bytes":  4972,
+                      "relative":  "bin\\lib\\madhava.smlib"
+                  },
+                  {
+                      "sha256":  "D64D9EF51A55F1FEDE6803E5825209C70BE9C61253FE826FB36D63CE5DA8AFFE",
+                      "bytes":  2552,
+                      "relative":  "bin\\lib\\mala.smlib"
+                  },
+                  {
+                      "sha256":  "3EF007B04FC1AABBB4BC1328C0E9859EE50201B554613747D7CE50F840BC254E",
+                      "bytes":  15559,
+                      "relative":  "bin\\lib\\nighantu.smlib"
+                  },
+                  {
+                      "sha256":  "B13D64A5C8413AC4ECA7CF96CD4FF101E3368F42FBAF22634088F36757162398",
+                      "bytes":  2912,
+                      "relative":  "bin\\lib\\patra.smlib"
+                  },
+                  {
+                      "sha256":  "CF1CD9EDA5050EFFA84C128F92728B3830608523E918A03EA448AD722141A140",
+                      "bytes":  6154,
+                      "relative":  "bin\\lib\\phal.smlib"
+                  },
+                  {
+                      "sha256":  "40B9B487BCA41E3629242AF3B1E007C82260DE5B40C4CCA1C59793E829CE356A",
+                      "bytes":  20355,
+                      "relative":  "bin\\lib\\roop.smlib"
+                  },
+                  {
+                      "sha256":  "C403C105A6D085FC147A3084B6C6E9CDB0DB3CE278E83598B24FF529CFC74FC0",
+                      "bytes":  4692,
+                      "relative":  "bin\\lib\\sadhan.smlib"
+                  },
+                  {
+                      "sha256":  "48D491C0261716201637D34B4ADD8918D616937FC19A58C28B112241B3C17AFD",
+                      "bytes":  5343,
+                      "relative":  "bin\\lib\\samanvaya.smlib"
+                  },
+                  {
+                      "sha256":  "55FF91F5098161FF8EB205D49B3BC1924815CA2E2837E7F2A4970071E21617A4",
+                      "bytes":  9805,
+                      "relative":  "bin\\lib\\sangrah.smlib"
+                  },
+                  {
+                      "sha256":  "84F32473E3C03FB2A8641FD7F66AAD1C96706C51CD6C0010D5C8E30A60636A2E",
+                      "bytes":  6540,
+                      "relative":  "bin\\lib\\sankhyiki.smlib"
+                  },
+                  {
+                      "sha256":  "951DB41D7BFB85D34D7ECDEC7670D4CE424B791A7C08F36C0EB28EDDEA2394AE",
+                      "bytes":  5960,
+                      "relative":  "bin\\lib\\shreni.smlib"
+                  },
+                  {
+                      "sha256":  "296BAEDA1EE7F794E3A0787088C686974BF7D12EDE2ECB13E32CC5E9D073D424",
+                      "bytes":  15565,
+                      "relative":  "bin\\lib\\suchi.smlib"
+                  },
+                  {
+                      "sha256":  "9D9563112CD9C877A7BF6CC36324403FC4F3D027374D7B2B5CF6AB0A94ACF296",
+                      "bytes":  12583,
+                      "relative":  "bin\\lib\\vakyank.smlib"
+                  },
+                  {
+                      "sha256":  "1F75779507465E3CA11DE500A3AF54C907FE840ECFFFD89F55363D73E9E54352",
+                      "bytes":  16119,
+                      "relative":  "bin\\lib\\varna.smlib"
+                  },
+                  {
+                      "sha256":  "1EB75FC320ECF1B2F1873780E6D5DC85D34D89A1626120105F816BF4F4B223CF",
+                      "bytes":  3588,
+                      "relative":  "docs\\AI-WORK-DIVISION.md"
+                  },
+                  {
+                      "sha256":  "ECF1DE53B67CB8CDFC1550AAABB17CBA074173B32FA3A356102574AA31C9BCD9",
+                      "bytes":  5144,
+                      "relative":  "docs\\BUILDING.md"
+                  },
+                  {
+                      "sha256":  "1E9212591FDC777704F5CF7963C2DC18E740C5596275AE2F08A9A1F01D831892",
+                      "bytes":  29622,
+                      "relative":  "docs\\CHANGELOG.md"
+                  },
+                  {
+                      "sha256":  "3F43E9B351511BC06FC7943700E9B9EF155FA9417A56064BE378F4E7B69FEB38",
+                      "bytes":  6571,
+                      "relative":  "docs\\_newchapter_en.html"
+                  },
+                  {
+                      "sha256":  "F783D14D292C1C819D45CFFD57E88743F757F3EDE7CF9BB5A3604AA542E2B5B8",
+                      "bytes":  2274,
+                      "relative":  "docs\\ai-handoff-notes\\HANDOFF.md"
+                  },
+                  {
+                      "sha256":  "33E2CA4B123332C15CE16DE431250AA189BE1317B074097C00403833A7E01F45",
+                      "bytes":  2701,
+                      "relative":  "docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md"
+                  },
+                  {
+                      "sha256":  "90787AEC2D1499F318FE3BB2A1D7CFCEBF535C1BE88DD9BBF366F79EF1A7CF2E",
+                      "bytes":  3024,
+                      "relative":  "docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md"
+                  },
+                  {
+                      "sha256":  "EB7DCD0EE38C8EA04E31C393E8A72E6F82CBA647374E25C24D1AC76A9710D40A",
+                      "bytes":  8595,
+                      "relative":  "docs\\ai-handoff-notes\\START_HERE_FOR_AI.md"
+                  }
+              ],
+    "preserved":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-d3-failed-20261107-101454",
+    "preserved_transaction":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-d3-failed-20261107-101454.transaction",
+    "restored":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-working-v309-20261107",
+    "verified":  true
+}

@@ -1,0 +1,17 @@
+{
+  "provenance": "Reconstructed read-only from saved evidence after dialog acknowledgement raised an observer error; no retry repeated.",
+  "original_sha256": "0f75f06bac0f014b9fb6b790bf97b0dce2699c19730fdc3dfb4db616ca1d4135",
+  "edited_sha256": "ecf1de53b67cb8cdfc1550aaabb17cba074173b32fa3a356102574aa31c9bcd9",
+  "after_retry_inventory_sha256": "ecf1de53b67cb8cdfc1550aaabb17cba074173b32fa3a356102574aa31c9bcd9",
+  "preserved_file": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-d3-failed-20261107-101454\\docs\\BUILDING.md",
+  "preserved_file_sha256": "ecf1de53b67cb8cdfc1550aaabb17cba074173b32fa3a356102574aa31c9bcd9",
+  "edit_preserved": true,
+  "exact_added_bytes": true,
+  "engine_exit": 1,
+  "observer_status": "OBSERVER_ERROR",
+  "observer_error": "Exception calling \"Send\" with \"5\" argument(s): \"SendMessageTimeout failed for message 0xF5\"",
+  "dialog": [
+    "OK",
+    "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."
+  ]
+}

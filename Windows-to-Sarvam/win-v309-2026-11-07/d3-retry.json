@@ -1,0 +1,43 @@
+{
+    "name":  "d3-retry",
+    "moment":  "complete",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
+    "setup_sha256":  "9D046B4E1B3D95222523E78304E48CB5BC10A69F951B33822A2673F0DC3BB533",
+    "started":  "2026-11-07T10:14:49.2262209-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.2865236,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  17972,
+    "process_started":  "2026-11-07T10:14:49.2424175-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "d3-retry-ready.png",
+    "child":  {
+                  "parent":  17972,
+                  "pid":  44480,
+                  "started":  "2026-11-07T10:14:50.1355200-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9CA2.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9CA2.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9CA2.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM9CA2.tmp\\install.log",
+    "status":  "OBSERVER_ERROR",
+    "dialog_text":  [
+                        "OK",
+                        "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."
+                    ],
+    "error_screenshot":  "d3-retry-error.png",
+    "observer_error":  "Exception calling \"Send\" with \"5\" argument(s): \"SendMessageTimeout failed for message 0xF5\"",
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  1,
+    "wizard_exited":  true,
+    "pending_exists":  true,
+    "transaction_exists":  true,
+    "payload_files_present":  57,
+    "ended":  "2026-11-07T10:14:54.7744171-05:00"
+}

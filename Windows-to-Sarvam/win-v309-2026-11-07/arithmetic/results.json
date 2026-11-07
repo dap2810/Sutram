@@ -1,0 +1,139 @@
+{
+  "phase": "arithmetic",
+  "compiler": "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+  "compiler_sha256": "05b23d56d40aaa4b71c6d67d13996d75da6e4d2e2b2ac47fbf4960a1a52fb481",
+  "cases": [
+    {
+      "name": "add",
+      "source_sha256": "77699b7cf6970b38ddddcdab00964c35a59cfb1dabac450a46275fabda166821",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v309-2026-11-07\\arithmetic\\add.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\add.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+        "stderr": "",
+        "seconds": 0.01858689999789931
+      },
+      "output_file_exists": false,
+      "pass": true
+    },
+    {
+      "name": "xor",
+      "source_sha256": "3eaf1d670f19ed101331aee119b39cf0b4b8b2b8ae10c38ba1f1980f6cdd8a4a",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v309-2026-11-07\\arithmetic\\xor.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\xor.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+        "stderr": "",
+        "seconds": 0.017238899978110567
+      },
+      "output_file_exists": false,
+      "pass": true
+    },
+    {
+      "name": "add-literal",
+      "source_sha256": "5c348f4342f19e0d347727b6a58a42ca7fe46d02c4295ba31820e2a0b9f52846",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v309-2026-11-07\\arithmetic\\add-literal.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\add-literal.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+        "stderr": "",
+        "seconds": 0.015980299998773262
+      },
+      "output_file_exists": false,
+      "pass": true
+    },
+    {
+      "name": "condition",
+      "source_sha256": "842a2b0179671b7fb229289afe1ebf3e6f7a70902e7e24e1fc7a458665060673",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v309-2026-11-07\\arithmetic\\condition.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\condition.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
+        "stderr": "",
+        "seconds": 0.016006099991500378
+      },
+      "output_file_exists": false,
+      "pass": true
+    },
+    {
+      "name": "direct-print",
+      "source_sha256": "11abfed25138626cb79c8320e43bbe1fd441aa4f941050985f394467e9d9b0d8",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v309-2026-11-07\\arithmetic\\direct-print.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\direct-print.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...)\nSanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru\n",
+        "stderr": "",
+        "seconds": 0.015109800006030127
+      },
+      "output_file_exists": false,
+      "pass": true
+    },
+    {
+      "name": "store",
+      "source_sha256": "a518d45cdddeefb7613f5166216d68745907017261e19ae7ffdbf897075f6bd4",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v309-2026-11-07\\arithmetic\\store.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\store.exe"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.016071300022304058
+      },
+      "output_file_exists": false,
+      "pass": true
+    },
+    {
+      "name": "length",
+      "source_sha256": "f7ad8965182d48142b02c4eb3443e9024ecb350049dd310920e8d7e2f8384f17",
+      "compile": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v309-2026-11-07\\arithmetic\\length.sm",
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\length.exe"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 3584 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.017207800003234297
+      },
+      "output_file_exists": true,
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\arithmetic\\length.exe"
+        ],
+        "exit": 0,
+        "stdout": "2\n",
+        "stderr": "",
+        "seconds": 0.07180490001337603
+      },
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "passed": 7
+  }
+}

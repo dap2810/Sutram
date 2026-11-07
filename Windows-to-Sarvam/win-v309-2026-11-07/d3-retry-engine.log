@@ -1,0 +1,12 @@
+Sutram Setup Log
+[2026-11-07 10:14:50] Starting installation.
+[2026-11-07 10:14:50] Checking for another Sutram installation.
+[2026-11-07 10:14:50] A previous installation stopped part-way (its journal is C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt); this run finishes it.
+[2026-11-07 10:14:50] A previous installation stopped part-way (it left C:\Users\dmech\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
+[2026-11-07 10:14:50] Extracting embedded payload.
+[2026-11-07 10:14:53] Native self-test start: pre-install --version
+[2026-11-07 10:14:53] Native self-test exit: pre-install --version code=0
+[2026-11-07 10:14:53] Native self-test start: pre-install --help
+[2026-11-07 10:14:53] Native self-test exit: pre-install --help code=0
+[2026-11-07 10:14:54] Not this installer's file (preserved): C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md
+[2026-11-07 10:14:54] ERROR: 1 file(s) in the installation folder are not what this installer wrote (changed since installation, or not Sutram's), so it will not replace them: C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md. Nothing was changed. Move those files elsewhere, or move the whole folder aside (for example to C:\Users\dmech\AppData\Local\Programs\Sutram-recovery-20261107-101454), then run this installer again.

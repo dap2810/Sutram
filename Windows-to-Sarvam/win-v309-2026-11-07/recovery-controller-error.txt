@@ -1,0 +1,8 @@
+d3: System.Management.Automation.MethodInvocationException: Exception calling "Send" with "5" argument(s): "SendMessageTimeout failed for message 0xF5" ---> System.Exception: SendMessageTimeout failed for message 0xF5
+   at SutramIde.Send(IntPtr h, UInt32 m, Int64 w, Int64 l, UInt32 ms)
+   at CallSite.Target(Closure , CallSite , Type , Object , Int32 , Int32 , Int32 , Int32 )
+   --- End of inner exception stack trace ---
+   at System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   at System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   at System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)

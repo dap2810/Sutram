@@ -1,0 +1,56 @@
+{
+    "name":  "d2-stop",
+    "moment":  "after",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
+    "setup_sha256":  "9D046B4E1B3D95222523E78304E48CB5BC10A69F951B33822A2673F0DC3BB533",
+    "started":  "2026-11-07T10:13:50.0621327-05:00",
+    "observations":  [
+                         {
+                             "seconds":  0.2580455,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  5.3063103,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  10.359027099999999,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         },
+                         {
+                             "seconds":  15.389123099999999,
+                             "next_label":  "Install",
+                             "child_exited":  false
+                         }
+                     ],
+    "live_log_opened":  false,
+    "pid":  24536,
+    "process_started":  "2026-11-07T10:13:50.0763532-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "d2-stop-ready.png",
+    "child":  {
+                  "parent":  24536,
+                  "pid":  15672,
+                  "started":  "2026-11-07T10:13:50.9278360-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB54F.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB54F.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB54F.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB54F.tmp\\install.log",
+    "stop_observed_at":  "2026-11-07T10:14:09.7306063-05:00",
+    "seconds":  18.815762499999998,
+    "engine_age_seconds":  18.8027703,
+    "status":  "INTERRUPTED",
+    "observed_seconds":  18.8379649,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  true,
+    "transaction_exists":  true,
+    "payload_files_present":  657,
+    "ended":  "2026-11-07T10:14:09.9612679-05:00"
+}

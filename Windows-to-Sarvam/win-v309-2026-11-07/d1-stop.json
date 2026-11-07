@@ -1,0 +1,37 @@
+{
+    "name":  "d1-stop",
+    "moment":  "before",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
+    "setup_sha256":  "9D046B4E1B3D95222523E78304E48CB5BC10A69F951B33822A2673F0DC3BB533",
+    "started":  "2026-11-07T10:13:21.1265819-05:00",
+    "observations":  [
+
+                     ],
+    "live_log_opened":  false,
+    "pid":  9412,
+    "process_started":  "2026-11-07T10:13:21.2051880-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "d1-stop-ready.png",
+    "child":  {
+                  "parent":  9412,
+                  "pid":  24744,
+                  "started":  "2026-11-07T10:13:22.2418663-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4540.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4540.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4540.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4540.tmp\\install.log",
+    "stop_observed_at":  "2026-11-07T10:13:22.5748979-05:00",
+    "seconds":  0.34655349999999996,
+    "engine_age_seconds":  0.33403689999999997,
+    "status":  "INTERRUPTED",
+    "observed_seconds":  0.36991769999999996,
+    "stopped_during_cleanup":  [
+
+                               ],
+    "child_exited":  true,
+    "child_exit":  -1,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "transaction_exists":  false,
+    "payload_files_present":  0,
+    "ended":  "2026-11-07T10:13:22.7020064-05:00"
+}

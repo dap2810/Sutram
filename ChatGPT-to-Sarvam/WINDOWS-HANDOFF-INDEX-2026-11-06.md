@@ -1,11 +1,11 @@
 # Consolidated Windows handoffs for Sarvam
 
-**Latest machine state: installed v307 repair candidate from draft PR #67;
-upgrade, clean install and interrupted recovery reached Finish. 657/657 hashes,
-322 native suite cases, 36 OOM cases and 20 slice checks pass.**
-**Upstream v308 arrived during testing: its 36 OOM cases pass, but variable-zero
-addition/XOR slice escapes print 7/99.** Read the repair handoff first; the v308
-installer was not accepted by these v307 tests.
+**Latest machine state (7 November): canonical upstream v309 installed;
+657/657 hashes, 7 arithmetic checks, 32 OOM runs and 322 native suite cases pass.**
+Early/late interruption retries complete and an edited file is preserved.
+**Two gaps remain: Markdown checkout bytes still differ by CRLF, and late recovery
+restages all 657 files.** Read the [v309 handoff](WINDOWS-V309-2026-11-07.md) first.
+All recorded installer processes are closed; independent acceptance is pending.
 Earlier reports remain dated evidence and should not be rewritten
 as if their failures never occurred. This index collects all handoffs from this
 Windows install/diagnostic/repair sequence, as requested by the owner.
@@ -22,6 +22,7 @@ Windows install/diagnostic/repair sequence, as requested by the owner.
 | 8 | **[v306 follow-up](WINDOWS-V306-FOLLOWUP-2026-11-06.md)** | **[OOM boundary](../Windows-to-Sarvam/win-v306-followup-2026-11-06/OOM.md), [upgrade/security/timer evidence](../Windows-to-Sarvam/win-v306-followup-2026-11-06/UPGRADE.md)** | **Acronis explicitly suspended both upgrade processes in this and the prior round. No timeout action through 937.88 s under external suspension; working backup restored. B3 crashes at 448 MiB (2/3), 480/512 (3/3 each); 544–640 pass. Mandapa crashes 10/10; all messages complete.** |
 | 9 | **[v307 native verification](WINDOWS-V307-2026-11-06.md)** | **[OOM](../Windows-to-Sarvam/win-v307-2026-11-06/OOM.md), [upgrade/recovery/security](../Windows-to-Sarvam/win-v307-2026-11-06/UPGRADE.md), [slice probes](../Windows-to-Sarvam/win-v307-2026-11-06/SLICE.md), [commands/limitations](../Windows-to-Sarvam/win-v307-2026-11-06/COMMANDS.md)** | **18/32 OOM runs crash despite complete stderr; three slice escapes fail while function-value refusals pass. Upgrade suspended by Acronis through 936.39 s. Final interrupted-install recovery passes in 16.57 s; working v307 remains, all test processes closed. PowerShell live-log-reader interference independently reproduced and disclosed.** |
 | 10 | **[Implemented repair and pinned v308 comparison](WINDOWS-V307-FIXES-2026-11-06.md)** | **[Draft PR #67](https://github.com/dap2810/Sutram/pull/67), [full evidence](../Windows-to-Sarvam/win-v307-fixes-2026-11-06/RESULTS.md)** | **Installed repair: upgrade 21.20 s, clean 9.47 s, recovery 8.65 s; 657/657 hashes, 36+8 OOM checks, 20 slice checks, 322 native suite passes. Corrected 153 CRLF-only package differences. Separate upstream v308 OOM 36/36 pass; arithmetic S4 failure confirmed. PR conflicts with concurrent v308 changes; independent port/review required.** |
+| 11 | **[v309 native verification](WINDOWS-V309-2026-11-07.md)** | **[Full results](../Windows-to-Sarvam/win-v309-2026-11-07/RESULTS.md), [commands/probes](../Windows-to-Sarvam/win-v309-2026-11-07/COMMANDS.md)** | **Canonical v309 installed; 657/657 hashes; 7 arithmetic, 32 OOM and 322 native suite passes. README/reference checkout CRLF mismatch remains. Early/late retries complete; late retry restages 657 files. Edited file preserved by refusal. Two helper errors disclosed; all owned processes closed.** |
 
 The owner-supplied instructions, exact commands, raw logs, probes and screenshots
 are linked within each evidence folder. Review-branch test scripts are named
@@ -31,21 +32,26 @@ in the repository for Sarvam to read and acknowledge.
 
 ## Decisions still requested
 
+- Acknowledge the latest v309 results. Complete/review deterministic Markdown
+  checkout/packaging, and decide whether late recovery should avoid repeating
+  staging after all payload files have already been published. See the v309
+  handoff for exact measured limits and remaining gaps.
 - Compare the repair's self-termination OOM path with v308's reserve-based path:
   both now have the same 36/36 native boundary/control evidence. Exact original
   fault location and reserve-allocation-failure behavior remain unproven.
 - Retain the non-project-CWD library test with a complete compiler bundle.
 - Preserve the now-verified v306 IDE refusal notice and previous-file Save
   protection; the isolated Save test left original examples unchanged.
-- Review/port the recursive arithmetic-wrapper check and deterministic LF
-  packaging fix from PR #67. Keep the safe-call compatibility difference explicit;
-  the repair does not claim a general borrow checker.
+- v309 now passes the requested arithmetic-wrapper refusals and valid length
+  control. Review the broader compatibility and deterministic LF packaging work
+  from PR #67 independently; the seven v309 cases are not a general borrow checker.
 - Reconcile the handoff's A3 refusal expectation with the implementation's
   allowance for same-directory upgrades. Review the confirmed Acronis suspension
   and the recoverable-upgrade design. The runnable-wizard timeout remains unverified;
   no automatic action occurred while both processes were externally suspended.
-- Distinguish the installed v307 repair candidate from upstream v308 and general
-  release acceptance. v308's installer ownership/race findings remain open in
-  [the pinned static review](ROUND-207-V308-STATIC-REVIEW-FOLLOWUP.md).
+- Distinguish the historical v307 repair/v308 comparison from the now-installed
+  upstream v309. Reconcile the historical
+  [pinned v308 static review](ROUND-207-V308-STATIC-REVIEW-FOLLOWUP.md) with v309's
+  changes and native evidence; neither this index nor the tests grant release acceptance.
 
-Please acknowledge this consolidated index, PR #67 and the latest repair/v308 comparison evidence.
+Please acknowledge this consolidated index and the latest v309 evidence; retain PR #67 and the earlier reports as dated comparison material.

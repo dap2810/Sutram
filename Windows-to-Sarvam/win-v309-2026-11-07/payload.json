@@ -1,0 +1,44 @@
+{
+  "commit": "7c92bc02ff6f81b4903a20c14712ad3fd566b0c4",
+  "setup_sha256": "9d046b4e1b3d95222523e78304e48cb5bc10a69f951b33822a2673f0dc3bb533",
+  "compiler_sha256": "05b23d56d40aaa4b71c6d67d13996d75da6e4d2e2b2ac47fbf4960a1a52fb481",
+  "manifest_entries": 657,
+  "manifest_passed": 657,
+  "files": [
+    {
+      "file": "docs/LANGUAGE-REFERENCE.md",
+      "checkout_sha256": "cf7b12be17408c17b4f21200a6dcf8f27486dd9c957a9b1650e00a8704b227d1",
+      "manifest_sha256": "0ea21b639c17be6956fbb02e516eccaf8235dc6cfd0b1cef5354af170650a830",
+      "payload_sha256": "0ea21b639c17be6956fbb02e516eccaf8235dc6cfd0b1cef5354af170650a830",
+      "match": false,
+      "payload_matches_manifest": true,
+      "checkout_crlf": true,
+      "payload_crlf": false,
+      "crlf_only": true
+    },
+    {
+      "file": "lang/sanskrit.lang",
+      "checkout_sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "manifest_sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "payload_sha256": "0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f",
+      "match": true,
+      "payload_matches_manifest": true,
+      "checkout_crlf": false,
+      "payload_crlf": false,
+      "crlf_only": false
+    },
+    {
+      "file": "README.md",
+      "checkout_sha256": "9e08391ad8f82317de1a366da727a73e2e0f49f28b91029e71168b307168e8de",
+      "manifest_sha256": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "payload_sha256": "ab0ea01b9e8e13a95e1be50d36779f2153726308e7eaf7b4afecb45e1e34b9bd",
+      "match": false,
+      "payload_matches_manifest": true,
+      "checkout_crlf": true,
+      "payload_crlf": false,
+      "crlf_only": true
+    }
+  ],
+  "attributes": "# R34: line endings. Git for Windows checks text out as CRLF by default (core.autocrlf=true), and on a\n# real Windows 11 checkout that broke three things: 94 of the 213 hashes in tests/negative/r17/SHA256SUMS,\n# tools/r69_build.py --check-only (it hashes the raw bytes against the pins), and one program the Linux\n# compiler refused because the CR bytes pushed it over its source limit. The committed bytes are LF; these\n# rules only make every checkout match them. No file's content changes.\n\n# Sources: always LF.\n*.sm        text eol=lf\n*.smlib     text eol=lf\n*.asm       text eol=lf\n*.inc       text eol=lf\n*.lang      text eol=lf\n*.sandesh   text eol=lf\n*.sffi      text eol=lf\n\n# Test data and goldens: the exact committed bytes, never converted (their hashes and goldens are bytes).\ntests/negative/**   -text\ntests/expect/**     -text\n\n# Evidence typed in the Windows IDE: kept as recorded (CRLF).\nClaude-to-Sarvam/evidence-r9/wine/*.sm   -text\n",
+  "source": "Checked-in release package obtained from this Windows checkout; not a new Windows build"
+}
