@@ -1,0 +1,8 @@
+prakriya get_slice(kosh k) {
+    nivartanam k[0:1]
+}
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    likha(get_slice(k))
+}

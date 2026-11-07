@@ -1,0 +1,8 @@
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    kosh outer[4]
+    outer[0] = k[0:1]
+    likha(1)
+}

@@ -1,0 +1,9 @@
+prakriya identity(vibhag s) {
+    nivartanam s
+}
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    likha(identity(k[0:1]))
+}

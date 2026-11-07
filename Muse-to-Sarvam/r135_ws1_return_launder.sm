@@ -1,0 +1,16 @@
+prakriya launder(x) {
+    nivartanam x
+}
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    vitti obstacle = nirmmita(16)
+    vitti t = launder(k[0:1])
+    kosh_kship(k, 30)
+    kosh_kship(k, 40)
+    kosh_kship(k, 50)
+    k[0] = 99
+    likha(t[0])
+    likha(k[0])
+}
