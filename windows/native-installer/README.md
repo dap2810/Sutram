@@ -41,3 +41,13 @@ leaves a half-written file under the real name.
 Developer-only verification: install-core.ps1 accepts -VerifyOnly. It extracts to
 TEMP, checks every payload hash and starts compiler --version/--help, then exits
 before creating an installation or changing Windows integration.
+
+The v307 repair candidate appends logs with an explicit shared write handle,
+so a live read-only log observer does not make Windows PowerShell 5.1 fail.
+Identical payload files are retained; changed files use the OS replacement
+operation after staging, while new files are moved into place. Ownership checks
+and the pending manifest still apply, and replacement failures stop installation.
+The builder normalizes known UTF-8 documentation and example-output text to LF
+before hashing. This avoids replacing unchanged files solely because one build
+was made from a Windows CRLF checkout. Native tests are still required: these
+changes cannot make an externally suspended wizard service its timeout.

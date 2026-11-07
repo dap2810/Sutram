@@ -16,7 +16,12 @@ Set-StrictMode -Version 2.0
 
 function Log([string]$Message) {
     $stamp = [DateTime]::Now.ToString('yyyy-MM-dd HH:mm:ss')
-    Add-Content -LiteralPath $LogPath -Value ("[{0}] {1}" -f $stamp,$Message) -Encoding UTF8
+    # Windows PowerShell 5.1 Add-Content can conflict with a read-only observer,
+    # even when that observer shares reads/writes/deletes. Open a write-only
+    # append handle explicitly, so watching the log cannot break installation.
+    $bytes = [Text.UTF8Encoding]::new($false).GetBytes(("[{0}] {1}" -f $stamp,$Message) + [Environment]::NewLine)
+    $stream = [IO.FileStream]::new($LogPath,[IO.FileMode]::Append,[IO.FileAccess]::Write,([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
+    try { $stream.Write($bytes,0,$bytes.Length) } finally { $stream.Dispose() }
 }
 # No unbounded compiler preflights: a broken native compiler must not
 # freeze the Windows wizard forever inside WaitForSingleObject(INFINITE).
@@ -63,14 +68,24 @@ function Copy-StagedFiles([string]$From,[string]$To) {
         $dst = Join-Path $To $rel
         $n++
         Log ('Copying ' + $n + '/' + $files.Length + ': ' + $rel)
+        # Ownership was checked against the old/pending/new manifests before
+        # entering this function. Leave identical payload files untouched.
+        if ([IO.File]::Exists($dst) -and
+            (Get-FileHash -LiteralPath $src -Algorithm SHA256).Hash -eq
+            (Get-FileHash -LiteralPath $dst -Algorithm SHA256).Hash) {
+            Log ('Unchanged: ' + $rel)
+            continue
+        }
         $dir = [IO.Path]::GetDirectoryName($dst)
         if (-not [IO.Directory]::Exists($dir)) { [void][IO.Directory]::CreateDirectory($dir) }
         # Copy beside it, then put it in place: a copy that stops leaves '<name>.sutram-partial', never a
         # half-written file under the real name (v303 left an empty PROJECT-OVERVIEW.md).
         $part = $dst + '.sutram-partial'
         [IO.File]::Copy($src,$part,$true)
-        if ([IO.File]::Exists($dst)) { [IO.File]::Delete($dst) }
-        [IO.File]::Move($part,$dst)
+        # One OS replacement operation instead of a delete-then-move gap.
+        # Failure propagates; keep the pending journal for the next retry.
+        if ([IO.File]::Exists($dst)) { [IO.File]::Replace($part,$dst,[NullString]::Value) }
+        else { [IO.File]::Move($part,$dst) }
     }
     Log ('Copied all ' + $n + ' files.')
 }

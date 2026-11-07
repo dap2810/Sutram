@@ -300,9 +300,13 @@ rt_veh:
     jz .v_nomem_exit
     call qword [rbx+RT_SetConsoleOutputCP]
 .v_nomem_exit:
-    mov ecx,1
-    call qword [rbx+RT_ExitProcess]
-    ud2                           ; ExitProcess does not return
+    ; Commit exhaustion is fatal. ExitProcess invokes DLL detach/teardown,
+    ; which may need additional stack/commit after our diagnostic. Do not run
+    ; that teardown under an exhausted process Job. Normal exits still use it.
+    mov rcx,-1                    ; pseudo-handle for this process only
+    mov edx,1
+    call qword [rbx+RT_TerminateProcess]
+    ud2                           ; successful self-termination cannot return
 .v_search:
     xor eax,eax                   ; EXCEPTION_CONTINUE_SEARCH
 .v_ret:

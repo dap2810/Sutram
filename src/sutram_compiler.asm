@@ -28264,21 +28264,97 @@ r126_bind:
     R126_REST
     ret
 
-; r127_check_slice_value(rdi = a value): a slice of a kosh is not kept in a name. Its element pointer
-; is the kosh's elements at the moment it is made, and a later kosh_kship may move them (R127).
-r127_check_slice_value:
-    test rdi, rdi
-    jz .r
-    cmp qword [rdi], AST_SLICE
-    jne .r
+; A borrowed view cannot become an untyped value. Return its originating name,
+; or zero for a scalar / a stable local mala view. Both conditional arms and
+; arithmetic wrappers must be checked; inspecting only the root AST_SLICE lets
+; the same pointer escape through ?: or + 0. A vibhag parameter may borrow a
+; kosh, so it and its subviews obey the same rule without caller-specific luck.
+r134_slice_origin:
     R126_SAVE
-    push rax
     push rbx
-    mov rbx, [rdi+8]
+    push r12
+    push r13
+    mov rbx, rdi
+    test rbx, rbx
+    jz .no
+    mov rax, [rbx]
+    cmp rax, AST_TERNARY
+    je .arms
+    cmp rax, AST_BINOP
+    je .arms
+    cmp rax, AST_SLICE
+    je .slice
+    cmp rax, AST_VAR
+    jne .no
+    mov rbx, [rbx+8]
+    jmp .parameter
+.slice:
+    mov rbx, [rbx+8]
     mov rdi, rbx
     call is_kosh_var
     test rax, rax
+    jnz .yes
+.parameter:
+    cmp qword [rel in_function], 0
+    je .no
+    mov rax, [rel r126_cur_fn]
+    cmp rax, -1
+    je .no
+    lea rcx, [rel func_defs]
+    mov rax, [rcx+rax*8]
+    mov r13, [rax+16]          ; number of parameters
+    mov r12, [rax+32]          ; end byte offset of parameter names
+    mov rcx, r13
+    shl rcx, 3
+    sub r12, rcx
+.param:
+    test r13, r13
+    jz .no
+    mov rax, r12
+    shr rax, 3
+    lea rcx, [rel func_param_types]
+    cmp byte [rcx+rax], PARAM_VIBHAG
+    jne .next
+    lea rcx, [rel func_params]
+    mov rsi, [rcx+r12]
+    mov rdi, rbx
+    call strcmp
+    test eax, eax
+    jz .yes
+.next:
+    add r12, 8
+    dec r13
+    jmp .param
+.arms:
+    mov rdi, [rbx+16]
+    call r134_slice_origin
+    test rax, rax
+    jnz .out
+    mov rdi, [rbx+24]
+    call r134_slice_origin
+    jmp .out
+.yes:
+    mov rax, rbx
+    jmp .out
+.no:
+    xor eax, eax
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    R126_REST
+    ret
+
+; Shared escape check for declarations, assignments, raw stores, scalar
+; parameters and returns. The element pointer may move on kosh_kship.
+r127_check_slice_value:
+    R126_SAVE
+    push rax
+    push rbx
+    call r134_slice_origin
+    test rax, rax
     jz .ok
+    mov rbx, rax
     lea rdi, [rel r127_vb_hdr]
     call print_str_z
     mov rdi, rbx
@@ -28412,6 +28488,9 @@ r129_check_call:
 ; (which a vibhag parameter receives as k[:]).
 r129_is_kosh_slice:
     push rdi
+    call r134_slice_origin
+    test rax, rax
+    jnz .yes
     xor eax, eax
     test rdi, rdi
     jz .r
@@ -28425,6 +28504,9 @@ r129_is_kosh_slice:
     test rax, rax
     setnz al
     movzx eax, al
+    jmp .r
+.yes:
+    mov eax, 1
 .r:
     pop rdi
     ret
@@ -28614,6 +28696,8 @@ r126_check_decl:
 r126_check_assign:
     R126_SAVE
     push rax
+    mov rdi, [rbx+16]
+    call r127_check_slice_value      ; every destination, including cells/fields/globals
     mov rax, [rbx+8]
     test rax, rax
     jz .out
@@ -28653,8 +28737,6 @@ r126_check_assign:
     jmp r126_fail_door
 .local:
     mov rdi, [rbx+16]
-    call r127_check_slice_value
-    mov rdi, [rbx+16]
     call r126_value_kind
     mov rsi, rax
     mov rdx, [rbx+16]
@@ -28677,6 +28759,14 @@ r126_check_builtin:
     jae .out
     cmp r12, 6
     jae .out
+    test r12, r12
+    jnz .slice_check
+    cmp qword [rbx+8], BN_PANKTILEN ; reading the length consumes a view without storing it
+    je .slice_done
+.slice_check:
+    mov rdi, [rbx+24+r12*8]
+    call r127_check_slice_value
+.slice_done:
     mov rdi, [rbx+24+r12*8]
     call r126_is_kosh_value
     test eax, eax
@@ -28708,6 +28798,10 @@ r126_check_builtin:
 r126_check_writemem:
     R126_SAVE
     push rax
+    mov rdi, [rbx+16]
+    call r127_check_slice_value
+    mov rdi, [rbx+24]
+    call r127_check_slice_value
     mov rdi, [rbx+16]
     call r126_is_kosh_value
     test eax, eax
@@ -28746,6 +28840,8 @@ r126_check_untyped_arg:
     pop rsi
     je .out
     push rsi
+    mov rdi, rsi
+    call r127_check_slice_value     ; scalar parameter of a statically known prakriya
 .known:
     pop rsi
     mov rdi, rsi
@@ -28769,6 +28865,9 @@ r126_check_return:
     R126_SAVE
     push rax
     push r12
+    mov rdi, [rbx+8]
+    call r23_check_return          ; retain the established diagnostic for a plain slice
+    call r127_check_slice_value
     cmp qword [rel in_function], 0
     je .out
     mov rax, [rel r126_cur_fn]

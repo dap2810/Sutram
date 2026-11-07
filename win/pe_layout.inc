@@ -1,6 +1,6 @@
 ; Shared PE layout: first 1024 data bytes hold language globals.
 RT_GLOBAL_BYTES equ 1024
-RT_IMPORT_BYTES equ 512
+RT_IMPORT_BYTES equ 1024
 RT_DATA_BYTES equ RT_GLOBAL_BYTES + RT_IMPORT_BYTES
 RT_IAT_OFF equ 40
 RT_GetStdHandle equ RT_IAT_OFF + 0
@@ -16,4 +16,5 @@ RT_GetConsoleOutputCP equ RT_IAT_OFF + 72
 RT_AddVectoredExceptionHandler equ RT_IAT_OFF + 80   ; R124: lazy commit
 RT_VirtualQuery equ RT_IAT_OFF + 88
 RT_VirtualFree equ RT_IAT_OFF + 96         ; R127: munmap - a kosh's old region given back
-RT_ORIGINAL_CP equ 508
+RT_TerminateProcess equ RT_IAT_OFF + 104   ; fatal OOM must not run DLL teardown
+RT_ORIGINAL_CP equ 1020

@@ -22,6 +22,17 @@ foreach ($destination in @('bin','win')) {
         Copy-Item -LiteralPath (Join-Path $ProjectRoot $folder) -Destination (Join-Path $stage $destination) -Recurse -Force
     }
 }
+# An existing Windows checkout may still have CRLF documentation after pulling
+# the LF attributes. Normalize only these known UTF-8 text payloads in staging.
+# Otherwise an unchanged Linux-built release becomes 153 needless replacements.
+$utf8=[Text.UTF8Encoding]::new($false,$true)
+foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
+    if ($file.Extension -in @('.md','.html','.txt','.out','.exit')) {
+        $bytes=[IO.File]::ReadAllBytes($file.FullName)
+        $value=$utf8.GetString($bytes)
+        if ($value.Contains("`r`n")) { [IO.File]::WriteAllBytes($file.FullName,$utf8.GetBytes($value.Replace("`r`n","`n"))) }
+    }
+}
 $rows=foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse | Sort-Object FullName) {
     (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$file.FullName.Substring($stage.Length+1)
 }

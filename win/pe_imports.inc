@@ -17,6 +17,7 @@ dq pe_name_GetConsoleOutputCP-pe_import_template
 dq pe_name_AddVectoredExceptionHandler-pe_import_template
 dq pe_name_VirtualQuery-pe_import_template
 dq pe_name_VirtualFree-pe_import_template
+dq pe_name_TerminateProcess-pe_import_template
 dq 0
 pe_import_int:
 dq pe_name_GetStdHandle-pe_import_template
@@ -32,6 +33,7 @@ dq pe_name_GetConsoleOutputCP-pe_import_template
 dq pe_name_AddVectoredExceptionHandler-pe_import_template
 dq pe_name_VirtualQuery-pe_import_template
 dq pe_name_VirtualFree-pe_import_template
+dq pe_name_TerminateProcess-pe_import_template
 dq 0
 pe_name_GetStdHandle: dw 0
 db "GetStdHandle",0
@@ -72,6 +74,9 @@ align 2, db 0
 pe_name_VirtualFree: dw 0
 db "VirtualFree",0
 align 2, db 0
+pe_name_TerminateProcess: dw 0
+db "TerminateProcess",0
+align 2, db 0
 pe_import_dll: db "KERNEL32.dll",0
 %if ($-pe_import_template) > RT_ORIGINAL_CP
 %error "PE import block overlaps RT_ORIGINAL_CP"
@@ -92,6 +97,7 @@ dd pe_import_iat-pe_import_template+72,pe_import_int-pe_import_template+72
 dd pe_import_iat-pe_import_template+80,pe_import_int-pe_import_template+80
 dd pe_import_iat-pe_import_template+88,pe_import_int-pe_import_template+88
 dd pe_import_iat-pe_import_template+96,pe_import_int-pe_import_template+96
+dd pe_import_iat-pe_import_template+104,pe_import_int-pe_import_template+104
 dd -1
 section .bss
 pe_import_output: resb RT_IMPORT_BYTES

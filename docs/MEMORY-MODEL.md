@@ -12,6 +12,22 @@
 >
 > **Still true from the snapshot:** there is no `free` and no garbage collector (refused: it needs a runtime); outside a block, memory is held for the program's life.
 
+## v307 repair branch (pending independent acceptance)
+
+The review candidate checks kosh-backed slices at storage, scalar-parameter and
+return boundaries, including conditional values and typed `vibhag` parameters.
+Direct calls with a declared `vibhag` parameter, indexing, length reads and
+stable local `mala` views remain supported. These checks do not constitute a
+general borrow checker: untyped function values still lack parameter contracts,
+and the existing safe indirect-call behavior is preserved.
+
+For Windows commit exhaustion, the candidate reports the existing error and
+calls `TerminateProcess` on the current process with exit 1. This avoids normal
+DLL teardown on that fatal path. Ordinary exits still use `ExitProcess`, and
+unrelated access violations are not converted to OOM. The native evidence and
+remaining installer limitations are recorded in the repair handoff; this is
+not a new accepted release or a claim of general memory safety.
+
 # Sutram — current memory observations and proposed ownership model
 > **STATUS — HISTORICAL RESEARCH AND UNIMPLEMENTED DESIGN (R70 snapshot).** Current-state observations below are pinned to an older compiler revision; proposed ownership, borrowing and automatic cleanup are NOT implemented. Specific bounds checks added later do not establish general memory safety. Consult `docs/OPEN-ISSUES.md` and current source for present status.
 
