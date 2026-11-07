@@ -1,5 +1,25 @@
 # Rebuilding the installer's payload (Windows, or Linux)
 
+## Payload line-ending contract
+
+The builders canonicalise declared UTF-8 documentation/fixture text (`.md`, `.html`,
+`.txt`, `.out`, `.exit`) to LF **in staging before hashing**. The checkout rules also
+force LF for those extensions; frozen test fixtures and native evidence retain their
+recorded bytes. Existing Windows checkouts may still have CRLF until refreshed, so
+staging normalization is required as well. Compiler, linker, GUI and icon bytes are
+copied unchanged. Invalid UTF-8 in a declared text input fails the build.
+
+Both builders use case-insensitive ordinal path order and CRLF manifest separators.
+Compare the complete staged file map and manifest, not just three sample hashes.
+`python3 tools/build_installer_linux.py --work <new-directory> --payload-only` performs
+the Linux payload step without requiring a PE linker or Wine. This is a developer
+verification mode, not an installer or Windows execution test.
+
+Payload file bytes and manifest bytes are intended to match across checkouts and
+platforms. **The complete ZIP/setup executables are not claimed byte reproducible**:
+ZIP metadata/compression and platform linkers can differ. The historical instructions
+below describe the existing full builds and older pinned versions.
+
 > **R128 (v302): there is now a Linux route as well** - `python3 tools/build_installer_linux.py`, a step-for-step
 > port of `windows\native-installer\build-installer.ps1` (payload, manifest, zip with backslash names, embedded
 > hashes, icon resource, `nasm -f win64` + mingw `ld`, `--self-test` under Wine 64, `Sutram-Setup.sha256`).

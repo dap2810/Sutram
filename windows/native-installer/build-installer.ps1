@@ -22,10 +22,24 @@ foreach ($destination in @('bin','win')) {
         Copy-Item -LiteralPath (Join-Path $ProjectRoot $folder) -Destination (Join-Path $stage $destination) -Recurse -Force
     }
 }
-$rows=foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse | Sort-Object FullName) {
-    (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$file.FullName.Substring($stage.Length+1)
+# Old Windows checkouts may retain CRLF even after pulling the LF attributes.
+# Canonicalise only declared UTF-8 documentation/fixture text in the staged copy;
+# never rewrite the checkout, executables, icons or other binary payloads.
+$utf8=[Text.UTF8Encoding]::new($false,$true)
+foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
+    if ($file.Extension.ToLowerInvariant() -in @('.md','.html','.txt','.out','.exit')) {
+        $value=$utf8.GetString([IO.File]::ReadAllBytes($file.FullName))
+        if ($value.Contains("`r`n")) { [IO.File]::WriteAllBytes($file.FullName,$utf8.GetBytes($value.Replace("`r`n","`n"))) }
+    }
 }
-[IO.File]::WriteAllLines((Join-Path $stage 'payload.manifest.sha256'),[string[]]$rows,([Text.UTF8Encoding]::new($false)))
+# Use ordinal, case-insensitive path order on both platforms, independent of the
+# developer's locale. The manifest's newline is fixed even when built on Linux.
+[string[]]$payloadFiles=[IO.Directory]::GetFiles($stage,'*',[IO.SearchOption]::AllDirectories)
+[Array]::Sort($payloadFiles,[StringComparer]::OrdinalIgnoreCase)
+$rows=foreach ($path in $payloadFiles) {
+    (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$path.Substring($stage.Length+1)
+}
+[IO.File]::WriteAllText((Join-Path $stage 'payload.manifest.sha256'),(($rows -join "`r`n")+"`r`n"),$utf8)
 $zip=Join-Path $work 'payload.zip'
 Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'install-core.ps1'),(Join-Path $PSScriptRoot 'uninstall-core.ps1') -Destination $work

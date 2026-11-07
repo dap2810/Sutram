@@ -40,6 +40,17 @@ wrote is never replaced: such files are listed with a way out, and nothing chang
 transaction folder is removed once the installation is complete; uninstall leaves an
 unfinished one in place, because its backups may be the only copy of the previous installation.
 
+Staging reuses a target only when its current SHA-256 matches the incoming payload.
+A late retry after all files were published therefore logs `Already installed` for
+every payload file and creates no staging copies. Publication rechecks each target;
+if a reused file changed or disappeared, the run stops before moving it or its backup.
+Payload extraction/hash verification still runs. User edits remain protected by the
+ownership checks; an unchanged file does not need a replacement copy to finish metadata.
+
+Both Windows and Linux builders normalize declared UTF-8 documentation/fixture text
+to LF before hashing and use the same manifest path order/newlines. This also handles
+older checkouts that still contain CRLF. Executables and icons are copied unchanged.
+
 Developer-only verification: install-core.ps1 accepts -VerifyOnly. It extracts to
 TEMP, checks every payload hash and starts compiler --version/--help, then exits
 before creating an installation or changing Windows integration.

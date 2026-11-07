@@ -107,9 +107,9 @@ function Read-Journal([string]$Path) {
     }
     return $j
 }
-# Stage-Payload(stage, txnStage, newFiles): copy every payload file into the transaction folder, verified by hash.
+# Stage-Payload(stage, txnStage, newFiles, target): stage only missing or changed payload files.
 # Each file is logged when its copy starts and when it is done, so a stop names the file it stopped in.
-function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles) {
+function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles,[string]$TargetRoot) {
     $files = @([IO.Directory]::GetFiles($From,'*',[IO.SearchOption]::AllDirectories) | Where-Object {
         -not [string]::Equals([IO.Path]::GetFileName($_),'payload.manifest.sha256',[StringComparison]::OrdinalIgnoreCase) } | Sort-Object)
     Log ('Staging ' + $files.Length + ' Sutram files in ' + $To + '.')
@@ -117,6 +117,12 @@ function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles) {
     foreach ($src in $files) {
         $rel = $src.Substring($From.Length).TrimStart('\')
         $n++
+        $target = Join-Path $TargetRoot $rel
+        Assert-NoReparsePath $target
+        if ((Test-Path -LiteralPath $target -PathType Leaf) -and (Get-Sha $target) -eq $NewFiles[$rel]) {
+            Log ('Already installed ' + $n + '/' + $files.Length + ': ' + $rel)
+            continue
+        }
         $staged = Join-Path $To $rel
         if ((Test-Path -LiteralPath $staged -PathType Leaf) -and (Get-Sha $staged) -eq $NewFiles[$rel]) {
             Log ('Already staged ' + $n + '/' + $files.Length + ': ' + $rel)
@@ -556,7 +562,7 @@ try {
         Log 'Recording the payload being installed (payload.pending.sha256).'
         [IO.File]::Copy((Join-Path $stage 'payload.manifest.sha256'),$pendingPath,$true)
         # Stage every file beside the target first (the target is not touched while the payload is copied).
-        $files = Stage-Payload $stage $txnStage $newFiles
+        $files = Stage-Payload $stage $txnStage $newFiles $InstallDir
         # Publish: the old file, if any, goes to the backup (journaled first), then the staged file is renamed in.
         # v303-v306 deleted the whole previous payload first, then wrote the new one into the target.
         Log ('Publishing ' + $files.Length + ' files into ' + $InstallDir + '.')
@@ -566,6 +572,7 @@ try {
             $n++
             $target = Join-Path $InstallDir $rel
             $staged = Join-Path $txnStage $rel
+            Assert-NoReparsePath $target
             $prior = 'absent'
             if (Test-Path -LiteralPath $target -PathType Leaf) {
                 $have = Get-Sha $target
@@ -583,6 +590,11 @@ try {
                     Log ('Changed since the check (preserved): ' + $target)
                     throw ('A file changed while the installer was working, and was not replaced: ' + $target + '. Move it elsewhere, then run this installer again.')
                 }
+                # A target reused during staging may have changed since then.
+                # Refuse before moving it: there is no verified replacement yet.
+                if (-not (Test-Path -LiteralPath $staged -PathType Leaf)) {
+                    throw ('A file changed after its installed copy was verified; it was preserved: ' + $target + '. Run the installer again.')
+                }
                 $bk = Join-Path $txnBackup $rel
                 if (Test-Path -LiteralPath $bk -PathType Leaf) {
                     # An earlier run kept the original in the backup; this file is that run's own copy. It is moved
@@ -595,6 +607,11 @@ try {
                     Move-Into $target $bk
                 }
                 $prior = $have
+            }
+            # A removed reused target needs a fresh staging pass. Do not claim
+            # publication or disturb backups when no replacement exists.
+            if (-not (Test-Path -LiteralPath $staged -PathType Leaf)) {
+                throw ('A file disappeared after its installed copy was verified: ' + $target + '. Run the installer again.')
             }
             Journal ("PUBLISH`t" + $rel + "`t" + $prior)
             Log ('PUBLISH ' + $n + '/' + $files.Length + ': ' + $rel)
