@@ -1,0 +1,23 @@
+# R133: the 10 probes (tests/r133/indirect) with v306 (./sutram_compiler) and the v307 source before the version bump (dev_compiler).
+##### ./sutram_compiler Sutram 1.0 (v306) - sampurna sutra
+alias_sl: compiled; runs: 0 7 (exit 0)
+ind_fv_arg: compiled; runs: 0 7 (exit 0)
+ind_k: refused E_KOSH_DVARA
+ind_wrap: refused E_KOSH_VIBHAG
+s3big: compiled; runs: (exit 139)
+s3big_direct: refused E_KOSH_VIBHAG
+s3small: compiled; runs: 0 7 (exit 0)
+s3small_direct: refused E_KOSH_VIBHAG
+safe1: compiled; runs: 0 99 (exit 0)
+st1: compiled; runs: 99 (exit 0)
+##### /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r133/dev_compiler Sutram 1.0 (v306) - sampurna sutra
+alias_sl: refused E_KOSH_VIBHAG
+ind_fv_arg: refused E_KOSH_VIBHAG
+ind_k: refused E_KOSH_DVARA
+ind_wrap: refused E_KOSH_VIBHAG
+s3big: refused E_KOSH_VIBHAG
+s3big_direct: refused E_KOSH_VIBHAG
+s3small: refused E_KOSH_VIBHAG
+s3small_direct: refused E_KOSH_VIBHAG
+safe1: compiled; runs: 0 99 (exit 0)
+st1: refused E_KOSH_VIBHAG

@@ -1,7 +1,7 @@
-# Sutram 1.0 (v306) — release notes
+# Sutram 1.0 (v307) — release notes
 
-**Compiler `Sutram 1.0 (v306) - sampurna sutra`, 6 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v306). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v307) - sampurna sutra`, 6 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v307). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -13,7 +13,9 @@ contract table, the Windows rounds 1-4 and the v297 IDE run.
 - **A language with Sanskrit keywords and builtins** (Devanagari accepted). The keywords and messages have
   eleven language packs. **Only the Sanskrit pack is developed; the other ten are frozen:** they work, and get
   no new development (see *Not included*).
-- **One compiler, no runtime, no dependencies.** It writes a Linux ELF or a Windows PE directly, and
+- **One compiler; native executables with their support code embedded.** There is no separately installed language
+  runtime or VM; programs use the platform's system interfaces (Linux system calls, Windows' own DLLs). It writes a
+  Linux ELF or a Windows PE directly, and
   `sutram-link` links separately compiled modules. A terminal IDE, an X11 IDE and a Windows IDE are included.
 - **Memory you can see:**
   - `nirmmita` comes from an arena;
@@ -92,7 +94,10 @@ succeeded; use the checked form when the program must detect a failure and go on
 - **A slice of a `kosh` is a view of the elements as they are when it is made.** So (`E_KOSH_VIBHAG`):
   - it cannot be kept in a name (`vitti s = k[1:4]`);
   - it cannot be given to a `prakriya` that may grow a `kosh` (it, or one it calls, runs `kosh_kship`);
-  - it cannot be given beside another argument that has a call in it (the call could grow the `kosh` first).
+  - it cannot be given beside another argument that has a call in it (the call could grow the `kosh` first) - to a
+    `prakriya` called by its name, **or through a function value** (`vitti f = badal; f(k[0:1], kosh_kship(k, 8))`:
+    v306 compiled that, and the callee wrote into the old elements or read a released region - ChatGPT R205-206 S3,
+    refused from v307).
   Passed on directly, to a `prakriya` that only reads, it is safe: `yog(k[1:4])`. In `k[lo:]` the end is the length
   after `lo` is evaluated (v305).
 - **`parimana()` counts:** occupied arena storage (including temporary buffers in open blocks, `kosh` descriptors and
@@ -114,8 +119,17 @@ succeeded; use the checked form when the program must detect a failure and go on
     0 MB (measured under Wine; native Windows commit is the owner's measurement).
   - **When Windows refuses that commit** (a commit limit, or the system out of memory), the program stops with
     `Sutram truti: smritih na labdha` on stderr and exit 1 (v306). Up to v305 it died with an access violation and
-    printed nothing (native Windows, a 64-256 MiB job commit limit). On Linux the same pressure is refused earlier,
-    when memory is reserved, with the `kosh` message.
+    printed nothing (native Windows, 64-640 MiB job commit limits). **It is fatal:** there is no recovery, and no
+    promise that the operation in progress was left whole. It applies after the runtime's memory handler is
+    installed; **if Windows refuses to install that handler**, the program stops at once with
+    `Sutram truti: smriti-prabandhah na arabdhah` and exit 1 (v307; up to v306 it ran on and died at the first touch
+    of reserved memory). The handler commits a page that is reserved and private to the process and not a thread's
+    stack; it does not know which reservations are Sutram's, so a raw or foreign pointer into another reservation of
+    that kind is outside this promise.
+  - **On Linux, a limit is a different thing.** An address-space limit (`ulimit -v`) refuses the reservation, and
+    the checked paths print their own message (`kosh vardhayitum smritih na labdha`); with overcommit, the system
+    may instead end the program when a page is touched. A Windows job commit limit and a Linux limit are not the
+    same resource, and these notes do not equate them.
 - **A program under an address-space limit below about 1 GiB** gets no arena; every allocation then is its own
   `mmap`. It still runs (1,000 `kosh` under a 300 MB limit: measured).
 
@@ -137,12 +151,13 @@ succeeded; use the checked form when the program must detect a failure and go on
 - **Every Linux gate runs here; the Windows gates run on the owner's machine.**
   - The native Windows runs: rounds 1-4 (v297: 305 passes and 8 failures; then 312 passes and 0 failures, merged as
     v299), and v305 (6 November: 321 passes, 1 compile failure that was the harness's working folder, fixed in
-    R131; the memory probes passed except the out-of-memory one, fixed in v306).
-  - **Native Windows execution of v306 is not yet done.**
+    R131; the memory probes passed except the out-of-memory one, fixed in v306). ChatGPT's PR #66 runs (a v305
+    source build with the v306 out-of-memory change, Windows build 26100): 8 of 8 out-of-memory checks.
+  - **Native Windows execution of v307 is not yet done.** Acceptance applies to the exact binary hashes run.
 - **An open observation under Wine:** about 1 run in 200 of a finished program, Wine reports an unhandled page
   fault at exit - after all the output, with exit code 0, at the same address in Wine's own code each time. Seen
   on v301 and v305 (also on programs with no `kosh`), not in 200 runs each of v299 and v300 - too few to say when
-  it began. Its cause is not known. Native Windows has not been run on these versions: watch for it there.
+  it began. Its cause is not known. It has not been reported from the native v305 runs; watch for it there.
 - **Skipped on Windows, by design:**
   - `examples/29_nishkriya`: inline Linux system calls;
   - socket examples, which differ by platform (`245_r18_netsock`).
@@ -152,20 +167,27 @@ succeeded; use the checked form when the program must detect a failure and go on
     up to v305 the previous program's output stayed on screen above the refusal;
   - **its menus and buttons are partly English;**
   - **Run Module gives no interactive input** (end of input at once).
-- **The installer (v306):**
+- **The installer (v306-v307):**
   - **it refuses to install while another Sutram is installed** where a terminal could find it - on the machine or
     user PATH, or in the folder older installers used (`%LOCALAPPDATA%\Sutram`) - and names it. Up to v305 it
     installed beside it, and a new terminal ran the older one (`Sutram 1.4.0`, Windows round of v303);
   - **with Add to PATH, it finishes only when a new terminal runs this compiler:** it opens `cmd.exe` with the PATH a
     new terminal would get and compares `sutram --version`;
   - **it cannot wait forever:** the engine runs without a console window, with `-NonInteractive`, no progress bars
-    and no prompts, logs every step and every 100 files copied, and the wizard stops it after 15 minutes and reports
-    a failure. The v303 run's engine stopped after `Copying Sutram files.` with PowerShell left open; **its cause was
-    not found** - these changes remove the ways it could wait, and the log now shows where any stop happens;
+    and no prompts, and the wizard stops it after 15 minutes and reports a failure (v306);
+  - **an installation that stops part-way is finished by the next run** (v307). The v303 copy stopped inside file
+    132 of 657 (left empty), after deleting the previous installation's 643 files; every later run refused it as "a
+    user file". Now the first change to the folder records what is being installed (`payload.pending.sha256`), the
+    next run treats those files as its own, each file is named in the log before it is copied and written under a
+    temporary name first, and an upgrade overwrites files in place and deletes only those the new payload lacks.
+    **Why the v303 copy stopped is still not known** (security software that watches mass deletes is the leading
+    candidate; not confirmed);
+  - Windows' list of installed apps shows the compiler's version (`1.0.307`), not `0.1.0` (v307);
   - **its PowerShell scripts are unsigned, and run with `-ExecutionPolicy Bypass`** for that process only. A policy
     set by Group Policy still overrides it;
-  - install and uninstall on a fresh machine are the owner's acceptance test, not yet done for v306
-    (`tests/windows/test_installer_e2e.py` runs both, and a new terminal);
+  - install, an installation stopped and finished, a new terminal, and uninstall are the owner's acceptance test,
+    not yet done for v307 (`tests/windows/test_installer_e2e.py` runs them); so is the upgrade over the owner's
+    existing v305 installation, with the wizard;
   - the installer's hashes detect corruption, not the publisher.
 - **The linker:** `sutram-link` and the object tools still print `Sutram Error` where the compiler prints
   `Sutram truti` (v294 renamed only the compiler's).
@@ -177,7 +199,7 @@ succeeded; use the checked form when the program must detect a failure and go on
 - **The breaking changes of v301-v304:**
   - a name cannot change kind (`vitti w = 0` then `w = k` is refused);
   - a `kosh` cannot go into a cell, a module `vitti` or an untyped parameter;
-  - a slice of a `kosh` cannot be kept in a name, nor go beside a growth (above);
+  - a slice of a `kosh` cannot be kept in a name, nor go beside a growth (above) - through a function value too (v307);
   - a declared capacity above 2^40 numbers is refused.
   - Three examples were rewritten for the first rule. The gain: a `kosh` parameter can grow (v304).
 
@@ -209,6 +231,10 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v307:** a `kosh` slice given through a function value beside an argument with a call is refused, as for a
+  direct call (ChatGPT R205-206 S3: v306 lost the write or crashed); the Windows runtime stops with a message if its
+  memory handler cannot be installed (R205-206 W1); an interrupted installation is finished by the next run, the log
+  names each file, and Windows is told the real version.
 
 How these defects were found - a second platform, testing, an independent attack and reading each found some the
 others missed - is in `docs/reports/HOW-DEFECTS-WERE-FOUND.md`.

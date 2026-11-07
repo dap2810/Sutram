@@ -1019,7 +1019,11 @@ parameter too - holds its descriptor, so the growth is the caller's, as it is an
 **One thing it rules out: a slice of a `kosh` given to a `prakriya` that may grow a `kosh`** (it, or a `prakriya`
 it calls, runs `kosh_kship`), or given beside another argument that has a call in it. A slice holds the
 elements' address as they were when it was made; a growth would leave it behind. Both are `E_KOSH_VIBHAG`. Give
-such a `prakriya` the `kosh` itself; give a slice to one that only reads.
+such a `prakriya` the `kosh` itself; give a slice to one that only reads. **The same holds through a function
+value** (v307, R133): `vitti f = badal` then `f(k[0:1], kosh_kship(k, 8))` is `E_KOSH_VIBHAG`. A function value's
+target is not known when compiling, but it can reach a `kosh` only through its arguments (a whole `kosh` is never
+given to one, `E_KOSH_DVARA`), so the rule for it is the argument-order one: no argument with a call beside the slice.
+`f(k[0:1], 5)` is allowed and writes through.
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.

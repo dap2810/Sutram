@@ -6,7 +6,10 @@ bare `sutram` to the installed compiler and prints this version. It runs the ins
 (install-core.ps1, with the wizard's own PowerShell flags) on the payload of the tree's Sutram-Setup.exe, with
 -AddPath, into %LOCALAPPDATA%\\Programs\\Sutram, then checks:
 
-  1. the engine exits 0 within 15 minutes and its log ends with 'Installation complete';
+  0. (R133) an installation stopped at file 132 - the engine killed as soon as its log names that file, as the v303
+     copy stopped - leaves payload.pending.sha256, and the next run finishes it rather than refusing;
+  1. the engine exits 0 within 15 minutes and its log ends with 'Installation complete', with no pending record or
+     unfinished '*.sutram-partial' copy left;
   2. a new `cmd.exe /d /c "where sutram & sutram --version"`, with PATH rebuilt from the registry (machine, then user)
      and a working folder without Sutram, finds the installed bin\\sutram.exe FIRST and prints the tree's version;
   3. uninstall (uninstall-core.ps1) exits 0 and removes the PATH entry.
@@ -62,19 +65,39 @@ def main():
     with zipfile.ZipFile(zp, 'w', zipfile.ZIP_DEFLATED) as out:
         for n in z.namelist():
             out.writestr(n, z.read(n))
-    log = os.path.join(work, 'install.log')
     ni = os.path.join(ROOT, 'windows', 'native-installer')
+
+    def engine(log):
+        return PS + [os.path.join(ni, 'install-core.ps1'), '-PayloadZip', zp, '-InstallDir', install_dir,
+                     '-SetupExePath', os.path.join(ROOT, 'Sutram-Setup.exe'), '-LogPath', log, '-AddPath']
+
+    # R133: stop an installation where v303's stopped - in file 132 - then run it again.
+    stop_log = os.path.join(work, 'install-stopped.log')
+    p = subprocess.Popen(engine(stop_log), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    t0, seen = time.time(), False
+    while time.time() - t0 < 600 and p.poll() is None:
+        if os.path.exists(stop_log) and 'Copying 132/' in open(stop_log, encoding='utf-8-sig', errors='replace').read():
+            seen = True
+            break
+        time.sleep(0.05)
+    subprocess.run(['taskkill', '/F', '/T', '/PID', str(p.pid)], capture_output=True)
+    p.wait(timeout=60)
+    check(seen, 'an installation is stopped while its log names file 132')
+    check(os.path.exists(os.path.join(install_dir, 'payload.pending.sha256')),
+          'the stopped installation left payload.pending.sha256')
+    log = os.path.join(work, 'install.log')
     t0 = time.time()
     try:
-        r = subprocess.run(PS + [os.path.join(ni, 'install-core.ps1'), '-PayloadZip', zp, '-InstallDir', install_dir,
-                                 '-SetupExePath', os.path.join(ROOT, 'Sutram-Setup.exe'), '-LogPath', log, '-AddPath'],
-                           capture_output=True, text=True, timeout=900)
+        r = subprocess.run(engine(log), capture_output=True, text=True, timeout=900)
         code = r.returncode
     except subprocess.TimeoutExpired:
         code = 'timeout'
     text = open(log, encoding='utf-8-sig').read() if os.path.exists(log) else ''
-    check(code == 0, f'the engine exits 0 ({code}) in {time.time() - t0:.0f} s')
+    check(code == 0, f'the next run finishes it: the engine exits 0 ({code}) in {time.time() - t0:.0f} s')
     check('Installation complete' in text, 'its log records the completion; last line: ' + (text.strip().split('\n') or [''])[-1])
+    left = [os.path.join(d, f) for d, _, fs in os.walk(install_dir) for f in fs
+            if f.endswith('.sutram-partial') or f == 'payload.pending.sha256']
+    check(not left, f'no pending record or unfinished copy is left ({left[:3]})')
     env = dict(os.environ, PATH=fresh_path())
     w = subprocess.run(['cmd.exe', '/d', '/c', 'where sutram & sutram --version'], capture_output=True, text=True,
                        env=env, cwd=work, timeout=30)

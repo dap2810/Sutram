@@ -1,0 +1,14 @@
+# R133: S3 with the slice taken from an alias of the kosh - v306 printed 0 and 7. Refused from v307.
+prakriya badal(vibhag s, ignored) {
+    s[0] = 99
+    nivartanam 0
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti b = k
+    vitti obstacle = nirmmita(16)
+    vitti f = badal
+    likha(f(b[0:1], kosh_kship(k, 8)))
+    likha(k[0])
+}

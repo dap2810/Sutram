@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v306) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v307) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -28307,11 +28307,11 @@ r129_check_call:
     mov rdi, [rbx+8]
     call r23_call_is_indirect
     test rax, rax
-    jnz .out
+    jnz .unknown
     mov rdi, [rbx+8]
     call rfx3_fn_index
     cmp rax, -1
-    je .out
+    je .unknown
     mov r14, rax                       ; the callee
     xor r12, r12
 .arg:
@@ -28350,6 +28350,41 @@ r129_check_call:
 .next:
     inc r12
     jmp .arg
+    ; R133 (ChatGPT R205-206 S3): a call through a function value (or to a foreign or unknown name) has no
+    ; parameter types and no effect summary here, so the rule above never ran: f(k[0:1], kosh_kship(k, 8))
+    ; captured the slice, grew k, and the callee wrote into the old buffer (or read a released region).
+    ; Such a callee cannot reach a kosh except through its arguments, and a whole kosh is never given to one
+    ; (R126, E_KOSH_DVARA; nor is a module vitti, R127), so what remains is the order of the arguments:
+    ; a kosh-made slice beside another argument with a call in it is refused, as for a direct call.
+.unknown:
+    xor r12, r12
+.uarg:
+    cmp r12, [rbx+16]
+    jae .out
+    cmp r12, 6
+    jae .out
+    mov rdi, [rbx+24+r12*8]
+    call r129_is_kosh_slice
+    test eax, eax
+    jz .unext
+    xor r13, r13
+.uother:
+    cmp r13, [rbx+16]
+    jae .unext
+    cmp r13, 6
+    jae .unext
+    cmp r13, r12
+    je .uonext
+    mov rdi, [rbx+24+r13*8]
+    call r128_has_call
+    test eax, eax
+    jnz .bad_call
+.uonext:
+    inc r13
+    jmp .uother
+.unext:
+    inc r12
+    jmp .uarg
 .bad_grow:
     lea rdx, [rel r129_vb_grow]
     jmp .bad

@@ -50,21 +50,39 @@ function Invoke-SutramSelfTest([string]$ExePath,[string]$Argument,[string]$Stage
         $p.Dispose()
     }
 }
-# R130: copy the staged payload file by file, saying how far it got, so that a stall shows where it stopped.
+# R130: copy the staged payload file by file. R133: each file is named in the log BEFORE it is copied, so a copy
+# that stops leaves the file it stopped in as the log's last line (v303 stopped in file 132 of 657 and its log said
+# only 'Copying Sutram files.'). The payload manifest is not copied here: it is written when the copy is complete.
 function Copy-StagedFiles([string]$From,[string]$To) {
-    $files = [IO.Directory]::GetFiles($From,'*',[IO.SearchOption]::AllDirectories)
+    $files = @([IO.Directory]::GetFiles($From,'*',[IO.SearchOption]::AllDirectories) | Where-Object {
+        -not [string]::Equals([IO.Path]::GetFileName($_),'payload.manifest.sha256',[StringComparison]::OrdinalIgnoreCase) })
     Log ('Copying ' + $files.Length + ' Sutram files.')
     $n = 0
     foreach ($src in $files) {
         $rel = $src.Substring($From.Length).TrimStart('\')
         $dst = Join-Path $To $rel
+        $n++
+        Log ('Copying ' + $n + '/' + $files.Length + ': ' + $rel)
         $dir = [IO.Path]::GetDirectoryName($dst)
         if (-not [IO.Directory]::Exists($dir)) { [void][IO.Directory]::CreateDirectory($dir) }
-        [IO.File]::Copy($src,$dst,$true)
-        $n++
-        if (($n % 100) -eq 0) { Log ('Copied ' + $n + ' of ' + $files.Length + ' files; last: ' + $rel) }
+        # Copy beside it, then put it in place: a copy that stops leaves '<name>.sutram-partial', never a
+        # half-written file under the real name (v303 left an empty PROJECT-OVERVIEW.md).
+        $part = $dst + '.sutram-partial'
+        [IO.File]::Copy($src,$part,$true)
+        if ([IO.File]::Exists($dst)) { [IO.File]::Delete($dst) }
+        [IO.File]::Move($part,$dst)
     }
     Log ('Copied all ' + $n + ' files.')
+}
+# R133: a manifest file ('<sha256> *<relative path>' per line) as a table, relative path -> upper-case hash.
+function Read-Manifest([string]$Path) {
+    $t = @{}
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $t }
+    foreach ($line in [IO.File]::ReadAllLines($Path)) {
+        if ($line -notmatch '^([0-9a-fA-F]{64}) \*(.+)$') { throw ('Invalid manifest: ' + $Path) }
+        $t[$Matches[2]] = $Matches[1].ToUpperInvariant()
+    }
+    return $t
 }
 # R130: the PATH a terminal opened now would get - the machine's entries, then the user's - and the first folder on it
 # that has a sutram.exe. A new terminal runs that one: if it is not this installation, the student runs another Sutram.
@@ -209,7 +227,7 @@ function Assert-NoReparsePath([string]$Path) {
         $walk=$parent
     }
 }
-function Remove-ManifestFiles([string]$Root,[string]$Manifest) {
+function Remove-ManifestFiles([string]$Root,[string]$Manifest,[hashtable]$Keep = @{}) {
     if (-not (Test-Path -LiteralPath $Manifest -PathType Leaf)) { return }
     $rootFull = [IO.Path]::GetFullPath($Root).TrimEnd('\')
     Assert-NoReparsePath $rootFull
@@ -218,6 +236,7 @@ function Remove-ManifestFiles([string]$Root,[string]$Manifest) {
         if ($line -notmatch '^([0-9a-fA-F]{64}) \*(.+)$') { throw 'Invalid installed manifest.' }
         $expectedHash = $Matches[1]
         $rel = $Matches[2]
+        if ($Keep.ContainsKey($rel)) { continue }   # R133: still in the payload - overwritten, not deleted
         $target = [IO.Path]::GetFullPath((Join-Path $rootFull $rel))
         if (-not $target.StartsWith($rootFull + '\',[StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe manifest path: $rel" }
         $walk = $target
@@ -340,9 +359,21 @@ try {
     $marker = Join-Path $InstallDir '.sutram-install'
     $statePath = Join-Path $InstallDir 'install-state.ini'
     $oldState = Read-State $statePath
+    # R133: an installation that stopped part-way (a hang, a closed window, a machine that slept) left this file,
+    # written before anything else was changed: the payload it was installing. Its files are this installer's own.
+    $pendingPath = Join-Path $InstallDir 'payload.pending.sha256'
+    $pending = Test-Path -LiteralPath $pendingPath -PathType Leaf
+    if ($pending) {
+        Log ('A previous installation stopped part-way (it left ' + $pendingPath + '); this run finishes it.')
+        foreach ($part in [IO.Directory]::GetFiles($InstallDir,'*.sutram-partial',[IO.SearchOption]::AllDirectories)) {
+            Assert-NoReparsePath $part
+            Log ('Removing an unfinished copy: ' + $part)
+            [IO.File]::Delete($part)
+        }
+    }
     if (Test-Path -LiteralPath $InstallDir -PathType Container) {
         $first = Get-ChildItem -LiteralPath $InstallDir -Force -ErrorAction SilentlyContinue | Select-Object -First 1
-        if ($first -and -not (Test-SutramMarker $marker)) { throw "The selected folder is not empty and is not an existing Sutram installation: $InstallDir" }
+        if ($first -and -not (Test-SutramMarker $marker) -and -not $pending) { throw "The selected folder is not empty and is not an existing Sutram installation: $InstallDir" }
     }
 
     # Check ownership conflicts before creating or changing an installation.
@@ -352,7 +383,9 @@ try {
         $currentCommand=(Get-Item -LiteralPath $classCommand).GetValue('')
         if ($currentCommand -and $currentCommand -ne $wantedCommand) { throw 'A conflicting Sutram.Source registration exists.' }
     }
-    if (Test-SutramMarker $marker) {
+    # R133: after a stopped installation the metadata is between two states (the marker written, the state not yet;
+    # the uninstaller replaced, its hash not yet recorded); the pending record says whose they are.
+    if ((Test-SutramMarker $marker) -and -not $pending) {
         if (-not (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) -or
             -not $oldState.ContainsKey('UninstallerSHA256')) { throw 'Existing installation ownership metadata is incomplete.' }
         $oldUninstaller=Join-Path $InstallDir 'Sutram-Uninstall.exe'
@@ -382,21 +415,25 @@ try {
             exit 0
         }
         # Refuse an upgrade that would replace user edits or newly conflicting files.
+        # R133: a file is this installer's own - safe to replace - if it is what the previous installation's manifest
+        # says, what an installation that stopped part-way was writing (payload.pending.sha256), or byte for byte
+        # what this payload puts there. v305 called its own half-copied linker 'a user file' and refused for good.
         $previousManifest = Join-Path $InstallDir 'payload.manifest.sha256'
-        if (Test-Path -LiteralPath $previousManifest -PathType Leaf) {
-            $previousFiles=@{}
-            foreach ($line in [IO.File]::ReadAllLines($previousManifest)) {
-                if ($line -notmatch '^([0-9a-fA-F]{64}) \*(.+)$') { throw 'Invalid previous manifest.' }
-                $previousFiles[$Matches[2]]=$Matches[1]
-            }
+        $previousFiles = Read-Manifest $previousManifest
+        $pendingFiles = Read-Manifest $pendingPath
+        $newFiles = Read-Manifest (Join-Path $stage 'payload.manifest.sha256')
+        if ($previousFiles.Count -gt 0 -or $pendingFiles.Count -gt 0) {
             foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
                 $relative=$file.FullName.Substring($stage.Length+1)
                 if ($relative -eq 'payload.manifest.sha256') { continue }
                 $target=Join-Path $InstallDir $relative
                 if (Test-Path -LiteralPath $target -PathType Leaf) {
-                    if (-not $previousFiles.ContainsKey($relative) -or
-                        (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ne $previousFiles[$relative]) {
-                        throw ("Upgrade would overwrite a user file; preserve it elsewhere first: " + $target)
+                    $have = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToUpperInvariant()
+                    $ours = ($previousFiles.ContainsKey($relative) -and $have -eq $previousFiles[$relative].ToUpperInvariant()) -or
+                            ($pendingFiles.ContainsKey($relative) -and $have -eq $pendingFiles[$relative]) -or
+                            ($newFiles.ContainsKey($relative) -and $have -eq $newFiles[$relative])
+                    if (-not $ours) {
+                        throw ("Upgrade would overwrite a file that is not this installer's (changed since it was installed); preserve it elsewhere first: " + $target)
                     }
                 }
             }
@@ -405,11 +442,30 @@ try {
             Assert-NoReparsePath (Join-Path $InstallDir $file.FullName.Substring($stage.Length+1))
         }
         New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-        if (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) {
-            Log 'Removing files owned by the previous Sutram payload.'
-            Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.manifest.sha256')
+        # R133: the first change to the folder says what is being installed; it is removed only when the
+        # installation is complete. If this run stops, the next one knows these files are its own.
+        $earlierPending = $null
+        if ($pendingFiles.Count -gt 0) {   # keep what the stopped run was installing, to remove its leftovers below
+            $earlierPending = [IO.Path]::GetTempFileName()
+            [IO.File]::Copy($pendingPath,$earlierPending,$true)
         }
+        Log 'Recording the payload being installed (payload.pending.sha256).'
+        [IO.File]::Copy((Join-Path $stage 'payload.manifest.sha256'),$pendingPath,$true)
+        # R133: the new files overwrite the old in place; only files the new payload no longer has are deleted,
+        # after the copy. v303-v306 first deleted every file of the previous payload (643 in 3 s on the owner's
+        # machine) and then wrote the new ones - the mass delete-then-write that security software watches for.
         Copy-StagedFiles $stage $InstallDir
+        if (Test-Path -LiteralPath $previousManifest -PathType Leaf) {
+            Log 'Removing files of the previous Sutram payload that this one no longer has.'
+            Remove-ManifestFiles $InstallDir $previousManifest $newFiles
+        }
+        if ($earlierPending) {
+            Log 'Removing files of the stopped installation that this payload does not have.'
+            Remove-ManifestFiles $InstallDir $earlierPending $newFiles
+            Remove-Item -LiteralPath $earlierPending -Force -ErrorAction SilentlyContinue
+        }
+        Log 'Writing the payload manifest.'
+        [IO.File]::Copy((Join-Path $stage 'payload.manifest.sha256'),$previousManifest,$true)
         Log 'Copying the uninstaller.'
         [IO.File]::Copy($SetupExePath,(Join-Path $InstallDir 'Sutram-Uninstall.exe'),$true)
         Log 'Writing the installation marker.'
@@ -506,7 +562,10 @@ try {
         [void](New-ItemProperty -Path (Join-Path $extKey 'OpenWithProgids') -Name 'Sutram.Source' -Value '' -PropertyType String -Force)
         New-Item -Path $unKey -Force | Out-Null
         New-ItemProperty -Path $unKey -Name DisplayName -Value 'Sutram' -PropertyType String -Force | Out-Null
-        New-ItemProperty -Path $unKey -Name DisplayVersion -Value '0.1.0' -PropertyType String -Force | Out-Null
+        # R133: the version Windows shows is the compiler's (its --version 'Sutram X.Y (vN)' gives X.Y.N), not a fixed 0.1.0.
+        $displayVersion = '0.0.0'
+        if ($check -match 'Sutram (\d+\.\d+) \(v(\d+)\)') { $displayVersion = $Matches[1] + '.' + $Matches[2] }
+        New-ItemProperty -Path $unKey -Name DisplayVersion -Value $displayVersion -PropertyType String -Force | Out-Null
         New-ItemProperty -Path $unKey -Name Publisher -Value 'Sutram Project' -PropertyType String -Force | Out-Null
         New-ItemProperty -Path $unKey -Name InstallLocation -Value $InstallDir -PropertyType String -Force | Out-Null
         New-ItemProperty -Path $unKey -Name DisplayIcon -Value (Join-Path $InstallDir 'assets\sutram.ico') -PropertyType String -Force | Out-Null
@@ -519,7 +578,7 @@ try {
         $desktopOwnedValue = '0'
         if ($desktopOwned) { $desktopOwnedValue = '1' }
         $stateLines = @(
-            'Version=0.1.0',
+            ('Version=' + $displayVersion),
             ('OwnedShortcuts=' + ($script:ownedShortcuts.ToArray() -join ',')),
             ('PathOwned=' + $pathOwnedValue),
             ('DesktopOwned=' + $desktopOwnedValue),
@@ -528,6 +587,7 @@ try {
         )
         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))
 
+        if ($pending -or (Test-Path -LiteralPath $pendingPath -PathType Leaf)) { Remove-Item -LiteralPath $pendingPath -Force }
         Log ('Installation complete: ' + $InstallDir)
         # The wizard deletes its temporary staging directory after success.
         # Preserve the actual installer log under this user's installed tree

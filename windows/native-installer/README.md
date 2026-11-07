@@ -21,10 +21,22 @@ manage user PATH, HKCU registration, .sm association and user shortcuts. Existin
 files during upgrades/uninstall. Install and uninstall integration are still
 unverified; see the delivery REPORT and TEST-PLAN before accepting a release.
 
-The scripts require Windows PowerShell 5.1 and obey the current execution policy.
-Unsigned scripts will be blocked on Restricted/AllSigned configurations. This is
-an unresolved release blocker for the zero-configuration promise. Do not change
-security policy to run this review build. End users need no NASM, linker or Python.
+The scripts require Windows PowerShell 5.1. They are unsigned. Since v306 (R130) the
+wizard starts them with `-NoProfile -NonInteractive -ExecutionPolicy Bypass`, which sets
+the policy for that one PowerShell process only: the machine's and user's settings are
+not changed, and a Restricted or AllSigned local setting does not stop them. An execution
+policy set by Group Policy (MachinePolicy or UserPolicy) takes precedence over the process
+setting, so on a machine managed that way the scripts are still refused and the wizard
+reports the failure. Signing the scripts is the remaining step for such machines.
+End users need no NASM, linker or Python.
+
+An installation that stops part-way (R133: a hang, a closed window, a machine that
+slept) leaves `payload.pending.sha256` in the folder, written before any other change.
+Running the installer again finishes it: files that match the previous manifest, the
+pending one, or the new payload are the installer's own and are replaced; a file that
+matches none of them is refused as changed since installation. Each file is named in the
+log before it is copied, and copied under `<name>.sutram-partial` first, so a stop never
+leaves a half-written file under the real name.
 
 Developer-only verification: install-core.ps1 accepts -VerifyOnly. It extracts to
 TEMP, checks every payload hash and starts compiler --version/--help, then exits

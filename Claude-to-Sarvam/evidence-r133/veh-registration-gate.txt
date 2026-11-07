@@ -1,0 +1,4 @@
+PASS  win/rtblob.inc is what win/winrt_blob.asm builds
+PASS  the shipped runtime: exit 0, stdout '100000\n', stderr '' (want 0, '100000\n', '')
+PASS  a runtime whose handler registration fails: exit 1, stdout '', stderr 'Sutram truti: smriti-prabandhah na arabdhah\n' (want 1, '', 'Sutram truti: smriti-prabandhah na arabdhah\n')
+r133 handler registration: 3 checks, 0 failed

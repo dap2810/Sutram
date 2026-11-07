@@ -1,0 +1,13 @@
+# R133: Control: the direct call, region size - refused since v304.
+prakriya pratham(vibhag s, ignored) {
+    nivartanam s[0]
+}
+mukhya() {
+    kosh k[1]
+    vitti obstacle = nirmmita(8)
+    chakra i = 1 tak 8388608 {
+        kosh_kship(k, i)
+    }
+    vitti f = pratham
+    likha(pratham(k[0:1], kosh_kship(k, 9)))
+}

@@ -178,6 +178,12 @@ try {
         Remove-Item -LiteralPath $unKey -Recurse -Force
     }
     Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.manifest.sha256')
+    # R133: an installation that stopped part-way left the payload it was installing, and perhaps unfinished copies.
+    Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.pending.sha256')
+    foreach ($part in [IO.Directory]::GetFiles($InstallDir,'*.sutram-partial',[IO.SearchOption]::AllDirectories)) {
+        Remove-Item -LiteralPath $part -Force -ErrorAction SilentlyContinue
+    }
+    Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.pending.sha256') -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath (Join-Path $InstallDir 'install-state.ini') -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath (Join-Path $InstallDir '.sutram-install') -Force -ErrorAction SilentlyContinue

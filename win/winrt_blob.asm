@@ -8,7 +8,7 @@ rt_init:
     push rbp
     mov rbp,rsp
     and rsp,-16
-    sub rsp,32
+    sub rsp,48                    ; shadow space, WriteFile's fifth argument, its byte count
     call rt_import_base
     call qword [rbx+RT_GetConsoleOutputCP]
     mov [rbx+RT_ORIGINAL_CP],eax
@@ -17,6 +17,11 @@ rt_init:
     mov ecx,1                     ; R124: commit reserved pages when first touched (rt_veh)
     lea rdx,[rel rt_veh]
     call qword [rbx+RT_AddVectoredExceptionHandler]
+%ifdef R133_FAIL_VEH_REGISTRATION
+    xor eax,eax                   ; test runtime only: the registration fails
+%endif
+    test rax,rax
+    jz rt_init_noveh              ; R133: see rt_init_noveh, after rt_veh
     mov rsp,rbp
     pop rbp
     pop rbx
@@ -306,8 +311,32 @@ rt_veh:
     pop rsi
     pop rbx
     ret
+; rt_init_noveh: reached from rt_init, in its frame (rsp 16-aligned, 48 bytes below), when
+; AddVectoredExceptionHandler returned NULL.
+rt_init_noveh:
+    ; R133 (ChatGPT R205-206 W1): no handler means the first touch of any reserved page (the arena, a kosh
+    ; region) would end in an access violation with no message. Stop now, with one, and exit 1.
+    mov ecx,-12                   ; STD_ERROR_HANDLE
+    call qword [rbx+RT_GetStdHandle]
+    mov rcx,rax
+    lea rdx,[rel rt_msg_noveh]
+    mov r8d,rt_msg_noveh_end-rt_msg_noveh
+    lea r9,[rsp+40]
+    mov dword [rsp+40],0
+    mov qword [rsp+32],0
+    call qword [rbx+RT_WriteFile]
+    mov ecx,[rbx+RT_ORIGINAL_CP]
+    test ecx,ecx
+    jz .n_exit
+    call qword [rbx+RT_SetConsoleOutputCP]
+.n_exit:
+    mov ecx,1
+    call qword [rbx+RT_ExitProcess]
+    ud2                           ; ExitProcess does not return
 rt_msg_nomem: db 'Sutram truti: smritih na labdha',10
 rt_msg_nomem_end:
+rt_msg_noveh: db 'Sutram truti: smriti-prabandhah na arabdhah',10
+rt_msg_noveh_end:
 rt_end:
 db 'SUTRTV01'
 dd rt_syscall-rt_init,rt_end-rt_init

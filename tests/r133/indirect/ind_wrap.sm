@@ -1,0 +1,15 @@
+# R133: Control: the slice to a direct wrapper that calls a function value - refused since v304 (the call beside it).
+prakriya badal(vibhag s, ignored) {
+    s[0] = 99
+    nivartanam 0
+}
+prakriya fwd(vibhag s, g, x) {
+    nivartanam g(s, x)
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    likha(fwd(k[0:1], badal, kosh_kship(k, 8)))
+    likha(k[0])
+}

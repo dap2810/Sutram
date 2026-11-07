@@ -1,0 +1,18 @@
+# R133: S3 with the growth inside a direct call in the other argument - v306 printed 0 and 7. Refused from v307.
+prakriya badal(vibhag s, ignored) {
+    s[0] = 99
+    nivartanam 0
+}
+prakriya push8(kosh b) {
+    kosh_kship(b, 8)
+    nivartanam 0
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti obstacle = nirmmita(16)
+    vitti f = badal
+    vitti p = push8
+    likha(f(k[0:1], push8(k)))
+    likha(k[0])
+}

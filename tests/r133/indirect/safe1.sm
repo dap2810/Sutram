@@ -1,0 +1,12 @@
+# R133: Control: a kosh slice through a function value with no call beside it - writes through, prints 0 and 99.
+prakriya badal(vibhag s, ignored) {
+    s[0] = 99
+    nivartanam 0
+}
+mukhya() {
+    kosh k[1]
+    kosh_kship(k, 7)
+    vitti f = badal
+    likha(f(k[0:1], 5))
+    likha(k[0])
+}

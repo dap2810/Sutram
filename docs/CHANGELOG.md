@@ -1,4 +1,25 @@
-> **The 20 newest entries.** Older ones, from "v286" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v287" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v307 (Claude, R133) - a slice through a function value, the handler that was never checked, the interrupted install
+
+- **A `kosh` slice through a function value** beside an argument with a call is `E_KOSH_VIBHAG`, as for a direct
+  call (ChatGPT R205-206 S3, found by reading; reproduced here on v306: `f(k[0:1], kosh_kship(k, 8))` printed `0`
+  and `7` - the write went to the old elements - and the 64 MiB form crashed, SIGSEGV). `r129_check_call` left at
+  once for a call through a variable. A function value can reach a `kosh` only through its arguments, so the
+  argument-order rule is applied to it; `f(k[0:1], 5)` still compiles and writes through. Gate `R133 indirect
+  slice` (v306 fails 5 of 10). No existing program is newly refused (guard: 584 ELF identical, 0 DIFFER).
+- **Windows: a failed `AddVectoredExceptionHandler`** stops the program with `Sutram truti: smriti-prabandhah na
+  arabdhah` and exit 1 (R205-206 W1). v306 did not test the result and would run on with no handler: under Wine,
+  a test runtime with the registration failing exited 5 (an access violation) with no output. Gate `R133 handler
+  registration` builds that test runtime in a scratch copy and runs it under Wine. Every PE changes bytes (the
+  runtime, 1165 → 1290 bytes); all run the same under Wine.
+- **The installer finishes an installation that stopped part-way** instead of refusing it: the first change to the
+  folder is `payload.pending.sha256`; files matching the previous manifest, the pending one or the new payload are
+  its own; each file is named in the log before it is copied and written as `<name>.sutram-partial` first; an
+  upgrade overwrites in place and deletes only files the new payload lacks (v303-v306 deleted all first); the
+  uninstaller removes a pending installation's files. Windows is told `1.0.307`, not `0.1.0`. Gate `R133
+  interrupted install` (v306 fails 14 of 16); `tests/windows/test_installer_e2e.py` stops an install at file 132.
+- `sutram-link.exe` rebuilt (it embeds the runtime). No Linux program changes bytes.
 
 ## v306 (Claude, R130 + R131) - the Windows out-of-memory path, the installer, the IDE's stale screen
 
@@ -283,23 +304,3 @@
   (`likha(k)` - the `likha` emitter, left out of this commit as the brief asked) and 6 (a string in a `mala` - its
   element is untyped; `shabda(a[0])` prints it).
 - A `kosh` made in a `mandapa` keeps its region for the program's life (unchanged; reasons in R106-00).
-
-## v287 (Claude, R105) - strings work: `==` `!=` `<` `>` compare text, `+` makes a new string, `likha(a, " ", b)` prints three values
-
-- **`==` / `!=`** between two strings compare bytes to the NUL (the node becomes `vartani_tul(a, b) ==/!= 0`, so
-  the compare that follows is the ordinary integer one). **`<` `<=` `>` `>=`** order by the first differing byte.
-  **`+`** between two strings allocates `len(a) + len(b) + 1` on the persistent side and copies both: the result
-  lives for the program; `parimita` does not count it.
-- **Which values are strings** is decided once per function, before code generation, from the whole program: a
-  variable all of whose assignments are strings; a parameter every caller passes a string; a `prakriya` every
-  `nivartanam` of which is one. Replaces v286's last-assignment flags (ChatGPT R173's P173-01/02/03: `s = s + s`,
-  the fast paths disagreeing, a call result taken for an integer). Every register fast path now leaves a
-  string-touching operation to the one generic rule.
-- **Refused instead of guessed:** a string beside a number, or beside a variable that is sometimes a string
-  (`E_VARTANI_TUL`, `E_VARTANI_CAT`); `-` `*` `/` `%` and bit operators on a string (`E_VARTANI_GANIT`, new).
-  String +/- an integer stays pointer arithmetic.
-- **`likha` with three values always prints three values** (v286's `E_LIKHA_TRAYA` is gone; raw writes stay
-  `dvaram_likha`).
-- Goldens 306 (equal), 307 (join), 308 (likha three), 309 (order), 310 and 311 (refusals). Reference 4a, 5a.
-  Not tracked: module globals, `kosh`/`mala` elements, a `prakriya` used as a value - refused beside a string.
-  `likha(s)` on a string variable still prints its address (`shabda` prints the text).

@@ -84,7 +84,7 @@ type Sutram-Setup.sha256
   fixed one.
 
 Other inputs the payload copies from the tree unchanged, for reference: `sutram-link.exe`
-`94a7bc2c8f8caaa83825ca2b797021fb86ef5784d67cab7b39972d419b8b7883`, `sutram-ide-gui.exe`
+`fef35252407786b50e78eb0e0ce3bb102f4362f0b437c3f104b4526d297e2a29`, `sutram-ide-gui.exe`
 `635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0`, `icons\sutram.ico`
 `b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1`.
 
@@ -103,3 +103,6 @@ runtime and the IDE changed). On Linux: the linker with `nasm -f win64 -DWINDOWS
 `x86_64-w64-mingw32-ld -mi386pep --entry=_start --no-insert-timestamp`, the IDE with `python3 tools/build_ide_linux.py`
 (the port of `windows/gui/build-gui.ps1`). The wizard now runs the engine with `-NonInteractive -ExecutionPolicy Bypass`
 and no console window, and stops it after 15 minutes (`ENGINE_WAIT_MS` in `sutram_wizard.asm`).
+
+**R133 (v307):** the runtime changed again (the handler registration is checked), so `sutram-link.exe` is rebuilt
+the same way. The engine (`install-core.ps1`) and uninstaller changed; the wizard did not.

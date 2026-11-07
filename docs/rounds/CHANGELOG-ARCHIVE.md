@@ -1,5 +1,25 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v287 (Claude, R105) - strings work: `==` `!=` `<` `>` compare text, `+` makes a new string, `likha(a, " ", b)` prints three values
+
+- **`==` / `!=`** between two strings compare bytes to the NUL (the node becomes `vartani_tul(a, b) ==/!= 0`, so
+  the compare that follows is the ordinary integer one). **`<` `<=` `>` `>=`** order by the first differing byte.
+  **`+`** between two strings allocates `len(a) + len(b) + 1` on the persistent side and copies both: the result
+  lives for the program; `parimita` does not count it.
+- **Which values are strings** is decided once per function, before code generation, from the whole program: a
+  variable all of whose assignments are strings; a parameter every caller passes a string; a `prakriya` every
+  `nivartanam` of which is one. Replaces v286's last-assignment flags (ChatGPT R173's P173-01/02/03: `s = s + s`,
+  the fast paths disagreeing, a call result taken for an integer). Every register fast path now leaves a
+  string-touching operation to the one generic rule.
+- **Refused instead of guessed:** a string beside a number, or beside a variable that is sometimes a string
+  (`E_VARTANI_TUL`, `E_VARTANI_CAT`); `-` `*` `/` `%` and bit operators on a string (`E_VARTANI_GANIT`, new).
+  String +/- an integer stays pointer arithmetic.
+- **`likha` with three values always prints three values** (v286's `E_LIKHA_TRAYA` is gone; raw writes stay
+  `dvaram_likha`).
+- Goldens 306 (equal), 307 (join), 308 (likha three), 309 (order), 310 and 311 (refusals). Reference 4a, 5a.
+  Not tracked: module globals, `kosh`/`mala` elements, a `prakriya` used as a value - refused beside a string.
+  `likha(s)` on a string variable still prints its address (`shabda` prints the text).
+
 ## v286 (Muse's FIXALL patch, applied by Claude, R104) - five silent wrong answers become refusals; a recursion guard
 
 - **`likha(a, " ", b)`** (three arguments, the first not a string literal) printed nothing: now **`E_LIKHA_TRAYA`**

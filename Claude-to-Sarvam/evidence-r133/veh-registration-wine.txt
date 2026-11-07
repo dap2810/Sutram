@@ -1,0 +1,17 @@
+# R133: a 100,000-push PE program under Wine. ./sutram_compiler = v306; dev_compiler = the v307 source before the version bump (shipped runtime); fail_compiler = v307 runtime built with -DR133_FAIL_VEH_REGISTRATION (registration forced to NULL); last block = v306's runtime with the registration call replaced by NULL (test build). Wine exit 5 = an unhandled access violation.
+== ./sutram_compiler
+exit 0
+stdout: 100000
+stderr: 
+== /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r133/dev_compiler
+exit 0
+stdout: 100000
+stderr: 
+== /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r133/fail_compiler
+exit 1
+stdout: 
+stderr: Sutram truti: smriti-prabandhah na arabdhah
+== v306 runtime, registration failing (test build)
+exit 5
+stdout: 
+stderr: 
