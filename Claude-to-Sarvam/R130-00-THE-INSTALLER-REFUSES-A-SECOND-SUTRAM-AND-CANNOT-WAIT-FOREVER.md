@@ -46,7 +46,7 @@ Copy-Item -LiteralPath $SetupExePath -Destination (Join-Path $InstallDir 'Sutram
 **What v306 changes** (`install-core.ps1`, `sutram_wizard.asm`):
 1. **No console:** the engine starts with `CREATE_NO_WINDOW` and `-NoProfile -NonInteractive -ExecutionPolicy Bypass`. The uninstaller gets the same flags.
 2. **Nothing can prompt:** `$ProgressPreference = 'SilentlyContinue'`, `$ConfirmPreference = 'None'`.
-3. **The copy logs:** `Copy-StagedFiles` copies file by file with `[IO.File]::Copy` (no progress records), logs every 100 files and the count at the end; the uninstaller copy and the marker log too; so do the shortcut and registry steps. **If it stops again, the last log line names the file.**
+3. **The copy logs:** `Copy-StagedFiles` copies file by file with `[IO.File]::Copy` (no progress records), logs every 100 files and the count at the end; the uninstaller copy and the marker log too; so do the shortcut and registry steps. ~~If it stops again, the last log line names the file.~~ **Correction (R132): it does not** - the last line names the last hundredth file, not the one the copy stopped in. Logging each file before it is copied is proposed in R132-00.
 4. **The wizard cannot wait forever:** `WaitForSingleObject` waits 15 minutes (`ENGINE_WAIT_MS`); then it ends the engine (`TerminateProcess`), the install is reported failed, and the log is shown. A slow machine copies the payload (658 files, 5.4 MB) in well under a minute, so 15 minutes is a hang, not a slow disk.
 5. **Completion is checked, not assumed:** the engine still ends with `Installation complete: <folder>` only after the post-install self-test, and with Add to PATH, only after the WS2 check.
 
