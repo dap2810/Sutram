@@ -1,0 +1,25 @@
+chatgpt                                  compiles -> '7\n99' exit 0
+expr: k[0:1] + zero                      compiles -> '140726237806032' exit 0
+expr: k[0:1] - zero                      compiles -> '140729989592112' exit 0
+expr: k[0:1] * 1                         compiles -> '140725631097120' exit 0
+expr: k[0:1] / 1                         compiles -> '140727983533312' exit 0
+expr: k[0:1] % 7                         compiles -> '3' exit 0
+expr: k[0:1] == zero                     compiles -> '0' exit 0
+expr: k[0:1] < zero                      compiles -> '0' exit 0
+expr: k[0:1] ^ zero                      compiles -> '140721068001680' exit 0
+expr: k[0:1] & zero                      compiles -> '0' exit 0
+expr: k[0:1] | zero                      compiles -> '140733737868272' exit 0
+expr: k[0:1] << zero                     compiles -> '140724615023024' exit 0
+expr: k[0:1] + 0                         compiles -> '140732972844064' exit 0
+expr: -k[0:1]                            compiles -> '-140720462454352' exit 0
+expr: zero + k[0:1]                      compiles -> '140723505015008' exit 0
+expr: m[0:2] + zero                      compiles -> '140729114214944' exit 0
+expr: k[0:1] && 1                        compiles -> '1' exit 0
+expr: !k[0:1]                            compiles -> '0' exit 0
+expr: k[0:1]                             refused E_KOSH_VIBHAG
+expr: m[0:2]                             compiles -> '140731578138368' exit 0
+expr: pankti_gan(k[0:2])                 compiles -> '2' exit 0
+expr: k[0:2][1]                          refused Sutram truti: vyakaran dosh, pankti 8:19, shabd ']'
+      likha(k[0:2]
+decl: vitti v = k[0:1] + zero            compiles -> '140724948920720' exit 0
+cell: m[1] = k[0:1] + zero               compiles -> '140720608340496' exit 0

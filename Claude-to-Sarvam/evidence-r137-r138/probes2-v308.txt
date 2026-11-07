@@ -1,0 +1,13 @@
+kosh + zero                        refused E_KOSH_GANIT
+kosh-result + zero                 compiles -> '140042511056912' exit 0
+ternary kosh + zero                compiles -> '140642097299472' exit 0
+ternary slice + zero               compiles -> '140728506902016' exit 0
+keep(mala slice)                   compiles -> '140727622359936' exit 0
+keep(slice)+zero                   refused E_KOSH_VIBHAG
+if (slice)                         compiles -> '1' exit 0
+index by slice                     compiles -> 'Sutram truti: mala ank seema atikram' exit 1
+vib(k[0:1]) control                compiles -> '7' exit 0
+pankti_gan control                 compiles -> '3' exit 0
+vitti t = m[0:2]; vib(t) control   compiles -> '5' exit 0
+slice bound by slice               compiles -> 'Sutram truti: mala ank seema atikram' exit 1
+f = keep; f(m[0:2])                compiles -> '140734086847344' exit 0

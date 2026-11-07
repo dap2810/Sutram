@@ -1,9 +1,9 @@
 > **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
 > unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
 
-> **Status at compiler v308, 6 November 2026 (R134-R135) — read this before the page below.**
+> **Status at compiler v309, 7 November 2026 (R137-R138) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v308) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **73 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v308 (R134-R135); the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v309) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **74 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v309 (R137-R138); the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -11,7 +11,7 @@
 > - **Every failure begins `Sutram truti`** (v294; `Sutram Error` up to v293).
 > - **`sankhya_bindu` / `sankhya_dot` are withdrawn** (v295, `E_PRATYAHRITA`).
 > - **Fifteen library contracts refuse instead of wrapping** (v296, R116); `patra_asti` is blocked on an OS query the compiler does not make.
-> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms; **v299 brought the Linux memory model to Windows** (R123), **v300 made Windows commit only what a program touches** (R124), **and v301 gives every name one kind for its whole `prakriya`** - a change of kind is `E_VITTI_PRAKAR`, a `kosh` that would become a raw number is `E_KOSH_DVARA` (R126; reference §16), **and v302 makes a `kosh` a descriptor** - two names stay one at any size, and there is no 64 MiB region per `kosh` (R127); **v303 fixes the three descriptor defects ChatGPT R203 found** (R128), **v304 lets a `kosh` parameter grow, and v305 settles `k[lo:]`** (R129, after ChatGPT R204); **v306 fixes the Windows out-of-memory crash, the installer's second-installation and endless-wait defects, and the IDE's stale screen** (R130-R131); **v307 closes the function-value slice (ChatGPT R205-206 S3), checks the Windows handler registration (W1), and finishes an interrupted installation** (R133); **v308 closes the slice's doors with one predicate (R207), keeps commit in hand for the Windows out-of-memory exit, and makes the installation a journaled transaction** (R134-R135). How the defects were found - reading and testing catch different things: `docs/reports/HOW-DEFECTS-WERE-FOUND.md`.
+> - **v298 fixed `anka_akshar` and `vartani_sandhi`**, which were wrong on both platforms; **v299 brought the Linux memory model to Windows** (R123), **v300 made Windows commit only what a program touches** (R124), **and v301 gives every name one kind for its whole `prakriya`** - a change of kind is `E_VITTI_PRAKAR`, a `kosh` that would become a raw number is `E_KOSH_DVARA` (R126; reference §16), **and v302 makes a `kosh` a descriptor** - two names stay one at any size, and there is no 64 MiB region per `kosh` (R127); **v303 fixes the three descriptor defects ChatGPT R203 found** (R128), **v304 lets a `kosh` parameter grow, and v305 settles `k[lo:]`** (R129, after ChatGPT R204); **v306 fixes the Windows out-of-memory crash, the installer's second-installation and endless-wait defects, and the IDE's stale screen** (R130-R131); **v307 closes the function-value slice (ChatGPT R205-206 S3), checks the Windows handler registration (W1), and finishes an interrupted installation** (R133); **v308 closes the slice's doors with one predicate (R207), keeps commit in hand for the Windows out-of-memory exit, and makes the installation a journaled transaction** (R134-R135); **v309 refuses a slice used as a number, and locks and re-checks the installation** (R137-R138). How the defects were found - reading and testing catch different things: `docs/reports/HOW-DEFECTS-WERE-FOUND.md`.
 >
 > **Memory:** on Linux and, from v299 (R123), on Windows: `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, a `kosh` is a descriptor whose elements may move but whose names always agree (v302; v299-v301: a 64 MiB region per `kosh`), and `parimana()` reports the bytes held. **On Windows it commits only the pages a program touches** (v300; in v299 the arena was 1 GiB of commit from the first allocation and each `kosh` 64 MiB) (reference §16, §19; `docs/MEMORY-MODEL.md`).
 >
@@ -167,7 +167,7 @@ build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Gates (`tools/gates.sh`) | **73 PASS, 0 FAIL, 1 NOT-RUN** (v308; the installer carries v308; NOT-RUN: Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
+| Gates (`tools/gates.sh`) | **74 PASS, 0 FAIL, 1 NOT-RUN** (v309; the installer carries v309; NOT-RUN: Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
 | Regression suite | **315 pass, 4 no-expectation** (v298) |
 | Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |

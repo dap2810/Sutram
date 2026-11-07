@@ -31,6 +31,9 @@ rt_init:
     mov r8d,0x3000                ; MEM_COMMIT | MEM_RESERVE
     mov r9d,4                     ; PAGE_READWRITE
     call qword [rbx+RT_VirtualAlloc]
+%ifdef R137_FAIL_RESERVE
+    xor eax,eax                   ; test runtime only: the reserve cannot be had
+%endif
     mov [rbx+RT_OOM_RESERVE],rax
     mov rsp,rbp
     pop rbp

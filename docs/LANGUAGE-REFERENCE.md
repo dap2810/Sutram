@@ -1028,6 +1028,13 @@ a cell or field, a module `vitti`, another `kosh`, a raw store, an untyped param
 whose parameters are untyped. A `vibhag` parameter keeps the kind: `prakriya rakh(vibhag s, m) { m[0] = s }` is
 refused. All are `E_KOSH_VIBHAG`. To keep values, copy them; to share them, pass the `kosh`.
 
+**A slice is not a number** (v309, R137). Its value is the address of a two-word descriptor, so no operator takes
+one - `+ - * / % == != < <= > >= & | ^ << >> && ||`, unary `-` and `!` - nor a condition (`yadi`, `yavat`, `?:`),
+a loop bound, an index, a builtin other than `pankti_gan`, a cell or raw store, or an untyped or function-value
+parameter: `E_VIBHAG_ANKA`, for a `mala`'s slice as for a `kosh`'s. A slice is used as the argument for a `vibhag`
+parameter, in `pankti_gan(s)`, as the base of `s[i]` and `s[a:b]`, and (a `mala`'s) as a name's value. A `kosh`
+made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is.
+
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.
 

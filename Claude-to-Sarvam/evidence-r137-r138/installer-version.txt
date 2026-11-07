@@ -1,0 +1,1 @@
+PASS payload v309 = compiler v309 (bin/ and win/sutram.exe, packed 2026-11-07; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/sutram.exe v309; sha256 9d046b4e1b3d9522...)

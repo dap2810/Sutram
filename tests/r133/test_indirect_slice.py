@@ -47,7 +47,7 @@ def main():
             ok = got == want
             what = f'compiles and prints {got!r}'
         else:
-            ok = want.startswith('E_') and f'[{want}]' in said
+            ok = want.startswith('E_') and f'[{want}]' in said and c.returncode != 0   # R137: an unsuccessful exit
             what = 'refused: ' + (said.strip().split('\n')[0][:110] if said.strip() else '(no message)')
         checks += 1
         fails += not ok

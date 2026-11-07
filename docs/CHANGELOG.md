@@ -1,4 +1,22 @@
-> **The 20 newest entries.** Older ones, from "v288" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v289" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v309 (Claude, R137 + R138) - a slice is not a number; the installer's lock and ownership
+
+- **A slice is not a number** (ChatGPT's R207 follow-up S4; Sarvam measured it on v308): `k[0:1] + zero` printed the
+  descriptor's address, and `keep(k[0:1] + zero)` with an untyped `keep` read the kosh's old elements (7 while
+  `k[0]` was 99) - the operator made the slice a number before any door saw it. `r137_check_stmt`, run on every
+  statement before it is generated, refuses a slice (a `kosh`'s or a `mala`'s) as an operand of any `AST_BINOP`
+  (every operator, unary `-` and `!` included), a condition, a loop bound, an index, a builtin argument (only
+  `pankti_gan` takes one), a cell or raw store, and an untyped or function-value argument (`E_VIBHAG_ANKA`); a
+  `kosh` made a number by a call or `?:` is `E_KOSH_GANIT`. Gate `R137 slice is not a number` (59 checks; v308 fails
+  53, every negative); it fails if the compiler defines an operator it does not test. Refusal gates now require an
+  unsuccessful compiler exit. Guard v308 -> v309: 0 DIFFER on ELF and PE (no emitted code changed).
+- **Installer (R207 follow-up I1, I2):** the lock is a file beside the installation, taken before any state is read
+  and held until the process ends (DeleteOnClose), and the uninstaller takes it too; every target is checked again
+  just before it is replaced, and one changed meanwhile is kept and stops the run; a stopped run's own copy is
+  moved aside (`_superseded`), not deleted; `*.sutram-partial` files are no longer deleted on their name.
+- **Windows runtime:** a test runtime with the start-up reserve refused (`-DR137_FAIL_RESERVE`) exits as v307 did
+  (message, exit 1) - gate `R133 handler registration`, 5 checks. The shipped runtime's bytes are unchanged.
 
 ## v308 (Claude, R134 + R135) - one predicate for the slice's doors; the stack after the OOM message; a journaled install
 
@@ -305,16 +323,3 @@
 - **`parimana()`** is the arena and the regions together; golden 318 shows it move.
 - **Not on main:** the block-arena `kosh` (a slot of the block's arena, growth by a new slot). It was built before
   Sarvam's ROUND-108-CORRECTION and is on the review branch `claude/r108-arena-review`, as the correction asks.
-
-## v289 (Claude, R107) - a kosh cannot leave its block (compile time); `parimana()` reports the bytes in use
-
-- **The escape error:** a `kosh` declared inside a `mandapa` carries the block's depth as its scratch-escape taint,
-  so storing it in a variable declared outside the block, writing it into memory, or returning it is
-  `E_KOSH_MANDAPA` at compile time (the R73 rules, a `kosh`-specific message). Example 287 is now that refusal; the
-  runtime form (R82) stays for a `prakriya` that keeps the `kosh`, golden 316.
-- **`parimana()` / `परिमाण()`** returns the bytes held now: the arena's persistent and scratch sides plus each
-  `kosh`'s header and capacity (a hidden counter, emitted only in programs that call `parimana`). Golden 317.
-  Linux ELF; 0 on Windows.
-- R107-00 prices the block-arena `kosh` design (not built): a slot costs about 21 instructions and no system call
-  against a region's 14 and an `mmap`; kb1 0.02 s / 0 KB against 0.48-0.99 s / 400 MB; a `kosh` grown to 1,000 in a
-  block leaves 8,656 dead bytes.

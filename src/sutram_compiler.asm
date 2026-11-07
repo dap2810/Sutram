@@ -246,7 +246,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v308) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v309) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -615,6 +615,10 @@ r54_builtin_arity_table:
     r129_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: prakriya '", 0
     r129_vb_grow db "' koshan vardhayitum shaknoti - kosh-vibhagah tasyai na diyate (vriddhau tasya mulyani anyatra gacchanti)", 10, 0
     r129_vb_call db "' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)", 10, 0
+    r137_hdr db "Sutram truti [E_VIBHAG_ANKA]: vibhagah '", 0
+    r137_txt db "' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya", 10, 0
+    r137_khdr db "Sutram truti [E_KOSH_GANIT]: ", 0
+    r137_hint db "Sanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya", 10, 0
     r134_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah '", 0
     r134_vb_hint db "Sanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru", 10, 0
     r129_vb_hint db "Sanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat", 10, 0
@@ -1541,6 +1545,7 @@ section .bss
     rfx2_asg_val  resq RFX2_ASG_CAP
     rfx2_asg_n  resq 1
     rfx2_stack  resq RFX2_STACK_CAP
+    r137_budget resq 1                ; R137: the expression walk's node budget
     rfx2_seen   resb AST_HEAP_CAP / 64
     rfx2_calls  resq RFX2_ASG_CAP          ; R105: the AST_FUNCALLs met in the walk
     rfx2_calls_n resq 1
@@ -18801,6 +18806,8 @@ r45_gen_block_body:                 ; R45: gen_block is the wrapper in src/r45_d
 gen_stmt:
     push rbx
     mov rbx, rax
+    mov rdi, rbx                   ; R137: a slice is used as a number nowhere in this statement
+    call r137_check_stmt
     call r108_note_alias           ; R109: a second name of an open block's kosh (no code emitted)
     cmp qword [rel r45_debug], 0   ; R45 --debug: the trap before the statement
     je .r45_no_trap
@@ -28288,6 +28295,281 @@ r134_kosh_slice:
 .out:
     pop rbx
     pop rdi
+    ret
+
+; R137 (ChatGPT R207 follow-up S4, Sarvam R137-R138): a slice is not a number. Its value is the address of a
+; two-word descriptor, so `k[0:1] + zero` was that address plus zero: printed it prints an address, and given to
+; an untyped prakriya and read back it read the kosh's old elements (v308: 7 while k[0] was 99). The doors
+; (r134_holds_kosh) never saw a slice there, because the + had made it a number first. So the rule is on the
+; operation, not the door: a slice is used ONLY
+;   - as the argument for a vibhag parameter of a prakriya called by name (an untyped parameter, a function
+;     value's, or a foreign function's receives it as a number - the untyped identity keep(x) laundered it);
+;   - as the first argument of pankti_gan (its length);
+;   - as the base of an index or a slice (s[i], s[a:b]) - a name there, not a value;
+;   - as the initial value or new value of a name of its own (vitti t = s), kosh slices excepted (E_KOSH_VIBHAG).
+; Anywhere else a slice is used as a number, and that is refused (E_VIBHAG_ANKA): an operand of any binary or
+; unary operator (+ - * / % == != < <= > >= & | ^ << >> && || ! and unary -, which are all AST_BINOP: a new
+; operator is a new AST_BINOP op and is covered without a new case), an argument of any other builtin (likha(s)
+; printed the address), a condition (yadi / yavat / kuru-yavat / abhava / ?:), a for-loop bound, a cell, field
+; or raw store, a raw store's address.
+; r137_check_stmt(rdi = statement): walk its expressions (not nested blocks: their statements come through
+; gen_stmt themselves) and refuse the first slice used as a number. Every register preserved.
+r137_check_stmt:
+    push rax
+    push rbx
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r15
+    xor r15, r15
+    mov qword [rel r137_budget], 200000
+    call rfx2_push
+.walk:
+    test r15, r15
+    jz .out
+    dec qword [rel r137_budget]
+    js .out                            ; a node budget, not a proof of anything: a tree this size is not real
+    dec r15
+    lea rax, [rel rfx2_stack]
+    mov rbx, [rax+r15*8]
+    lea rax, [rel ast_heap]
+    cmp rbx, rax
+    jb .walk
+    cmp rbx, [rel ast_ptr]
+    jae .walk
+    mov rcx, rbx
+    sub rcx, rax
+    test ecx, 7
+    jnz .walk
+    mov rax, [rbx]
+    test rax, rax
+    jz .walk
+    cmp rax, 128
+    ja .walk
+    cmp rax, AST_NUM
+    je .walk
+    cmp rax, AST_FLOAT
+    je .walk
+    cmp rax, AST_STR
+    je .walk
+    cmp rax, AST_VAR
+    je .walk
+    cmp rax, AST_SLICE                 ; its lo and hi are numbers; its base is a name
+    je .slicebounds
+    cmp rax, AST_FUNCDEF
+    je .walk
+    cmp rax, AST_FUNC
+    je .walk
+    cmp rax, AST_BLOCK
+    je .walk
+    cmp rax, AST_BINOP
+    je .binop
+    cmp rax, AST_CALL
+    je .call
+    cmp rax, AST_IF
+    je .cond8
+    cmp rax, AST_WHILE
+    je .cond8
+    cmp rax, AST_ASSERT
+    je .cond8
+    cmp rax, AST_TERNARY
+    je .cond8
+    cmp rax, AST_DO_WHILE
+    je .cond16
+    cmp rax, AST_FOR
+    je .forb
+    cmp rax, AST_WRITEMEM
+    je .wmem
+    cmp rax, AST_ASSIGN
+    je .assign
+    cmp rax, AST_INDEX
+    je .index
+    cmp rax, AST_FUNCALL
+    je .funcall
+    jmp .gen
+.funcall:                              ; [AST_FUNCALL][name][count][args...]: a slice only to a vibhag parameter
+    mov r10d, 1                        ; a kosh to a parameter is r126_check_untyped_arg's (E_KOSH_DVARA)
+    xor r9, r9
+.farg:
+    cmp r9, [rbx+16]
+    jae .gen
+    cmp r9, 6
+    jae .gen
+    mov rdi, [rbx+8]
+    call r23_call_is_indirect          ; a function value: no parameter is known to be vibhag
+    test rax, rax
+    jnz .fnum
+    mov rdi, [rbx+8]
+    mov rsi, r9
+    call func_param_type               ; (0 for a name with no definition: its own error comes first)
+    cmp rax, PARAM_VIBHAG
+    je .fnext
+.fnum:
+    mov rdi, [rbx+24+r9*8]
+    call .num
+.fnext:
+    inc r9
+    jmp .farg
+.index:                                ; [AST_INDEX][name][index]: an index is a number
+    xor r10d, r10d
+    mov rdi, [rbx+16]
+    call .num
+    jmp .gen
+.binop:                                ; [AST_BINOP][op][left][right]
+    xor r10d, r10d                     ; an operator's operand: neither a slice nor a kosh is a number
+    mov rdi, [rbx+16]
+    call .num
+    mov rdi, [rbx+24]
+    call .num
+    jmp .gen
+.call:                                 ; [AST_CALL][builtin][count][args...]
+    mov r10d, 1                        ; a kosh at a builtin is r126_check_builtin's (E_KOSH_DVARA)
+    xor r9, r9
+.carg:
+    cmp r9, [rbx+16]
+    jae .gen
+    cmp r9, 6
+    jae .gen
+    test r9, r9
+    jnz .cnum
+    cmp qword [rbx+8], BN_PANKTILEN    ; pankti_gan(s): the slice's length - its one builtin
+    je .cnext
+.cnum:
+    mov rdi, [rbx+24+r9*8]
+    call .num
+.cnext:
+    inc r9
+    jmp .carg
+.cond8:
+    xor r10d, r10d
+    mov rdi, [rbx+8]
+    call .num
+    jmp .gen
+.cond16:
+    xor r10d, r10d
+    mov rdi, [rbx+16]
+    call .num
+    jmp .gen
+.forb:                                 ; [AST_FOR][var][start][end][body]
+    xor r10d, r10d
+    mov rdi, [rbx+16]
+    call .num
+    mov rdi, [rbx+24]
+    call .num
+    jmp .gen
+.wmem:                                 ; [AST_WRITEMEM][count][address][value]
+    mov r10d, 1
+    mov rdi, [rbx+16]
+    call .num
+    mov rdi, [rbx+24]
+    call .num
+    jmp .gen
+.assign:                               ; [AST_ASSIGN][target][value]: a name of its own may take a slice
+    mov rax, [rbx+8]
+    test rax, rax
+    jz .gen
+    cmp qword [rax], AST_VAR
+    je .gen
+    mov r10d, 1
+    mov rdi, [rbx+16]
+    call .num
+    jmp .gen
+.slicebounds:                          ; [AST_SLICE][base][lo][hi]
+    xor r10d, r10d
+    mov rdi, [rbx+16]
+    call .num
+    mov rdi, [rbx+24]
+    call .num
+    mov rdi, [rbx+16]
+    call rfx2_push
+    mov rdi, [rbx+24]
+    call rfx2_push
+    jmp .walk
+.gen:                                  ; every field that may be a node (the r129 walk's rule)
+    mov r9d, 8
+.gl:
+    cmp r9d, 72
+    jae .walk
+    mov rdi, [rbx+r9]
+    call rfx2_push
+    add r9d, 8
+    jmp .gl
+.num:                                  ; rdi = a value used as a number: refuse a slice there
+    test rdi, rdi
+    jz .numok
+    lea rax, [rel ast_heap]            ; (a ?: whose arm is a slice gives a slice)
+    cmp rdi, rax
+    jb .numslice
+    cmp rdi, [rel ast_ptr]
+    jae .numslice
+    cmp qword [rdi], AST_TERNARY
+    jne .numslice
+    push rdi
+    mov rdi, [rdi+16]
+    call .num
+    pop rdi
+    push rdi
+    mov rdi, [rdi+24]
+    call .num
+    pop rdi
+.numslice:
+    push rdi
+    call r23_expr_is_slice
+    pop rdi
+    test rax, rax
+    jz .numkosh
+    test r10d, r10d                    ; at a door, a kosh's slice is the door's to refuse (E_KOSH_VIBHAG, R134)
+    jz .bad
+    push rdi
+    call r134_holds_kosh
+    pop rdi
+    test rax, rax
+    jz .bad
+    ret
+.numkosh:
+    test r10d, r10d
+    jnz .numok
+    cmp qword [rdi], AST_VAR           ; a bare kosh name is rfx_is_kosh_operand's (E_KOSH_GANIT with its place)
+    je .numok
+    push rdi                           ; R137: and a kosh made a number by a call or ?: (dek(k) + zero) - a bare
+    call r134_holds_kosh               ; kosh name is E_KOSH_GANIT already (rfx_is_kosh_operand)
+    pop rdi
+    test rax, rax
+    jnz .badk
+.numok:
+    ret
+.badk:
+    lea rdi, [rel r137_khdr]
+    call print_str_z
+    lea rdi, [rel rfx_bc_txt_kosh]
+    call print_str_z
+    lea rdi, [rel rfx_bc_hint_kosh]
+    jmp capacity_fail
+.bad:
+    mov rbx, rdi
+    lea rdi, [rel r137_hdr]
+    call print_str_z
+    mov rdi, [rbx+8]                   ; the slice's base, or the slice name
+    call print_str_z
+    lea rdi, [rel r137_txt]
+    call print_str_z
+    lea rdi, [rel r137_hint]
+    jmp capacity_fail
+.out:
+    pop r15
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rbx
+    pop rax
     ret
 
 ; r126_bind(rdi = name, rsi = the kind given to it, rdx = the value expression or 0): the name keeps one

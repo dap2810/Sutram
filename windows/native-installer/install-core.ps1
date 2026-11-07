@@ -8,7 +8,7 @@ param(
     [switch]$VerifyOnly
 )
 $ErrorActionPreference = 'Stop'
-$script:txnLock = $null       # R134: the transaction folder's lock, held while this run installs
+$script:txnLock = $null       # R137: the lock beside the target, held from the first read until the process ends
 $script:journalPath = $null
 # R130: no progress bars (Expand-Archive and Copy-Item draw one, which a console can stall) and no confirmation
 # prompts: the wizard runs this with -NonInteractive and no console window, and waits at most 15 minutes.
@@ -427,6 +427,15 @@ try {
     # R134: the transaction folder beside the target, and what its journal says.
     $txnDir = Join-Path ([IO.Path]::GetDirectoryName($InstallDir)) ([IO.Path]::GetFileName($InstallDir) + '.sutram-transaction')
     Assert-NoReparsePath $txnDir
+    # R137 (ChatGPT R207 follow-up I2): one installer at a time, from before anything is read until the process
+    # ends. The lock is a file beside the target, outside the transaction folder (which cleanup removes), opened
+    # with no sharing and deleted when its handle closes - so a second installer cannot read state the first is
+    # changing, nor act on a check made before the first finished.
+    $lockPath = Join-Path ([IO.Path]::GetDirectoryName($InstallDir)) ([IO.Path]::GetFileName($InstallDir) + '.sutram-lock')
+    Assert-NoReparsePath $lockPath
+    try {
+        $script:txnLock = New-Object IO.FileStream($lockPath,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
+    } catch { throw ('Another Sutram installer or uninstaller is working on ' + $InstallDir + '. Let it finish, then run this one again.') }
     $script:journalPath = Join-Path $txnDir 'journal.txt'
     $earlier = Read-Journal $script:journalPath
     if ($earlier.Exists -and $earlier.Committed) {
@@ -440,13 +449,11 @@ try {
     }
     if ($pending) {
         Log ('A previous installation stopped part-way (it left ' + $pendingPath + '); this run finishes it.')
+        # R137 (I1): v307 copied as '<name>.sutram-partial'; such a file is left where it is and named. Its suffix
+        # does not prove the installer wrote it, and nothing in v308 or later uses that name.
         $parts = @()
         if ([IO.Directory]::Exists($InstallDir)) { $parts = [IO.Directory]::GetFiles($InstallDir,'*.sutram-partial',[IO.SearchOption]::AllDirectories) }
-        foreach ($part in $parts) {
-            Assert-NoReparsePath $part
-            Log ('Removing an unfinished copy: ' + $part)
-            [IO.File]::Delete($part)
-        }
+        foreach ($part in $parts) { Log ('Left in place (not removed; perhaps an unfinished v307 copy): ' + $part) }
     }
     if (Test-Path -LiteralPath $InstallDir -PathType Container) {
         $first = Get-ChildItem -LiteralPath $InstallDir -Force -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -531,10 +538,6 @@ try {
         $txnStage = Join-Path $txnDir 'stage'
         $txnBackup = Join-Path $txnDir 'backup'
         foreach ($d in @($txnDir,$txnStage,$txnBackup)) { if (-not [IO.Directory]::Exists($d)) { [void][IO.Directory]::CreateDirectory($d) } }
-        # One installer at a time for this folder: the lock is held until this run ends.
-        try {
-            $script:txnLock = [IO.File]::Open((Join-Path $txnDir 'lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None)
-        } catch { throw ('Another Sutram installer is working on ' + $InstallDir + '. Let it finish, then run this one again.') }
         $txid = [guid]::NewGuid().ToString('N')
         $oldManifestSha = 'none'
         if (Test-Path -LiteralPath $previousManifest -PathType Leaf) { $oldManifestSha = Get-Sha $previousManifest }
@@ -571,9 +574,22 @@ try {
                     Journal ("PUBLISHED`t" + $rel + "`t" + $newFiles[$rel])
                     continue
                 }
+                # R137 (I2): checked again just before it is replaced - a file changed since the first check is
+                # not this installer's to move: it is kept, and the run stops (the journal lets the next run go on).
+                $mine = ($previousFiles.ContainsKey($rel) -and $have -eq $previousFiles[$rel].ToUpperInvariant()) -or
+                        ($pendingFiles.ContainsKey($rel) -and $have -eq $pendingFiles[$rel]) -or
+                        ($earlier.Known.ContainsKey($rel) -and ($earlier.Known[$rel] -contains $have))
+                if (-not $mine) {
+                    Log ('Changed since the check (preserved): ' + $target)
+                    throw ('A file changed while the installer was working, and was not replaced: ' + $target + '. Move it elsewhere, then run this installer again.')
+                }
                 $bk = Join-Path $txnBackup $rel
                 if (Test-Path -LiteralPath $bk -PathType Leaf) {
-                    [IO.File]::Delete($target)   # an earlier run kept the original; this is that run's own copy
+                    # An earlier run kept the original in the backup; this file is that run's own copy. It is moved
+                    # aside too (R137: nothing in the target is deleted), under _superseded.
+                    $sup = Join-Path (Join-Path $txnBackup '_superseded') ($rel + '.' + $have.Substring(0,12))
+                    Journal ("SUPERSEDED`t" + $rel + "`t" + $have)
+                    if (Test-Path -LiteralPath $sup -PathType Leaf) { [IO.File]::Delete($target) } else { Move-Into $target $sup }
                 } else {
                     Journal ("BACKUP`t" + $rel + "`t" + $have)
                     Move-Into $target $bk
@@ -729,7 +745,6 @@ try {
         # committed journal, which the next run only cleans up.
         try {
             [IO.File]::Copy($script:journalPath,(Join-Path $InstallDir 'install-journal.log'),$true)
-            if ($script:txnLock) { $script:txnLock.Dispose(); $script:txnLock = $null }
             Remove-Item -LiteralPath $txnDir -Recurse -Force
         } catch { Log ('The transaction folder could not be removed now (the next run removes it): ' + $txnDir) }
         # The wizard deletes its temporary staging directory after success.
@@ -738,7 +753,6 @@ try {
         Copy-Item -LiteralPath $LogPath -Destination (Join-Path $InstallDir 'install.log') -Force
         Add-Content -LiteralPath $statePath -Encoding UTF8 -Value ('InstallLogSHA256='+(Get-FileHash -LiteralPath (Join-Path $InstallDir 'install.log') -Algorithm SHA256).Hash)
     } finally {
-        if ($script:txnLock) { $script:txnLock.Dispose(); $script:txnLock = $null }
         $stageFull=[IO.Path]::GetFullPath($stage)
         $tempFull=[IO.Path]::GetFullPath($env:TEMP).TrimEnd('\')
         if (-not $stageFull.StartsWith($tempFull+'\Sutram-Payload-',[StringComparison]::OrdinalIgnoreCase)) { throw 'Unsafe stage cleanup path.' }

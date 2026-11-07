@@ -109,3 +109,6 @@ the same way. The engine (`install-core.ps1`) and uninstaller changed; the wizar
 
 **R134-R135 (v308):** the runtime and the PE layout changed (a 64 KiB commit reserve), so `sutram-link.exe` is rebuilt
 again; the engine, the uninstaller and the wizard (it logs its 15-minute stop) changed.
+
+**R137-R138 (v309):** the runtime's shipped bytes and `sutram-link.exe` are unchanged; the engine and the uninstaller
+changed (the lock beside the installation, the re-check before each replacement).

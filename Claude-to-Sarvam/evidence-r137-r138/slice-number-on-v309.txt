@@ -1,0 +1,60 @@
+PASS  every operator the compiler defines has a case here (all)
+PASS  OP_ADD: k[0:1] + zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_ADD: one + m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SUB: k[0:1] - zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SUB: one - m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MUL: k[0:1] * zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MUL: one * m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_DIV: k[0:1] / zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_DIV: one / m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_EQ: k[0:1] == zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_EQ: one == m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LE: k[0:1] <= zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LE: one <= m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LT: k[0:1] < zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LT: one < m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GT: k[0:1] > zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GT: one > m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GE: k[0:1] >= zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GE: one >= m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_NE: k[0:1] != zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_NE: one != m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MOD: k[0:1] % zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MOD: one % m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_AND: k[0:1] & zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_AND: one & m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_OR: k[0:1] | zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_OR: one | m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_XOR: k[0:1] ^ zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_XOR: one ^ m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LAND: k[0:1] && zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LAND: one && m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LOR: k[0:1] || zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LOR: one || m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHL: k[0:1] << zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHL: one << m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHR: k[0:1] >> zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHR: one >> m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  unary -: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  unary !: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  likha(mala slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  yadi (slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  yavat (slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  ?: condition: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  ?: arm + zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  for bound: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  index: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  cell store: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  raw store: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  untyped parameter: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  function value: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  declared from arithmetic: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  kosh result + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  ?: of kosh + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  bare kosh + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  control: vib(k[0:1]): want '7\n'; prints '7\n'
+PASS  control: pankti_gan(m[0:3]): want '3\n'; prints '3\n'
+PASS  control: a slice name passed on: want '5\n'; prints '5\n'
+PASS  control: element arithmetic: want '12\n'; prints '12\n'
+PASS  ChatGPT S4 laundering probe: want 'E_'; refused E_VIBHAG_ANKA
+r137 slice is not a number: 59 checks, 0 failed

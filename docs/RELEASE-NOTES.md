@@ -1,7 +1,7 @@
-# Sutram 1.0 (v308) — release notes
+# Sutram 1.0 (v309) — release notes
 
-**Compiler `Sutram 1.0 (v308) - sampurna sutra`, 6 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v308). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v309) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v309). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -102,8 +102,16 @@ succeeded; use the checked form when the program must detect a failure and go on
     that form; v308 refuses every slice of a `kosh` to a function value). A `vibhag` parameter keeps the slice's
     kind, so forwarding it does not open a door. Up to v307 these printed the old value: the write went to elements
     the `kosh` had left.
-  Passed on directly, to a `prakriya` that only reads, it is safe: `yog(k[1:4])`. In `k[lo:]` the end is the length
-  after `lo` is evaluated (v305).
+  - **a slice is not a number** (v309, after ChatGPT's R207 follow-up S4): no operator takes one (`k[0:1] + zero`
+    printed the descriptor's address, and passed to an untyped `prakriya` read the `kosh`'s old elements - 7 while
+    `k[0]` was 99 - on v308), nor a condition, a loop bound, an index, a builtin other than `pankti_gan`, a cell or
+    raw store, or an untyped or function-value parameter, for a slice of a `mala` too (`E_VIBHAG_ANKA`). A `kosh`
+    made a number by a call or `?:` is `E_KOSH_GANIT`, as a bare one was.
+  **What a slice is for:** an argument to a `vibhag` parameter of a `prakriya` called by name, `pankti_gan(s)`, the
+  base of `s[i]` and `s[a:b]`, and a name of its own for a `mala`'s slice (`vitti t = m[1:3]`). Passed on directly,
+  to a `prakriya` that only reads, it is safe: `yog(k[1:4])`. In `k[lo:]` the end is the length after `lo` is
+  evaluated (v305). **These rules are what the gates test** (the R133, R134 and R137 gates: every escape and every
+  expression form found so far, each refused); they are not a proof that no other form exists.
 - **`parimana()` counts:** occupied arena storage (including temporary buffers in open blocks, `kosh` descriptors and
   retained old arena buffers) plus the current capacity of a `kosh` whose elements have a region of their own. It is
   not resident memory, commit or reserved address space, and an allocation that falls back to its own `mmap` (past the
@@ -126,7 +134,8 @@ succeeded; use the checked form when the program must detect a failure and go on
     printed nothing (native Windows, 64-640 MiB job commit limits). Under v306 two cases printed the message and then
     died with `STATUS_STACK_OVERFLOW` (512 MiB, and a `mandapa` at 64 MiB: the commit left after the failure was too
     little for the thread's stack to grow while exiting); **from v308 the runtime keeps 64 KiB of commit from the
-    start and gives it back before the message**, so the exit has room - native confirmation is the owner's.
+    start and gives it back before the message**, so the exit should have room - **not yet measured natively**
+    (`tests/windows/test_oom_headroom.py`). If that reserve cannot be had at start, the exit is v307's, without it.
     **It is fatal:** there is no recovery, and no
     promise that the operation in progress was left whole. It applies after the runtime's memory handler is
     installed; **if Windows refuses to install that handler**, the program stops at once with
@@ -189,8 +198,12 @@ succeeded; use the checked form when the program must detect a failure and go on
     backups; every file reaches the installation by a rename, so none is ever half-written; a replaced file is
     backed up first; files the new version lacks go to the backup. **A run that stops is finished by the next**,
     which reads the journal. A file that is not what the installer wrote is never replaced: all such files are
-    listed, with a way out (move them, or the folder, aside), and nothing changes. The backups are removed once the
-    installation is complete;
+    listed, with a way out (move them, or the folder, aside), and nothing in the installation changes. Each file is
+    checked again just before it is replaced, and one changed meanwhile is kept and stops the run (v309). One
+    installer or uninstaller at a time: a lock file beside the installation is held from the first read to the end
+    (v309). A `*.sutram-partial` file (v307's temporary name) is no longer deleted on its name alone (v309). This is
+    interruption-and-retry safety, not one atomic step: the shortcuts, registry and PATH are written after the files
+    and finished, not rolled back, by a rerun. The backups are removed once the installation is complete;
   - **the stops themselves:** the v303 copy stopped inside file 132 of 657 (left empty) and the v306 same-folder
     upgrade after about 117 files (native, 6 November); both had just deleted the previous installation's files,
     and in the v306 stop Windows reported **every thread of the engine, and the wizard's original threads, suspended**.
@@ -251,6 +264,10 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v309:** a slice is not a number - no operator, condition, bound, index, builtin (but `pankti_gan`), store or
+  untyped parameter takes one (`E_VIBHAG_ANKA`), and a `kosh` made a number by a call or `?:` is `E_KOSH_GANIT`;
+  the installer locks the folder from its first read, checks each file again before replacing it, and no longer
+  deletes `*.sutram-partial` files on their name.
 - **v308:** a slice of a `kosh` goes through no door a `kosh` may not - cells, fields, module `vitti`, another `kosh`,
   raw stores, untyped and function-value parameters - by one predicate (ChatGPT R207); the Windows out-of-memory exit
   keeps 64 KiB of commit in hand, so it no longer overflows the stack after the message; the installer is a

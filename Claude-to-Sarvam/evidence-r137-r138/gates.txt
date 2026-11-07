@@ -1,0 +1,19 @@
+rc=0
+payload: 658 files, 1863956 bytes zipped; Sutram-Setup.exe 2009359 bytes, sha256 9d046b4e1b3d95222523e78304e48cb5bc10a69f951b33822a2673f0dc3bb533
+PASS payload v309 = compiler v309 (bin/ and win/sutram.exe, 
+  regression suite (NO-EXPECTATION=4 PASS=327 ) PASS
+  guard pages (controls 5/5, suite PASS=323 FAIL=0, library proofs 229/229, property proofs 86/86) PASS
+  crash corpus (227 cases + manifest, 0 failed) PASS
+  R133 indirect slice (10 checks) PASS
+  R134 install transaction (24 checks) PASS
+  R134 one predicate (27 checks) PASS
+  R137 slice is not a number (59 checks) PASS
+  R133 handler registration (5 checks) PASS
+  Windows execution            NOT-RUN cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/t
+  doc counts (74 gates PASS, 0 FAIL, 1 NOT-RUN; suite PASS=327) PASS
+  PASS                         74
+  FAIL                         0
+  NOT-RUN                      1
+  PASS, FAIL and NOT-RUN are separate on purpose.
+
+[exited with code 0]

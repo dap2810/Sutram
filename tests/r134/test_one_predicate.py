@@ -79,7 +79,7 @@ def main():
                 got = 'TIMEOUT'
             ok, what = got == want, f'compiles and prints {got!r}'
         else:
-            ok = want.startswith('E_') and f'[{want}]' in said
+            ok = want.startswith('E_') and f'[{want}]' in said and c.returncode != 0   # R137: an unsuccessful exit
             what = 'refused: ' + (said.strip().split('\n')[0][:110] if said.strip() else '(no message)')
         check(ok, f'{name}: want {want!r}; {what}')
     print(f'r134 one predicate: {checks} checks, {fails} failed')

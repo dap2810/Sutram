@@ -1,0 +1,13 @@
+kosh + zero                        refused E_KOSH_GANIT
+kosh-result + zero                 refused E_KOSH_GANIT
+ternary kosh + zero                refused E_KOSH_GANIT
+ternary slice + zero               refused E_VIBHAG_ANKA
+keep(mala slice)                   refused E_VIBHAG_ANKA
+keep(slice)+zero                   refused E_KOSH_VIBHAG
+if (slice)                         refused E_VIBHAG_ANKA
+index by slice                     refused E_VIBHAG_ANKA
+vib(k[0:1]) control                compiles -> '7' exit 0
+pankti_gan control                 compiles -> '3' exit 0
+vitti t = m[0:2]; vib(t) control   compiles -> '5' exit 0
+slice bound by slice               refused E_VIBHAG_ANKA
+f = keep; f(m[0:2])                refused E_VIBHAG_ANKA

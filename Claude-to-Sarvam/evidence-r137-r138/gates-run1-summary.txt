@@ -1,0 +1,10 @@
+# R137: the FIRST full gate run on v309 (before the fix that leaves bare kosh names to rfx_is_kosh_operand).
+# Its file was overwritten by the second run's launch; these are the summary lines as printed at the time.
+  regression suite             FAIL   FAIL=1 NO-EXPECTATION=4 PASS=326
+  guard pages                  FAIL   guard pages: controls 5/5, suite PASS=322 FAIL=1, library proofs 229/229, property proofs 86/86, 1 fai
+  doc counts                   FAIL      PROJECT-MASTER.md: quotes 74 PASS but only 72 gates exist
+  PASS                         71
+  FAIL                         3
+  NOT-RUN                      1
+# The one suite failure: examples/314_r106_kosh_operand.sm - the expected message has its "file.sm: " prefix; the
+# new check refused `a == b` (two bare kosh names) first, without it. Fixed; the second run is gates.txt (74/0/1).

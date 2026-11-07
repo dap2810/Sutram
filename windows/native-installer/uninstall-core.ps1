@@ -135,6 +135,10 @@ try {
     $userProgramsRoot=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'Programs')).TrimEnd('\')
     if (-not $InstallDir.StartsWith($userProgramsRoot + '\',[StringComparison]::OrdinalIgnoreCase)) { throw 'Refusing to uninstall outside the current user Programs folder.' }
     if (-not (Test-SutramMarker (Join-Path $InstallDir '.sutram-install'))) { throw 'This folder is not marked as a valid Sutram installation.' }
+    # R137: not while an installer holds the folder's lock (install-core.ps1); held until this process ends.
+    try {
+        $script:lock = New-Object IO.FileStream(($InstallDir + '.sutram-lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
+    } catch { throw ('A Sutram installer is working on ' + $InstallDir + '. Let it finish, then uninstall.') }
     $state=Read-State (Join-Path $InstallDir 'install-state.ini')
     $expectedSelf=Join-Path $InstallDir 'Sutram-Uninstall.exe'
     if (-not [string]::Equals([IO.Path]::GetFullPath($SelfPath),$expectedSelf,[StringComparison]::OrdinalIgnoreCase)) {
@@ -189,8 +193,9 @@ try {
     Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.manifest.sha256')
     # R133: an installation that stopped part-way left the payload it was installing, and perhaps unfinished copies.
     Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.pending.sha256')
+    # R137 (I1): a '*.sutram-partial' file is left and named - its suffix does not prove the installer wrote it.
     foreach ($part in [IO.Directory]::GetFiles($InstallDir,'*.sutram-partial',[IO.SearchOption]::AllDirectories)) {
-        Remove-Item -LiteralPath $part -Force -ErrorAction SilentlyContinue
+        Log ('Left in place (not removed; perhaps an unfinished v307 copy): ' + $part)
     }
     Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.pending.sha256') -Force -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath (Join-Path $InstallDir 'install-journal.log') -Force -ErrorAction SilentlyContinue

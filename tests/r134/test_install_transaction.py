@@ -65,8 +65,22 @@ def main():
     i_stage = body.find('Stage-Payload $stage $txnStage $newFiles')
     i_pub = body.find('Move-Into $staged $target')
     check(0 < i_begin < i_hint < i_stage < i_pub, 'BEGIN is journaled before the pending hint, the staging and any change to the target')
-    check('[IO.FileShare]::None' in body and "Another Sutram installer is working on" in body,
-          'one installer at a time: the transaction folder is locked')
+    i_lock, i_read = code.find("$script:txnLock = New-Object IO.FileStream($lockPath"), code.find('$earlier = Read-Journal $script:journalPath')
+    check(0 < i_lock < i_read and "+ '.sutram-lock')" in code and '[IO.FileOptions]::DeleteOnClose' in code
+          and "Join-Path $txnDir 'lock'" not in code,
+          'R137 (I2): one installer at a time, locked beside the target before any state is read, until the process ends')
+    check('.sutram-lock' in re.sub(r'(?m)#.*$', '', uni) and '[IO.FileShare]::None' in uni,
+          'R137: the uninstaller takes the same lock')
+    part = code[code.find("'*.sutram-partial'"):code.find("'*.sutram-partial'") + 300]
+    check('Delete' not in part and 'Left in place' in part and 'Delete' not in
+          re.sub(r'(?m)#.*$', '', uni)[re.sub(r'(?m)#.*$', '', uni).find("'*.sutram-partial'"):][:300],
+          "R137 (I1): a '*.sutram-partial' file is not deleted on a suffix alone, by the installer or the uninstaller")
+    pubtxt = body[body.find("Log ('Publishing "):body.find('Log \'Writing the payload manifest.\'')]
+    i_rv, i_bk = pubtxt.find('if (-not $mine)'), pubtxt.find('Journal ("BACKUP`t"')
+    check(0 < i_rv < i_bk and 'Changed since the check (preserved)' in pubtxt,
+          'R137 (I2): each target is checked again just before it is moved, and a changed one is kept')
+    check('Journal ("SUPERSEDED`t"' in pubtxt and "'_superseded'" in pubtxt,
+          "R137: a stopped run's own copy is moved aside under _superseded, not deleted")
     sp = func(code, 'Stage-Payload')
     i_s, i_c, i_v, i_d = (sp.find("Log ('START "), sp.find('[IO.File]::Copy($src,$part,$true)'),
                           sp.find("(Get-Sha $part) -ne $NewFiles[$rel]"), sp.find("Log ('DONE  "))
@@ -92,7 +106,7 @@ def main():
     i_commit = body.find('Journal ("COMMITTED`t"')
     i_unhint = body.find('Remove-Item -LiteralPath $pendingPath -Force')
     i_done = body.find("Log ('Installation complete: ' + $InstallDir)")
-    i_clean = body.find('Remove-Item -LiteralPath $txnDir -Recurse -Force')
+    i_clean = body.find('Remove-Item -LiteralPath $txnDir -Recurse -Force', max(i_done, 0))
     check(0 < i_state < i_commit < i_unhint < i_done < i_clean, 'COMMITTED after the state, then the hint is removed, then the folder is cleaned up')
     check('$earlier.Exists -and $earlier.Committed' in code, 'a rerun that finds a committed journal only cleans up')
     ucode = re.sub(r'(?m)#.*$', '', uni)

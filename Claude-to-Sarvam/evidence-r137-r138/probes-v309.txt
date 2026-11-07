@@ -1,0 +1,25 @@
+chatgpt                                  refused E_VIBHAG_ANKA
+expr: k[0:1] + zero                      refused E_VIBHAG_ANKA
+expr: k[0:1] - zero                      refused E_VIBHAG_ANKA
+expr: k[0:1] * 1                         refused E_VIBHAG_ANKA
+expr: k[0:1] / 1                         refused E_VIBHAG_ANKA
+expr: k[0:1] % 7                         refused E_VIBHAG_ANKA
+expr: k[0:1] == zero                     refused E_VIBHAG_ANKA
+expr: k[0:1] < zero                      refused E_VIBHAG_ANKA
+expr: k[0:1] ^ zero                      refused E_VIBHAG_ANKA
+expr: k[0:1] & zero                      refused E_VIBHAG_ANKA
+expr: k[0:1] | zero                      refused E_VIBHAG_ANKA
+expr: k[0:1] << zero                     refused E_VIBHAG_ANKA
+expr: k[0:1] + 0                         refused E_VIBHAG_ANKA
+expr: -k[0:1]                            refused E_VIBHAG_ANKA
+expr: zero + k[0:1]                      refused E_VIBHAG_ANKA
+expr: m[0:2] + zero                      refused E_VIBHAG_ANKA
+expr: k[0:1] && 1                        refused E_VIBHAG_ANKA
+expr: !k[0:1]                            refused E_VIBHAG_ANKA
+expr: k[0:1]                             refused E_KOSH_VIBHAG
+expr: m[0:2]                             refused E_VIBHAG_ANKA
+expr: pankti_gan(k[0:2])                 compiles -> '2' exit 0
+expr: k[0:2][1]                          refused Sutram truti: vyakaran dosh, pankti 8:19, shabd ']'
+      likha(k[0:2]
+decl: vitti v = k[0:1] + zero            refused E_VIBHAG_ANKA
+cell: m[1] = k[0:1] + zero               refused E_VIBHAG_ANKA

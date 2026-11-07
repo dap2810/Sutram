@@ -1,5 +1,18 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v289 (Claude, R107) - a kosh cannot leave its block (compile time); `parimana()` reports the bytes in use
+
+- **The escape error:** a `kosh` declared inside a `mandapa` carries the block's depth as its scratch-escape taint,
+  so storing it in a variable declared outside the block, writing it into memory, or returning it is
+  `E_KOSH_MANDAPA` at compile time (the R73 rules, a `kosh`-specific message). Example 287 is now that refusal; the
+  runtime form (R82) stays for a `prakriya` that keeps the `kosh`, golden 316.
+- **`parimana()` / `परिमाण()`** returns the bytes held now: the arena's persistent and scratch sides plus each
+  `kosh`'s header and capacity (a hidden counter, emitted only in programs that call `parimana`). Golden 317.
+  Linux ELF; 0 on Windows.
+- R107-00 prices the block-arena `kosh` design (not built): a slot costs about 21 instructions and no system call
+  against a region's 14 and an `mmap`; kb1 0.02 s / 0 KB against 0.48-0.99 s / 400 MB; a `kosh` grown to 1,000 in a
+  block leaves 8,656 dead bytes.
+
 ## v288 (Claude, R106) - `likha` prints a string's text; a string condition and a kosh operand are refused; a dasham into a mala is converted
 
 - **`likha` on a string value prints its text** (a variable, `s + t`, a string-returning `prakriya`), with no

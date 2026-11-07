@@ -13,7 +13,9 @@ one PE program under Wine:
      exit 1;
   3. (R135) a test runtime whose every lazy commit fails (-DR135_FAIL_COMMIT): no output, `Sutram truti: smritih na
      labdha`, exit 1 - the out-of-memory exit, through the release of its 64 KiB reserve;
-  4. the tree's win/rtblob.inc is exactly what win/winrt_blob.asm builds (the test runtime is never committed).
+  4. (R137) the same with the start-up reserve also refused (-DR137_FAIL_RESERVE): the same message and exit - the
+     fallback is the v307 exit, without the 64 KiB in hand;
+  5. the tree's win/rtblob.inc is exactly what win/winrt_blob.asm builds (the test runtime is never committed).
 Needs nasm, ld and /usr/lib/wine/wine64; without Wine the last line says NOT RUN.
 Last line: "r133 handler registration: N checks, M failed".
 """
@@ -55,13 +57,17 @@ def main():
             print('r133 handler registration: NOT RUN (no Wine) - ' + f'{checks} checks, {fails} failed')
             return 0
         def test_compiler(define, name):
-            open(os.path.join(work, 'win', 'rtblob.inc'), 'w', encoding='utf-8').write(blob_inc(work, [define]))
+            return test_compiler2([define], name)
+
+        def test_compiler2(defines, name):
+            open(os.path.join(work, 'win', 'rtblob.inc'), 'w', encoding='utf-8').write(blob_inc(work, defines))
             obj, out = os.path.join(work, name + '.o'), os.path.join(work, name)
             subprocess.run(['nasm', '-f', 'elf64', '-I.', 'src/r68_compiler_entry.asm', '-o', obj], cwd=work, check=True)
             subprocess.run(['ld', '-o', out, obj], check=True)
             return out
         test_c = test_compiler('-DR133_FAIL_VEH_REGISTRATION', 'test_noveh')
         commit_c = test_compiler('-DR135_FAIL_COMMIT', 'test_nocommit')
+        noreserve_c = test_compiler2(['-DR135_FAIL_COMMIT', '-DR137_FAIL_RESERVE'], 'test_noreserve')
         src = os.path.join(work, 'p.sm')
         open(src, 'w', encoding='utf-8').write(PROG)
         env = dict(os.environ, WINEDEBUG='-all')
@@ -69,7 +75,9 @@ def main():
                 ('the shipped runtime', os.path.join(ROOT, 'sutram_compiler'), '100000\n', '', 0),
                 ('a runtime whose handler registration fails', test_c, '', MSG + '\n', 1),
                 ('a runtime whose every lazy commit fails (R135: the reserve is given back, then the message)',
-                 commit_c, '', 'Sutram truti: smritih na labdha\n', 1)):
+                 commit_c, '', 'Sutram truti: smritih na labdha\n', 1),
+                ('(R137) the same with no reserve to give back (it could not be had at start): the same exit',
+                 noreserve_c, '', 'Sutram truti: smritih na labdha\n', 1)):
             exe = os.path.join(work, 'p.exe')
             if os.path.exists(exe):
                 os.remove(exe)
