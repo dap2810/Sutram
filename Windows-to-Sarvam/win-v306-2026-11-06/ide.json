@@ -1,0 +1,84 @@
+{
+    "started":  "2026-11-06T21:50:18.1838492-05:00",
+    "ide":  "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\ide-save-guard\\sutram-ide-gui.exe",
+    "ide_sha256":  "635C276B354C672925D460EAF6717C69333ED347EAA6084EDA08AE6B40A55AD0",
+    "scenarios":  [
+                      {
+                          "name":  "C1-hello-run",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n",
+                          "output":  "Namaste, Sutram!\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 64   |   sanchit"
+                      },
+                      {
+                          "name":  "C1-refused-load",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n",
+                          "output":  "[patram atibrihat; sampadaka-seema 64 KiB]\r\n[patram na udghatitam - sampadake purvam patram eva asti]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 64   |   sanchit",
+                          "screenshot":  "C1-refused-load.png"
+                      },
+                      {
+                          "name":  "C2-edited-before-save",
+                          "title":  "01_hello.sm * - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n\r\n# v306 isolated Save safeguard verification\r\n",
+                          "output":  "[patram atibrihat; sampadaka-seema 64 KiB]\r\n[patram na udghatitam - sampadake purvam patram eva asti]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 109   |   asanchit *"
+                      },
+                      {
+                          "name":  "C2-after-save",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n\r\n# v306 isolated Save safeguard verification\r\n",
+                          "output":  "[patram atibrihat; sampadaka-seema 64 KiB]\r\n[patram na udghatitam - sampadake purvam patram eva asti]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 109   |   sanchit",
+                          "screenshot":  "C2-after-save.png"
+                      }
+                  ],
+    "protected_before":  [
+                             {
+                                 "Path":  "E:\\Github_Projects\\Sutram\\examples\\01_hello.sm",
+                                 "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
+                             },
+                             {
+                                 "Path":  "E:\\Github_Projects\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                                 "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
+                             },
+                             {
+                                 "Path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\examples\\01_hello.sm",
+                                 "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
+                             },
+                             {
+                                 "Path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                                 "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
+                             }
+                         ],
+    "held_file":  "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\ide-save-guard\\examples\\01_hello.sm",
+    "refused_file":  "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\ide-save-guard\\examples\\105_block_nesting_capacity.sm",
+    "held_before":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD",
+    "refused_before":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC",
+    "refused_bytes":  70422,
+    "c1_pass":  true,
+    "held_after":  "17F501E7922110FBC1C2FF96247F15742158A7AF0F64BBC8D33E5B927169A02C",
+    "refused_after":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC",
+    "saved_text":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n\r\n# v306 isolated Save safeguard verification\r\n",
+    "c2_pass":  true,
+    "protected_after":  [
+                            {
+                                "Path":  "E:\\Github_Projects\\Sutram\\examples\\01_hello.sm",
+                                "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
+                            },
+                            {
+                                "Path":  "E:\\Github_Projects\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                                "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
+                            },
+                            {
+                                "Path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\examples\\01_hello.sm",
+                                "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
+                            },
+                            {
+                                "Path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                                "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
+                            }
+                        ],
+    "originals_unchanged":  true
+}

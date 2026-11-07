@@ -1,0 +1,191 @@
+﻿[
+    {
+        "observed":  "2026-11-06T21:38:15.2036097-05:00",
+        "id":  27748,
+        "cpu":  11.859375,
+        "threads":  [
+                        {
+                            "id":  37296,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  19680,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  36104,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  7452,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  33244,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  42868,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  39548,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  25940,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  24804,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  33188,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  41760,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  27352,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  5636,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  41100,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  22168,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  30896,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  28496,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  20068,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  32676,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  43188,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  34532,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  31668,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  17620,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  25932,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  3336,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  27912,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  12748,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        }
+                    ]
+    },
+    {
+        "observed":  "2026-11-06T21:38:15.2376572-05:00",
+        "id":  36956,
+        "cpu":  0.109375,
+        "threads":  [
+                        {
+                            "id":  32720,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  5536,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  14388,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  32980,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  44576,
+                            "state":  "Wait",
+                            "wait":  "Suspended"
+                        },
+                        {
+                            "id":  36460,
+                            "state":  "Wait",
+                            "wait":  "EventPairLow"
+                        },
+                        {
+                            "id":  18440,
+                            "state":  "Wait",
+                            "wait":  "EventPairLow"
+                        },
+                        {
+                            "id":  44432,
+                            "state":  "Wait",
+                            "wait":  "EventPairLow"
+                        }
+                    ]
+    }
+]

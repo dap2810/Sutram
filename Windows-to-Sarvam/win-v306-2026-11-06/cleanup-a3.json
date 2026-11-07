@@ -1,0 +1,11 @@
+﻿{
+    "started":  "2026-11-06T21:49:04.6293614-05:00",
+    "reason":  "Close only this test-owned A3 wizard/child after the full timeout observation",
+    "stopped":  [
+                    {
+                        "pid":  27748,
+                        "name":  "powershell.exe",
+                        "at":  "2026-11-06T21:49:04.8974081-05:00"
+                    }
+                ]
+}

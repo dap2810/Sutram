@@ -1,0 +1,10 @@
+Observed console output from the first A3 post-run snapshot, before orphan cleanup:
+
+Get-FileHash : The file 'C:\Users\dmech\AppData\Local\Programs\Sutram\docs\reports\EDGE-COVERAGE-30.md' cannot be read: The process cannot access the file because it is being used by another process.
+Snapshot a3-after saved; installed files: 117
+a3 result: NO_RESULT_AFTER_930_SECONDS; wizard closed: True
+
+This is a transcription of the diagnostic command output, not an installer log.
+The owner manually ended the wizard. Its PowerShell child remained alive until
+the cleanup recorded in cleanup-a3.json. The 930-second observer result does
+not establish an automatic installer timeout.

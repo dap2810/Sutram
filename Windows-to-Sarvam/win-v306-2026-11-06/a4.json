@@ -1,0 +1,142 @@
+{
+    "phase":  "a4",
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "E6006CAF2BACEBF378B9D3B8CD4527D63C1DE6AC2E96EFA630E5C268FF852E5F",
+    "started":  "2026-11-06T21:49:05.4333426-05:00",
+    "elevated":  false,
+    "observations":  [
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  0.64,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  1.31,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  1.94,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  2.56,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  3.16,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  3.77,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  4.38,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  4.96,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  5.58,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  6.2,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  6.83,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  7.43,
+                             "next_label":  "Install",
+                             "children":  1
+                         },
+                         {
+                             "dialogs":  0,
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "seconds":  8.05,
+                             "next_label":  "Finish",
+                             "children":  0
+                         }
+                     ],
+    "pid":  20256,
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready":  "a4-ready.png",
+    "child":  {
+                  "ProcessId":  33552,
+                  "ParentProcessId":  20256,
+                  "CommandLine":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STME31B.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STME31B.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STME31B.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STME31B.tmp\\install.log",
+    "status":  "FINISH",
+    "finish_seconds":  8.05,
+    "finish_screenshot":  "a4-finish.png",
+    "observed_seconds":  8.1,
+    "child_exit":  null,
+    "child_exited":  true,
+    "closed":  true
+}

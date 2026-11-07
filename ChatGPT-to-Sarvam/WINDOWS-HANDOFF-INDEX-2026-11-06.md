@@ -1,7 +1,7 @@
 # Consolidated Windows handoffs for Sarvam
 
-**Latest machine state: installation repaired and verified.** Read the repair
-handoff first. Earlier reports remain dated evidence and should not be rewritten
+**Latest machine state: v306 installed and verified; two OOM crash cases remain.**
+Read the v306 handoff first. Earlier reports remain dated evidence and should not be rewritten
 as if their failures never occurred. This index collects all handoffs from this
 Windows install/diagnostic/repair sequence, as requested by the owner.
 
@@ -13,6 +13,7 @@ Windows install/diagnostic/repair sequence, as requested by the owner.
 | 4 | [v305 boundary/IDE/harness diagnostics](WINDOWS-DIAG-V305-2026-11-06.md) | [OOM](../Windows-to-Sarvam/win-diag-v305-2026-11-06/OOM.md), [IDE](../Windows-to-Sarvam/win-diag-v305-2026-11-06/IDE.md), [harness](../Windows-to-Sarvam/win-diag-v305-2026-11-06/HARNESS.md) | B3 fails at 640 MiB/succeeds at 768 MiB; failure shared beyond kosh; Run clears compile/runtime errors; complete library layout fixes unrelated-CWD test. |
 | 5 | [Installer diagnostic](WINDOWS-INSTALLER-DIAG-2026-11-06.md) | [Logs, argv and owner error screenshot](../Windows-to-Sarvam/win-installer-diag-2026-11-06/HANG.md) | Two retries refused old ownership metadata before copy. No stuck child; incomplete state was not accepted. |
 | 6 | **[Installation repair](WINDOWS-REPAIR-2026-11-06.md)** | **[Verified results and screenshots](../Windows-to-Sarvam/win-repair-2026-11-06/RESULTS.md)** | **Original files preserved; current installer completed; all 657 package hashes match; installed CLI/desktop IDE work.** |
+| 7 | **[v306 native verification](WINDOWS-V306-2026-11-06.md)** | **[Full results](../Windows-to-Sarvam/win-v306-2026-11-06/RESULTS.md), [OOM reproductions](../Windows-to-Sarvam/win-v306-2026-11-06/OOM.md), [installation](../Windows-to-Sarvam/win-v306-2026-11-06/INSTALL.md), [IDE](../Windows-to-Sarvam/win-v306-2026-11-06/IDE.md)** | **Clean install, new-shell identity, IDE safeguard and 322 checked suite cases pass. B3 512 MiB and mandapa 64 MiB still crash after printing the refusal, 6/6 each. Automatic installer timeout not verified because the owner ended the stalled upgrade.** |
 
 The owner-supplied instructions, exact commands, raw logs, probes and screenshots
 are linked within each evidence folder. Review-branch test scripts are named
@@ -22,13 +23,17 @@ in the repository for Sarvam to read and acknowledge.
 
 ## Decisions still requested
 
-- Independently review/accept or reject PR #66 before repinning and shipping it.
+- The earlier OOM candidate is incorporated in the tested v306 build. Investigate
+  the remaining B3 512 MiB and mandapa 64 MiB crash-after-message cases before
+  treating the OOM behavior as closed.
 - Retain the non-project-CWD library test with a complete compiler bundle.
-- Preserve previous-file protection in the IDE while fixing stale load-refusal
-  output/indication; normal Run error output already clears.
+- Preserve the now-verified v306 IDE refusal notice and previous-file Save
+  protection; the isolated Save test left original examples unchanged.
 - Address automatic recovery from partial upgrades and stale DisplayVersion
   metadata. The successful clean install does not establish the old stall's cause.
-- Distinguish this machine's repaired installation from general v1.0 release
-  acceptance. No fixes to the other known v305 issues were silently installed.
+- Reconcile the handoff's A3 refusal expectation with the implementation's
+  allowance for same-directory upgrades. Automatic timeout remains unverified.
+- Distinguish this machine's working v306 installation from general v1.0 release
+  acceptance. No product code was changed in this verification round.
 
-Please acknowledge this consolidated index and the latest repair evidence.
+Please acknowledge this consolidated index and the latest v306 evidence.

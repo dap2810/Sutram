@@ -1,0 +1,402 @@
+[
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-1-B3-512",
+    "limit_bytes": 536870912,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.3162,
+    "probe": "B3",
+    "limit_mib": 512,
+    "iteration": 1,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-1-A3-mandapa-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.132,
+    "probe": "A3-mandapa",
+    "limit_mib": 64,
+    "iteration": 1,
+    "executable_sha256": "9d4a5e0ecfe5a01be871ceaffc30660bfe60ff0778685bff4bc6ace15904648a",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-1-B3-640",
+    "limit_bytes": 671088640,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.3855,
+    "probe": "B3",
+    "limit_mib": 640,
+    "iteration": 1,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-1-A3-nirmmita-touch-pages-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.0443,
+    "probe": "A3-nirmmita-touch-pages",
+    "limit_mib": 64,
+    "iteration": 1,
+    "executable_sha256": "963961e5308a306ce1e2e977d049aee7016b52d39337c20198f1bd67ded47556",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-2-B3-512",
+    "limit_bytes": 536870912,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.2674,
+    "probe": "B3",
+    "limit_mib": 512,
+    "iteration": 2,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-2-A3-mandapa-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.1361,
+    "probe": "A3-mandapa",
+    "limit_mib": 64,
+    "iteration": 2,
+    "executable_sha256": "9d4a5e0ecfe5a01be871ceaffc30660bfe60ff0778685bff4bc6ace15904648a",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-2-B3-640",
+    "limit_bytes": 671088640,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.3847,
+    "probe": "B3",
+    "limit_mib": 640,
+    "iteration": 2,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-2-A3-nirmmita-touch-pages-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.0395,
+    "probe": "A3-nirmmita-touch-pages",
+    "limit_mib": 64,
+    "iteration": 2,
+    "executable_sha256": "963961e5308a306ce1e2e977d049aee7016b52d39337c20198f1bd67ded47556",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-3-B3-512",
+    "limit_bytes": 536870912,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.2751,
+    "probe": "B3",
+    "limit_mib": 512,
+    "iteration": 3,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-3-A3-mandapa-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.1326,
+    "probe": "A3-mandapa",
+    "limit_mib": 64,
+    "iteration": 3,
+    "executable_sha256": "9d4a5e0ecfe5a01be871ceaffc30660bfe60ff0778685bff4bc6ace15904648a",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-3-B3-640",
+    "limit_bytes": 671088640,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.3976,
+    "probe": "B3",
+    "limit_mib": 640,
+    "iteration": 3,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-3-A3-nirmmita-touch-pages-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.0406,
+    "probe": "A3-nirmmita-touch-pages",
+    "limit_mib": 64,
+    "iteration": 3,
+    "executable_sha256": "963961e5308a306ce1e2e977d049aee7016b52d39337c20198f1bd67ded47556",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-4-B3-512",
+    "limit_bytes": 536870912,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.2665,
+    "probe": "B3",
+    "limit_mib": 512,
+    "iteration": 4,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-4-A3-mandapa-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.1339,
+    "probe": "A3-mandapa",
+    "limit_mib": 64,
+    "iteration": 4,
+    "executable_sha256": "9d4a5e0ecfe5a01be871ceaffc30660bfe60ff0778685bff4bc6ace15904648a",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-4-B3-640",
+    "limit_bytes": 671088640,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.3973,
+    "probe": "B3",
+    "limit_mib": 640,
+    "iteration": 4,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-4-A3-nirmmita-touch-pages-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.0402,
+    "probe": "A3-nirmmita-touch-pages",
+    "limit_mib": 64,
+    "iteration": 4,
+    "executable_sha256": "963961e5308a306ce1e2e977d049aee7016b52d39337c20198f1bd67ded47556",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-5-B3-512",
+    "limit_bytes": 536870912,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.2822,
+    "probe": "B3",
+    "limit_mib": 512,
+    "iteration": 5,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-5-A3-mandapa-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 3221225725,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.1305,
+    "probe": "A3-mandapa",
+    "limit_mib": 64,
+    "iteration": 5,
+    "executable_sha256": "9d4a5e0ecfe5a01be871ceaffc30660bfe60ff0778685bff4bc6ace15904648a",
+    "exit_hex": "0xC00000FD",
+    "pass": false
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-5-B3-640",
+    "limit_bytes": 671088640,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.3782,
+    "probe": "B3",
+    "limit_mib": 640,
+    "iteration": 5,
+    "executable_sha256": "a38d47e5cec829641a630dbed5d673640a1cb267824f2b29d117d5c3cc7f1e70",
+    "exit_hex": "0x00000001",
+    "pass": true
+  },
+  {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\repeat-5-A3-nirmmita-touch-pages-64",
+    "limit_bytes": 67108864,
+    "timeout_seconds": 60,
+    "invalid_stderr": false,
+    "timed_out": false,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "Sutram truti: smritih na labdha\n",
+    "elapsed_seconds": 0.0432,
+    "probe": "A3-nirmmita-touch-pages",
+    "limit_mib": 64,
+    "iteration": 5,
+    "executable_sha256": "963961e5308a306ce1e2e977d049aee7016b52d39337c20198f1bd67ded47556",
+    "exit_hex": "0x00000001",
+    "pass": true
+  }
+]
