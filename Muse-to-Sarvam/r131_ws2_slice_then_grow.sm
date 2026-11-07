@@ -1,0 +1,20 @@
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    kosh_kship(k, 30)
+    kosh_kship(k, 40)
+    kosh_kship(k, 50)
+    vitti s = k[2:5]
+    likha(pankti_gan(s))
+    likha(s[0])
+    likha(s[2])
+    kosh_kship(k, 60)
+    kosh_kship(k, 70)
+    kosh_kship(k, 80)
+    kosh_kship(k, 90)
+    likha(pankti_gan(s))
+    likha(s[0])
+    likha(s[2])
+    likha(k[8])
+}

@@ -1,0 +1,16 @@
+prakriya grow_it(kosh k) {
+    kosh_kship(k, 99)
+    nivartanam 1
+}
+prakriya use_slice(vibhag s, dasham x) {
+    nivartanam s[0]
+}
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    kosh_kship(k, 30)
+    kosh_kship(k, 40)
+    kosh_kship(k, 50)
+    likha(use_slice(k[2:5], grow_it(k)))
+}

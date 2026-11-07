@@ -1,0 +1,13 @@
+prakriya may_grow(vibhag s, kosh k) {
+    kosh_kship(k, 99)
+    nivartanam s[0]
+}
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    kosh_kship(k, 30)
+    kosh_kship(k, 40)
+    kosh_kship(k, 50)
+    likha(may_grow(k[2:5], k))
+}

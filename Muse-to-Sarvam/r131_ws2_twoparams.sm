@@ -1,0 +1,16 @@
+prakriya grow2(kosh a, kosh b) {
+    kosh_kship(a, 99)
+    kosh_kship(b, 88)
+    nivartanam 0
+}
+mukhya() {
+    kosh x[4]
+    kosh_kship(x, 11)
+    kosh y[4]
+    kosh_kship(y, 22)
+    vitti r = grow2(x, y)
+    likha(x[1])
+    likha(y[1])
+    likha(kosh_gan(x))
+    likha(kosh_gan(y))
+}

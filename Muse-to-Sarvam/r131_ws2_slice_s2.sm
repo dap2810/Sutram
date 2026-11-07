@@ -1,0 +1,19 @@
+prakriya grow_it(kosh k) {
+    kosh_kship(k, 99)
+    nivartanam 1
+}
+prakriya yog(vibhag s) {
+    vitti t = 0
+    chakra i = 0 tak pankti_gan(s) - 1 {
+        t = t + s[i]
+    }
+    nivartanam t
+}
+mukhya() {
+    kosh k[4]
+    kosh_kship(k, 10)
+    kosh_kship(k, 20)
+    kosh_kship(k, 30)
+    likha(yog(k[grow_it(k):]))
+    likha(pankti_gan(k[grow_it(k):]))
+}

@@ -1,0 +1,24 @@
+prakriya grow_in_block(kosh k) {
+    mandapa {
+        kosh_kship(k, 99)
+    }
+    nivartanam 0
+}
+prakriya grow_in_yadi(kosh k, dasham c) {
+    yadi (c) {
+        kosh_kship(k, 88)
+    }
+    nivartanam 0
+}
+mukhya() {
+    kosh a[4]
+    kosh_kship(a, 11)
+    vitti r1 = grow_in_block(a)
+    likha(a[1])
+    likha(kosh_gan(a))
+    kosh b[4]
+    kosh_kship(b, 22)
+    vitti r2 = grow_in_yadi(b, 1)
+    likha(b[1])
+    likha(kosh_gan(b))
+}
