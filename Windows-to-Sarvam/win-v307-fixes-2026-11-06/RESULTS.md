@@ -15,10 +15,14 @@ Main contains this record and logs. The main checkout subsequently advanced to
 | Normalized upgrade | [record](upgrade.json), [engine log](upgrade-engine.log), [Finish screenshot](upgrade-finish.png) | Finish 21.20 s; engine 0; 654 payload files unchanged; wizard closed after Finish. |
 | Clean install | [record](clean.json), [log](clean-engine.log), [Finish screenshot](clean-finish.png) | Finish 9.47 s; engine 0; wizard closed after Finish. |
 | Interrupted install | [record](interrupt.json), [log](interrupt-engine.log) | Observer killed only its own recorded handles after 17 complete filenames at 5.70 s; pending manifest retained. |
-| Recovery | [record](recovery.json), [log](recovery-engine.log), [Finish screenshot](recovery-finish.png) | Finish 8.65 s; engine 0; pending record absent; wizard closed after Finish. |
+| Recovery | [record](recovery.json), [log](recovery-engine.log), [partial screenshot](recovery-finish.png) | Finish 8.65 s; engine 0; pending record absent; wizard closed after Finish. |
 
 Timing is measured from clicking Install until Finish is observed; it includes
-polling and UI latency and is not a benchmark guarantee. No live installer log
+polling and UI latency and is not a benchmark guarantee. The clean and upgrade
+Finish screenshots are complete. The recovery screenshot captured only a small
+title-bar fragment, so it is not visual proof of that page; recovery completion
+uses the recorded Finish control, engine exit/log and final manifest checks.
+No live installer log
 was opened by the final observer; progress for interruption came from filenames.
 The independent [I/O fixture](installer-io.json) proves 100 writes while a shared
 reader remains open, unchanged timestamps, successful new/replaced files,
