@@ -16,7 +16,7 @@ Sutram 1.0 (v311) - sampurna sutra
   - **Linux PE: 587 identical, 181 refused identically, 0 DIFFER.**
   - **The 181 refusals print v310's exact messages** (paths and version normalised).
   - **No existing program changes or is newly refused.** The runtime and `sutram-link.exe` are byte-unchanged.
-  - **The Windows compiler (v311) under Wine:** RUNNING when this file was first pushed; its line is added in the next commit.
+  - **The Windows compiler (v311) under Wine:** = the Linux PE output for all 768 (587 identical, 181 refused by both), 0 differ.
 
 **Not done:**
 - **No native Windows run of v310 or v311.** This is the round that sends v311 to Windows.

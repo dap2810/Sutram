@@ -10,6 +10,6 @@
 - `unchecked-entries-trace.txt` - every gen_expr entry outside a checked statement, over the 768 programs (a tracing build of the R142 source before the version bump): two compiler-made diagnostic calls.
 - `txn-gate-on-v310-engine.txt`, `txn-gate-on-v311.txt` - gate `R134 install transaction` (27 checks).
 - `package-gate.txt`, `installer-build.txt`, `installer-version.txt` - the rebuilt Sutram-Setup.exe.
-- `wine-compiler.txt` - the v311 Windows compiler under Wine against the Linux PE output (added when the run finished).
+- `wine-compiler.txt` - the v311 Windows compiler under Wine against the Linux PE output.
 
 NOT RUN here: PowerShell (a downloaded PowerShell binary was not permitted to run); the three tests/windows/*.ps1 fixtures; any native Windows run of v310 or v311.
