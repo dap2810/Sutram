@@ -1,0 +1,10 @@
+> where sutram
+C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe
+> sutram --version
+Sutram 1.0 (v311) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+> sutram first.sm first.exe
+Siddh: 98 baait sankalit
+Compile exit: 0
+> first.exe
+namasteRun exit: 0

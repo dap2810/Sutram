@@ -1,0 +1,55 @@
+{
+    "started":  "2026-11-07T15:13:21.8592564-05:00",
+    "launch":  "Start Menu shortcut",
+    "shortcut":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram IDE.lnk",
+    "shortcut_target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+    "shortcut_working_directory":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "scenarios":  [
+                      {
+                          "name":  "B1-hello",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n",
+                          "output":  "Namaste, Sutram!\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 64   |   sanchit",
+                          "screenshot":  "B1-hello.png"
+                      },
+                      {
+                          "name":  "B2-syntax",
+                          "title":  "syntax.sm - Sutram sampadak",
+                          "editor":  "mukhya() {\r\n    vitti =\r\n}\r\n",
+                          "output":  "\r\nSutram truti: vyakaran dosh, pankti 2:11, shabd \u0027=\u0027\r\n      vitti =\r\n            ^\r\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\r\n[sankalan asaphal]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 25   |   sanchit",
+                          "screenshot":  "B2-syntax.png"
+                      },
+                      {
+                          "name":  "B3-arithmetic",
+                          "title":  "arithmetic.sm - Sutram sampadak",
+                          "editor":  "mukhya() {\r\n    kosh k[1]\r\n    kosh_kship(k, 7)\r\n    likha(k[0:1] + 0)\r\n}\r\n",
+                          "output":  "Sutram truti [E_VIBHAG_ANKA]: vibhagah \u0027k\u0027 sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\r\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\r\n[sankalan asaphal]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 70   |   sanchit",
+                          "screenshot":  "B3-arithmetic.png"
+                      },
+                      {
+                          "name":  "B4-large-file",
+                          "title":  "arithmetic.sm - Sutram sampadak",
+                          "editor":  "mukhya() {\r\n    kosh k[1]\r\n    kosh_kship(k, 7)\r\n    likha(k[0:1] + 0)\r\n}\r\n",
+                          "output":  "[patram atibrihat; sampadaka-seema 64 KiB]\r\n[patram na udghatitam - sampadake purvam patram eva asti]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 70   |   sanchit",
+                          "screenshot":  "B4-large-file.png"
+                      }
+                  ],
+    "protected_hello_before":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD",
+    "large_file_bytes":  81000,
+    "pid":  42488,
+    "process_started":  "2026-11-07T15:13:21.9374651-05:00",
+    "b1_pass":  true,
+    "b2_pass":  true,
+    "b3_pass":  true,
+    "b4_pass":  true,
+    "process_exited":  true,
+    "protected_hello_after":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD",
+    "hello_unchanged":  true,
+    "capture_warnings":  [
+
+                         ]
+}

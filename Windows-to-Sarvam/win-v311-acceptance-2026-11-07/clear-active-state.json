@@ -1,0 +1,45 @@
+{
+    "machine_path_unchanged":  true,
+    "removed_user_path_entries":  [
+                                      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin"
+                                  ],
+    "original_user_path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin;C:\\Users\\dmech\\.cargo\\bin;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;\\msys64\\mingw64\\bin;C:\\msys64;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Mozilla Firefox;C:\\Users\\dmech\\go\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python311\\Scripts;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python313\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Python\\bin;C:\\Users\\dmech\\miniconda3\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Programs\\MovieBox-Tui\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Zed\\bin;C:\\Users\\dmech\\AppData\\Roaming\\npm;C:\\Users\\dmech\\AppData\\Local\\Programs\\Ollama;C:\\Users\\dmech\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Users\\dmech\\.local\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim;C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin",
+    "moves":  [
+                  {
+                      "to":  "HKCU:\\Software\\SutramAcceptanceArchives\\v311-20261107\\uninstall",
+                      "from":  "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Sutram"
+                  },
+                  {
+                      "to":  "HKCU:\\Software\\SutramAcceptanceArchives\\v311-20261107\\class",
+                      "from":  "HKCU:\\Software\\Classes\\Sutram.Source"
+                  },
+                  {
+                      "to":  "HKCU:\\Software\\SutramAcceptanceArchives\\v311-20261107\\extension",
+                      "from":  "HKCU:\\Software\\Classes\\.sm"
+                  },
+                  {
+                      "to":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\preserved-shortcuts\\StartMenu-Sutram",
+                      "from":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram"
+                  },
+                  {
+                      "to":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\preserved-shortcuts\\Desktop-Sutram-IDE.lnk",
+                      "from":  "C:\\Users\\dmech\\OneDrive\\Desktop\\Sutram IDE.lnk"
+                  }
+              ],
+    "exports":  {
+                    "extension":  {
+                                      "sha256":  "50A73938BCA0B31B92C58FF403C5F13991AF068F682E3D3A33EC67EED92626A6",
+                                      "file":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\Windows-to-Sarvam\\win-v311-acceptance-2026-11-07\\before-extension.reg"
+                                  },
+                    "uninstall":  {
+                                      "sha256":  "707CE4CA9E935955867F34A81F5BD078003433291AF20F2AFAA25AC06291CA2A",
+                                      "file":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\Windows-to-Sarvam\\win-v311-acceptance-2026-11-07\\before-uninstall.reg"
+                                  },
+                    "class":  {
+                                  "sha256":  "2DE56156195576BF8402A1CA5CC393726AC4221BCA6C7FB1952AD37AF697184D",
+                                  "file":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\Windows-to-Sarvam\\win-v311-acceptance-2026-11-07\\before-class.reg"
+                              }
+                },
+    "active_user_path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin;C:\\Users\\dmech\\.cargo\\bin;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;\\msys64\\mingw64\\bin;C:\\msys64;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Mozilla Firefox;C:\\Users\\dmech\\go\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python311\\Scripts;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python313\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Python\\bin;C:\\Users\\dmech\\miniconda3\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Programs\\MovieBox-Tui\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Zed\\bin;C:\\Users\\dmech\\AppData\\Roaming\\npm;C:\\Users\\dmech\\AppData\\Local\\Programs\\Ollama;C:\\Users\\dmech\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Users\\dmech\\.local\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim",
+    "preservation_note":  "Files and active registry subtrees moved into archives; .reg exports retained. No original file deleted."
+}

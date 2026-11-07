@@ -1,0 +1,194 @@
+{
+    "started":  "2026-11-07T15:09:20.7474388-05:00",
+    "method":  "User invokes uninstall in Settings; observer reads only matching uninstaller/child processes and their visible dialogs.",
+    "processes":  [
+
+                  ],
+    "dialogs":  [
+
+                ],
+    "observations":  [
+                         {
+                             "install_exists":  false,
+                             "seconds":  0.2351226,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  5.4220842,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  10.726030399999999,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  16.0021429,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  21.3275802,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  26.710768899999998,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  31.754895299999998,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  37.0028314,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  42.046724999999995,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  47.2092167,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  52.618604299999994,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  57.891619899999995,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  63.2636049,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  68.639502,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  73.912742999999992,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  78.9477167,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  84.1388839,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  89.339212199999992,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  94.4940106,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  99.5744259,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  104.8759967,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  109.93368009999999,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  115.10808949999999,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  120.3227148,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  125.63918369999999,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  130.9332811,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  135.9630149,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  141.2933782,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  146.4523787,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  151.71369479999998,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  156.8736657,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  162.2156372,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  167.24845499999998,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  172.4115502,
+                             "uninstall_key_exists":  false
+                         },
+                         {
+                             "install_exists":  false,
+                             "seconds":  177.6643576,
+                             "uninstall_key_exists":  false
+                         }
+                     ],
+    "ended":  "2026-11-07T15:12:20.7134888-05:00",
+    "process_results":  [
+
+                        ],
+    "capture_warnings":  [
+
+                         ]
+}

@@ -1,6 +1,6 @@
 # Consolidated Windows handoffs for Sarvam
 
-**Latest machine state (7 November): upstream v311 at `fae5319d`, installed and natively verified.** All 657 payload hashes match; one canonical compiler; all recorded installer processes closed. Read the [v311 handoff](WINDOWS-V311-2026-11-07.md) first.
+**Latest machine state (7 November): unchanged upstream v311, pinned checkout `2e8f2ea4`, reinstalled and natively verified.** All 657 payload hashes match; one canonical compiler; all 11 tracked acceptance-test process identities closed. Read the [v311 acceptance observations](WINDOWS-V311-ACCEPTANCE-2026-11-07.md) first. Default install, first Notepad/CLI program, four IDE checks and 322 native cases pass (19.048 s). Licence text rendering, brief owner-observed uninstall PowerShell visibility and an empty association key remain findings; strict no-residue uninstall is partial. This was the existing account with active state cleared, not a new OS/profile. No timeout fired because neither install stalled.
 
 The [v310 round](WINDOWS-V310-2026-11-07.md) reproduced loss of controlled target bytes when an unequal backup occupied the expected prefix-name. v311 now refuses and preserves both copies in that same reproduction. Compiler controls, 322 native suite cases, concurrency/publication-edit/recovery checks and 40 upstream installer-fixture assertions pass on v311. Arbitrary-writer atomicity and full release acceptance remain unproven. Older v309 repair evidence/PR #68 stays separately pinned; compare remaining differences before any integration.
 
@@ -29,6 +29,7 @@ Windows install/diagnostic/repair sequence, as requested by the owner.
 | 14 | **[Final integration with current main](WINDOWS-V309-FINAL-FIXES-2026-11-07.md)** | **[PR #68 at 7ab8c439](https://github.com/dap2810/Sutram/pull/68), [integration evidence](../Windows-to-Sarvam/win-v309-integrated-2026-11-07/RESULTS.md)** | **Concurrent R140 changes retained and conflicts resolved. Compiler/engine/wizard/IDE source and payload binaries unchanged from 664ff188; four docs updated. Rebuilt package installed in 22.67 s; 657/657 hashes and Linux parity; 14/7 fixtures and 16/29 gates pass again; both new processes closed.** |
 | 15 | **[v310 native verification](WINDOWS-V310-2026-11-07.md)** | **[Full evidence](../Windows-to-Sarvam/win-v310-2026-11-07/RESULTS.md)** | **322 suite passes; globals/arithmetic/nesting/concurrency/publication-edit controls pass. C4 unequal superseded backup loses controlled target bytes before cleanup; ordinary recovery succeeds. No product edits.** |
 | 16 | **[v311 upstream repair verified](WINDOWS-V311-2026-11-07.md)** | **[Full evidence](../Windows-to-Sarvam/win-v311-2026-11-07/RESULTS.md)** | **Same C4 reproduction now refuses and preserves both copies. 322 native suite passes; 19/14/7 installer-fixture assertions; real concurrency/edit/recovery passes; 657/657 installed hashes; all 12 full-install processes closed. No release acceptance.** |
+| 17 | **[v311 acceptance observations](WINDOWS-V311-ACCEPTANCE-2026-11-07.md)** | **[Full result table](../Windows-to-Sarvam/win-v311-acceptance-2026-11-07/RESULTS.md), [install/uninstall](../Windows-to-Sarvam/win-v311-acceptance-2026-11-07/FRESH-INSTALL.md), [IDE](../Windows-to-Sarvam/win-v311-acceptance-2026-11-07/IDE.md), [suite/time](../Windows-to-Sarvam/win-v311-acceptance-2026-11-07/SUITE.md)** | **Default install 27.171 s, first Notepad/CLI program, reinstall 40.188 s, four IDE checks and 322 native cases pass. Owner uninstall: no error, brief PowerShell window; empty registry key remains. Licence presentation defect observed. 657/657 final hashes; no spontaneous stall; no product edits or release verdict.** |
 
 The owner-supplied instructions, exact commands, raw logs, probes and screenshots
 are linked within each evidence folder. Review-branch test scripts are named
@@ -37,6 +38,8 @@ No email or external message delivery is implied: these handoffs are published
 in the repository for Sarvam to read and acknowledge.
 
 ## Decisions still requested
+
+- Acknowledge the v311 acceptance observations and review licence UTF-8/line-break rendering, transient uninstall PowerShell visibility and empty association-key cleanup. The acceptance brief prohibited product edits; these are remaining findings, not claimed repairs. Retain the existing-account scope and unexercised timeout.
 
 - Acknowledge the new v310 reproduction and independent v311 repair verification. Retain the remaining full-hash-then-delete writer-race limitation and A2 class-inference correction. The final installed candidate is v311, not PR #68.
 
@@ -63,4 +66,4 @@ in the repository for Sarvam to read and acknowledge.
   [pinned v308 static review](ROUND-207-V308-STATIC-REVIEW-FOLLOWUP.md) with v309's
   changes and native evidence; neither this index nor the tests grant release acceptance.
 
-Please acknowledge this consolidated index and both v310/v311 evidence sets; retain PR #67 and the earlier reports as dated comparison material.
+Please acknowledge this consolidated index, the new v311 acceptance observations and the prior v310/v311 evidence sets; retain PR #67 and the earlier reports as dated comparison material.

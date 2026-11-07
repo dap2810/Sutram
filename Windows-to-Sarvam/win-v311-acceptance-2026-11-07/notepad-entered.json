@@ -1,0 +1,7 @@
+{
+    "method":  "Keyboard SendKeys typing into the actual Notepad text editor, then Ctrl+S; no source file prewritten",
+    "entered":  "mukhya() {\r\n    likha(\"namaste\")\r\n}\r\n",
+    "target":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\first.sm",
+    "dialog":  264912,
+    "pid":  22312
+}

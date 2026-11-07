@@ -1,0 +1,168 @@
+{
+    "name":  "reinstall",
+    "started":  "2026-11-07T15:12:28.0874059-05:00",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\Sutram-Setup.exe",
+    "setup_sha256":  "134fae95dc9d79a0cc7e563bbf59e6fc69983eae950c2c2799e20dea911a286b",
+    "pages":  [
+                  {
+                      "page":  "welcome",
+                      "text":  [
+                                   "Welcome to Sutram Setup",
+                                   "This wizard will install Sutram, the Sanskrit-keyword programming language, on your computer.",
+                                   "Sutram installs for the current Windows user only. No administrator rights are needed, and nothing is written outside your own account.",
+                                   "Click Next to continue.",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ],
+                      "screenshot":  "reinstall-welcome.png"
+                  },
+                  {
+                      "page":  "licence",
+                      "text":  [
+                                   "License Agreement",
+                                   "Please read the following license agreement. You must accept the terms to continue.",
+                                   "Sutram â The Complete Thread\nCopyright (c) 2026 Sutram Project\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\n---\n\nà¤¸à¥à¤¤à¥à¤°à¤®à¥ â à¤¸à¤®à¥à¤ªà¥à¤°à¥à¤£à¤ à¤¸à¥à¤¤à¥à¤°à¤®à¥\n\nà¤¯à¤¹ à¤¸à¥à¤«à¥à¤à¤µà¥à¤¯à¤° à¤¨à¤¿à¤à¤¶à¥à¤²à¥à¤ à¤¹à¥à¥¤ à¤à¤¸à¥ à¤®à¥à¤à¥à¤¤ à¤°à¥à¤ª à¤¸à¥ à¤à¤ªà¤¯à¥à¤ à¤à¤°à¥à¤, à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¿à¤¤ à¤à¤°à¥à¤ à¤à¤° à¤¬à¤¾à¤à¤à¥à¤à¥¤\n\nà®à¯à®¤à¯à®°à®®à¯ â à®®à¯à®´à¯à®®à¯à®¯à®¾à®© à®¨à¯à®²à¯\n\nà°¸à±à°¤à±à°°à°®à± â à°¸à°à°ªà±à°°à±à°£à°®à±à°¨ à°¦à°¾à°°à°\n\nàª¸à«àª¤à«àª°àª®à« â àª¸àªàªªà«àª°à«àª£ àª¦à«àª°à«\n\nTHE COMPLETE THREAD â for every language, for every learner.\n",
+                                   "I \u0026accept the terms of the license agreement",
+                                   "I do \u0026not accept the terms of the license agreement",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ],
+                      "screenshot":  "reinstall-licence.png"
+                  },
+                  {
+                      "page":  "location",
+                      "text":  [
+                                   "Choose Install Location",
+                                   "\u0026Install location:",
+                                   "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+                                   "Browse...",
+                                   "Setup will install Sutram in the folder below. The installer needs write access to this folder.",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ],
+                      "screenshot":  "reinstall-location.png"
+                  },
+                  {
+                      "page":  "options",
+                      "text":  [
+                                   "Select Components",
+                                   "Select the components to install:",
+                                   "\u0026Add Sutram to my user PATH (recommended)",
+                                   "Create a \u0026desktop shortcut (Sutram Terminal)",
+                                   "The compiler, standard library, language packs, examples and books are always installed. Start Menu shortcuts are always created.",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ],
+                      "screenshot":  "reinstall-options.png"
+                  },
+                  {
+                      "page":  "ready",
+                      "text":  [
+                                   "Ready to Install",
+                                   "Setup is ready to install Sutram on your computer.",
+                                   "Destination folder: C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\r\nAdd to user PATH: yes\r\nDesktop shortcut: no\r\n\r\nClick Install to begin the installation.",
+                                   "\u003c Back",
+                                   "Install",
+                                   "Cancel"
+                               ],
+                      "screenshot":  "reinstall-ready.png"
+                  },
+                  {
+                      "page":  "finish",
+                      "text":  [
+                                   "Completing the Sutram Setup Wizard",
+                                   "Sutram has been installed successfully.",
+                                   "You will find Sutram IDE and Sutram Terminal in your Start Menu.",
+                                   "\u0026Launch Sutram IDE",
+                                   "Finish"
+                               ],
+                      "screenshot":  null
+                  }
+              ],
+    "console_observations":  [
+
+                             ],
+    "observations":  [
+                         {
+                             "label":  "Install",
+                             "seconds":  0.4580911,
+                             "child_exited":  false
+                         },
+                         {
+                             "label":  "Install",
+                             "seconds":  5.7632365,
+                             "child_exited":  false
+                         },
+                         {
+                             "label":  "Install",
+                             "seconds":  11.095758199999999,
+                             "child_exited":  false
+                         },
+                         {
+                             "label":  "Install",
+                             "seconds":  16.415388999999998,
+                             "child_exited":  false
+                         },
+                         {
+                             "label":  "Install",
+                             "seconds":  21.634797,
+                             "child_exited":  false
+                         },
+                         {
+                             "label":  "Install",
+                             "seconds":  26.933143299999998,
+                             "child_exited":  false
+                         },
+                         {
+                             "label":  "Install",
+                             "seconds":  32.2718463,
+                             "child_exited":  false
+                         },
+                         {
+                             "label":  "Install",
+                             "seconds":  37.6008936,
+                             "child_exited":  false
+                         }
+                     ],
+    "console_detection":  "Visible top-level console/Terminal windows sampled during wizard run; sub-sample transients cannot be excluded.",
+    "pid":  2152,
+    "process_started":  "2026-11-07T15:12:28.1723813-05:00",
+    "licence_initially_accepted":  0,
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "default_add_path":  1,
+    "default_desktop":  0,
+    "child":  {
+                  "pid":  37436,
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\install.log\" -AddPath",
+                  "started":  "2026-11-07T15:12:30.3939115-05:00"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\install.log",
+    "status":  "FINISH",
+    "finish_seconds":  40.1880119,
+    "launch_ide_default":  1,
+    "closed_before_finish_click":  false,
+    "closed_after_finish_click":  true,
+    "default_launched_ide":  {
+                                 "path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                                 "pid":  30708,
+                                 "started":  "2026-11-07T15:13:14.8255292-05:00"
+                             },
+    "ide_launch_screenshot":  null,
+    "total_observed_seconds":  47.9713845,
+    "stopped_in_cleanup":  [
+
+                           ],
+    "wizard_exited":  true,
+    "child_exited":  true,
+    "child_exit":  0,
+    "default_ide_exited":  true,
+    "capture_warnings":  [
+                             "reinstall-finish: own window not foreground; capture skipped",
+                             "reinstall-default-ide: own window not foreground; capture skipped"
+                         ],
+    "ended":  "2026-11-07T15:13:18.3648049-05:00"
+}

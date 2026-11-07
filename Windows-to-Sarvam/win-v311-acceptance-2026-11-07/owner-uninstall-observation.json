@@ -1,0 +1,6 @@
+{
+    "interpretation":  "Owner reports no uninstall error; a PowerShell window appeared near the end and closed itself.",
+    "uninstall_report":  "there was no error in uninstall process",
+    "console_report":  "poweshell at end of the process and disappeared than",
+    "source":  "Owner observations in this conversation"
+}

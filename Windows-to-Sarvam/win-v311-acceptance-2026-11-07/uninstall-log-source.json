@@ -1,0 +1,8 @@
+{
+    "note":  "Only matching fresh uninstall log found after the first install; owner performed Settings uninstall before observer started.",
+    "source":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMFB5F.tmp\\uninstall.log",
+    "sha256":  "18536776F71D06C9CFB14A0FC5B08A7FFC21923C51C9606D491D52D2AA4214C5",
+    "last_write":  "2026-11-07T15:09:10.5024268-05:00",
+    "copy_sha256":  "18536776F71D06C9CFB14A0FC5B08A7FFC21923C51C9606D491D52D2AA4214C5",
+    "copied_file":  "uninstall-engine.log"
+}

@@ -1,0 +1,26 @@
+{
+    "new_window":  true,
+    "process_started":  "2026-11-07T14:59:29.1581768-05:00",
+    "screenshot":  "notepad-opened.png",
+    "app":  "notepad",
+    "before":  [
+                   {
+                       "handle":  262658,
+                       "pid":  18412,
+                       "cls":  "Windows.UI.Core.CoreWindow",
+                       "title":  "Settings"
+                   },
+                   {
+                       "handle":  655502,
+                       "pid":  2136,
+                       "cls":  "ApplicationFrameWindow",
+                       "title":  "Settings"
+                   }
+               ],
+    "window":  {
+                   "handle":  10488388,
+                   "pid":  22312,
+                   "cls":  "Notepad",
+                   "title":  "Untitled - Notepad"
+               }
+}

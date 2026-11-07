@@ -1,0 +1,8 @@
+{
+    "text":  "mukhya() {\r\n    likha(\"namaste\")\r\n}\r\n",
+    "source":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\first.sm",
+    "process_exited":  true,
+    "sha256":  "21A431FB55837A1E76B3B8CDA9894D0D9E8F065D6722F227041A06171B7E0C30",
+    "screenshot":  "notepad-first-saved.png",
+    "bytes":  37
+}

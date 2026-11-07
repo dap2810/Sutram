@@ -1,0 +1,52 @@
+$ErrorActionPreference='Stop';$OutDir=$PSScriptRoot;$Root=Split-Path (Split-Path $OutDir -Parent) -Parent
+. (Join-Path $OutDir 'desktop-helper.ps1');$script:captureWarnings=@()
+$work=Join-Path $Root 'build\native-v311-acceptance';$source=Join-Path $work 'first.sm'
+if(-not (Test-Path $source) -or (Test-Path (Join-Path $work 'first.exe'))){throw 'Need Notepad source and absent executable'}
+$batch=@'
+@echo off
+title Sutram v311 acceptance - first program
+call :run > first-cli.log 2>&1
+type first-cli.log
+echo.
+echo First-program check finished.
+goto :eof
+:run
+echo ^> where sutram
+where sutram
+echo ^> sutram --version
+sutram --version
+echo ^> sutram first.sm first.exe
+sutram first.sm first.exe
+set "compileExit=%errorlevel%"
+echo Compile exit: %compileExit%
+if not "%compileExit%"=="0" goto :done
+echo ^> first.exe
+first.exe
+set "runExit=%errorlevel%"
+echo.
+echo Run exit: %runExit%
+:done
+echo complete > first-cli.done
+exit /b
+'@
+$path=Join-Path $work 'first-program.cmd';[IO.File]::WriteAllText($path,$batch,[Text.ASCIIEncoding]::new())
+Copy-Item -LiteralPath $path -Destination (Join-Path $OutDir 'first-program.cmd')
+$hostExe=Join-Path $env:SystemRoot 'System32\conhost.exe'
+$psi=[Diagnostics.ProcessStartInfo]::new($hostExe,('"'+$env:ComSpec+'" /d /k "'+$path+'"'));$psi.WorkingDirectory=$work;$psi.UseShellExecute=$false
+$psi.EnvironmentVariables['Path']=([Environment]::GetEnvironmentVariable('Path','Machine')+';'+[Environment]::GetEnvironmentVariable('Path','User'))
+$p=[Diagnostics.Process]::Start($psi);[void]$p.Handle;$r=@{pid=$p.Id;started=$p.StartTime.ToString('o');command=($hostExe+' '+$psi.Arguments);cwd=$work;fresh_path=$psi.EnvironmentVariables['Path']}
+try{
+ if(-not (Wait-Until {Test-Path (Join-Path $work 'first-cli.done')} 20000)){throw 'First program did not finish'}
+ $win=Wait-Until {[AcceptanceWindow]::All()|Where-Object {$_.title -like '*Sutram v311 acceptance - first program*'}|Select-Object -First 1} 5000
+ if(-not $win){throw 'Command Prompt window not identified'}
+ $h=[IntPtr]$win.handle;[void][AcceptanceWindow]::SetWindowPos($h,[IntPtr]::Zero,20,30,950,650,0x0040);Foreground $h
+ $r.window=$win;$r.screenshot=Shot $h 'first-program-command-prompt'
+ $text=[IO.File]::ReadAllText((Join-Path $work 'first-cli.log'));$r.output=$text
+ $r.pass=($text -match 'Sutram 1.0 \(v311\)' -and $text -match '(?m)^namaste\r?$' -and $text.Contains('Compile exit: 0') -and $text.Contains('Run exit: 0'))
+ [void][SutramIde]::PostMessageW($h,0x10,[IntPtr]::Zero,[IntPtr]::Zero);[void]$p.WaitForExit(5000)
+}finally{
+ if(-not $p.HasExited){$p.Kill();[void]$p.WaitForExit(5000);$r.forced_cleanup=$true};$r.process_exited=$p.HasExited
+ Copy-Item -LiteralPath (Join-Path $work 'first-cli.log') -Destination (Join-Path $OutDir 'first-cli.log') -ErrorAction SilentlyContinue
+ [IO.File]::WriteAllText((Join-Path $OutDir 'first-program.json'),($r|ConvertTo-Json -Depth 5),[Text.UTF8Encoding]::new($false))
+}
+if(-not $r.pass){throw 'First program failed'};Write-Host 'New Command Prompt: v311; first.sm compiled and printed namaste.'

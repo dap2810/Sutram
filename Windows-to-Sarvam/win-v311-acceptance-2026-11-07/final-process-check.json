@@ -1,0 +1,101 @@
+{
+    "owned":  [
+                  {
+                      "label":  "first wizard",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  40664,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T14:58:14.4269417-05:00"
+                  },
+                  {
+                      "label":  "first engine",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  34508,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T14:58:16.6603516-05:00"
+                  },
+                  {
+                      "label":  "first default IDE",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  20876,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T14:58:45.0686626-05:00"
+                  },
+                  {
+                      "label":  "Notepad",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  22312,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T14:59:29.1581768-05:00"
+                  },
+                  {
+                      "label":  "first cmd observer attempt",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  41060,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T15:04:30.7382479-05:00"
+                  },
+                  {
+                      "label":  "conhost observer attempt",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  23144,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T15:05:13.5916338-05:00"
+                  },
+                  {
+                      "label":  "visible Command Prompt",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  44312,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T15:06:20.1313018-05:00"
+                  },
+                  {
+                      "label":  "reinstall wizard",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  2152,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T15:12:28.1723813-05:00"
+                  },
+                  {
+                      "label":  "reinstall engine",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  37436,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T15:12:30.3939115-05:00"
+                  },
+                  {
+                      "label":  "reinstall default IDE",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  30708,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T15:13:14.8255292-05:00"
+                  },
+                  {
+                      "label":  "B1-B4 shortcut IDE",
+                      "pid_exists":  false,
+                      "same_process_still_running":  false,
+                      "pid":  42488,
+                      "current_start":  null,
+                      "recorded_start":  "2026-11-07T15:13:21.9374651-05:00"
+                  }
+              ],
+    "pass":  true,
+    "attempt2_remaining_children":  [
+
+                                    ],
+    "note":  "Read-only final check; no process was stopped. Existing user Settings was not closed.",
+    "test_windows":  [
+
+                     ],
+    "time":  "2026-11-07T15:19:06.4379214-05:00"
+}

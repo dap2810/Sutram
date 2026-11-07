@@ -1,0 +1,344 @@
+[
+    {
+        "id":  "",
+        "name":  "",
+        "class":  "NotepadTextBox",
+        "offscreen":  false,
+        "handle":  789150,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Text editor",
+        "class":  "RichEditD2DPT",
+        "offscreen":  false,
+        "handle":  330136,
+        "type":  "ControlType.Document",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "",
+        "class":  "Microsoft.UI.Content.DesktopChildSiteBridge",
+        "offscreen":  false,
+        "handle":  7539070,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "",
+        "class":  "InputSiteWindowClass",
+        "offscreen":  false,
+        "handle":  264604,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "Tabs",
+        "name":  "",
+        "class":  "Microsoft.UI.Xaml.Controls.TabView",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Tab",
+        "pid":  22312
+    },
+    {
+        "id":  "TabListView",
+        "name":  "",
+        "class":  "ListView",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.List",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Untitled. Unmodified.",
+        "class":  "ListViewItem",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.TabItem",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Untitled",
+        "class":  "TextBlock",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Text",
+        "pid":  22312
+    },
+    {
+        "id":  "CloseButton",
+        "name":  "Close Tab",
+        "class":  "Button",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "AddButton",
+        "name":  "Add New Tab",
+        "class":  "Button",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "",
+        "class":  "Microsoft.UI.Content.DesktopChildSiteBridge",
+        "offscreen":  false,
+        "handle":  4918060,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "",
+        "class":  "InputSiteWindowClass",
+        "offscreen":  false,
+        "handle":  4524780,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "MenuBar",
+        "name":  "",
+        "class":  "",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.MenuBar",
+        "pid":  22312
+    },
+    {
+        "id":  "File",
+        "name":  "File",
+        "class":  "Microsoft.UI.Xaml.Controls.MenuBarItem",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.MenuItem",
+        "pid":  22312
+    },
+    {
+        "id":  "Edit",
+        "name":  "Edit",
+        "class":  "Microsoft.UI.Xaml.Controls.MenuBarItem",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.MenuItem",
+        "pid":  22312
+    },
+    {
+        "id":  "View",
+        "name":  "View",
+        "class":  "Microsoft.UI.Xaml.Controls.MenuBarItem",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.MenuItem",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Headings",
+        "class":  "Microsoft.UI.Xaml.Controls.DropDownButton",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Lists",
+        "class":  "Microsoft.UI.Xaml.Controls.DropDownButton",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Bold (Ctrl+B)",
+        "class":  "ToggleButton",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Italic (Ctrl+I)",
+        "class":  "ToggleButton",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Strikethrough (Ctrl+Shift+X)",
+        "class":  "ToggleButton",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "Link (Ctrl+K)",
+        "class":  "ToggleButton",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "OverflowButton",
+        "name":  "More options",
+        "class":  "Button",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "RewriteDropDownButton",
+        "name":  "Writing tools",
+        "class":  "Microsoft.UI.Xaml.Controls.DropDownButton",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "FREButton",
+        "name":  "What\u0027s new",
+        "class":  "Button",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "AvatarButton",
+        "name":  "User avatar",
+        "class":  "Button",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "SettingsButton",
+        "name":  "Settings",
+        "class":  "Button",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Button",
+        "pid":  22312
+    },
+    {
+        "id":  "PrivacyTeachingTip",
+        "name":  "",
+        "class":  "Microsoft.UI.Xaml.Controls.TeachingTip",
+        "offscreen":  true,
+        "handle":  0,
+        "type":  "ControlType.Window",
+        "pid":  22312
+    },
+    {
+        "id":  "PsDownloadDetailTeachingTip",
+        "name":  "",
+        "class":  "Microsoft.UI.Xaml.Controls.TeachingTip",
+        "offscreen":  true,
+        "handle":  0,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "PsDownloadLightTeachingTip",
+        "name":  "Local AI model must complete downloading to use this feature while signed out.",
+        "class":  "Microsoft.UI.Xaml.Controls.TeachingTip",
+        "offscreen":  true,
+        "handle":  0,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "",
+        "class":  "Microsoft.UI.Content.DesktopChildSiteBridge",
+        "offscreen":  false,
+        "handle":  396070,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "",
+        "name":  "",
+        "class":  "InputSiteWindowClass",
+        "offscreen":  false,
+        "handle":  1444648,
+        "type":  "ControlType.Pane",
+        "pid":  22312
+    },
+    {
+        "id":  "ContentTextBlock",
+        "name":  "Line 1,\nColumn 1",
+        "class":  "TextBlock",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Text",
+        "pid":  22312
+    },
+    {
+        "id":  "ContentTextBlock",
+        "name":  "0 characters",
+        "class":  "TextBlock",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Text",
+        "pid":  22312
+    },
+    {
+        "id":  "ContentTextBlock",
+        "name":  "Plain text",
+        "class":  "TextBlock",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Text",
+        "pid":  22312
+    },
+    {
+        "id":  "ContentTextBlock",
+        "name":  "Zoom",
+        "class":  "TextBlock",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Text",
+        "pid":  22312
+    },
+    {
+        "id":  "ContentTextBlock",
+        "name":  " Windows (CRLF)",
+        "class":  "TextBlock",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Text",
+        "pid":  22312
+    },
+    {
+        "id":  "ContentTextBlock",
+        "name":  " UTF-8",
+        "class":  "TextBlock",
+        "offscreen":  false,
+        "handle":  0,
+        "type":  "ControlType.Text",
+        "pid":  22312
+    }
+]
