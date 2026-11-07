@@ -1,0 +1,12 @@
+PASS while_hot: 5 instructions (ceiling 5) bottom-test
+PASS for_hot: 7 instructions (ceiling 7) bottom-test
+PASS wide_immediate_update: 4 instructions (ceiling 4)
+PASS register_destination: 7 instructions (ceiling 7)
+PASS float_reg_self: 4 instructions (ceiling 4)
+PASS register_immediate_destination: 8 instructions (ceiling 8)
+PASS float_reg_compare: 44 instructions (ceiling 44)
+PASS float_scalar_call_rhs: 17 instructions (ceiling 18)
+PASS float_reg_destination: 12 instructions (ceiling 12)
+PASS float_index_left_reg_right: 43 instructions (ceiling 43)
+PASS float_call_left_reg_right: 17 instructions (ceiling 17)
+PASS float_index_left_literal_right: 44 instructions (ceiling 44)

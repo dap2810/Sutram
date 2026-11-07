@@ -1,0 +1,24 @@
+PASS  function value: passed, stored, returned                   
+PASS  function value through a mala                              
+PASS  the same function is the same value                        
+PASS  a prakriya wins over a parameter of its name               
+PASS  an undefined name is still an error                        
+PASS  calling an undefined name is still an error                
+PASS  a method changes its object                                
+PASS  no such method                                             
+PASS  a method name in two rachanas                              
+PASS  a method of an undeclared rachana                          
+PASS  ... and its hint names the rachana (R24)                   
+PASS  a method call with the wrong number of arguments           
+PASS  slices: views, writes, omitted bounds                      
+PASS  a slice index past its length                              
+PASS  a slice write past its length                              
+PASS  hi past the array                                          
+PASS  lo after hi                                                
+PASS  a negative lo                                              
+PASS  a sub-slice past its slice                                 
+PASS  a slice of a raw pointer                                   
+PASS  a number to a vibhag parameter                             
+PASS  returning a slice                                          
+PASS  a whole kosh to a vibhag parameter, and a kosh slice       
+r23 capabilities: 23 checks, 0 failed

@@ -1,0 +1,2 @@
+# Preserve recorded evidence bytes, including stderr and Windows log line endings.
+* -text

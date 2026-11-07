@@ -1,0 +1,3357 @@
+{
+    "phase":  "recovery",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe",
+    "sha256":  "7BA5FDDA8E373492AE272D2B0EF3CC2965287715A4503D9C11B3C02FCAF398BD",
+    "started":  "2026-11-06T23:50:14.2704934-05:00",
+    "elevated":  false,
+    "observations":  [
+                         {
+                             "dialogs":  0,
+                             "seconds":  0.44,
+                             "next_label":  "Install",
+                             "last_line":  "",
+                             "child_exited":  false
+                         },
+                         {
+                             "dialogs":  0,
+                             "seconds":  5.47,
+                             "next_label":  "Install",
+                             "last_line":  "",
+                             "child_exited":  false
+                         }
+                     ],
+    "pid":  6212,
+    "process_started":  "2026-11-06T23:50:14.2893424-05:00",
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready":  "recovery-ready.png",
+    "child":  {
+                  "parent":  6212,
+                  "pid":  35532,
+                  "started":  "2026-11-06T23:50:15.3373228-05:00",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\install.log",
+    "status":  "FINISH",
+    "finish_seconds":  8.65,
+    "finish_screenshot":  "recovery-finish.png",
+    "wizard_self_closed_before_finish_click":  false,
+    "closed_after_finish_click":  true,
+    "observed_seconds":  8.85,
+    "child_exited":  true,
+    "child_exit":  0,
+    "wizard_exited":  true,
+    "pending_exists":  false,
+    "files":  [
+                  {
+                      "created":  "2026-11-06T23:50:23.3465825-05:00",
+                      "bytes":  29,
+                      "relative":  ".sutram-install"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.6469292-05:00",
+                      "bytes":  250,
+                      "relative":  "install-state.ini"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.6519256-05:00",
+                      "bytes":  49473,
+                      "relative":  "install.log"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1180237-05:00",
+                      "bytes":  1650,
+                      "relative":  "LICENSE.txt"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.3396740-05:00",
+                      "bytes":  63662,
+                      "relative":  "payload.manifest.sha256"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1230941-05:00",
+                      "bytes":  10893,
+                      "relative":  "README.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1271344-05:00",
+                      "bytes":  142563,
+                      "relative":  "sutram-ide-gui.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.3425820-05:00",
+                      "bytes":  1999009,
+                      "relative":  "Sutram-Uninstall.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1310611-05:00",
+                      "bytes":  36693,
+                      "relative":  "assets\\sutram.ico"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1340231-05:00",
+                      "bytes":  19870,
+                      "relative":  "bin\\sutram-link.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1350379-05:00",
+                      "bytes":  535039,
+                      "relative":  "bin\\sutram.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1380310-05:00",
+                      "bytes":  1014,
+                      "relative":  "bin\\lang\\bengali.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1400237-05:00",
+                      "bytes":  23206,
+                      "relative":  "bin\\lang\\bengali.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1421170-05:00",
+                      "bytes":  1588,
+                      "relative":  "bin\\lang\\gujarati.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1450873-05:00",
+                      "bytes":  22485,
+                      "relative":  "bin\\lang\\gujarati.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1470235-05:00",
+                      "bytes":  1110,
+                      "relative":  "bin\\lang\\hindi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1480230-05:00",
+                      "bytes":  22591,
+                      "relative":  "bin\\lang\\hindi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1510223-05:00",
+                      "bytes":  1166,
+                      "relative":  "bin\\lang\\kannada.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1520230-05:00",
+                      "bytes":  23266,
+                      "relative":  "bin\\lang\\kannada.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1540235-05:00",
+                      "bytes":  1148,
+                      "relative":  "bin\\lang\\malayalam.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1561021-05:00",
+                      "bytes":  24569,
+                      "relative":  "bin\\lang\\malayalam.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1580236-05:00",
+                      "bytes":  1115,
+                      "relative":  "bin\\lang\\marathi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1610240-05:00",
+                      "bytes":  23368,
+                      "relative":  "bin\\lang\\marathi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1630240-05:00",
+                      "bytes":  1091,
+                      "relative":  "bin\\lang\\odia.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1650250-05:00",
+                      "bytes":  23510,
+                      "relative":  "bin\\lang\\odia.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1670329-05:00",
+                      "bytes":  981,
+                      "relative":  "bin\\lang\\punjabi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:14.1700304-05:00",
+                      "bytes":  22540,
+                      "relative":  "bin\\lang\\punjabi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:21.9819566-05:00",
+                      "bytes":  3032,
+                      "relative":  "bin\\lang\\sanskrit.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:21.9869674-05:00",
+                      "bytes":  23684,
+                      "relative":  "bin\\lang\\sanskrit.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:21.9889544-05:00",
+                      "bytes":  1418,
+                      "relative":  "bin\\lang\\tamil.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:21.9909632-05:00",
+                      "bytes":  25479,
+                      "relative":  "bin\\lang\\tamil.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:21.9929548-05:00",
+                      "bytes":  1186,
+                      "relative":  "bin\\lang\\telugu.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:21.9959580-05:00",
+                      "bytes":  24085,
+                      "relative":  "bin\\lang\\telugu.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0590645-05:00",
+                      "bytes":  3578,
+                      "relative":  "bin\\lib\\aadhar.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0620600-05:00",
+                      "bytes":  4631,
+                      "relative":  "bin\\lib\\ank.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0640585-05:00",
+                      "bytes":  4629,
+                      "relative":  "bin\\lib\\anukram.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0650580-05:00",
+                      "bytes":  10601,
+                      "relative":  "bin\\lib\\brihat.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0670582-05:00",
+                      "bytes":  3844,
+                      "relative":  "bin\\lib\\chandas.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0700579-05:00",
+                      "bytes":  9899,
+                      "relative":  "bin\\lib\\ganit.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0710580-05:00",
+                      "bytes":  22996,
+                      "relative":  "bin\\lib\\ganita.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0740584-05:00",
+                      "bytes":  1059,
+                      "relative":  "bin\\lib\\gudh.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0760587-05:00",
+                      "bytes":  5846,
+                      "relative":  "bin\\lib\\kalana.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0780590-05:00",
+                      "bytes":  17692,
+                      "relative":  "bin\\lib\\khand.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0801182-05:00",
+                      "bytes":  4972,
+                      "relative":  "bin\\lib\\madhava.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0820588-05:00",
+                      "bytes":  2552,
+                      "relative":  "bin\\lib\\mala.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0830631-05:00",
+                      "bytes":  15559,
+                      "relative":  "bin\\lib\\nighantu.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0860636-05:00",
+                      "bytes":  2912,
+                      "relative":  "bin\\lib\\patra.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0880636-05:00",
+                      "bytes":  6154,
+                      "relative":  "bin\\lib\\phal.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0900635-05:00",
+                      "bytes":  20355,
+                      "relative":  "bin\\lib\\roop.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0920636-05:00",
+                      "bytes":  4692,
+                      "relative":  "bin\\lib\\sadhan.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0940639-05:00",
+                      "bytes":  5343,
+                      "relative":  "bin\\lib\\samanvaya.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0960637-05:00",
+                      "bytes":  9805,
+                      "relative":  "bin\\lib\\sangrah.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0975676-05:00",
+                      "bytes":  6540,
+                      "relative":  "bin\\lib\\sankhyiki.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.0995739-05:00",
+                      "bytes":  5960,
+                      "relative":  "bin\\lib\\shreni.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1015740-05:00",
+                      "bytes":  15565,
+                      "relative":  "bin\\lib\\suchi.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1035741-05:00",
+                      "bytes":  12583,
+                      "relative":  "bin\\lib\\vakyank.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1055745-05:00",
+                      "bytes":  16119,
+                      "relative":  "bin\\lib\\varna.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1075740-05:00",
+                      "bytes":  3588,
+                      "relative":  "docs\\AI-WORK-DIVISION.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1095739-05:00",
+                      "bytes":  5091,
+                      "relative":  "docs\\BUILDING.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1115740-05:00",
+                      "bytes":  27274,
+                      "relative":  "docs\\CHANGELOG.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1135741-05:00",
+                      "bytes":  4174,
+                      "relative":  "docs\\CI-NOTIFICATION-POLICY.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1145740-05:00",
+                      "bytes":  8634,
+                      "relative":  "docs\\ERROR-CONVENTION.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1163095-05:00",
+                      "bytes":  8600,
+                      "relative":  "docs\\FREESTANDING.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1188481-05:00",
+                      "bytes":  4740,
+                      "relative":  "docs\\INSTALLATION-ROUTES.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1203672-05:00",
+                      "bytes":  6179,
+                      "relative":  "docs\\INSTALLER-REBUILD.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1218842-05:00",
+                      "bytes":  92799,
+                      "relative":  "docs\\LANGUAGE-REFERENCE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1234250-05:00",
+                      "bytes":  6356,
+                      "relative":  "docs\\LIBRARY-BOUNDARY.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1264669-05:00",
+                      "bytes":  16452,
+                      "relative":  "docs\\MEMORY-MODEL.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1279856-05:00",
+                      "bytes":  9225,
+                      "relative":  "docs\\mockup-setup.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1296092-05:00",
+                      "bytes":  11155,
+                      "relative":  "docs\\NUMERIC-CONTRACT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1326920-05:00",
+                      "bytes":  17537,
+                      "relative":  "docs\\OBJECT-FORMAT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1342116-05:00",
+                      "bytes":  10030,
+                      "relative":  "docs\\OPEN-ISSUES.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1357478-05:00",
+                      "bytes":  5486,
+                      "relative":  "docs\\OVERFLOW-SAFETY.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1372651-05:00",
+                      "bytes":  8932,
+                      "relative":  "docs\\PATH-TO-COMPLETION.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1403126-05:00",
+                      "bytes":  20168,
+                      "relative":  "docs\\RELEASE-NOTES.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1423255-05:00",
+                      "bytes":  3133,
+                      "relative":  "docs\\SANDESH.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1443253-05:00",
+                      "bytes":  15712,
+                      "relative":  "docs\\SPECIFICATION.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1463256-05:00",
+                      "bytes":  12778,
+                      "relative":  "docs\\sutram-audit.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1483255-05:00",
+                      "bytes":  39573,
+                      "relative":  "docs\\sutram-benchmark-report.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1503255-05:00",
+                      "bytes":  1709,
+                      "relative":  "docs\\sutram-book-2.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1513261-05:00",
+                      "bytes":  1716,
+                      "relative":  "docs\\sutram-book-3.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1563253-05:00",
+                      "bytes":  62392,
+                      "relative":  "docs\\sutram-book-english.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1583251-05:00",
+                      "bytes":  85760,
+                      "relative":  "docs\\sutram-book-gujarati.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1603254-05:00",
+                      "bytes":  95112,
+                      "relative":  "docs\\sutram-book-hindi.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1623249-05:00",
+                      "bytes":  80891,
+                      "relative":  "docs\\sutram-book-sanskrit.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1643345-05:00",
+                      "bytes":  97554,
+                      "relative":  "docs\\sutram-book-tamil.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1663252-05:00",
+                      "bytes":  96942,
+                      "relative":  "docs\\sutram-book-telugu.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1683256-05:00",
+                      "bytes":  1710,
+                      "relative":  "docs\\sutram-book.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1693254-05:00",
+                      "bytes":  29177,
+                      "relative":  "docs\\sutram-design-parameters.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1713250-05:00",
+                      "bytes":  8020,
+                      "relative":  "docs\\sutram-icon-thread.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1733255-05:00",
+                      "bytes":  5193,
+                      "relative":  "docs\\sutram-ide.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1753253-05:00",
+                      "bytes":  11614,
+                      "relative":  "docs\\sutram-keyword-words.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1773255-05:00",
+                      "bytes":  16749,
+                      "relative":  "docs\\sutram-performance.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1793370-05:00",
+                      "bytes":  11475,
+                      "relative":  "docs\\sutram-philosophy.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1813252-05:00",
+                      "bytes":  16467,
+                      "relative":  "docs\\sutram-project-status.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1823292-05:00",
+                      "bytes":  9368,
+                      "relative":  "docs\\sutram-roadmap.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1843298-05:00",
+                      "bytes":  14944,
+                      "relative":  "docs\\sutram-scorecard.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1863298-05:00",
+                      "bytes":  60771,
+                      "relative":  "docs\\sutram-stdlib-reference.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1883301-05:00",
+                      "bytes":  96624,
+                      "relative":  "docs\\sutram-stdlib.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1903300-05:00",
+                      "bytes":  43841,
+                      "relative":  "docs\\sutram-vocabulary.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1913348-05:00",
+                      "bytes":  6438,
+                      "relative":  "docs\\WHATS-LEFT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1933299-05:00",
+                      "bytes":  2083,
+                      "relative":  "docs\\WINDOWS-PORT-PLAN.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1953300-05:00",
+                      "bytes":  7252,
+                      "relative":  "docs\\WINDOWS-SETUP.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1973299-05:00",
+                      "bytes":  6571,
+                      "relative":  "docs\\_newchapter_en.html"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.1998388-05:00",
+                      "bytes":  2274,
+                      "relative":  "docs\\ai-handoff-notes\\HANDOFF.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2008399-05:00",
+                      "bytes":  2701,
+                      "relative":  "docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2028397-05:00",
+                      "bytes":  3024,
+                      "relative":  "docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2048400-05:00",
+                      "bytes":  8595,
+                      "relative":  "docs\\ai-handoff-notes\\START_HERE_FOR_AI.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2068394-05:00",
+                      "bytes":  8082,
+                      "relative":  "docs\\decisions\\ALIAS-DESIGN.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2088397-05:00",
+                      "bytes":  12662,
+                      "relative":  "docs\\decisions\\MEMORY-DECISION.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2108407-05:00",
+                      "bytes":  6424,
+                      "relative":  "docs\\decisions\\MEMORY-DESIGN.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2128403-05:00",
+                      "bytes":  5528,
+                      "relative":  "docs\\decisions\\MEMORY-IMPROVEMENTS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2138396-05:00",
+                      "bytes":  5968,
+                      "relative":  "docs\\decisions\\MEMORY-MY-IDEA.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2158401-05:00",
+                      "bytes":  7640,
+                      "relative":  "docs\\decisions\\MEMORY-UNIQUE-HYBRID.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2178398-05:00",
+                      "bytes":  3288,
+                      "relative":  "docs\\decisions\\R114-SUTRAM-TRUTI.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2198401-05:00",
+                      "bytes":  2726,
+                      "relative":  "docs\\reports\\COVERAGE-AUDIT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2218399-05:00",
+                      "bytes":  12691,
+                      "relative":  "docs\\reports\\EDGE-COVERAGE-30.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2238401-05:00",
+                      "bytes":  3330,
+                      "relative":  "docs\\reports\\FAIL-ALLOC.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2248397-05:00",
+                      "bytes":  4267,
+                      "relative":  "docs\\reports\\HOW-DEFECTS-WERE-FOUND.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2268421-05:00",
+                      "bytes":  2009,
+                      "relative":  "docs\\reports\\INDIC-COVERAGE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2288399-05:00",
+                      "bytes":  8197,
+                      "relative":  "docs\\reports\\KOSH-BUILTINS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2308400-05:00",
+                      "bytes":  3395,
+                      "relative":  "docs\\reports\\KOSH-REUSE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2328399-05:00",
+                      "bytes":  2087,
+                      "relative":  "docs\\reports\\LAGHU-EXAMPLE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2348401-05:00",
+                      "bytes":  4882,
+                      "relative":  "docs\\reports\\LANG-PACK-AUDIT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2368521-05:00",
+                      "bytes":  2826,
+                      "relative":  "docs\\reports\\LEXER-BOUNDARY-TEST.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2388399-05:00",
+                      "bytes":  7148,
+                      "relative":  "docs\\reports\\LIBRARY-ENGLISH-AUDIT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2408399-05:00",
+                      "bytes":  4949,
+                      "relative":  "docs\\reports\\LIBRARY-LAYERS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2428411-05:00",
+                      "bytes":  3111,
+                      "relative":  "docs\\reports\\MEMORY-COMPOSITION-TEST.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2448398-05:00",
+                      "bytes":  9497,
+                      "relative":  "docs\\reports\\NEGATIVE-CORPUS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2468401-05:00",
+                      "bytes":  3082,
+                      "relative":  "docs\\reports\\PARSER-CLASS-TEST.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2488402-05:00",
+                      "bytes":  11571,
+                      "relative":  "docs\\reports\\PROPERTY-NET.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2498398-05:00",
+                      "bytes":  7395,
+                      "relative":  "docs\\reports\\SANSKRIT-AND-AI-BRIGGS-1985.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2518402-05:00",
+                      "bytes":  15791,
+                      "relative":  "docs\\reports\\SANSKRIT-FOR-LANGUAGE-DESIGN.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2538402-05:00",
+                      "bytes":  4998,
+                      "relative":  "docs\\reports\\SECURITY-AUDIT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2558403-05:00",
+                      "bytes":  5429,
+                      "relative":  "docs\\reports\\STRING-BYTE-PARITY.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2578396-05:00",
+                      "bytes":  711923,
+                      "relative":  "docs\\rounds\\CHANGELOG-ARCHIVE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2598400-05:00",
+                      "bytes":  2505,
+                      "relative":  "docs\\rounds\\F7-SCALAR-INDEX-CRASH.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2618402-05:00",
+                      "bytes":  3122,
+                      "relative":  "docs\\rounds\\F8-PACK-WARNING-FALSE-ALARM.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2638397-05:00",
+                      "bytes":  3072,
+                      "relative":  "docs\\rounds\\ITEM-6-X11-INDIC-ASSESSMENT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2658401-05:00",
+                      "bytes":  4464,
+                      "relative":  "docs\\rounds\\PLAN-TO-FINISH.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2678401-05:00",
+                      "bytes":  7633,
+                      "relative":  "docs\\rounds\\PROJECT-OVERVIEW.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2688529-05:00",
+                      "bytes":  8220,
+                      "relative":  "docs\\rounds\\R34-ACKNOWLEDGE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2708398-05:00",
+                      "bytes":  1228,
+                      "relative":  "docs\\rounds\\R50-BYTE-PACKED-TEXT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2728443-05:00",
+                      "bytes":  3027,
+                      "relative":  "docs\\rounds\\R52-BUILTIN-FIXES.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2748558-05:00",
+                      "bytes":  6886,
+                      "relative":  "docs\\rounds\\R54-BUILTIN-BOUNDS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2768394-05:00",
+                      "bytes":  4998,
+                      "relative":  "docs\\rounds\\R56-MODULE-GLOBALS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2788399-05:00",
+                      "bytes":  3807,
+                      "relative":  "docs\\rounds\\R57-REGISTER-EVALUATOR.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2808394-05:00",
+                      "bytes":  6926,
+                      "relative":  "docs\\rounds\\R58-CONSTANT-FOLDING.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2828443-05:00",
+                      "bytes":  5289,
+                      "relative":  "docs\\rounds\\R59-PREEMISSION-PEEPHOLE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2848444-05:00",
+                      "bytes":  4615,
+                      "relative":  "docs\\rounds\\R62-WINDOWS-ACCEPTANCE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2858439-05:00",
+                      "bytes":  6894,
+                      "relative":  "docs\\rounds\\R63-KOSH-BUILTINS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2878444-05:00",
+                      "bytes":  2756,
+                      "relative":  "docs\\rounds\\R64-KOSH-DIAGNOSTICS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2898452-05:00",
+                      "bytes":  1486,
+                      "relative":  "docs\\rounds\\R65-DEVANAGARI-SURFACE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2918445-05:00",
+                      "bytes":  7169,
+                      "relative":  "docs\\rounds\\R65-FINISH-REVIEW.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2938441-05:00",
+                      "bytes":  2908,
+                      "relative":  "docs\\rounds\\R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2958443-05:00",
+                      "bytes":  6169,
+                      "relative":  "docs\\rounds\\R65-SOURCE-REVIEW.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2973488-05:00",
+                      "bytes":  8772,
+                      "relative":  "docs\\rounds\\R67-SOURCE-REVIEW.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.2993544-05:00",
+                      "bytes":  3295,
+                      "relative":  "docs\\rounds\\R68-INDIC-DEVICES.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3013545-05:00",
+                      "bytes":  3611,
+                      "relative":  "docs\\rounds\\R68-LEXICAL-DIAGNOSTICS.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3023538-05:00",
+                      "bytes":  2482,
+                      "relative":  "docs\\rounds\\R68-PURE-PAIR-PROBE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3043545-05:00",
+                      "bytes":  5056,
+                      "relative":  "docs\\rounds\\R68-SOURCE-REVIEW.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3063544-05:00",
+                      "bytes":  5391,
+                      "relative":  "docs\\rounds\\R68-WINDOWS-GUI-CHECKLIST.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3083539-05:00",
+                      "bytes":  1951,
+                      "relative":  "docs\\rounds\\R69-PURE-PAIR-MEASUREMENT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3103545-05:00",
+                      "bytes":  2889,
+                      "relative":  "docs\\rounds\\R71-BOOT-PATH.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3123543-05:00",
+                      "bytes":  3971,
+                      "relative":  "docs\\rounds\\R71-CANONICAL-BUILD.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3143546-05:00",
+                      "bytes":  4408,
+                      "relative":  "docs\\rounds\\R71-MEMORY-BOUNDARY.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3163543-05:00",
+                      "bytes":  5930,
+                      "relative":  "docs\\rounds\\R71-MODULES.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3183541-05:00",
+                      "bytes":  3119,
+                      "relative":  "docs\\rounds\\R71-SPECIFICATION-EVIDENCE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3203543-05:00",
+                      "bytes":  2618,
+                      "relative":  "docs\\rounds\\R72-BASELINE-OBSERVED.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3223543-05:00",
+                      "bytes":  9942,
+                      "relative":  "docs\\rounds\\ROADMAP-TO-V1.0.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3253558-05:00",
+                      "bytes":  3221,
+                      "relative":  "docs\\rounds\\TEST-ME.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3273536-05:00",
+                      "bytes":  10459,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-COMPLETE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3293543-05:00",
+                      "bytes":  4475,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-DERIVATION.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3313562-05:00",
+                      "bytes":  6484,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-RULE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3323539-05:00",
+                      "bytes":  12272,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-SHORT.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3343545-05:00",
+                      "bytes":  19016,
+                      "relative":  "docs\\vocabulary\\VOCABULARY-TABLE.md"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3373541-05:00",
+                      "bytes":  64,
+                      "relative":  "examples\\01_hello.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3393545-05:00",
+                      "bytes":  115,
+                      "relative":  "examples\\02_arith.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3413562-05:00",
+                      "bytes":  96,
+                      "relative":  "examples\\03_if_else.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3423538-05:00",
+                      "bytes":  133,
+                      "relative":  "examples\\04_while.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3443545-05:00",
+                      "bytes":  240,
+                      "relative":  "examples\\05_func_params.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3463558-05:00",
+                      "bytes":  239,
+                      "relative":  "examples\\06_rachana.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3483542-05:00",
+                      "bytes":  148,
+                      "relative":  "examples\\07_module.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3503545-05:00",
+                      "bytes":  432,
+                      "relative":  "examples\\08_demo.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3513540-05:00",
+                      "bytes":  779,
+                      "relative":  "examples\\09_comparisons.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3533543-05:00",
+                      "bytes":  144,
+                      "relative":  "examples\\100_t18_kosh_bounds.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3553544-05:00",
+                      "bytes":  229,
+                      "relative":  "examples\\100_t18_kosh_devanagari.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3573546-05:00",
+                      "bytes":  117,
+                      "relative":  "examples\\101_t18_kosh_empty.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3593545-05:00",
+                      "bytes":  183,
+                      "relative":  "examples\\102_ast_multimodule_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3613546-05:00",
+                      "bytes":  3080,
+                      "relative":  "examples\\103_b10_nested_break_patches.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3633543-05:00",
+                      "bytes":  3083,
+                      "relative":  "examples\\104_b10_nested_continue_patches.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3653544-05:00",
+                      "bytes":  70422,
+                      "relative":  "examples\\105_block_nesting_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3663539-05:00",
+                      "bytes":  193,
+                      "relative":  "examples\\106_rachana_field_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3693572-05:00",
+                      "bytes":  1266,
+                      "relative":  "examples\\107_b11_block_65_statements.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3723737-05:00",
+                      "bytes":  4737,
+                      "relative":  "examples\\108_b11_block_statement_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3743582-05:00",
+                      "bytes":  339,
+                      "relative":  "examples\\109_t18_kosh_dasham.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3763545-05:00",
+                      "bytes":  299,
+                      "relative":  "examples\\10_mathlib.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3783589-05:00",
+                      "bytes":  254,
+                      "relative":  "examples\\110_t18_kosh_dasham_devanagari.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3803546-05:00",
+                      "bytes":  352,
+                      "relative":  "examples\\111_t18_kosh_dasham_function_return.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3843685-05:00",
+                      "bytes":  335,
+                      "relative":  "examples\\112_t18_kosh_integer_conversion.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3893666-05:00",
+                      "bytes":  429,
+                      "relative":  "examples\\113_perf_self_update.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3913593-05:00",
+                      "bytes":  317,
+                      "relative":  "examples\\114_perf_loop_fastpaths.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3933594-05:00",
+                      "bytes":  777,
+                      "relative":  "examples\\115_perf_loop_bottom.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3963587-05:00",
+                      "bytes":  320,
+                      "relative":  "examples\\116_perf_reg_destination.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3978648-05:00",
+                      "bytes":  254,
+                      "relative":  "examples\\117_perf_constant_literals.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.3998700-05:00",
+                      "bytes":  543,
+                      "relative":  "examples\\118_t18_kosh_param.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4018698-05:00",
+                      "bytes":  499,
+                      "relative":  "examples\\119_t18_kosh_param_forward.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4038697-05:00",
+                      "bytes":  564,
+                      "relative":  "examples\\11_forloop.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4058699-05:00",
+                      "bytes":  210,
+                      "relative":  "examples\\120_t18_kosh_param_mismatch.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4078700-05:00",
+                      "bytes":  494,
+                      "relative":  "examples\\121_t18_kosh_param_push_reject.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4098698-05:00",
+                      "bytes":  242,
+                      "relative":  "examples\\122_t18_kosh_param_devanagari.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4118698-05:00",
+                      "bytes":  240,
+                      "relative":  "examples\\123_t18_kosh_param_statement_call.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4138695-05:00",
+                      "bytes":  621,
+                      "relative":  "examples\\124_perf_wide_immediate.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4158700-05:00",
+                      "bytes":  684,
+                      "relative":  "examples\\125_perf_register_immediate_destination.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4178707-05:00",
+                      "bytes":  1073,
+                      "relative":  "examples\\126_numeric_pipeline.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4208681-05:00",
+                      "bytes":  290,
+                      "relative":  "examples\\127_perf_float_self_register.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4218692-05:00",
+                      "bytes":  302,
+                      "relative":  "examples\\128_perf_float_self_fallback.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4238694-05:00",
+                      "bytes":  313,
+                      "relative":  "examples\\129_perf_float_destination.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4258703-05:00",
+                      "bytes":  640,
+                      "relative":  "examples\\12_elif.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4278699-05:00",
+                      "bytes":  485,
+                      "relative":  "examples\\130_perf_float_destination_alias.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4298695-05:00",
+                      "bytes":  289,
+                      "relative":  "examples\\131_perf_float_compare_register.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4364813-05:00",
+                      "bytes":  350,
+                      "relative":  "examples\\132_perf_float_compare_fallback.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4394973-05:00",
+                      "bytes":  624,
+                      "relative":  "examples\\133_perf_float_scalar_call_rhs.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4414907-05:00",
+                      "bytes":  628,
+                      "relative":  "examples\\134_perf_float_complex_fallback.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4434893-05:00",
+                      "bytes":  667,
+                      "relative":  "examples\\135_r30_float_index_scalar.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4454923-05:00",
+                      "bytes":  535,
+                      "relative":  "examples\\136_r30_float_complex_left.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4475648-05:00",
+                      "bytes":  452,
+                      "relative":  "examples\\137_r30_float_literal_rhs.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4515648-05:00",
+                      "bytes":  462,
+                      "relative":  "examples\\138_r30_float_comparison_index.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4524934-05:00",
+                      "bytes":  461,
+                      "relative":  "examples\\139_r30_float_mixed_fallback.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4554897-05:00",
+                      "bytes":  757,
+                      "relative":  "examples\\13_negatives.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4574877-05:00",
+                      "bytes":  513,
+                      "relative":  "examples\\140_r30_index_side_effect.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4594921-05:00",
+                      "bytes":  317,
+                      "relative":  "examples\\141_xmm_cache_basic.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4604903-05:00",
+                      "bytes":  283,
+                      "relative":  "examples\\142_xmm_cache_alias.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4624891-05:00",
+                      "bytes":  494,
+                      "relative":  "examples\\143_xmm_cache_barriers.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4654917-05:00",
+                      "bytes":  383,
+                      "relative":  "examples\\144_xmm_cache_fallback.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4664982-05:00",
+                      "bytes":  368,
+                      "relative":  "examples\\145_xmm_cache_nested_calls.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4684891-05:00",
+                      "bytes":  482,
+                      "relative":  "examples\\146_stage2_loop_call_boundary.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4704900-05:00",
+                      "bytes":  396,
+                      "relative":  "examples\\147_stage2_recursive_float_boundary.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4724897-05:00",
+                      "bytes":  560,
+                      "relative":  "examples\\148_stage2_array_mutation_call.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4745670-05:00",
+                      "bytes":  230,
+                      "relative":  "examples\\149_namespaced_colliding_imports.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4764892-05:00",
+                      "bytes":  560,
+                      "relative":  "examples\\14_strings.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4785647-05:00",
+                      "bytes":  164,
+                      "relative":  "examples\\150_namespaced_same_module_two_aliases.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4804890-05:00",
+                      "bytes":  174,
+                      "relative":  "examples\\151_namespaced_and_legacy_import.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4824888-05:00",
+                      "bytes":  180,
+                      "relative":  "examples\\152_namespaced_comment_string_preservation.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4845126-05:00",
+                      "bytes":  74,
+                      "relative":  "examples\\153_namespaced_devanagari_function.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4865868-05:00",
+                      "bytes":  134,
+                      "relative":  "examples\\154_namespaced_duplicate_idempotent.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4885729-05:00",
+                      "bytes":  245,
+                      "relative":  "examples\\155_namespaced_multi_alias_composition.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4914928-05:00",
+                      "bytes":  121,
+                      "relative":  "examples\\156_namespaced_alias_collision.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4934936-05:00",
+                      "bytes":  53,
+                      "relative":  "examples\\157_namespaced_missing_module.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4954922-05:00",
+                      "bytes":  41,
+                      "relative":  "examples\\158_namespaced_alias_digit.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4974968-05:00",
+                      "bytes":  46,
+                      "relative":  "examples\\159_namespaced_path_traversal.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.4995760-05:00",
+                      "bytes":  481,
+                      "relative":  "examples\\15_sutra_const.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5015827-05:00",
+                      "bytes":  37,
+                      "relative":  "examples\\160_namespaced_empty_alias.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5035822-05:00",
+                      "bytes":  72,
+                      "relative":  "examples\\161_namespaced_overlong_alias.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5045753-05:00",
+                      "bytes":  448,
+                      "relative":  "examples\\162_namespaced_import_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5065761-05:00",
+                      "bytes":  72,
+                      "relative":  "examples\\163_r40_transitive_diamond.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5085827-05:00",
+                      "bytes":  57,
+                      "relative":  "examples\\164_r41_cycle_reject.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5105760-05:00",
+                      "bytes":  61,
+                      "relative":  "examples\\165_r41_missing_reject.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5125853-05:00",
+                      "bytes":  91,
+                      "relative":  "examples\\166_r41_optin_diamond.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5145826-05:00",
+                      "bytes":  782,
+                      "relative":  "examples\\16_advanced.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5165823-05:00",
+                      "bytes":  757,
+                      "relative":  "examples\\17_booleans.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5185824-05:00",
+                      "bytes":  384,
+                      "relative":  "examples\\18_guna_switch.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5205891-05:00",
+                      "bytes":  380,
+                      "relative":  "examples\\19_srijana_enum.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5215752-05:00",
+                      "bytes":  1426,
+                      "relative":  "examples\\200_madhava_series.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5235758-05:00",
+                      "bytes":  353,
+                      "relative":  "examples\\201_madhava_library.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5265758-05:00",
+                      "bytes":  455,
+                      "relative":  "examples\\202_brahmagupta_area.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5285864-05:00",
+                      "bytes":  507,
+                      "relative":  "examples\\203_meru_with_kosh.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5305824-05:00",
+                      "bytes":  5045,
+                      "relative":  "examples\\204_b11_block_statement_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5325830-05:00",
+                      "bytes":  679,
+                      "relative":  "examples\\205_madhava_pi_kosh.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5345822-05:00",
+                      "bytes":  716,
+                      "relative":  "examples\\206_sankhyiki.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5365748-05:00",
+                      "bytes":  633,
+                      "relative":  "examples\\207_sankhyiki_vector.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5385750-05:00",
+                      "bytes":  1281,
+                      "relative":  "examples\\208_kalana.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5405761-05:00",
+                      "bytes":  1551,
+                      "relative":  "examples\\209_samanvaya.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5425871-05:00",
+                      "bytes":  243,
+                      "relative":  "examples\\20_pankti_array.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5445795-05:00",
+                      "bytes":  174,
+                      "relative":  "examples\\210_r41_cycle.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5465748-05:00",
+                      "bytes":  148,
+                      "relative":  "examples\\211_r41_v1_public.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5485861-05:00",
+                      "bytes":  158,
+                      "relative":  "examples\\212_r41_v1_private.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5505756-05:00",
+                      "bytes":  152,
+                      "relative":  "examples\\213_r41_v1_dupexp.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5525759-05:00",
+                      "bytes":  135,
+                      "relative":  "examples\\214_r41_v1_noalias.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5545761-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\215_r12_wordfreq.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5565760-05:00",
+                      "bytes":  72,
+                      "relative":  "examples\\215_r12_wordfreq.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5585758-05:00",
+                      "bytes":  2453,
+                      "relative":  "examples\\215_r12_wordfreq.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5605774-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\216_r12_expr.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5625795-05:00",
+                      "bytes":  15,
+                      "relative":  "examples\\216_r12_expr.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5645766-05:00",
+                      "bytes":  2743,
+                      "relative":  "examples\\216_r12_expr.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5665750-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\217_r12_report.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5685783-05:00",
+                      "bytes":  190,
+                      "relative":  "examples\\217_r12_report.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5705939-05:00",
+                      "bytes":  1820,
+                      "relative":  "examples\\217_r12_report.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5715757-05:00",
+                      "bytes":  636,
+                      "relative":  "examples\\218_sanskrit_devanagari.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5735764-05:00",
+                      "bytes":  290,
+                      "relative":  "examples\\219_sanskrit_kosh_aliases.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5755760-05:00",
+                      "bytes":  213,
+                      "relative":  "examples\\21_break_continue.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5775756-05:00",
+                      "bytes":  224,
+                      "relative":  "examples\\220_hindi_parse_error.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5795764-05:00",
+                      "bytes":  421,
+                      "relative":  "examples\\221_eof_location.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5815758-05:00",
+                      "bytes":  430,
+                      "relative":  "examples\\222_old_keyword_name.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5835819-05:00",
+                      "bytes":  193,
+                      "relative":  "examples\\223_undefined_name.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5855888-05:00",
+                      "bytes":  244,
+                      "relative":  "examples\\224_unknown_field.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5885845-05:00",
+                      "bytes":  199,
+                      "relative":  "examples\\225_undeclared_array.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5945876-05:00",
+                      "bytes":  338,
+                      "relative":  "examples\\226_long_field_names.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5965875-05:00",
+                      "bytes":  257,
+                      "relative":  "examples\\227_assign_undeclared.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.5991190-05:00",
+                      "bytes":  222,
+                      "relative":  "examples\\228_block_scope.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6011245-05:00",
+                      "bytes":  216,
+                      "relative":  "examples\\229_loop_var_scope.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6021234-05:00",
+                      "bytes":  275,
+                      "relative":  "examples\\22_precedence.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6051241-05:00",
+                      "bytes":  378,
+                      "relative":  "examples\\230_redeclare_after_block.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6071164-05:00",
+                      "bytes":  223,
+                      "relative":  "examples\\231_duplicate_name.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6081320-05:00",
+                      "bytes":  208,
+                      "relative":  "examples\\232_arity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6101335-05:00",
+                      "bytes":  191,
+                      "relative":  "examples\\233_missing_module.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6121176-05:00",
+                      "bytes":  359,
+                      "relative":  "examples\\234_ambiguous_field.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6141236-05:00",
+                      "bytes":  203,
+                      "relative":  "examples\\235_duplicate_field.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6161234-05:00",
+                      "bytes":  1157,
+                      "relative":  "examples\\236_guna_once.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6181234-05:00",
+                      "bytes":  2159,
+                      "relative":  "examples\\237_many_variables.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6201172-05:00",
+                      "bytes":  336,
+                      "relative":  "examples\\238_r17_d1_unary_not.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6231179-05:00",
+                      "bytes":  411,
+                      "relative":  "examples\\239_r17_d2_anya_loop_krama.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6251238-05:00",
+                      "bytes":  309,
+                      "relative":  "examples\\23_grahan_input.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6271158-05:00",
+                      "bytes":  251,
+                      "relative":  "examples\\240_r17_d3_anya_self_assign.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6291165-05:00",
+                      "bytes":  358,
+                      "relative":  "examples\\241_r17_d4_precedence.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6301325-05:00",
+                      "bytes":  235,
+                      "relative":  "examples\\242_r17_empty_guna.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6321171-05:00",
+                      "bytes":  348,
+                      "relative":  "examples\\243_r18_sthagita.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6341242-05:00",
+                      "bytes":  338,
+                      "relative":  "examples\\244_r18_rachana_in_function.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6361172-05:00",
+                      "bytes":  705,
+                      "relative":  "examples\\245_r18_netsock.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6381188-05:00",
+                      "bytes":  1648,
+                      "relative":  "examples\\246_r23_comparator_sort.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6401252-05:00",
+                      "bytes":  1201,
+                      "relative":  "examples\\247_r23_methods.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6421243-05:00",
+                      "bytes":  1325,
+                      "relative":  "examples\\248_r23_slices.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6441183-05:00",
+                      "bytes":  1545,
+                      "relative":  "examples\\249_r25_phal.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6461188-05:00",
+                      "bytes":  503,
+                      "relative":  "examples\\24_guess_game.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6471185-05:00",
+                      "bytes":  1307,
+                      "relative":  "examples\\250_r26_dosh_handler.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6492029-05:00",
+                      "bytes":  231,
+                      "relative":  "examples\\251_r38_alias_mala_oob.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6512121-05:00",
+                      "bytes":  406,
+                      "relative":  "examples\\252_r38_alias_kosh_oob.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6531177-05:00",
+                      "bytes":  361,
+                      "relative":  "examples\\253_r38_alias_slice_oob.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6551179-05:00",
+                      "bytes":  293,
+                      "relative":  "examples\\254_r42_alias_pankti_len.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6571199-05:00",
+                      "bytes":  469,
+                      "relative":  "examples\\255_r42_alias_kosh_push.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6591238-05:00",
+                      "bytes":  720,
+                      "relative":  "examples\\256_r44_vartani_sanskrit_names.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6611210-05:00",
+                      "bytes":  625,
+                      "relative":  "examples\\257_r48_kosh_empty.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6631162-05:00",
+                      "bytes":  1126,
+                      "relative":  "examples\\258_r70_loop_indent.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6651159-05:00",
+                      "bytes":  245,
+                      "relative":  "examples\\259_r70_indent_ambiguous.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6671232-05:00",
+                      "bytes":  298,
+                      "relative":  "examples\\25_patterns.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6691180-05:00",
+                      "bytes":  2271,
+                      "relative":  "examples\\260_r71_indented_bodies.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6711155-05:00",
+                      "bytes":  187,
+                      "relative":  "examples\\261_r71_after_mukhya.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6731363-05:00",
+                      "bytes":  304,
+                      "relative":  "examples\\262_r71_same_line_body.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6751240-05:00",
+                      "bytes":  896,
+                      "relative":  "examples\\263_r72_mandapa.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6761319-05:00",
+                      "bytes":  246,
+                      "relative":  "examples\\264_r73_escape_arith.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6781322-05:00",
+                      "bytes":  239,
+                      "relative":  "examples\\265_r73_escape_mala.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6801249-05:00",
+                      "bytes":  254,
+                      "relative":  "examples\\266_r73_inside_only.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6831382-05:00",
+                      "bytes":  222,
+                      "relative":  "examples\\267_r73_outer_number.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6851315-05:00",
+                      "bytes":  654,
+                      "relative":  "examples\\268_r73_return_value.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6881318-05:00",
+                      "bytes":  802,
+                      "relative":  "examples\\269_r73_copy_out.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6901320-05:00",
+                      "bytes":  844,
+                      "relative":  "examples\\26_calculator.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6921301-05:00",
+                      "bytes":  591,
+                      "relative":  "examples\\270_r75_nested_store.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6941305-05:00",
+                      "bytes":  281,
+                      "relative":  "examples\\271_r75_nested_store_data.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6961905-05:00",
+                      "bytes":  162,
+                      "relative":  "examples\\272_r75_negative_size.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.6987943-05:00",
+                      "bytes":  244,
+                      "relative":  "examples\\273_r77_bytes_not_cells.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7007866-05:00",
+                      "bytes":  427,
+                      "relative":  "examples\\274_r77_bytes_loop_stops.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7028023-05:00",
+                      "bytes":  230,
+                      "relative":  "examples\\275_r77_cells_times_eight.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7047861-05:00",
+                      "bytes":  464,
+                      "relative":  "examples\\276_r77_mixed_indentation.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7067966-05:00",
+                      "bytes":  315,
+                      "relative":  "examples\\277_r80_divide_by_zero.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7087872-05:00",
+                      "bytes":  231,
+                      "relative":  "examples\\278_r80_literal_too_large.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7107891-05:00",
+                      "bytes":  214,
+                      "relative":  "examples\\279_r80_constant_overflow.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7127864-05:00",
+                      "bytes":  201,
+                      "relative":  "examples\\27_even_odd.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7147925-05:00",
+                      "bytes":  588,
+                      "relative":  "examples\\280_r80_runtime_wraps.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7197918-05:00",
+                      "bytes":  243,
+                      "relative":  "examples\\281_r80_divide_in_module.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7217919-05:00",
+                      "bytes":  1174,
+                      "relative":  "examples\\282_r81_parikshita_sort.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7237866-05:00",
+                      "bytes":  370,
+                      "relative":  "examples\\283_r81_parikshita_refuses_library.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7257855-05:00",
+                      "bytes":  324,
+                      "relative":  "examples\\284_r81_parikshita_transitive.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7277902-05:00",
+                      "bytes":  324,
+                      "relative":  "examples\\285_r81_parikshita_address_param.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7297911-05:00",
+                      "bytes":  623,
+                      "relative":  "examples\\286_r82_kosh_in_mandapa.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7318032-05:00",
+                      "bytes":  676,
+                      "relative":  "examples\\287_r82_kosh_after_mandapa.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7363510-05:00",
+                      "bytes":  624,
+                      "relative":  "examples\\288_r86_kosh_alias_moves.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7383583-05:00",
+                      "bytes":  900,
+                      "relative":  "examples\\289_r87_float_print.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7393580-05:00",
+                      "bytes":  623,
+                      "relative":  "examples\\28_compound.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7413626-05:00",
+                      "bytes":  230,
+                      "relative":  "examples\\290_r87_fraction_into_vitti.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7433619-05:00",
+                      "bytes":  850,
+                      "relative":  "examples\\291_r90_nan_compare.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7453579-05:00",
+                      "bytes":  292,
+                      "relative":  "examples\\292_r90_likha_after_division.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7483572-05:00",
+                      "bytes":  317,
+                      "relative":  "examples\\293_r90_float_divide_by_zero.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7493611-05:00",
+                      "bytes":  532,
+                      "relative":  "examples\\294_r160_nan_comparisons.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7533566-05:00",
+                      "bytes":  350,
+                      "relative":  "examples\\295_r92_computed_fraction_into_vitti.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7553649-05:00",
+                      "bytes":  499,
+                      "relative":  "examples\\296_r93_float_e_notation.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7573572-05:00",
+                      "bytes":  591,
+                      "relative":  "examples\\297_r94_whole_number_operators.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7593569-05:00",
+                      "bytes":  243,
+                      "relative":  "examples\\298_r94_dasham_remainder_refused.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7613645-05:00",
+                      "bytes":  1456,
+                      "relative":  "examples\\299_r94_nonfinite_kosh_mandapa.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7633632-05:00",
+                      "bytes":  460,
+                      "relative":  "examples\\29_nishkriya.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7653578-05:00",
+                      "bytes":  237,
+                      "relative":  "examples\\300_r96_chakra_decimal_bound.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7673570-05:00",
+                      "bytes":  261,
+                      "relative":  "examples\\301_r96_chakra_dasham_counter.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7683680-05:00",
+                      "bytes":  312,
+                      "relative":  "examples\\302_r96_decimal_loop_with_yavat.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7713648-05:00",
+                      "bytes":  542,
+                      "relative":  "examples\\303_r103_parimita_refuses.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7723644-05:00",
+                      "bytes":  843,
+                      "relative":  "examples\\304_r103_parimita_within.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7743582-05:00",
+                      "bytes":  248,
+                      "relative":  "examples\\305_r103_parimita_needs_number.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7763570-05:00",
+                      "bytes":  697,
+                      "relative":  "examples\\306_r105_string_equal.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7793645-05:00",
+                      "bytes":  725,
+                      "relative":  "examples\\307_r105_string_join.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7803671-05:00",
+                      "bytes":  351,
+                      "relative":  "examples\\308_r105_likha_three.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7833677-05:00",
+                      "bytes":  429,
+                      "relative":  "examples\\309_r105_string_order.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7843689-05:00",
+                      "bytes":  592,
+                      "relative":  "examples\\30_lkhb.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7863646-05:00",
+                      "bytes":  355,
+                      "relative":  "examples\\310_r105_string_beside_number.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7884584-05:00",
+                      "bytes":  235,
+                      "relative":  "examples\\311_r105_string_arithmetic.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7903629-05:00",
+                      "bytes":  552,
+                      "relative":  "examples\\312_r106_likha_string.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7923703-05:00",
+                      "bytes":  266,
+                      "relative":  "examples\\313_r106_string_condition.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7943660-05:00",
+                      "bytes":  278,
+                      "relative":  "examples\\314_r106_kosh_operand.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7963656-05:00",
+                      "bytes":  352,
+                      "relative":  "examples\\315_r106_dasham_into_mala.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7978698-05:00",
+                      "bytes":  695,
+                      "relative":  "examples\\316_r107_kosh_kept_by_a_prakriya.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.7998828-05:00",
+                      "bytes":  844,
+                      "relative":  "examples\\317_r107_parimana.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8018811-05:00",
+                      "bytes":  966,
+                      "relative":  "examples\\318_r108_parimana_moves.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8038746-05:00",
+                      "bytes":  251,
+                      "relative":  "examples\\319_r108_mala_operand.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8058733-05:00",
+                      "bytes":  262,
+                      "relative":  "examples\\31_strcat.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8078810-05:00",
+                      "bytes":  710,
+                      "relative":  "examples\\320_r109_kosh_alias_kept.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8088749-05:00",
+                      "bytes":  2124,
+                      "relative":  "examples\\321_r109_kosh_long_chain.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8108904-05:00",
+                      "bytes":  990,
+                      "relative":  "examples\\322_r111_new_names.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8128735-05:00",
+                      "bytes":  1017,
+                      "relative":  "examples\\323_r111_old_names.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8148806-05:00",
+                      "bytes":  351,
+                      "relative":  "examples\\324_r111_asti_true.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8168813-05:00",
+                      "bytes":  351,
+                      "relative":  "examples\\325_r111_asti_false.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8188812-05:00",
+                      "bytes":  361,
+                      "relative":  "examples\\326_r111_nasti_true.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8208809-05:00",
+                      "bytes":  361,
+                      "relative":  "examples\\327_r111_nasti_false.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8228765-05:00",
+                      "bytes":  537,
+                      "relative":  "examples\\328_r113_rachana_operand.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8248760-05:00",
+                      "bytes":  411,
+                      "relative":  "examples\\329_r113_sankhya_bindu.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8268745-05:00",
+                      "bytes":  623,
+                      "relative":  "examples\\32_bank_interest.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8278743-05:00",
+                      "bytes":  197,
+                      "relative":  "examples\\330_r116_dvigun.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8298830-05:00",
+                      "bytes":  187,
+                      "relative":  "examples\\331_r116_trigun.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8318806-05:00",
+                      "bytes":  235,
+                      "relative":  "examples\\332_r116_vardh.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8338756-05:00",
+                      "bytes":  293,
+                      "relative":  "examples\\333_r116_nirapeksh_mulya.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8358840-05:00",
+                      "bytes":  402,
+                      "relative":  "examples\\334_r116_mahattam_samapavartak.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8378822-05:00",
+                      "bytes":  295,
+                      "relative":  "examples\\335_r116_viparyay_ank.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8398793-05:00",
+                      "bytes":  242,
+                      "relative":  "examples\\336_r116_ganita_nirapeksh.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8418737-05:00",
+                      "bytes":  510,
+                      "relative":  "examples\\337_r116_brahmagupta_kshetr.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8438765-05:00",
+                      "bytes":  463,
+                      "relative":  "examples\\338_r116_brihat_ank_se.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8448905-05:00",
+                      "bytes":  526,
+                      "relative":  "examples\\339_r116_brihat_ank_tak_laghu.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8468906-05:00",
+                      "bytes":  714,
+                      "relative":  "examples\\33_unit_conversion.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8488821-05:00",
+                      "bytes":  429,
+                      "relative":  "examples\\340_r116_yog_seema.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8508891-05:00",
+                      "bytes":  459,
+                      "relative":  "examples\\341_r116_adish_gunan.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8528732-05:00",
+                      "bytes":  459,
+                      "relative":  "examples\\342_r116_bindu_gunan.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8548780-05:00",
+                      "bytes":  502,
+                      "relative":  "examples\\343_r116_suchi_shreni.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8558760-05:00",
+                      "bytes":  802,
+                      "relative":  "examples\\344_r116_varna_tak_dashm.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8578754-05:00",
+                      "bytes":  4070,
+                      "relative":  "examples\\345_r116_long_literal.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8598761-05:00",
+                      "bytes":  1193,
+                      "relative":  "examples\\346_r118_old_library_names.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8618899-05:00",
+                      "bytes":  986,
+                      "relative":  "examples\\347_r118_old_roop_names.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8638808-05:00",
+                      "bytes":  415,
+                      "relative":  "examples\\348_r126_kosh_then_raw.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8658785-05:00",
+                      "bytes":  495,
+                      "relative":  "examples\\349_r126_kosh_in_one_branch.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8678833-05:00",
+                      "bytes":  558,
+                      "relative":  "examples\\34_incdec.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8698862-05:00",
+                      "bytes":  403,
+                      "relative":  "examples\\350_r126_mala_then_kosh.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8718817-05:00",
+                      "bytes":  346,
+                      "relative":  "examples\\351_r127_muse_reassign.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8738763-05:00",
+                      "bytes":  365,
+                      "relative":  "examples\\352_r127_muse_assign_kosh_mala.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8758812-05:00",
+                      "bytes":  401,
+                      "relative":  "examples\\353_r127_muse_loop.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8778809-05:00",
+                      "bytes":  359,
+                      "relative":  "examples\\354_r127_muse_callresult.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8798733-05:00",
+                      "bytes":  358,
+                      "relative":  "examples\\355_r127_muse_malacell.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8818809-05:00",
+                      "bytes":  387,
+                      "relative":  "examples\\356_r127_muse_koshcell.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8838948-05:00",
+                      "bytes":  392,
+                      "relative":  "examples\\357_r127_muse_global.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8848904-05:00",
+                      "bytes":  340,
+                      "relative":  "examples\\358_r127_muse_global_samefn.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8868825-05:00",
+                      "bytes":  349,
+                      "relative":  "examples\\359_r127_muse_ternary_oob.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8888821-05:00",
+                      "bytes":  324,
+                      "relative":  "examples\\35_comments.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8908970-05:00",
+                      "bytes":  392,
+                      "relative":  "examples\\36_descending.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8928890-05:00",
+                      "bytes":  567,
+                      "relative":  "examples\\37_native_gujarati.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8948822-05:00",
+                      "bytes":  443,
+                      "relative":  "examples\\38_native_hindi.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8968903-05:00",
+                      "bytes":  575,
+                      "relative":  "examples\\39_native_tamil.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.8984112-05:00",
+                      "bytes":  297,
+                      "relative":  "examples\\40_functions_params.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9004258-05:00",
+                      "bytes":  460,
+                      "relative":  "examples\\41_recursion.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9024252-05:00",
+                      "bytes":  136,
+                      "relative":  "examples\\42_block_comments.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9044195-05:00",
+                      "bytes":  355,
+                      "relative":  "examples\\43_nested_likha.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9064176-05:00",
+                      "bytes":  416,
+                      "relative":  "examples\\44_shabda.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9084185-05:00",
+                      "bytes":  342,
+                      "relative":  "examples\\45_shifts.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9104184-05:00",
+                      "bytes":  1184,
+                      "relative":  "examples\\46_language_reference.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9114184-05:00",
+                      "bytes":  284,
+                      "relative":  "examples\\59_windows_grahan_runtime.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9134196-05:00",
+                      "bytes":  267,
+                      "relative":  "examples\\60_six_func_args.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9154220-05:00",
+                      "bytes":  503,
+                      "relative":  "examples\\61_stdlib_math.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9174183-05:00",
+                      "bytes":  422,
+                      "relative":  "examples\\62_stdlib_num.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9194258-05:00",
+                      "bytes":  538,
+                      "relative":  "examples\\63_stdlib_string.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9214175-05:00",
+                      "bytes":  87,
+                      "relative":  "examples\\64_param_reassign.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9244185-05:00",
+                      "bytes":  43,
+                      "relative":  "examples\\65_char_code_index.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9264347-05:00",
+                      "bytes":  52,
+                      "relative":  "examples\\66_module_dedupe.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9284252-05:00",
+                      "bytes":  110,
+                      "relative":  "examples\\67_array_len_bounds.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9304318-05:00",
+                      "bytes":  56,
+                      "relative":  "examples\\68_array_oob.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9324276-05:00",
+                      "bytes":  42,
+                      "relative":  "examples\\69_undefined_function.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9344188-05:00",
+                      "bytes":  80,
+                      "relative":  "examples\\70_module_collision.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9364208-05:00",
+                      "bytes":  57,
+                      "relative":  "examples\\71_array_negative_index.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9374179-05:00",
+                      "bytes":  98,
+                      "relative":  "examples\\72_array_variable_index.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9394198-05:00",
+                      "bytes":  56,
+                      "relative":  "examples\\73_array_equal_length.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9414183-05:00",
+                      "bytes":  82,
+                      "relative":  "examples\\74_array_highest_valid.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9434997-05:00",
+                      "bytes":  102,
+                      "relative":  "examples\\75_array_dynamic_length.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9455059-05:00",
+                      "bytes":  231,
+                      "relative":  "examples\\76_array_function_scope.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9474192-05:00",
+                      "bytes":  171,
+                      "relative":  "examples\\77_ternary.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9494211-05:00",
+                      "bytes":  266,
+                      "relative":  "examples\\78_do_while.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9504193-05:00",
+                      "bytes":  43,
+                      "relative":  "examples\\79_ayojan_cwd.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9524364-05:00",
+                      "bytes":  502,
+                      "relative":  "examples\\80_b6_nested_call_loop.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9544266-05:00",
+                      "bytes":  403,
+                      "relative":  "examples\\81_stdlib_num2.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9564535-05:00",
+                      "bytes":  600,
+                      "relative":  "examples\\82_b7_stack_spill.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9584257-05:00",
+                      "bytes":  711,
+                      "relative":  "examples\\83_stdlib_sort.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9604171-05:00",
+                      "bytes":  607,
+                      "relative":  "examples\\84_stdlib_string2.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9614187-05:00",
+                      "bytes":  455,
+                      "relative":  "examples\\85_stdlib_shellsort.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9634170-05:00",
+                      "bytes":  156,
+                      "relative":  "examples\\86_b8_multi_modules.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9654263-05:00",
+                      "bytes":  62,
+                      "relative":  "examples\\87_b8_all_modules.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9674244-05:00",
+                      "bytes":  54,
+                      "relative":  "examples\\87_b8_func_params_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9694173-05:00",
+                      "bytes":  54,
+                      "relative":  "examples\\87_b8_math_sort_string.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9714243-05:00",
+                      "bytes":  469,
+                      "relative":  "examples\\88_pingala_chandas.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9734211-05:00",
+                      "bytes":  311,
+                      "relative":  "examples\\89_b9_short_circuit.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9754189-05:00",
+                      "bytes":  154,
+                      "relative":  "examples\\90_b9_short_circuit_bounds.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9764203-05:00",
+                      "bytes":  561,
+                      "relative":  "examples\\91_indian_number_theory.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9784190-05:00",
+                      "bytes":  507,
+                      "relative":  "examples\\92_t12_dasham_float.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9804191-05:00",
+                      "bytes":  667,
+                      "relative":  "examples\\93_t12_float_functions.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9824189-05:00",
+                      "bytes":  844,
+                      "relative":  "examples\\94_t12_float_functions.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9844289-05:00",
+                      "bytes":  1340,
+                      "relative":  "examples\\95_t12_madhava_functions.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9864302-05:00",
+                      "bytes":  410,
+                      "relative":  "examples\\96_t18_kosh.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9884312-05:00",
+                      "bytes":  229,
+                      "relative":  "examples\\97_t18_kosh_devanagari.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9904273-05:00",
+                      "bytes":  117,
+                      "relative":  "examples\\98_t18_kosh_empty.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9924246-05:00",
+                      "bytes":  183,
+                      "relative":  "examples\\99_ast_multimodule_capacity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9944236-05:00",
+                      "bytes":  410,
+                      "relative":  "examples\\99_t18_kosh.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9964231-05:00",
+                      "bytes":  553,
+                      "relative":  "examples\\array_demo.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:22.9979350-05:00",
+                      "bytes":  318,
+                      "relative":  "examples\\char_ops.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0009529-05:00",
+                      "bytes":  525,
+                      "relative":  "examples\\fizzbuzz.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0029434-05:00",
+                      "bytes":  198,
+                      "relative":  "examples\\format_demo.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0039443-05:00",
+                      "bytes":  884,
+                      "relative":  "examples\\full_demo.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0059458-05:00",
+                      "bytes":  442,
+                      "relative":  "examples\\func_demo.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0079563-05:00",
+                      "bytes":  69,
+                      "relative":  "examples\\hello.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0099504-05:00",
+                      "bytes":  395,
+                      "relative":  "examples\\import_demo.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0119521-05:00",
+                      "bytes":  358,
+                      "relative":  "examples\\mem_safe.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0139439-05:00",
+                      "bytes":  246,
+                      "relative":  "examples\\multable.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0159619-05:00",
+                      "bytes":  403,
+                      "relative":  "examples\\number_game.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0179448-05:00",
+                      "bytes":  479,
+                      "relative":  "examples\\prime.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0189452-05:00",
+                      "bytes":  261,
+                      "relative":  "examples\\strength_reduction.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0219534-05:00",
+                      "bytes":  143,
+                      "relative":  "examples\\lib\\r33_alpha.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0239569-05:00",
+                      "bytes":  153,
+                      "relative":  "examples\\lib\\r33_beta.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0249448-05:00",
+                      "bytes":  124,
+                      "relative":  "examples\\lib\\r33_devanagari.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0269451-05:00",
+                      "bytes":  87,
+                      "relative":  "examples\\lib\\r40_a.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0289602-05:00",
+                      "bytes":  66,
+                      "relative":  "examples\\lib\\r40_b.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0309469-05:00",
+                      "bytes":  67,
+                      "relative":  "examples\\lib\\r40_c.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0339505-05:00",
+                      "bytes":  87,
+                      "relative":  "examples\\lib\\r40_d.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0359455-05:00",
+                      "bytes":  71,
+                      "relative":  "examples\\lib\\r41_cycle_a.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0379455-05:00",
+                      "bytes":  71,
+                      "relative":  "examples\\lib\\r41_cycle_b.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0399448-05:00",
+                      "bytes":  129,
+                      "relative":  "examples\\lib\\r41_cyc_a.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0419455-05:00",
+                      "bytes":  129,
+                      "relative":  "examples\\lib\\r41_cyc_b.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0439456-05:00",
+                      "bytes":  142,
+                      "relative":  "examples\\lib\\r41_dup.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0459541-05:00",
+                      "bytes":  198,
+                      "relative":  "examples\\lib\\r41_vec.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0479471-05:00",
+                      "bytes":  148,
+                      "relative":  "examples\\lib\\r80_ausat.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0499463-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r67\\bengali_native.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0519451-05:00",
+                      "bytes":  33,
+                      "relative":  "examples\\r67\\bengali_native.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0530374-05:00",
+                      "bytes":  400,
+                      "relative":  "examples\\r67\\bengali_native.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0549520-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r67\\punjabi_native.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0569445-05:00",
+                      "bytes":  33,
+                      "relative":  "examples\\r67\\punjabi_native.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0589429-05:00",
+                      "bytes":  388,
+                      "relative":  "examples\\r67\\punjabi_native.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0619510-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\hindi.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0639484-05:00",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\hindi.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0659610-05:00",
+                      "bytes":  238,
+                      "relative":  "examples\\r68\\hindi.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0679483-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\kannada.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0699454-05:00",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\kannada.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0719505-05:00",
+                      "bytes":  249,
+                      "relative":  "examples\\r68\\kannada.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0739447-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\marathi.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0759448-05:00",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\marathi.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0779484-05:00",
+                      "bytes":  240,
+                      "relative":  "examples\\r68\\marathi.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0789461-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\odia.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0809479-05:00",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\odia.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0829654-05:00",
+                      "bytes":  246,
+                      "relative":  "examples\\r68\\odia.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0849761-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\tamil.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0869759-05:00",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\tamil.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0889684-05:00",
+                      "bytes":  271,
+                      "relative":  "examples\\r68\\tamil.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0909876-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\telugu.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0929760-05:00",
+                      "bytes":  19,
+                      "relative":  "examples\\r68\\telugu.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0949873-05:00",
+                      "bytes":  284,
+                      "relative":  "examples\\r68\\telugu.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0969788-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\pairs\\all_registers.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.0984957-05:00",
+                      "bytes":  3,
+                      "relative":  "examples\\r68\\pairs\\all_registers.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1005049-05:00",
+                      "bytes":  478,
+                      "relative":  "examples\\r68\\pairs\\all_registers.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1025056-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\pairs\\nonmatching.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1035063-05:00",
+                      "bytes":  3,
+                      "relative":  "examples\\r68\\pairs\\nonmatching.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1055062-05:00",
+                      "bytes":  90,
+                      "relative":  "examples\\r68\\pairs\\nonmatching.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1075060-05:00",
+                      "bytes":  2,
+                      "relative":  "examples\\r68\\pairs\\no_pairs.exit"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1095064-05:00",
+                      "bytes":  3,
+                      "relative":  "examples\\r68\\pairs\\no_pairs.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1115133-05:00",
+                      "bytes":  252,
+                      "relative":  "examples\\r68\\pairs\\no_pairs.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1135058-05:00",
+                      "bytes":  9,
+                      "relative":  "examples\\r71\\associativity.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1155067-05:00",
+                      "bytes":  103,
+                      "relative":  "examples\\r71\\associativity.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1175053-05:00",
+                      "bytes":  72,
+                      "relative":  "examples\\r71\\boundary_bad.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1195069-05:00",
+                      "bytes":  3,
+                      "relative":  "examples\\r71\\boundary_good.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1215050-05:00",
+                      "bytes":  135,
+                      "relative":  "examples\\r71\\boundary_good.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1235899-05:00",
+                      "bytes":  14,
+                      "relative":  "examples\\r71\\conversion.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1255083-05:00",
+                      "bytes":  398,
+                      "relative":  "examples\\r71\\conversion.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1275140-05:00",
+                      "bytes":  14,
+                      "relative":  "examples\\r71\\evaluation_order.out"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1295137-05:00",
+                      "bytes":  327,
+                      "relative":  "examples\\r71\\evaluation_order.sm"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1325217-05:00",
+                      "bytes":  1014,
+                      "relative":  "lang\\bengali.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1335119-05:00",
+                      "bytes":  23206,
+                      "relative":  "lang\\bengali.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1355115-05:00",
+                      "bytes":  1588,
+                      "relative":  "lang\\gujarati.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1375123-05:00",
+                      "bytes":  22485,
+                      "relative":  "lang\\gujarati.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1395065-05:00",
+                      "bytes":  1110,
+                      "relative":  "lang\\hindi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1415052-05:00",
+                      "bytes":  22591,
+                      "relative":  "lang\\hindi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1435126-05:00",
+                      "bytes":  1166,
+                      "relative":  "lang\\kannada.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1455040-05:00",
+                      "bytes":  23266,
+                      "relative":  "lang\\kannada.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1475114-05:00",
+                      "bytes":  1148,
+                      "relative":  "lang\\malayalam.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1495068-05:00",
+                      "bytes":  24569,
+                      "relative":  "lang\\malayalam.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1505064-05:00",
+                      "bytes":  1115,
+                      "relative":  "lang\\marathi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1525116-05:00",
+                      "bytes":  23368,
+                      "relative":  "lang\\marathi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1545062-05:00",
+                      "bytes":  1091,
+                      "relative":  "lang\\odia.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1565098-05:00",
+                      "bytes":  23510,
+                      "relative":  "lang\\odia.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1585092-05:00",
+                      "bytes":  981,
+                      "relative":  "lang\\punjabi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1605115-05:00",
+                      "bytes":  22540,
+                      "relative":  "lang\\punjabi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1625052-05:00",
+                      "bytes":  3032,
+                      "relative":  "lang\\sanskrit.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1645128-05:00",
+                      "bytes":  23684,
+                      "relative":  "lang\\sanskrit.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1655123-05:00",
+                      "bytes":  1418,
+                      "relative":  "lang\\tamil.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1675121-05:00",
+                      "bytes":  25479,
+                      "relative":  "lang\\tamil.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1695122-05:00",
+                      "bytes":  1186,
+                      "relative":  "lang\\telugu.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1715121-05:00",
+                      "bytes":  24085,
+                      "relative":  "lang\\telugu.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1735055-05:00",
+                      "bytes":  3578,
+                      "relative":  "lib\\aadhar.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1755045-05:00",
+                      "bytes":  4631,
+                      "relative":  "lib\\ank.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1765220-05:00",
+                      "bytes":  4629,
+                      "relative":  "lib\\anukram.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1785042-05:00",
+                      "bytes":  10601,
+                      "relative":  "lib\\brihat.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1805212-05:00",
+                      "bytes":  3844,
+                      "relative":  "lib\\chandas.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1825125-05:00",
+                      "bytes":  9899,
+                      "relative":  "lib\\ganit.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1845271-05:00",
+                      "bytes":  22996,
+                      "relative":  "lib\\ganita.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1865234-05:00",
+                      "bytes":  1059,
+                      "relative":  "lib\\gudh.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1885232-05:00",
+                      "bytes":  5846,
+                      "relative":  "lib\\kalana.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1905334-05:00",
+                      "bytes":  17692,
+                      "relative":  "lib\\khand.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1925265-05:00",
+                      "bytes":  4972,
+                      "relative":  "lib\\madhava.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1945212-05:00",
+                      "bytes":  2552,
+                      "relative":  "lib\\mala.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1965202-05:00",
+                      "bytes":  15559,
+                      "relative":  "lib\\nighantu.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.1980333-05:00",
+                      "bytes":  2912,
+                      "relative":  "lib\\patra.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2000496-05:00",
+                      "bytes":  6154,
+                      "relative":  "lib\\phal.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2020503-05:00",
+                      "bytes":  20355,
+                      "relative":  "lib\\roop.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2040424-05:00",
+                      "bytes":  4692,
+                      "relative":  "lib\\sadhan.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2050425-05:00",
+                      "bytes":  5343,
+                      "relative":  "lib\\samanvaya.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2070420-05:00",
+                      "bytes":  9805,
+                      "relative":  "lib\\sangrah.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2090405-05:00",
+                      "bytes":  6540,
+                      "relative":  "lib\\sankhyiki.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2110434-05:00",
+                      "bytes":  5960,
+                      "relative":  "lib\\shreni.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2130497-05:00",
+                      "bytes":  15565,
+                      "relative":  "lib\\suchi.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2140418-05:00",
+                      "bytes":  12583,
+                      "relative":  "lib\\vakyank.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2160483-05:00",
+                      "bytes":  16119,
+                      "relative":  "lib\\varna.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2180412-05:00",
+                      "bytes":  535039,
+                      "relative":  "win\\sutram.exe"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2210429-05:00",
+                      "bytes":  1014,
+                      "relative":  "win\\lang\\bengali.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2230443-05:00",
+                      "bytes":  23206,
+                      "relative":  "win\\lang\\bengali.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2250418-05:00",
+                      "bytes":  1588,
+                      "relative":  "win\\lang\\gujarati.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2270438-05:00",
+                      "bytes":  22485,
+                      "relative":  "win\\lang\\gujarati.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2280417-05:00",
+                      "bytes":  1110,
+                      "relative":  "win\\lang\\hindi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2300408-05:00",
+                      "bytes":  22591,
+                      "relative":  "win\\lang\\hindi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2320492-05:00",
+                      "bytes":  1166,
+                      "relative":  "win\\lang\\kannada.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2340482-05:00",
+                      "bytes":  23266,
+                      "relative":  "win\\lang\\kannada.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2360421-05:00",
+                      "bytes":  1148,
+                      "relative":  "win\\lang\\malayalam.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2380485-05:00",
+                      "bytes":  24569,
+                      "relative":  "win\\lang\\malayalam.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2390434-05:00",
+                      "bytes":  1115,
+                      "relative":  "win\\lang\\marathi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2410509-05:00",
+                      "bytes":  23368,
+                      "relative":  "win\\lang\\marathi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2430494-05:00",
+                      "bytes":  1091,
+                      "relative":  "win\\lang\\odia.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2450501-05:00",
+                      "bytes":  23510,
+                      "relative":  "win\\lang\\odia.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2460500-05:00",
+                      "bytes":  981,
+                      "relative":  "win\\lang\\punjabi.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2480442-05:00",
+                      "bytes":  22540,
+                      "relative":  "win\\lang\\punjabi.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2500575-05:00",
+                      "bytes":  3032,
+                      "relative":  "win\\lang\\sanskrit.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2520420-05:00",
+                      "bytes":  23684,
+                      "relative":  "win\\lang\\sanskrit.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2540574-05:00",
+                      "bytes":  1418,
+                      "relative":  "win\\lang\\tamil.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2560426-05:00",
+                      "bytes":  25479,
+                      "relative":  "win\\lang\\tamil.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2580498-05:00",
+                      "bytes":  1186,
+                      "relative":  "win\\lang\\telugu.lang"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2600590-05:00",
+                      "bytes":  24085,
+                      "relative":  "win\\lang\\telugu.sandesh"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2620573-05:00",
+                      "bytes":  3578,
+                      "relative":  "win\\lib\\aadhar.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2640610-05:00",
+                      "bytes":  4631,
+                      "relative":  "win\\lib\\ank.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2660441-05:00",
+                      "bytes":  4629,
+                      "relative":  "win\\lib\\anukram.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2680433-05:00",
+                      "bytes":  10601,
+                      "relative":  "win\\lib\\brihat.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2700499-05:00",
+                      "bytes":  3844,
+                      "relative":  "win\\lib\\chandas.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2720451-05:00",
+                      "bytes":  9899,
+                      "relative":  "win\\lib\\ganit.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2740511-05:00",
+                      "bytes":  22996,
+                      "relative":  "win\\lib\\ganita.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2760488-05:00",
+                      "bytes":  1059,
+                      "relative":  "win\\lib\\gudh.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2770483-05:00",
+                      "bytes":  5846,
+                      "relative":  "win\\lib\\kalana.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2790417-05:00",
+                      "bytes":  17692,
+                      "relative":  "win\\lib\\khand.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2820490-05:00",
+                      "bytes":  4972,
+                      "relative":  "win\\lib\\madhava.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2840524-05:00",
+                      "bytes":  2552,
+                      "relative":  "win\\lib\\mala.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2850666-05:00",
+                      "bytes":  15559,
+                      "relative":  "win\\lib\\nighantu.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2870579-05:00",
+                      "bytes":  2912,
+                      "relative":  "win\\lib\\patra.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2890478-05:00",
+                      "bytes":  6154,
+                      "relative":  "win\\lib\\phal.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2910614-05:00",
+                      "bytes":  20355,
+                      "relative":  "win\\lib\\roop.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2930617-05:00",
+                      "bytes":  4692,
+                      "relative":  "win\\lib\\sadhan.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2950547-05:00",
+                      "bytes":  5343,
+                      "relative":  "win\\lib\\samanvaya.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2970554-05:00",
+                      "bytes":  9805,
+                      "relative":  "win\\lib\\sangrah.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.2995918-05:00",
+                      "bytes":  6540,
+                      "relative":  "win\\lib\\sankhyiki.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.3015838-05:00",
+                      "bytes":  5960,
+                      "relative":  "win\\lib\\shreni.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.3035837-05:00",
+                      "bytes":  15565,
+                      "relative":  "win\\lib\\suchi.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.3055824-05:00",
+                      "bytes":  12583,
+                      "relative":  "win\\lib\\vakyank.smlib"
+                  },
+                  {
+                      "created":  "2026-11-06T23:50:23.3065841-05:00",
+                      "bytes":  16119,
+                      "relative":  "win\\lib\\varna.smlib"
+                  }
+              ],
+    "ended":  "2026-11-06T23:50:24.3829910-05:00"
+}

@@ -1,0 +1,13 @@
+{
+    "time":  "2026-11-06T23:41:39.2710478-05:00",
+    "stopped":  [
+                    32756,
+                    37664
+                ],
+    "restored":  true,
+    "user_path_unchanged":  true,
+    "preserved":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-review-upgrade-20261106-234108",
+    "files_verified":  662,
+    "phase":  "upgrade",
+    "security_changed":  false
+}

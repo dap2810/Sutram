@@ -1,0 +1,42 @@
+﻿[
+    {
+        "phase":  "clean",
+        "pid":  37360,
+        "same_test_process_running":  false
+    },
+    {
+        "phase":  "clean",
+        "pid":  39856,
+        "same_test_process_running":  false
+    },
+    {
+        "phase":  "upgrade",
+        "pid":  44068,
+        "same_test_process_running":  false
+    },
+    {
+        "phase":  "upgrade",
+        "pid":  19252,
+        "same_test_process_running":  false
+    },
+    {
+        "phase":  "interrupt",
+        "pid":  44192,
+        "same_test_process_running":  false
+    },
+    {
+        "phase":  "interrupt",
+        "pid":  23340,
+        "same_test_process_running":  false
+    },
+    {
+        "phase":  "recovery",
+        "pid":  6212,
+        "same_test_process_running":  false
+    },
+    {
+        "phase":  "recovery",
+        "pid":  35532,
+        "same_test_process_running":  false
+    }
+]

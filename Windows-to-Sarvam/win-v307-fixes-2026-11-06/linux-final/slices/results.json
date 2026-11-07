@@ -1,0 +1,352 @@
+{
+  "compiler": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+  "compiler_sha256": "2cf595fe1aa65701b81005401468d32071da48c21abad9762f479b36e24a5079",
+  "phase": "slice",
+  "baseline": false,
+  "cases": [
+    {
+      "source": "Muse-to-Sarvam/r136_ws1_cell_minimal.sm",
+      "sha256": "bb11d2cc21b0da13d795f38ebb403a810eabf9b1a046e14e93642b5d683a4773",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws1_cell_minimal.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws1_cell_minimal.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.012577782000008142
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws1_cell_write.sm",
+      "sha256": "908ad692d440182dde6d93664985e5cfd3543914bede4f8d3fa45d80022a94d1",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws1_cell_write.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws1_cell_write.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.01883644100000481
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws1_funcval_large.sm",
+      "sha256": "76508e722f21f6a266c1bbab0529d4b62cd6c7d0ba71a8f764589bbd51539e66",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws1_funcval_large.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws1_funcval_large.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
+        "stderr": "",
+        "seconds": 0.014427316000009682
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws1_funcval_small.sm",
+      "sha256": "4fe5de60af53900c9a6db9794e8151d6b198165f9d0dd4ed0bc21b709530a75d",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws1_funcval_small.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws1_funcval_small.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
+        "stderr": "",
+        "seconds": 0.012544632000000888
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws1_untyped_param.sm",
+      "sha256": "bf83d33282ca256b70703a47f4a6dd05060df0d5cfb3ede999e48d23df851bcc",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws1_untyped_param.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws1_untyped_param.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.012295244000000594
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws1_untyped_return.sm",
+      "sha256": "7ae69119b92ff64c1cb4a84463625fd1c30e1e43811c04a274fe664fbd4e54d8",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws1_untyped_return.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws1_untyped_return.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.012405164000000468
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws2_cond_assign.sm",
+      "sha256": "aa20b7956b60465d1eee669a0803ac0efcf87eb12f90c06d318da204df5dcc81",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws2_cond_assign.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws2_cond_assign.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.009963177999992467
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws2_dasham_diag.sm",
+      "sha256": "cdffa7d4d3ec5ae6c2ebea86b56e7cd2621b9027836217c1a5c2a52a8d257ec3",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws2_dasham_diag.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws2_dasham_diag.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.011601484999999911
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws2_dasham_param.sm",
+      "sha256": "a1fefec156f3a1fcf69ce59b0f70659d0514f2a907ae7feb6937e2f5b6fab140",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws2_dasham_param.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws2_dasham_param.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.013302048999989324
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws2_field.sm",
+      "sha256": "bc80b14f23f40db0e4f6f6e28903c0eff6d3cac5467caa3ffc1268984c1ed762",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws2_field.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws2_field.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.01348533899999893
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws2_global.sm",
+      "sha256": "a56cbf02489b10628b1f251a385f821daa792f55fcfed1e2fe60012fcc515f52",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws2_global.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws2_global.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.013314774000008356
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws2_rawmem.sm",
+      "sha256": "e086e94c09194f2296a848645ec5342b267b6bde67e7210191c0ef20638dd92b",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws2_rawmem.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws2_rawmem.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.012455952999999909
+      },
+      "pass": true
+    },
+    {
+      "source": "Muse-to-Sarvam/r136_ws2_ternary.sm",
+      "sha256": "339aca66eab41a8dbfc4224a6ff1d5a68b3464b315ccfb88c910ff56eec37322",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/Muse-to-Sarvam/r136_ws2_ternary.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/r136_ws2_ternary.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.011937848000002305
+      },
+      "pass": true
+    },
+    {
+      "source": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-cell.sm",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-cell.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-cell.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 's' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.026089210999998613
+      },
+      "pass": true
+    },
+    {
+      "source": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-scalar.sm",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-scalar.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-scalar.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 's' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.03342074900000114
+      },
+      "pass": true
+    },
+    {
+      "source": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-return.sm",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-return.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-return.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti: vibhag prakriyayah na pratyarpaniyah\n",
+        "stderr": "",
+        "seconds": 0.03439872000001287
+      },
+      "pass": true
+    },
+    {
+      "source": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-alias.sm",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-alias.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/typed-alias.bin"
+        ],
+        "exit": 1,
+        "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 's' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+        "stderr": "",
+        "seconds": 0.026869533000009937
+      },
+      "pass": true
+    },
+    {
+      "source": "examples/248_r23_slices.sm",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/examples/248_r23_slices.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/248_r23_slices.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 9186 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.038904832000000056
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/248_r23_slices.bin"
+        ],
+        "exit": 0,
+        "stdout": "55\n12\n55\n4\n4\n7\n52\n100\n50\n0\n",
+        "stderr": "",
+        "seconds": 0.018424258999999665
+      },
+      "pass": true
+    },
+    {
+      "source": "examples/246_r23_comparator_sort.sm",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/examples/246_r23_comparator_sort.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/246_r23_comparator_sort.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 5729 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.02734097099998678
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/246_r23_comparator_sort.bin"
+        ],
+        "exit": 0,
+        "stdout": "1 2 3 4 5 7 8 9 \n9 8 7 5 4 3 2 1 \n2 4 8 1 3 5 7 9 \n2 4 8 5 3 1 7 9 \n7\n",
+        "stderr": "",
+        "seconds": 0.01579008999999587
+      },
+      "pass": true
+    },
+    {
+      "source": "tests/r133/indirect/safe1.sm",
+      "compile": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/tests/r133/indirect/safe1.sm",
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/safe1.bin"
+        ],
+        "exit": 0,
+        "stdout": "Siddh: 2349 baait sankalit\n",
+        "stderr": "",
+        "seconds": 0.040331855000005135
+      },
+      "run": {
+        "command": [
+          "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices/safe1.bin"
+        ],
+        "exit": 0,
+        "stdout": "0\n99\n",
+        "stderr": "",
+        "seconds": 0.015238992999996981
+      },
+      "pass": true
+    }
+  ],
+  "summary": {
+    "total": 20,
+    "passed": 20
+  }
+}

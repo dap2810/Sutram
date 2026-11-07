@@ -1,0 +1,8 @@
+prakriya f(vibhag s) {
+    mala box[1]
+    box[0] = s
+}
+mukhya() {
+    mala m[1]
+    f(m[:])
+}

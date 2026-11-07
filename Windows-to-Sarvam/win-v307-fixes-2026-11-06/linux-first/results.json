@@ -1,0 +1,304 @@
+[
+  {
+    "label": "baseline",
+    "command": [
+      "tests/run_tests.py"
+    ],
+    "exit": 1,
+    "seconds": 22.48955759,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/0-run_tests.log",
+    "tail": [
+      "    | 1",
+      "",
+      "suite: NO-EXPECTATION=4  PASS=327  (331 run)"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tools/codegen_gate.py",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.43647160199999746,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/1-codegen_gate.log",
+    "tail": [
+      "PASS float_index_left_reg_right: 43 instructions (ceiling 43)",
+      "PASS float_call_left_reg_right: 17 instructions (ceiling 17)",
+      "PASS float_index_left_literal_right: 44 instructions (ceiling 44)"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tools/test_lang_packs.py",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.8064466680000066,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/2-test_lang_packs.log",
+    "tail": [
+      "",
+      "  33/33 pack checks pass (11 packs x 3 keyword groups)"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tools/proof_lib.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 1,
+    "seconds": 52.470877521000006,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/3-proof_lib.log",
+    "tail": [
+      "  stdout mismatch:",
+      "  expected: '13\\n\\n104\\n\\n101\\n\\n108\\n\\n108\\n\\n111\\n\\n32\\n\\n115\\n\\n117\\n\\n116\\n\\n114\\n\\n97\\n\\n109\\n\\n10\\n\\n5\\n\\n104\\n\\n111\\n\\n0\\n\\n-1\\n\\n-1\\n\\n1\\n\\n0\\n\\nfile-read-done\\n'",
+      "  actual:   '14\\n\\n104\\n\\n101\\n\\n108\\n\\n108\\n\\n111\\n\\n32\\n\\n115\\n\\n117\\n\\n116\\n\\n114\\n\\n97\\n\\n109\\n\\n13\\n\\n10\\n\\n5\\n\\n104\\n\\n111\\n\\n0\\n\\n-1\\n\\n-1\\n\\n1\\n\\n0\\n\\nfile-read-done\\n'"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tools/proof_props.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 12.880516490999995,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/4-proof_props.log",
+    "tail": [
+      "PASS: numeric28",
+      "",
+      "86/86 properties hold"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tools/check_layers.py"
+    ],
+    "exit": 0,
+    "seconds": 0.478379891000003,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/5-check_layers.log",
+    "tail": [
+      "layers OK: 14 core, 9 alloc, 1 std"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tests/r23/test_capabilities.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.47759226300000535,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/6-test_capabilities.log",
+    "tail": [
+      "PASS  returning a slice                                          ",
+      "PASS  a whole kosh to a vibhag parameter, and a kosh slice       ",
+      "r23 capabilities: 23 checks, 0 failed"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tests/r126/test_kinds.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.6793641440000044,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/7-test_kinds.log",
+    "tail": [
+      "PASS  runs (ELF): a raw buffer reassigned raw, and a number reassigned: '4\\n2\\n' exit 0",
+      "PASS  runs (ELF): two prakriyas, one name, two kinds (each prakriya its own): '41\\n5\\n' exit 0",
+      "r126 kinds: 42 checks, 0 failed"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tests/r127/test_descriptor.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 1.1830638830000026,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/8-test_descriptor.log",
+    "tail": [
+      "PASS  a slice of a kosh kept in a name is refused (E_KOSH_VIBHAG), no output",
+      "PASS  20,000,000 numbers: peak 152 MB (under 200: the 64 MiB region it left is given back)",
+      "r127 descriptor: 26 checks, 0 failed"
+    ]
+  },
+  {
+    "label": "baseline",
+    "command": [
+      "tests/r133/test_indirect_slice.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.3269375630000013,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/9-test_indirect_slice.log",
+    "tail": [
+      "PASS  ind_k: want 'E_KOSH_DVARA'; refused: Sutram truti [E_KOSH_DVARA]: kosh 'k' asankhyita-tarke na preshyate - prakriya: f",
+      "PASS  safe1: want '0\\n99\\n'; compiles and prints '0\\n99\\n'",
+      "r133 indirect slice: 10 checks, 0 failed"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tests/run_tests.py"
+    ],
+    "exit": 1,
+    "seconds": 22.230553001000004,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/0-run_tests.log",
+    "tail": [
+      "    | 1",
+      "",
+      "suite: NO-EXPECTATION=4  PASS=327  (331 run)"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tools/codegen_gate.py",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.38170008200000893,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/1-codegen_gate.log",
+    "tail": [
+      "PASS float_index_left_reg_right: 43 instructions (ceiling 43)",
+      "PASS float_call_left_reg_right: 17 instructions (ceiling 17)",
+      "PASS float_index_left_literal_right: 44 instructions (ceiling 44)"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tools/test_lang_packs.py",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.7278748500000063,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/2-test_lang_packs.log",
+    "tail": [
+      "",
+      "  33/33 pack checks pass (11 packs x 3 keyword groups)"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tools/proof_lib.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 1,
+    "seconds": 38.988127714,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/3-proof_lib.log",
+    "tail": [
+      "  stdout mismatch:",
+      "  expected: '13\\n\\n104\\n\\n101\\n\\n108\\n\\n108\\n\\n111\\n\\n32\\n\\n115\\n\\n117\\n\\n116\\n\\n114\\n\\n97\\n\\n109\\n\\n10\\n\\n5\\n\\n104\\n\\n111\\n\\n0\\n\\n-1\\n\\n-1\\n\\n1\\n\\n0\\n\\nfile-read-done\\n'",
+      "  actual:   '14\\n\\n104\\n\\n101\\n\\n108\\n\\n108\\n\\n111\\n\\n32\\n\\n115\\n\\n117\\n\\n116\\n\\n114\\n\\n97\\n\\n109\\n\\n13\\n\\n10\\n\\n5\\n\\n104\\n\\n111\\n\\n0\\n\\n-1\\n\\n-1\\n\\n1\\n\\n0\\n\\nfile-read-done\\n'"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tools/proof_props.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 11.752743592999991,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/4-proof_props.log",
+    "tail": [
+      "PASS: numeric28",
+      "",
+      "86/86 properties hold"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tools/check_layers.py"
+    ],
+    "exit": 0,
+    "seconds": 0.37869819499999835,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/5-check_layers.log",
+    "tail": [
+      "layers OK: 14 core, 9 alloc, 1 std"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tests/r23/test_capabilities.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 1,
+    "seconds": 0.4761352360000046,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/6-test_capabilities.log",
+    "tail": [
+      "FAIL  returning a slice                                          compile exit 1",
+      "PASS  a whole kosh to a vibhag parameter, and a kosh slice       ",
+      "r23 capabilities: 23 checks, 1 failed"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tests/r126/test_kinds.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.5225052929999947,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/7-test_kinds.log",
+    "tail": [
+      "PASS  runs (ELF): a raw buffer reassigned raw, and a number reassigned: '4\\n2\\n' exit 0",
+      "PASS  runs (ELF): two prakriyas, one name, two kinds (each prakriya its own): '41\\n5\\n' exit 0",
+      "r126 kinds: 42 checks, 0 failed"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tests/r127/test_descriptor.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 1.0245130469999992,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/8-test_descriptor.log",
+    "tail": [
+      "PASS  a slice of a kosh kept in a name is refused (E_KOSH_VIBHAG), no output",
+      "PASS  20,000,000 numbers: peak 152 MB (under 200: the 64 MiB region it left is given back)",
+      "r127 descriptor: 26 checks, 0 failed"
+    ]
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "tests/r133/test_indirect_slice.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.30282205800000384,
+    "log": "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/9-test_indirect_slice.log",
+    "tail": [
+      "PASS  ind_k: want 'E_KOSH_DVARA'; refused: Sutram truti [E_KOSH_DVARA]: kosh 'k' asankhyita-tarke na preshyate - prakriya: f",
+      "PASS  safe1: want '0\\n99\\n'; compiles and prints '0\\n99\\n'",
+      "r133 indirect slice: 10 checks, 0 failed"
+    ]
+  }
+]

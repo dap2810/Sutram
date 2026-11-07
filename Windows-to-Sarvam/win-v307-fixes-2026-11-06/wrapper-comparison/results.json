@@ -1,0 +1,62 @@
+[
+  {
+    "label": "add",
+    "version": "baseline-v307",
+    "compiler_sha256": "a1a2f038555f7dcdeb7eb36dca9f814102bd21efedf4e199d4e65cf55fd91de9",
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 3420 baait sankalit\n",
+    "compile_stderr": "",
+    "exit": 0,
+    "stdout": "7\n99\n",
+    "stderr": ""
+  },
+  {
+    "label": "add",
+    "version": "repair-v307",
+    "compiler_sha256": "a95ceaf1fca6310cd8b2df0892632a38642595cdfaa53bdef7ec0736b138aa70",
+    "compile_exit": 1,
+    "compile_stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+    "compile_stderr": ""
+  },
+  {
+    "label": "add",
+    "version": "upstream-v308",
+    "compiler_sha256": "9a15a7f25b6f4825c9bca40debb53899c9f8a772b780286bed0efb5d086f81f1",
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 3420 baait sankalit\n",
+    "compile_stderr": "",
+    "exit": 0,
+    "stdout": "7\n99\n",
+    "stderr": ""
+  },
+  {
+    "label": "xor",
+    "version": "baseline-v307",
+    "compiler_sha256": "a1a2f038555f7dcdeb7eb36dca9f814102bd21efedf4e199d4e65cf55fd91de9",
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 3420 baait sankalit\n",
+    "compile_stderr": "",
+    "exit": 0,
+    "stdout": "7\n99\n",
+    "stderr": ""
+  },
+  {
+    "label": "xor",
+    "version": "repair-v307",
+    "compiler_sha256": "a95ceaf1fca6310cd8b2df0892632a38642595cdfaa53bdef7ec0736b138aa70",
+    "compile_exit": 1,
+    "compile_stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+    "compile_stderr": ""
+  },
+  {
+    "label": "xor",
+    "version": "upstream-v308",
+    "compiler_sha256": "9a15a7f25b6f4825c9bca40debb53899c9f8a772b780286bed0efb5d086f81f1",
+    "compile_exit": 0,
+    "compile_stdout": "Siddh: 3420 baait sankalit\n",
+    "compile_stderr": "",
+    "exit": 0,
+    "stdout": "7\n99\n",
+    "stderr": ""
+  }
+]

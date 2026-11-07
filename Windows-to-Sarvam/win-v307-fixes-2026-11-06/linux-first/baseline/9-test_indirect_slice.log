@@ -1,0 +1,11 @@
+PASS  s3small: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a
+PASS  s3big: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a
+PASS  st1: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a
+PASS  ind_fv_arg: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a
+PASS  alias_sl: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad a
+PASS  s3small_direct: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'badal' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (t
+PASS  s3big_direct: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'pratham' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate 
+PASS  ind_wrap: want 'E_KOSH_VIBHAG'; refused: Sutram truti [E_KOSH_VIBHAG]: prakriya 'fwd' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad
+PASS  ind_k: want 'E_KOSH_DVARA'; refused: Sutram truti [E_KOSH_DVARA]: kosh 'k' asankhyita-tarke na preshyate - prakriya: f
+PASS  safe1: want '0\n99\n'; compiles and prints '0\n99\n'
+r133 indirect slice: 10 checks, 0 failed

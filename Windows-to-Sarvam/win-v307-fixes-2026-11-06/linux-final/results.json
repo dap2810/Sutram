@@ -1,0 +1,77 @@
+[
+  {
+    "label": "baseline-proof",
+    "command": [
+      "tools/proof_lib.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 41.383182086999994,
+    "tail": [
+      "",
+      "229 passed, 0 failed, 229 total"
+    ]
+  },
+  {
+    "label": "candidate-proof",
+    "command": [
+      "tools/proof_lib.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 37.774354277,
+    "tail": [
+      "",
+      "229 passed, 0 failed, 229 total"
+    ]
+  },
+  {
+    "label": "candidate-r23",
+    "command": [
+      "tests/r23/test_capabilities.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+    ],
+    "exit": 0,
+    "seconds": 0.42270109199999695,
+    "tail": [
+      "PASS  returning a slice                                          ",
+      "PASS  a whole kosh to a vibhag parameter, and a kosh slice       ",
+      "r23 capabilities: 23 checks, 0 failed"
+    ]
+  },
+  {
+    "label": "candidate-suite",
+    "command": [
+      "tests/run_tests.py"
+    ],
+    "exit": 1,
+    "seconds": 19.976804533999996,
+    "tail": [
+      "    | 1",
+      "",
+      "suite: NO-EXPECTATION=4  PASS=327  (331 run)"
+    ]
+  },
+  {
+    "label": "candidate-slices",
+    "command": [
+      "tools/test_v307_fix_regressions.py",
+      "--compiler",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+      "--phase",
+      "slice",
+      "--evidence",
+      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices"
+    ],
+    "exit": 0,
+    "seconds": 1.0273833110000083,
+    "tail": [
+      "246_r23_comparator_sort.sm positive= True",
+      "safe1.sm positive= True",
+      "{\"total\": 20, \"passed\": 20}"
+    ]
+  }
+]

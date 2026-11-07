@@ -1,0 +1,43 @@
+{
+    "powershell":  "5.1.26100.9711",
+    "source_sha256":  "6C80BB10093E888F5057CEEC8632ADF9FA677EE7C0D04E18471A526AE9BA630F",
+    "work":  "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\io-908cbcd5d41c43d5a87cc070698bdcf0",
+    "checks":  [
+                   {
+                       "pass":  true,
+                       "name":  "100 appends while shared reader stays open"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "identical file timestamp preserved"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "changed file replaced"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "new file moved into place"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "manifest belongs to transaction completion"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "no partial files after success"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "replacement of locked target fails closed"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "locked target retained original bytes"
+                   },
+                   {
+                       "pass":  true,
+                       "name":  "retry completes partial copy"
+                   }
+               ]
+}

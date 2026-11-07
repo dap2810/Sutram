@@ -1,0 +1,7 @@
+prakriya f(vibhag s) {
+    likha(s)
+}
+mukhya() {
+    mala m[1]
+    f(m[:])
+}

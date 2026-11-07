@@ -1,0 +1,17 @@
+r136_ws1_cell_minimal.sm refused= True
+r136_ws1_cell_write.sm refused= True
+r136_ws1_funcval_large.sm refused= True
+r136_ws1_funcval_small.sm refused= True
+r136_ws1_untyped_param.sm refused= True
+r136_ws1_untyped_return.sm refused= True
+r136_ws2_cond_assign.sm refused= True
+r136_ws2_dasham_diag.sm refused= True
+r136_ws2_dasham_param.sm refused= True
+r136_ws2_field.sm refused= True
+r136_ws2_global.sm refused= True
+r136_ws2_rawmem.sm refused= True
+r136_ws2_ternary.sm refused= True
+248_r23_slices.sm positive= True
+246_r23_comparator_sort.sm positive= True
+safe1.sm positive= True
+{"total": 20, "passed": 20}

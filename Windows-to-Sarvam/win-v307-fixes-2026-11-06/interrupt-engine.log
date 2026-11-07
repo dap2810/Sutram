@@ -1,0 +1,33 @@
+Sutram Setup Log
+[2026-11-06 23:50:08] Starting installation.
+[2026-11-06 23:50:08] Checking for another Sutram installation.
+[2026-11-06 23:50:08] Extracting embedded payload.
+[2026-11-06 23:50:11] Native self-test start: pre-install --version
+[2026-11-06 23:50:11] Native self-test exit: pre-install --version code=0
+[2026-11-06 23:50:11] Native self-test start: pre-install --help
+[2026-11-06 23:50:11] Native self-test exit: pre-install --help code=0
+[2026-11-06 23:50:14] Recording the payload being installed (payload.pending.sha256).
+[2026-11-06 23:50:14] Copying 657 Sutram files.
+[2026-11-06 23:50:14] Copying 1/657: LICENSE.txt
+[2026-11-06 23:50:14] Copying 2/657: README.md
+[2026-11-06 23:50:14] Copying 3/657: sutram-ide-gui.exe
+[2026-11-06 23:50:14] Copying 4/657: assets\sutram.ico
+[2026-11-06 23:50:14] Copying 5/657: bin\sutram-link.exe
+[2026-11-06 23:50:14] Copying 6/657: bin\sutram.exe
+[2026-11-06 23:50:14] Copying 7/657: bin\lang\bengali.lang
+[2026-11-06 23:50:14] Copying 8/657: bin\lang\bengali.sandesh
+[2026-11-06 23:50:14] Copying 9/657: bin\lang\gujarati.lang
+[2026-11-06 23:50:14] Copying 10/657: bin\lang\gujarati.sandesh
+[2026-11-06 23:50:14] Copying 11/657: bin\lang\hindi.lang
+[2026-11-06 23:50:14] Copying 12/657: bin\lang\hindi.sandesh
+[2026-11-06 23:50:14] Copying 13/657: bin\lang\kannada.lang
+[2026-11-06 23:50:14] Copying 14/657: bin\lang\kannada.sandesh
+[2026-11-06 23:50:14] Copying 15/657: bin\lang\malayalam.lang
+[2026-11-06 23:50:14] Copying 16/657: bin\lang\malayalam.sandesh
+[2026-11-06 23:50:14] Copying 17/657: bin\lang\marathi.lang
+[2026-11-06 23:50:14] Copying 18/657: bin\lang\marathi.sandesh
+[2026-11-06 23:50:14] Copying 19/657: bin\lang\odia.lang
+[2026-11-06 23:50:14] Copying 20/657: bin\lang\odia.sandesh
+[2026-11-06 23:50:14] Copying 21/657: bin\lang\punjabi.lang
+[2026-11-06 23:50:14] Copying 22/657: bin\lang\punjabi.sandesh
+[2026-11-06 23:50:14] Copying 23/657: bin\lang\sanskrit.lang

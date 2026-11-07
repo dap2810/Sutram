@@ -1,0 +1,6 @@
+
+228 passed, 1 failed, 229 total
+FAIL file_read:
+  stdout mismatch:
+  expected: '13\n\n104\n\n101\n\n108\n\n108\n\n111\n\n32\n\n115\n\n117\n\n116\n\n114\n\n97\n\n109\n\n10\n\n5\n\n104\n\n111\n\n0\n\n-1\n\n-1\n\n1\n\n0\n\nfile-read-done\n'
+  actual:   '14\n\n104\n\n101\n\n108\n\n108\n\n111\n\n32\n\n115\n\n117\n\n116\n\n114\n\n97\n\n109\n\n13\n\n10\n\n5\n\n104\n\n111\n\n0\n\n-1\n\n-1\n\n1\n\n0\n\nfile-read-done\n'

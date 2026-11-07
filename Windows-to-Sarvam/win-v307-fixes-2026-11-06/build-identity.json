@@ -1,0 +1,26 @@
+{
+  "base_commit": "e282e237d30cd27c2acc63126ab8f566e350e9bd",
+  "python": "C:\\Users\\dmech\\miniconda3\\python.exe",
+  "python_version": "3.14.7 | packaged by Anaconda, Inc. | (main, Aug 14 2026, 10:12:46) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "artifacts": {
+    "build\\fixes\\candidate.exe": "a95ceaf1fca6310cd8b2df0892632a38642595cdfaa53bdef7ec0736b138aa70",
+    "build\\fixes\\baseline.exe": "a1a2f038555f7dcdeb7eb36dca9f814102bd21efedf4e199d4e65cf55fd91de9",
+    "build\\fixes\\review-Sutram-Setup.exe": "7ba5fdda8e373492ae272d2b0ef3cc2965287715a4503d9c11b3c02fcaf398bd",
+    "build\\fixes\\linux\\candidate\\sutram_compiler": "2cf595fe1aa65701b81005401468d32071da48c21abad9762f479b36e24a5079",
+    "build\\fixes\\linux\\baseline\\sutram_compiler": "724713848900b6a86a6b31d74c92802bd866de179dda4e663a514dcd76248f8d"
+  },
+  "sources": {
+    ".gitattributes": "a8ee3f6bcecd1153e6099289acdd4a3ba61ad23d3494a13a006c2281d43f19bc",
+    "src/sutram_compiler.asm": "4850b82cf6ee79b65d921ab0351c35fb7f7275968e95a66cb3d1fd5e12329f5d",
+    "win/pe_layout.inc": "2f4452d291eddf88b5bb1a411997e5c9176a8785fdb66ffd9f75c5652c34567b",
+    "win/pe_imports.inc": "1f692fc8dea000d07e9706c73c9858f17ddc8724e770c42cbf4f190d53679f51",
+    "win/winrt_blob.asm": "7542e3f6ed90d0a550db0b50a086bb8ffabb114d1c8e605a0a6117bead4a1862",
+    "win/rtblob.inc": "4660ce604a712876013312321a8f515a94142936f21b81f98d9364ccc3e3980b",
+    "windows/native-installer/install-core.ps1": "6c80bb10093e888f5057ceec8632adf9fa677ee7c0d04e18471a526ae9ba630f",
+    "windows/native-installer/build-installer.ps1": "9c9848beeecbfe199cc0c182ba3cb4274c01a6572f4261f98cad6c780bf2a1f6"
+  },
+  "runtime_import_bytes": 1024,
+  "release_version_unchanged": "1.0 (v307)",
+  "frozen_goldens_changed": false
+}

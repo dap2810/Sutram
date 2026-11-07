@@ -1,0 +1,147 @@
+Sutram Setup Log
+[2026-11-06 23:38:40] Starting installation.
+[2026-11-06 23:38:40] Checking for another Sutram installation.
+[2026-11-06 23:38:40] Extracting embedded payload.
+[2026-11-06 23:38:45] Native self-test start: pre-install --version
+[2026-11-06 23:38:45] Native self-test exit: pre-install --version code=0
+[2026-11-06 23:38:45] Native self-test start: pre-install --help
+[2026-11-06 23:38:45] Native self-test exit: pre-install --help code=0
+[2026-11-06 23:38:53] Recording the payload being installed (payload.pending.sha256).
+[2026-11-06 23:38:53] Copying 657 Sutram files.
+[2026-11-06 23:38:53] Copying 1/657: LICENSE.txt
+[2026-11-06 23:38:53] Copying 2/657: README.md
+[2026-11-06 23:38:53] Copying 3/657: sutram-ide-gui.exe
+[2026-11-06 23:38:53] Unchanged: sutram-ide-gui.exe
+[2026-11-06 23:38:53] Copying 4/657: assets\sutram.ico
+[2026-11-06 23:38:53] Unchanged: assets\sutram.ico
+[2026-11-06 23:38:54] Copying 5/657: bin\sutram-link.exe
+[2026-11-06 23:38:54] Unchanged: bin\sutram-link.exe
+[2026-11-06 23:38:54] Copying 6/657: bin\sutram.exe
+[2026-11-06 23:38:54] Copying 7/657: bin\lang\bengali.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\bengali.lang
+[2026-11-06 23:38:54] Copying 8/657: bin\lang\bengali.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\bengali.sandesh
+[2026-11-06 23:38:54] Copying 9/657: bin\lang\gujarati.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\gujarati.lang
+[2026-11-06 23:38:54] Copying 10/657: bin\lang\gujarati.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\gujarati.sandesh
+[2026-11-06 23:38:54] Copying 11/657: bin\lang\hindi.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\hindi.lang
+[2026-11-06 23:38:54] Copying 12/657: bin\lang\hindi.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\hindi.sandesh
+[2026-11-06 23:38:54] Copying 13/657: bin\lang\kannada.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\kannada.lang
+[2026-11-06 23:38:54] Copying 14/657: bin\lang\kannada.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\kannada.sandesh
+[2026-11-06 23:38:54] Copying 15/657: bin\lang\malayalam.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\malayalam.lang
+[2026-11-06 23:38:54] Copying 16/657: bin\lang\malayalam.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\malayalam.sandesh
+[2026-11-06 23:38:54] Copying 17/657: bin\lang\marathi.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\marathi.lang
+[2026-11-06 23:38:54] Copying 18/657: bin\lang\marathi.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\marathi.sandesh
+[2026-11-06 23:38:54] Copying 19/657: bin\lang\odia.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\odia.lang
+[2026-11-06 23:38:54] Copying 20/657: bin\lang\odia.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\odia.sandesh
+[2026-11-06 23:38:54] Copying 21/657: bin\lang\punjabi.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\punjabi.lang
+[2026-11-06 23:38:54] Copying 22/657: bin\lang\punjabi.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\punjabi.sandesh
+[2026-11-06 23:38:54] Copying 23/657: bin\lang\sanskrit.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\sanskrit.lang
+[2026-11-06 23:38:54] Copying 24/657: bin\lang\sanskrit.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\sanskrit.sandesh
+[2026-11-06 23:38:54] Copying 25/657: bin\lang\tamil.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\tamil.lang
+[2026-11-06 23:38:54] Copying 26/657: bin\lang\tamil.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\tamil.sandesh
+[2026-11-06 23:38:54] Copying 27/657: bin\lang\telugu.lang
+[2026-11-06 23:38:54] Unchanged: bin\lang\telugu.lang
+[2026-11-06 23:38:54] Copying 28/657: bin\lang\telugu.sandesh
+[2026-11-06 23:38:54] Unchanged: bin\lang\telugu.sandesh
+[2026-11-06 23:38:54] Copying 29/657: bin\lib\aadhar.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\aadhar.smlib
+[2026-11-06 23:38:54] Copying 30/657: bin\lib\ank.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\ank.smlib
+[2026-11-06 23:38:54] Copying 31/657: bin\lib\anukram.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\anukram.smlib
+[2026-11-06 23:38:54] Copying 32/657: bin\lib\brihat.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\brihat.smlib
+[2026-11-06 23:38:54] Copying 33/657: bin\lib\chandas.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\chandas.smlib
+[2026-11-06 23:38:54] Copying 34/657: bin\lib\ganit.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\ganit.smlib
+[2026-11-06 23:38:54] Copying 35/657: bin\lib\ganita.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\ganita.smlib
+[2026-11-06 23:38:54] Copying 36/657: bin\lib\gudh.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\gudh.smlib
+[2026-11-06 23:38:54] Copying 37/657: bin\lib\kalana.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\kalana.smlib
+[2026-11-06 23:38:54] Copying 38/657: bin\lib\khand.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\khand.smlib
+[2026-11-06 23:38:54] Copying 39/657: bin\lib\madhava.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\madhava.smlib
+[2026-11-06 23:38:54] Copying 40/657: bin\lib\mala.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\mala.smlib
+[2026-11-06 23:38:54] Copying 41/657: bin\lib\nighantu.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\nighantu.smlib
+[2026-11-06 23:38:54] Copying 42/657: bin\lib\patra.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\patra.smlib
+[2026-11-06 23:38:54] Copying 43/657: bin\lib\phal.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\phal.smlib
+[2026-11-06 23:38:54] Copying 44/657: bin\lib\roop.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\roop.smlib
+[2026-11-06 23:38:54] Copying 45/657: bin\lib\sadhan.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\sadhan.smlib
+[2026-11-06 23:38:54] Copying 46/657: bin\lib\samanvaya.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\samanvaya.smlib
+[2026-11-06 23:38:54] Copying 47/657: bin\lib\sangrah.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\sangrah.smlib
+[2026-11-06 23:38:54] Copying 48/657: bin\lib\sankhyiki.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\sankhyiki.smlib
+[2026-11-06 23:38:54] Copying 49/657: bin\lib\shreni.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\shreni.smlib
+[2026-11-06 23:38:54] Copying 50/657: bin\lib\suchi.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\suchi.smlib
+[2026-11-06 23:38:54] Copying 51/657: bin\lib\vakyank.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\vakyank.smlib
+[2026-11-06 23:38:54] Copying 52/657: bin\lib\varna.smlib
+[2026-11-06 23:38:54] Unchanged: bin\lib\varna.smlib
+[2026-11-06 23:38:54] Copying 53/657: docs\AI-WORK-DIVISION.md
+[2026-11-06 23:38:54] Copying 54/657: docs\BUILDING.md
+[2026-11-06 23:38:54] Copying 55/657: docs\CHANGELOG.md
+[2026-11-06 23:38:54] Copying 56/657: docs\CI-NOTIFICATION-POLICY.md
+[2026-11-06 23:38:54] Copying 57/657: docs\ERROR-CONVENTION.md
+[2026-11-06 23:38:54] Copying 58/657: docs\FREESTANDING.md
+[2026-11-06 23:38:54] Copying 59/657: docs\INSTALLATION-ROUTES.md
+[2026-11-06 23:38:54] Copying 60/657: docs\INSTALLER-REBUILD.md
+[2026-11-06 23:38:54] Copying 61/657: docs\LANGUAGE-REFERENCE.md
+[2026-11-06 23:38:55] Copying 62/657: docs\LIBRARY-BOUNDARY.md
+[2026-11-06 23:38:55] Copying 63/657: docs\MEMORY-MODEL.md
+[2026-11-06 23:38:55] Copying 64/657: docs\mockup-setup.html
+[2026-11-06 23:38:55] Copying 65/657: docs\NUMERIC-CONTRACT.md
+[2026-11-06 23:38:55] Copying 66/657: docs\OBJECT-FORMAT.md
+[2026-11-06 23:38:55] Copying 67/657: docs\OPEN-ISSUES.md
+[2026-11-06 23:38:55] Copying 68/657: docs\OVERFLOW-SAFETY.md
+[2026-11-06 23:38:55] Copying 69/657: docs\PATH-TO-COMPLETION.md
+[2026-11-06 23:38:55] Copying 70/657: docs\RELEASE-NOTES.md
+[2026-11-06 23:38:55] Copying 71/657: docs\SANDESH.md
+[2026-11-06 23:38:55] Copying 72/657: docs\SPECIFICATION.md
+[2026-11-06 23:38:55] Copying 73/657: docs\sutram-audit.html
+[2026-11-06 23:38:55] Copying 74/657: docs\sutram-benchmark-report.html
+[2026-11-06 23:38:55] Copying 75/657: docs\sutram-book-2.html
+[2026-11-06 23:38:55] Copying 76/657: docs\sutram-book-3.html
+[2026-11-06 23:38:55] Copying 77/657: docs\sutram-book-english.html
+[2026-11-06 23:38:55] Copying 78/657: docs\sutram-book-gujarati.html
+[2026-11-06 23:38:55] Copying 79/657: docs\sutram-book-hindi.html
+[2026-11-06 23:38:55] Copying 80/657: docs\sutram-book-sanskrit.html
+[2026-11-06 23:38:56] Copying 81/657: docs\sutram-book-tamil.html
+[2026-11-06 23:38:56] Copying 82/657: docs\sutram-book-telugu.html
+[2026-11-06 23:38:56] Copying 83/657: docs\sutram-book.html
+[2026-11-06 23:38:56] Copying 84/657: docs\sutram-design-parameters.html
+[2026-11-06 23:38:56] Copying 85/657: docs\sutram-icon-thread.html
+[2026-11-06 23:38:56] Copying 86/657: docs\sutram-ide.html
+[2026-11-06 23:38:56] Copying 87/657: docs\sutram-keyword-words.html
+[2026-11-06 23:38:56] Copying 88/657: docs\sutram-performance.html

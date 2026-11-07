@@ -1,0 +1,2 @@
+PASS win/rtblob.inc is what win/winrt_blob.asm builds
+r133 handler registration: NOT RUN (no Wine) - 1 checks, 0 failed

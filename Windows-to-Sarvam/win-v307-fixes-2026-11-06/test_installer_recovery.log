@@ -1,0 +1,17 @@
+PASS  the copy names each file in the log before copying it
+PASS  each file is copied as <name>.sutram-partial, then moved into place
+PASS  the copy leaves out the payload manifest
+PASS  payload.pending.sha256 is the first change to the folder, before any file is copied
+PASS  the previous payload is not deleted first: obsolete files only, after the copy, then the manifest
+PASS  files the new payload still has are overwritten, not deleted
+PASS  the pending record is removed only when everything else is written
+PASS  a folder holding a stopped installation is not refused as "not empty"
+PASS  half-written metadata of a stopped installation is not refused as incomplete or modified
+PASS  a file is the installer's own if it matches the previous manifest, the pending one or the new payload
+PASS  unfinished copies left by a stopped installation are removed on the next run
+PASS  files a stopped installation wrote that this payload does not have are removed
+PASS  uninstall removes a stopped installation's files and unfinished copies
+PASS  Windows is told the compiler's version (Sutram 1.0 (v306) -> 1.0.306), not 0.1.0
+PASS  Sutram-Setup.exe embeds this install-core.ps1
+PASS  Sutram-Setup.exe embeds this uninstall-core.ps1
+r133 interrupted install: 16 checks, 0 failed

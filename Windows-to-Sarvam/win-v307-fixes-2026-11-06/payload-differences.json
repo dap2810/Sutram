@@ -1,0 +1,932 @@
+[
+  {
+    "path": "LICENSE.txt",
+    "crlf_only": true,
+    "bytes_before": 1684,
+    "bytes_installed": 1650
+  },
+  {
+    "path": "README.md",
+    "crlf_only": true,
+    "bytes_before": 11132,
+    "bytes_installed": 10893
+  },
+  {
+    "path": "bin\\sutram.exe",
+    "crlf_only": false,
+    "bytes_before": 535039,
+    "bytes_installed": 533366
+  },
+  {
+    "path": "docs\\AI-WORK-DIVISION.md",
+    "crlf_only": true,
+    "bytes_before": 3658,
+    "bytes_installed": 3588
+  },
+  {
+    "path": "docs\\BUILDING.md",
+    "crlf_only": true,
+    "bytes_before": 5185,
+    "bytes_installed": 5091
+  },
+  {
+    "path": "docs\\CHANGELOG.md",
+    "crlf_only": true,
+    "bytes_before": 27580,
+    "bytes_installed": 27274
+  },
+  {
+    "path": "docs\\CI-NOTIFICATION-POLICY.md",
+    "crlf_only": true,
+    "bytes_before": 4223,
+    "bytes_installed": 4174
+  },
+  {
+    "path": "docs\\ERROR-CONVENTION.md",
+    "crlf_only": true,
+    "bytes_before": 8811,
+    "bytes_installed": 8634
+  },
+  {
+    "path": "docs\\FREESTANDING.md",
+    "crlf_only": true,
+    "bytes_before": 8698,
+    "bytes_installed": 8600
+  },
+  {
+    "path": "docs\\INSTALLATION-ROUTES.md",
+    "crlf_only": true,
+    "bytes_before": 4828,
+    "bytes_installed": 4740
+  },
+  {
+    "path": "docs\\INSTALLER-REBUILD.md",
+    "crlf_only": true,
+    "bytes_before": 6287,
+    "bytes_installed": 6179
+  },
+  {
+    "path": "docs\\LANGUAGE-REFERENCE.md",
+    "crlf_only": true,
+    "bytes_before": 94290,
+    "bytes_installed": 92799
+  },
+  {
+    "path": "docs\\LIBRARY-BOUNDARY.md",
+    "crlf_only": true,
+    "bytes_before": 6470,
+    "bytes_installed": 6356
+  },
+  {
+    "path": "docs\\MEMORY-MODEL.md",
+    "crlf_only": true,
+    "bytes_before": 15714,
+    "bytes_installed": 15492
+  },
+  {
+    "path": "docs\\mockup-setup.html",
+    "crlf_only": true,
+    "bytes_before": 9369,
+    "bytes_installed": 9225
+  },
+  {
+    "path": "docs\\NUMERIC-CONTRACT.md",
+    "crlf_only": true,
+    "bytes_before": 11298,
+    "bytes_installed": 11155
+  },
+  {
+    "path": "docs\\OBJECT-FORMAT.md",
+    "crlf_only": true,
+    "bytes_before": 17803,
+    "bytes_installed": 17537
+  },
+  {
+    "path": "docs\\OPEN-ISSUES.md",
+    "crlf_only": true,
+    "bytes_before": 10226,
+    "bytes_installed": 10030
+  },
+  {
+    "path": "docs\\OVERFLOW-SAFETY.md",
+    "crlf_only": true,
+    "bytes_before": 5596,
+    "bytes_installed": 5486
+  },
+  {
+    "path": "docs\\PATH-TO-COMPLETION.md",
+    "crlf_only": true,
+    "bytes_before": 9058,
+    "bytes_installed": 8932
+  },
+  {
+    "path": "docs\\RELEASE-NOTES.md",
+    "crlf_only": true,
+    "bytes_before": 20408,
+    "bytes_installed": 20168
+  },
+  {
+    "path": "docs\\SANDESH.md",
+    "crlf_only": true,
+    "bytes_before": 3184,
+    "bytes_installed": 3133
+  },
+  {
+    "path": "docs\\SPECIFICATION.md",
+    "crlf_only": true,
+    "bytes_before": 16013,
+    "bytes_installed": 15712
+  },
+  {
+    "path": "docs\\sutram-audit.html",
+    "crlf_only": true,
+    "bytes_before": 12956,
+    "bytes_installed": 12778
+  },
+  {
+    "path": "docs\\sutram-benchmark-report.html",
+    "crlf_only": true,
+    "bytes_before": 40639,
+    "bytes_installed": 39573
+  },
+  {
+    "path": "docs\\sutram-book-2.html",
+    "crlf_only": true,
+    "bytes_before": 1750,
+    "bytes_installed": 1709
+  },
+  {
+    "path": "docs\\sutram-book-3.html",
+    "crlf_only": true,
+    "bytes_before": 1757,
+    "bytes_installed": 1716
+  },
+  {
+    "path": "docs\\sutram-book-english.html",
+    "crlf_only": true,
+    "bytes_before": 63153,
+    "bytes_installed": 62392
+  },
+  {
+    "path": "docs\\sutram-book-gujarati.html",
+    "crlf_only": true,
+    "bytes_before": 86455,
+    "bytes_installed": 85760
+  },
+  {
+    "path": "docs\\sutram-book-hindi.html",
+    "crlf_only": true,
+    "bytes_before": 95850,
+    "bytes_installed": 95112
+  },
+  {
+    "path": "docs\\sutram-book-sanskrit.html",
+    "crlf_only": true,
+    "bytes_before": 81579,
+    "bytes_installed": 80891
+  },
+  {
+    "path": "docs\\sutram-book-tamil.html",
+    "crlf_only": true,
+    "bytes_before": 98264,
+    "bytes_installed": 97554
+  },
+  {
+    "path": "docs\\sutram-book-telugu.html",
+    "crlf_only": true,
+    "bytes_before": 97675,
+    "bytes_installed": 96942
+  },
+  {
+    "path": "docs\\sutram-book.html",
+    "crlf_only": true,
+    "bytes_before": 1751,
+    "bytes_installed": 1710
+  },
+  {
+    "path": "docs\\sutram-design-parameters.html",
+    "crlf_only": true,
+    "bytes_before": 29609,
+    "bytes_installed": 29177
+  },
+  {
+    "path": "docs\\sutram-icon-thread.html",
+    "crlf_only": true,
+    "bytes_before": 8054,
+    "bytes_installed": 8020
+  },
+  {
+    "path": "docs\\sutram-ide.html",
+    "crlf_only": true,
+    "bytes_before": 5281,
+    "bytes_installed": 5193
+  },
+  {
+    "path": "docs\\sutram-keyword-words.html",
+    "crlf_only": true,
+    "bytes_before": 11659,
+    "bytes_installed": 11614
+  },
+  {
+    "path": "docs\\sutram-performance.html",
+    "crlf_only": true,
+    "bytes_before": 17043,
+    "bytes_installed": 16749
+  },
+  {
+    "path": "docs\\sutram-philosophy.html",
+    "crlf_only": true,
+    "bytes_before": 11658,
+    "bytes_installed": 11475
+  },
+  {
+    "path": "docs\\sutram-project-status.html",
+    "crlf_only": true,
+    "bytes_before": 16719,
+    "bytes_installed": 16467
+  },
+  {
+    "path": "docs\\sutram-roadmap.html",
+    "crlf_only": true,
+    "bytes_before": 9519,
+    "bytes_installed": 9368
+  },
+  {
+    "path": "docs\\sutram-scorecard.html",
+    "crlf_only": true,
+    "bytes_before": 15194,
+    "bytes_installed": 14944
+  },
+  {
+    "path": "docs\\sutram-stdlib-reference.html",
+    "crlf_only": true,
+    "bytes_before": 61544,
+    "bytes_installed": 60771
+  },
+  {
+    "path": "docs\\sutram-stdlib.html",
+    "crlf_only": true,
+    "bytes_before": 97105,
+    "bytes_installed": 96624
+  },
+  {
+    "path": "docs\\sutram-vocabulary.html",
+    "crlf_only": true,
+    "bytes_before": 44325,
+    "bytes_installed": 43841
+  },
+  {
+    "path": "docs\\WHATS-LEFT.md",
+    "crlf_only": true,
+    "bytes_before": 6547,
+    "bytes_installed": 6438
+  },
+  {
+    "path": "docs\\WINDOWS-PORT-PLAN.md",
+    "crlf_only": true,
+    "bytes_before": 2122,
+    "bytes_installed": 2083
+  },
+  {
+    "path": "docs\\WINDOWS-SETUP.md",
+    "crlf_only": true,
+    "bytes_before": 7415,
+    "bytes_installed": 7252
+  },
+  {
+    "path": "docs\\_newchapter_en.html",
+    "crlf_only": true,
+    "bytes_before": 6670,
+    "bytes_installed": 6571
+  },
+  {
+    "path": "examples\\215_r12_wordfreq.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\215_r12_wordfreq.out",
+    "crlf_only": true,
+    "bytes_before": 88,
+    "bytes_installed": 72
+  },
+  {
+    "path": "examples\\216_r12_expr.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\216_r12_expr.out",
+    "crlf_only": true,
+    "bytes_before": 23,
+    "bytes_installed": 15
+  },
+  {
+    "path": "examples\\217_r12_report.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\217_r12_report.out",
+    "crlf_only": true,
+    "bytes_before": 213,
+    "bytes_installed": 190
+  },
+  {
+    "path": "win\\sutram.exe",
+    "crlf_only": false,
+    "bytes_before": 535039,
+    "bytes_installed": 533366
+  },
+  {
+    "path": "examples\\r67\\bengali_native.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r67\\bengali_native.out",
+    "crlf_only": true,
+    "bytes_before": 37,
+    "bytes_installed": 33
+  },
+  {
+    "path": "examples\\r67\\punjabi_native.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r67\\punjabi_native.out",
+    "crlf_only": true,
+    "bytes_before": 37,
+    "bytes_installed": 33
+  },
+  {
+    "path": "examples\\r68\\hindi.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\hindi.out",
+    "crlf_only": true,
+    "bytes_before": 21,
+    "bytes_installed": 19
+  },
+  {
+    "path": "examples\\r68\\kannada.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\kannada.out",
+    "crlf_only": true,
+    "bytes_before": 21,
+    "bytes_installed": 19
+  },
+  {
+    "path": "examples\\r68\\marathi.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\marathi.out",
+    "crlf_only": true,
+    "bytes_before": 21,
+    "bytes_installed": 19
+  },
+  {
+    "path": "examples\\r68\\odia.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\odia.out",
+    "crlf_only": true,
+    "bytes_before": 21,
+    "bytes_installed": 19
+  },
+  {
+    "path": "examples\\r68\\tamil.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\tamil.out",
+    "crlf_only": true,
+    "bytes_before": 21,
+    "bytes_installed": 19
+  },
+  {
+    "path": "examples\\r68\\telugu.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\telugu.out",
+    "crlf_only": true,
+    "bytes_before": 21,
+    "bytes_installed": 19
+  },
+  {
+    "path": "examples\\r71\\associativity.out",
+    "crlf_only": true,
+    "bytes_before": 13,
+    "bytes_installed": 9
+  },
+  {
+    "path": "examples\\r71\\boundary_good.out",
+    "crlf_only": true,
+    "bytes_before": 4,
+    "bytes_installed": 3
+  },
+  {
+    "path": "examples\\r71\\conversion.out",
+    "crlf_only": true,
+    "bytes_before": 17,
+    "bytes_installed": 14
+  },
+  {
+    "path": "examples\\r71\\evaluation_order.out",
+    "crlf_only": true,
+    "bytes_before": 18,
+    "bytes_installed": 14
+  },
+  {
+    "path": "examples\\r68\\pairs\\all_registers.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\pairs\\all_registers.out",
+    "crlf_only": true,
+    "bytes_before": 4,
+    "bytes_installed": 3
+  },
+  {
+    "path": "examples\\r68\\pairs\\nonmatching.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\pairs\\nonmatching.out",
+    "crlf_only": true,
+    "bytes_before": 4,
+    "bytes_installed": 3
+  },
+  {
+    "path": "examples\\r68\\pairs\\no_pairs.exit",
+    "crlf_only": true,
+    "bytes_before": 3,
+    "bytes_installed": 2
+  },
+  {
+    "path": "examples\\r68\\pairs\\no_pairs.out",
+    "crlf_only": true,
+    "bytes_before": 4,
+    "bytes_installed": 3
+  },
+  {
+    "path": "docs\\ai-handoff-notes\\HANDOFF.md",
+    "crlf_only": true,
+    "bytes_before": 2320,
+    "bytes_installed": 2274
+  },
+  {
+    "path": "docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md",
+    "crlf_only": true,
+    "bytes_before": 2793,
+    "bytes_installed": 2701
+  },
+  {
+    "path": "docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md",
+    "crlf_only": true,
+    "bytes_before": 3136,
+    "bytes_installed": 3024
+  },
+  {
+    "path": "docs\\ai-handoff-notes\\START_HERE_FOR_AI.md",
+    "crlf_only": true,
+    "bytes_before": 8853,
+    "bytes_installed": 8595
+  },
+  {
+    "path": "docs\\decisions\\ALIAS-DESIGN.md",
+    "crlf_only": true,
+    "bytes_before": 8262,
+    "bytes_installed": 8082
+  },
+  {
+    "path": "docs\\decisions\\MEMORY-DECISION.md",
+    "crlf_only": true,
+    "bytes_before": 12832,
+    "bytes_installed": 12662
+  },
+  {
+    "path": "docs\\decisions\\MEMORY-DESIGN.md",
+    "crlf_only": true,
+    "bytes_before": 6526,
+    "bytes_installed": 6424
+  },
+  {
+    "path": "docs\\decisions\\MEMORY-IMPROVEMENTS.md",
+    "crlf_only": true,
+    "bytes_before": 5617,
+    "bytes_installed": 5528
+  },
+  {
+    "path": "docs\\decisions\\MEMORY-MY-IDEA.md",
+    "crlf_only": true,
+    "bytes_before": 6085,
+    "bytes_installed": 5968
+  },
+  {
+    "path": "docs\\decisions\\MEMORY-UNIQUE-HYBRID.md",
+    "crlf_only": true,
+    "bytes_before": 7785,
+    "bytes_installed": 7640
+  },
+  {
+    "path": "docs\\decisions\\R114-SUTRAM-TRUTI.md",
+    "crlf_only": true,
+    "bytes_before": 3337,
+    "bytes_installed": 3288
+  },
+  {
+    "path": "docs\\reports\\COVERAGE-AUDIT.md",
+    "crlf_only": true,
+    "bytes_before": 2783,
+    "bytes_installed": 2726
+  },
+  {
+    "path": "docs\\reports\\EDGE-COVERAGE-30.md",
+    "crlf_only": true,
+    "bytes_before": 12951,
+    "bytes_installed": 12691
+  },
+  {
+    "path": "docs\\reports\\FAIL-ALLOC.md",
+    "crlf_only": true,
+    "bytes_before": 3393,
+    "bytes_installed": 3330
+  },
+  {
+    "path": "docs\\reports\\HOW-DEFECTS-WERE-FOUND.md",
+    "crlf_only": true,
+    "bytes_before": 4320,
+    "bytes_installed": 4267
+  },
+  {
+    "path": "docs\\reports\\INDIC-COVERAGE.md",
+    "crlf_only": true,
+    "bytes_before": 2045,
+    "bytes_installed": 2009
+  },
+  {
+    "path": "docs\\reports\\KOSH-BUILTINS.md",
+    "crlf_only": true,
+    "bytes_before": 8366,
+    "bytes_installed": 8197
+  },
+  {
+    "path": "docs\\reports\\KOSH-REUSE.md",
+    "crlf_only": true,
+    "bytes_before": 3481,
+    "bytes_installed": 3395
+  },
+  {
+    "path": "docs\\reports\\LAGHU-EXAMPLE.md",
+    "crlf_only": true,
+    "bytes_before": 2155,
+    "bytes_installed": 2087
+  },
+  {
+    "path": "docs\\reports\\LANG-PACK-AUDIT.md",
+    "crlf_only": true,
+    "bytes_before": 4966,
+    "bytes_installed": 4882
+  },
+  {
+    "path": "docs\\reports\\LEXER-BOUNDARY-TEST.md",
+    "crlf_only": true,
+    "bytes_before": 2880,
+    "bytes_installed": 2826
+  },
+  {
+    "path": "docs\\reports\\LIBRARY-ENGLISH-AUDIT.md",
+    "crlf_only": true,
+    "bytes_before": 7296,
+    "bytes_installed": 7148
+  },
+  {
+    "path": "docs\\reports\\LIBRARY-LAYERS.md",
+    "crlf_only": true,
+    "bytes_before": 5042,
+    "bytes_installed": 4949
+  },
+  {
+    "path": "docs\\reports\\MEMORY-COMPOSITION-TEST.md",
+    "crlf_only": true,
+    "bytes_before": 3154,
+    "bytes_installed": 3111
+  },
+  {
+    "path": "docs\\reports\\NEGATIVE-CORPUS.md",
+    "crlf_only": true,
+    "bytes_before": 9647,
+    "bytes_installed": 9497
+  },
+  {
+    "path": "docs\\reports\\PARSER-CLASS-TEST.md",
+    "crlf_only": true,
+    "bytes_before": 3136,
+    "bytes_installed": 3082
+  },
+  {
+    "path": "docs\\reports\\PROPERTY-NET.md",
+    "crlf_only": true,
+    "bytes_before": 11701,
+    "bytes_installed": 11571
+  },
+  {
+    "path": "docs\\reports\\SANSKRIT-AND-AI-BRIGGS-1985.md",
+    "crlf_only": true,
+    "bytes_before": 7537,
+    "bytes_installed": 7395
+  },
+  {
+    "path": "docs\\reports\\SANSKRIT-FOR-LANGUAGE-DESIGN.md",
+    "crlf_only": true,
+    "bytes_before": 16084,
+    "bytes_installed": 15791
+  },
+  {
+    "path": "docs\\reports\\SECURITY-AUDIT.md",
+    "crlf_only": true,
+    "bytes_before": 5090,
+    "bytes_installed": 4998
+  },
+  {
+    "path": "docs\\reports\\STRING-BYTE-PARITY.md",
+    "crlf_only": true,
+    "bytes_before": 5512,
+    "bytes_installed": 5429
+  },
+  {
+    "path": "docs\\rounds\\CHANGELOG-ARCHIVE.md",
+    "crlf_only": true,
+    "bytes_before": 723607,
+    "bytes_installed": 711923
+  },
+  {
+    "path": "docs\\rounds\\F7-SCALAR-INDEX-CRASH.md",
+    "crlf_only": true,
+    "bytes_before": 2576,
+    "bytes_installed": 2505
+  },
+  {
+    "path": "docs\\rounds\\F8-PACK-WARNING-FALSE-ALARM.md",
+    "crlf_only": true,
+    "bytes_before": 3179,
+    "bytes_installed": 3122
+  },
+  {
+    "path": "docs\\rounds\\ITEM-6-X11-INDIC-ASSESSMENT.md",
+    "crlf_only": true,
+    "bytes_before": 3128,
+    "bytes_installed": 3072
+  },
+  {
+    "path": "docs\\rounds\\PLAN-TO-FINISH.md",
+    "crlf_only": true,
+    "bytes_before": 4542,
+    "bytes_installed": 4464
+  },
+  {
+    "path": "docs\\rounds\\PROJECT-OVERVIEW.md",
+    "crlf_only": true,
+    "bytes_before": 7810,
+    "bytes_installed": 7633
+  },
+  {
+    "path": "docs\\rounds\\R34-ACKNOWLEDGE.md",
+    "crlf_only": true,
+    "bytes_before": 8319,
+    "bytes_installed": 8220
+  },
+  {
+    "path": "docs\\rounds\\R50-BYTE-PACKED-TEXT.md",
+    "crlf_only": true,
+    "bytes_before": 1235,
+    "bytes_installed": 1228
+  },
+  {
+    "path": "docs\\rounds\\R52-BUILTIN-FIXES.md",
+    "crlf_only": true,
+    "bytes_before": 3057,
+    "bytes_installed": 3027
+  },
+  {
+    "path": "docs\\rounds\\R54-BUILTIN-BOUNDS.md",
+    "crlf_only": true,
+    "bytes_before": 6961,
+    "bytes_installed": 6886
+  },
+  {
+    "path": "docs\\rounds\\R56-MODULE-GLOBALS.md",
+    "crlf_only": true,
+    "bytes_before": 5048,
+    "bytes_installed": 4998
+  },
+  {
+    "path": "docs\\rounds\\R57-REGISTER-EVALUATOR.md",
+    "crlf_only": true,
+    "bytes_before": 3839,
+    "bytes_installed": 3807
+  },
+  {
+    "path": "docs\\rounds\\R58-CONSTANT-FOLDING.md",
+    "crlf_only": true,
+    "bytes_before": 6987,
+    "bytes_installed": 6926
+  },
+  {
+    "path": "docs\\rounds\\R59-PREEMISSION-PEEPHOLE.md",
+    "crlf_only": true,
+    "bytes_before": 5345,
+    "bytes_installed": 5289
+  },
+  {
+    "path": "docs\\rounds\\R62-WINDOWS-ACCEPTANCE.md",
+    "crlf_only": true,
+    "bytes_before": 4660,
+    "bytes_installed": 4615
+  },
+  {
+    "path": "docs\\rounds\\R63-KOSH-BUILTINS.md",
+    "crlf_only": true,
+    "bytes_before": 6956,
+    "bytes_installed": 6894
+  },
+  {
+    "path": "docs\\rounds\\R64-KOSH-DIAGNOSTICS.md",
+    "crlf_only": true,
+    "bytes_before": 2821,
+    "bytes_installed": 2756
+  },
+  {
+    "path": "docs\\rounds\\R65-DEVANAGARI-SURFACE.md",
+    "crlf_only": true,
+    "bytes_before": 1497,
+    "bytes_installed": 1486
+  },
+  {
+    "path": "docs\\rounds\\R65-FINISH-REVIEW.md",
+    "crlf_only": true,
+    "bytes_before": 7238,
+    "bytes_installed": 7169
+  },
+  {
+    "path": "docs\\rounds\\R65-LEGACY-NSIS-VS-NATIVE-INSTALLER.md",
+    "crlf_only": true,
+    "bytes_before": 2931,
+    "bytes_installed": 2908
+  },
+  {
+    "path": "docs\\rounds\\R65-SOURCE-REVIEW.md",
+    "crlf_only": true,
+    "bytes_before": 6223,
+    "bytes_installed": 6169
+  },
+  {
+    "path": "docs\\rounds\\R67-SOURCE-REVIEW.md",
+    "crlf_only": true,
+    "bytes_before": 8923,
+    "bytes_installed": 8772
+  },
+  {
+    "path": "docs\\rounds\\R68-INDIC-DEVICES.md",
+    "crlf_only": true,
+    "bytes_before": 3346,
+    "bytes_installed": 3295
+  },
+  {
+    "path": "docs\\rounds\\R68-LEXICAL-DIAGNOSTICS.md",
+    "crlf_only": true,
+    "bytes_before": 3683,
+    "bytes_installed": 3611
+  },
+  {
+    "path": "docs\\rounds\\R68-PURE-PAIR-PROBE.md",
+    "crlf_only": true,
+    "bytes_before": 2529,
+    "bytes_installed": 2482
+  },
+  {
+    "path": "docs\\rounds\\R68-SOURCE-REVIEW.md",
+    "crlf_only": true,
+    "bytes_before": 5143,
+    "bytes_installed": 5056
+  },
+  {
+    "path": "docs\\rounds\\R68-WINDOWS-GUI-CHECKLIST.md",
+    "crlf_only": true,
+    "bytes_before": 5473,
+    "bytes_installed": 5391
+  },
+  {
+    "path": "docs\\rounds\\R69-PURE-PAIR-MEASUREMENT.md",
+    "crlf_only": true,
+    "bytes_before": 1983,
+    "bytes_installed": 1951
+  },
+  {
+    "path": "docs\\rounds\\R71-BOOT-PATH.md",
+    "crlf_only": true,
+    "bytes_before": 2954,
+    "bytes_installed": 2889
+  },
+  {
+    "path": "docs\\rounds\\R71-CANONICAL-BUILD.md",
+    "crlf_only": true,
+    "bytes_before": 4046,
+    "bytes_installed": 3971
+  },
+  {
+    "path": "docs\\rounds\\R71-MEMORY-BOUNDARY.md",
+    "crlf_only": true,
+    "bytes_before": 4501,
+    "bytes_installed": 4408
+  },
+  {
+    "path": "docs\\rounds\\R71-MODULES.md",
+    "crlf_only": true,
+    "bytes_before": 6023,
+    "bytes_installed": 5930
+  },
+  {
+    "path": "docs\\rounds\\R71-SPECIFICATION-EVIDENCE.md",
+    "crlf_only": true,
+    "bytes_before": 3170,
+    "bytes_installed": 3119
+  },
+  {
+    "path": "docs\\rounds\\R72-BASELINE-OBSERVED.md",
+    "crlf_only": true,
+    "bytes_before": 2643,
+    "bytes_installed": 2618
+  },
+  {
+    "path": "docs\\rounds\\ROADMAP-TO-V1.0.md",
+    "crlf_only": true,
+    "bytes_before": 10112,
+    "bytes_installed": 9942
+  },
+  {
+    "path": "docs\\rounds\\TEST-ME.md",
+    "crlf_only": true,
+    "bytes_before": 3293,
+    "bytes_installed": 3221
+  },
+  {
+    "path": "docs\\vocabulary\\VOCABULARY-COMPLETE.md",
+    "crlf_only": true,
+    "bytes_before": 10639,
+    "bytes_installed": 10459
+  },
+  {
+    "path": "docs\\vocabulary\\VOCABULARY-DERIVATION.md",
+    "crlf_only": true,
+    "bytes_before": 4567,
+    "bytes_installed": 4475
+  },
+  {
+    "path": "docs\\vocabulary\\VOCABULARY-RULE.md",
+    "crlf_only": true,
+    "bytes_before": 6588,
+    "bytes_installed": 6484
+  },
+  {
+    "path": "docs\\vocabulary\\VOCABULARY-SHORT.md",
+    "crlf_only": true,
+    "bytes_before": 12478,
+    "bytes_installed": 12272
+  },
+  {
+    "path": "docs\\vocabulary\\VOCABULARY-TABLE.md",
+    "crlf_only": true,
+    "bytes_before": 19284,
+    "bytes_installed": 19016
+  }
+]

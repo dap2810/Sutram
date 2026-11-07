@@ -1,0 +1,81 @@
+{
+  "read_at": "2026-11-06T23:50:27.314487-05:00",
+  "phases": [
+    {
+      "phase": "clean",
+      "started": "2026-11-06T23:49:46.0584110-05:00",
+      "pids": [
+        37360,
+        39856
+      ]
+    },
+    {
+      "phase": "upgrade",
+      "started": "2026-11-06T23:46:02.6158496-05:00",
+      "pids": [
+        44068,
+        19252
+      ]
+    },
+    {
+      "phase": "interrupt",
+      "started": "2026-11-06T23:50:07.2924674-05:00",
+      "pids": [
+        44192,
+        23340
+      ]
+    },
+    {
+      "phase": "recovery",
+      "started": "2026-11-06T23:50:14.2704934-05:00",
+      "pids": [
+        6212,
+        35532
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.89.log",
+      "size": 1007727,
+      "read_bytes_sha256": "7d5f11d842fa6fc36312e412dcbaa0cb8884a03cb08245e8403b179331750fea",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.88.log.gz",
+      "size": 95019,
+      "read_bytes_sha256": "8b2aa244bdd9bc1ab4e44b8867310fa1a0a3aeb0591096ea0da6b36f3d2a036e",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.87.log.gz",
+      "size": 128594,
+      "read_bytes_sha256": "45bd7ceb55a56383b6315bdc06b07d0eca74006c47ea5ed7ff9809ad5829432c",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.86.log.gz",
+      "size": 126641,
+      "read_bytes_sha256": "78c868c9e7315cbae250b226a3b3d3df14426e9205efadb377480f45b4031ccf",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.85.log.gz",
+      "size": 131083,
+      "read_bytes_sha256": "fa12f51365f4611560f558558684377f26caa367e5548e012833b71f4f363282",
+      "matching_lines": [],
+      "relevant_lines": []
+    },
+    {
+      "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.84.log.gz",
+      "size": 133004,
+      "read_bytes_sha256": "28cfbcc3b72d29821871f00dc24e4893b8cb19ebb44f94d355bb610c505943f6",
+      "matching_lines": [],
+      "relevant_lines": []
+    }
+  ]
+}
