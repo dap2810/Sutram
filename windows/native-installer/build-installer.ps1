@@ -22,10 +22,24 @@ foreach ($destination in @('bin','win')) {
         Copy-Item -LiteralPath (Join-Path $ProjectRoot $folder) -Destination (Join-Path $stage $destination) -Recurse -Force
     }
 }
-$rows=foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse | Sort-Object FullName) {
-    (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$file.FullName.Substring($stage.Length+1)
+# Old Windows checkouts may retain CRLF even after pulling the LF attributes.
+# Canonicalise only declared UTF-8 documentation/fixture text in the staged copy;
+# never rewrite the checkout, executables, icons or other binary payloads.
+$utf8=[Text.UTF8Encoding]::new($false,$true)
+foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
+    if ($file.Extension.ToLowerInvariant() -in @('.md','.html','.txt','.out','.exit')) {
+        $value=$utf8.GetString([IO.File]::ReadAllBytes($file.FullName))
+        if ($value.Contains("`r`n")) { [IO.File]::WriteAllBytes($file.FullName,$utf8.GetBytes($value.Replace("`r`n","`n"))) }
+    }
 }
-[IO.File]::WriteAllLines((Join-Path $stage 'payload.manifest.sha256'),[string[]]$rows,([Text.UTF8Encoding]::new($false)))
+# Use ordinal UTF-16 path order on both platforms, independent of the
+# developer's locale. The manifest's newline is fixed even when built on Linux.
+[string[]]$payloadFiles=[IO.Directory]::GetFiles($stage,'*',[IO.SearchOption]::AllDirectories)
+[Array]::Sort($payloadFiles,[StringComparer]::Ordinal)
+$rows=foreach ($path in $payloadFiles) {
+    (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$path.Substring($stage.Length+1)
+}
+[IO.File]::WriteAllText((Join-Path $stage 'payload.manifest.sha256'),(($rows -join "`r`n")+"`r`n"),$utf8)
 $zip=Join-Path $work 'payload.zip'
 Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'install-core.ps1'),(Join-Path $PSScriptRoot 'uninstall-core.ps1') -Destination $work
@@ -48,7 +62,15 @@ $obj=Join-Path $work 'wizard.obj'
 Write-IconResourceInclude (Join-Path $ProjectRoot 'icons\sutram.ico') (Join-Path $work 'r73_icon.inc') 'icons/sutram.ico'
 [void](Invoke-BoundedProcess $nasm @('-f','win64','-dR73_ICON',('-I'+$work.Replace('\','/')+'/'),('-I'+$ProjectRoot.Replace('\','/')+'/'),(Join-Path $PSScriptRoot 'sutram_wizard.asm'),'-o',$obj) $work)
 $out=Join-Path $ProjectRoot 'Sutram-Setup.exe'
-[void](Invoke-BoundedProcess $linker @('-mi386pep','--subsystem','windows','--entry=_start','-o',$out,$obj,'-lkernel32','-lbcrypt') $work)
+# Relocated MinGW distributions may still have their original absolute search
+# paths compiled into ld. Prefer this toolchain's own adjacent import libraries.
+$linkArgs=@('-mi386pep','--subsystem','windows','--entry=_start','-o',$out,$obj)
+$importDir=[IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $linker) '..\x86_64-w64-mingw32\lib'))
+if ((Test-Path -LiteralPath (Join-Path $importDir 'libkernel32.a')) -and (Test-Path -LiteralPath (Join-Path $importDir 'libbcrypt.a'))) {
+    $linkArgs+=('-L'+$importDir)
+}
+$linkArgs+=@('-lkernel32','-lbcrypt')
+[void](Invoke-BoundedProcess $linker $linkArgs $work)
 Assert-Pe64 $out
 Write-Host ('Installer icon: ' + (Assert-PeResourceDirectory $out))
 [void](Invoke-BoundedProcess $out @('--self-test') $work)

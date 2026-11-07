@@ -16,8 +16,9 @@ compiler's version without a Windows machine (docs/INSTALLER-REBUILD.md). The sa
   6. nasm -f win64 -dR73_ICON sutram_wizard.asm; ld -mi386pep --subsystem windows (kernel32, bcrypt);
   7. Sutram-Setup.exe --self-test (under Wine 64 here), then Sutram-Setup.sha256 = "<sha256> *Sutram-Setup.exe".
 
-Differences from the Windows build, said: text files keep the tree's LF line endings (a Windows checkout
-may give CRLF); zip times are the files' modification times; the link uses mingw's ld and import libraries.
+Both builders normalise declared UTF-8 text payloads to LF before hashing. Payload file bytes and
+manifest order/newlines are platform-independent. ZIP metadata/compression and the linked wizard may
+still differ: ZIP times are the files' modification times; the link uses platform import libraries.
 Usage: python3 tools/build_installer_linux.py [--work DIR] [--wine PATH]   (from the repo root)
 Last line: "SETUP PASS ..." or "SETUP FAIL ...".
 """
@@ -37,6 +38,17 @@ NI = os.path.join(ROOT, 'windows', 'native-installer')
 
 def sha(path):
     return hashlib.sha256(open(path, 'rb').read()).hexdigest()
+
+
+def normalize_payload_text(path):
+    """Match build-installer.ps1; preserve every byte outside declared text files."""
+    if os.path.splitext(path)[1].lower() in {'.md', '.html', '.txt', '.out', '.exit'}:
+        with open(path, 'rb') as f:
+            raw = f.read()
+        raw.decode('utf-8', errors='strict')
+        if b'\r\n' in raw:
+            with open(path, 'wb') as f:
+                f.write(raw.replace(b'\r\n', b'\n'))
 
 
 def assert_pe64(path):
@@ -91,6 +103,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--work')
     ap.add_argument('--wine', default='/usr/lib/wine/wine64')
+    ap.add_argument('--payload-only', action='store_true', help='build and verify payload inputs without linking a wizard')
     a = ap.parse_args()
     work = a.work or tempfile.mkdtemp(prefix='sutram-setup-')
     stage = os.path.join(work, 'payload')
@@ -116,15 +129,21 @@ def main():
     files = []
     for dp, _, fs in os.walk(stage):
         for f in fs:
+            normalize_payload_text(os.path.join(dp, f))
             files.append(os.path.relpath(os.path.join(dp, f), stage))
-    files.sort(key=lambda r: r.replace('/', '\\').lower())
+    # Match .NET StringComparer.Ordinal, including punctuation and non-BMP paths.
+    path_order = lambda r: r.replace('/', '\\').encode('utf-16-be')
+    files.sort(key=path_order)
     rows = [f'{sha(os.path.join(stage, r))} *{r.replace("/", chr(92))}' for r in files]
     open(os.path.join(stage, 'payload.manifest.sha256'), 'w', encoding='utf-8', newline='\r\n').write('\n'.join(rows) + '\n')
     files.append('payload.manifest.sha256')
     zpath = os.path.join(work, 'payload.zip')
     with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-        for r in sorted(files, key=lambda r: r.replace('/', '\\').lower()):
+        for r in sorted(files, key=path_order):
             z.write(os.path.join(stage, r), r.replace('/', '\\'))
+    if a.payload_only:
+        print(f'PAYLOAD PASS: {len(files) - 1} files; manifest {sha(os.path.join(stage, "payload.manifest.sha256"))}; {zpath}')
+        return
     for f in ('install-core.ps1', 'uninstall-core.ps1'):
         shutil.copy2(os.path.join(NI, f), work)
     shutil.copy2(os.path.join(ROOT, 'LICENSE.txt'), work)

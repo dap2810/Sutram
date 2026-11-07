@@ -12,10 +12,19 @@
 *.lang      text eol=lf
 *.sandesh   text eol=lf
 *.sffi      text eol=lf
+*.md        text eol=lf
+*.html      text eol=lf
+*.txt       text eol=lf
+*.out       text eol=lf
+*.exit      text eol=lf
 
 # Test data and goldens: the exact committed bytes, never converted (their hashes and goldens are bytes).
 tests/negative/**   -text
 tests/expect/**     -text
+tests/fixtures/**   -text
+
+# Native evidence is a byte record, including deliberate CRLF input and output.
+Windows-to-Sarvam/** -text
 
 # Evidence typed in the Windows IDE: kept as recorded (CRLF).
 Claude-to-Sarvam/evidence-r9/wine/*.sm   -text
