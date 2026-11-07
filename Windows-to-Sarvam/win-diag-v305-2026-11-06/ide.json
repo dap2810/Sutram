@@ -1,0 +1,112 @@
+{
+    "ide":  "E:\\Github_Projects\\Sutram\\sutram-ide-gui.exe",
+    "ide_sha256":  "829F8658DE55BE045C6273339244D099022B373725EAD3681228C00BA3D5C051",
+    "compiler":  "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+    "compiler_sha256":  "DB5EDA53871AAFA4749D593DDEF2D29E2841E3EB4D3CB7CDF680223FB45A073C",
+    "started":  "2026-11-06T20:03:48.6772474-05:00",
+    "scenarios":  [
+                      {
+                          "name":  "B1-before-compile-error",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n",
+                          "output":  "Namaste, Sutram!\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 64   |   sanchit"
+                      },
+                      {
+                          "name":  "B1-loaded-before-run",
+                          "title":  "B1-syntax-error.sm - Sutram sampadak",
+                          "editor":  "mukhya() {\r\n    vitti x =\r\n}\r\n",
+                          "output":  "Namaste, Sutram!\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 27   |   sanchit"
+                      },
+                      {
+                          "name":  "B1-compile-error",
+                          "title":  "B1-syntax-error.sm - Sutram sampadak",
+                          "editor":  "mukhya() {\r\n    vitti x =\r\n}\r\n",
+                          "output":  "\r\nSutram truti: vyakaran dosh, pankti 4:1, shabd \u0027patra-ant\u0027\r\n  \r\n  ^\r\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\r\n[sankalan asaphal]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 27   |   sanchit",
+                          "screenshot":  "B1-compile-error.png"
+                      },
+                      {
+                          "name":  "B2-before-runtime-error",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n",
+                          "output":  "Namaste, Sutram!\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 64   |   sanchit"
+                      },
+                      {
+                          "name":  "B2-loaded-before-run",
+                          "title":  "B2-runtime-error.sm - Sutram sampadak",
+                          "editor":  "mukhya() {\r\n    vitti zero = 0\r\n    vitti numerator = 42\r\n    likha(numerator / zero)\r\n}\r\n",
+                          "output":  "Namaste, Sutram!\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 85   |   sanchit"
+                      },
+                      {
+                          "name":  "B2-runtime-error",
+                          "title":  "B2-runtime-error.sm - Sutram sampadak",
+                          "editor":  "mukhya() {\r\n    vitti zero = 0\r\n    vitti numerator = 42\r\n    likha(numerator / zero)\r\n}\r\n",
+                          "output":  "Sutram truti [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati\r\n[karyakramah asamanya-rupena samaptah]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 85   |   sanchit",
+                          "screenshot":  "B2-runtime-error.png"
+                      },
+                      {
+                          "name":  "B3-before-refusal",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n",
+                          "output":  "Namaste, Sutram!\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 64   |   sanchit"
+                      },
+                      {
+                          "name":  "B3-large-file-refusal",
+                          "title":  "01_hello.sm - Sutram sampadak",
+                          "editor":  "# Sutram - Hello World\r\nmukhya()\r\n    likha(\"Namaste, Sutram!\\n\")\r\n",
+                          "output":  "Namaste, Sutram!\r\n[patram atibrihat; sampadaka-seema 64 KiB]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 64   |   sanchit",
+                          "screenshot":  "B3-large-file-refusal.png"
+                      },
+                      {
+                          "name":  "B3-recovered-before-run",
+                          "title":  "02_arith.sm - Sutram sampadak",
+                          "editor":  "# Variables and arithmetic\r\nmukhya()\r\n    vitti x = 10\r\n    vitti y = 20\r\n    vitti z = x + y\r\n    likha(\"x + y = \", z)\r\n",
+                          "output":  "Namaste, Sutram!\r\n[patram atibrihat; sampadaka-seema 64 KiB]\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 115   |   sanchit"
+                      },
+                      {
+                          "name":  "B3-recovered-after-run",
+                          "title":  "02_arith.sm - Sutram sampadak",
+                          "editor":  "# Variables and arithmetic\r\nmukhya()\r\n    vitti x = 10\r\n    vitti y = 20\r\n    vitti z = x + y\r\n    likha(\"x + y = \", z)\r\n",
+                          "output":  "x + y = 30\r\n",
+                          "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 115   |   sanchit",
+                          "screenshot":  "B3-recovered-after-run.png"
+                      }
+                  ],
+    "before":  [
+                   {
+                       "Path":  "E:\\Github_Projects\\Sutram\\examples\\01_hello.sm",
+                       "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
+                   },
+                   {
+                       "Path":  "E:\\Github_Projects\\Sutram\\examples\\02_arith.sm",
+                       "Hash":  "A57DD05E5E5207A38FAEED35D330C16E83901A6D9FD1C0101A92C93DF0EAFA76"
+                   },
+                   {
+                       "Path":  "E:\\Github_Projects\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                       "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
+                   }
+               ],
+    "status":  "OBSERVED",
+    "after":  [
+                  {
+                      "Path":  "E:\\Github_Projects\\Sutram\\examples\\01_hello.sm",
+                      "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
+                  },
+                  {
+                      "Path":  "E:\\Github_Projects\\Sutram\\examples\\02_arith.sm",
+                      "Hash":  "A57DD05E5E5207A38FAEED35D330C16E83901A6D9FD1C0101A92C93DF0EAFA76"
+                  },
+                  {
+                      "Path":  "E:\\Github_Projects\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                      "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
+                  }
+              ]
+}

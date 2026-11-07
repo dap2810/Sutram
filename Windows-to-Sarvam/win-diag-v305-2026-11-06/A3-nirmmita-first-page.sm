@@ -1,0 +1,5 @@
+mukhya() {
+    vitti p = nirmmita(100000000)
+    p[0] = 1
+    likha(p[0])
+}

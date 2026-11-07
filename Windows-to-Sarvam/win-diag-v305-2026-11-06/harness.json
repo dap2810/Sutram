@@ -1,0 +1,83 @@
+{
+  "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
+  "runs": [
+    {
+      "command": [
+        "win\\sutram.exe",
+        "examples\\79_ayojan_cwd.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-relative.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "exit": 0,
+      "stdout": "Siddh: 7335 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0212,
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-relative.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06",
+        "exit": 0,
+        "stdout": "81\n",
+        "stderr": "",
+        "elapsed_seconds": 0.0361
+      }
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-absolute.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "exit": 0,
+      "stdout": "Siddh: 7335 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0146,
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-absolute.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06",
+        "exit": 0,
+        "stdout": "81\n",
+        "stderr": "",
+        "elapsed_seconds": 0.0336
+      }
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\harness-cwd.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\suite",
+      "exit": 1,
+      "stdout": "Sutram truti [E_MODULE_MISSING]: yoj patra aprapt: ganit\nSanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0108
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\bundle\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\portable-control.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\suite",
+      "exit": 0,
+      "stdout": "Siddh: 7335 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0238,
+      "run": {
+        "command": [
+          "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\portable-control.exe"
+        ],
+        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06",
+        "exit": 0,
+        "stdout": "81\n",
+        "stderr": "",
+        "elapsed_seconds": 0.0347
+      }
+    }
+  ]
+}

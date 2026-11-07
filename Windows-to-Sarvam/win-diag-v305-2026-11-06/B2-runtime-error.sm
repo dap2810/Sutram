@@ -1,0 +1,5 @@
+mukhya() {
+    vitti zero = 0
+    vitti numerator = 42
+    likha(numerator / zero)
+}

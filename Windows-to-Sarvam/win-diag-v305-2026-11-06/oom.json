@@ -1,0 +1,395 @@
+{
+  "compiler": "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+  "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
+  "b3": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe",
+  "b3_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2",
+  "version": {
+    "command": [
+      "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+      "--version"
+    ],
+    "cwd": "E:\\Github_Projects\\Sutram",
+    "exit": 0,
+    "stdout": "Sutram 1.0 (v305) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+    "stderr": "",
+    "elapsed_seconds": 0.0104
+  },
+  "commit": "30be5ac8e212eabfc4321eda0b9878d7563e006c",
+  "compilations": [
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A2-two-million.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "exit": 0,
+      "stdout": "Siddh: 1594 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0126,
+      "probe": "A2-two-million"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-first-page.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "exit": 0,
+      "stdout": "Siddh: 445 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0108,
+      "probe": "A3-nirmmita-first-page"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "exit": 0,
+      "stdout": "Siddh: 1309 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0117,
+      "probe": "A3-mandapa"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "exit": 0,
+      "stdout": "Siddh: 471 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.011,
+      "probe": "A3-nirmmita-touch-pages"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa-small-budget.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "exit": 0,
+      "stdout": "Siddh: 1309 baait sankalit\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0119,
+      "probe": "A3-mandapa-small-budget"
+    }
+  ],
+  "runs": [
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1193,
+      "probe": "B3",
+      "limit_mib": 64,
+      "exe_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-128MiB",
+      "limit_bytes": 134217728,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1033,
+      "probe": "B3",
+      "limit_mib": 128,
+      "exe_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-256MiB",
+      "limit_bytes": 268435456,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1772,
+      "probe": "B3",
+      "limit_mib": 256,
+      "exe_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-384MiB",
+      "limit_bytes": 402653184,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.2326,
+      "probe": "B3",
+      "limit_mib": 384,
+      "exe_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-512MiB",
+      "limit_bytes": 536870912,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.2698,
+      "probe": "B3",
+      "limit_mib": 512,
+      "exe_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-640MiB",
+      "limit_bytes": 671088640,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.422,
+      "probe": "B3",
+      "limit_mib": 640,
+      "exe_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-768MiB",
+      "limit_bytes": 805306368,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "100000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.4675,
+      "probe": "B3",
+      "limit_mib": 768,
+      "exe_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "2000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0771,
+      "probe": "A2-two-million",
+      "limit_mib": 64,
+      "exe_sha256": "146e5ebbe9bd7f56981e84c6532d2efa3f15cf1b463eae7cb2b5e287825f5b15"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-128MiB",
+      "limit_bytes": 134217728,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "2000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0314,
+      "probe": "A2-two-million",
+      "limit_mib": 128,
+      "exe_sha256": "146e5ebbe9bd7f56981e84c6532d2efa3f15cf1b463eae7cb2b5e287825f5b15"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-256MiB",
+      "limit_bytes": 268435456,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "2000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0294,
+      "probe": "A2-two-million",
+      "limit_mib": 256,
+      "exe_sha256": "146e5ebbe9bd7f56981e84c6532d2efa3f15cf1b463eae7cb2b5e287825f5b15"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-384MiB",
+      "limit_bytes": 402653184,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "2000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0302,
+      "probe": "A2-two-million",
+      "limit_mib": 384,
+      "exe_sha256": "146e5ebbe9bd7f56981e84c6532d2efa3f15cf1b463eae7cb2b5e287825f5b15"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-512MiB",
+      "limit_bytes": 536870912,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "2000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0298,
+      "probe": "A2-two-million",
+      "limit_mib": 512,
+      "exe_sha256": "146e5ebbe9bd7f56981e84c6532d2efa3f15cf1b463eae7cb2b5e287825f5b15"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-640MiB",
+      "limit_bytes": 671088640,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "2000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.031,
+      "probe": "A2-two-million",
+      "limit_mib": 640,
+      "exe_sha256": "146e5ebbe9bd7f56981e84c6532d2efa3f15cf1b463eae7cb2b5e287825f5b15"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-768MiB",
+      "limit_bytes": 805306368,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "2000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0329,
+      "probe": "A2-two-million",
+      "limit_mib": 768,
+      "exe_sha256": "146e5ebbe9bd7f56981e84c6532d2efa3f15cf1b463eae7cb2b5e287825f5b15"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "1\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0602,
+      "probe": "A3-nirmmita-first-page",
+      "limit_mib": 64,
+      "exe_sha256": "c68e14d5520a12d06ce3fbdbc19c177df3def02f80aee203202c4d834ff6c7e0"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1668,
+      "probe": "A3-mandapa",
+      "limit_mib": 64,
+      "exe_sha256": "c4424123f49e5ce64594c76556cf23885b6e12f46dc4d6273249803cb58c5aa1"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1196,
+      "probe": "A3-nirmmita-touch-pages",
+      "limit_mib": 64,
+      "exe_sha256": "108b748a031e095c1d1c0bed06674f32f5ec9ae4c86a77c875ea2502817c8bbb"
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 1,
+      "stdout": "Sutram truti [E_PARIMITA]: pankti 3 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 16777216 baait)\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0853,
+      "probe": "A3-mandapa-small-budget",
+      "limit_mib": 64,
+      "exe_sha256": "9be0f240867db37e69fa6b2b6d17cd9c69231e587590ea9b6b4b8f4073e595a3"
+    }
+  ],
+  "first_success_in_requested_sweep_mib": 768,
+  "prior_2048MiB_control": "../win-v305-2026-11-06/oom-B3-2048MiB.json"
+}

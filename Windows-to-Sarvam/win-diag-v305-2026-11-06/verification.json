@@ -1,0 +1,118 @@
+{
+  "checks": {
+    "original_v305": true,
+    "B3_first_success_768": true,
+    "all_18_runs_bounded": true,
+    "compile_error_clears_hello": true,
+    "runtime_error_clears_hello": true,
+    "refusal_retains_editor": true,
+    "refusal_retains_output": true,
+    "recovery_correct": true,
+    "examples_unchanged": true,
+    "ide_finished_normally": true,
+    "harness_exit_pattern": true,
+    "tracked_files_unchanged": true,
+    "four_pngs": true,
+    "eight_probes": true,
+    "compiler_still_original": true
+  },
+  "all_pass": true,
+  "files": {
+    "A2-two-million.sm": {
+      "bytes": 112,
+      "sha256": "9c7734c73e090ec2b4b5da709d84c11e13bb5b186eff54ebb5dfb333552233f6"
+    },
+    "A3-mandapa-small-budget.sm": {
+      "bytes": 289,
+      "sha256": "0217f22e1c634cf1d486c4b61cc3b08bd5e0153e773463fe5010640612d8cf6f"
+    },
+    "A3-mandapa.sm": {
+      "bytes": 214,
+      "sha256": "a1f23c904927f8b3b96adc4079cfa28b3ffbebec97f164dc5f1fbd5384f4c0f4"
+    },
+    "A3-nirmmita-first-page.sm": {
+      "bytes": 76,
+      "sha256": "a8f868cebe47b8f45035336d87972511a06f50cf276b158d59976c161cf64aa3"
+    },
+    "A3-nirmmita-touch-pages.sm": {
+      "bytes": 233,
+      "sha256": "862c2b4e4f87de7ce5db364e577a4e08f7eff0bd641fd99c386edbbe4d6465e9"
+    },
+    "B1-compile-error.png": {
+      "bytes": 120961,
+      "sha256": "ee915b5bd893b03a31c48cc1fbe860e9450210491ae920c1a3ac47e67ebe913e"
+    },
+    "B1-syntax-error.sm": {
+      "bytes": 27,
+      "sha256": "fe05388cdd6f6d2fdad0bbeb1223cf6a64856358f5b268d14b2b9073edc99e39"
+    },
+    "B2-runtime-error.png": {
+      "bytes": 126765,
+      "sha256": "6fa5085b7fbadc9a2945775ebc1b5d9a4ee390ca6c9c03dc9794a7908de66f59"
+    },
+    "B2-runtime-error.sm": {
+      "bytes": 85,
+      "sha256": "fdff9d07201be0035d94354b3714cd8a07da986c9a64b53a29fe1a3f29ae7ae5"
+    },
+    "B3-large-file-refusal.png": {
+      "bytes": 116845,
+      "sha256": "eeb0982db7ae7094c247b0c97baa56068f2397ff65409940b0e902abf3c82a6a"
+    },
+    "B3-recovered-after-run.png": {
+      "bytes": 116030,
+      "sha256": "28e3d5147c1c863e59c8355d7549ed89197ce40289971a2d5c16133bf1c00020"
+    },
+    "B3.sm": {
+      "bytes": 114,
+      "sha256": "2a27617609db6f789ebe4aa04710f04387f4d15c976b07538b3e510bb51934b4"
+    },
+    "COMMANDS.md": {
+      "bytes": 2837,
+      "sha256": "af18965bb46aa0aa8d552a69493972282b1deae0ecdaa00c87deaffc8c4f94c4"
+    },
+    "diagnose.py": {
+      "bytes": 3683,
+      "sha256": "0638fcab35044330bc380de464a44882b640bc71eb539dec29aa6da884741606"
+    },
+    "harness.json": {
+      "bytes": 3035,
+      "sha256": "49e7da2f4db94dc9774c7e4b592906b300fe077365a45fb8f58914a0da6d03b7"
+    },
+    "HARNESS.md": {
+      "bytes": 2001,
+      "sha256": "5e021a9ca6d2c340709b3672a7dc00f9f7539083047e48914621c2de25073c45"
+    },
+    "ide.json": {
+      "bytes": 7392,
+      "sha256": "cedaf5a4ac1ffe4fb0dcbfd1ff53ad3a4a013277678175a86d5ca468fa7e64e4"
+    },
+    "IDE.md": {
+      "bytes": 2937,
+      "sha256": "8e4426c5f2ea3d15ffeb7df43a8ebde30a108d47751a59ca26dbba12ed5b6534"
+    },
+    "ide.ps1": {
+      "bytes": 4636,
+      "sha256": "24424a9432bf9cec77a5c8b692317886e92e99b41183132460deeec6129d6251"
+    },
+    "job_runner.py": {
+      "bytes": 5860,
+      "sha256": "2b237ccbedb955d0a4585aa309676d1cdfa783ec47f15bc83cd7b09cf606f133"
+    },
+    "oom.json": {
+      "bytes": 14439,
+      "sha256": "a0d64052d7916fa8e1f61c4783859f94b2ab4b359d6969c04a22abc320d51ec2"
+    },
+    "OOM.md": {
+      "bytes": 4528,
+      "sha256": "88481ab18da3c8328416f120543584bd592c7b71fb6720f56b39a7e9b99a11b1"
+    },
+    "REQUEST.md": {
+      "bytes": 6851,
+      "sha256": "51f3bbe482832c19233c699ddc7afd8ad35338184f4a35893e10bfdc8ddc04f2"
+    },
+    "ui-helper.ps1": {
+      "bytes": 6059,
+      "sha256": "4b2d8ccd0761fbbec9731d886e787581fd9df1ee98838f45435b165a51a4aeea"
+    }
+  }
+}
