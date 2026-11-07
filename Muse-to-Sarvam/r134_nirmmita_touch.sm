@@ -1,0 +1,9 @@
+mukhya() {
+    vitti p = nirmmita(200000000)
+    vitti i = 0
+    yavat (i < 25000000) {
+        p[i] = 42
+        i = i + 512
+    }
+    likha("done")
+}
