@@ -1,0 +1,8 @@
+PASS  the manifest lists every entry once (657 lines, 657 entries, 0 duplicates, 0 unmatched)
+PASS  every embedded entry hashes to its manifest line (657/657; [])
+PASS  no text entry contains CR LF (0: [])
+PASS  every entry equals the tree file it was made from (657/657; differ [], no source [])
+PASS  every payload text path is eol=lf in .gitattributes (560/560; [])
+PASS  every ZIP entry has the fixed date 1980-01-01 (0 do not: [])
+PASS  Sutram-Setup.sha256 is the setup's hash
+r140 package: 7 checks, 0 failed

@@ -1,0 +1,16 @@
+expression statement: keep(k[0:1] + zero)      refused E_VIBHAG_ANKA
+expression statement: k[0:1] + zero            refused E_VIBHAG_ANKA
+compound x += m[0:2]                           refused E_VIBHAG_ANKA
+return arithmetic                              refused E_VIBHAG_ANKA
+return a slice name inside ?:                  refused E_KOSH_DVARA
+global initializer from a global mala slice    refused Sutram truti: vyakaran dosh, pankti 1:1, shabd 'mala'
+  mala GM[4]
+  ^
+Sanket: asmin sthan
+mandapa budget = slice                         refused E_PARIMITA
+abhava(slice)                                  refused E_VIBHAG_ANKA
+chakra step                                    refused E_VIBHAG_ANKA
+nested call arg arithmetic                     refused E_VIBHAG_ANKA
+lambda/value then arithmetic                   refused E_VIBHAG_ANKA
+string index by slice                          refused E_VIBHAG_ANKA
+control: vib(m[0:2]) + 1                       compiles -> '6' exit 0

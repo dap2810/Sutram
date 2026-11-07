@@ -13,6 +13,23 @@
 *.sandesh   text eol=lf
 *.sffi      text eol=lf
 
+# R140: everything the installer carries is LF in every checkout, so a package built on Windows has the bytes of
+# one built on Linux. Without these, a Windows checkout had CRLF Markdown: 153 payload files differed from the
+# installed (Linux-built) copies and an upgrade replaced them all. Scoped to the payload's own paths - the
+# partners' folders keep the bytes they committed (some are CRLF or mixed on purpose). Gate: R140 package.
+/README.md              text eol=lf
+/LICENSE.txt            text eol=lf
+docs/**/*.md            text eol=lf
+docs/**/*.html          text eol=lf
+docs/**/*.txt           text eol=lf
+examples/**/*.md        text eol=lf
+examples/**/*.out       text eol=lf
+examples/**/*.exit      text eol=lf
+examples/**/*.txt       text eol=lf
+# ... and the installer's own scripts, which the wizard embeds byte for byte.
+windows/native-installer/*.ps1  text eol=lf
+windows/native-installer/*.md   text eol=lf
+
 # Test data and goldens: the exact committed bytes, never converted (their hashes and goldens are bytes).
 tests/negative/**   -text
 tests/expect/**     -text

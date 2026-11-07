@@ -112,3 +112,7 @@ again; the engine, the uninstaller and the wizard (it logs its 15-minute stop) c
 
 **R137-R138 (v309):** the runtime's shipped bytes and `sutram-link.exe` are unchanged; the engine and the uninstaller
 changed (the lock beside the installation, the re-check before each replacement).
+
+**R140:** the Linux build is deterministic - LF text, fixed ZIP dates, no link timestamp - so building the same tree
+twice, from checkouts with different file times, gives the same `Sutram-Setup.exe`. Gate `R140 package` checks
+the built file. The Windows builder normalizes text to LF but does not fix the ZIP dates.

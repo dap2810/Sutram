@@ -22,6 +22,17 @@ foreach ($destination in @('bin','win')) {
         Copy-Item -LiteralPath (Join-Path $ProjectRoot $folder) -Destination (Join-Path $stage $destination) -Recurse -Force
     }
 }
+# R140 (after ChatGPT's PR #67): a Windows checkout made before the eol rules in .gitattributes may still have CRLF
+# text; the payload's text is LF in every build, so a Windows build hashes like a Linux one. The release package
+# is built on Linux (tools/build_installer_linux.py, which also fixes the ZIP's dates); this builder does not.
+$utf8=[Text.UTF8Encoding]::new($false,$true)
+foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse) {
+    if ($file.Extension -in @('.md','.html','.txt','.out','.exit','.sm','.smlib','.lang','.sandesh')) {
+        $bytes=[IO.File]::ReadAllBytes($file.FullName)
+        $value=$utf8.GetString($bytes)
+        if ($value.Contains("`r`n")) { [IO.File]::WriteAllBytes($file.FullName,$utf8.GetBytes($value.Replace("`r`n","`n"))) }
+    }
+}
 $rows=foreach ($file in Get-ChildItem -LiteralPath $stage -File -Recurse | Sort-Object FullName) {
     (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()+' *'+$file.FullName.Substring($stage.Length+1)
 }

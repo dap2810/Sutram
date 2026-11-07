@@ -32,6 +32,8 @@ import tempfile
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# R140: the payload's text, normalized to LF (the payload's other files are .exe, .ico and .sha256)
+TEXT_EXT = ('.md', '.html', '.txt', '.out', '.exit', '.sm', '.smlib', '.lang', '.sandesh')
 NI = os.path.join(ROOT, 'windows', 'native-installer')
 
 
@@ -113,6 +115,16 @@ def main():
         for folder in ('lib', 'lang'):
             shutil.copytree(os.path.join(ROOT, folder), os.path.join(stage, dest, folder), dirs_exist_ok=True,
                             ignore=shutil.ignore_patterns('__pycache__'))
+    # R140: one exact package from any checkout. Text the payload carries is LF whatever the checkout did
+    # (a Windows checkout without an eol rule had CRLF Markdown: 153 files differed from a Linux build), and
+    # the ZIP records no time or host (a fixed date, fixed attributes): the same tree gives the same bytes.
+    for dp, _, fs in os.walk(stage):
+        for f in fs:
+            if f.lower().endswith(TEXT_EXT):
+                fp = os.path.join(dp, f)
+                b = open(fp, 'rb').read()
+                if b'\r\n' in b:
+                    open(fp, 'wb').write(b.replace(b'\r\n', b'\n'))
     files = []
     for dp, _, fs in os.walk(stage):
         for f in fs:
@@ -124,10 +136,19 @@ def main():
     zpath = os.path.join(work, 'payload.zip')
     with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for r in sorted(files, key=lambda r: r.replace('/', '\\').lower()):
-            z.write(os.path.join(stage, r), r.replace('/', '\\'))
+            info = zipfile.ZipInfo(r.replace('/', '\\'), date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 0
+            info.external_attr = 0x20          # FILE_ATTRIBUTE_ARCHIVE, as Windows tools write it
+            z.writestr(info, open(os.path.join(stage, r), 'rb').read(), compresslevel=9)
     for f in ('install-core.ps1', 'uninstall-core.ps1'):
         shutil.copy2(os.path.join(NI, f), work)
     shutil.copy2(os.path.join(ROOT, 'LICENSE.txt'), work)
+    for f in ('install-core.ps1', 'uninstall-core.ps1', 'LICENSE.txt'):   # R140: the wizard embeds these too: LF
+        fp = os.path.join(work, f)
+        b = open(fp, 'rb').read()
+        if b'\r\n' in b:
+            open(fp, 'wb').write(b.replace(b'\r\n', b'\n'))
     lines = ['section .data']
     for f, name in (('payload.zip', 'payload'), ('install-core.ps1', 'install'), ('uninstall-core.ps1', 'uninst'),
                     ('LICENSE.txt', 'license')):
@@ -144,7 +165,7 @@ def main():
     if r.returncode:
         raise SystemExit('SETUP FAIL nasm: ' + (r.stdout + r.stderr)[-600:])
     out = os.path.join(ROOT, 'Sutram-Setup.exe')
-    r = subprocess.run(['x86_64-w64-mingw32-ld', '-mi386pep', '--subsystem', 'windows', '--entry=_start', '-o', out, obj,
+    r = subprocess.run(['x86_64-w64-mingw32-ld', '-mi386pep', '--subsystem', 'windows', '--entry=_start', '--no-insert-timestamp', '-s', '-o', out, obj,
                         '-L/usr/x86_64-w64-mingw32/lib', '-lkernel32', '-lbcrypt'], cwd=work, capture_output=True, text=True)
     if r.returncode:
         raise SystemExit('SETUP FAIL ld: ' + (r.stdout + r.stderr)[-600:])

@@ -109,7 +109,7 @@ function Read-Journal([string]$Path) {
 }
 # Stage-Payload(stage, txnStage, newFiles): copy every payload file into the transaction folder, verified by hash.
 # Each file is logged when its copy starts and when it is done, so a stop names the file it stopped in.
-function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles) {
+function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles,[string]$Target) {
     $files = @([IO.Directory]::GetFiles($From,'*',[IO.SearchOption]::AllDirectories) | Where-Object {
         -not [string]::Equals([IO.Path]::GetFileName($_),'payload.manifest.sha256',[StringComparison]::OrdinalIgnoreCase) } | Sort-Object)
     Log ('Staging ' + $files.Length + ' Sutram files in ' + $To + '.')
@@ -118,6 +118,13 @@ function Stage-Payload([string]$From,[string]$To,[hashtable]$NewFiles) {
         $rel = $src.Substring($From.Length).TrimStart('\')
         $n++
         $staged = Join-Path $To $rel
+        # R140 (ChatGPT's v309 run: a late retry restaged all 657): a file already installed with this payload's
+        # bytes needs no copy at all; publishing records it as published and leaves it alone.
+        $installed = Join-Path $Target $rel
+        if ((Test-Path -LiteralPath $installed -PathType Leaf) -and (Get-Sha $installed) -eq $NewFiles[$rel]) {
+            Log ('Already installed ' + $n + '/' + $files.Length + ': ' + $rel)
+            continue
+        }
         if ((Test-Path -LiteralPath $staged -PathType Leaf) -and (Get-Sha $staged) -eq $NewFiles[$rel]) {
             Log ('Already staged ' + $n + '/' + $files.Length + ': ' + $rel)
             continue
@@ -556,7 +563,7 @@ try {
         Log 'Recording the payload being installed (payload.pending.sha256).'
         [IO.File]::Copy((Join-Path $stage 'payload.manifest.sha256'),$pendingPath,$true)
         # Stage every file beside the target first (the target is not touched while the payload is copied).
-        $files = Stage-Payload $stage $txnStage $newFiles
+        $files = Stage-Payload $stage $txnStage $newFiles $InstallDir
         # Publish: the old file, if any, goes to the backup (journaled first), then the staged file is renamed in.
         # v303-v306 deleted the whole previous payload first, then wrote the new one into the target.
         Log ('Publishing ' + $files.Length + ' files into ' + $InstallDir + '.')

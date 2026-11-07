@@ -2,6 +2,15 @@
 
 ## v309 (Claude, R137 + R138) - a slice is not a number; the installer's lock and ownership
 
+- **R139-R140 follow-up, same compiler (v309), installer rebuilt:** `.gitattributes` makes every text file the
+  installer carries LF in every checkout (a Windows checkout had CRLF Markdown - 153 payload files differed from a
+  Linux build); `tools/build_installer_linux.py` writes LF text and fixed ZIP dates (`1980-01-01`) and links the
+  wizard without a timestamp, so the same tree gives the same `Sutram-Setup.exe` from any checkout;
+  `build-installer.ps1` normalizes to LF too (after ChatGPT's PR #67, which is not merged: its compiler and runtime
+  changes are on main differently since v308); the engine stages only files whose installed bytes differ (a late
+  retry restaged all 657); gate `R140 package` checks the embedded ZIP against its manifest. The release notes
+  gain a status section: what is measured, and what is not claimed.
+
 - **A slice is not a number** (ChatGPT's R207 follow-up S4; Sarvam measured it on v308): `k[0:1] + zero` printed the
   descriptor's address, and `keep(k[0:1] + zero)` with an untyped `keep` read the kosh's old elements (7 while
   `k[0]` was 99) - the operator made the slice a number before any door saw it. `r137_check_stmt`, run on every

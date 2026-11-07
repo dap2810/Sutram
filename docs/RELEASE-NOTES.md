@@ -8,6 +8,36 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
+## Status: what v309 closes, and what it does not (R140)
+
+Measured, with where:
+- **On native Windows, on the tested v309 commit** (ChatGPT's v309 run, 7 November, `Windows-to-Sarvam/win-v309-2026-11-07/`):
+  - the out-of-memory exit: 32 of 32 runs (448-640 MiB, `mandapa` and touched pages at 64 MiB) exit 1 with the
+    message and no stack overflow;
+  - the slice-arithmetic refusals: 7 of 7;
+  - the native suite: 322 pass, 0 fail;
+  - install: an upgrade, a clean install, and a run interrupted early, late, and with a user's edit, each retried;
+    one canonical `sutram` in a new terminal; Windows shows `1.0.309`.
+- **On Linux and under Wine:** every gate in `tools/gates.sh`; the guard (every program compiled before and after
+  each change, the bytes compared). The Windows compiler under Wine produces the Linux PE, byte for byte.
+
+**Not closed, and not claimed:**
+- **A slice is refused in every form the gates test** (the R133, R134 and R137 gates); **that is not a proof that no
+  other form exists.** The check covers every statement, and every operator in one place. It does not cover the
+  one expression path outside a statement, the module-level `vitti` initializers - no slice can be formed there
+  today (R140 hand-back).
+- **The out-of-memory exit** is measured at those limits on one machine. Other allocation failures, a failed
+  start-up reserve on Windows, and teardown in general are not.
+- **The installer** is safe to interrupt and retry, file by file. It is not one atomic step: the shortcuts,
+  registry and PATH are finished by a rerun, not rolled back. Its stops between two journal records are not yet
+  tested natively. Acronis Active Protection suspended the v306 and v307 upgrades; the measured upgrades of the
+  v309-era packages were not suspended. **Whether a security product suspends an installer is that product's
+  decision, and no cause is established.**
+- **The package:** from R140 one exact package, its manifest checked against the embedded ZIP. A package built on
+  Windows with `windows/native-installer/build-installer.ps1` has LF text like the Linux build, but its ZIP dates
+  are not fixed. The release package is the Linux build.
+- **The Windows IDE**, the frozen language packs and the items under *Not included* are as described there.
+
 ## What is in it
 
 - **A language with Sanskrit keywords and builtins** (Devanagari accepted). The keywords and messages have
@@ -220,6 +250,12 @@ succeeded; use the checked form when the program must detect a failure and go on
     not yet done for v307 (`tests/windows/test_installer_e2e.py` runs them); so is the upgrade over the owner's
     existing v305 installation, with the wizard;
   - the installer's hashes detect corruption, not the publisher.
+  - **one exact package** (R140): every text file it carries is LF in every checkout (`.gitattributes`), the build
+    writes LF and fixed ZIP dates whatever the checkout did, and the gate checks the embedded ZIP against its
+    manifest. A package built from a CRLF checkout had 153 files that differed from the installed copies, and an
+    upgrade replaced them all; that upgrade was suspended by Acronis, and the same upgrade from an LF package was
+    not - one observation, not an established cause;
+  - an upgrade or a retry copies only the files whose bytes change (R140); a late retry no longer stages all 657;
   - its logs are appended with full sharing, and a log line that cannot be written does not stop the installation
     (up to v308's first build, a program reading the log made the engine fail: ChatGPT's v307 fixture).
 - **The linker:** `sutram-link` and the object tools still print `Sutram Error` where the compiler prints
