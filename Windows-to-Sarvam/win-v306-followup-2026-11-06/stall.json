@@ -1,0 +1,850 @@
+﻿{
+    "observed":  "2026-11-06T22:06:25.8780323-05:00",
+    "file_count":  107,
+    "files":  [
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\.sutram-install",
+                      "Length":  29,
+                      "LastWriteTime":  "2026-11-06T21:49:13.7214882-05:00",
+                      "CreationTime":  "2026-11-06T21:49:13.7214882-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\install-state.ini",
+                      "Length":  248,
+                      "LastWriteTime":  "2026-11-06T21:49:14.3797665-05:00",
+                      "CreationTime":  "2026-11-06T21:49:14.3710085-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\install.log",
+                      "Length":  2531,
+                      "LastWriteTime":  "2026-11-06T21:49:14.3730028-05:00",
+                      "CreationTime":  "2026-11-06T21:49:14.3765159-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt",
+                      "Length":  1650,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.1786780-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\payload.manifest.sha256",
+                      "Length":  63662,
+                      "LastWriteTime":  "2026-11-06T20:11:22.0000000-05:00",
+                      "CreationTime":  "2026-11-06T21:49:13.0439848-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\README.md",
+                      "Length":  10893,
+                      "LastWriteTime":  "2026-11-02T17:20:40.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.1942149-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                      "Length":  142563,
+                      "LastWriteTime":  "2026-11-06T20:08:32.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.1952099-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
+                      "Length":  1982592,
+                      "LastWriteTime":  "2026-11-06T21:29:56.0373275-05:00",
+                      "CreationTime":  "2026-11-06T21:49:13.7174841-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico",
+                      "Length":  36693,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.1982105-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram-link.exe",
+                      "Length":  19870,
+                      "LastWriteTime":  "2026-11-06T20:08:32.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2002144-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+                      "Length":  533163,
+                      "LastWriteTime":  "2026-11-06T20:08:32.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2012083-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\bengali.lang",
+                      "Length":  1014,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2032113-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\bengali.sandesh",
+                      "Length":  23206,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2042103-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\gujarati.lang",
+                      "Length":  1588,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2052095-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\gujarati.sandesh",
+                      "Length":  22485,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2062101-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\hindi.lang",
+                      "Length":  1110,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2072108-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\hindi.sandesh",
+                      "Length":  22591,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2082105-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\kannada.lang",
+                      "Length":  1166,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2092142-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\kannada.sandesh",
+                      "Length":  23266,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2122132-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\malayalam.lang",
+                      "Length":  1148,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2132144-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\malayalam.sandesh",
+                      "Length":  24569,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2142104-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\marathi.lang",
+                      "Length":  1115,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2152105-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\marathi.sandesh",
+                      "Length":  23368,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2162151-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\odia.lang",
+                      "Length":  1091,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2172204-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\odia.sandesh",
+                      "Length":  23510,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2182151-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\punjabi.lang",
+                      "Length":  981,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2192153-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\punjabi.sandesh",
+                      "Length":  22540,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2202097-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\sanskrit.lang",
+                      "Length":  3032,
+                      "LastWriteTime":  "2026-10-30T14:58:58.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2212123-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\sanskrit.sandesh",
+                      "Length":  23684,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2222136-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\tamil.lang",
+                      "Length":  1418,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2232135-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\tamil.sandesh",
+                      "Length":  25479,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2255621-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\telugu.lang",
+                      "Length":  1186,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2265621-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\telugu.sandesh",
+                      "Length":  24085,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2275633-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\aadhar.smlib",
+                      "Length":  3578,
+                      "LastWriteTime":  "2026-11-03T17:18:00.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2295646-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ank.smlib",
+                      "Length":  4631,
+                      "LastWriteTime":  "2026-11-03T17:25:38.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2305651-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\anukram.smlib",
+                      "Length":  4629,
+                      "LastWriteTime":  "2026-10-28T15:52:36.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2315663-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\brihat.smlib",
+                      "Length":  10601,
+                      "LastWriteTime":  "2026-11-03T17:25:38.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2325619-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\chandas.smlib",
+                      "Length":  3844,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2335621-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ganit.smlib",
+                      "Length":  9899,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2345618-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ganita.smlib",
+                      "Length":  22996,
+                      "LastWriteTime":  "2026-11-03T17:25:38.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2353725-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\gudh.smlib",
+                      "Length":  1059,
+                      "LastWriteTime":  "2026-10-28T16:16:36.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2366749-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\kalana.smlib",
+                      "Length":  5846,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2376573-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\khand.smlib",
+                      "Length":  17692,
+                      "LastWriteTime":  "2026-10-30T12:21:26.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2376573-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\madhava.smlib",
+                      "Length":  4972,
+                      "LastWriteTime":  "2026-10-31T17:37:22.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2386564-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\mala.smlib",
+                      "Length":  2552,
+                      "LastWriteTime":  "2026-10-28T14:20:12.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2396599-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\nighantu.smlib",
+                      "Length":  15559,
+                      "LastWriteTime":  "2026-10-28T14:20:12.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2406583-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\patra.smlib",
+                      "Length":  2912,
+                      "LastWriteTime":  "2026-11-02T12:52:18.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2456687-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\phal.smlib",
+                      "Length":  6154,
+                      "LastWriteTime":  "2026-10-28T14:20:12.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2466563-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\roop.smlib",
+                      "Length":  20355,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2476578-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sadhan.smlib",
+                      "Length":  4692,
+                      "LastWriteTime":  "2026-11-03T17:18:56.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2486571-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\samanvaya.smlib",
+                      "Length":  5343,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2496626-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sangrah.smlib",
+                      "Length":  9805,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2506564-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sankhyiki.smlib",
+                      "Length":  6540,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2516570-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\shreni.smlib",
+                      "Length":  5960,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2526571-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\suchi.smlib",
+                      "Length":  15565,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2536568-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\vakyank.smlib",
+                      "Length":  12583,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2546613-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\varna.smlib",
+                      "Length":  16119,
+                      "LastWriteTime":  "2026-10-30T12:21:26.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2556581-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\AI-WORK-DIVISION.md",
+                      "Length":  3588,
+                      "LastWriteTime":  "2026-10-31T10:57:10.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2566589-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
+                      "Length":  5091,
+                      "LastWriteTime":  "2026-11-06T20:08:32.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2576584-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\CHANGELOG.md",
+                      "Length":  26947,
+                      "LastWriteTime":  "2026-11-06T20:09:46.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2586585-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\CI-NOTIFICATION-POLICY.md",
+                      "Length":  4174,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2596570-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ERROR-CONVENTION.md",
+                      "Length":  8634,
+                      "LastWriteTime":  "2026-10-28T14:43:46.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2606611-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\FREESTANDING.md",
+                      "Length":  8600,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2616609-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\INSTALLATION-ROUTES.md",
+                      "Length":  4740,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2626701-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\INSTALLER-REBUILD.md",
+                      "Length":  5973,
+                      "LastWriteTime":  "2026-11-06T20:11:22.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2636579-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\LANGUAGE-REFERENCE.md",
+                      "Length":  92370,
+                      "LastWriteTime":  "2026-11-04T16:14:04.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2656577-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\LIBRARY-BOUNDARY.md",
+                      "Length":  6356,
+                      "LastWriteTime":  "2026-10-31T13:01:02.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2666756-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\MEMORY-MODEL.md",
+                      "Length":  15367,
+                      "LastWriteTime":  "2026-11-06T20:09:46.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2676614-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html",
+                      "Length":  9225,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2686581-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\NUMERIC-CONTRACT.md",
+                      "Length":  11155,
+                      "LastWriteTime":  "2026-11-03T20:19:28.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2686581-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OBJECT-FORMAT.md",
+                      "Length":  17537,
+                      "LastWriteTime":  "2026-10-27T08:06:54.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2696582-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OPEN-ISSUES.md",
+                      "Length":  10030,
+                      "LastWriteTime":  "2026-11-03T22:29:04.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2706594-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OVERFLOW-SAFETY.md",
+                      "Length":  5486,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2716577-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\PATH-TO-COMPLETION.md",
+                      "Length":  8783,
+                      "LastWriteTime":  "2026-11-06T20:09:46.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2726577-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\RELEASE-NOTES.md",
+                      "Length":  17513,
+                      "LastWriteTime":  "2026-11-06T20:09:26.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2736583-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SANDESH.md",
+                      "Length":  3133,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2746571-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SPECIFICATION.md",
+                      "Length":  15712,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2756602-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html",
+                      "Length":  12778,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2776654-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html",
+                      "Length":  39573,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2786650-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html",
+                      "Length":  1709,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2796660-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html",
+                      "Length":  1716,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2806651-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
+                      "Length":  62392,
+                      "LastWriteTime":  "2026-11-03T22:29:04.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2816662-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html",
+                      "Length":  85760,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2826682-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html",
+                      "Length":  95112,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2836659-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html",
+                      "Length":  80891,
+                      "LastWriteTime":  "2026-11-03T22:29:04.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2856660-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html",
+                      "Length":  97554,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2866659-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html",
+                      "Length":  96942,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2876662-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html",
+                      "Length":  1710,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2886690-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html",
+                      "Length":  29177,
+                      "LastWriteTime":  "2026-11-03T22:29:32.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2896693-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html",
+                      "Length":  8020,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2906692-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html",
+                      "Length":  5193,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2920890-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html",
+                      "Length":  11614,
+                      "LastWriteTime":  "2026-10-28T14:43:46.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2930890-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-performance.html",
+                      "Length":  16749,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2940938-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-philosophy.html",
+                      "Length":  11475,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2950933-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-project-status.html",
+                      "Length":  16467,
+                      "LastWriteTime":  "2026-11-03T22:29:32.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2960936-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-roadmap.html",
+                      "Length":  9368,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2971889-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-scorecard.html",
+                      "Length":  14944,
+                      "LastWriteTime":  "2026-11-03T22:29:32.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2981384-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib-reference.html",
+                      "Length":  60771,
+                      "LastWriteTime":  "2026-10-28T15:56:22.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.2990893-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib.html",
+                      "Length":  96624,
+                      "LastWriteTime":  "2026-11-04T17:09:22.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3000897-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-vocabulary.html",
+                      "Length":  43841,
+                      "LastWriteTime":  "2026-11-03T22:29:04.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3010894-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\WHATS-LEFT.md",
+                      "Length":  6438,
+                      "LastWriteTime":  "2026-11-03T15:43:06.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3020894-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\WINDOWS-PORT-PLAN.md",
+                      "Length":  2083,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3030898-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\WINDOWS-SETUP.md",
+                      "Length":  7252,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3040887-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\_newchapter_en.html",
+                      "Length":  6571,
+                      "LastWriteTime":  "2026-11-03T22:29:04.0000000-05:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3050883-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\HANDOFF.md",
+                      "Length":  2274,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3090904-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md",
+                      "Length":  2701,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3100900-05:00"
+                  },
+                  {
+                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md",
+                      "Length":  3024,
+                      "LastWriteTime":  "2026-10-27T07:51:32.0000000-04:00",
+                      "CreationTime":  "2026-11-06T22:05:53.3110904-05:00"
+                  }
+              ],
+    "written_last_two_minutes":  [
+
+                                 ],
+    "processes":  [
+                      {
+                          "Id":  43036,
+                          "ProcessName":  "powershell",
+                          "CPU":  15.890625,
+                          "StartTime":  "\/Date(1794020737672)\/"
+                      },
+                      {
+                          "Id":  45028,
+                          "ProcessName":  "powershell",
+                          "CPU":  1.9375,
+                          "StartTime":  "\/Date(1794020732685)\/"
+                      },
+                      {
+                          "Id":  42236,
+                          "ProcessName":  "Sutram-Setup",
+                          "CPU":  0.109375,
+                          "StartTime":  "\/Date(1794020677686)\/"
+                      }
+                  ],
+    "owned_threads":  [
+                          {
+                              "pid":  42236,
+                              "threads":  [
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  42380,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  43720,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  19504,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  27352,
+                                                  "state":  "Wait"
+                                              }
+                                          ],
+                              "cpu":  0.109375
+                          },
+                          {
+                              "pid":  43036,
+                              "threads":  [
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  8500,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  15960,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  37484,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  41080,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  20632,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  6376,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  30160,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  41324,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  28008,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  37476,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  25212,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  43500,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  6032,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  39884,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  9124,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  30480,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  11128,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  1108,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  15200,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  5212,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  41176,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  9924,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  5840,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  20132,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  40956,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  30328,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  33412,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  28260,
+                                                  "state":  "Wait"
+                                              },
+                                              {
+                                                  "wait":  "Suspended",
+                                                  "id":  16856,
+                                                  "state":  "Wait"
+                                              }
+                                          ],
+                              "cpu":  15.890625
+                          }
+                      ]
+}

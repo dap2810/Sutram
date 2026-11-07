@@ -1,0 +1,2 @@
+# Preserve the measured 32-byte stderr payload, including its single LF.
+streams/*.stderr -text

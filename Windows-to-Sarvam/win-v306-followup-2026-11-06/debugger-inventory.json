@@ -1,0 +1,103 @@
+﻿{
+    "recorded":  "2026-11-06T22:01:47.2193909-05:00",
+    "commands":  [
+                     {
+                         "name":  "procdump.exe",
+                         "found":  [
+
+                                   ]
+                     },
+                     {
+                         "name":  "procdump64.exe",
+                         "found":  [
+
+                                   ]
+                     },
+                     {
+                         "name":  "windbg.exe",
+                         "found":  [
+
+                                   ]
+                     },
+                     {
+                         "name":  "windbgx.exe",
+                         "found":  [
+
+                                   ]
+                     },
+                     {
+                         "name":  "cdb.exe",
+                         "found":  [
+
+                                   ]
+                     },
+                     {
+                         "name":  "handle.exe",
+                         "found":  [
+
+                                   ]
+                     },
+                     {
+                         "name":  "handle64.exe",
+                         "found":  [
+
+                                   ]
+                     },
+                     {
+                         "name":  "openfiles.exe",
+                         "found":  [
+                                       {
+                                           "Name":  "openfiles.exe",
+                                           "Source":  "c:\\windows\\system32\\openfiles.exe"
+                                       }
+                                   ]
+                     }
+                 ],
+    "known_locations":  [
+                            {
+                                "pattern":  "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\*\\cdb.exe",
+                                "found":  [
+
+                                          ]
+                            },
+                            {
+                                "pattern":  "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\*\\windbg.exe",
+                                "found":  [
+
+                                          ]
+                            },
+                            {
+                                "pattern":  "C:\\Tools\\*procdump*.exe",
+                                "found":  [
+
+                                          ]
+                            },
+                            {
+                                "pattern":  "C:\\Sysinternals\\*procdump*.exe",
+                                "found":  [
+
+                                          ]
+                            },
+                            {
+                                "pattern":  "C:\\Program Files\\SysinternalsSuite\\*procdump*.exe",
+                                "found":  [
+
+                                          ]
+                            },
+                            {
+                                "pattern":  "C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps\\*windbg*",
+                                "found":  [
+
+                                          ]
+                            },
+                            {
+                                "pattern":  "C:\\Users\\dmech\\Downloads\\*procdump*.exe",
+                                "found":  [
+
+                                          ]
+                            }
+                        ],
+    "store_packages":  [
+
+                       ]
+}

@@ -1,0 +1,13 @@
+﻿{
+    "foreground":  false,
+    "window":  1378966,
+    "target_process":  42236,
+    "method":  "screen rectangle; requires visual inspection for occlusion",
+    "rectangle":  {
+                      "Left":  78,
+                      "Top":  78,
+                      "Right":  878,
+                      "Bottom":  678
+                  },
+    "observed":  "2026-11-06T22:13:28.7694619-05:00"
+}

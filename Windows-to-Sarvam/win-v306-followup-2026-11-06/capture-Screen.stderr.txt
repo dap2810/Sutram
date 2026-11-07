@@ -1,0 +1,7 @@
+Wizard is not foreground; refuse unrelated screen capture
+At E:\Github_Projects\Sutram\Windows-to-Sarvam\win-v306-followup-2026-11-06\capture.ps1:11 char:47
++ ... w() -ne $h){throw 'Wizard is not foreground; refuse unrelated screen  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Wizard is not f... screen capture:String) [], RuntimeException
+    + FullyQualifiedErrorId : Wizard is not foreground; refuse unrelated screen capture
+ 

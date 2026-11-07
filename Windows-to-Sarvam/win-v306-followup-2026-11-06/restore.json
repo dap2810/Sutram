@@ -1,0 +1,30 @@
+﻿{
+    "started":  "2026-11-06T22:21:39.7315660-05:00",
+    "reason":  "Restore the verified pre-upgrade installation after the full externally-suspended timeout observation",
+    "backup":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-before-v306-followup-20261106",
+    "partial":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-followup-partial-20261106",
+    "stopped":  [
+                    {
+                        "pid":  43036,
+                        "name":  "powershell.exe",
+                        "at":  "2026-11-06T22:21:40.0467673-05:00"
+                    },
+                    {
+                        "pid":  42236,
+                        "name":  "Sutram-Setup.exe",
+                        "at":  "2026-11-06T22:21:40.1996531-05:00"
+                    }
+                ],
+    "security_settings_changed":  false,
+    "partial_file_count":  107,
+    "files_verified":  662,
+    "restored_file_count":  662,
+    "user_path_unchanged":  true,
+    "machine_path_unchanged":  true,
+    "version":  [
+                    "Sutram 1.0 (v306) - sampurna sutra",
+                    "Samskrita-mukhya bhasha -\u003e x86-64 yantra-bhasha"
+                ],
+    "cli_exit":  0,
+    "pass":  true
+}

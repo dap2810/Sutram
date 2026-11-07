@@ -1,0 +1,14 @@
+{
+    "started":  "2026-11-06T22:04:37.5941726-05:00",
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "E6006CAF2BACEBF378B9D3B8CD4527D63C1DE6AC2E96EFA630E5C268FF852E5F",
+    "file_count_before":  662,
+    "observations":  [
+
+                     ],
+    "elevated":  false,
+    "stalled_observed":  false,
+    "pid":  42236,
+    "error":  "Exception calling \"Send\" with \"5\" argument(s): \"SendMessageTimeout failed for message 0xF5\"",
+    "ended":  "2026-11-06T22:04:37.7624992-05:00"
+}

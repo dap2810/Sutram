@@ -1,0 +1,3065 @@
+{
+    "started":  "2026-11-06T22:05:35.8413870-05:00",
+    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "sha256":  "E6006CAF2BACEBF378B9D3B8CD4527D63C1DE6AC2E96EFA630E5C268FF852E5F",
+    "file_count_before":  662,
+    "observations":  [
+                         {
+                             "at":  "2026-11-06T22:05:38.6086331-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:38] Extracting embedded payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  0.69
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:39.2589774-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:38] Extracting embedded payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  1.34
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:39.9112250-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:38] Extracting embedded payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  1.99
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:40.5270625-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:38] Extracting embedded payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  2.6
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:41.1515620-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test start: pre-install --version",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  3.23
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:41.8005627-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  3.88
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:42.4362940-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  4.51
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:43.0720829-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  5.15
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:43.7223615-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  5.8
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:44.3403404-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  6.42
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:44.9706441-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  7.05
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:45.6019500-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  7.68
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:46.2299980-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  8.31
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:46.8502669-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  8.93
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:47.4838310-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  9.56
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:48.1113006-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  10.19
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:48.7436457-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  10.82
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:49.3642338-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  11.44
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:50.0182025-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  12.1
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:50.6483464-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  12.72
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:51.2790625-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  13.36
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:51.9221718-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  14
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:52.5609022-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  14.64
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:53.1856771-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copying 658 Sutram files.",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "Install",
+                             "dialogs":  0,
+                             "seconds":  15.26
+                         },
+                         {
+                             "at":  "2026-11-06T22:05:56.8165041-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  18.89
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:00.4505403-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  22.53
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:04.0839047-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  26.16
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:07.7054745-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  29.78
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:11.3491812-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  33.43
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:14.9779913-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  37.05
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:18.6017839-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  40.68
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:22.2233811-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  44.3
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:25.8720362-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  47.95
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:36.2074733-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  58.28
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:39.8437765-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  61.92
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:43.4774030-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  65.55
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:47.1227236-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  69.2
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:50.7319968-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  72.81
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:54.3746776-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  76.45
+                         },
+                         {
+                             "at":  "2026-11-06T22:06:57.9911506-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  80.07
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:01.6245320-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  83.7
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:05.2443889-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  87.32
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:08.8617575-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  90.94
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:12.4963007-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  94.57
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:16.1393647-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  98.22
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:19.7648700-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  101.84
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:23.3829986-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  105.46
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:27.0146157-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  109.09
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:30.6355653-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  112.71
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:34.2564022-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  116.33
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:37.8861911-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  119.96
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:41.5259986-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  123.6
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:45.1416717-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  127.22
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:48.7608636-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  130.84
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:52.3765367-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  134.45
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:56.0019262-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  138.08
+                         },
+                         {
+                             "at":  "2026-11-06T22:07:59.6264723-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  141.7
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:03.2571318-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  145.33
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:06.8922765-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  148.97
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:10.5303475-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  152.61
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:14.1411829-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  156.22
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:17.7667587-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  159.84
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:21.4059783-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  163.48
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:25.0386380-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  167.12
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:28.6722989-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  170.75
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:32.2889340-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  174.37
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:35.9280663-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  178.01
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:39.5608487-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  181.64
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:43.1786925-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  185.26
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:46.8056450-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  188.88
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:50.4341659-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  192.51
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:54.0676155-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  196.15
+                         },
+                         {
+                             "at":  "2026-11-06T22:08:57.7046757-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  199.78
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:01.3413543-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  203.42
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:04.9632604-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  207.04
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:08.5875822-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  210.67
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:12.2057973-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  214.28
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:15.8613915-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  217.94
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:19.4871563-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  221.56
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:23.1180871-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  225.2
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:26.7327507-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  228.81
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:30.3590603-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  232.44
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:33.9978127-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  236.08
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:37.6474438-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  239.73
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:41.2641287-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  243.34
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:44.8936455-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  246.97
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:48.5414473-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  250.62
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:52.1706996-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  254.25
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:55.7844724-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  257.86
+                         },
+                         {
+                             "at":  "2026-11-06T22:09:59.4385691-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  261.52
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:03.0546931-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  265.13
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:06.6737653-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  268.75
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:10.3022899-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  272.38
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:13.9374441-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  276.02
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:17.5760215-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  279.65
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:21.2135461-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  283.29
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:24.8294531-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  286.91
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:28.4646580-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  290.54
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:32.1085345-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  294.19
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:35.7283930-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  297.81
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:39.3530382-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  301.43
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:42.9946670-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  305.07
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:46.6094851-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  308.69
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:50.2524848-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  312.33
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:53.8950861-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  315.97
+                         },
+                         {
+                             "at":  "2026-11-06T22:10:57.5088231-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  319.59
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:01.1337205-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  323.21
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:04.7802659-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  326.86
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:08.4017519-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  330.48
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:12.0351181-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  334.11
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:15.6658586-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  337.74
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:19.2862043-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  341.36
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:22.9235705-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  345
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:26.5446619-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  348.62
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:30.1589497-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  352.24
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:33.7871528-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  355.87
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:37.4199385-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  359.5
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:41.0571127-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  363.14
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:44.7048168-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  366.78
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:48.3400740-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  370.42
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:51.9502085-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  374.03
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:55.5792225-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  377.66
+                         },
+                         {
+                             "at":  "2026-11-06T22:11:59.2186965-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  381.3
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:02.8384519-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  384.92
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:06.4910126-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  388.57
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:10.1389501-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  392.22
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:13.7674671-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  395.85
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:17.4057957-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  399.49
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:21.0323635-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  403.11
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:24.6794437-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  406.76
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:28.3131524-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  410.39
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:31.9471524-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  414.03
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:35.5631235-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  417.64
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:39.2035052-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  421.28
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:42.8257823-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  424.9
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:46.4689994-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  428.55
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:50.0990339-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  432.18
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:53.7361021-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  435.82
+                         },
+                         {
+                             "at":  "2026-11-06T22:12:57.3595835-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  439.44
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:00.9752652-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  443.05
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:04.6273503-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  446.71
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:08.2362119-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  450.32
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:11.8596951-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  453.94
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:15.5011505-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  457.58
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:19.1273886-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  461.21
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:22.7421714-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  464.82
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:26.3675280-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  468.45
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:30.0119326-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  472.09
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:33.6330233-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  475.71
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:37.2748281-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  479.35
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:40.8971188-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  482.98
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:44.5491239-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  486.63
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:48.1789172-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  490.26
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:51.8158523-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  493.9
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:55.4317456-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  497.51
+                         },
+                         {
+                             "at":  "2026-11-06T22:13:59.0603262-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  501.14
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:02.6807103-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  504.76
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:06.3159890-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  508.39
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:09.9360322-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  512.02
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:13.5482494-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  515.63
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:17.1657811-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  519.24
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:20.7815909-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  522.86
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:24.4506804-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  526.53
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:28.0591638-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  530.14
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:31.6978604-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  533.78
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:35.3179837-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  537.4
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:38.9522382-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  541.03
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:42.5722506-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  544.65
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:46.2240396-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  548.3
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:49.8455632-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  551.92
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:53.4707412-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  555.55
+                         },
+                         {
+                             "at":  "2026-11-06T22:14:57.1029300-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  559.18
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:00.7339357-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  562.81
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:04.3725130-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  566.45
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:08.0046946-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  570.08
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:11.6237699-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  573.7
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:15.2532673-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  577.33
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:18.8793363-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  580.96
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:22.5149156-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  584.59
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:26.1656661-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  588.25
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:29.7839158-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  591.86
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:33.4157242-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  595.5
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:37.0335643-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  599.11
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:40.6408952-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  602.72
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:44.2675249-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  606.35
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:47.8864925-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  609.97
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:51.5058617-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  613.59
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:55.1335552-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  617.21
+                         },
+                         {
+                             "at":  "2026-11-06T22:15:58.7634139-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  620.84
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:02.4117461-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  624.49
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:06.0404363-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  628.12
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:09.6690115-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  631.75
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:13.3035508-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  635.38
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:16.9269118-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  639.01
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:20.5697258-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  642.65
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:24.1978876-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  646.28
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:27.8330359-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  649.91
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:31.4602738-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  653.54
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:35.0880884-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  657.17
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:38.7284512-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  660.81
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:42.3638201-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  664.44
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:45.9900705-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  668.07
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:49.6164568-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  671.7
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:53.2513787-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  675.33
+                         },
+                         {
+                             "at":  "2026-11-06T22:16:56.8961261-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  678.98
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:00.5296771-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  682.61
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:04.1616864-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  686.24
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:07.7974773-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  689.88
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:11.4340183-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  693.51
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:15.0854823-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  697.17
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:18.7170500-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  700.8
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:22.3586065-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  704.44
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:26.0049137-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  708.09
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:29.6331549-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  711.71
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:33.2641481-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  715.34
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:36.9026123-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  718.98
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:40.5468520-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  722.63
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:44.1805479-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  726.26
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:47.8271635-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  729.91
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:51.4802302-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  733.56
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:55.1226518-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  737.2
+                         },
+                         {
+                             "at":  "2026-11-06T22:17:58.7595408-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  740.84
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:02.3986477-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  744.48
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:06.0135236-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  748.09
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:09.6635617-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  751.74
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:13.2933176-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  755.37
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:16.9212029-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  759
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:20.5589015-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  762.64
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:24.1882575-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  766.27
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:27.8364389-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  769.92
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:31.4623204-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  773.54
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:35.1012523-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  777.18
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:38.7217244-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  780.8
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:42.3593874-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  784.44
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:46.0071737-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  788.09
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:49.6491318-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  791.73
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:53.2696419-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  795.35
+                         },
+                         {
+                             "at":  "2026-11-06T22:18:56.8951749-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  798.98
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:00.5545215-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  802.63
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:04.1927913-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  806.27
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:07.8142239-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  809.89
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:11.4553035-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  813.54
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:15.0871204-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  817.17
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:18.7467484-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  820.83
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:22.3764832-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  824.46
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:26.0022278-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  828.08
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:29.6341641-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  831.71
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:33.2702103-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  835.35
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:36.9091261-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  838.99
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:40.5390005-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  842.62
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:44.1766610-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  846.26
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:47.8281475-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  849.91
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:51.4698967-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  853.55
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:55.1031295-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  857.18
+                         },
+                         {
+                             "at":  "2026-11-06T22:19:58.7303741-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  860.81
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:02.3595541-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  864.44
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:06.2632129-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  868.34
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:10.2233312-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  872.3
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:13.8814247-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  875.96
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:17.5222656-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  879.6
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:21.1487799-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  883.23
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:24.7848817-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  886.87
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:28.4503316-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  890.53
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:32.0787579-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  894.16
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:35.7086649-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  897.79
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:39.3337738-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  901.41
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:42.9800388-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  905.06
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:46.6334341-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  908.71
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:50.2749786-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  912.36
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:53.9139942-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  915.99
+                         },
+                         {
+                             "at":  "2026-11-06T22:20:57.5681444-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  919.65
+                         },
+                         {
+                             "at":  "2026-11-06T22:21:01.2363739-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  923.32
+                         },
+                         {
+                             "at":  "2026-11-06T22:21:04.8755090-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  926.96
+                         },
+                         {
+                             "at":  "2026-11-06T22:21:08.5061216-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  930.59
+                         },
+                         {
+                             "at":  "2026-11-06T22:21:12.1411789-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  934.22
+                         },
+                         {
+                             "at":  "2026-11-06T22:21:15.7856196-05:00",
+                             "children":  1,
+                             "last_log":  "[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\\_newchapter_en.html",
+                             "visible_child_windows":  [
+
+                                                       ],
+                             "next_label":  "UI timeout",
+                             "dialogs":  0,
+                             "seconds":  937.87
+                         }
+                     ],
+    "elevated":  false,
+    "stalled_observed":  true,
+    "resumed_welcome_page":  true,
+    "pid":  42236,
+    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "ready_screenshot":  "upgrade-ready.png",
+    "child":  {
+                  "ProcessId":  43036,
+                  "ParentProcessId":  42236,
+                  "CommandLine":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7E.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7E.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7E.tmp\\install.log\" -AddPath -DesktopShortcut"
+              },
+    "child_started":  "2026-11-06T22:05:37.6727403-05:00",
+    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7E.tmp\\install.log",
+    "stall_seconds":  47.95,
+    "openfiles_exit":  null,
+    "status":  "NO_RESULT_AFTER_935_SECONDS",
+    "observed_seconds":  937.88,
+    "child_exited":  false,
+    "wizard_closed":  false,
+    "file_count_after":  107,
+    "ended":  "2026-11-06T22:21:18.8342190-05:00"
+}

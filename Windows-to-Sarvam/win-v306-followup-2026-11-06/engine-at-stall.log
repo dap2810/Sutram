@@ -1,0 +1,11 @@
+Sutram Setup Log
+[2026-11-06 22:05:38] Starting installation.
+[2026-11-06 22:05:38] Checking for another Sutram installation.
+[2026-11-06 22:05:38] Extracting embedded payload.
+[2026-11-06 22:05:41] Native self-test start: pre-install --version
+[2026-11-06 22:05:41] Native self-test exit: pre-install --version code=0
+[2026-11-06 22:05:41] Native self-test start: pre-install --help
+[2026-11-06 22:05:41] Native self-test exit: pre-install --help code=0
+[2026-11-06 22:05:48] Removing files owned by the previous Sutram payload.
+[2026-11-06 22:05:53] Copying 658 Sutram files.
+[2026-11-06 22:05:53] Copied 100 of 658 files; last: docs\_newchapter_en.html

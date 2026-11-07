@@ -1,0 +1,268 @@
+[
+  {
+    "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.75.log",
+    "size": 1546749,
+    "read_bytes_sha256": "2c8022c41ad0f1794f0ca699a8283a14afebf69f7aecfc49f14f8448ba820ee0",
+    "suspension_lines": [
+      4761,
+      4764
+    ],
+    "relevant_lines": [
+      {
+        "line": 4749,
+        "text": "2026-11-06 22:05:53.306088 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+      },
+      {
+        "line": 4750,
+        "text": "2026-11-06 22:05:53.307090 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\NUMERIC-CONTRACT.md\""
+      },
+      {
+        "line": 4751,
+        "text": "2026-11-06 22:05:53.307090 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+      },
+      {
+        "line": 4752,
+        "text": "2026-11-06 22:05:53.309090 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OBJECT-FORMAT.md\""
+      },
+      {
+        "line": 4753,
+        "text": "2026-11-06 22:05:53.309090 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+      },
+      {
+        "line": 4754,
+        "text": "2026-11-06 22:05:53.309090 15336 [info]: [driver] Process  [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\HANDOFF.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 4755,
+        "text": "2026-11-06 22:05:53.310090 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OPEN-ISSUES.md\""
+      },
+      {
+        "line": 4756,
+        "text": "2026-11-06 22:05:53.310090 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+      },
+      {
+        "line": 4757,
+        "text": "2026-11-06 22:05:53.310090 15336 [info]: [driver] Process  [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 4758,
+        "text": "2026-11-06 22:05:53.312099 15336 [info]: [driver] Process  [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 4759,
+        "text": "2026-11-06 22:05:53.312099 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OVERFLOW-SAFETY.md\""
+      },
+      {
+        "line": 4760,
+        "text": "2026-11-06 22:05:53.312099 6832 [warning]: [heuristic] \"Create Delete Full Read\" found suspected malware: [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\", E6A9F4477B2C5E4915A93524A00D85346C314182]"
+      },
+      {
+        "line": 4761,
+        "text": "2026-11-06 22:05:53.312099 6832 [info]: Process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\", E6A9F4477B2C5E4915A93524A00D85346C314182] suspended successfully"
+      },
+      {
+        "line": 4762,
+        "text": "2026-11-06 22:05:53.312099 6832 [info]: \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"'s certificate couldn't be verified (cache)"
+      },
+      {
+        "line": 4763,
+        "text": "2026-11-06 22:05:53.312099 6832 [info]: Found suspicious parent process [32755 (internal), 42236 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"] of process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+      },
+      {
+        "line": 4764,
+        "text": "2026-11-06 22:05:53.312099 6832 [info]: Process [32755 (internal), 42236 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\", 4F1ACE2A3E5A6027C55EA87E5710D70785259700] suspended successfully"
+      },
+      {
+        "line": 4765,
+        "text": "2026-11-06 22:05:53.312099 6832 [info]: Successfully added restoration process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+      },
+      {
+        "line": 4766,
+        "text": "2026-11-06 22:05:53.320144 6832 [info]: Process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] has modified the following files: \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-philosophy.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-roadmap.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-performance.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-scorecard.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\_newchapter_en.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-project-status.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib-reference.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-vocabulary.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html\""
+      },
+      {
+        "line": 4767,
+        "text": "2026-11-06 22:05:53.320144 6832 [info]: Successfully populated affected files for process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+      },
+      {
+        "line": 4768,
+        "text": "2026-11-06 22:05:53.324143 6832 [info]: Posting request to cloud white list for process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] with a process hash: <60C9B29843624DD8AF6B6A7B26147753BE6AEEF65098B9A503CC50850AFE410F>"
+      },
+      {
+        "line": 4769,
+        "text": "2026-11-06 22:05:53.324143 6832 [info]: [Cloud Verdict Cache] Found cached verdict for process <60C9B29843624DD8AF6B6A7B26147753BE6AEEF65098B9A503CC50850AFE410F>: false"
+      },
+      {
+        "line": 4770,
+        "text": "2026-11-06 22:05:53.324143 6832 [info]: Process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is not found in the cloud white list."
+      },
+      {
+        "line": 4771,
+        "text": "2026-11-06 22:05:53.324143 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\PATH-TO-COMPLETION.md\" by process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      },
+      {
+        "line": 4772,
+        "text": "2026-11-06 22:05:53.324143 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\RELEASE-NOTES.md\" by process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      },
+      {
+        "line": 4773,
+        "text": "2026-11-06 22:05:53.324143 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SANDESH.md\" by process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      },
+      {
+        "line": 4774,
+        "text": "2026-11-06 22:05:53.324143 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SPECIFICATION.md\" by process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      },
+      {
+        "line": 4775,
+        "text": "2026-11-06 22:05:53.324143 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html\" by process [32792 (internal), 43036 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      }
+    ]
+  },
+  {
+    "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.74.log.gz",
+    "size": 137003,
+    "read_bytes_sha256": "ee9dfb61849f68cffc4454188eac2aef6e5c938c0b575434426e20b1841785e1",
+    "suspension_lines": [],
+    "relevant_lines": []
+  },
+  {
+    "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.73.log.gz",
+    "size": 134722,
+    "read_bytes_sha256": "28931d9a4aac15bced09bd31549b4f151b04c641977c0226b19b410e5f1cd50b",
+    "suspension_lines": [],
+    "relevant_lines": []
+  },
+  {
+    "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.72.log.gz",
+    "size": 113337,
+    "read_bytes_sha256": "8cf7a753770fa72885bdc3335fa44c94fd097775b455afd855909e401845f447",
+    "suspension_lines": [
+      1202,
+      1205
+    ],
+    "relevant_lines": [
+      {
+        "line": 1190,
+        "text": "2026-11-06 21:32:45.265276 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+      },
+      {
+        "line": 1191,
+        "text": "2026-11-06 21:32:45.266294 8988 [info]: [driver] Process  [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-IMPROVEMENTS.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 1192,
+        "text": "2026-11-06 21:32:45.267279 8988 [info]: [driver] Process  [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-MY-IDEA.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 1193,
+        "text": "2026-11-06 21:32:45.267279 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OBJECT-FORMAT.md\""
+      },
+      {
+        "line": 1194,
+        "text": "2026-11-06 21:32:45.267279 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+      },
+      {
+        "line": 1195,
+        "text": "2026-11-06 21:32:45.267279 8988 [info]: [driver] Process  [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-UNIQUE-HYBRID.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 1196,
+        "text": "2026-11-06 21:32:45.268278 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OPEN-ISSUES.md\""
+      },
+      {
+        "line": 1197,
+        "text": "2026-11-06 21:32:45.268278 6832 [info]: \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"'s certificate has been verified (cache)"
+      },
+      {
+        "line": 1198,
+        "text": "2026-11-06 21:32:45.268278 8988 [info]: [driver] Process  [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\R114-SUTRAM-TRUTI.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 1199,
+        "text": "2026-11-06 21:32:45.269279 8988 [info]: [driver] Process  [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\reports\\COVERAGE-AUDIT.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 1200,
+        "text": "2026-11-06 21:32:45.270280 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OVERFLOW-SAFETY.md\""
+      },
+      {
+        "line": 1201,
+        "text": "2026-11-06 21:32:45.270280 6832 [warning]: [heuristic] \"Create Delete Full Read\" found suspected malware: [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\", E6A9F4477B2C5E4915A93524A00D85346C314182]"
+      },
+      {
+        "line": 1202,
+        "text": "2026-11-06 21:32:45.270280 6832 [info]: Process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\", E6A9F4477B2C5E4915A93524A00D85346C314182] suspended successfully"
+      },
+      {
+        "line": 1203,
+        "text": "2026-11-06 21:32:45.270280 6832 [info]: \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"'s certificate couldn't be verified (cache)"
+      },
+      {
+        "line": 1204,
+        "text": "2026-11-06 21:32:45.270280 6832 [info]: Found suspicious parent process [30983 (internal), 36956 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"] of process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+      },
+      {
+        "line": 1205,
+        "text": "2026-11-06 21:32:45.270280 6832 [info]: Process [30983 (internal), 36956 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\", 4F1ACE2A3E5A6027C55EA87E5710D70785259700] suspended successfully"
+      },
+      {
+        "line": 1206,
+        "text": "2026-11-06 21:32:45.270280 8988 [info]: [driver] Process  [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\reports\\EDGE-COVERAGE-30.md\" with operation flags [ UntrustedProcess ]"
+      },
+      {
+        "line": 1207,
+        "text": "2026-11-06 21:32:45.270280 6832 [info]: Successfully added restoration process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+      },
+      {
+        "line": 1208,
+        "text": "2026-11-06 21:32:45.277283 6832 [info]: Process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] has modified the following files: \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-vocabulary.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib-reference.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-performance.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-scorecard.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-philosophy.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-project-status.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-roadmap.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\_newchapter_en.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html\""
+      },
+      {
+        "line": 1209,
+        "text": "2026-11-06 21:32:45.277283 6832 [info]: Successfully populated affected files for process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+      },
+      {
+        "line": 1210,
+        "text": "2026-11-06 21:32:45.280293 6832 [info]: Posting request to cloud white list for process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] with a process hash: <60C9B29843624DD8AF6B6A7B26147753BE6AEEF65098B9A503CC50850AFE410F>"
+      },
+      {
+        "line": 1211,
+        "text": "2026-11-06 21:32:45.280293 6832 [info]: [Cloud Verdict Cache] Found cached verdict for process <60C9B29843624DD8AF6B6A7B26147753BE6AEEF65098B9A503CC50850AFE410F>: false"
+      },
+      {
+        "line": 1212,
+        "text": "2026-11-06 21:32:45.280293 6832 [info]: Process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is not found in the cloud white list."
+      },
+      {
+        "line": 1213,
+        "text": "2026-11-06 21:32:45.280293 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\PATH-TO-COMPLETION.md\" by process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      },
+      {
+        "line": 1214,
+        "text": "2026-11-06 21:32:45.280293 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\RELEASE-NOTES.md\" by process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      },
+      {
+        "line": 1215,
+        "text": "2026-11-06 21:32:45.280293 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SANDESH.md\" by process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      },
+      {
+        "line": 1216,
+        "text": "2026-11-06 21:32:45.280293 6832 [warning]: Ignoring creating of file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SPECIFICATION.md\" by process [30984 (internal), 27748 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] since it's already considered suspicious"
+      }
+    ]
+  },
+  {
+    "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.71.log.gz",
+    "size": 113103,
+    "read_bytes_sha256": "10494c7cc91fda92e531a2241e0c75b69bd939df7d69791a512dced741274616",
+    "suspension_lines": [],
+    "relevant_lines": []
+  },
+  {
+    "path": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.70.log.gz",
+    "size": 128482,
+    "read_bytes_sha256": "d63bb7e855dafc85bc50db29d286f9736b1d72412164dfb9496fa940a61b0f4b",
+    "suspension_lines": [],
+    "relevant_lines": []
+  }
+]
