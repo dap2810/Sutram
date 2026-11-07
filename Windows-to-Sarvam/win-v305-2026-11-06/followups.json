@@ -1,0 +1,104 @@
+[
+  {
+    "test": "B3-forced-oom",
+    "description": "no memory to grow a kosh: a message",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "--fail-alloc",
+        "3",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B3-forced-oom.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3-forced-oom.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 1,
+      "stdout": "Sutram truti: nivesh patra aprapt\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0239
+    },
+    "expected_stdout": "Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva\n",
+    "expected_exit": 1
+  },
+  {
+    "test": "B7-S1-refusal",
+    "description": "a kosh slice beside a growth that moves its region (R204 S1; v303 SIGSEGV)",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7-S1-refusal.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S1-refusal.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 1,
+      "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'pratham' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0281
+    },
+    "output_exists": false,
+    "expected": "E_KOSH_VIBHAG, exit 1, no output executable"
+  },
+  {
+    "test": "79_ayojan_cwd-original-repo-cwd",
+    "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\original-repo-cwd.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 7335 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.027
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\original-repo-cwd.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "81\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0635
+    }
+  },
+  {
+    "test": "79_ayojan_cwd-complete-bundle-unrelated-cwd",
+    "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\bundle\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\complete-bundle-unrelated-cwd.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 7335 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0561
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\complete-bundle-unrelated-cwd.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "81\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0638
+    }
+  }
+]

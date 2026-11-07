@@ -1,0 +1,29 @@
+{
+  "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
+  "libraries": {
+    "aadhar.smlib": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876",
+    "ank.smlib": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76",
+    "anukram.smlib": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26",
+    "brihat.smlib": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479",
+    "chandas.smlib": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52",
+    "ganit.smlib": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e",
+    "ganita.smlib": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09",
+    "gudh.smlib": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379",
+    "kalana.smlib": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a",
+    "khand.smlib": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c",
+    "madhava.smlib": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1",
+    "mala.smlib": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe",
+    "nighantu.smlib": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e",
+    "patra.smlib": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398",
+    "phal.smlib": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140",
+    "roop.smlib": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a",
+    "sadhan.smlib": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0",
+    "samanvaya.smlib": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd",
+    "sangrah.smlib": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4",
+    "sankhyiki.smlib": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e",
+    "shreni.smlib": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae",
+    "suchi.smlib": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424",
+    "vakyank.smlib": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296",
+    "varna.smlib": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352"
+  }
+}

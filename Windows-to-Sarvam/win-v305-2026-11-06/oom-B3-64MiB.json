@@ -1,0 +1,17 @@
+{
+  "test": "B3-under-64MiB-commit-limit",
+  "executable": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe",
+  "executable_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2",
+  "process_commit_limit_bytes": 67108864,
+  "timeout_seconds": 60,
+  "command": [
+    "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+  ],
+  "mechanism": "Windows Job Object, process memory limit; child assigned while suspended",
+  "timed_out": false,
+  "exit": 3221225477,
+  "stdout": "",
+  "stderr": "",
+  "graceful_oom": false,
+  "elapsed_seconds": 0.0901
+}

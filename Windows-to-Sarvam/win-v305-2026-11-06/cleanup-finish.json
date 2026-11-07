@@ -1,0 +1,13 @@
+{
+    "status":  "PASS",
+    "resolved_target":  "C:\\Users\\dmech\\AppData\\Local\\Sutram",
+    "removed":  [
+                    "C:\\Users\\dmech\\AppData\\Local\\Sutram\\uninstall.exe",
+                    "C:\\Users\\dmech\\AppData\\Local\\Sutram"
+                ],
+    "recursive_delete":  false,
+    "stale_user_path_removed":  true,
+    "old_folder_exists":  false,
+    "canonical_sha256":  "4C05D5CBAD99B32BE1A38459F1B4B794E00F8B34F89A662EF1CA363C92EC1603",
+    "canonical_uninstall_key_exists":  false
+}

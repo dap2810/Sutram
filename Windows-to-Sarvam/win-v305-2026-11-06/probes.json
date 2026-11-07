@@ -1,0 +1,413 @@
+[
+  {
+    "test": "B1",
+    "source_sha256": "db6444562844b46ee703a8faabfc7ca4ae92c9d13f42b4a90ef590fa0921db9d",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B1.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B1.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 3077 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0494
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B1.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "a0=99 k0=99\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0782
+    }
+  },
+  {
+    "test": "B2",
+    "source_sha256": "1eeb82e3d247fa6f7868e9fb7a612ae2d87201ed8fc5cea9574d8526bce5337e",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B2.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B2.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 1778 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0293
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B2.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "sum=20000\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0736
+    }
+  },
+  {
+    "test": "B3",
+    "source_sha256": "2a27617609db6f789ebe4aa04710f04387f4d15c976b07538b3e510bb51934b4",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B3.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 1594 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0301
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 60,
+      "exit": 0,
+      "stdout": "100000000\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.5003
+    }
+  },
+  {
+    "test": "B4",
+    "source_sha256": "459946c0c29fd029cfc2fa1934522aece0ca4d5cd7a9924be78b4bd1f1df4e0d",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B4.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B4.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 1291 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0298
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B4.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "start=0\nin=4096\nafter=0\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0744
+    }
+  },
+  {
+    "test": "B5",
+    "source_sha256": "adfb84bb10311ca293bc07c20832bd6b259a2059c3b8c964abd04ae0a2c52f1a",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B5.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B5.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 1309 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0273
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B5.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 1,
+      "stdout": "Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1048576 baait)\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0743
+    }
+  },
+  {
+    "test": "B6",
+    "source_sha256": "707d56eef1979924cc0cc3ed40647132e58b5be56ba717c73c02b38b0580575c",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B6.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B6.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 2522 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0279
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B6.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "gan=2\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0754
+    }
+  },
+  {
+    "test": "B7",
+    "source_sha256": "47ada6069d516b60661f0f77f224a2f36947ead6607abe96da8eb744e5f54bce",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 1,
+      "stdout": "\nSutram truti: vyakaran dosh, pankti 6:19, shabd 'tak'\n      vitti s = k[1 tak]\n                    ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0276
+    }
+  },
+  {
+    "test": "B8",
+    "source_sha256": "461c548d852c55546206a772784ba2421f205b001e563b63add947c1f9c6fb7e",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B8.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B8.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 321 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0292
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B8.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "B",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0734
+    }
+  },
+  {
+    "test": "B7-S2-1",
+    "source_sha256": "6f56c2575b882a83a5f4d63f95bcf922f2e8cbea54e18609747ca9951f696531",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7-S2-1.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S2-1.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 3104 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0298
+    },
+    "repository_expectation": {
+      "description": "k[lo:] where lo grows the kosh: to the new end (R204 S2; v304 refused it)",
+      "stdout": "8\n",
+      "exit": 0
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S2-1.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "8\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0721
+    }
+  },
+  {
+    "test": "B7-S2-2",
+    "source_sha256": "45b7ac08de175b845f14983f57a78536af06b9c754c46347b15d9923e8269119",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7-S2-2.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S2-2.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 3764 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0303
+    },
+    "repository_expectation": {
+      "description": "k[lo:] where lo shrinks the kosh (R204 S2)",
+      "stdout": "2\n",
+      "exit": 0
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S2-2.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "2\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0823
+    }
+  },
+  {
+    "test": "B7-S2-3",
+    "source_sha256": "b42902beee83e71d9a7f620e6a779032034df31f6fd3b4e7e1860a13a095ea02",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7-S2-3.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S2-3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 1888 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0355
+    },
+    "repository_expectation": {
+      "description": "k[lo:] where lo clears the kosh (R204 S2)",
+      "stdout": "0\n",
+      "exit": 0
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S2-3.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "0\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0747
+    }
+  },
+  {
+    "test": "B7-colon",
+    "source_sha256": "47f4c7f263d7ff1504f62b28f7048851683f7b8916e186eb279cbc2ce16f6fd9",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7-colon.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-colon.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 1,
+      "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0295
+    }
+  },
+  {
+    "test": "B8-lowercase",
+    "source_sha256": "793d17fa65911991a3d587fd23a038583da879beccdcee0774a20951dd182b90",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B8-lowercase.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B8-lowercase.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 321 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0272
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B8-lowercase.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "a",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.072
+    }
+  },
+  {
+    "test": "B8-concat",
+    "source_sha256": "e0aad72bf142075e8be72648084bdc91c19936694b5f4e5a6b9d553aa9b39a3d",
+    "compile": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B8-concat.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B8-concat.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram",
+      "timeout_seconds": 30,
+      "exit": 0,
+      "stdout": "Siddh: 472 baait sankalit\n",
+      "stderr": "",
+      "timed_out": false,
+      "elapsed_seconds": 0.0271
+    },
+    "run": {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B8-concat.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "timeout_seconds": 30,
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Sutram truti [E_VARTANI_STHIRA]: vartani_sandhi: prathama vartani sthira (karyakramasya bhagah) - tasyam likhitum na shakyate\n",
+      "timed_out": false,
+      "elapsed_seconds": 0.0793
+    }
+  }
+]

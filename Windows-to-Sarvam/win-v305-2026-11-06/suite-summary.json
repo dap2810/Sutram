@@ -1,0 +1,14 @@
+{
+  "exit": 1,
+  "elapsed_seconds": 26.559,
+  "counts": {
+    "COMPILE_FAIL": 1,
+    "NO_EXPECTATION": 3,
+    "PASS": 321,
+    "SKIP_LINUX_RAW_SYSCALL": 1,
+    "SKIP_SIDE_EFFECT_OR_INLINE_ASM": 5
+  },
+  "failures": [
+    "79_ayojan_cwd"
+  ]
+}

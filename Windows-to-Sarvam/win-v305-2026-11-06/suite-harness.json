@@ -1,0 +1,9 @@
+{
+  "original": "E:\\Github_Projects\\Sutram\\tools\\test_windows_native.py",
+  "sha256": "749b482d4a8ab448a7b1ef8bf17a0becdd9a1c664743e590685429ca50d37ba5",
+  "only_override": {
+    "before": "out=ROOT/'build/windows/acceptance'",
+    "after": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\suite"
+  },
+  "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c"
+}
