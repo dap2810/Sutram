@@ -54,12 +54,12 @@ Copy-Item -LiteralPath $SetupExePath -Destination (Join-Path $InstallDir 'Sutram
 
 **I built detect and refuse.**
 - **Before it stages anything,** the engine looks for another `sutram.exe` where a new terminal could find it: every folder on the machine PATH and the user PATH (as the registry has them now, not as the installer's own process inherited them), and the legacy `%LOCALAPPDATA%\Sutram\bin\` and `%LOCALAPPDATA%\Sutram\`. Its own `bin\` (a re-install or upgrade of the same folder) does not count.
-- **If one is found it stops:** `Another Sutram is already installed: <path>. Uninstall it (or remove its folder from PATH), then run this installer again.` Nothing is copied.
+- **If one is found it stops:** `Another Sutram is already installed: <path>. A new terminal could run that one instead of this. Uninstall it (Settings > Apps > Sutram, or its own uninstaller), or delete that folder and remove it from PATH, then run this installer again.` Nothing is copied. A PATH folder with no `sutram.exe` in it does not count.
 - **With Add to PATH, after writing PATH,** it asks a fresh `cmd.exe` - PATH rebuilt from the registry, working folder `%TEMP%`, 8 s limit - which `sutram.exe` comes first and what `sutram --version` prints. **Unless that is this folder's `bin\sutram.exe` and this version, the install fails** with both shown. This is the check that would have caught v303: it asks the question a student's new terminal asks.
 
 **Why not the other two:**
 - **Removing or upgrading the old one:** the old `AppData\Local\Sutram` is not this installer's. It has no manifest of ours; a student may have their programs in it. Deleting what we did not install is the wrong default, and "upgrading" it means guessing its layout.
-- **A PATH entry that takes precedence:** user PATH comes after machine PATH on Windows, so the installer cannot win against a machine-wide old install without administrator rights - and it would leave two compilers, with the order deciding which one a student gets. That is the defect, made permanent.
+- **A PATH entry that takes precedence:** on the owner's machine both entries are in the **user** PATH (ChatGPT's diagnostic, `9ae1b12`, corrects the earlier reading), so putting ours first there would have worked on that machine. But Windows puts the machine PATH before the user PATH, so an old machine-wide install would still win without administrator rights; and either way two compilers stay installed, with the order deciding which one a student gets - the defect, made permanent and harder to see.
 - **Refusing is the one that leaves one compiler,** and says where the other is.
 
 ## WS3 - was there a gate? No.
@@ -68,6 +68,15 @@ Copy-Item -LiteralPath $SetupExePath -Destination (Join-Path $InstallDir 'Sutram
 - **Now there are two:**
   - **`R130 installer engine`** (Linux, in `tools/gates.sh`, 16 checks): the wizard's flags, no window, a bounded wait with terminate, the engine's preferences, no prompt anywhere, the per-file copy, the other-Sutram refusal before staging (and the legacy folder), the fresh-terminal check and version comparison, the completion log, and that `Sutram-Setup.exe` embeds this tree's engine and uninstaller. **Run on v305's wizard, engine and `Sutram-Setup.exe` (copies from `30be5ac`), it fails 12 of 16;** the 4 it passes are true of v305 too (no prompt in the engine, the completion line, the exe embeds its own scripts). On v306: 0 failed. Both runs are in the evidence.
   - **`tests/windows/test_installer_e2e.py`** (Windows only; changes this user's install, so it needs `--i-understand-this-installs`): runs the engine the wizard runs, with `-AddPath`, checks it exits 0 within 15 minutes and logs completion, then a new `cmd.exe` with PATH from the registry: `where sutram` must list the installed `bin\sutram.exe` first and `sutram --version` must print the tree's version; then it uninstalls and checks PATH. **That is the gate you described. It is NOT RUN here; it is in the gate list's Windows NOT-RUN.**
+
+## What landed on `main` while I worked (ChatGPT, native Windows, read before this was sent)
+
+- **`9ae1b12`, the diagnostic:** on the owner's machine as it was, the v305 installer did not hang - it refused before copying, both times, because the installed `bin\sutram-link.exe` did not match the previous install's manifest (`Upgrade would overwrite a user file`). **The copy-stage hang was not reproduced.** It also found:
+  - **the wizard shows 90 % ("finalizing") as soon as the engine exits, before it looks at the exit code** (`sutram_wizard.asm` near the `WaitForSingleObject`), so a nearly full bar is not evidence of success. The failure dialog is still shown. **Not changed in v306** - a display order, not a wrong result; next round if you want it.
+  - the registered DisplayVersion is still `0.1.0`. **Not changed in v306.**
+- **`870acb3`, the repair (owner-authorized):** the 137 files moved to `Programs\Sutram-recovery-20261106-205221`, then the unchanged v305 installer ran into the empty folder: **it finished in about 15 s, closed normally, 657 of 657 files match, and bare `sutram` from a new terminal is v305.**
+- **What this means for R130:** the hang has now been seen once (v303, by the owner) and not again (v305, twice refused, once complete). **Its cause is still not established** - I say so above and do not claim the v306 changes fixed it. They make it impossible to wait forever, and make the log say where it stopped.
+- **On that machine now:** `%LOCALAPPDATA%\Sutram\bin` is still in the user PATH, ahead of `Programs\Sutram\bin`, but bare `sutram` resolves to the new install, so there is no `sutram.exe` in it. **v306's check does not refuse for that;** it would if a `sutram.exe` were there again. The machine has v305 installed, so `test_installer_e2e.py` will refuse (it needs a machine with no Sutram) - run the v306 wizard over it as an upgrade instead, then a new terminal: `where sutram` and `sutram --version`.
 
 ## WS4 - v306
 

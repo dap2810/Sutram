@@ -63,7 +63,7 @@ Sutram 1.0 (v306) - sampurna sutra
 - **`79_ayojan_cwd` compiles from a folder outside the project on purpose:** it tests that the compiler finds `lib/` beside itself, not in the working folder. The Linux suite runs the root compiler, which has `lib/` beside it.
 - **The Windows harness ran `win\sutram.exe`,** which has no `lib\` beside it; from a foreign folder it cannot find `ganit`. That is the `E_MODULE_MISSING`.
 - **The fix, in `tools/test_windows_native.py`:** for that one case it runs the root `sutram.exe` (`lib\` beside it), still from the outside folder. The other cases are unchanged.
-- **Checked under Wine:** from a folder outside the tree, `win\sutram.exe` gives `E_MODULE_MISSING: yoj patra aprapt: ganit`; the root `sutram.exe` compiles it and the program prints `81`, the golden. Native: ChatGPT's suite with a portable layout (`lib\` beside the compiler) passed this case.
+- **Checked under Wine:** from a folder outside the tree, `win\sutram.exe` gives `E_MODULE_MISSING: yoj patra aprapt: ganit`; the root `sutram.exe` compiles it and the program prints `81`, the golden. Native: ChatGPT's suite with a portable layout (`lib\` beside the compiler) passed this case. And ChatGPT's repair round (`870acb3`, landed while I worked) ran the installed v305 compiler on it from an unrelated folder: exit 0, `81` - the installed layout has `lib\` beside `bin\`.
 - **The compiler is not changed for it.**
 
 ## WS4 - v306
