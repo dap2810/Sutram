@@ -184,6 +184,17 @@ try {
             try { $ext.DeleteValue('', $false) } finally { $ext.Dispose() }
         }
         Remove-ItemProperty -LiteralPath (Join-Path $extKey 'OpenWithProgids') -Name 'Sutram.Source' -ErrorAction SilentlyContinue
+        # R143 (Windows v311 acceptance): the installer creates .sm\OpenWithProgids; removing its value left the key,
+        # empty. A key is removed only when it has no value and no subkey left - another program's association,
+        # or anything else under .sm, keeps it.
+        foreach ($sub in @('Software\Classes\.sm\OpenWithProgids','Software\Classes\.sm')) {
+            $k=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($sub,$false)
+            if ($k) {
+                $empty=($k.ValueCount -eq 0 -and $k.SubKeyCount -eq 0)
+                $k.Dispose()
+                if ($empty) { [Microsoft.Win32.Registry]::CurrentUser.DeleteSubKey($sub,$false); Log ('Removed the empty registry key HKCU\' + $sub) }
+            }
+        }
     }
     $unKey='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram'
     $registered=Get-ItemProperty -LiteralPath $unKey -ErrorAction SilentlyContinue
@@ -229,4 +240,10 @@ try {
     Log 'Uninstall completed; user-created and user-modified files were preserved.'
 
     exit 0
-} catch { try{Log('ERROR: '+$_.Exception.Message)}catch{}; exit 1 }
+} catch {
+    $failure=$_.Exception.Message
+    try{Log('ERROR: '+$failure)}catch{}
+    # R143: this script runs with no console (the wizard starts it with CREATE_NO_WINDOW), so a failure is shown.
+    try { [void](New-Object -ComObject WScript.Shell).Popup(('Sutram was not fully uninstalled: ' + $failure + [Environment]::NewLine + [Environment]::NewLine + 'Log: ' + $LogPath),0,'Sutram Uninstall',16) } catch {}
+    exit 1
+}

@@ -1,0 +1,25 @@
+# steps (entries popped) per walk, tracing build of the R143 source before the budget change; max per program
+768 programs; largest single walks (entries popped):
+       52  tests/stdlib/r9_guard_cells.sm
+       52  tests/stdlib/r9_aadhar_alone.sm
+       52  tests/stdlib/r11_page_edges.sm
+       52  tests/stdlib/r11_brihat_guards.sm
+       52  tests/stdlib/bigint_zero.sm
+       52  tests/stdlib/bigint_to_int.sm
+       52  tests/stdlib/bigint_sub.sm
+       52  tests/stdlib/bigint_powmod.sm
+
+# the widest statement the AST heap holds (21,829 terms)
+87316 steps
+
+# shapes at 1,000 terms: steps, compiled
+add 4000 True
+index 7000 True
+tern 7000 True
+neg 8000 True
+cmp 8000 True
+land 8000 True
+str 7000 True
+len 7000 True
+call6 12000 False
+call1 7000 False

@@ -1,5 +1,17 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v292 (Claude, R111) - the vocabulary change, as aliases: 22 builtins get Sanskrit names, `asti` / `nasti` are `==` / `!=`, `tyaj` leaves the shell
+
+- **22 builtins have a new, primary name; the old one still works and compiles to the same bytes.** An old name
+  written in the program's own file prints one warning per name on stderr - `Sutram suchana: 'kosh_push' purana
+  nama - 'kosh_kship' likhatu` - and none from a `yoj`'d module or in a `--lang` run (a pack run prints only its
+  pack's language). Reference §4b has
+  the table. `tests/r111/test_vocabulary.py` (a gate): every pair byte-identical, ELF and PE.
+- **`asti` / अस्ति is `==`, `nasti` / नास्ति is `!=`** - the same token (examples 324-327).
+- **The shell:** `tyaj` leaves; `exit`, `quit`, `help` still work, with the warning; `sahayata` is help.
+- **Sarvam's decisions applied:** `to` dropped; `vartani_sandhi`, `kosh_apanay`, `anka_akshar`, `likha_santat`;
+  Muse's two: `smaran_pratilip` and `sahayata`. **Not changed:** `Sutram Error` (R111-00 says why).
+
 ## v291 (Claude, R109) - the outlives rule follows a second name and a chain of any length; the installer gate names the payload; the suite's summary is its last line
 
 - **ChatGPT R178's branch findings, checked on main:** two were open on v290. `vitti a = k` then `rakh(a)` gave a

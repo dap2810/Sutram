@@ -123,3 +123,7 @@ are unchanged. Built with `tools/build_installer_linux.py` as in R140.
 **R142 (v311):** compiler and engine changed (a target deleted only when its kept copy has the same full SHA-256;
 a reused target that changed or disappeared is refused before it is moved, from PR #68); the runtime and
 `sutram-link.exe` are unchanged. Built with `tools/build_installer_linux.py` as in R140.
+
+**R143 (v312):** the wizard changed (the licence decoded as UTF-8 with CR LF line ends; the uninstall script
+started with CREATE_NO_WINDOW) and the uninstaller (no empty `.sm` keys; a failure shown in a message box). The
+runtime and `sutram-link.exe` are unchanged. Built with `tools/build_installer_linux.py` as in R140.

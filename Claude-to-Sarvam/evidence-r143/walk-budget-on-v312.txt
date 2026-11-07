@@ -1,0 +1,7 @@
+PASS  the source: the budget is R143_WALK_BUDGET (65536), spent before each entry is taken, refusing when spent
+PASS  release compiler: a 20,000-term statement (wide, not deep) - refused, exit 1, no output, E_VAKYA_SEEMA naming 65536
+PASS  release compiler: a 20,000-term module-level initializer (wide, not deep) - refused, exit 1, no output, E_VAKYA_SEEMA naming 65536
+PASS  release compiler: a 10,000-term statement compiles - prints '10000\n'
+PASS  test build, budget 64: a 40-term statement - refused, exit 1, no output, E_VAKYA_SEEMA naming 64
+PASS  test build, budget 64: a 10-term statement compiles - prints '10\n'
+r143 walk budget: 6 checks, 0 failed

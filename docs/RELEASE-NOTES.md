@@ -1,16 +1,31 @@
-# Sutram 1.0 (v311) — release notes
+# Sutram 1.0 (v312) — release notes
 
-**Compiler `Sutram 1.0 (v311) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v311). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v312) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v312). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
-## Status: what v311 closes, and what it does not (R140-R142)
+## Status: what v312 closes, and what it does not (R140-R143)
 
-v311 is v310 plus (R142):
+v312 is v311 plus (R143):
+- **the expression check's budget can be reached, and refuses.** v311's 200,000 steps could not be reached (the
+  widest statement the compiler can hold takes 87,316), so its refusal was code no program could run. From v312 a
+  statement whose check takes more than 65,536 steps - about 16,400 terms in one expression - is refused
+  (`E_VAKYA_SEEMA`), with the release compiler; the largest check any program here makes takes 52.
+- **the installer's licence page** shows the licence as written: UTF-8 is decoded (the em dash in its first line
+  showed as three characters, and its Sanskrit lines as noise) and its lines break (they ran together).
+- **the uninstall** opens no PowerShell window; a failure is shown in a message box with its log. And it removes
+  `HKCU\Software\Classes\.sm\OpenWithProgids`, then `.sm`, when nothing is left in them.
+
+**Evidence scope for v312.** Everything about v312 above is measured on Linux and under Wine only: the gates,
+the guard, the Windows compiler under Wine, the licence conversion run from the wizard's own code. **v312 has not
+run on Windows.** In particular nobody has yet seen the licence page drawn, an uninstall without a window, or the
+registry after a v312 uninstall. The native evidence below is of v309 and v311, each on the commit it names.
+
+v311 was v310 plus (R142):
 - **the expression check is inside expression code generation.** `gen_expr` generates without a check of its own
   only inside a statement or module-level initializer the check has already walked; anything reaching it another
   way is checked there, its own value counted as a number. A new entry that forgets the check can refuse more; it
@@ -25,7 +40,18 @@ v311 is v310 plus (R142):
   kept. And (from the Windows branch, PR #68) a file staging reused that changed or disappeared before it was
   published is refused before anything is moved.
 
-The native measurements below are of v309. **v310 and v311 have not yet been run on Windows.**
+**What the native Windows runs of v311 establish** (`Windows-to-Sarvam/win-v311-2026-11-07/` and
+`win-v311-acceptance-2026-11-07/`, the exact setup `134fae95...`, one existing Windows account - **not a new
+machine, VM or user profile**): the v310 superseded-copy data loss refuses and keeps both files; the installer
+fixtures pass (19 boundary, 14 reuse, 7 lock); concurrency, an edit during publishing, the suffix file and an
+ordinary interrupted retry; a default install, a first program written in Notepad, reinstall, four IDE scenarios,
+the add/XOR and global-initializer refusals, nesting to 1022, and 322 suite cases. **What they do not:** the
+out-of-memory exit (not rerun on v310 or v311), the walk budget (the nesting probe measured the parser), the
+mutant compilers, a byte-for-byte setup built on Windows, a clean uninstall (it left the empty key and a
+PowerShell window, fixed in v312 and not yet seen natively), a new user profile, and the compare-then-delete race
+under another writer, which no run has tested.
+
+The native measurements below are of v309 unless they say otherwise.
 
 
 Measured, with where:
@@ -323,6 +349,11 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v312:** an expression check that would take more than 65,536 steps refuses (`E_VAKYA_SEEMA`), reachable;
+  the licence page is decoded as UTF-8 with line breaks; the uninstall shows no console and leaves no empty `.sm`
+  key.
+- **v311:** the expression check is inside expression code generation, with its own stack; the installer deletes
+  a stopped run's copy only on an equal full SHA-256.
 - **v310:** module-level `vitti` initializers get a statement's checks (no `kosh` or slice used as a number, no
   `kosh` in a module `vitti`); an expression check that cannot finish refuses (`E_VAKYA_SEEMA`); the installer
   locks before any state read.

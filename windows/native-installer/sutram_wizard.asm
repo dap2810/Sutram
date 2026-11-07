@@ -992,24 +992,147 @@ dirname:
 .done:
     EPILOG
 
-; --- convert the ASCII license blob to UTF-16 in lic_w ------------------------------------
+; --- convert the UTF-8 license blob to UTF-16 in lic_w, with CR LF line ends ---------------
+; R143 (Windows v311 acceptance): the blob was widened byte by byte, so the em dash in the first line (U+2014,
+; UTF-8 E2 80 94) showed as three characters and every non-ASCII line was garbled; and its LF line ends, which a
+; multiline EDIT control does not break on, joined the lines ("ThreadCopyright"). Now: UTF-8 is decoded (a code
+; point above U+FFFF as a surrogate pair; an invalid or truncated sequence as U+FFFD, one byte at a time), and an
+; LF not already after a CR is written CR LF. At most 4095 units, then a NUL.
 license_to_utf16:
     PROLOG 48
     PTR  rsi, blob_license
     PTR  rdi, lic_w
-    mov rcx,blob_license_end-blob_license
-    cmp rcx,4095
-    jbe .loop
-    mov ecx,4095
+    mov  rcx, blob_license_end-blob_license
+    lea  r8, [rdi+4094*2]              ; no unit pair starts at or past this
 .loop:
     test rcx, rcx
     jz   .done
+    cmp  rdi, r8
+    jae  .done
     movzx eax, byte [rsi]
-    mov  [rdi], ax
-    inc  rsi
+    cmp  eax, 0x0A
+    je   .lf
+    cmp  eax, 0x80
+    jb   .unit1
+    cmp  eax, 0xC2
+    jb   .bad
+    cmp  eax, 0xE0
+    jb   .two
+    cmp  eax, 0xF0
+    jb   .three
+    cmp  eax, 0xF5
+    jb   .four
+    jmp  .bad
+.lf:
+    PTR  rdx, lic_w
+    cmp  rdi, rdx
+    je   .cr
+    cmp  word [rdi-2], 0x0D
+    je   .unit1
+.cr:
+    mov  word [rdi], 0x0D
     add  rdi, 2
+.unit1:                                ; eax = one unit; consumes one byte
+    mov  [rdi], ax
+    add  rdi, 2
+    inc  rsi
     dec  rcx
     jmp  .loop
+.two:
+    cmp  rcx, 2
+    jb   .bad
+    movzx edx, byte [rsi+1]
+    mov  r9d, edx
+    and  r9d, 0xC0
+    cmp  r9d, 0x80
+    jne  .bad
+    and  eax, 0x1F
+    shl  eax, 6
+    and  edx, 0x3F
+    or   eax, edx
+    mov  [rdi], ax
+    add  rdi, 2
+    add  rsi, 2
+    sub  rcx, 2
+    jmp  .loop
+.three:
+    cmp  rcx, 3
+    jb   .bad
+    movzx edx, byte [rsi+1]
+    movzx r10d, byte [rsi+2]
+    mov  r9d, edx
+    and  r9d, 0xC0
+    cmp  r9d, 0x80
+    jne  .bad
+    mov  r9d, r10d
+    and  r9d, 0xC0
+    cmp  r9d, 0x80
+    jne  .bad
+    and  eax, 0x0F
+    shl  eax, 12
+    and  edx, 0x3F
+    shl  edx, 6
+    or   eax, edx
+    and  r10d, 0x3F
+    or   eax, r10d
+    cmp  eax, 0x800                    ; overlong
+    jb   .bad
+    mov  r9d, eax
+    and  r9d, 0xF800
+    cmp  r9d, 0xD800                   ; a surrogate is not a character
+    je   .bad
+    mov  [rdi], ax
+    add  rdi, 2
+    add  rsi, 3
+    sub  rcx, 3
+    jmp  .loop
+.four:
+    cmp  rcx, 4
+    jb   .bad
+    movzx edx, byte [rsi+1]
+    movzx r10d, byte [rsi+2]
+    movzx r11d, byte [rsi+3]
+    mov  r9d, edx
+    and  r9d, 0xC0
+    cmp  r9d, 0x80
+    jne  .bad
+    mov  r9d, r10d
+    and  r9d, 0xC0
+    cmp  r9d, 0x80
+    jne  .bad
+    mov  r9d, r11d
+    and  r9d, 0xC0
+    cmp  r9d, 0x80
+    jne  .bad
+    and  eax, 0x07
+    shl  eax, 18
+    and  edx, 0x3F
+    shl  edx, 12
+    or   eax, edx
+    and  r10d, 0x3F
+    shl  r10d, 6
+    or   eax, r10d
+    and  r11d, 0x3F
+    or   eax, r11d
+    cmp  eax, 0x10000                  ; overlong
+    jb   .bad
+    cmp  eax, 0x10FFFF
+    ja   .bad
+    sub  eax, 0x10000
+    mov  edx, eax
+    shr  edx, 10
+    add  edx, 0xD800
+    mov  [rdi], dx
+    and  eax, 0x3FF
+    add  eax, 0xDC00
+    mov  [rdi+2], ax
+    add  rdi, 4
+    add  rsi, 4
+    sub  rcx, 4
+    jmp  .loop
+.bad:
+    mov  eax, 0xFFFD
+    jmp  .unit1
 .done:
     mov  word [rdi], 0
     EPILOG
@@ -1332,7 +1455,10 @@ do_uninstall:
     xor  r8d, r8d
     xor  r9d, r9d
     mov  qword [rsp+32], 0
-    mov  qword [rsp+40], 0
+    ; R143 (Windows v311 acceptance: "PowerShell at the end of the process, and disappeared"): no console
+    ; window, as the install has none (R130). The uninstaller is a GUI program; a failure is shown by the
+    ; uninstall script itself in a message box, with its log.
+    mov  qword [rsp+40], CREATE_NO_WINDOW
     mov  qword [rsp+48], 0
     mov  qword [rsp+56], 0
     PTR  rax, startupinfo

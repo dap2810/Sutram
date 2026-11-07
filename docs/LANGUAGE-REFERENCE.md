@@ -1036,6 +1036,10 @@ parameter, in `pankti_gan(s)`, as the base of `s[i]` and `s[a:b]`, and (a `mala`
 made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is. The same holds in a module-level `vitti` initializer (v310), and
 a `kosh` cannot be a module `vitti`'s initial value there either (`E_KOSH_DVARA`). From v311 the check is part of
 expression code generation itself: an expression reached by any other path is checked there, its own value as a number.
+The check has a limit (v312): a statement whose check takes more than 65,536 steps - one step per node and per
+field that is not a node, about 16,400 terms in a single expression - is refused, `Sutram truti [E_VAKYA_SEEMA]`,
+exit 1, no program. Split such an expression over several statements. The largest statement in the examples,
+tests and library takes 52 steps.
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.

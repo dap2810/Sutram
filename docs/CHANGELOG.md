@@ -1,4 +1,20 @@
-> **The 20 newest entries.** Older ones, from "v291" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v292" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v312 (Claude, R143) - the walk budget reachable; the licence page, the uninstall window, the empty key
+
+- **The expression walk's budget** (Sarvam R143 WS1; ChatGPT R211: the nesting probe measured the parser). R141's
+  "200000 can never be reached" compared nodes with steps: the walk spends a step on every entry it pops. Measured
+  on v311: the widest statement the AST heap holds, 21,829 terms, takes 87,316 steps; the largest walk in the 768
+  programs takes 52. The budget is now `R143_WALK_BUDGET`, 65536: a 20,000-term statement, or module initializer,
+  is refused with the release compiler (`E_VAKYA_SEEMA`, exit 1, no output; the message names the number), 10,000
+  terms compile, and a `-DR143_WALK_BUDGET=64` build refuses 40 terms. Gate `R143 walk budget` (6 checks).
+- **Installer, from the Windows v311 acceptance run** (gate `R143 installer first contact`, 10 checks):
+  - the licence page: `license_to_utf16` widened UTF-8 byte by byte (U+2014 EM DASH showed as three characters,
+    every Sanskrit line as noise) and kept bare LF, on which an EDIT control does not break. It now decodes
+    UTF-8 and writes CR LF; the gate runs the wizard's own function on the embedded licence against a reference;
+  - the uninstall script starts with `CREATE_NO_WINDOW`, and shows its own failure in a message box with its log;
+  - the uninstaller removes `HKCU\Software\Classes\.sm\OpenWithProgids`, then `.sm`, only when empty.
+- Guard v311 -> v312: ELF and PE 587 identical / 181 refused / 0 DIFFER; refusal messages unchanged.
 
 ## v311 (Claude, R142) - the check inside expression code generation, its own stack, no delete on a name
 
@@ -327,15 +343,3 @@
   which no Sutram value holds. Example 329. `sankhya_yog` / `sankhya_gunan` are documented as what they are
   (four 32-bit float lanes), not fixed.
 - The reference says what would remove `Sutram Error`, the one English word left.
-
-## v292 (Claude, R111) - the vocabulary change, as aliases: 22 builtins get Sanskrit names, `asti` / `nasti` are `==` / `!=`, `tyaj` leaves the shell
-
-- **22 builtins have a new, primary name; the old one still works and compiles to the same bytes.** An old name
-  written in the program's own file prints one warning per name on stderr - `Sutram suchana: 'kosh_push' purana
-  nama - 'kosh_kship' likhatu` - and none from a `yoj`'d module or in a `--lang` run (a pack run prints only its
-  pack's language). Reference §4b has
-  the table. `tests/r111/test_vocabulary.py` (a gate): every pair byte-identical, ELF and PE.
-- **`asti` / अस्ति is `==`, `nasti` / नास्ति is `!=`** - the same token (examples 324-327).
-- **The shell:** `tyaj` leaves; `exit`, `quit`, `help` still work, with the warning; `sahayata` is help.
-- **Sarvam's decisions applied:** `to` dropped; `vartani_sandhi`, `kosh_apanay`, `anka_akshar`, `likha_santat`;
-  Muse's two: `smaran_pratilip` and `sahayata`. **Not changed:** `Sutram Error` (R111-00 says why).

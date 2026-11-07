@@ -1,0 +1,11 @@
+FAIL  the licence the wizard embeds: 1650 units, reference 1376; first difference at 7
+FAIL  the licence with CR LF line ends: 1684 units, reference 1376; first difference at 7
+FAIL  edge cases: 2/3/4-byte, a surrogate pair, overlong, a stray continuation, a CR alone, truncated: 23 units, reference 20; first difference at 1
+FAIL  a blob longer than the buffer: 4095 units, reference 4094; first difference at 0
+PASS  the reference agrees with Python's UTF-8 codec on the licence (CR LF line ends)
+PASS  the first line is "Sutram — The Complete Thread", then CR LF (U+2014 EM DASH, not three characters)
+FAIL  the uninstall script is started with CREATE_NO_WINDOW (no PowerShell window), as the install is
+FAIL  a failed uninstall says so in a message box, with its log - there is no console to see it in
+FAIL  uninstall removes .sm\OpenWithProgids, then .sm, only when the key has no value and no subkey left
+PASS  Sutram-Setup.exe embeds this uninstall-core.ps1
+r143 installer first contact: 10 checks, 7 failed

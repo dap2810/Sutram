@@ -1,0 +1,7 @@
+FAIL  the source: the budget is R143_WALK_BUDGET (None), spent before each entry is taken, refusing when spent
+FAIL  release compiler: a 20,000-term statement (wide, not deep) - exit 0, output made: 'Siddh: 120192 baait sankalit'
+FAIL  release compiler: a 20,000-term module-level initializer (wide, not deep) - exit 1, output none: 'Sutram truti: sarvatrik mulya sandarbh seema atikram'
+PASS  release compiler: a 10,000-term statement compiles - prints '10000\n'
+FAIL  test build, budget 64: a 40-term statement - exit 0, output made: 'Siddh: 432 baait sankalit'
+PASS  test build, budget 64: a 10-term statement compiles - prints '10\n'
+r143 walk budget: 6 checks, 4 failed
