@@ -62,7 +62,15 @@ $obj=Join-Path $work 'wizard.obj'
 Write-IconResourceInclude (Join-Path $ProjectRoot 'icons\sutram.ico') (Join-Path $work 'r73_icon.inc') 'icons/sutram.ico'
 [void](Invoke-BoundedProcess $nasm @('-f','win64','-dR73_ICON',('-I'+$work.Replace('\','/')+'/'),('-I'+$ProjectRoot.Replace('\','/')+'/'),(Join-Path $PSScriptRoot 'sutram_wizard.asm'),'-o',$obj) $work)
 $out=Join-Path $ProjectRoot 'Sutram-Setup.exe'
-[void](Invoke-BoundedProcess $linker @('-mi386pep','--subsystem','windows','--entry=_start','-o',$out,$obj,'-lkernel32','-lbcrypt') $work)
+# Relocated MinGW distributions may still have their original absolute search
+# paths compiled into ld. Prefer this toolchain's own adjacent import libraries.
+$linkArgs=@('-mi386pep','--subsystem','windows','--entry=_start','-o',$out,$obj)
+$importDir=[IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $linker) '..\x86_64-w64-mingw32\lib'))
+if ((Test-Path -LiteralPath (Join-Path $importDir 'libkernel32.a')) -and (Test-Path -LiteralPath (Join-Path $importDir 'libbcrypt.a'))) {
+    $linkArgs+=('-L'+$importDir)
+}
+$linkArgs+=@('-lkernel32','-lbcrypt')
+[void](Invoke-BoundedProcess $linker $linkArgs $work)
 Assert-Pe64 $out
 Write-Host ('Installer icon: ' + (Assert-PeResourceDirectory $out))
 [void](Invoke-BoundedProcess $out @('--self-test') $work)
