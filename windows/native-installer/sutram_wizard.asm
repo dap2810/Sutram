@@ -81,6 +81,9 @@ default rel
 
 ; --- misc -------------------------------------------------------------------
 %define INFINITE              0xFFFFFFFF
+%define ENGINE_WAIT_MS        900000        ; R130: 15 minutes, then the engine is stopped and setup fails
+%define WAIT_TIMEOUT_CODE     0x102
+%define CREATE_NO_WINDOW      0x08000000
 %define MB_YESNO              0x00000004
 %define MB_OK                 0x00000000
 %define MB_ICONQUESTION       0x00000020
@@ -190,6 +193,7 @@ n_WriteFile          db 'WriteFile',0
 n_CloseHandle        db 'CloseHandle',0
 n_CreateProcessW     db 'CreateProcessW',0
 n_WaitForSingleObject db 'WaitForSingleObject',0
+n_TerminateProcess   db 'TerminateProcess',0
 n_GetExitCodeProcess db 'GetExitCodeProcess',0
 n_lstrcpyW           db 'lstrcpyW',0
 n_lstrcatW           db 'lstrcatW',0
@@ -255,6 +259,7 @@ kernel_table:
     IMPORTS CloseHandle
     IMPORTS CreateProcessW
     IMPORTS WaitForSingleObject
+    IMPORTS TerminateProcess
     IMPORTS GetExitCodeProcess
     IMPORTS lstrcpyW
     IMPORTS lstrcatW
@@ -451,7 +456,7 @@ fname_ulog:    u16 "\uninstall.log"
 align 2
 sub_programs:  u16 "\Programs\Sutram"
 align 2
-ps_prefix:     u16 "powershell.exe -NoProfile -File "
+ps_prefix:     u16 "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "
 align 2
 flag_payloadzip:  u16 " -PayloadZip "
 align 2
@@ -467,7 +472,7 @@ flag_desktop:  u16 " -DesktopShortcut"
 align 2
 flag_selfpath: u16 " -SelfPath "
 align 2
-ps_uninst:     u16 "powershell.exe -NoProfile -File "
+ps_uninst:     u16 "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "
 quote:         dw '"',0
 align 2
 brow_title:    u16 "Select the folder to install Sutram in"
@@ -528,6 +533,7 @@ p_WriteFile:          resq 1
 p_CloseHandle:        resq 1
 p_CreateProcessW:     resq 1
 p_WaitForSingleObject: resq 1
+p_TerminateProcess:   resq 1
 p_GetExitCodeProcess: resq 1
 p_lstrcpyW:           resq 1
 p_lstrcatW:           resq 1
@@ -1122,13 +1128,14 @@ do_install_staged:
     PTR  rax, startupinfo
     mov  dword [rax], 104
 
-    ; CreateProcessW(NULL, cmdline, ...)
+    ; CreateProcessW(NULL, cmdline, ...). R130: no console window (CREATE_NO_WINDOW) - nothing can stop the
+    ; engine at a console, a QuickEdit selection or a progress bar - and -NonInteractive refuses any prompt.
     xor  ecx, ecx
     PTR  rdx, cmdline
     xor  r8d, r8d
     xor  r9d, r9d
     mov  qword [rsp+32], 0
-    mov  qword [rsp+40], 0
+    mov  qword [rsp+40], CREATE_NO_WINDOW
     mov  qword [rsp+48], 0
     mov  qword [rsp+56], 0
     PTR  rax, startupinfo
@@ -1142,13 +1149,25 @@ do_install_staged:
     mov  ecx, 60
     call post_progress
     mov  rcx, [rel procinfo]
-    mov  edx, INFINITE
+    mov  edx, ENGINE_WAIT_MS     ; R130: bounded - setup never waits forever on its engine
     API  WaitForSingleObject
+    cmp  eax, WAIT_TIMEOUT_CODE
+    jne  .engine_ended
+    mov  rcx, [rel procinfo]     ; still running after 15 minutes: stop it, and report a failure
+    mov  edx, 1
+    API  TerminateProcess
+    mov  rcx, [rel procinfo]
+    mov  edx, 5000
+    API  WaitForSingleObject
+    mov  dword [rel exit_code], 1
+    jmp  .engine_code
+.engine_ended:
     mov  ecx, 90
     call post_progress
     mov  rcx, [rel procinfo]
     PTR  rdx, exit_code
     API  GetExitCodeProcess
+.engine_code:
     mov rcx,[rel procinfo+8]
     API CloseHandle
     mov rcx,[rel procinfo]

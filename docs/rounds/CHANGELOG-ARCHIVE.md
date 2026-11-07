@@ -1,5 +1,25 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v286 (Muse's FIXALL patch, applied by Claude, R104) - five silent wrong answers become refusals; a recursion guard
+
+- **`likha(a, " ", b)`** (three arguments, the first not a string literal) printed nothing: now **`E_LIKHA_TRAYA`**
+  at compile time. The raw write is the new builtin **`dvaram_likha(fd, buf, len)`** (returns the count); 57 tree
+  sites renamed (`examples/215`, `217`, `lib/patra.smlib`, 54 tests).
+- **`s == "ab"` / `!=`** on strings compared addresses: now **`E_VARTANI_TUL`** (use `vartani_tul`, 0 when equal).
+  Also in `yadi` / `yavat` conditions and the fast paths. Not tracked: parameters, call results, `kosh` elements,
+  module globals - with a literal on either side they are still refused.
+- **`s + t`** on strings added addresses: now **`E_VARTANI_CAT`** (use `vartani_cat`). A string plus an integer is
+  still pointer arithmetic (`base + 6`, `letters + grade - 65`: two tree programs use it); literal + literal folds.
+- **`vitti x` / `dasham d` without a value in a function** read the slot's leftover (`0 99 99`): now **`E_MULYA_VINA`**.
+  `mala`, `kosh` and module-level declarations unchanged. Zero tree programs affected.
+- **Recursion past the stack** was a segmentation fault, exit 139: now **`E_GAHANATA`**, exit 1, from a check in every
+  `prakriya` prologue against `mukhya`'s entry `rsp` (limit 8,339,456 bytes, about 4,000 frames; `yog(3900)` runs,
+  `yog(4000)` refuses; v285 ran 4,000 and crashed at 4,100). Linux only; 15 bytes in `mukhya` + 115 per `prakriya`;
+  50,000,000 calls: 0.10 s before and after.
+- **The guard, v285 -> v286:** every Linux program that compiles differs (the prologue bytes); each was run old and
+  new - see `Claude-to-Sarvam/R104-00-*.md` for the counts by kind. PE: byte-identical. Reference 4a, 5a, 6d, 20.
+- Muse's report: `Muse-to-Sarvam/FIXALL-R100-TRAPS.md`. Native-speaker review of the new Sanskrit: NOT RUN.
+
 ## v285 (Claude, R102 + R103) - `mandapa parimita N`: a block with a byte budget that refuses; regions stay for the program's life
 
 - **`mandapa parimita N { }`** - the block's own `nirmmita` may use at most `N` bytes (each rounded to 16, as the

@@ -119,6 +119,7 @@ run_gate() {                      # name, then the command
     "R124 lazy commit")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r124 lazy commit: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R126 kinds")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r126 kinds: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R127 descriptor")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r127 descriptor: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R130 installer engine")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r130 installer engine: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R93 installer gate") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r93 installer gate: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "installer version") case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS //; s/ (.*//'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-100)";; esac ;;
     "version string")   case "$(tail -1 /tmp/g_out.$$)" in PASS*) ok "$name ($(tail -1 /tmp/g_out.$$ | sed 's/PASS version //'))";; *) bad "$name" "$(tail -1 /tmp/g_out.$$ | cut -c6-90)";; esac ;;
@@ -232,6 +233,7 @@ run_gate "R123 PE memory"    python3 -B tests/r123/test_pe_memory.py --compiler 
 run_gate "R124 lazy commit"  python3 -B tests/r124/test_lazy_commit.py --compiler ./sutram_compiler   # R124: Windows commits what a program touches - one nirmmita < 1 MB (was 1 GiB); runs and commit measured under Wine
 run_gate "R126 kinds"        python3 -B tests/r126/test_kinds.py --compiler ./sutram_compiler --pe   # R126: a name keeps one kind (E_VITTI_PRAKAR); a kosh leaves only by doors that keep it (E_KOSH_DVARA); runs ELF and PE (Wine)
 run_gate "R127 descriptor"   python3 -B tests/r127/test_descriptor.py --compiler ./sutram_compiler --pe   # R127: a kosh is a descriptor - names stay one past any growth, no region per kosh, failures are messages
+run_gate "R130 installer engine" python3 -B tests/r130/test_installer_engine.py   # R130: the engine cannot wait forever, refuses a second Sutram, and checks a new terminal; Sutram-Setup.exe embeds it
 run_gate "R93 installer gate" python3 -B tests/r93/test_installer_version.py   # R93: the installer check passes a current installer and fails each stale shape
 run_gate "installer version" python3 tools/check_installer_version.py   # R93: Sutram-Setup.exe must embed the compiler of this version (bin/ and win/sutram.exe), and Sutram-Setup.sha256 must be its hash - the installer fell behind twice with nothing failing
 run_gate "performance"        python3 tools/bench_gate.py --compiler ./sutram_compiler --repeat 3
@@ -250,7 +252,7 @@ fi
 # Windows cannot be run here. R34: it HAS been run, on real Windows 11 (Windows-to-Sarvam/,
 # Claude-to-Sarvam/evidence-r34/): there, run tests/r34/test_link_windows.py,
 # tools/ide_examples_windows.ps1 and tools/accept-windows.ps1. Say plainly it is not run here.
-skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1"
+skip "Windows execution" "cannot run here (Linux) - on Windows: tests/r34/test_link_windows.py, tests/r35/test_ffi_windows.py, tools/ide_examples_windows.ps1, tools/accept-windows.ps1, tests/windows/test_commit_oom.py (R131), tests/windows/test_installer_e2e.py --i-understand-this-installs (R130)"
 
 # R38: doc counts, LAST. doc_counts_gate.py normally runs gates.sh itself, which
 # would recurse if called from here. It now accepts --totals/--suite-pass (see its

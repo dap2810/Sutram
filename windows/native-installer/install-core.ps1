@@ -8,6 +8,10 @@ param(
     [switch]$VerifyOnly
 )
 $ErrorActionPreference = 'Stop'
+# R130: no progress bars (Expand-Archive and Copy-Item draw one, which a console can stall) and no confirmation
+# prompts: the wizard runs this with -NonInteractive and no console window, and waits at most 15 minutes.
+$ProgressPreference = 'SilentlyContinue'
+$ConfirmPreference = 'None'
 Set-StrictMode -Version 2.0
 
 function Log([string]$Message) {
@@ -45,6 +49,84 @@ function Invoke-SutramSelfTest([string]$ExePath,[string]$Argument,[string]$Stage
     } finally {
         $p.Dispose()
     }
+}
+# R130: copy the staged payload file by file, saying how far it got, so that a stall shows where it stopped.
+function Copy-StagedFiles([string]$From,[string]$To) {
+    $files = [IO.Directory]::GetFiles($From,'*',[IO.SearchOption]::AllDirectories)
+    Log ('Copying ' + $files.Length + ' Sutram files.')
+    $n = 0
+    foreach ($src in $files) {
+        $rel = $src.Substring($From.Length).TrimStart('\')
+        $dst = Join-Path $To $rel
+        $dir = [IO.Path]::GetDirectoryName($dst)
+        if (-not [IO.Directory]::Exists($dir)) { [void][IO.Directory]::CreateDirectory($dir) }
+        [IO.File]::Copy($src,$dst,$true)
+        $n++
+        if (($n % 100) -eq 0) { Log ('Copied ' + $n + ' of ' + $files.Length + ' files; last: ' + $rel) }
+    }
+    Log ('Copied all ' + $n + ' files.')
+}
+# R130: the PATH a terminal opened now would get - the machine's entries, then the user's - and the first folder on it
+# that has a sutram.exe. A new terminal runs that one: if it is not this installation, the student runs another Sutram.
+function Get-FreshPath {
+    $machine = [Environment]::GetEnvironmentVariable('Path','Machine')
+    $user = [Environment]::GetEnvironmentVariable('Path','User')
+    return (@($machine,$user) | Where-Object { $_ }) -join ';'
+}
+function Find-SutramOnPath([string]$PathValue) {
+    foreach ($item in ($PathValue -split ';')) {
+        $dir = Normalize-PathEntry $item
+        if ([string]::IsNullOrWhiteSpace($dir)) { continue }
+        try { if (Test-Path -LiteralPath (Join-Path $dir 'sutram.exe') -PathType Leaf) { return (Join-Path $dir 'sutram.exe') } } catch { continue }
+    }
+    return $null
+}
+# R130: every other Sutram this user's terminals could find - on the machine or user PATH, or in the folder the
+# older Sutram installers used (%LOCALAPPDATA%\Sutram) - excluding this installation's own bin folder.
+function Find-OtherSutram([string]$OwnBin) {
+    $found = New-Object System.Collections.Generic.List[string]
+    $own = Normalize-PathEntry $OwnBin
+    foreach ($item in ((Get-FreshPath) -split ';')) {
+        $dir = Normalize-PathEntry $item
+        if ([string]::IsNullOrWhiteSpace($dir)) { continue }
+        if ([string]::Equals($dir,$own,[StringComparison]::OrdinalIgnoreCase)) { continue }
+        try {
+            $exe = Join-Path $dir 'sutram.exe'
+            if ((Test-Path -LiteralPath $exe -PathType Leaf) -and -not $found.Contains($exe)) { $found.Add($exe) }
+        } catch { continue }
+    }
+    if ($env:LOCALAPPDATA) {
+        foreach ($legacy in @((Join-Path $env:LOCALAPPDATA 'Sutram\bin\sutram.exe'),(Join-Path $env:LOCALAPPDATA 'Sutram\sutram.exe'))) {
+            $legacyDir = Normalize-PathEntry ([IO.Path]::GetDirectoryName($legacy))
+            if ([string]::Equals($legacyDir,$own,[StringComparison]::OrdinalIgnoreCase)) { continue }
+            if ((Test-Path -LiteralPath $legacy -PathType Leaf) -and -not $found.Contains($legacy)) { $found.Add($legacy) }
+        }
+    }
+    return ,$found.ToArray()
+}
+# R130: run 'sutram --version' as a new terminal would - cmd.exe, the fresh PATH, a working folder without Sutram in it.
+function Invoke-FreshShellVersion {
+    $p = New-Object System.Diagnostics.Process
+    $p.StartInfo.FileName = $env:ComSpec
+    $p.StartInfo.Arguments = '/d /c sutram --version'
+    $p.StartInfo.UseShellExecute = $false
+    $p.StartInfo.RedirectStandardOutput = $true
+    $p.StartInfo.RedirectStandardError = $true
+    $p.StartInfo.CreateNoWindow = $true
+    $p.StartInfo.WorkingDirectory = $env:TEMP
+    $p.StartInfo.EnvironmentVariables['PATH'] = (Get-FreshPath)
+    try {
+        Log 'New-terminal check start: sutram --version through PATH.'
+        if (-not $p.Start()) { throw 'Unable to start cmd.exe for the new-terminal check.' }
+        $outTask=$p.StandardOutput.ReadToEndAsync()
+        $errTask=$p.StandardError.ReadToEndAsync()
+        if (-not $p.WaitForExit(8000)) {
+            try { $p.Kill() } catch {}
+            throw 'The new-terminal check timed out after 8000 ms.'
+        }
+        Log ('New-terminal check exit: code=' + $p.ExitCode)
+        return $outTask.Result
+    } finally { $p.Dispose() }
 }
 function Normalize-PathEntry([string]$Value) {
     if ($null -eq $Value) { return '' }
@@ -246,6 +328,15 @@ try {
         }
     }
 
+    # R130: refuse while another Sutram is installed where a terminal could find it. Two installations side by side
+    # made a new terminal run the older one (Windows round, v303: 'Sutram 1.4.0'), and a student cannot tell which.
+    Log 'Checking for another Sutram installation.'
+    $others = Find-OtherSutram (Join-Path $InstallDir 'bin')
+    if ($others.Length -gt 0) {
+        foreach ($o in $others) { Log ('Another Sutram is installed: ' + $o) }
+        throw ('Another Sutram is already installed: ' + ($others -join '; ') + '. A new terminal could run that one instead of this. Uninstall it (Settings > Apps > Sutram, or its own uninstaller), or delete that folder and remove it from PATH, then run this installer again.')
+    }
+
     $marker = Join-Path $InstallDir '.sutram-install'
     $statePath = Join-Path $InstallDir 'install-state.ini'
     $oldState = Read-State $statePath
@@ -318,9 +409,10 @@ try {
             Log 'Removing files owned by the previous Sutram payload.'
             Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.manifest.sha256')
         }
-        Log 'Copying Sutram files.'
-        Copy-Item -Path (Join-Path $stage '*') -Destination $InstallDir -Recurse -Force
-        Copy-Item -LiteralPath $SetupExePath -Destination (Join-Path $InstallDir 'Sutram-Uninstall.exe') -Force
+        Copy-StagedFiles $stage $InstallDir
+        Log 'Copying the uninstaller.'
+        [IO.File]::Copy($SetupExePath,(Join-Path $InstallDir 'Sutram-Uninstall.exe'),$true)
+        Log 'Writing the installation marker.'
         [IO.File]::WriteAllText($marker,'Sutram Windows installation' + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))
 
         $installedExe = Join-Path $InstallDir 'bin\sutram.exe'
@@ -344,6 +436,23 @@ try {
             $pathOwned = $false
         }
 
+        # R130: the completion check that verifies something - a new terminal must run THIS compiler.
+        if ($AddPath) {
+            $first = Find-SutramOnPath (Get-FreshPath)
+            $ownExe = Join-Path $binDir 'sutram.exe'
+            if (-not $first -or -not [string]::Equals([IO.Path]::GetFullPath($first),[IO.Path]::GetFullPath($ownExe),[StringComparison]::OrdinalIgnoreCase)) {
+                throw ('A new terminal would run ' + $first + ', not ' + $ownExe + '. Remove that one from PATH and run this installer again.')
+            }
+            $fresh = Invoke-FreshShellVersion
+            if ($fresh.Trim() -ne $check.Trim()) {
+                throw ('A new terminal reports a different Sutram: [' + $fresh.Trim() + '] instead of [' + $check.Trim() + '].')
+            }
+            Log ('New-terminal check: ' + ($fresh -split "`n")[0].Trim())
+        } else {
+            Log 'PATH was not requested: a new terminal finds this Sutram only through its Start-menu terminal.'
+        }
+
+        Log 'Creating Start-menu shortcuts.'
         $startMenu = Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs\Sutram'
         New-Item -ItemType Directory -Force -Path $startMenu | Out-Null
         $icon = Join-Path $InstallDir 'assets\sutram.ico'
@@ -373,6 +482,7 @@ try {
             $desktopOwned = $false
         }
 
+        Log 'Registering the .sm file type and the uninstaller.'
         $classKey='HKCU:\Software\Classes\Sutram.Source'
         $extKey='HKCU:\Software\Classes\.sm'
         $commandKey=Join-Path $classKey 'shell\open\command'

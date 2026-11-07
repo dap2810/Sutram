@@ -22,7 +22,12 @@ for name in names:
     source=ROOT/'examples'/f'{name}.sm'
     if not source.exists():continue
     target=out/f'{name}.exe'
-    cmd=[str(exe)]+(['--lang',langs[name]] if name in langs else [])+[str(source),str(target)]
+    # R131: 79_ayojan_cwd compiles from a directory outside the project, so it tests the compiler's own lookup of the
+    # lib/ beside it. The Linux suite runs the root compiler (lib/ is its neighbour) from /tmp; here the same is the
+    # root sutram.exe - win/sutram.exe has no lib/ beside it, so with an output folder outside the tree it could not
+    # find ganit (Windows v305 run). Same bytes as win/sutram.exe; the compiler is unchanged.
+    case_exe=(ROOT/'sutram.exe') if name=='79_ayojan_cwd' else exe
+    cmd=[str(case_exe)]+(['--lang',langs[name]] if name in langs else [])+[str(source),str(target)]
     row={'case':name,'compile_command':cmd}
     try:
         compile_cwd=out if name=='79_ayojan_cwd' else ROOT

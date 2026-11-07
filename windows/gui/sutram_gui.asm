@@ -293,6 +293,7 @@ msg_compile_failed db '[sankalan asaphal]',13,10,0
 msg_run_failed db '[karyakramah asamanya-rupena samaptah]',13,10,0
 msg_file_failed db '[patrasya pathane lekhane va asaphalata]',13,10,0
 msg_input_large db '[patram atibrihat; sampadaka-seema 64 KiB]',13,10,0
+msg_load_kept db '[patram na udghatitam - sampadake purvam patram eva asti]',13,10,0   ; R131
 msg_shell_limit db '[kholasya itihasah purnah; prathamam kholam riktam karotu]',13,10,0
 msg_timeout db '[prakriya 10 kshanebhyah adhikam chalita; samapita]',13,10,0
 msg_missing_compiler db '[win\sutram.exe na praptam: prathamam sankalakam nirmatu]',13,10,0
@@ -2666,11 +2667,34 @@ load_file:
     mov eax,1
     jmp .end
 .too_big:
+    ; R131: a refused load clears the output pane first - the previous program's output must not stay
+    ; on screen under the refusal - and then says plainly that the editor still holds the previous file.
+    call output_clear
     PTR rcx,msg_input_large
     call output_append
+    jmp .refused
 .fail:
+    call output_clear
+    PTR rcx,msg_file_failed
+    call output_append
+.refused:
+    PTR rcx,msg_load_kept
+    call output_append
     xor eax,eax
 .end:
+    EPILOG
+
+; R131: empty the output pane, as the Clear button does (its text, the shell's history and its offset).
+output_clear:
+    PROLOG 48
+    mov byte [rel shell_history],0
+    mov dword [rel last_shell_out],0
+    mov rcx,[rel h_output]
+    test rcx,rcx
+    jz .done
+    PTR rdx,empty_w
+    API SetWindowTextW
+.done:
     EPILOG
 
 ; Save full editor text. rcx path, eax success/fail.

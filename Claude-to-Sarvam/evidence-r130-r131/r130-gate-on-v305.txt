@@ -1,0 +1,17 @@
+FAIL  the wizard starts PowerShell non-interactive, execution policy Bypass (ps_prefix: 'powershell.exe -NoProfile -File ')
+FAIL  the wizard starts PowerShell non-interactive, execution policy Bypass (ps_uninst: 'powershell.exe -NoProfile -File ')
+FAIL  the install engine has no console window (CREATE_NO_WINDOW)
+FAIL  the wizard waits for the engine at most ENGINE_WAIT_MS, never INFINITE
+FAIL  an engine still running at the limit is stopped (TerminateProcess) and setup fails
+FAIL  the limit is between 1 and 60 minutes (None ms)
+FAIL  the engine turns off progress bars and confirmations
+PASS  the engine never waits for input
+FAIL  the payload is copied file by file, logged every 100 files
+FAIL  another Sutram installation is refused before anything is changed
+FAIL  the older installers' folder (%LOCALAPPDATA%\Sutram) is looked at
+FAIL  with -AddPath, a new terminal is checked after PATH is written
+FAIL  the new terminal must report the installed compiler's version
+PASS  the engine logs its completion
+PASS  Sutram-Setup.exe embeds this install-core.ps1
+PASS  Sutram-Setup.exe embeds this uninstall-core.ps1
+r130 installer engine: 16 checks, 12 failed

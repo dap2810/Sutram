@@ -84,8 +84,8 @@ type Sutram-Setup.sha256
   fixed one.
 
 Other inputs the payload copies from the tree unchanged, for reference: `sutram-link.exe`
-`5f7a8e202a5d04df88fbbc299b077b114c29a7dd50447194dd2e95ff4a848aa9`, `sutram-ide-gui.exe`
-`829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051`, `icons\sutram.ico`
+`94a7bc2c8f8caaa83825ca2b797021fb86ef5784d67cab7b39972d419b8b7883`, `sutram-ide-gui.exe`
+`635c276b354c672925d460eaf6717c69333ed347eaa6084eda08ae6b40a55ad0`, `icons\sutram.ico`
 `b48aeb52516433c3cce51ffe436fa04355cb938aa0b5188c60fe7c02f2923ec1`.
 
 Then commit `Sutram-Setup.exe` and `Sutram-Setup.sha256`. On Linux, `python3 tools/check_installer_version.py`
@@ -97,3 +97,9 @@ PASS payload v291 = compiler v291 (bin/ and win/sutram.exe, packed <today>; the 
 
 **This goes stale again at the next compiler version.** Each round that bumps the version makes the payload one
 version behind until this is run again; the gate will say so in the words above.
+
+**R130-R131 (v306):** the payload's `sutram-link.exe` and `sutram-ide-gui.exe` are rebuilt from source too (the
+runtime and the IDE changed). On Linux: the linker with `nasm -f win64 -DWINDOWS -I./ linker/sutram_link.asm` and
+`x86_64-w64-mingw32-ld -mi386pep --entry=_start --no-insert-timestamp`, the IDE with `python3 tools/build_ide_linux.py`
+(the port of `windows/gui/build-gui.ps1`). The wizard now runs the engine with `-NonInteractive -ExecutionPolicy Bypass`
+and no console window, and stops it after 15 minutes (`ENGINE_WAIT_MS` in `sutram_wizard.asm`).
