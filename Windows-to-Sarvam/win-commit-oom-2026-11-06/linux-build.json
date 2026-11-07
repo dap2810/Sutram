@@ -1,0 +1,60 @@
+[
+  {
+    "command": [
+      "nasm",
+      "-f",
+      "elf64",
+      "-I./",
+      "src/r68_compiler_entry.asm",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/base/linux.o"
+    ],
+    "cwd": "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/baseline-inputs",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "elapsed_seconds": 8.875
+  },
+  {
+    "command": [
+      "ld",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/base/sutram-linux",
+      "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/base/linux.o"
+    ],
+    "cwd": "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/baseline-inputs",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "elapsed_seconds": 0.072
+  },
+  {
+    "command": [
+      "nasm",
+      "-f",
+      "elf64",
+      "-I./",
+      "src/r68_compiler_entry.asm",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/patched/linux.o"
+    ],
+    "cwd": "/mnt/e/Github_Projects/Sutram/build/windows-oom-review",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "elapsed_seconds": 8.447
+  },
+  {
+    "command": [
+      "ld",
+      "-o",
+      "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/patched/sutram-linux",
+      "/mnt/e/Github_Projects/Sutram/build/windows-oom-review/build/oom/patched/linux.o"
+    ],
+    "cwd": "/mnt/e/Github_Projects/Sutram/build/windows-oom-review",
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "elapsed_seconds": 0.063
+  }
+]

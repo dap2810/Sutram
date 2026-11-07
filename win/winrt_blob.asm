@@ -233,7 +233,9 @@ rt_touch:
 
 ; rt_veh (a vectored exception handler, R124): an access violation inside memory this program only reserved
 ; (MEM_RESERVE, MEM_PRIVATE, not this thread's stack) commits up to 64 KiB there, read-write, and the faulting
-; instruction runs again. Every other exception goes on to the next handler.
+; instruction runs again. A failed commit is fatal OOM, with a diagnostic and exit 1;
+; it cannot return to an allocation call because that reservation already succeeded.
+; Every unrelated exception goes on to the next handler.
 rt_veh:
     push rbx
     push rsi
@@ -272,9 +274,30 @@ rt_veh:
     mov r9d,4
     call qword [rbx+RT_VirtualAlloc]
     test rax,rax
-    jz .v_search
+    jz .v_nomem
     mov eax,-1                    ; EXCEPTION_CONTINUE_EXECUTION
     jmp .v_ret
+.v_nomem:
+    ; Do not allocate, retry the fault, or use rt_syscall/rt_touch here. The
+    ; diagnostic is static image data; output is best effort if stderr is closed.
+    ; This path serves both kosh and nirmmita, so its message is not kosh-specific.
+    mov ecx,-12                   ; STD_ERROR_HANDLE
+    call qword [rbx+RT_GetStdHandle]
+    mov rcx,rax
+    lea rdx,[rel rt_msg_nomem]
+    mov r8d,rt_msg_nomem_end-rt_msg_nomem
+    lea r9,[rsp+40]
+    mov dword [rsp+40],0
+    mov qword [rsp+32],0
+    call qword [rbx+RT_WriteFile]
+    mov ecx,[rbx+RT_ORIGINAL_CP]
+    test ecx,ecx
+    jz .v_nomem_exit
+    call qword [rbx+RT_SetConsoleOutputCP]
+.v_nomem_exit:
+    mov ecx,1
+    call qword [rbx+RT_ExitProcess]
+    ud2                           ; ExitProcess does not return
 .v_search:
     xor eax,eax                   ; EXCEPTION_CONTINUE_SEARCH
 .v_ret:
@@ -283,6 +306,8 @@ rt_veh:
     pop rsi
     pop rbx
     ret
+rt_msg_nomem: db 'Sutram truti: smritih na labdha',10
+rt_msg_nomem_end:
 rt_end:
 db 'SUTRTV01'
 dd rt_syscall-rt_init,rt_end-rt_init

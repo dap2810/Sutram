@@ -1,0 +1,203 @@
+{
+  "compiler": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\base\\sutram.exe",
+  "compiler_sha256": "0a22f132976b91f70ec6a44aae7dde29abb1067f6c85509028f1ab6c2200b2de",
+  "expect_baseline_crash": true,
+  "compilations": [
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\base\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh.exe"
+      ],
+      "exit": 0,
+      "stdout": "Siddh: 1594 baait sankalit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\base\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\small.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\small.exe"
+      ],
+      "exit": 0,
+      "stdout": "Siddh: 1740 baait sankalit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\base\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\raw.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\raw.exe"
+      ],
+      "exit": 0,
+      "stdout": "Siddh: 471 baait sankalit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\base\\sutram.exe",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\null.sm",
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\null.exe"
+      ],
+      "exit": 0,
+      "stdout": "Siddh: 214 baait sankalit\n",
+      "stderr": ""
+    }
+  ],
+  "checks": [
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1356,
+      "name": "kosh-64MiB",
+      "expected_exit": 3221225477,
+      "expected_stdout": "",
+      "expected_stderr": "",
+      "pass": true
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh-128MiB",
+      "limit_bytes": 134217728,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1013,
+      "name": "kosh-128MiB",
+      "expected_exit": 3221225477,
+      "expected_stdout": "",
+      "expected_stderr": "",
+      "pass": true
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh-256MiB",
+      "limit_bytes": 268435456,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1778,
+      "name": "kosh-256MiB",
+      "expected_exit": 3221225477,
+      "expected_stdout": "",
+      "expected_stderr": "",
+      "pass": true
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\raw.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\raw-64MiB",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.1178,
+      "name": "raw-64MiB",
+      "expected_exit": 3221225477,
+      "expected_stdout": "",
+      "expected_stderr": "",
+      "pass": true
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh-64MiB-invalid-stderr",
+      "limit_bytes": 67108864,
+      "timeout_seconds": 60,
+      "invalid_stderr": true,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.0834,
+      "name": "kosh-64MiB-invalid-stderr",
+      "expected_exit": 3221225477,
+      "expected_stdout": "",
+      "expected_stderr": "",
+      "pass": true
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\small.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\small-128MiB",
+      "limit_bytes": 134217728,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "20000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0676,
+      "name": "small-128MiB",
+      "expected_exit": 0,
+      "expected_stdout": "20000\n",
+      "expected_stderr": "",
+      "pass": true
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\kosh-2048MiB",
+      "limit_bytes": 2147483648,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 0,
+      "stdout": "100000000\n",
+      "stderr": "",
+      "elapsed_seconds": 0.4514,
+      "name": "kosh-2048MiB",
+      "expected_exit": 0,
+      "expected_stdout": "100000000\n",
+      "expected_stderr": "",
+      "pass": true
+    },
+    {
+      "command": [
+        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\null.exe"
+      ],
+      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\baseline\\null-128MiB",
+      "limit_bytes": 134217728,
+      "timeout_seconds": 60,
+      "invalid_stderr": false,
+      "timed_out": false,
+      "exit": 3221225477,
+      "stdout": "",
+      "stderr": "",
+      "elapsed_seconds": 0.0989,
+      "name": "null-128MiB",
+      "expected_exit": 3221225477,
+      "expected_stdout": "",
+      "expected_stderr": "",
+      "pass": true
+    }
+  ],
+  "passed": 8,
+  "failed": 0
+}

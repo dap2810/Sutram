@@ -1,0 +1,17 @@
+{
+  "compiler_sha256": "3bad012af185440276874a4315961e4c1e1a15532cda7c681e60300540c2f568",
+  "harness_sha256": "749b482d4a8ab448a7b1ef8bf17a0becdd9a1c664743e590685429ca50d37ba5",
+  "overrides": {
+    "exe=ROOT/'win/sutram.exe'": "exe=ROOT/'build/oom/patched/sutram.exe'",
+    "out=ROOT/'build/windows/acceptance'": "out=ROOT/'build/oom/native-suite'"
+  },
+  "elapsed_seconds": 23.913,
+  "exit": 0,
+  "counts": {
+    "NO_EXPECTATION": 3,
+    "PASS": 322,
+    "SKIP_LINUX_RAW_SYSCALL": 1,
+    "SKIP_SIDE_EFFECT_OR_INLINE_ASM": 5
+  },
+  "failures": []
+}
