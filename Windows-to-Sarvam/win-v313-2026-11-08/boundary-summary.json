@@ -1,0 +1,10 @@
+{
+  "version": "Sutram 1.0 (v312) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+  "scope": "PRE-FIX v312 only; v313 unavailable",
+  "shape": "local vitti s = x+x+...; x=1; likha(s)",
+  "last_compiles": 16384,
+  "first_refuses": 16385,
+  "tested_probes": 15,
+  "full_refusal_message": "Sutram truti [E_VAKYA_SEEMA]: ekam vakyam ati-vistritam - tasya parikshanam 65536 padeshu na samaptam, ato na sankalyate\nSanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya)\n",
+  "all_compiled_outputs_verified": true
+}

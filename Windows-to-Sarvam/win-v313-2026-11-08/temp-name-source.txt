@@ -1,0 +1,32 @@
+temp_prefix: u16 "STM"
+align 2
+ide_suffix: u16 "\sutram-ide-gui.exe"
+section .text
+make_unique_stage:
+    PROLOG 64
+    mov ecx,MAXP
+    PTR rdx,temp_path
+    API GetTempPathW
+    test eax,eax
+    jz .failed
+    cmp eax,MAXP
+    jae .failed
+    PTR rcx,temp_path
+    PTR rdx,temp_prefix
+    xor r8d,r8d
+    PTR r9,setup_dir
+    API GetTempFileNameW
+    test eax,eax
+    jz .failed
+    PTR rcx,setup_dir
+    API DeleteFileW
+    test eax,eax
+    jz .failed
+    PTR rcx,setup_dir
+    xor edx,edx
+    API CreateDirectoryW
+    EPILOG
+.failed:
+    xor eax,eax
+    EPILOG
+

@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-11-08T12:16:27.252667-05:00",
+  "source_commit": "108301e2155b7c48e3e6d88103910148662fd191",
+  "available_setup_sha256": "2356014dc0e66b1de1dabe3f868e55b7b73b1c3e17ad231802b2dbb5592643d6",
+  "available_compiler_sha256": "7ac8347032b6d9f754b4706d48c20f32f1a43f58324e4432d5463751031b6f93",
+  "repo_compiler_matches_payload": true,
+  "available_version": {
+    "exit": 0,
+    "stdout": "Sutram 1.0 (v312) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+    "stderr": ""
+  },
+  "installed_compiler_sha256": "7ac8347032b6d9f754b4706d48c20f32f1a43f58324e4432d5463751031b6f93",
+  "installed_version": {
+    "exit": 0,
+    "stdout": "Sutram 1.0 (v312) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+    "stderr": ""
+  },
+  "required_version": "Sutram 1.0 (v313) - sampurna sutra",
+  "v313_available": false,
+  "installation_attempted": false
+}

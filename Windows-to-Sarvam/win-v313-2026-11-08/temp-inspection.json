@@ -1,0 +1,231 @@
+{
+  "time": "2026-11-08T12:18:48.397333-05:00",
+  "scope": "Read-only preflight snapshot; no new uninstall performed",
+  "locations_resolve_to_same_directory": true,
+  "locations": [
+    {
+      "root": "C:\\Users\\dmech\\AppData\\Local\\Temp",
+      "newest_entries": [
+        {
+          "name": "ce6711be-a485-479f-9113-daa4677374d1.tmp",
+          "directory": false,
+          "modified": "2026-11-08T12:12:28.921374-05:00"
+        },
+        {
+          "name": "StructuredQuery.log",
+          "directory": false,
+          "modified": "2026-11-08T12:12:14.786170-05:00"
+        },
+        {
+          "name": "mat-debug-32452.log",
+          "directory": false,
+          "modified": "2026-11-08T12:05:00.811944-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_PublicShare.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.379502-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_PrivateShare.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.371475-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_Synced.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.363473-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_SyncedAndShared.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.355455-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_SyncFailed.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.346374-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_Syncing.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.322373-05:00"
+        },
+        {
+          "name": "system-commandline-sentinel-files",
+          "directory": true,
+          "modified": "2026-11-08T11:36:11.134327-05:00"
+        },
+        {
+          "name": "STM7C1C.tmp",
+          "directory": true,
+          "modified": "2026-11-08T11:25:02.099686-05:00"
+        },
+        {
+          "name": "PDFXShellExt",
+          "directory": true,
+          "modified": "2026-11-08T11:12:59.080652-05:00"
+        },
+        {
+          "name": "STM1E91.tmp",
+          "directory": true,
+          "modified": "2026-11-08T11:12:37.926996-05:00"
+        },
+        {
+          "name": "c8bb8c8c-2722-46a9-b532-203b00d74562.tmp",
+          "directory": false,
+          "modified": "2026-11-08T11:06:15.479859-05:00"
+        },
+        {
+          "name": "95102e9c-3daf-4501-9c25-5a24e9de82fd.tmp",
+          "directory": false,
+          "modified": "2026-11-08T11:05:49.365872-05:00"
+        }
+      ],
+      "stm_directories": [
+        {
+          "directory": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp",
+          "files": [
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall-core.ps1",
+              "bytes": 13794,
+              "sha256": "3acf8a645e45f2d8dfb9be53d691b0336e165ff75a80aeae5bdbb89e3588e51d"
+            },
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall.log",
+              "bytes": 117,
+              "sha256": "14c6bfcf4fa15cc0c1c00fab94c98a342d3d9ad32147cbcc73e6c4294c6bab4d"
+            }
+          ]
+        },
+        {
+          "directory": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp",
+          "files": [
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall-core.ps1",
+              "bytes": 14901,
+              "sha256": "eb53ebd2f9eb817314237bf941bd09e02feee81233b5269d61eaf70b44fc0479"
+            },
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log",
+              "bytes": 289,
+              "sha256": "f766a8cd0f17eebb123301ed6608145f52943f10400e0d9ec0008933d5f87b6a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "root": "C:\\Users\\dmech\\AppData\\Local\\Temp",
+      "newest_entries": [
+        {
+          "name": "ce6711be-a485-479f-9113-daa4677374d1.tmp",
+          "directory": false,
+          "modified": "2026-11-08T12:12:28.921374-05:00"
+        },
+        {
+          "name": "StructuredQuery.log",
+          "directory": false,
+          "modified": "2026-11-08T12:12:14.786170-05:00"
+        },
+        {
+          "name": "mat-debug-32452.log",
+          "directory": false,
+          "modified": "2026-11-08T12:05:00.811944-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_PublicShare.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.379502-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_PrivateShare.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.371475-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_Synced.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.363473-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_SyncedAndShared.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.355455-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_SyncFailed.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.346374-05:00"
+        },
+        {
+          "name": "WDDesktopIconOverlay_Syncing.ico",
+          "directory": false,
+          "modified": "2026-11-08T11:41:19.322373-05:00"
+        },
+        {
+          "name": "system-commandline-sentinel-files",
+          "directory": true,
+          "modified": "2026-11-08T11:36:11.134327-05:00"
+        },
+        {
+          "name": "STM7C1C.tmp",
+          "directory": true,
+          "modified": "2026-11-08T11:25:02.099686-05:00"
+        },
+        {
+          "name": "PDFXShellExt",
+          "directory": true,
+          "modified": "2026-11-08T11:12:59.080652-05:00"
+        },
+        {
+          "name": "STM1E91.tmp",
+          "directory": true,
+          "modified": "2026-11-08T11:12:37.926996-05:00"
+        },
+        {
+          "name": "c8bb8c8c-2722-46a9-b532-203b00d74562.tmp",
+          "directory": false,
+          "modified": "2026-11-08T11:06:15.479859-05:00"
+        },
+        {
+          "name": "95102e9c-3daf-4501-9c25-5a24e9de82fd.tmp",
+          "directory": false,
+          "modified": "2026-11-08T11:05:49.365872-05:00"
+        }
+      ],
+      "stm_directories": [
+        {
+          "directory": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp",
+          "files": [
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall-core.ps1",
+              "bytes": 13794,
+              "sha256": "3acf8a645e45f2d8dfb9be53d691b0336e165ff75a80aeae5bdbb89e3588e51d"
+            },
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall.log",
+              "bytes": 117,
+              "sha256": "14c6bfcf4fa15cc0c1c00fab94c98a342d3d9ad32147cbcc73e6c4294c6bab4d"
+            }
+          ]
+        },
+        {
+          "directory": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp",
+          "files": [
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall-core.ps1",
+              "bytes": 14901,
+              "sha256": "eb53ebd2f9eb817314237bf941bd09e02feee81233b5269d61eaf70b44fc0479"
+            },
+            {
+              "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log",
+              "bytes": 289,
+              "sha256": "f766a8cd0f17eebb123301ed6608145f52943f10400e0d9ec0008933d5f87b6a"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

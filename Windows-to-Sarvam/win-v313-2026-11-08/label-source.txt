@@ -1,0 +1,9 @@
+    ; ---- page 1: license ----
+    PTR  rcx, b_lichead
+    mov  edx, 246
+    mov  r8d, 62
+    mov  r9d, 530
+    mov  qword [rsp+32], 26
+    PTR  rax, hw_lichead
+    mov  [rsp+40], rax
+    call mk_static

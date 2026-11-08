@@ -1,0 +1,20 @@
+{
+    "source_label_width":  530,
+    "source_label_y":  62,
+    "source_label_height":  26,
+    "measurements":  [
+                         709,
+                         25,
+                         50,
+                         523
+                     ],
+    "source_license_body_y":  94,
+    "scope":  "Source-based layout calculation using a locally created Segoe UI -19/400 font; not an in-process measurement of the installer.",
+    "measurement_fields":  [
+                               "single_line_width",
+                               "font_height",
+                               "required_wordwrap_height",
+                               "wordwrap_width"
+                           ],
+    "discarded_foreign_font_measurement":  "label-capture.json gdi_metrics did not verify SelectObject success and contradicts visible clipping. It is not used as layout evidence."
+}

@@ -1,0 +1,47 @@
+{
+    "started":  "2026-11-08T12:17:57.1503287-05:00",
+    "scope":  "PRE-FIX v312 only; v313 unavailable",
+    "setup_sha256":  "2356014dc0e66b1de1dabe3f868e55b7b73b1c3e17ad231802b2dbb5592643d6",
+    "expected_text":  "Please read the following license agreement. You must accept the terms to continue.",
+    "installation_attempted":  false,
+    "pid":  2464,
+    "process_started":  "2026-11-08T12:17:57.2383633-05:00",
+    "actual_control_text":  "Please read the following license agreement. You must accept the terms to continue.",
+    "native_style":  348782592,
+    "resizable_border":  false,
+    "window_dpi":  96,
+    "gdi_metrics":  [
+                        662,
+                        32,
+                        548,
+                        16,
+                        16,
+                        548
+                    ],
+    "gdi_metrics_fields":  [
+                               "client_width",
+                               "client_height",
+                               "full_text_single_line_width",
+                               "font_height",
+                               "required_wordwrap_height",
+                               "wordwrap_width"
+                           ],
+    "window_rect":  {
+                        "Left":  195,
+                        "Top":  195,
+                        "Right":  1195,
+                        "Bottom":  945
+                    },
+    "full_screenshot":  "prefixed-licence-default.png",
+    "label_screen_rect":  {
+                              "Left":  506,
+                              "Top":  305,
+                              "Right":  1169,
+                              "Bottom":  338
+                          },
+    "closed_without_install":  true,
+    "capture_warnings":  [
+
+                         ],
+    "ended":  "2026-11-08T12:17:58.4778254-05:00"
+}

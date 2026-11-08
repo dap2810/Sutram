@@ -1,0 +1,6 @@
+{
+  "source_commit": "108301e2155b7c48e3e6d88103910148662fd191",
+  "wizard_source_sha256": "a65240c7ebe5773cf8dd3406c8962d949d54da98857530b561f9ebf9f195fca6",
+  "instruction_text": "Please read the following license agreement. You must accept the terms to continue.",
+  "note": "The instruction text is b_lichead in windows/native-installer/sutram_wizard.asm, not LICENSE.txt."
+}
