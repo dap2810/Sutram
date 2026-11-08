@@ -7,6 +7,6 @@
 - `wine-licence-label-default-font.png`, `wine-licence-label-serif-font.png` - the v313 Sutram-Setup.exe under Wine on Xvfb, licence page, with two fonts: the instruction shows both lines in each. Not Windows.
 - `guard-elf.txt`, `guard-pe.txt`, `refusal-messages.txt` - v312 vs v313, 782 programs (14 new, refused by both): 0 DIFFER; refusal messages unchanged.
 - `gates.txt` - 77 PASS / 0 FAIL / 1 NOT-RUN; `package-gate.txt`, `installer-build.txt`, `installer-version.txt` - the setup.
-- `wine-compiler.txt`, `fourteen-shapes-windows-compiler.txt` - the v313 Windows compiler under Wine (added when the run finished).
+- `wine-compiler.txt`, `fourteen-shapes-windows-compiler.txt` - the v313 Windows compiler under Wine.
 
 NOT RUN: anything on native Windows.

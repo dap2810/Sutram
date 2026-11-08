@@ -1,0 +1,15 @@
+# the fourteen probes, compiled by the v313 Windows compiler (win/sutram.exe) under Wine
+01_cell.sm                   E_KOSH_VIBHAG
+02_untyped_param.sm          E_KOSH_VIBHAG
+03_untyped_return.sm         E_KOSH_VIBHAG
+04_function_value.sm         E_KOSH_VIBHAG
+05_module_vitti.sm           E_KOSH_VIBHAG
+06_record_field.sm           E_KOSH_VIBHAG
+07_raw_memory.sm             E_KOSH_VIBHAG
+08_dasham_param.sm           E_KOSH_VIBHAG
+09_arithmetic.sm             E_VIBHAG_ANKA
+10_module_initializer.sm     E_KOSH_DVARA
+11_comparison_as_index.sm    E_VIBHAG_ANKA
+12_two_functions.sm          E_KOSH_VIBHAG
+13_kosh_element.sm           E_KOSH_VIBHAG
+14_inline_assembly.sm        vyakaran dosh

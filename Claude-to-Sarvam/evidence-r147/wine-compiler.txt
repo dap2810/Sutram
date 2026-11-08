@@ -1,0 +1,1 @@
+v313 win/sutram.exe under Wine, all 782 programs: 587 identical to the Linux PE, 195 refused by both, 0 differ
