@@ -1,0 +1,18 @@
+{
+    "loaded":  true,
+    "output":  "Sajjam. F5: sampadakasya karyakramasya sankalanam chalanam cha.\r\n",
+    "pid":  7792,
+    "expected":  "mukhya() {\r\n    likha(\"FIRST_RUN_SPACES\")\r\n}\r\n",
+    "dialogs":  [
+
+                ],
+    "started":  "2026-11-08T14:54:07.1625423-05:00",
+    "closed":  true,
+    "title":  "hello.sm - Sutram sampadak",
+    "screenshot":  "shell-spaces.png",
+    "editor":  "mukhya() {\r\n    likha(\"FIRST_RUN_SPACES\")\r\n}\r\n",
+    "file_sha256":  "1D317A5114DDA89A8993DB086DBAFD4A714862918B34D92B5A1BB818B0857A0C",
+    "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 43   |   sanchit",
+    "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files\\hello.sm",
+    "method":  "Two real left clicks in Explorer, 80 ms apart"
+}

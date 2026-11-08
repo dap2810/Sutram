@@ -1,0 +1,21 @@
+{
+    "time":  "2026-11-08T15:01:27.3355757-05:00",
+    "screenshot":  "desktop-collision.png",
+    "capture":  "Unaltered screen-region capture around the real desktop icon; other personal desktop content excluded",
+    "method":  "Real desktop icon double-click; coordinates visually verified because desktop list exposes no UIA items",
+    "rectangle":  {
+                      "y":  490,
+                      "width":  85,
+                      "height":  90,
+                      "x":  670
+                  },
+    "launched":  {
+                     "title":  "Notepad",
+                     "handle":  265992,
+                     "executable":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2607.14.0_x64__8wekyb3d8bbwe\\Notepad\\Notepad.exe",
+                     "class":  "Notepad",
+                     "pid":  31592
+                 },
+    "desktop_handle":  65962,
+    "icon_name":  "Sutram IDE"
+}

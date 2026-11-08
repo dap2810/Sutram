@@ -1,0 +1,28 @@
+{
+  "payload_files": 658,
+  "mismatches": [],
+  "compiler_sha256": "7ac8347032b6d9f754b4706d48c20f32f1a43f58324e4432d5463751031b6f93",
+  "user_path_unchanged_from_test_baseline": true,
+  "sutram_on_user_path": false,
+  "normal_cmd": {
+    "argv": [
+      "C:\\WINDOWS\\system32\\cmd.exe",
+      "/d",
+      "/c",
+      "sutram --version"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "'sutram' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+  },
+  "full_path_recovery": {
+    "argv": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "Sutram 1.0 (v312) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+    "stderr": ""
+  },
+  "book_present": true
+}

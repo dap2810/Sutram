@@ -1,0 +1,44 @@
+{
+    "os":  {
+               "Caption":  "Microsoft Windows 11 Home",
+               "Version":  "10.0.26300",
+               "BuildNumber":  "26300"
+           },
+    "notepad_window_still_present":  false,
+    "time":  "2026-11-08T15:04:56.2208645-05:00",
+    "installed_app_processes":  [
+
+                                ],
+    "notepad_close_requested":  true,
+    "standard_user":  true,
+    "explorer_closed":  [
+                            {
+                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "handle":  4065652
+                            },
+                            {
+                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "handle":  2230844
+                            },
+                            {
+                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "handle":  1379154
+                            },
+                            {
+                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "handle":  1051496
+                            },
+                            {
+                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "handle":  1182522
+                            },
+                            {
+                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "handle":  331156
+                            },
+                            {
+                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "handle":  1641276
+                            }
+                        ]
+}

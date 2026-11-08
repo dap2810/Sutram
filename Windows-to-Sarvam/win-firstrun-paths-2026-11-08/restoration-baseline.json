@@ -1,0 +1,101 @@
+{
+  "original_registry": {
+    "Software\\Classes\\.sm": {
+      "values": {
+        "": {
+          "type": 1,
+          "value": "Sutram.Source"
+        }
+      },
+      "children": {
+        "OpenWithProgids": {
+          "values": {
+            "Sutram.Source": {
+              "type": 1,
+              "value": ""
+            }
+          },
+          "children": {}
+        }
+      }
+    },
+    "Software\\Classes\\Sutram.Source": {
+      "values": {},
+      "children": {
+        "DefaultIcon": {
+          "values": {
+            "": {
+              "type": 1,
+              "value": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico"
+            }
+          },
+          "children": {}
+        },
+        "shell": {
+          "values": {},
+          "children": {
+            "open": {
+              "values": {},
+              "children": {
+                "command": {
+                  "values": {
+                    "": {
+                      "type": 1,
+                      "value": "\"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" \"%1\""
+                    }
+                  },
+                  "children": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Sutram": {
+      "values": {
+        "DisplayName": {
+          "type": 1,
+          "value": "Sutram"
+        },
+        "DisplayVersion": {
+          "type": 1,
+          "value": "1.0.312"
+        },
+        "Publisher": {
+          "type": 1,
+          "value": "Sutram Project"
+        },
+        "InstallLocation": {
+          "type": 1,
+          "value": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+        },
+        "DisplayIcon": {
+          "type": 1,
+          "value": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico"
+        },
+        "UninstallString": {
+          "type": 1,
+          "value": "\"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall"
+        },
+        "NoModify": {
+          "type": 4,
+          "value": 1
+        },
+        "NoRepair": {
+          "type": 4,
+          "value": 1
+        }
+      },
+      "children": {}
+    }
+  },
+  "original_shortcuts": {
+    "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram": {
+      "Sutram Documentation.lnk": "53c0346a1d76fcb64df7fc844ba95968757ff8a24a584f98f8d173d4f8924a47",
+      "Sutram IDE.lnk": "e6c65c6be00bf3633d7d694b78195af857463fc934394c24ece6646b0a4ba289",
+      "Sutram Terminal.lnk": "7fa7bd4a74c067098fb8b6952b76e452e2704b639b16165a2d08673c461a79fe",
+      "Uninstall Sutram.lnk": "ce28db3dd368befc15f371f4ead2f9bb36cb1d9aaaa8ad6edf8970f36a04062b"
+    }
+  }
+}

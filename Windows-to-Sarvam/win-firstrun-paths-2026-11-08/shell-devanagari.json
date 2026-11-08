@@ -1,0 +1,18 @@
+{
+    "loaded":  true,
+    "output":  "Sajjam. F5: sampadakasya karyakramasya sankalanam chalanam cha.\r\n",
+    "pid":  38324,
+    "expected":  "mukhya() {\r\n    likha(\"FIRST_RUN_DEVANAGARI\")\r\n}\r\n",
+    "dialogs":  [
+
+                ],
+    "started":  "2026-11-08T14:54:10.4512937-05:00",
+    "closed":  true,
+    "title":  "hello.sm - Sutram sampadak",
+    "screenshot":  "shell-devanagari.png",
+    "editor":  "mukhya() {\r\n    likha(\"FIRST_RUN_DEVANAGARI\")\r\n}\r\n",
+    "file_sha256":  "2643978A396B088686D24028A60B392F6DBE4F209DBAB94277E6A8F35E53A94F",
+    "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 47   |   sanchit",
+    "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\सूत्रम्\\hello.sm",
+    "method":  "Two real left clicks in Explorer, 80 ms apart"
+}

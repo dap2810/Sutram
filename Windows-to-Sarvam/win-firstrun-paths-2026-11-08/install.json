@@ -1,0 +1,118 @@
+{
+    "time":  "2026-11-08T14:48:11.5193686-05:00",
+    "setup_sha256":  "2356014dc0e66b1de1dabe3f868e55b7b73b1c3e17ad231802b2dbb5592643d6",
+    "pages":  [
+                  {
+                      "screenshot":  "install-welcome.png",
+                      "name":  "welcome",
+                      "text":  [
+                                   "Welcome to Sutram Setup",
+                                   "This wizard will install Sutram, the Sanskrit-keyword programming language, on your computer.",
+                                   "Sutram installs for the current Windows user only. No administrator rights are needed, and nothing is written outside your own account.",
+                                   "Click Next to continue.",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ]
+                  },
+                  {
+                      "screenshot":  "install-licence.png",
+                      "name":  "licence",
+                      "text":  [
+                                   "License Agreement",
+                                   "Please read the following license agreement. You must accept the terms to continue.",
+                                   "Sutram — The Complete Thread\r\nCopyright (c) 2026 Sutram Project\r\n\r\nPermission is hereby granted, free of charge, to any person obtaining a copy\r\nof this software and associated documentation files (the \"Software\"), to deal\r\nin the Software without restriction, including without limitation the rights\r\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom the Software is\r\nfurnished to do so, subject to the following conditions:\r\n\r\nThe above copyright notice and this permission notice shall be included in all\r\ncopies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\nSOFTWARE.\r\n\r\n---\r\n\r\nसूत्रम् — सम्पूर्णं सूत्रम्\r\n\r\nयह सॉफ्टवेयर निःशुल्क है। इसे मुक्त रूप से उपयोग करें, परिवर्तित करें और बाँटें।\r\n\r\nசூத்ரம் — முழுமையான நூல்\r\n\r\nసూత్రమ్ — సంపూర్ణమైన దారం\r\n\r\nસૂત્રમ્ — સંપૂર્ણ દોરો\r\n\r\nTHE COMPLETE THREAD — for every language, for every learner.\r\n",
+                                   "I \u0026accept the terms of the license agreement",
+                                   "I do \u0026not accept the terms of the license agreement",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ]
+                  },
+                  {
+                      "screenshot":  "install-location.png",
+                      "name":  "location",
+                      "text":  [
+                                   "Choose Install Location",
+                                   "\u0026Install location:",
+                                   "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+                                   "Browse...",
+                                   "Setup will install Sutram in the folder below. The installer needs write access to this folder.",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ]
+                  },
+                  {
+                      "screenshot":  "install-options-default.png",
+                      "name":  "options-default",
+                      "text":  [
+                                   "Select Components",
+                                   "Select the components to install:",
+                                   "\u0026Add Sutram to my user PATH (recommended)",
+                                   "Create a \u0026desktop shortcut (Sutram Terminal)",
+                                   "The compiler, standard library, language packs, examples and books are always installed. Start Menu shortcuts are always created.",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ]
+                  },
+                  {
+                      "screenshot":  "install-options-selected.png",
+                      "name":  "options-selected",
+                      "text":  [
+                                   "Select Components",
+                                   "Select the components to install:",
+                                   "\u0026Add Sutram to my user PATH (recommended)",
+                                   "Create a \u0026desktop shortcut (Sutram Terminal)",
+                                   "The compiler, standard library, language packs, examples and books are always installed. Start Menu shortcuts are always created.",
+                                   "\u003c Back",
+                                   "Next \u003e",
+                                   "Cancel"
+                               ]
+                  },
+                  {
+                      "screenshot":  "install-ready.png",
+                      "name":  "ready",
+                      "text":  [
+                                   "Ready to Install",
+                                   "Setup is ready to install Sutram on your computer.",
+                                   "Destination folder: C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\r\nAdd to user PATH: no\r\nDesktop shortcut: yes\r\n\r\nClick Install to begin the installation.",
+                                   "\u003c Back",
+                                   "Install",
+                                   "Cancel"
+                               ]
+                  },
+                  {
+                      "screenshot":  "install-finish.png",
+                      "name":  "finish",
+                      "text":  [
+                                   "Completing the Sutram Setup Wizard",
+                                   "Sutram has been installed successfully.",
+                                   "You will find Sutram IDE and Sutram Terminal in your Start Menu.",
+                                   "\u0026Launch Sutram IDE",
+                                   "Finish"
+                               ]
+                  }
+              ],
+    "pid":  35344,
+    "started":  "2026-11-08T14:48:11.6176916-05:00",
+    "handle":  854844,
+    "path_label":  "\u0026Add Sutram to my user PATH (recommended)",
+    "path_default":  1,
+    "desktop_label":  "Create a \u0026desktop shortcut (Sutram Terminal)",
+    "desktop_default":  0,
+    "path_selected":  0,
+    "desktop_selected":  1,
+    "child":  {
+                  "started":  "2026-11-08T14:48:16.2682486-05:00",
+                  "pid":  40932
+              },
+    "seconds":  27.7994295,
+    "closed":  true,
+    "child_exit":  0,
+    "user_path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin;C:\\Users\\dmech\\.cargo\\bin;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;\\msys64\\mingw64\\bin;C:\\msys64;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Mozilla Firefox;C:\\Users\\dmech\\go\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python311\\Scripts;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python313\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Python\\bin;C:\\Users\\dmech\\miniconda3\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Programs\\MovieBox-Tui\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Zed\\bin;C:\\Users\\dmech\\AppData\\Roaming\\npm;C:\\Users\\dmech\\AppData\\Local\\Programs\\Ollama;C:\\Users\\dmech\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Users\\dmech\\.local\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim",
+    "capture_warnings":  [
+
+                         ]
+}

@@ -1,0 +1,10 @@
+{
+  "checks": 672,
+  "failures": [
+    "machine_path"
+  ],
+  "fresh_cmd_exit": 0,
+  "fresh_cmd_stdout": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\r\nSutram 1.0 (v312) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+  "fresh_cmd_stderr": "",
+  "desktop_fixture_removed_by_preservation": true
+}
