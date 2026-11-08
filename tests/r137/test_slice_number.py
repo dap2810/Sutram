@@ -29,6 +29,9 @@ And the walk's stack (R142): r126_ret_kind, working out a prakriya's return kind
 of the walk, used to overwrite the walk's pending nodes on the shared rfx2_stack: v310 printed an address, and
 read 7 while k[0] was 99, for a statement in a prakriya defined before the prakriya it called.
 
+R147: and the fourteen ways of keeping a slice past a growth (tests/r147/slices/, Sarvam R147 Task 4): each refused,
+by the release compiler and by both mutants.
+
 The gate fails if src/sutram_compiler.asm defines an OP_* this table does not spell, so a new operator cannot be
 added without a case here. A refusal must be an unsuccessful compiler exit, no output file and the code.
 
@@ -107,6 +110,17 @@ STACK = [
      '    likha(((zero * 1) * 1) + (f() + 4))\n    nivartanam 0\n}\n' + LATE_F, '4\n'),
 ]
 
+# R147 (Sarvam R147 Tasks 4-5): the fourteen ways of keeping a slice past a growth, one file each in
+# tests/r147/slices/ - the ten found and closed (cell, untyped parameter and result, function value, module vitti,
+# record field, raw memory, dasham parameter, arithmetic, module initializer) and four new (a comparison used as an
+# index, two prakriyas in sequence, a kosh element, inline machine code). Every one is refused; with the mutants too.
+SLICES = {'01_cell': 'E_KOSH_VIBHAG', '02_untyped_param': 'E_KOSH_VIBHAG', '03_untyped_return': 'E_KOSH_VIBHAG',
+          '04_function_value': 'E_KOSH_VIBHAG', '05_module_vitti': 'E_KOSH_VIBHAG', '06_record_field': 'E_KOSH_VIBHAG',
+          '07_raw_memory': 'E_KOSH_VIBHAG', '08_dasham_param': 'E_KOSH_VIBHAG', '09_arithmetic': 'E_VIBHAG_ANKA',
+          '10_module_initializer': 'E_KOSH_DVARA', '11_comparison_as_index': 'E_VIBHAG_ANKA',
+          '12_two_functions': 'E_KOSH_VIBHAG', '13_kosh_element': 'E_KOSH_VIBHAG',
+          '14_inline_assembly': 'SYNTAX'}   # yantra takes a string of machine bytes, not a value
+
 
 def run(exe):
     try:
@@ -162,6 +176,11 @@ def main():
     work = tempfile.mkdtemp(prefix='r137-')
     progs = [(n, HEAD + '    ' + b + '\n}\n', w) for n, b, w in cases()] + [('ChatGPT S4 laundering probe', CHATGPT, 'E_')]
     progs += [(n, t, w) for n, t, w in GLOBALS + STACK]
+    sdir = os.path.join(ROOT, 'tests', 'r147', 'slices')
+    found = sorted(f[:-3] for f in os.listdir(sdir) if f.endswith('.sm')) if os.path.isdir(sdir) else []
+    check(found == sorted(SLICES), f'R147: tests/r147/slices holds the fourteen shapes, each with a case here ({len(found)} files)')
+    progs += [(f'R147 shape {n}', open(os.path.join(sdir, n + '.sm'), encoding='utf-8').read(), w)
+              for n, w in sorted(SLICES.items()) if n in found]
 
     def compile_(comp, i, text, tag=''):
         sm, out = os.path.join(work, f'{tag}{i}.sm'), os.path.join(work, f'{tag}{i}')
@@ -170,7 +189,10 @@ def main():
         return c, out, c.stdout + c.stderr
     for i, (name, text, want) in enumerate(progs):
         c, out, said = compile_(comp, i, text)
-        if want.startswith('E_'):
+        if want == 'SYNTAX':
+            ok = c.returncode != 0 and not os.path.exists(out) and 'vyakaran dosh' in said
+            got = 'refused (syntax)' if ok else ('compiles, ' + run(out)[1] if os.path.exists(out) else 'refused ' + said.strip()[:60])
+        elif want.startswith('E_'):
             ok = c.returncode != 0 and not os.path.exists(out) and (want == 'E_' and '[E_' in said or f'[{want}]' in said)
             got = 'refused ' + (m.group(0) if (m := re.search(r'E_[A-Z_]+', said)) else repr(said.strip()[:60]))
             if os.path.exists(out):
@@ -197,7 +219,10 @@ def main():
             for i, (name, text, want) in enumerate(progs):
                 c, out, said = compile_(exe, i, text, define)
                 made = os.path.exists(out)
-                if want.startswith('E_'):
+                if want == 'SYNTAX':
+                    if c.returncode == 0 or made:
+                        leaked.append(name)
+                elif want.startswith('E_'):
                     if c.returncode == 0 or made or '[E_' not in said:
                         leaked.append(name)
                 elif made:

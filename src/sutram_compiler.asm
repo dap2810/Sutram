@@ -36,13 +36,16 @@ R73_MAXDEPTH equ 32             ; R73: mandapa nesting depth
 BLOCK_STMT_CAP equ 256        ; B11: max statements stored in one AST_BLOCK
 AST_BLOCK_EXTRA equ (BLOCK_STMT_CAP * 8) - (AST_NODE_SIZE - 16)
 AST_HEAP_CAP equ 3145728      ; R53: 3 MiB compile-time AST heap for expanded modern stdlib (no runtime/codegen ABI change)
-; R143: the expression walk's budget - entries r137_check_stmt pops in one walk (a node, or a field that is not
-; one). v311's 200000 could not be reached: the widest statement the AST heap holds (21,829 terms, 43,657
-; nodes) pops 87,316, and the largest walk in the 768 programs pops 52. So its refusal (E_VAKYA_SEEMA) was code
-; no program could run. 65536 is reachable - a statement of more than about 16,400 terms is refused, fail-closed,
-; with the release compiler - and 1260 times the largest walk any program here makes. A test build may lower it.
+; R147: the expression walk's budget - entries r137_check_stmt pops in one walk (a node, or a field of one that is
+; not a node). It is a defensive stop, not a language limit (Sarvam R147 Task 1, ChatGPT R212: a limit inside the
+; syntax tree's own would refuse generated code the tree can hold). A walk takes each node once and at most its 8
+; fields (+8..+64), so a statement the tree can hold takes at most 8 x (AST_HEAP_CAP / AST_NODE_SIZE) + 1 =
+; 349,521 steps; the widest measured takes 87,316, the largest in the 768 programs 52. The budget is that bound, so
+; it refuses only a walk that cannot be a tree's - a compiler defect - and says so. R143 set 65536, which refused
+; 8,200 to 16,400 terms the tree can hold. The gate checks the bound against AST_HEAP_CAP and AST_NODE_SIZE, and a
+; -DR143_WALK_BUDGET=64 build tests the refusal. The size limit a program meets is the syntax tree's (3 MiB).
 %ifndef R143_WALK_BUDGET
-%define R143_WALK_BUDGET 65536
+%define R143_WALK_BUDGET 349521
 %endif
 FUNC_PARAMS_CAP equ 8192      ; 1024 parameter-name slots; >= 128 funcs * 6 args
 VAR_TABLE_CAP equ 256         ; entries; 16 bytes each
@@ -254,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v312) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v313) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -628,8 +631,9 @@ r54_builtin_arity_table:
     r137_khdr db "Sutram truti [E_KOSH_GANIT]: ", 0
 %defstr R143_WALK_BUDGET_S R143_WALK_BUDGET
     ; R143: the number is the budget's own (v311 said "200000 nodes"; the budget counts steps, not nodes)
-    r141_budget_hdr db "Sutram truti [E_VAKYA_SEEMA]: ekam vakyam ati-vistritam - tasya parikshanam ", R143_WALK_BUDGET_S, " padeshu na samaptam, ato na sankalyate", 10, 0
-    r141_budget_hint db "Sanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya)", 10, 0
+    ; R147: the message says what the stop is and what to do (it can fire only on a compiler defect, R147 above)
+    r141_budget_hdr db "Sutram truti [E_VAKYA_SEEMA]: antarika seema - vakyasya parikshanam ", R143_WALK_BUDGET_S, " padeshu na samaptam; vakya-vrikshe sthitam vakyam etavat na bhavati, ato'yam sankalakasya doshah", 10, 0
+    r141_budget_hint db "Sanket: etam dosham suchaya (pankti, karyakram); tavat vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya)", 10, 0
     r137_hint db "Sanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya", 10, 0
     r134_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah '", 0
     r134_vb_hint db "Sanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru", 10, 0

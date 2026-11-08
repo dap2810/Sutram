@@ -12,6 +12,8 @@
    and the script shows its own failure in a message box (with nobody's console to see it in).
 3. An empty HKCU\\Software\\Classes\\.sm\\OpenWithProgids left by uninstall: the uninstaller removes that key, and
    then .sm, only when it has no value and no subkey left.
+4. (R147) the licence instruction label is high enough for its two lines (the body font, a wider font's count),
+   above the licence box; and on success the uninstaller removes its own %TEMP%\\STMxxxx.tmp staging folder.
 Rendering on Windows is not checked here; the Windows run is the check of that.
 Last line: "r143 installer first contact: N checks, M failed".
 """
@@ -114,6 +116,47 @@ def main():
           and '$k.ValueCount -eq 0 -and $k.SubKeyCount -eq 0' in seg and 'DeleteSubKey($sub,$false)' in seg
           and seg.find('ValueCount') < seg.find('DeleteSubKey'),
           'uninstall removes .sm\\OpenWithProgids, then .sm, only when the key has no value and no subkey left')
+    # R147 (Windows v312 acceptance): the licence instruction label clipped its second line, and uninstall left its
+    # %TEMP%\STMxxxx.tmp folder with the script and the log.
+    lab = re.search(r'PTR  rcx, b_lichead\n    mov  edx, (\d+)\n    mov  r8d, (\d+)\n    mov  r9d, (\d+)\n    mov  qword \[rsp\+32\], (\d+)', wiz)
+    edit = re.search(r'mov  qword \[rsp\+32\], (\d+)\n    mov  qword \[rsp\+40\], (\d+)\n    mov  qword \[rsp\+48\], (\d+)\n'
+                     r'    mov  qword \[rsp\+56\], (\d+)\n    mov  rax, \[rel hwnd_main\]\n    mov  \[rsp\+64\], rax\n    mov  qword \[rsp\+72\], IDC_LICEDIT', wiz)
+    radio = re.search(r'PTR  r8,  b_accept\n.*?mov  qword \[rsp\+40\], (\d+)', wiz, re.S)
+    text = re.search(r'b_lichead:\s+u16 "([^"]*)"', wiz).group(1)
+    lines = None
+    try:
+        from PIL import ImageFont
+        f = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 19)   # wider than Segoe UI: a safe count
+
+        def wrap(w):
+            n, cur = 1, ''
+            for word in text.split(' '):
+                t = (cur + ' ' + word).strip()
+                if f.getlength(t) <= w:
+                    cur = t
+                else:
+                    n, cur = n + 1, word
+            return n
+        lines = (wrap(int(lab.group(3))), wrap(int(lab.group(3)) * 0.85))
+    except Exception as e:
+        print('NOT RUN  the label wrap count (PIL or DejaVu Sans missing: ' + str(e)[:60] + ')')
+    if lab and edit and radio:
+        x, y, w, h = map(int, lab.groups())
+        ey, eh = int(edit.group(2)), int(edit.group(4))
+        need = 25 * max(lines) if lines else 50
+        check(h >= need and y + h <= ey and ey + eh <= int(radio.group(1)),
+              f'the licence instruction label is {h} px high for {lines or "?"} lines (at its width and at 85% of it, 25 px a '
+              f'line of the 19 px body font) and ends above the licence box ({y}+{h} <= {ey}), which ends above the radios')
+    else:
+        check(False, 'the licence page layout was found in the wizard')
+    k = ucode.find("Log 'Uninstall completed")
+    tailok = ucode[k:ucode.find('exit 0', k)] if k > 0 else ''
+    check(all(x in tailok for x in ("[IO.Path]::GetTempPath()", "-match '^STM[0-9A-Fa-f]{1,8}\\.tmp$'", '$names.Count -eq 2',
+                                    "$names -contains 'uninstall-core.ps1'", "$names -contains 'uninstall.log'",
+                                    '[IO.Directory]::Delete($stageDir, $false)'))
+          and 'Recurse' not in tailok and '$stageDir' not in ucode[ucode.rfind('$failure=$_.Exception.Message'):],
+          'on success uninstall removes its own %TEMP%\\STMxxxx.tmp folder - only in TEMP, with the wizard\'s name, holding '
+          'exactly its script and log, by exact paths and a non-recursive delete; a failure keeps it')
     setup = os.path.join(ROOT, 'Sutram-Setup.exe')
     if os.path.exists(setup):
         check(open(os.path.join(NI, 'uninstall-core.ps1'), 'rb').read() in open(setup, 'rb').read(),

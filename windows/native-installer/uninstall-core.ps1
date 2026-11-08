@@ -238,6 +238,24 @@ try {
         Remove-Item -LiteralPath $InstallDir -Force
     }
     Log 'Uninstall completed; user-created and user-modified files were preserved.'
+    # R147 (Windows v312 acceptance: "uninstall leaves a temporary directory with a script and a log"): the wizard
+    # staged this script and its log in a fresh %TEMP%\STMxxxx.tmp folder (GetTempFileNameW). On success that folder
+    # goes, and only that: it must be in TEMP, have the wizard's name, and hold exactly this script and this log.
+    # Each file is removed by its exact path and the folder by a non-recursive delete, so anything else in it keeps
+    # it. A failed uninstall keeps both (the message box names the log).
+    try {
+        $stageDir = [IO.Path]::GetDirectoryName([IO.Path]::GetFullPath($PSCommandPath))
+        $tempDir = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\')
+        $names = @([IO.Directory]::GetFileSystemEntries($stageDir) | ForEach-Object { [IO.Path]::GetFileName($_) })
+        if (([IO.Path]::GetDirectoryName($stageDir)).TrimEnd('\') -ieq $tempDir -and
+            [IO.Path]::GetFileName($stageDir) -match '^STM[0-9A-Fa-f]{1,8}\.tmp$' -and
+            [IO.Path]::GetDirectoryName([IO.Path]::GetFullPath($LogPath)) -ieq $stageDir -and
+            $names.Count -eq 2 -and ($names -contains 'uninstall-core.ps1') -and ($names -contains 'uninstall.log')) {
+            [IO.File]::Delete([IO.Path]::GetFullPath($LogPath))
+            [IO.File]::Delete([IO.Path]::GetFullPath($PSCommandPath))
+            [IO.Directory]::Delete($stageDir, $false)
+        }
+    } catch {}
 
     exit 0
 } catch {

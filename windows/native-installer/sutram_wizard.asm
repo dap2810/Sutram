@@ -1840,7 +1840,7 @@ create_window:
     mov  edx, 246
     mov  r8d, 124
     mov  r9d, 530
-    mov  qword [rsp+32], 72
+    mov  qword [rsp+32], 78          ; R147: three body lines (3 x 25 px) and their descenders
     PTR  rax, hw_p0b
     mov  [rsp+40], rax
     call mk_static
@@ -1854,11 +1854,13 @@ create_window:
     call mk_static
 
     ; ---- page 1: license ----
+    ; R147 (Windows v312 acceptance: "the label clips 'the terms to continue'"): the instruction wraps to two
+    ; lines at 530 px, and the label was one line (26 px) high. Two lines now, and the licence box starts below.
     PTR  rcx, b_lichead
     mov  edx, 246
     mov  r8d, 62
     mov  r9d, 530
-    mov  qword [rsp+32], 26
+    mov  qword [rsp+32], 52
     PTR  rax, hw_lichead
     mov  [rsp+40], rax
     call mk_static
@@ -1868,9 +1870,9 @@ create_window:
     PTR  r8,  lic_w
     mov  r9d, WS_CHILD | WS_VISIBLE | WS_BORDER | WS_VSCROLL | ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL | WS_TABSTOP
     mov  qword [rsp+32], 246
-    mov  qword [rsp+40], 94
+    mov  qword [rsp+40], 118
     mov  qword [rsp+48], 530
-    mov  qword [rsp+56], 216
+    mov  qword [rsp+56], 192
     mov  rax, [rel hwnd_main]
     mov  [rsp+64], rax
     mov  qword [rsp+72], IDC_LICEDIT

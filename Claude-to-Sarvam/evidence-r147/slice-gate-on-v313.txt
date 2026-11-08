@@ -1,0 +1,90 @@
+PASS  every operator the compiler defines has a case here (all)
+PASS  R142: gen_expr itself goes to the generator only inside a checked statement or initializer, and walks anything else first
+PASS  R142: the generators' bodies are reached only through gen_expr and gen_stmt (no other reference)
+PASS  R142: r142_checked is raised only after the walk, in the same function ([('r56_gen_global_initializers', True), ('gen_stmt', True), ('gen_expr', True)])
+PASS  R142: the walk keeps its own stack (r126_ret_kind uses rfx2_stack in the middle of it)
+PASS  R147: tests/r147/slices holds the fourteen shapes, each with a case here (14 files)
+PASS  OP_ADD: k[0:1] + zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_ADD: one + m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SUB: k[0:1] - zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SUB: one - m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MUL: k[0:1] * zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MUL: one * m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_DIV: k[0:1] / zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_DIV: one / m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_EQ: k[0:1] == zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_EQ: one == m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LE: k[0:1] <= zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LE: one <= m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LT: k[0:1] < zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LT: one < m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GT: k[0:1] > zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GT: one > m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GE: k[0:1] >= zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_GE: one >= m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_NE: k[0:1] != zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_NE: one != m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MOD: k[0:1] % zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_MOD: one % m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_AND: k[0:1] & zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_AND: one & m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_OR: k[0:1] | zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_OR: one | m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_XOR: k[0:1] ^ zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_XOR: one ^ m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LAND: k[0:1] && zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LAND: one && m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LOR: k[0:1] || zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_LOR: one || m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHL: k[0:1] << zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHL: one << m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHR: k[0:1] >> zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  OP_SHR: one >> m[0:2]: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  unary -: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  unary !: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  likha(mala slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  yadi (slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  yavat (slice): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  ?: condition: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  ?: arm + zero: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  for bound: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  index: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  cell store: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  raw store: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  untyped parameter: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  function value: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  declared from arithmetic: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  kosh result + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  ?: of kosh + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  bare kosh + zero: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  control: vib(k[0:1]): want '7\n'; prints '7\n'
+PASS  control: pankti_gan(m[0:3]): want '3\n'; prints '3\n'
+PASS  control: a slice name passed on: want '5\n'; prints '5\n'
+PASS  control: element arithmetic: want '12\n'; prints '12\n'
+PASS  ChatGPT S4 laundering probe: want 'E_'; refused E_VIBHAG_ANKA
+PASS  global initializer: make_kosh() + zero (C1): want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  global initializer: make_kosh() == 0: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  global initializer: (1 ? make_kosh() : make_kosh()) + 0: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  global initializer: a kosh into a module vitti: want 'E_KOSH_DVARA'; refused E_KOSH_DVARA
+PASS  global initializer control: 3 + f(): want '7\n'; prints '7\n'
+PASS  R142 walk stack: slice arithmetic beside a first call of f: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  R142 walk stack: kosh arithmetic beside a first call of f: want 'E_KOSH_GANIT'; refused E_KOSH_GANIT
+PASS  R142 walk stack: the S4 stale read beside a first call of f (v310: 7 and 99): want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  R142 walk stack control: the same with no slice prints 4: want '4\n'; prints '4\n'
+PASS  R147 shape 01_cell: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 02_untyped_param: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 03_untyped_return: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 04_function_value: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 05_module_vitti: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 06_record_field: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 07_raw_memory: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 08_dasham_param: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 09_arithmetic: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  R147 shape 10_module_initializer: want 'E_KOSH_DVARA'; refused E_KOSH_DVARA
+PASS  R147 shape 11_comparison_as_index: want 'E_VIBHAG_ANKA'; refused E_VIBHAG_ANKA
+PASS  R147 shape 12_two_functions: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 13_kosh_element: want 'E_KOSH_VIBHAG'; refused E_KOSH_VIBHAG
+PASS  R147 shape 14_inline_assembly: want 'SYNTAX'; refused (syntax)
+PASS  R142 mutant R142_MUTANT_NO_STMT_CHECK (the entry forgets the walk): every negative still refused, no control wrong (80 as before, 1 control(s) refused instead: control: a slice name passed on)
+PASS  R142 mutant R142_MUTANT_NO_GLOBAL_CHECK (the entry forgets the walk): every negative still refused, no control wrong (81 as before, 0 control(s) refused instead)
+r137 slice is not a number: 89 checks, 0 failed

@@ -1,4 +1,21 @@
-> **The 20 newest entries.** Older ones, from "v292" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v293" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v313 (Claude, R147) - the walk budget a defensive stop; the fourteen slice shapes; the licence label, the staging folder
+
+- **Fourteen ways of keeping a slice past a growth, in one table** (Sarvam R147 Task 4): the ten found and closed
+  and four new - a comparison used as an index, two prakriyas in sequence, a kosh element, inline machine code.
+  On v313 (Linux, and the Windows compiler under Wine) all fourteen are refused at compile time; on v307, eleven
+  compiled (eight read the old elements, one crashed, one leaked a descriptor's address, one compared an address). `tests/r147/slices/`,
+  and in gate `R137 slice is not a number` (89 checks) with both mutant compilers.
+- **The expression check's budget** (Task 1; ChatGPT R212): 349,521 = 8 x (AST_HEAP_CAP / AST_NODE_SIZE) + 1, the
+  most a statement the syntax tree can hold can take. v312's 65,536 refused 8,200-16,400 terms the tree holds; now
+  the widest, 21,829 terms, compiles. `E_VAKYA_SEEMA` says it is an internal limit and a compiler defect: report
+  it, split the statement. The refusal is tested with a `-DR143_WALK_BUDGET=64` build; gate `R143 walk budget` (6).
+- **Installer** (Windows v312 acceptance): the licence instruction label is two lines high and the licence box
+  starts below it; uninstall removes its `%TEMP%\STMxxxx.tmp` staging folder on success - in TEMP, with the
+  wizard's name, holding exactly its script and log, by exact paths. Gate `R143 installer first contact` (12).
+- Guard v312 -> v313: ELF and PE 587 identical / 181 refused / 0 DIFFER (782 programs, 14 new); refusal messages
+  unchanged.
 
 ## v312 (Claude, R143) - the walk budget reachable; the licence page, the uninstall window, the empty key
 
@@ -333,16 +350,3 @@
   Linux IDE's failure check matches `truti`; goldens, test scripts and current docs move with it.
 - **Not changed:** the linker's own messages (`sutram-link`, `sutram-elf2smo`, `sutram-coff2smo`) - outside the
   permission. A program built by v293 or earlier still prints `Sutram Error` from its own bytes.
-
-## v293 (Claude, R113) - a `rachana` reference beside an operator is refused; `sankhya_bindu` is an integer dot product
-
-- **`E_RACHANA_GANIT`:** `p == q`, `p < q`, `p + q` (and every operator) on a `rachana` reference - a name whose
-  field the `prakriya` reads or writes, or a method's first parameter - is refused, as a bare `kosh` or `mala`
-  is. Up to v292 they compared, ordered and added two addresses. The reference states the meaning `==` will have
-  on all three - the same object - and why it is refused until a `kosh` has a stable identity (ChatGPT R182).
-  Example 328. No program in the tree changed (705 compiled, 0 differ).
-- **`sankhya_bindu(a, b, n)`** (was `sankhya_dot`, Muse R108's one alias whose body was wrong): the integer dot
-  product of n 8-byte cells. Up to v292 it took two pointers and returned the bits of four 32-bit float products,
-  which no Sutram value holds. Example 329. `sankhya_yog` / `sankhya_gunan` are documented as what they are
-  (four 32-bit float lanes), not fixed.
-- The reference says what would remove `Sutram Error`, the one English word left.

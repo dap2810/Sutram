@@ -1036,15 +1036,20 @@ parameter, in `pankti_gan(s)`, as the base of `s[i]` and `s[a:b]`, and (a `mala`
 made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is. The same holds in a module-level `vitti` initializer (v310), and
 a `kosh` cannot be a module `vitti`'s initial value there either (`E_KOSH_DVARA`). From v311 the check is part of
 expression code generation itself: an expression reached by any other path is checked there, its own value as a number.
-The check has a limit (v312): a statement whose check takes more than 65,536 steps - one step per node and per
-field that is not a node - is refused, `Sutram truti [E_VAKYA_SEEMA]`, exit 1, no program. Split such an
-expression over several statements. **Why that number (R144):** it is reachable, so the refusal is tested with the
-release compiler, and it is far above anything written. In one expression it takes between about 8,200 terms (8
-steps a term, as in `(z < z) + ...`) and about 16,400 (4 a term, `z + z + ...`). The largest statement in the 344
-examples and the 310 library functions takes 52 steps and 11 terms (`lib/brihat.smlib`, line 174); the most
-terms in one statement is 12 (`lib/ganita.smlib`, line 216, 35 steps). **The margin is 1,260 times in steps, and
-at least 680 times in terms.** Gate `R143 walk budget` checks it on every run: with the budget at 64, every
-example and library compiles exactly as with 65,536.
+**Size limits (v313, R147).** A program meets one size limit: its **syntax tree**, 3 MiB - at most 43,690 nodes for the
+whole program, the libraries it brings in with `yoj` included. A program larger than that is refused with
+`Sutram truti: vakya-vriksh seema atikram` (the syntax tree is full); split it, or bring in less. One expression
+of `z + z + ...` can have up to 21,829 terms before the tree is full, and it compiles.
+
+The expression check also has a budget, **349,521 steps** (one step per node and per field of a node that is not
+one): 8 fields for each node the tree can hold, plus one, so **no statement that fits in the tree can reach it**.
+It is a defensive stop against a defect in the check, not a limit on programs. If it fires, the compiler says so:
+`Sutram truti [E_VAKYA_SEEMA]: antarika seema ... ato'yam sankalakasya doshah` - an internal limit, a compiler
+defect - with the advice to report it and, meanwhile, to split the statement into smaller ones (keeping
+intermediate values in names). The largest statement in the 344 examples and 310 library functions takes 52
+steps; the gate `R143 walk budget` tests the refusal with a build whose budget is 64, under which every example
+and library still compiles unchanged. (v312's budget was 65,536, which refused expressions of 8,200 to 16,400 terms
+that the tree can hold; R147 withdrew that limit.)
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.

@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""R143: the expression walk's budget refuses, and the refusal is reachable with the release compiler.
+"""R143-R147: the expression walk's budget - a defensive stop, tested; not a language limit.
 
-ChatGPT R211: the 0-1023 parentheses probe measured parser nesting, not the walk's budget. And R141 compared the
-wrong units: its "200000 can never be reached, the heap holds 43,690 nodes" counted nodes, but r137_check_stmt
-spends a step on every entry it pops, a node or a field that is not one. Measured on v311: the widest statement
-the AST heap holds (21,829 terms) takes 87,316 steps; the largest walk in the 768 programs takes 52. So v311's
-refusal was code no program could reach. v312's budget is 65536 (R143_WALK_BUDGET):
+R143 (v312) set the budget to 65536 so that the release compiler could reach the refusal, and that refused
+statements of 8,200 to 16,400 terms which the syntax tree can hold (ChatGPT R212: generated code). R147 (v313)
+makes it the bound a tree cannot pass: a walk takes each node once and at most its 8 fields, so a statement the
+tree holds takes at most 8 x (AST_HEAP_CAP / AST_NODE_SIZE) + 1 steps. The size limit a program meets is the
+syntax tree's; the budget can fire only on a compiler defect, and its message says so and what to do.
 
-  * a wide statement - 20,000 terms, siblings, not nesting - is refused by the release compiler: exit 1, no
-    output file, E_VAKYA_SEEMA naming 65536; the same as a module-level initializer (the walk at r56);
-  * 10,000 terms compile and print 10000;
-  * a test build of this source with -DR143_WALK_BUDGET=64 refuses 40 terms naming 64, and compiles 10;
-  * the source: the budget is that define, and it is spent before each entry is taken;
-  * (R144) the margin: with the budget at 64, every example and every library compiles exactly as with the release
-    budget. Measured with a tracing build: the largest statement in them takes 52 steps (lib/brihat.smlib:174, 11
-    terms); the most terms, 12 (lib/ganita.smlib:216, 35 steps). The fewest terms that reach 65536 are about 8,200
-    (shapes of 8 steps a term, such as `(z < z) + ...`); the widest, 4 a term, about 16,400.
+  * the source: the budget equals 8 x (AST_HEAP_CAP / AST_NODE_SIZE) + 1, read from the same file, and is spent
+    before each entry is taken;
+  * the release compiler: the widest statement the tree holds (21,829 terms) compiles and prints 21829, and a
+    statement of 10,000 terms prints 10000 - the budget refuses nothing the tree holds;
+  * a test build with -DR143_WALK_BUDGET=64 refuses 40 terms - exit 1, no output, E_VAKYA_SEEMA naming 64 and
+    saying to report it and to split the statement - and compiles 10;
+  * the margin, measured with that build: every example and library compiles exactly as with the release budget.
+    Measured with a tracing build: the largest statement in them takes 52 steps (lib/brihat.smlib:174, 11 terms);
+    the most terms, 12 (lib/ganita.smlib:216).
 
   python3 tests/r143/test_walk_budget.py [--compiler PATH]
 Last line: "r143 walk budget: N checks, M failed".
@@ -56,8 +56,9 @@ def main():
     def refused(c, name, text, budget):
         r, out, said = compile_(c, name, text)
         ok = (r.returncode == 1 and not os.path.exists(out) and '[E_VAKYA_SEEMA]' in said
-              and f' {budget} padeshu' in said)
-        return ok, ('refused, exit 1, no output, E_VAKYA_SEEMA naming ' + str(budget)) if ok else \
+              and f' {budget} padeshu' in said and 'sankalakasya doshah' in said and 'suchaya' in said
+              and 'vibhaja' in said)
+        return ok, ('refused, exit 1, no output, E_VAKYA_SEEMA naming ' + str(budget) + ', a compiler defect: report it, split the statement') if ok else \
             f'exit {r.returncode}, output {"made" if os.path.exists(out) else "none"}: {said.strip()[:90]!r}'
 
     def prints(c, name, text, want):
@@ -71,17 +72,25 @@ def main():
     code = re.sub(r';[^\n]*', '', src)
     m = re.search(r'%ifndef R143_WALK_BUDGET\s+%define R143_WALK_BUDGET (\d+)\s+%endif', code)
     budget = int(m.group(1)) if m else None
+    cap = int(re.search(r'(?m)^AST_HEAP_CAP equ (\d+)', code).group(1))
+    size = int(re.search(r'(?m)^AST_NODE_SIZE equ (\d+)', code).group(1))
+    bound = 8 * (cap // size) + 1
     walk = code[code.find('\nr137_check_stmt:'):]
     w = walk[walk.find('\n.walk:'):walk.find('mov rbx, [rax+r15*8]')]
-    check(budget == 65536 and 'mov qword [rel r137_budget], R143_WALK_BUDGET' in walk
+    gen = walk[walk.find('\n.gen:'):]
+    gen = gen[:gen.find('jmp .walk')]
+    lo = re.search(r'mov r9d, (\d+)', gen)
+    hi = re.search(r'cmp r9d, (\d+)', gen)
+    fields = list(range(int(lo.group(1)), int(hi.group(1)), 8)) if lo and hi else []
+    check(budget == bound and fields and len(fields) <= 8
+          and 'mov qword [rel r137_budget], R143_WALK_BUDGET' in walk
           and w.find('dec qword [rel r137_budget]') < w.find('js .exhausted') < w.find('dec r15'),
-          f'the source: the budget is R143_WALK_BUDGET ({budget}), spent before each entry is taken, refusing when spent')
+          f'the source: the budget ({budget}) is 8 x (AST_HEAP_CAP {cap} / AST_NODE_SIZE {size}) + 1 = {bound} - the walk '
+          f'pushes at most 8 fields of a node (offsets {fields}) - spent before each entry is taken')
     if budget is None:
-        budget = 65536
-    for name, text, what in (('wide', wide(20000), 'a 20,000-term statement'),
-                             ('wide_global', wide(20000, True), 'a 20,000-term module-level initializer')):
-        ok, got = refused(comp, name, text, budget)
-        check(ok, f'release compiler: {what} (wide, not deep) - {got}')
+        budget = bound
+    ok, got = prints(comp, 'widest', wide(21829), '21829\n')
+    check(ok, f'release compiler: the widest statement the syntax tree holds (21,829 terms) compiles - {got}')
     ok, got = prints(comp, 'control', wide(10000), '10000\n')
     check(ok, f'release compiler: a 10,000-term statement compiles - {got}')
     if not own:

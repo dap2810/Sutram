@@ -1,5 +1,18 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v293 (Claude, R113) - a `rachana` reference beside an operator is refused; `sankhya_bindu` is an integer dot product
+
+- **`E_RACHANA_GANIT`:** `p == q`, `p < q`, `p + q` (and every operator) on a `rachana` reference - a name whose
+  field the `prakriya` reads or writes, or a method's first parameter - is refused, as a bare `kosh` or `mala`
+  is. Up to v292 they compared, ordered and added two addresses. The reference states the meaning `==` will have
+  on all three - the same object - and why it is refused until a `kosh` has a stable identity (ChatGPT R182).
+  Example 328. No program in the tree changed (705 compiled, 0 differ).
+- **`sankhya_bindu(a, b, n)`** (was `sankhya_dot`, Muse R108's one alias whose body was wrong): the integer dot
+  product of n 8-byte cells. Up to v292 it took two pointers and returned the bits of four 32-bit float products,
+  which no Sutram value holds. Example 329. `sankhya_yog` / `sankhya_gunan` are documented as what they are
+  (four 32-bit float lanes), not fixed.
+- The reference says what would remove `Sutram Error`, the one English word left.
+
 ## v292 (Claude, R111) - the vocabulary change, as aliases: 22 builtins get Sanskrit names, `asti` / `nasti` are `==` / `!=`, `tyaj` leaves the shell
 
 - **22 builtins have a new, primary name; the old one still works and compiles to the same bytes.** An old name

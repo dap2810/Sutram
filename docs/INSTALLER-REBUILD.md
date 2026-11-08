@@ -127,3 +127,7 @@ a reused target that changed or disappeared is refused before it is moved, from 
 **R143 (v312):** the wizard changed (the licence decoded as UTF-8 with CR LF line ends; the uninstall script
 started with CREATE_NO_WINDOW) and the uninstaller (no empty `.sm` keys; a failure shown in a message box). The
 runtime and `sutram-link.exe` are unchanged. Built with `tools/build_installer_linux.py` as in R140.
+
+**R147 (v313):** the wizard (the licence instruction two lines high) and the uninstaller (its staging folder
+removed on success) changed; the runtime and `sutram-link.exe` are unchanged. Built with
+`tools/build_installer_linux.py` from an **empty** `--work` folder (the builder refuses a used one).

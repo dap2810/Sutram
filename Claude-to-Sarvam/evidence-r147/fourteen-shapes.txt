@@ -1,0 +1,31 @@
+# the fourteen probes (tests/r147/slices), each compiled and, if it compiles, run
+## v313
+01_cell.sm                   E_KOSH_VIBHAG    
+02_untyped_param.sm          E_KOSH_VIBHAG    
+03_untyped_return.sm         E_KOSH_VIBHAG    
+04_function_value.sm         E_KOSH_VIBHAG    
+05_module_vitti.sm           E_KOSH_VIBHAG    
+06_record_field.sm           E_KOSH_VIBHAG    
+07_raw_memory.sm             E_KOSH_VIBHAG    
+08_dasham_param.sm           E_KOSH_VIBHAG    
+09_arithmetic.sm             E_VIBHAG_ANKA    
+10_module_initializer.sm     E_KOSH_DVARA     
+11_comparison_as_index.sm    E_VIBHAG_ANKA    
+12_two_functions.sm          E_KOSH_VIBHAG    
+13_kosh_element.sm           E_KOSH_VIBHAG    
+14_inline_assembly.sm        vyakaran dosh    
+## v307
+01_cell.sm                   compiled         prints ['7', '99'] exit 0
+02_untyped_param.sm          compiled         prints ['7', '99'] exit 0
+03_untyped_return.sm         compiled         prints ['7', '99'] exit 0
+04_function_value.sm         E_KOSH_DVARA     
+05_module_vitti.sm           compiled         prints ['7', '99'] exit 0
+06_record_field.sm           compiled         prints ['7', '99'] exit 0
+07_raw_memory.sm             compiled         prints ['7', '99'] exit 0
+08_dasham_param.sm           compiled         prints [] exit -11
+09_arithmetic.sm             compiled         prints ['7', '99'] exit 0
+10_module_initializer.sm     compiled         prints ['140255304876048'] exit 0
+11_comparison_as_index.sm    compiled         prints ['5'] exit 0
+12_two_functions.sm          E_KOSH_VIBHAG    
+13_kosh_element.sm           compiled         prints ['7', '99'] exit 0
+14_inline_assembly.sm        vyakaran dosh    

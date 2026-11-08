@@ -1,41 +1,48 @@
-# Sutram 1.0 (v312) — release notes
+# Sutram 1.0 (v313) — release notes
 
-**Compiler `Sutram 1.0 (v312) - sampurna sutra`, 7 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v312). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v313) - sampurna sutra`, 8 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v313). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
-## Status: what v312 closes, and what it does not (R140-R143)
+## Status: what v313 closes, and what it does not (R140-R147)
 
-v312 is v311 plus (R143):
-- **the expression check's budget can be reached, and refuses.** v311's 200,000 steps could not be reached (the
-  widest statement the compiler can hold takes 87,316), so its refusal was code no program could run. From v312 a
-  statement whose check takes more than 65,536 steps - 8,200 to 16,400 terms in one expression, by its shape - is
-  refused (`E_VAKYA_SEEMA`), with the release compiler. **The largest statement in the 344 examples and 310 library
-  functions takes 52 steps and 11 terms; the most terms in one is 12. The margin is 1,260 times in steps and at
-  least 680 in terms** (R144; checked on every gate run).
-- **the installer's licence page** shows the licence as written: UTF-8 is decoded (the em dash in its first line
-  showed as three characters, and its Sanskrit lines as noise) and its lines break (they ran together).
-- **the uninstall** opens no PowerShell window; a failure is shown in a message box with its log. And it removes
-  `HKCU\Software\Classes\.sm\OpenWithProgids`, then `.sm`, when nothing is left in them.
+v313 is v312 plus (R147):
+- **the expression check's budget is a defensive stop, not a language limit.** v312 set it to 65,536 steps, which
+  refused one expression of 8,200 to 16,400 terms that the compiler can otherwise hold - generated code, as
+  ChatGPT said, not anything in the tree. From v313 it is 349,521, the most a statement the syntax tree can hold can
+  take (8 fields for each of its 43,690 nodes, plus one), so **no statement the compiler can hold is refused by
+  it**; the widest, 21,829 terms, compiles. If it ever fires it is a compiler defect, and the message says that:
+  report it, and split the statement meanwhile. The size limit a program meets is the syntax tree's (below and in
+  the language reference). The refusal is tested by a build with the budget at 64, on every gate run.
+- **the licence page's instruction** is two lines high (its second line, "the terms to continue.", was cut off).
+- **uninstall removes its own staging folder** (`%TEMP%\STMxxxx.tmp`, its script and log) when it succeeds.
 
-**Evidence scope for v312.** *The pinned v312 package (the setup committed with these notes - its hash is in `Sutram-Setup.sha256`, which a
-setup cannot carry inside itself - with the v312 compiler of commit `097ac45c`) passed the
-Linux gates, the byte-for-byte guard against v311 and the Windows compiler under Wine; it has not been installed,
-run or uninstalled on Windows, and untested guarantees remain unclaimed.* What v312 does **not** claim:
-- that the licence page draws correctly on Windows. The gate checks the characters the wizard puts in the page.
-  Under Wine the em dash and the line breaks draw, but the Devanagari and Tamil lines in that box draw as one empty
-  box per character after their first word - the same scripts draw in the wizard's sidebar once a font for them is
-  linked, so this is Wine's text box, but **how Windows draws them has not been seen**;
-- that the uninstall opens no window, removes the empty `.sm` keys, or shows its message box on failure - read
-  from the code and checked by the gate, not run;
-- the expression-check refusal on Windows (Linux and Wine only);
-- anything v311's native runs did not establish (below), and the compare-then-delete race under another writer.
+**Evidence scope for v313.** *The pinned v313 package (the setup committed with these notes - its hash is in
+`Sutram-Setup.sha256`, which a setup cannot carry inside itself) passed the Linux gates, the byte-for-byte guard
+against v312 and the Windows compiler under Wine; it has not been installed, run or uninstalled on Windows, and
+untested guarantees remain unclaimed.* What v313 does **not** claim: the licence label drawn on Windows (under
+Wine it shows both lines); the staging folder gone after a real uninstall (read from the code and gated, not run);
+the 21,829-term statement on Windows; anything the v312 and v311 native runs did not establish (below); the
+compare-then-delete race under another writer.
 
-The native evidence below is of v309 and v311, each on the commit it names.
+**Evidence scope for v312, on Windows.** *The pinned v312 package (`5cca529c...`, source `06324ce`) passed the
+reported Windows first-contact checks on one existing user account (Windows 11 Home build 26300, not elevated):
+the em dash as one U+2014, CR LF line ends with the text equal to the licence source, the Sanskrit and Hindi lines
+visibly rendered, no uninstall window, the empty `.sm` key and its parent removed, PATH restored, one canonical
+installation with 657/657 hashes, the variable and global 20,000-term refusals and 10,000-term controls, and 322
+suite cases; two acceptance findings were recorded (the clipped instruction label, the surviving uninstall
+staging folder - both fixed in v313), and untested guarantees remain unclaimed* (`Windows-to-Sarvam/win-v312-2026-11-08/`).
+**The licence rendering is verified on native Windows and not under Wine:** Wine draws the Devanagari and Tamil
+lines in the licence box as empty boxes, a Wine font limitation. Not established by that run: a new machine or
+user profile, font coverage on other machines, the suite time (one sample, 24% slower than v311's, not attributed),
+a whole-machine cleanup guarantee, the out-of-memory exit, the race.
+
+v312 was v311 plus (R143): the expression check's budget set to 65,536 (reachable; superseded in v313), the
+licence decoded as UTF-8 with CR LF line ends, the uninstall without a console window, and no empty `.sm` key.
 
 v311 was v310 plus (R142):
 - **the expression check is inside expression code generation.** `gen_expr` generates without a check of its own
@@ -361,9 +368,11 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
-- **v312:** an expression check that would take more than 65,536 steps refuses (`E_VAKYA_SEEMA`), reachable;
-  the licence page is decoded as UTF-8 with line breaks; the uninstall shows no console and leaves no empty `.sm`
-  key.
+- **v313:** the expression check's budget is the bound a statement the syntax tree holds cannot pass (349,521), so
+  it refuses only a compiler defect, and says so; the licence instruction shows both lines; uninstall removes its
+  staging folder.
+- **v312:** the licence page is decoded as UTF-8 with line breaks; the uninstall shows no console and leaves no
+  empty `.sm` key.
 - **v311:** the expression check is inside expression code generation, with its own stack; the installer deletes
   a stopped run's copy only on an equal full SHA-256.
 - **v310:** module-level `vitti` initializers get a statement's checks (no `kosh` or slice used as a number, no

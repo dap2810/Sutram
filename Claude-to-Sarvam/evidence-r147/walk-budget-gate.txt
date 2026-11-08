@@ -1,0 +1,7 @@
+PASS  the source: the budget (349521) is 8 x (AST_HEAP_CAP 3145728 / AST_NODE_SIZE 72) + 1 = 349521 - the walk pushes at most 8 fields of a node (offsets [8, 16, 24, 32, 40, 48, 56, 64]) - spent before each entry is taken
+PASS  release compiler: the widest statement the syntax tree holds (21,829 terms) compiles - prints '21829\n'
+PASS  release compiler: a 10,000-term statement compiles - prints '10000\n'
+PASS  test build, budget 64: a 40-term statement - refused, exit 1, no output, E_VAKYA_SEEMA naming 64, a compiler defect: report it, split the statement
+PASS  test build, budget 64: a 10-term statement compiles - prints '10\n'
+PASS  the margin: with the budget at 64, all 344 examples and all 24 libraries compile as with 349521 - the largest real statement takes fewer than 64 steps, a margin over 1,024x
+r143 walk budget: 6 checks, 0 failed
