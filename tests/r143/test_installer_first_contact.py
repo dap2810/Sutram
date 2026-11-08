@@ -157,6 +157,19 @@ def main():
           and 'Recurse' not in tailok and '$stageDir' not in ucode[ucode.rfind('$failure=$_.Exception.Message'):],
           'on success uninstall removes its own %TEMP%\\STMxxxx.tmp folder - only in TEMP, with the wizard\'s name, holding '
           'exactly its script and log, by exact paths and a non-recursive delete; a failure keeps it')
+    # R152 (Windows v312 first-run paths, C2 and the checkbox): a user's own desktop "Sutram IDE.lnk" is kept and the
+    # installer's is then "Sutram IDE (Sutram).lnk"; the name is recorded and a link is removed only when it points at
+    # this installation's IDE; the checkbox names the IDE.
+    eng = re.sub(r'(?m)#.*$', '', open(os.path.join(NI, 'install-core.ps1'), encoding='utf-8-sig').read())
+    check("'Sutram IDE (Sutram).lnk'" in eng and "('DesktopLink=' + $desktopName)" in eng
+          and 'if (& $isOurs $desktopLink) { Remove-Item' in eng and 'Remove-Item -LiteralPath $desktopLink -Force -ErrorAction SilentlyContinue\n' not in eng.replace('if (& $isOurs $desktopLink) { Remove-Item -LiteralPath $desktopLink -Force -ErrorAction SilentlyContinue }', ''),
+          'a desktop collision: the user\'s Sutram IDE.lnk is kept and the installer\'s is "Sutram IDE (Sutram).lnk", recorded; '
+          'removed only when it points at this IDE')
+    check("$state['DesktopLink']" in ucode and "CreateShortcut($desktopLink).TargetPath -eq (Join-Path $InstallDir 'sutram-ide-gui.exe')" in ucode,
+          'uninstall removes the desktop link by its recorded name, only when it points at this installation\'s IDE')
+    ck = re.search(r'b_ckdesk:\s+u16 "([^"]*)"', wiz)
+    check(ck and 'Sutram IDE' in ck.group(1) and 'Terminal' not in ck.group(1),
+          f'the desktop checkbox names what it makes ({ck.group(1) if ck else "?"!r})')
     setup = os.path.join(ROOT, 'Sutram-Setup.exe')
     if os.path.exists(setup):
         check(open(os.path.join(NI, 'uninstall-core.ps1'), 'rb').read() in open(setup, 'rb').read(),

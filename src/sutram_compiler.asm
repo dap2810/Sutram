@@ -36,16 +36,16 @@ R73_MAXDEPTH equ 32             ; R73: mandapa nesting depth
 BLOCK_STMT_CAP equ 256        ; B11: max statements stored in one AST_BLOCK
 AST_BLOCK_EXTRA equ (BLOCK_STMT_CAP * 8) - (AST_NODE_SIZE - 16)
 AST_HEAP_CAP equ 3145728      ; R53: 3 MiB compile-time AST heap for expanded modern stdlib (no runtime/codegen ABI change)
-; R147: the expression walk's budget - entries r137_check_stmt pops in one walk (a node, or a field of one that is
-; not a node). It is a defensive stop, not a language limit (Sarvam R147 Task 1, ChatGPT R212: a limit inside the
-; syntax tree's own would refuse generated code the tree can hold). A walk takes each node once and at most its 8
-; fields (+8..+64), so a statement the tree can hold takes at most 8 x (AST_HEAP_CAP / AST_NODE_SIZE) + 1 =
-; 349,521 steps; the widest measured takes 87,316, the largest in the 768 programs 52. The budget is that bound, so
-; it refuses only a walk that cannot be a tree's - a compiler defect - and says so. R143 set 65536, which refused
-; 8,200 to 16,400 terms the tree can hold. The gate checks the bound against AST_HEAP_CAP and AST_NODE_SIZE, and a
-; -DR143_WALK_BUDGET=64 build tests the refusal. The size limit a program meets is the syntax tree's (3 MiB).
+; R152 (Sarvam R149-R150, ChatGPT R214-R217): the expression walk's budget - entries r137_check_stmt pops in one
+; walk (a node, or a field of one that is not a node). The release default is 200000, and a program may set it for
+; one compile: --analysis-steps=N, 1 <= N <= 2147483647 (r152_scan_flag below has the exact contract). The count
+; starts again at N for every walk - each statement, each module-level initializer, each gen_expr fallback. The
+; bound a statement the syntax tree holds cannot pass is 8 x (AST_HEAP_CAP / AST_NODE_SIZE) + 1 = 349,521; the widest
+; measured takes 87,316, the largest in the 782 programs 52. A test build may lower the default
+; (-DR143_WALK_BUDGET=64); the flag overrides that too. Exhaustion refuses, names N, the prakriya, and that the
+; syntax tree's own limit is separate. (v313: 349521, fixed; v312: 65536; v311: 200000, fixed.)
 %ifndef R143_WALK_BUDGET
-%define R143_WALK_BUDGET 349521
+%define R143_WALK_BUDGET 200000
 %endif
 FUNC_PARAMS_CAP equ 8192      ; 1024 parameter-name slots; >= 128 funcs * 6 args
 VAR_TABLE_CAP equ 256         ; entries; 16 bytes each
@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v313) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v314) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -614,6 +614,8 @@ r54_builtin_arity_table:
     r126_d_cell db "' koshthe, kshetre athava smritau na likhyate", 10, 0
     r126_d_glob db "' vaishvika-vittau na sthapyate", 10, 0
     r126_d_par db "' asankhyita-tarke na preshyate - prakriya: ", 0
+    r152_steps dq R143_WALK_BUDGET    ; R152: the walk's budget for this compile (--analysis-steps=N)
+    r152_d_ffi db "' bahya-prakriyayai (FFI) na preshyate - bahya: ", 0   ; R152: the foreign call's door
     r126_d_raw db "' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...)", 10, 0
     r126_d_ret db "Sutram truti [E_KOSH_DVARA]: prakriya '", 0
     r126_d_ret2 db "' kosh nivartayati - kevalam kosh-tarkam athava atraiva ghoshitam kosh, tasya namna, pratyeka-nivartane", 10, 0
@@ -630,10 +632,17 @@ r54_builtin_arity_table:
     r137_txt db "' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya", 10, 0
     r137_khdr db "Sutram truti [E_KOSH_GANIT]: ", 0
 %defstr R143_WALK_BUDGET_S R143_WALK_BUDGET
-    ; R143: the number is the budget's own (v311 said "200000 nodes"; the budget counts steps, not nodes)
-    ; R147: the message says what the stop is and what to do (it can fire only on a compiler defect, R147 above)
-    r141_budget_hdr db "Sutram truti [E_VAKYA_SEEMA]: antarika seema - vakyasya parikshanam ", R143_WALK_BUDGET_S, " padeshu na samaptam; vakya-vrikshe sthitam vakyam etavat na bhavati, ato'yam sankalakasya doshah", 10, 0
-    r141_budget_hint db "Sanket: etam dosham suchaya (pankti, karyakram); tavat vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya)", 10, 0
+    ; R152: the analysis limit, said as one - its number, where, and that the syntax tree's limit is another
+    r141_budget_hdr db "Sutram truti [E_VAKYA_SEEMA]: vakyasya parikshanam ", 0
+    r152_budget_mid db " padeshu na samaptam (parikshana-seema) - ", 0
+    r152_budget_fn  db "prakriya '", 0
+    r152_budget_fn2 db "'", 10, 0
+    r152_budget_top db "mukhya athava vaishvika-arambhah", 10, 0
+    r141_budget_hint db "Sanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya), athava seemam vardhaya: --analysis-steps=<adhika> (1 - 2147483647; mula ", R143_WALK_BUDGET_S, "). Iyam parikshana-seema; vakya-vriksha-seema ('vakya-vriksh seema atikram') prithak, tasyam --analysis-steps na sahayyam karoti.", 10, 0
+    r152_ast_hint   db "Sanket: karyakramasya vakya-vrikshah purnah (3 MiB) - iyam vakya-vriksha-seema, na parikshana-seema (E_VAKYA_SEEMA); --analysis-steps atra na sahayyam karoti. Karyakramam laghum kuru: dirghani vakyani vibhaja, yoj-pratimanani nyunani kuru.", 10, 0
+    r152_flag_name  db "--analysis-steps", 0
+    r152_flag_bad   db "Sutram truti [E_PARIKSHA_PADANI]: --analysis-steps=N - N ekah dashamikah ankah 1 tah 2147483647 paryantam, '=' saha, ekasmin eva tarke, ekavaram eva", 10, 0
+    r152_usage      db "  sutram --analysis-steps=N <nivesh.sm> <nirgat.bin>  parikshana-seema (mula ", R143_WALK_BUDGET_S, ")", 10, 0
     r137_hint db "Sanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya", 10, 0
     r134_vb_hdr db "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah '", 0
     r134_vb_hint db "Sanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru", 10, 0
@@ -1564,7 +1573,8 @@ section .bss
     r137_budget resq 1                ; R137: the expression walk's node budget
     r142_wstack resq RFX2_STACK_CAP   ; R142: that walk's own stack (rfx2_stack is r126_ret_kind's, mid-walk)
     r142_checked resq 1               ; R142: >0 while generating a statement or initializer the walk has checked
-    r142_value_mode resq 1            ; R142: 1 - the walk's root is also a value used as a number
+    r142_value_mode resq 1
+    r152_seen resq 1                  ; R152: --analysis-steps= given once already            ; R142: 1 - the walk's root is also a value used as a number
     rfx2_seen   resb AST_HEAP_CAP / 64
     rfx2_calls  resq RFX2_ASG_CAP          ; R105: the AST_FUNCALLs met in the walk
     rfx2_calls_n resq 1
@@ -2750,6 +2760,36 @@ _start:
 %endif
 %endif
     call get_self_path
+    ; R152: --analysis-steps=N, anywhere after argv[0]: read, checked to the contract, and dropped, before any
+    ; other argument is looked at. Anything starting --analysis-steps that is not exactly one valid token, or a
+    ; second one, is E_PARIKSHA_PADANI.
+    mov r12d, 1
+.r152_scan:
+    mov rax, R49_ARG(0)
+    cmp r12, rax
+    jae .r152_done
+%ifdef WINDOWS
+    lea r8, [rel win_stack]
+%else
+    mov r8, rsp
+%endif
+    mov rdi, [r8 + 8 + r12*8]
+    call r152_scan_flag            ; rax = 0 not this flag, 1 a valid one (rdx = N), 2 malformed
+    test rax, rax
+    jz .r152_next
+    cmp rax, 1
+    jne r152_flag_error
+    cmp qword [rel r152_seen], 0
+    jne r152_flag_error            ; a second --analysis-steps, even with the same value
+    mov qword [rel r152_seen], 1
+    mov [rel r152_steps], rdx
+    mov edi, r12d
+    call r49_drop_arg
+    jmp .r152_scan
+.r152_next:
+    inc r12
+    jmp .r152_scan
+.r152_done:
     ; decide the output format now: .exe -> Windows PE, else Linux ELF
 %ifdef WINDOWS
     mov qword [rel target_pe], 1
@@ -3072,6 +3112,8 @@ _start:
     jmp do_exit
 .usage:
     lea rdi, [rel msg_usage]
+    call print_str_z
+    lea rdi, [rel r152_usage]      ; R152: the flag and its effective default
     call print_str_z
     jmp do_exit
 .args_ok:
@@ -7691,6 +7733,14 @@ capacity_fail:
     mov rdi, 1
     call os_exit
 
+; R152: the syntax tree is full - its message, then which limit this is and what to do (and that
+; --analysis-steps is the other limit, and does not help here).
+r152_ast_full:
+    lea rdi, [rel msg_ast_overflow]
+    call print_str_z
+    lea rdi, [rel r152_ast_hint]
+    jmp capacity_fail
+
 reserve_ast_block_extra:
     ; AST_BLOCK stores up to BLOCK_STMT_CAP statement pointers after the regular node.
     mov rax, [rel ast_ptr]
@@ -7702,8 +7752,7 @@ reserve_ast_block_extra:
     mov [rel ast_ptr], rax
     ret
 .rabe_overflow:
-    lea rdi, [rel msg_ast_overflow]
-    jmp capacity_fail
+    jmp r152_ast_full
 
 ; R9 (F3): rax = guna switch expression. Returns rax = the expression to
 ; compare against, rdx = a hidden DECL to emit first, or 0 when the
@@ -7796,7 +7845,8 @@ alloc_ast:
     ret
 .aa_overflow:
     pop rbx
-    lea rdi, [rel msg_ast_overflow]
+    jmp r152_ast_full
+    ; (was: msg_ast_overflow)
     jmp capacity_fail
 
 cur_tok:
@@ -28411,7 +28461,8 @@ r137_check_stmt:
     push r10
     push r15
     xor r15, r15
-    mov qword [rel r137_budget], R143_WALK_BUDGET
+    mov rax, [rel r152_steps]          ; R152: N, from --analysis-steps=N or the default
+    mov [rel r137_budget], rax
     call r142_push
 .walk:
     test r15, r15
@@ -28655,6 +28706,28 @@ r137_check_stmt:
 .exhausted:
     lea rdi, [rel r141_budget_hdr]
     call print_str_z
+    mov rdi, [rel r152_steps]
+    lea rsi, [rel num_buf]
+    call itoa
+    mov rdi, rax
+    call print_str_z
+    lea rdi, [rel r152_budget_mid]
+    call print_str_z
+    cmp qword [rel in_function], 0
+    je .ex_top
+    cmp qword [rel r25_cur_func], 0
+    je .ex_top
+    lea rdi, [rel r152_budget_fn]
+    call print_str_z
+    mov rdi, [rel r25_cur_func]
+    call print_str_z
+    lea rdi, [rel r152_budget_fn2]
+    call print_str_z
+    jmp .ex_hint
+.ex_top:
+    lea rdi, [rel r152_budget_top]
+    call print_str_z
+.ex_hint:
     lea rdi, [rel r141_budget_hint]
     jmp capacity_fail
 .out:
@@ -28669,6 +28742,70 @@ r137_check_stmt:
     pop rbx
     pop rax
     ret
+
+; R152: r152_scan_flag(rdi = an argument) -> rax = 0 if it does not begin "--analysis-steps"; 1 if it is exactly
+; "--analysis-steps=" and 1 or more ASCII decimal digits whose value is 1 .. 2147483647 (leading zeros allowed:
+; "=00064" is 64), rdx = the value; 2 for anything else that begins so - the bare flag with its value in the next
+; argument, an empty value, 0, a sign, 200k, 1e5, 0x100, 1_000, a fraction, a space, a non-ASCII digit, trailing
+; junk, or a value over 2147483647, checked as acc > (2147483647 - digit) / 10 before acc is updated.
+r152_scan_flag:
+    test rdi, rdi
+    jz .no
+    lea rsi, [rel r152_flag_name]
+.pre:
+    mov al, [rsi]
+    test al, al
+    jz .name
+    cmp al, [rdi]
+    jne .no
+    inc rsi
+    inc rdi
+    jmp .pre
+.name:
+    cmp byte [rdi], '='
+    jne .bad                       ; "--analysis-steps", "--analysis-steps 2", "--analysis-stepsX"
+    inc rdi
+    xor edx, edx                   ; acc
+    xor r9d, r9d                   ; digits seen
+.digit:
+    movzx ecx, byte [rdi]
+    test ecx, ecx
+    jz .end
+    sub ecx, '0'
+    cmp ecx, 9
+    ja .bad
+    mov eax, 2147483647
+    sub eax, ecx
+    xor r10d, r10d
+    mov r11d, 10
+    push rdx
+    xor edx, edx
+    div r11d                       ; eax = (2147483647 - digit) / 10
+    pop rdx
+    cmp rdx, rax
+    ja .bad                        ; acc > (2147483647 - digit) / 10: it would pass the range
+    imul rdx, rdx, 10
+    add rdx, rcx
+    inc r9d
+    inc rdi
+    jmp .digit
+.end:
+    test r9d, r9d
+    jz .bad                        ; "--analysis-steps="
+    test rdx, rdx
+    jz .bad                        ; 0 (or 000)
+    mov eax, 1
+    ret
+.no:
+    xor eax, eax
+    ret
+.bad:
+    mov eax, 2
+    ret
+
+r152_flag_error:
+    lea rdi, [rel r152_flag_bad]
+    jmp capacity_fail
 
 ; r142_push(rdi = node or 0): onto r137_check_stmt's own stack (r15 = depth). Clobbers rax. R142: r137's walk
 ; calls r134_holds_kosh, which may work out a prakriya's return kind for the first time (r126_ret_kind) on

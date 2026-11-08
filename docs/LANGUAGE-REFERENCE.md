@@ -991,8 +991,11 @@ a[0]=7 k[0]=7
   smritih na labdha` / `kosh vardhayitum smritih na labdha` (exit 1); the `kosh` is not left half-grown.
 - **A slice of a `kosh` is not kept in a name** (`vitti s = k[1:4]` is `E_KOSH_VIBHAG`): its element address is
   the elements' address when it was made, and a later `kosh_kship` may move them. Pass the slice on directly -
-  `f(k[1:4])` - as before. A foreign function's `ptr` parameter receives the elements' address too, valid until
-  the `kosh` next grows.
+  `f(k[1:4])` - as before. **A slice is not given to a foreign function** (`--ffi`; v314, `E_KOSH_VIBHAG`): v313
+  passed the slice's descriptor - an address of its three words, not its elements - so the C side read an address,
+  or, as an `i64` count, crashed (Muse's reading, R151; confirmed). Pass the `kosh` itself - its elements' address,
+  valid until it next grows - and the bounds as numbers. Earlier versions of this page said a slice's elements went
+  to a `ptr` parameter; that was not what the compiler did.
 
 ### A `kosh` parameter can grow (v304, R129)
 
@@ -1036,20 +1039,28 @@ parameter, in `pankti_gan(s)`, as the base of `s[i]` and `s[a:b]`, and (a `mala`
 made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is. The same holds in a module-level `vitti` initializer (v310), and
 a `kosh` cannot be a module `vitti`'s initial value there either (`E_KOSH_DVARA`). From v311 the check is part of
 expression code generation itself: an expression reached by any other path is checked there, its own value as a number.
-**Size limits (v313, R147).** A program meets one size limit: its **syntax tree**, 3 MiB - at most 43,690 nodes for the
-whole program, the libraries it brings in with `yoj` included. A program larger than that is refused with
-`Sutram truti: vakya-vriksh seema atikram` (the syntax tree is full); split it, or bring in less. One expression
-of `z + z + ...` can have up to 21,829 terms before the tree is full, and it compiles.
-
-The expression check also has a budget, **349,521 steps** (one step per node and per field of a node that is not
-one): 8 fields for each node the tree can hold, plus one, so **no statement that fits in the tree can reach it**.
-It is a defensive stop against a defect in the check, not a limit on programs. If it fires, the compiler says so:
-`Sutram truti [E_VAKYA_SEEMA]: antarika seema ... ato'yam sankalakasya doshah` - an internal limit, a compiler
-defect - with the advice to report it and, meanwhile, to split the statement into smaller ones (keeping
-intermediate values in names). The largest statement in the 344 examples and 310 library functions takes 52
-steps; the gate `R143 walk budget` tests the refusal with a build whose budget is 64, under which every example
-and library still compiles unchanged. (v312's budget was 65,536, which refused expressions of 8,200 to 16,400 terms
-that the tree can hold; R147 withdrew that limit.)
+**Size limits (v314, R152).** A program meets two limits, and each says which it is:
+- **the syntax tree**, 3 MiB - at most 43,690 nodes for the whole program, the libraries `yoj` brings in included.
+  When it is full: `Sutram truti: vakya-vriksh seema atikram`, then *"Sanket: ... iyam vakya-vriksha-seema, na
+  parikshana-seema"* - the syntax tree's limit, not the analysis limit; `--analysis-steps` does not help; make the
+  program smaller (split long statements, bring in fewer modules). One `z + z + ...` expression of 21,829 terms
+  fits.
+- **the expression check's budget**: the steps the check may take on one statement or initializer (one step per
+  node and per field of a node that is not one). **Default 200,000**; for one compile, **`--analysis-steps=N`**,
+  `N` from 1 to 2147483647, written as one argument with `=` (leading zeros are decimal; a sign, a unit, a
+  fraction, a space, a second `--analysis-steps` or the value in the next argument are refused,
+  `E_PARIKSHA_PADANI`). The count starts again at `N` for every statement and initializer. When it runs out:
+  `Sutram truti [E_VAKYA_SEEMA]: vakyasya parikshanam N padeshu na samaptam (parikshana-seema) - prakriya 'f'`
+  (or *mukhya athava vaishvika-arambhah*), with the advice to split the statement (keeping intermediate values in
+  names) or raise `--analysis-steps`, and that the syntax tree's limit is separate. There is no source line: the
+  check sees the statement after parsing, where positions are not kept (only `--debug` keeps them).
+- **How many steps a statement takes** depends on its shape, not only its terms: `z + z + ...` takes 4 a term
+  plus a few, `(z < z) + ...` 8. The widest statement the tree holds takes exactly 87,316 (`--analysis-steps=87315`
+  refuses it, `87316` compiles it); no measured statement reaches the default, though the bound for a statement
+  the tree holds is 349,521, so a shape above 200,000 is possible in principle (raise the flag for it). The largest statement in
+  the 344 examples and 310 library functions takes 52 steps (`lib/brihat.smlib`, line 174).
+- **History:** v311 200,000 fixed; v312 65,536 (refused 16,385 terms - R148's measured boundary); v313 349,521;
+  v314 200,000 and the flag (ChatGPT R214-R217's contract). Gates `R143 walk budget` and `R152 analysis steps`.
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.

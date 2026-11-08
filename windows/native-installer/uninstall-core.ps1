@@ -164,7 +164,9 @@ try {
     }
     try { if ((Test-Path -LiteralPath $startMenu -PathType Container) -and -not (Get-ChildItem -LiteralPath $startMenu -Force -ErrorAction Stop | Select-Object -First 1)) { Remove-Item -LiteralPath $startMenu -Force } } catch {}
     $desktopOwned = (($state.ContainsKey('DesktopOwned') -and $state['DesktopOwned'] -eq '1') -or ($state.ContainsKey('DesktopShortcut') -and $state['DesktopShortcut'] -eq '1'))
-    $desktopLink=Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Sutram IDE.lnk'
+    $desktopName='Sutram IDE.lnk'
+    if ($state.ContainsKey('DesktopLink') -and $state['DesktopLink'] -and $state['DesktopLink'] -notmatch '[\\/]') { $desktopName=$state['DesktopLink'] }   # R152: the name the installer made
+    $desktopLink=Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) $desktopName
     if ($desktopOwned -and (Test-Path -LiteralPath $desktopLink -PathType Leaf)) {
         $shell=New-Object -ComObject WScript.Shell
         if ($shell.CreateShortcut($desktopLink).TargetPath -eq (Join-Path $InstallDir 'sutram-ide-gui.exe')) {

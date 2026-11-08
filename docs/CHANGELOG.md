@@ -1,4 +1,20 @@
-> **The 20 newest entries.** Older ones, from "v293" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v294" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v314 (Claude, R152) - the foreign-function door; --analysis-steps=N; the two limits named; the desktop collision
+
+- **A slice to a declared foreign function** (Sarvam R151; Muse's reading): `r33_gen_foreign_funcall` generated
+  each argument with no door check, and the walk leaves `kosh` values at an argument to the door. v313 compiled
+  `k_sum(k[0:2], 2)` and C read the descriptor (printed an address); as an `i64` count it crashed. Now refused,
+  `E_KOSH_VIBHAG` (`tests/r147/slices/15_ffi_argument.sm`; gate `R137` 91 checks, with the mutants).
+- **`--analysis-steps=N`** (R149-R150, ChatGPT R214-R217): default 200,000; 1..2147483647, one token with `=`,
+  overflow checked before it can wrap, a second occurrence or a separate value refused (`E_PARIKSHA_PADANI`);
+  every walk starts from N. The exhaustion message names N and the prakriya and says the syntax tree's limit is
+  separate; the tree-full message says the reverse. The widest statement the tree holds takes exactly 87,316 steps.
+  Gates `R152 analysis steps` (40) and `R143 walk budget` (7).
+- **Installer** (Windows v312 first-run paths): a user's own desktop `Sutram IDE.lnk` is kept and the installer's
+  is `Sutram IDE (Sutram).lnk`, recorded and removed only when it points at this IDE; the checkbox names the IDE.
+- **The release binaries are the plain builds**, checked by gate `R137`: no mutant define, no lowered budget.
+- Guard v313 -> v314: ELF and PE 587 identical / 195 refused / 0 DIFFER (783 programs); refusal messages unchanged.
 
 ## v313 (Claude, R147) - the walk budget a defensive stop; the fourteen slice shapes; the licence label, the staging folder
 
@@ -337,16 +353,3 @@
 - **The arena branch** (`claude/r108-arena-review`, not merged): its silent wrong answer - `chain40_reuse.sm`
   printing another block's 99 - was the outlives analysis stopping after 32 rounds; fixed on the branch (`3a6292e`)
   with main's v291 fix. Main changes only by the withdrawal.
-
-## v294 (Claude, R114) - `Sutram Error` becomes `Sutram truti`, in the compiler and all eleven packs
-
-- **The failure token is Sanskrit:** every message that stops a compile or a program begins `Sutram truti`
-  (`Sutram truti [E_PARSE]: ...`). Bodies, `[E_CODE]` tags, punctuation, placeholders and exit codes unchanged;
-  `Sutram suchana:` unchanged.
-- **By the owner's written exception** (3 November; `docs/decisions/R114-SUTRAM-TRUTI.md`): the one token,
-  identically in all eleven `lang/*.sandesh` files - 68 message values each, 748 in all - and nothing else in them.
-  Each pack file differs from v293 by the token alone.
-- `tools/sandesh.py` enforces the new token (a pack still carrying `Sutram Error` is refused - a new test); the
-  Linux IDE's failure check matches `truti`; goldens, test scripts and current docs move with it.
-- **Not changed:** the linker's own messages (`sutram-link`, `sutram-elf2smo`, `sutram-coff2smo`) - outside the
-  permission. A program built by v293 or earlier still prints `Sutram Error` from its own bytes.

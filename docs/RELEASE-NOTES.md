@@ -1,16 +1,37 @@
-# Sutram 1.0 (v313) — release notes
+# Sutram 1.0 (v314) — release notes
 
-**Compiler `Sutram 1.0 (v313) - sampurna sutra`, 8 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v313). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v314) - sampurna sutra`, 9 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v314). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
-## Status: what v313 closes, and what it does not (R140-R147)
+## Status: what v314 closes, and what it does not (R140-R152)
 
-v313 is v312 plus (R147):
+v314 is v313 plus (R152):
+- **a slice is not given to a foreign function** (`--ffi`): `E_KOSH_VIBHAG`. v313 compiled it, and passed the
+  slice's descriptor - so the C side read an address, and as an `i64` count it crashed (found by Muse's reading,
+  confirmed here). Every other door already refused it; this one had no check.
+- **`--analysis-steps=N`** sets the expression check's budget for one compile; the default is **200,000** (ChatGPT
+  R214-R217's contract: 1 to 2147483647, one argument with `=`, refused otherwise, `E_PARIKSHA_PADANI`). The widest
+  statement the syntax tree holds, of the shapes measured, takes 87,316 steps; no measured statement reaches the
+  default (a statement the tree holds is bounded at 349,521 steps, so a shape above 200,000 is possible in principle).
+- **the two size limits say which they are:** the analysis limit names its number, the prakriya, and says it is
+  not the syntax tree's; the syntax tree's full message now says it is not the analysis limit and that
+  `--analysis-steps` does not help.
+- **the desktop shortcut:** when a user's own `Sutram IDE.lnk` is on the desktop it is kept and the installer's
+  is `Sutram IDE (Sutram).lnk` (v312 made none, and the only "Sutram IDE" opened the user's target); the checkbox
+  says "Sutram IDE", not "Sutram Terminal".
+
+**Evidence scope for v314.** *The pinned v314 package (the setup committed with these notes - its hash is in
+`Sutram-Setup.sha256`) passed the Linux gates, the byte-for-byte guard against v313 and the Windows compiler
+under Wine; it has not been installed, run or uninstalled on Windows, and untested guarantees remain unclaimed.*
+Not claimed: the shortcut fix and the checkbox on Windows; `--analysis-steps` with the Windows compiler natively;
+the foreign-function refusal with the Windows FFI natively; what v313's and v312's native runs did not establish.
+
+v313 was v312 plus (R147):
 - **the expression check's budget is a defensive stop, not a language limit.** v312 set it to 65,536 steps, which
   refused one expression of 8,200 to 16,400 terms that the compiler can otherwise hold - generated code, as
   ChatGPT said, not anything in the tree. From v313 it is 349,521, the most a statement the syntax tree can hold can
@@ -188,7 +209,8 @@ succeeded; use the checked form when the program must detect a failure and go on
   extent and lifetime are the programmer's: the address is valid for the program's life, or until its block ends
   inside a `mandapa` (escaping a block is refused, `E_SCRATCH_ESCAPE`).
 - **A foreign function** (`--ffi`, a `ptr` parameter) **receives a `kosh`'s elements' address, valid until the `kosh` next
-  grows.** Nothing checks what the foreign side does with it.
+  grows.** Nothing checks what the foreign side does with it. **A slice of a `kosh` is not given to one** (v314,
+  `E_KOSH_VIBHAG`; v313 passed the slice's descriptor).
 - **A slice of a `kosh` is a view of the elements as they are when it is made.** So (`E_KOSH_VIBHAG`):
   - it cannot be kept in a name (`vitti s = k[1:4]`);
   - it cannot be given to a `prakriya` that may grow a `kosh` (it, or one it calls, runs `kosh_kship`);
@@ -368,6 +390,8 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v314:** a slice is not given to a foreign function; `--analysis-steps=N` (default 200,000); the two size
+  limits name themselves; the desktop shortcut collision and checkbox.
 - **v313:** the expression check's budget is the bound a statement the syntax tree holds cannot pass (349,521), so
   it refuses only a compiler defect, and says so; the licence instruction shows both lines; uninstall removes its
   staging folder.

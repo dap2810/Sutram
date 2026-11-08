@@ -1,0 +1,32 @@
+# FFI: a kosh slice to a declared foreign function (tests/r33/kinds.o: k_sum(ptr p, i64 n) sums n longs)
+## v313, built and run with tools/sutram_build.py
+--- ffi1.sm
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 7)
+    kosh_kship(k, 8)
+    likha(k_sum(k, 2))
+    likha(k_sum(k[0:2], 2))
+}
+--- ffi3.sm
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 7)
+    kosh xs[2]
+    kosh_kship(xs, 1)
+    likha(k_sum(xs, k[0:1]))
+}
+v313: ffi1 prints 15 (k_sum(k, 2): the kosh, right) then 139676486729762 (k_sum(k[0:2], 2): the slice's descriptor words); ffi3 (the slice as the i64 count) - Segmentation fault, exit 139
+--- ffi2.sm (a mala slice): refused E_VIBHAG_ANKA on v313 too
+
+## v314
+--- ffi1
+Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' bahya-prakriyayai (FFI) na preshyate - bahya: k_sum
+--- ffi2
+Sutram truti [E_VIBHAG_ANKA]: vibhagah 'm' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya
+--- ffi3
+Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' bahya-prakriyayai (FFI) na preshyate - bahya: k_sum
+
+## the Windows compilers under Wine, msabi sidecar, tests/r147/slices/15_ffi_argument.sm
+v314 win/sutram.exe: Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' bahya-prakriyayai (FFI) na preshyate - bahya: k_sum (exit 1, no object)
+v313 win/sutram.exe: Siddh: 2899 baait sankalit (exit 0, object written)

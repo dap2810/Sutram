@@ -682,6 +682,29 @@ r33_gen_foreign_funcall:
     cmp r13, r15
     jae .args_done
     mov r12, [rbx + 24 + r13*8]       ; the argument
+    ; R152 (Muse's reading, R151; confirmed: v313 passed k[0:2] to a ptr argument as the slice's descriptor - C
+    ; read an address - and to an i64 one as a count - a crash). The foreign call is a door like every other:
+    ; a value that holds a kosh - a slice of one, a call or ?: giving one, a name holding a slice - does not go to
+    ; C. A kosh by its own name still does (as its elements, for ptr; refused below for i64 and f64). The walk
+    ; leaves kosh values at an argument to the door (r137 .num, r10 = 1); this was the door that had no check.
+    cmp qword [r12], AST_VAR
+    jne .r152_door
+    mov rdi, [r12 + 8]
+    call is_kosh_var
+    test rax, rax
+    jnz .r152_open                    ; a kosh name: the kind checks decide
+.r152_door:
+    push rbx
+    mov rdi, r12
+    call r134_holds_kosh
+    pop rbx
+    test eax, eax
+    jz .r152_open
+    mov rdi, r12
+    lea rsi, [rel r152_d_ffi]
+    mov rdx, [rbx + 8]                ; the foreign function's name
+    jmp r126_fail_door
+.r152_open:
     movzx eax, byte [r14 + 24 + r13]  ; its declared kind
     cmp eax, 2
     je .ptr

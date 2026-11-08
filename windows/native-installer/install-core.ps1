@@ -706,19 +706,37 @@ try {
         $doc = Join-Path $InstallDir 'docs\sutram-book-english.html'
         if (Test-Path -LiteralPath $doc) { New-Shortcut (Join-Path $startMenu 'Sutram Documentation.lnk') $doc '' $InstallDir $icon }
         New-Shortcut (Join-Path $startMenu 'Uninstall Sutram.lnk') (Join-Path $InstallDir 'Sutram-Uninstall.exe') '--uninstall' $InstallDir $icon
-        $desktopLink = Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) 'Sutram IDE.lnk'
+        # R152 (Windows v312 first-run paths, C2): a user's own "Sutram IDE.lnk" on the desktop is kept, and the one
+        # this installer makes is then "Sutram IDE (Sutram).lnk" - before, it made none, and the only desktop item
+        # called Sutram IDE opened the user's target (Notepad in the test). The name made is recorded (DesktopLink),
+        # and a link is removed only when it is that name and points at this installation's IDE.
+        $desktopDir = [Environment]::GetFolderPath('DesktopDirectory')
         $previousDesktopOwned = (($oldState.ContainsKey('DesktopOwned') -and $oldState['DesktopOwned'] -eq '1') -or ($oldState.ContainsKey('DesktopShortcut') -and $oldState['DesktopShortcut'] -eq '1'))
+        $previousDesktopName = 'Sutram IDE.lnk'
+        if ($oldState.ContainsKey('DesktopLink') -and $oldState['DesktopLink'] -and $oldState['DesktopLink'] -notmatch '[\\/]') { $previousDesktopName = $oldState['DesktopLink'] }
+        $desktopName = $previousDesktopName
         $desktopOwned = $previousDesktopOwned
+        $shellForLinks = New-Object -ComObject WScript.Shell
+        $isOurs = { param($p) (Test-Path -LiteralPath $p -PathType Leaf) -and ($shellForLinks.CreateShortcut($p).TargetPath -eq $guiInstalled) }
         if ($DesktopShortcut) {
-            if ((Test-Path -LiteralPath $desktopLink -PathType Leaf) -and -not $previousDesktopOwned) {
-                Log 'A pre-existing user desktop shortcut named Sutram IDE.lnk was preserved.'
+            if (-not $previousDesktopOwned) {
+                $desktopName = 'Sutram IDE.lnk'
+                if ((Test-Path -LiteralPath (Join-Path $desktopDir $desktopName) -PathType Leaf) -and -not (& $isOurs (Join-Path $desktopDir $desktopName))) {
+                    Log 'A pre-existing user desktop shortcut named Sutram IDE.lnk was preserved; this installer''s is "Sutram IDE (Sutram).lnk".'
+                    $desktopName = 'Sutram IDE (Sutram).lnk'
+                }
+            }
+            $desktopLink = Join-Path $desktopDir $desktopName
+            if ((Test-Path -LiteralPath $desktopLink -PathType Leaf) -and -not (& $isOurs $desktopLink) -and -not $previousDesktopOwned) {
+                Log ('A pre-existing user desktop shortcut named ' + $desktopName + ' was preserved too; no desktop shortcut was made.')
                 $desktopOwned = $false
             } else {
                 New-Shortcut $desktopLink $guiInstalled '' $InstallDir $icon
                 $desktopOwned = $true
             }
         } elseif ($previousDesktopOwned) {
-            Remove-Item -LiteralPath $desktopLink -Force -ErrorAction SilentlyContinue
+            $desktopLink = Join-Path $desktopDir $previousDesktopName
+            if (& $isOurs $desktopLink) { Remove-Item -LiteralPath $desktopLink -Force -ErrorAction SilentlyContinue }
             $desktopOwned = $false
         } else {
             $desktopOwned = $false
@@ -768,6 +786,7 @@ try {
             ('OwnedShortcuts=' + ($script:ownedShortcuts.ToArray() -join ',')),
             ('PathOwned=' + $pathOwnedValue),
             ('DesktopOwned=' + $desktopOwnedValue),
+            ('DesktopLink=' + $desktopName),
             ('AssociationOwned=' + [int]$associationOwned),
             ('UninstallerSHA256=' + (Get-FileHash -LiteralPath $SetupExePath -Algorithm SHA256).Hash)
         )

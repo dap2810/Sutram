@@ -1,0 +1,10 @@
+# R152 (Muse's reading, Sarvam R151), shape 15: a slice of a kosh given to a declared foreign function.
+# Compiled with --ffi tests/r33/kinds.sffi --object (k_sum(ptr, i64) sums n longs from the pointer).
+# v313 compiled it: C read the slice's descriptor, and printed an address; as an i64 count it crashed.
+mukhya() {
+    kosh k[2]
+    kosh_kship(k, 7)
+    kosh_kship(k, 8)
+    likha(k_sum(k, 2))
+    likha(k_sum(k[0:2], 2))
+}

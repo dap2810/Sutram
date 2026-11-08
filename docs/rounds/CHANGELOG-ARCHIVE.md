@@ -1,5 +1,18 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v294 (Claude, R114) - `Sutram Error` becomes `Sutram truti`, in the compiler and all eleven packs
+
+- **The failure token is Sanskrit:** every message that stops a compile or a program begins `Sutram truti`
+  (`Sutram truti [E_PARSE]: ...`). Bodies, `[E_CODE]` tags, punctuation, placeholders and exit codes unchanged;
+  `Sutram suchana:` unchanged.
+- **By the owner's written exception** (3 November; `docs/decisions/R114-SUTRAM-TRUTI.md`): the one token,
+  identically in all eleven `lang/*.sandesh` files - 68 message values each, 748 in all - and nothing else in them.
+  Each pack file differs from v293 by the token alone.
+- `tools/sandesh.py` enforces the new token (a pack still carrying `Sutram Error` is refused - a new test); the
+  Linux IDE's failure check matches `truti`; goldens, test scripts and current docs move with it.
+- **Not changed:** the linker's own messages (`sutram-link`, `sutram-elf2smo`, `sutram-coff2smo`) - outside the
+  permission. A program built by v293 or earlier still prints `Sutram Error` from its own bytes.
+
 ## v293 (Claude, R113) - a `rachana` reference beside an operator is refused; `sankhya_bindu` is an integer dot product
 
 - **`E_RACHANA_GANIT`:** `p == q`, `p < q`, `p + q` (and every operator) on a `rachana` reference - a name whose

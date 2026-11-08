@@ -131,3 +131,7 @@ runtime and `sutram-link.exe` are unchanged. Built with `tools/build_installer_l
 **R147 (v313):** the wizard (the licence instruction two lines high) and the uninstaller (its staging folder
 removed on success) changed; the runtime and `sutram-link.exe` are unchanged. Built with
 `tools/build_installer_linux.py` from an **empty** `--work` folder (the builder refuses a used one).
+
+**R152 (v314):** the compiler (the FFI door, `--analysis-steps`), the engine and uninstaller (the desktop
+collision) and the wizard (the checkbox label) changed; the runtime and `sutram-link.exe` are unchanged. Built
+with `tools/build_installer_linux.py` from an empty `--work` folder.

@@ -1,0 +1,8 @@
+PASS  the source: the default is 200000; every walk starts from r152_steps (--analysis-steps=N or the default); a statement the tree holds cannot pass 8 x (AST_HEAP_CAP 3145728 / AST_NODE_SIZE 72) + 1 = 349521 (the walk pushes at most 8 fields, offsets [8, 16, 24, 32, 40, 48, 56, 64]); spent before each entry is taken
+PASS  release compiler: the widest statement the syntax tree holds (21,829 terms) compiles - prints '21829\n'
+PASS  release compiler: the widest statement with --analysis-steps=87315 - refused, exit 1, no output, E_VAKYA_SEEMA naming 87315, the analysis limit (not the tree's): split, or raise it; with 87316 - prints '21829\n'
+PASS  test build, budget 64: a 40-term statement - refused, exit 1, no output, E_VAKYA_SEEMA naming 64, the analysis limit (not the tree's): split, or raise it
+PASS  test build, budget 64: a 10-term statement compiles - prints '10\n'
+PASS  test build, budget 64: --analysis-steps=200000 overrides it, and 40 terms compile - prints '40\n'
+PASS  the margin: with the budget at 64, all 344 examples and all 24 libraries compile as with 200000 - the largest real statement takes fewer than 64 steps, a margin over 3,125x
+r143 walk budget: 7 checks, 0 failed

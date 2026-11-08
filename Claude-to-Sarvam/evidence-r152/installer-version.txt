@@ -1,0 +1,1 @@
+PASS payload v314 = compiler v314 (bin/ and win/sutram.exe, packed 1980-01-01; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/sutram.exe v314; sha256 a0e786e44d26780e...)

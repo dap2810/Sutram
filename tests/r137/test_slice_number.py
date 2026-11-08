@@ -119,10 +119,14 @@ SLICES = {'01_cell': 'E_KOSH_VIBHAG', '02_untyped_param': 'E_KOSH_VIBHAG', '03_u
           '07_raw_memory': 'E_KOSH_VIBHAG', '08_dasham_param': 'E_KOSH_VIBHAG', '09_arithmetic': 'E_VIBHAG_ANKA',
           '10_module_initializer': 'E_KOSH_DVARA', '11_comparison_as_index': 'E_VIBHAG_ANKA',
           '12_two_functions': 'E_KOSH_VIBHAG', '13_kosh_element': 'E_KOSH_VIBHAG',
-          '14_inline_assembly': 'SYNTAX'}   # yantra takes a string of machine bytes, not a value
+          '14_inline_assembly': 'SYNTAX',   # yantra takes a string of machine bytes, not a value
+          '15_ffi_argument': 'E_KOSH_VIBHAG'}   # R152: a declared foreign function's argument (--ffi ... --object)
+FFI = ['--ffi', os.path.join(ROOT, 'tests', 'r33', 'kinds.sffi'), '--object']
 
 
 def run(exe):
+    if not os.access(exe, os.X_OK):
+        return None, 'writes an object (--object)'
     try:
         r = subprocess.run([exe], capture_output=True, text=True, timeout=10)
         return r.returncode, f'prints {r.stdout!r}'
@@ -178,17 +182,18 @@ def main():
     progs += [(n, t, w) for n, t, w in GLOBALS + STACK]
     sdir = os.path.join(ROOT, 'tests', 'r147', 'slices')
     found = sorted(f[:-3] for f in os.listdir(sdir) if f.endswith('.sm')) if os.path.isdir(sdir) else []
-    check(found == sorted(SLICES), f'R147: tests/r147/slices holds the fourteen shapes, each with a case here ({len(found)} files)')
+    check(found == sorted(SLICES), f'R147/R152: tests/r147/slices holds the fifteen shapes, each with a case here ({len(found)} files)')
     progs += [(f'R147 shape {n}', open(os.path.join(sdir, n + '.sm'), encoding='utf-8').read(), w)
               for n, w in sorted(SLICES.items()) if n in found]
 
-    def compile_(comp, i, text, tag=''):
+    def compile_(comp, i, text, tag='', name=''):
         sm, out = os.path.join(work, f'{tag}{i}.sm'), os.path.join(work, f'{tag}{i}')
         open(sm, 'w', encoding='utf-8').write(text)
-        c = subprocess.run([comp, sm, out], cwd=ROOT, capture_output=True, text=True)
+        c = subprocess.run([comp] + (FFI if name.startswith('R147 shape 15') else []) + [sm, out], cwd=ROOT,
+                           capture_output=True, text=True)
         return c, out, c.stdout + c.stderr
     for i, (name, text, want) in enumerate(progs):
-        c, out, said = compile_(comp, i, text)
+        c, out, said = compile_(comp, i, text, name=name)
         if want == 'SYNTAX':
             ok = c.returncode != 0 and not os.path.exists(out) and 'vyakaran dosh' in said
             got = 'refused (syntax)' if ok else ('compiles, ' + run(out)[1] if os.path.exists(out) else 'refused ' + said.strip()[:60])
@@ -203,6 +208,21 @@ def main():
                 rc, got = run(out)
                 ok = rc == 0 and got == f'prints {want!r}'
         check(ok, f'{name}: want {want!r}; {got}')
+    # R152 (Sarvam R151 WS3 item 5): the release binaries are the plain builds - no mutant, no lowered budget.
+    if own and shutil.which('nasm') and shutil.which('ld'):
+        plain = os.path.join(work, 'plain')
+        b = subprocess.run(f'nasm -f elf64 -I. src/r68_compiler_entry.asm -o {plain}.o && ld -o {plain} {plain}.o',
+                           shell=True, cwd=ROOT, capture_output=True, text=True)
+        same = b.returncode == 0 and open(plain, 'rb').read() == open(comp, 'rb').read()
+        msg = 'the committed sutram_compiler is the plain build of src/ byte for byte (no -D: no mutant, no lowered budget)'
+        if shutil.which('x86_64-w64-mingw32-ld'):
+            bw = subprocess.run(f'nasm -f win64 -dWINDOWS -I./ src/r68_compiler_entry.asm -o {plain}w.obj && '
+                                f'x86_64-w64-mingw32-ld -mi386pep --no-insert-timestamp --entry=_start -o {plain}w.exe {plain}w.obj',
+                                shell=True, cwd=ROOT, capture_output=True, text=True)
+            same = same and bw.returncode == 0 and all(open(f'{plain}w.exe', 'rb').read() == open(os.path.join(ROOT, x), 'rb').read()
+                                                       for x in ('sutram.exe', os.path.join('win', 'sutram.exe')))
+            msg += '; so are sutram.exe and win/sutram.exe (-dWINDOWS only)'
+        check(same, msg)
     if not own:
         print('NOT RUN  the mutant check (it builds this tree\'s compiler; --compiler names another)')
     elif not (shutil.which('nasm') and shutil.which('ld')):
@@ -217,7 +237,7 @@ def main():
                 continue
             leaked, over = [], []
             for i, (name, text, want) in enumerate(progs):
-                c, out, said = compile_(exe, i, text, define)
+                c, out, said = compile_(exe, i, text, define, name=name)
                 made = os.path.exists(out)
                 if want == 'SYNTAX':
                     if c.returncode == 0 or made:

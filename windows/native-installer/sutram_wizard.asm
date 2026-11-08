@@ -389,7 +389,7 @@ b_complbl:  u16 "Select the components to install:"
 align 2
 b_ckpath:   u16 "&Add Sutram to my user PATH (recommended)"
 align 2
-b_ckdesk:   u16 "Create a &desktop shortcut (Sutram Terminal)"
+b_ckdesk:   u16 "Create a &desktop shortcut (Sutram IDE)"     ; R152: it is the IDE's (Windows v312: it said Terminal)
 align 2
 b_compnote: u16 "The compiler, standard library, language packs, examples and books are always installed. Start Menu shortcuts are always created."
 align 2
