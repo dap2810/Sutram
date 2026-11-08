@@ -16,7 +16,7 @@ Sutram 1.0 (v314) - sampurna sutra
   - **Linux PE: the same.**
   - **The 195 refusals print v313's exact messages.**
   - **No existing program changes or is newly refused.** The runtime and `sutram-link.exe` are byte-unchanged.
-  - **The Windows compiler (v314) under Wine:** RUNNING when this file was first pushed; its line is added in the next commit.
+  - **The Windows compiler (v314) under Wine:** = the Linux PE output for all 783 (587 identical, 196 refused by both - the 195 and the FFI probe, which without `--ffi` is refused as an unknown name), 0 differ.
 
 **Not done:**
 - **No native Windows run of v314.**

@@ -7,6 +7,6 @@
 - `first-contact-gate.txt` - gate R143 installer first contact, 15 checks, including the desktop collision and the checkbox.
 - `guard-elf.txt`, `guard-pe.txt`, `refusal-messages.txt` - v313 vs v314, 783 programs: 0 DIFFER; the 195 refusal messages unchanged.
 - `gates.txt` - 78 PASS / 0 FAIL / 1 NOT-RUN; `package-gate.txt`, `installer-build.txt`, `installer-version.txt` - the setup.
-- `wine-compiler.txt` - the v314 Windows compiler under Wine against the Linux PE (added when the run finished).
+- `wine-compiler.txt` - the v314 Windows compiler under Wine against the Linux PE.
 
 NOT RUN: anything on native Windows.
