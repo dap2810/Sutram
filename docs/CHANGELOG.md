@@ -1,4 +1,20 @@
-> **The 20 newest entries.** Older ones, from "v294" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v295" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v315 (Claude, R154) - the tree limit's code; the fold guard; ownership records, not flags
+
+- **`E_VRIKSHA_SEEMA`** (Sarvam R154 WS4, Muse R151): the syntax tree's full message keeps its translated first line
+  and adds a coded line, naming `E_VAKYA_SEEMA` as the other limit, with a remedy that works (a smaller program or
+  fewer modules; splitting a statement does not shrink the tree - ChatGPT R218). The analysis-limit hint names
+  `E_VRIKSHA_SEEMA`. Gate `R152 analysis steps` (42).
+- **The fold's identity guard** skips a slice or a value holding a `kosh` (Muse R150): `k[0:1] + 0` cannot fold to a
+  bare slice even if the walk ever stopped refusing it. Nothing that compiles changes (guard: 0 DIFFER).
+- **Installer ownership, every record a record of what was done** (R154 WS1-WS3): `PathAdded` (the text of the one
+  entry this install added; uninstall removes that one entry, not every equal one; the installer adds nothing when an
+  equal entry is there), `AssociationSet` (the value set, carried only while it is still the default), the
+  `Sutram.Source` class removed value by value and key by key only when empty (v314 removed the whole tree), and the
+  shortcuts by their bytes (R153). `PathOwned`, `AssociationOwned` and `DesktopOwned` are still written, derived from
+  the records, and nothing acts on them. Gate `R143 installer first contact` (20).
+- Guard v314 -> v315: ELF and PE 587 identical / 196 refused / 0 DIFFER; refusal messages unchanged.
 
 ## v314 (Claude, R152) - the foreign-function door; --analysis-steps=N; the two limits named; the desktop collision
 
@@ -347,14 +363,3 @@
   nothing or the wrong text; `likha` and `likha_rup` of a literal also wrote only its length modulo 256. The R189
   messages are 88-151 bytes. Every literal of 126 bytes or fewer compiles to the same bytes as before.
 - Examples 330-344 (one per row) and 207 (now the refusal); the suite checks a `<name>.err` when one is recorded.
-
-## v295 (Claude, R115) - `sankhya_bindu` / `sankhya_dot` withdrawn; the arena branch's silent wrong answer found and fixed there
-
-- **Withdrawn, not missing:** a call to `sankhya_bindu` or `sankhya_dot` is refused when compiled -
-  `E_PRATYAHRITA`, with the name, the line and the library's working float dot product (`yoj sankhyiki`,
-  `bindu_gunan(a, b)`). v293's integer loop was right for integer cells and **wrong for a `kosh dasham`**
-  (it multiplied float bits: 2.5·2.5 + 1.5·1.5 gave 0) - my mistake in R113, found against Muse R111's shapes.
-  No old-name warning first (ChatGPT R187). Example 329 is now that refusal.
-- **The arena branch** (`claude/r108-arena-review`, not merged): its silent wrong answer - `chain40_reuse.sm`
-  printing another block's 99 - was the outlives analysis stopping after 32 rounds; fixed on the branch (`3a6292e`)
-  with main's v291 fix. Main changes only by the withdrawal.

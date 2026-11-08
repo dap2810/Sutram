@@ -266,6 +266,36 @@ function Set-UserPathEntry([string]$Entry,[bool]$ShouldExist) {
     if ($changed) { Broadcast-EnvironmentChange }
     return $changed
 }
+# R154 (Sarvam R154 WS1, Muse R151): PATH ownership is a record of the entry this installer added - its exact text -
+# not a flag. Set-UserPathEntry adds nothing when an equal entry (after expanding variables and trimming quotes and a
+# trailing backslash) is already there: that entry is the user's, and nothing is recorded. Removal takes out one entry
+# whose text is exactly the recorded one, and leaves every other - a user's equal entry included.
+function Test-UserPathEntryText([string]$Entry) {
+    $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment',$false)
+    if (-not $key) { return $false }
+    try {
+        $raw = [string]$key.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+        foreach ($item in ($raw -split ';')) { if ([string]::Equals($item.Trim(),$Entry,[StringComparison]::OrdinalIgnoreCase)) { return $true } }
+        return $false
+    } finally { $key.Dispose() }
+}
+function Remove-UserPathEntryOnce([string]$Entry) {
+    $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment',$true)
+    if (-not $key) { return $false }
+    $removed = $false
+    try {
+        $raw = [string]$key.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+        $entries = New-Object System.Collections.Generic.List[string]
+        foreach ($item in ($raw -split ';')) {
+            if ([string]::IsNullOrWhiteSpace($item)) { continue }
+            if (-not $removed -and [string]::Equals($item.Trim(),$Entry,[StringComparison]::OrdinalIgnoreCase)) { $removed = $true; continue }
+            $entries.Add($item.Trim())
+        }
+        if ($removed) { $key.SetValue('Path',[string]::Join(';',$entries.ToArray()),[Microsoft.Win32.RegistryValueKind]::ExpandString) }
+    } finally { $key.Dispose() }
+    if ($removed) { Broadcast-EnvironmentChange }
+    return $removed
+}
 function Read-State([string]$Path) {
     $state = @{}
     if (Test-Path -LiteralPath $Path -PathType Leaf) {
@@ -701,22 +731,25 @@ try {
         $check = Invoke-SutramSelfTest $installedExe '--version' 'post-install --version'
 
         $binDir = Join-Path $InstallDir 'bin'
-        $previousOwned = ($oldState.ContainsKey('PathOwned') -and $oldState['PathOwned'] -eq '1')
-        $pathOwned = $previousOwned
+        # R154: what this install added to PATH, recorded as its text (PathAdded); before R154 a flag (PathOwned=1),
+        # which meant this bin folder's entry.
+        $previousAdded = ''
+        if ($oldState.ContainsKey('PathAdded') -and $oldState['PathAdded']) { $previousAdded = $oldState['PathAdded'] }
+        elseif ($oldState.ContainsKey('PathOwned') -and $oldState['PathOwned'] -eq '1') { $previousAdded = $binDir }
+        if ($previousAdded -and -not [string]::Equals((Normalize-PathEntry $previousAdded),(Normalize-PathEntry $binDir),[StringComparison]::OrdinalIgnoreCase)) { $previousAdded = '' }
+        $pathAdded = ''
         if ($AddPath) {
             Log 'Ensuring Sutram is present in the current user PATH.'
-            $pathAddedNow = [bool](Set-UserPathEntry $binDir $true)
-            # Own the entry only if this installer created it now or already owned it
-            # from the previous Sutram installation. A pre-existing manual PATH entry
-            # remains user-owned and will not be removed by uninstall.
-            $pathOwned = ($previousOwned -or $pathAddedNow)
-        } elseif ($previousOwned) {
-            Log 'Removing previously installer-owned Sutram PATH entry.'
-            [void](Set-UserPathEntry $binDir $false)
-            $pathOwned = $false
-        } else {
-            $pathOwned = $false
+            if ($previousAdded -and (Test-UserPathEntryText $previousAdded)) {
+                $pathAdded = $previousAdded               # the entry an earlier run added is still there: still this installer's
+            } elseif ([bool](Set-UserPathEntry $binDir $true)) {
+                $pathAdded = $binDir                      # added now; an equal entry already there is the user's, and stays unrecorded
+            }
+        } elseif ($previousAdded) {
+            Log 'Removing the PATH entry an earlier run of this installer added.'
+            [void](Remove-UserPathEntryOnce $previousAdded)
         }
+        $pathOwned = [bool]$pathAdded
 
         # R130: the completion check that verifies something - a new terminal must run THIS compiler.
         if ($AddPath) {
@@ -787,11 +820,18 @@ try {
         Set-Item -LiteralPath (Join-Path $classKey 'DefaultIcon') -Value $icon
         [void](New-Item -Path $extKey -Force)
         $existingDefault=(Get-Item -LiteralPath $extKey).GetValue('')
-        $associationOwned=($oldState.ContainsKey('AssociationOwned') -and $oldState['AssociationOwned'] -eq '1')
+        # R154: what this installer set as .sm's default, recorded as the value (AssociationSet), carried on only while
+        # the default is still that value; before R154 a flag (AssociationOwned=1), which meant 'Sutram.Source'.
+        $associationSet=''
+        if (($oldState.ContainsKey('AssociationSet') -and $oldState['AssociationSet'] -eq 'Sutram.Source') -or
+            ($oldState.ContainsKey('AssociationOwned') -and $oldState['AssociationOwned'] -eq '1')) {
+            if ($existingDefault -eq 'Sutram.Source') { $associationSet='Sutram.Source' }
+        }
         if (-not $existingDefault) {
             Set-Item -LiteralPath $extKey -Value 'Sutram.Source'
-            $associationOwned=$true
+            $associationSet='Sutram.Source'
         }
+        $associationOwned=[bool]$associationSet
         [void](New-Item -Path (Join-Path $extKey 'OpenWithProgids') -Force)
         [void](New-ItemProperty -Path (Join-Path $extKey 'OpenWithProgids') -Name 'Sutram.Source' -Value '' -PropertyType String -Force)
         New-Item -Path $unKey -Force | Out-Null
@@ -815,9 +855,11 @@ try {
             ('Version=' + $displayVersion),
             ('OwnedShortcuts=' + ($script:ownedShortcuts.ToArray() -join ',')),
             ('PathOwned=' + $pathOwnedValue),
+            ('PathAdded=' + $pathAdded),
             ('DesktopOwned=' + $desktopOwnedValue),
             ('DesktopLink=' + $desktopName),
             ('AssociationOwned=' + [int]$associationOwned),
+            ('AssociationSet=' + $associationSet),
             ('UninstallerSHA256=' + (Get-FileHash -LiteralPath $SetupExePath -Algorithm SHA256).Hash)
         )
         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))

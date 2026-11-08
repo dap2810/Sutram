@@ -189,6 +189,29 @@ def main():
           and '[string]::Equals($parent,$startMenu' in ul and '[string]::Equals($parent,$desktopDir' in ul,
           'R153: uninstall removes a shortcut only when it is recorded with a hash, is in the Start-menu folder or on the '
           'desktop, and its bytes still have that hash - not on a matching target, not on DesktopOwned')
+    # R154 (Sarvam R154): every ownership record is a record of what was done, and uninstall acts only on that.
+    pa = eng[eng.find('$previousAdded = '):eng.find('$pathOwned = [bool]$pathAdded')]
+    check("('PathAdded=' + $pathAdded)" in eng and '$pathAdded = $binDir' in pa and '$pathAdded = $previousAdded' in pa
+          and 'Test-UserPathEntryText $previousAdded' in pa and 'Remove-UserPathEntryOnce $previousAdded' in pa
+          and 'Set-UserPathEntry $binDir $false' not in eng,
+          'R154: PATH is recorded as the text of the entry this install added (PathAdded), only when it added it or an '
+          'earlier run did and it is still there; unchecked, that one entry is removed')
+    ro = func(ucode, 'Remove-UserPathEntryOnce')
+    check("$state['PathAdded']" in ucode and 'Remove-UserPathEntryOnce $state' in ucode and "$state['PathOwned']" not in ucode
+          and '-not $removed -and [string]::Equals($item.Trim(),$Entry' in ro and 'Normalize-PathEntry' not in ro,
+          'R154: uninstall removes one PATH entry, the one whose text is the recorded PathAdded - not every entry equal '
+          'after expansion, and nothing on PathOwned')
+    asg = eng[eng.find('$associationSet='):eng.find('$associationOwned=[bool]$associationSet')]
+    check("('AssociationSet=' + $associationSet)" in eng and "if ($existingDefault -eq 'Sutram.Source') { $associationSet='Sutram.Source' }" in asg
+          and "$state['AssociationSet']" in ucode and "$state['AssociationOwned']" not in ucode
+          and "(Get-Item -LiteralPath $extKey).GetValue('') -eq $setValue" in ucode,
+          'R154: the .sm default is recorded as the value set (AssociationSet), carried on only while it is still that value; '
+          'uninstall clears it only when recorded and still equal')
+    cls = ucode[ucode.find('$expectedIcon='):ucode.find("Remove-ItemProperty -LiteralPath (Join-Path $extKey 'OpenWithProgids')")]
+    check('Remove-Item -LiteralPath $classKey -Recurse' not in ucode and "if ([string]$k.GetValue('') -eq $pair[1]) { $k.DeleteValue('', $false) }" in cls
+          and '$empty=($k.ValueCount -eq 0 -and $k.SubKeyCount -eq 0)' in cls,
+          'R154: uninstall removes the Sutram.Source values it wrote when they are still what it wrote, and each key only '
+          'when empty - not the whole tree (a verb a user added stays)')
     ck = re.search(r'b_ckdesk:\s+u16 "([^"]*)"', wiz)
     check(ck and 'Sutram IDE' in ck.group(1) and 'Terminal' not in ck.group(1),
           f'the desktop checkbox names what it makes ({ck.group(1) if ck else "?"!r})')

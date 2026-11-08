@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v314) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v315) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -638,8 +638,10 @@ r54_builtin_arity_table:
     r152_budget_fn  db "prakriya '", 0
     r152_budget_fn2 db "'", 10, 0
     r152_budget_top db "mukhya athava vaishvika-arambhah", 10, 0
-    r141_budget_hint db "Sanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya), athava seemam vardhaya: --analysis-steps=<adhika> (1 - 2147483647; mula ", R143_WALK_BUDGET_S, "). Iyam parikshana-seema; vakya-vriksha-seema ('vakya-vriksh seema atikram') prithak, tasyam --analysis-steps na sahayyam karoti.", 10, 0
-    r152_ast_hint   db "Sanket: karyakramasya vakya-vrikshah purnah (3 MiB) - iyam vakya-vriksha-seema, na parikshana-seema (E_VAKYA_SEEMA); --analysis-steps atra na sahayyam karoti. Karyakramam laghum kuru: dirghani vakyani vibhaja, yoj-pratimanani nyunani kuru.", 10, 0
+    r141_budget_hint db "Sanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya), athava seemam vardhaya: --analysis-steps=<adhika> (1 - 2147483647; mula ", R143_WALK_BUDGET_S, "). Iyam parikshana-seema; vakya-vriksha-seema ('vakya-vriksh seema atikram', E_VRIKSHA_SEEMA) prithak, tasyam --analysis-steps na sahayyam karoti.", 10, 0
+    ; R154: the tree limit's own code (R150-R153 said "the two limits name themselves"; this one had no code -
+    ; Muse, R151), and a remedy that works: splitting a statement does not make the tree smaller (ChatGPT R218).
+    r152_ast_hint   db "Sutram truti [E_VRIKSHA_SEEMA]: karyakramasya vakya-vrikshah purnah (3 MiB, 43690 granthayah) - iyam vakya-vriksha-seema, na parikshana-seema (E_VAKYA_SEEMA); --analysis-steps atra na sahayyam karoti.", 10, "Sanket: karyakramam laghum kuru - nyunani yoj-pratimanani, laghutarah karyakramah (anyeshu karyakrameshu vibhajya); vakyanam vibhajanam vriksham na laghayati.", 10, 0
     r152_flag_name  db "--analysis-steps", 0
     r152_flag_bad   db "Sutram truti [E_PARIKSHA_PADANI]: --analysis-steps=N - N ekah dashamikah ankah 1 tah 2147483647 paryantam, '=' saha, ekasmin eva tarke, ekavaram eva", 10, 0
     r152_usage      db "  sutram --analysis-steps=N <nivesh.sm> <nirgat.bin>  parikshana-seema (mula ", R143_WALK_BUDGET_S, ")", 10, 0
@@ -31780,6 +31782,17 @@ r58_fold_tree:
     mov rdi,[rbx+16]
     call r113_is_rname
     test rax,rax
+    jnz .r58_ft_original
+    ; R154 (Muse's reading, R150): nor for a slice or anything holding a kosh - `k[0:1] + 0` must stay a binop.
+    ; The walk refuses such a binop before this fold runs, so this does not change what compiles; it means the
+    ; fold cannot turn one into a bare slice if the walk ever stopped refusing it.
+    mov rdi,[rbx+16]
+    call r23_expr_is_slice
+    test rax,rax
+    jnz .r58_ft_original
+    mov rdi,[rbx+16]
+    call r134_holds_kosh
+    test eax,eax
     jnz .r58_ft_original
     mov rdi,rbx
     call binop_needs_float

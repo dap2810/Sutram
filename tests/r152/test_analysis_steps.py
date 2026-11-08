@@ -89,6 +89,17 @@ def main():
     ffi = subprocess.run([comp, '--analysis-steps=3', '--ffi', os.path.join(ROOT, 'tests', 'r33', 'kinds.sffi'), '--object',
                           sm, out + '.smo'], cwd=ROOT, capture_output=True, text=True)
     check(ffi.returncode == 1 and '[E_VAKYA_SEEMA]' in ffi.stdout + ffi.stderr, 'with --ffi ... --object')
+    # R154: the two limits each name themselves, and each the other (Muse R151: E_VRIKSHA_SEEMA did not exist)
+    full = os.path.join(work, 'full.sm')
+    open(full, 'w').write('mukhya() {\n    vitti z = 1\n    likha(' + '+'.join(['z'] * 25000) + ')\n}\n')
+    r, said, made = comp_([full, out])
+    check(r.returncode == 1 and not made and '[E_VRIKSHA_SEEMA]' in said and 'E_VAKYA_SEEMA' in said
+          and '[E_VAKYA_SEEMA]' not in said and 'vakya-vriksh seema atikram' in said and 'yoj-pratimanani' in said,
+          'the syntax tree full (25,000 terms): exit 1, no output, [E_VRIKSHA_SEEMA], names E_VAKYA_SEEMA as the other '
+          'limit, keeps the translated first line, and advises a smaller program, not split statements')
+    r, said, made = comp_(['--analysis-steps=3', sm, out])
+    check('[E_VAKYA_SEEMA]' in said and 'E_VRIKSHA_SEEMA' in said and '[E_VRIKSHA_SEEMA]' not in said,
+          'the analysis limit: [E_VAKYA_SEEMA], naming E_VRIKSHA_SEEMA as the other limit')
     u = subprocess.run([comp], capture_output=True, text=True)
     check('--analysis-steps=N' in u.stdout + u.stderr and '(mula 200000)' in u.stdout + u.stderr,
           'the usage text names the flag and its effective default, 200000')

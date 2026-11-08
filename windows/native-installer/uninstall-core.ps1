@@ -37,23 +37,23 @@ namespace Sutram {
     $result = [UIntPtr]::Zero
     [void][Sutram.NativeMethods]::SendMessageTimeout([IntPtr]0xffff,0x001A,[UIntPtr]::Zero,'Environment',2,5000,[ref]$result)
 }
-function Remove-UserPathEntry([string]$Entry) {
+# R154 (Sarvam R154 WS1): one entry, the one whose text is exactly what the installer recorded adding - not every
+# entry equal to it after expansion (a user's own equal entry stays), and nothing when there is no record.
+function Remove-UserPathEntryOnce([string]$Entry) {
     $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment',$true)
     if (-not $key) { return }
-    $changed = $false
+    $removed = $false
     try {
         $raw = [string]$key.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
-        $target = Normalize-PathEntry $Entry
         $entries = New-Object System.Collections.Generic.List[string]
         foreach ($item in ($raw -split ';')) {
-            $n = Normalize-PathEntry $item
-            if ([string]::IsNullOrWhiteSpace($n)) { continue }
-            if ([string]::Equals($n,$target,[StringComparison]::OrdinalIgnoreCase)) { $changed = $true; continue }
+            if ([string]::IsNullOrWhiteSpace($item)) { continue }
+            if (-not $removed -and [string]::Equals($item.Trim(),$Entry,[StringComparison]::OrdinalIgnoreCase)) { $removed = $true; continue }
             $entries.Add($item.Trim())
         }
-        if ($changed) { $key.SetValue('Path',[string]::Join(';',$entries.ToArray()),[Microsoft.Win32.RegistryValueKind]::ExpandString) }
+        if ($removed) { $key.SetValue('Path',[string]::Join(';',$entries.ToArray()),[Microsoft.Win32.RegistryValueKind]::ExpandString) }
     } finally { $key.Dispose() }
-    if ($changed) { Broadcast-EnvironmentChange }
+    if ($removed) { Broadcast-EnvironmentChange }
 }
 function Read-State([string]$Path) {
     $state = @{}
@@ -148,7 +148,7 @@ try {
     $selfHash=(Get-FileHash -LiteralPath $SelfPath -Algorithm SHA256).Hash
     if ($selfHash -ne $state['UninstallerSHA256']) { throw 'The uninstaller has changed; preserving it.' }
 
-    if($state.ContainsKey('PathOwned') -and $state['PathOwned'] -eq '1'){Remove-UserPathEntry (Join-Path $InstallDir 'bin')}
+    if ($state.ContainsKey('PathAdded') -and $state['PathAdded']) { Remove-UserPathEntryOnce $state['PathAdded'] }   # R154: the record, not PathOwned
     # R153 (ChatGPT R218 follow-up, Sarvam R153 WS1): a shortcut is removed only when it is one the installer
     # recorded as written - OwnedShortcuts, "<base64 path>|<SHA-256 of the .lnk>" - and its bytes are still those.
     # Not on a target that matches (a user's own link can point at the IDE), and not on DesktopOwned (v314's
@@ -176,10 +176,27 @@ try {
     $extKey='HKCU:\Software\Classes\.sm'
     $commandKey=Join-Path $classKey 'shell\open\command'
     $expectedCommand='"'+(Join-Path $InstallDir 'sutram-ide-gui.exe')+'" "%1"'
+    # R154 (Sarvam R154 WS2-WS3, Muse R151 pair 3): what the installer wrote, and only that. v314 deleted the whole
+    # Sutram.Source tree when its command matched - a verb a user had added under it went too. Now the values the
+    # installer set go when they are still what it set, then each key it made goes only if nothing is left in it;
+    # .sm's default goes only when the installer recorded setting it (AssociationSet) and it is still that value.
+    $expectedIcon=Join-Path $InstallDir 'assets\sutram.ico'
     if ((Test-Path -LiteralPath $commandKey) -and (Get-Item -LiteralPath $commandKey).GetValue('') -eq $expectedCommand) {
-        Remove-Item -LiteralPath $classKey -Recurse -Force
-        if ($state.ContainsKey('AssociationOwned') -and $state['AssociationOwned'] -eq '1' -and
-            (Test-Path -LiteralPath $extKey) -and (Get-Item -LiteralPath $extKey).GetValue('') -eq 'Sutram.Source') {
+        foreach ($pair in @(@('Software\Classes\Sutram.Source\shell\open\command',$expectedCommand),@('Software\Classes\Sutram.Source\DefaultIcon',$expectedIcon))) {
+            $k=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($pair[0],$true)
+            if ($k) { try { if ([string]$k.GetValue('') -eq $pair[1]) { $k.DeleteValue('', $false) } } finally { $k.Dispose() } }
+        }
+        foreach ($sub in @('Software\Classes\Sutram.Source\shell\open\command','Software\Classes\Sutram.Source\shell\open','Software\Classes\Sutram.Source\shell','Software\Classes\Sutram.Source\DefaultIcon','Software\Classes\Sutram.Source')) {
+            $k=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($sub,$false)
+            if ($k) {
+                $empty=($k.ValueCount -eq 0 -and $k.SubKeyCount -eq 0)
+                $k.Dispose()
+                if ($empty) { [Microsoft.Win32.Registry]::CurrentUser.DeleteSubKey($sub,$false) } else { Log ('Kept HKCU\' + $sub + ': something else is in it.') }
+            }
+        }
+        $setValue=''
+        if ($state.ContainsKey('AssociationSet') -and $state['AssociationSet']) { $setValue=$state['AssociationSet'] }
+        if ($setValue -and (Test-Path -LiteralPath $extKey) -and (Get-Item -LiteralPath $extKey).GetValue('') -eq $setValue) {
             $ext=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Software\Classes\.sm',$true)
             try { $ext.DeleteValue('', $false) } finally { $ext.Dispose() }
         }

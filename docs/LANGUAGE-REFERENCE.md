@@ -1039,13 +1039,15 @@ parameter, in `pankti_gan(s)`, as the base of `s[i]` and `s[a:b]`, and (a `mala`
 made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is. The same holds in a module-level `vitti` initializer (v310), and
 a `kosh` cannot be a module `vitti`'s initial value there either (`E_KOSH_DVARA`). From v311 the check is part of
 expression code generation itself: an expression reached by any other path is checked there, its own value as a number.
-**Size limits (v314, R152).** Two limits are about size, and each says which it is (they are not the only
-capacities - block nesting, the walk's own stack and others have theirs):
+**Size limits (v315, R154).** Two limits are about size, and from v315 each has its own code and names the other
+(they are not the only capacities - block nesting, the walk's own stack and others have theirs; v314 claimed both
+named themselves, but the tree limit had no code):
 - **the syntax tree**, 3 MiB - at most 43,690 nodes for the whole program, the libraries `yoj` brings in included.
-  When it is full: `Sutram truti: vakya-vriksh seema atikram`, then *"Sanket: ... iyam vakya-vriksha-seema, na
-  parikshana-seema"* - the syntax tree's limit, not the analysis limit; `--analysis-steps` does not help; make the
-  program smaller (split long statements, bring in fewer modules). One `z + z + ...` expression of 21,829 terms
-  fits.
+  When it is full: `Sutram truti: vakya-vriksh seema atikram` (the line the language packs translate), then
+  `Sutram truti [E_VRIKSHA_SEEMA]: ... iyam vakya-vriksha-seema, na parikshana-seema (E_VAKYA_SEEMA)` - the syntax
+  tree's limit, not the analysis limit; `--analysis-steps` does not help. **Make the program smaller:** bring in
+  fewer modules, or split the program into separate programs. Splitting a statement does not help - it does not
+  make the tree smaller (v314 advised it; that was wrong). One `z + z + ...` expression of 21,829 terms fits.
 - **the expression check's budget**: the steps the check may take on one statement or initializer (one step per
   node and per field of a node that is not one). **Default 200,000**; for one compile, **`--analysis-steps=N`**,
   `N` from 1 to 2147483647, written as one argument with `=` (leading zeros are decimal; a sign, a unit, a
@@ -1053,7 +1055,7 @@ capacities - block nesting, the walk's own stack and others have theirs):
   `E_PARIKSHA_PADANI`). The count starts again at `N` for every statement and initializer. When it runs out:
   `Sutram truti [E_VAKYA_SEEMA]: vakyasya parikshanam N padeshu na samaptam (parikshana-seema) - prakriya 'f'`
   (or *mukhya athava vaishvika-arambhah*), with the advice to split the statement (keeping intermediate values in
-  names) or raise `--analysis-steps`, and that the syntax tree's limit is separate. There is no source line: the
+  names) or raise `--analysis-steps`, and that the syntax tree's limit (`E_VRIKSHA_SEEMA`) is separate. There is no source line: the
   check sees the statement after parsing, where positions are not kept (only `--debug` keeps them).
 - **How many steps a statement takes** depends on its shape, not only its terms: `z + z + ...` takes 4 a term
   plus a few, `(z < z) + ...` 8. The widest statement the tree holds takes exactly 87,316 (`--analysis-steps=87315`

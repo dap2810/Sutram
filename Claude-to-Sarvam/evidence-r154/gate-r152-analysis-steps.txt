@@ -1,0 +1,43 @@
+PASS  accepted: --analysis-steps=00064 - compiles, prints '8\n'
+PASS  accepted: --analysis-steps=200000 - compiles, prints '8\n'
+PASS  accepted: --analysis-steps=2147483647 - compiles, prints '8\n'
+PASS  accepted: --analysis-steps=1 - the flag is taken, and the compile is refused by a budget of 1 (E_VAKYA_SEEMA, "1")
+PASS  leading zeros are decimal and displayed normalised ("=000001" is named 1)
+PASS  rejected: '--analysis-steps=' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=0' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=000' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=-1' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=+1' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=200k' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=1e5' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=0x100' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=1_000' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=1.5' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=1/2' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps= 5' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=5 5' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=5 ' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=\t5' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=٥' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=१०' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=５' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=5x' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=2147483648' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=4294967297' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps=99999999999999999999' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-stepsX' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: '--analysis-steps:5' - exit 1, no output, 'E_PARIKSHA_PADANI'
+PASS  rejected: "--analysis-steps 200000" (the value is not in the token)
+PASS  rejected: a second occurrence ['--analysis-steps=5000', '--analysis-steps=5000']
+PASS  rejected: a second occurrence ['--analysis-steps=5000', '--analysis-steps=6000']
+PASS  any position: after the files
+PASS  any position: after the files, and in force (3 steps refuse)
+PASS  scope: a module-level initializer is checked with N too (refused at 20, named "mukhya athava vaishvika-arambhah")
+PASS  with --check
+PASS  with --lang
+PASS  with --ffi ... --object
+PASS  the syntax tree full (25,000 terms): exit 1, no output, [E_VRIKSHA_SEEMA], names E_VAKYA_SEEMA as the other limit, keeps the translated first line, and advises a smaller program, not split statements
+PASS  the analysis limit: [E_VAKYA_SEEMA], naming E_VRIKSHA_SEEMA as the other limit
+PASS  the usage text names the flag and its effective default, 200000
+r152 analysis steps: 42 checks, 0 failed

@@ -1,16 +1,35 @@
-# Sutram 1.0 (v314) — release notes
+# Sutram 1.0 (v315) — release notes
 
-**Compiler `Sutram 1.0 (v314) - sampurna sutra`, 9 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v314). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v315) - sampurna sutra`, 9 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v315). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
-## Status: what v314 closes, and what it does not (R140-R152)
+## Status: what v315 closes, and what it does not (R140-R154)
 
-v314 is v313 plus (R152):
+v315 is v314 plus (R153-R154):
+- **the syntax tree's limit has its own code,** `E_VRIKSHA_SEEMA`, and its advice is one that works (a smaller
+  program, fewer modules - not split statements). v314's notes said both limits named themselves; the tree limit
+  had no code.
+- **the constant folder cannot turn `k[0:1] + 0` into a bare slice** (Muse's reading): its identity rule now skips a
+  slice or anything holding a `kosh`, as it skipped a `kosh`. The walk refused such an expression first, so nothing
+  that compiles changes.
+- **the installer records what it did, not that it did something:** shortcuts by the SHA-256 of each link as it
+  wrote it (R153: v314 could delete a user's own desktop link on uninstall); PATH as the text of the one entry it
+  added (`PathAdded`; uninstall removes that one entry, not every equal one); the `.sm` default as the value it set
+  (`AssociationSet`); and uninstall removes the `Sutram.Source` values it wrote, and each key only when empty (v314
+  removed the whole tree, a verb a user added under it included).
+
+**Evidence scope for v315.** *The pinned v315 package (the setup committed with these notes) passed the Linux
+gates, the byte-for-byte guard against v314 and the Windows compiler under Wine; it has not been installed, run or
+uninstalled on Windows, and untested guarantees remain unclaimed.* Not claimed: any of the installer's ownership
+changes on Windows (`tests/windows/test_installer_shortcuts.ps1` is written, not run), and what earlier native runs
+did not establish.
+
+v314 was v313 plus (R152):
 - **a slice is not given to a foreign function** (`--ffi`): `E_KOSH_VIBHAG`. v313 compiled it, and passed the
   slice's descriptor - so the C side read an address, and as an `i64` count it crashed (found by Muse's reading,
   confirmed here). Every other door already refused it; this one had no check.
@@ -18,9 +37,9 @@ v314 is v313 plus (R152):
   R214-R217's contract: 1 to 2147483647, one argument with `=`, refused otherwise, `E_PARIKSHA_PADANI`). The widest
   statement the syntax tree holds, of the shapes measured, takes 87,316 steps; no measured statement reaches the
   default (a statement the tree holds is bounded at 349,521 steps, so a shape above 200,000 is possible in principle).
-- **the two size limits say which they are:** the analysis limit names its number, the prakriya, and says it is
-  not the syntax tree's; the syntax tree's full message now says it is not the analysis limit and that
-  `--analysis-steps` does not help.
+- **the two size limits:** the analysis limit names its number, the prakriya, and says it is not the syntax
+  tree's; the syntax tree's full message said it was not the analysis limit, but had no code of its own until v315
+  (this note said "the two limits now name themselves"; that overstated it).
 - **the desktop shortcut:** when a user's own `Sutram IDE.lnk` is on the desktop it is kept and the installer's
   is `Sutram IDE (Sutram).lnk` (v312 made none, and the only "Sutram IDE" opened the user's target); the checkbox
   says "Sutram IDE", not "Sutram Terminal".
@@ -397,8 +416,10 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
-- **v314:** a slice is not given to a foreign function; `--analysis-steps=N` (default 200,000); the two size
-  limits name themselves; the desktop shortcut collision and checkbox.
+- **v315:** the tree limit's own code (`E_VRIKSHA_SEEMA`); the fold guard; the installer records what it did -
+  shortcuts by their bytes, PATH by the entry, the association by its value, the class by what it wrote.
+- **v314:** a slice is not given to a foreign function; `--analysis-steps=N` (default 200,000); the analysis limit
+  names itself; the desktop shortcut collision and checkbox.
 - **v313:** the expression check's budget is the bound a statement the syntax tree holds cannot pass (349,521), so
   it refuses only a compiler defect, and says so; the licence instruction shows both lines; uninstall removes its
   staging folder.

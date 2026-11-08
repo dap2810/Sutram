@@ -138,3 +138,7 @@ with `tools/build_installer_linux.py` from an empty `--work` folder.
 
 **R153 (v314, rebuilt):** the engine and uninstaller only (shortcut ownership by the link's own bytes); the
 compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty `--work` folder.
+
+**R154 (v315):** the compiler (the tree limit's code, the fold guard), the engine and the uninstaller (PATH,
+association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
+`--work` folder.
