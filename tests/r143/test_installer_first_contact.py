@@ -107,6 +107,11 @@ def main():
           'the uninstall script is started with CREATE_NO_WINDOW (no PowerShell window), as the install is')
     uni = open(os.path.join(NI, 'uninstall-core.ps1'), encoding='utf-8-sig').read()
     ucode = re.sub(r'(?m)#.*$', '', uni)
+
+    def func(src, name):
+        k = src.find('function ' + name)
+        e = src.find('\nfunction ', k + 1)
+        return src[k:e if e > 0 else len(src)] if k >= 0 else ''
     tail = ucode[ucode.rfind('$failure=$_.Exception.Message'):] if '$failure=$_.Exception.Message' in ucode else ''
     check('.Popup(' in tail and '$LogPath' in tail and 'exit 1' in tail,
           'a failed uninstall says so in a message box, with its log - there is no console to see it in')
@@ -157,16 +162,33 @@ def main():
           and 'Recurse' not in tailok and '$stageDir' not in ucode[ucode.rfind('$failure=$_.Exception.Message'):],
           'on success uninstall removes its own %TEMP%\\STMxxxx.tmp folder - only in TEMP, with the wizard\'s name, holding '
           'exactly its script and log, by exact paths and a non-recursive delete; a failure keeps it')
-    # R152 (Windows v312 first-run paths, C2 and the checkbox): a user's own desktop "Sutram IDE.lnk" is kept and the
-    # installer's is then "Sutram IDE (Sutram).lnk"; the name is recorded and a link is removed only when it points at
-    # this installation's IDE; the checkbox names the IDE.
+    # R152-R153 (Windows v312 first-run paths; ChatGPT R218 follow-up): one function decides whether a shortcut may be
+    # written and records it; ownership is the link's own bytes, and nothing deletes a link on a flag or a target.
     eng = re.sub(r'(?m)#.*$', '', open(os.path.join(NI, 'install-core.ps1'), encoding='utf-8-sig').read())
-    check("'Sutram IDE (Sutram).lnk'" in eng and "('DesktopLink=' + $desktopName)" in eng
-          and 'if (& $isOurs $desktopLink) { Remove-Item' in eng and 'Remove-Item -LiteralPath $desktopLink -Force -ErrorAction SilentlyContinue\n' not in eng.replace('if (& $isOurs $desktopLink) { Remove-Item -LiteralPath $desktopLink -Force -ErrorAction SilentlyContinue }', ''),
-          'a desktop collision: the user\'s Sutram IDE.lnk is kept and the installer\'s is "Sutram IDE (Sutram).lnk", recorded; '
-          'removed only when it points at this IDE')
-    check("$state['DesktopLink']" in ucode and "CreateShortcut($desktopLink).TargetPath -eq (Join-Path $InstallDir 'sutram-ide-gui.exe')" in ucode,
-          'uninstall removes the desktop link by its recorded name, only when it points at this installation\'s IDE')
+    so = func(eng, 'Set-OwnedShortcut')
+    i_test, i_save, i_rec = so.find('Test-OwnedShortcut $Path'), so.find('$sc.Save()'), so.find("$script:ownedShortcuts.Add(")
+    to = func(eng, 'Test-OwnedShortcut')
+    calls = re.findall(r'(?<!function )\b(Set-OwnedShortcut|New-Shortcut) \(', eng)
+    saves = eng.count('.Save()')
+    check(0 < i_test < i_save < i_rec and "+ '|' + (Get-Sha $Path)" in so and "return 'preserved'" in so
+          and so.find("return 'preserved'") < i_save and 'Get-Sha $Path) -eq $rec' in to and saves == 1
+          and 'New-Shortcut' not in calls and len(calls) == 5 and '$isOurs' not in eng,
+          'R153: one function (Set-OwnedShortcut) decides and records: a link is written only when its name is free or it is '
+          'this installer\'s, unchanged since (its bytes have the recorded SHA-256); it is recorded with that hash as it is '
+          'written; a kept link is not recorded; it is the only .Save() in the engine (5 call sites)')
+    desk = eng[eng.find('if ($DesktopShortcut) {'):eng.find('if ($DesktopShortcut) {') + 1600]
+    check("$made = Set-OwnedShortcut (Join-Path $desktopDir $n)" in desk and "if ($made -ne 'preserved') { $desktopName = $n; $desktopOwned = $true; break }" in desk
+          and "'Sutram IDE (Sutram).lnk'" in desk and "'Sutram IDE (Sutram ' + $_ + ').lnk'" in desk
+          and 'Remove-OwnedShortcut (Join-Path $desktopDir $previousDesktopName)' in desk and '$desktopOwned = $true\n' not in desk,
+          'R153: DesktopOwned comes from what Set-OwnedShortcut did, at the first free of ten names; unchecked, only an '
+          'unchanged own link is removed')
+    ul = ucode[ucode.find("if ($state.ContainsKey('OwnedShortcuts')) {"):]
+    ul = ul[:ul.find('$classKey=')]
+    check("(Get-FileHash -LiteralPath $link -Algorithm SHA256).Hash -eq $parts[1]" in ul and '$parts.Count -lt 2 -or -not $parts[1]' in ul
+          and 'TargetPath' not in ul and "$state['DesktopOwned']" not in ucode and '$desktopOwned' not in ucode
+          and '[string]::Equals($parent,$startMenu' in ul and '[string]::Equals($parent,$desktopDir' in ul,
+          'R153: uninstall removes a shortcut only when it is recorded with a hash, is in the Start-menu folder or on the '
+          'desktop, and its bytes still have that hash - not on a matching target, not on DesktopOwned')
     ck = re.search(r'b_ckdesk:\s+u16 "([^"]*)"', wiz)
     check(ck and 'Sutram IDE' in ck.group(1) and 'Terminal' not in ck.group(1),
           f'the desktop checkbox names what it makes ({ck.group(1) if ck else "?"!r})')

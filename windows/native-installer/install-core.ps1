@@ -364,22 +364,62 @@ function Verify-Payload([string]$Stage) {
     }
 }
 $script:ownedShortcuts = New-Object Collections.Generic.List[string]
-function New-Shortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
-    $shell = New-Object -ComObject WScript.Shell
-    if (Test-Path -LiteralPath $Path -PathType Leaf) {
-        $encoded=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Path))
-        if (-not $oldState.ContainsKey('OwnedShortcuts') -or $encoded -notin ($oldState['OwnedShortcuts'] -split ',')) {
-            Log ('Preserved pre-existing user shortcut: '+$Path)
-            return
-        }
+# R153 (ChatGPT R218 follow-up, Sarvam R153 WS1): one place decides whether this installer may write a shortcut,
+# and the same place records it. In v314 the shortcut helper preserved a user's link while its caller still wrote
+# DesktopOwned=1, which uninstall trusted with a matching target: a user's own "Sutram IDE.lnk" pointing at the
+# installed IDE was deleted on uninstall. A matching target is not evidence that this installer made a file.
+# Ownership now is the link's own bytes: OwnedShortcuts holds "<base64 path>|<SHA-256 of the .lnk as written>".
+function Get-OldShortcutRecord([string]$Path) {
+    # $null: the old state does not name this path; '': named without a hash (written before v315); else the hash
+    if (-not $oldState.ContainsKey('OwnedShortcuts')) { return $null }
+    $encoded = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Path))
+    foreach ($entry in ($oldState['OwnedShortcuts'] -split ',')) {
+        $parts = $entry -split '\|', 2
+        if ($parts[0] -eq $encoded) { if ($parts.Count -gt 1) { return $parts[1] } else { return '' } }
     }
-    $script:ownedShortcuts.Add([Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Path)))
-    $sc = $shell.CreateShortcut($Path)
+    return $null
+}
+function Test-ShortcutSays([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
+    # every field this installer writes, as it would write it now (for a record from before v315, which has no hash)
+    try {
+        $sc = (New-Object -ComObject WScript.Shell).CreateShortcut($Path)
+        return ($sc.TargetPath -eq $Target -and $sc.Arguments -eq $Arguments -and $sc.WorkingDirectory -eq $WorkingDir -and
+                ($sc.IconLocation -replace ',0$','') -eq $Icon)
+    } catch { return $false }
+}
+function Test-OwnedShortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
+    # true only for a link this installer wrote and nobody has changed since
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
+    $rec = Get-OldShortcutRecord $Path
+    if ($rec) { return ((Get-Sha $Path) -eq $rec) }
+    if ($null -ne $rec) { return (Test-ShortcutSays $Path $Target $Arguments $WorkingDir $Icon) }
+    return $false
+}
+function Set-OwnedShortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
+    # 'created' (the name was free), 'updated' (this installer's own link, unchanged since it wrote it), or
+    # 'preserved' (anything else - a user's own, or this installer's changed by the user: left as it is and not
+    # recorded, so nothing later removes it). Only created and updated links are recorded, with their new hash.
+    $result = 'created'
+    if (Test-Path -LiteralPath $Path -PathType Leaf) {
+        if (-not (Test-OwnedShortcut $Path $Target $Arguments $WorkingDir $Icon)) {
+            Log ('Preserved a shortcut this installer did not write, or one changed since it did: ' + $Path)
+            return 'preserved'
+        }
+        $result = 'updated'
+    }
+    $sc = (New-Object -ComObject WScript.Shell).CreateShortcut($Path)
     $sc.TargetPath = $Target
     if ($Arguments) { $sc.Arguments = $Arguments }
     if ($WorkingDir) { $sc.WorkingDirectory = $WorkingDir }
     if ($Icon) { $sc.IconLocation = $Icon }
     $sc.Save()
+    $script:ownedShortcuts.Add([Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Path)) + '|' + (Get-Sha $Path))
+    return $result
+}
+function Remove-OwnedShortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
+    if (Test-OwnedShortcut $Path $Target $Arguments $WorkingDir $Icon) { Remove-Item -LiteralPath $Path -Force; return $true }
+    if (Test-Path -LiteralPath $Path -PathType Leaf) { Log ('Kept a shortcut this installer did not write, or one changed since: ' + $Path) }
+    return $false
 }
 
 try {
@@ -700,46 +740,36 @@ try {
         $icon = Join-Path $InstallDir 'assets\sutram.ico'
         $guiInstalled = Join-Path $InstallDir 'sutram-ide-gui.exe'
         if (-not (Test-Path -LiteralPath $guiInstalled -PathType Leaf)) { throw 'GUI executable missing after extraction.' }
-        New-Shortcut (Join-Path $startMenu 'Sutram IDE.lnk') $guiInstalled '' $InstallDir $icon
+        [void](Set-OwnedShortcut (Join-Path $startMenu 'Sutram IDE.lnk') $guiInstalled '' $InstallDir $icon)
         $terminalArgs = '/K "set "PATH=' + $binDir + ';%PATH%" && sutram --version"'
-        New-Shortcut (Join-Path $startMenu 'Sutram Terminal.lnk') $env:ComSpec $terminalArgs $env:USERPROFILE $icon
+        [void](Set-OwnedShortcut (Join-Path $startMenu 'Sutram Terminal.lnk') $env:ComSpec $terminalArgs $env:USERPROFILE $icon)
         $doc = Join-Path $InstallDir 'docs\sutram-book-english.html'
-        if (Test-Path -LiteralPath $doc) { New-Shortcut (Join-Path $startMenu 'Sutram Documentation.lnk') $doc '' $InstallDir $icon }
-        New-Shortcut (Join-Path $startMenu 'Uninstall Sutram.lnk') (Join-Path $InstallDir 'Sutram-Uninstall.exe') '--uninstall' $InstallDir $icon
-        # R152 (Windows v312 first-run paths, C2): a user's own "Sutram IDE.lnk" on the desktop is kept, and the one
-        # this installer makes is then "Sutram IDE (Sutram).lnk" - before, it made none, and the only desktop item
-        # called Sutram IDE opened the user's target (Notepad in the test). The name made is recorded (DesktopLink),
-        # and a link is removed only when it is that name and points at this installation's IDE.
+        if (Test-Path -LiteralPath $doc) { [void](Set-OwnedShortcut (Join-Path $startMenu 'Sutram Documentation.lnk') $doc '' $InstallDir $icon) }
+        [void](Set-OwnedShortcut (Join-Path $startMenu 'Uninstall Sutram.lnk') (Join-Path $InstallDir 'Sutram-Uninstall.exe') '--uninstall' $InstallDir $icon)
+        # R152-R153: the desktop link goes through the same Set-OwnedShortcut, which decides and records. A user's
+        # own link (or this installer's, changed since) is kept, and this installer's takes the first free name of
+        # "Sutram IDE.lnk", "Sutram IDE (Sutram).lnk", "Sutram IDE (Sutram 2).lnk" ... "(Sutram 9)". DesktopOwned and
+        # DesktopLink say what was made; nothing removes a link on their word (the uninstaller checks the bytes).
         $desktopDir = [Environment]::GetFolderPath('DesktopDirectory')
         $previousDesktopOwned = (($oldState.ContainsKey('DesktopOwned') -and $oldState['DesktopOwned'] -eq '1') -or ($oldState.ContainsKey('DesktopShortcut') -and $oldState['DesktopShortcut'] -eq '1'))
         $previousDesktopName = 'Sutram IDE.lnk'
         if ($oldState.ContainsKey('DesktopLink') -and $oldState['DesktopLink'] -and $oldState['DesktopLink'] -notmatch '[\\/]') { $previousDesktopName = $oldState['DesktopLink'] }
-        $desktopName = $previousDesktopName
-        $desktopOwned = $previousDesktopOwned
-        $shellForLinks = New-Object -ComObject WScript.Shell
-        $isOurs = { param($p) (Test-Path -LiteralPath $p -PathType Leaf) -and ($shellForLinks.CreateShortcut($p).TargetPath -eq $guiInstalled) }
+        $desktopName = ''
+        $desktopOwned = $false
         if ($DesktopShortcut) {
-            if (-not $previousDesktopOwned) {
-                $desktopName = 'Sutram IDE.lnk'
-                if ((Test-Path -LiteralPath (Join-Path $desktopDir $desktopName) -PathType Leaf) -and -not (& $isOurs (Join-Path $desktopDir $desktopName))) {
-                    Log 'A pre-existing user desktop shortcut named Sutram IDE.lnk was preserved; this installer''s is "Sutram IDE (Sutram).lnk".'
-                    $desktopName = 'Sutram IDE (Sutram).lnk'
-                }
+            $names = New-Object Collections.Generic.List[string]
+            if ($previousDesktopOwned) { $names.Add($previousDesktopName) }
+            foreach ($n in @('Sutram IDE.lnk','Sutram IDE (Sutram).lnk') + @(2..9 | ForEach-Object { 'Sutram IDE (Sutram ' + $_ + ').lnk' })) {
+                if (-not $names.Contains($n)) { $names.Add($n) }
             }
-            $desktopLink = Join-Path $desktopDir $desktopName
-            if ((Test-Path -LiteralPath $desktopLink -PathType Leaf) -and -not (& $isOurs $desktopLink) -and -not $previousDesktopOwned) {
-                Log ('A pre-existing user desktop shortcut named ' + $desktopName + ' was preserved too; no desktop shortcut was made.')
-                $desktopOwned = $false
-            } else {
-                New-Shortcut $desktopLink $guiInstalled '' $InstallDir $icon
-                $desktopOwned = $true
+            foreach ($n in $names) {
+                $made = Set-OwnedShortcut (Join-Path $desktopDir $n) $guiInstalled '' $InstallDir $icon
+                if ($made -ne 'preserved') { $desktopName = $n; $desktopOwned = $true; break }
             }
+            if (-not $desktopOwned) { Log 'No desktop shortcut was made: every name it could take is another shortcut. The IDE is in the Start menu (Sutram).' }
+            elseif ($desktopName -ne 'Sutram IDE.lnk') { Log ('The desktop shortcut is "' + $desktopName + '": a shortcut of the usual name was kept as it is.') }
         } elseif ($previousDesktopOwned) {
-            $desktopLink = Join-Path $desktopDir $previousDesktopName
-            if (& $isOurs $desktopLink) { Remove-Item -LiteralPath $desktopLink -Force -ErrorAction SilentlyContinue }
-            $desktopOwned = $false
-        } else {
-            $desktopOwned = $false
+            [void](Remove-OwnedShortcut (Join-Path $desktopDir $previousDesktopName) $guiInstalled '' $InstallDir $icon)
         }
 
         Log 'Registering the .sm file type and the uninstaller.'

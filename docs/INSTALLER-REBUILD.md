@@ -135,3 +135,6 @@ removed on success) changed; the runtime and `sutram-link.exe` are unchanged. Bu
 **R152 (v314):** the compiler (the FFI door, `--analysis-steps`), the engine and uninstaller (the desktop
 collision) and the wizard (the checkbox label) changed; the runtime and `sutram-link.exe` are unchanged. Built
 with `tools/build_installer_linux.py` from an empty `--work` folder.
+
+**R153 (v314, rebuilt):** the engine and uninstaller only (shortcut ownership by the link's own bytes); the
+compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty `--work` folder.

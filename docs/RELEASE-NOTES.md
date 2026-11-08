@@ -24,6 +24,13 @@ v314 is v313 plus (R152):
 - **the desktop shortcut:** when a user's own `Sutram IDE.lnk` is on the desktop it is kept and the installer's
   is `Sutram IDE (Sutram).lnk` (v312 made none, and the only "Sutram IDE" opened the user's target); the checkbox
   says "Sutram IDE", not "Sutram Terminal".
+- **shortcut ownership, in the package rebuilt for R153 (the compiler is unchanged):** v314's first package could
+  delete a user's own desktop `Sutram IDE.lnk` on uninstall when it pointed at the installed IDE (ChatGPT's trace:
+  the helper kept it, its caller recorded it as the installer's, uninstall trusted that and the target), and could
+  overwrite on reinstall a link the user had changed. Now one function decides and records: a link is written only
+  when its name is free or it is the installer's own, unchanged since (its bytes have the SHA-256 recorded when it
+  was written); the desktop link takes the first free of ten names; uninstall removes only links whose bytes still
+  have the recorded hash. A matching target is no longer taken as ownership.
 
 **Evidence scope for v314.** *The pinned v314 package (the setup committed with these notes - its hash is in
 `Sutram-Setup.sha256`) passed the Linux gates, the byte-for-byte guard against v313 and the Windows compiler

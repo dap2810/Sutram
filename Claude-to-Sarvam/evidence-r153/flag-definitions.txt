@@ -1,0 +1,18 @@
+./src/sutram_compiler.asm:45:; (-DR143_WALK_BUDGET=64); the flag overrides that too. Exhaustion refuses, names N, the prakriya, and that the
+./src/sutram_compiler.asm:47:%ifndef R143_WALK_BUDGET
+./src/sutram_compiler.asm:48:%define R143_WALK_BUDGET 200000
+./src/sutram_compiler.asm:617:    r152_steps dq R143_WALK_BUDGET    ; R152: the walk's budget for this compile (--analysis-steps=N)
+./src/sutram_compiler.asm:634:%defstr R143_WALK_BUDGET_S R143_WALK_BUDGET
+./src/sutram_compiler.asm:641:    r141_budget_hint db "Sanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya), athava seemam vardhaya: --analysis-steps=<adhika> (1 - 2147483647; mula ", R143_WALK_BUDGET_S, "). Iyam parikshana-seema; vakya-vriksha-seema ('vakya-vriksh seema atikram') prithak, tasyam --analysis-steps na sahayyam karoti.", 10, 0
+./src/sutram_compiler.asm:645:    r152_usage      db "  sutram --analysis-steps=N <nivesh.sm> <nirgat.bin>  parikshana-seema (mula ", R143_WALK_BUDGET_S, ")", 10, 0
+./src/sutram_compiler.asm:18396:%ifndef R142_MUTANT_NO_GLOBAL_CHECK        ; (test builds only: the initializer entry forgets the walk)
+./src/sutram_compiler.asm:18410:%ifndef R142_MUTANT_NO_GLOBAL_CHECK
+./src/sutram_compiler.asm:18414:%ifndef R142_MUTANT_NO_GLOBAL_CHECK
+./src/sutram_compiler.asm:18905:%ifndef R142_MUTANT_NO_STMT_CHECK          ; (test builds only: the statement entry forgets the walk)
+./src/sutram_compiler.asm:18915:%ifndef R142_MUTANT_NO_STMT_CHECK
+./tests/r137/test_slice_number.py:25:  * by building the two entries' mutants (-DR142_MUTANT_NO_STMT_CHECK, -DR142_MUTANT_NO_GLOBAL_CHECK: the entry
+./tests/r137/test_slice_number.py:231:        for define in ('R142_MUTANT_NO_STMT_CHECK', 'R142_MUTANT_NO_GLOBAL_CHECK'):
+./tests/r143/test_walk_budget.py:14:  * a test build with -DR143_WALK_BUDGET=64 refuses 40 terms naming 64, compiles 10, and the flag overrides it;
+./tests/r143/test_walk_budget.py:71:    m = re.search(r'%ifndef R143_WALK_BUDGET\s+%define R143_WALK_BUDGET (\d+)\s+%endif', code)
+./tests/r143/test_walk_budget.py:102:        b = subprocess.run(f'nasm -f elf64 -I. -DR143_WALK_BUDGET=64 src/r68_compiler_entry.asm -o {exe}.o && ld -o {exe} {exe}.o',
+./tests/r143/test_walk_budget.py:105:            check(False, 'the -DR143_WALK_BUDGET=64 build: ' + b.stderr.strip()[:90])

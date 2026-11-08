@@ -149,30 +149,28 @@ try {
     if ($selfHash -ne $state['UninstallerSHA256']) { throw 'The uninstaller has changed; preserving it.' }
 
     if($state.ContainsKey('PathOwned') -and $state['PathOwned'] -eq '1'){Remove-UserPathEntry (Join-Path $InstallDir 'bin')}
+    # R153 (ChatGPT R218 follow-up, Sarvam R153 WS1): a shortcut is removed only when it is one the installer
+    # recorded as written - OwnedShortcuts, "<base64 path>|<SHA-256 of the .lnk>" - and its bytes are still those.
+    # Not on a target that matches (a user's own link can point at the IDE), and not on DesktopOwned (v314's
+    # installer wrote it for a link it had preserved). A link changed since, or recorded without a hash, is kept.
     $startMenu = Join-Path ([Environment]::GetFolderPath('StartMenu')) 'Programs\Sutram'
-    foreach ($shortcut in @('Sutram IDE.lnk','Sutram Terminal.lnk','Sutram Documentation.lnk','Uninstall Sutram.lnk')) {
-        $link=Join-Path $startMenu $shortcut
-        $encoded=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($link))
-        if ($state.ContainsKey('OwnedShortcuts') -and $encoded -in ($state['OwnedShortcuts'] -split ',') -and (Test-Path -LiteralPath $link -PathType Leaf)) {
-            $shell=New-Object -ComObject WScript.Shell
-            $sc=$shell.CreateShortcut($link)
-            if ($sc.TargetPath.StartsWith($InstallDir+'\',[StringComparison]::OrdinalIgnoreCase) -or
-                ($shortcut -eq 'Sutram Terminal.lnk' -and $sc.Arguments.Contains($InstallDir))) {
-                Remove-Item -LiteralPath $link -Force
+    $desktopDir = [Environment]::GetFolderPath('DesktopDirectory')
+    if ($state.ContainsKey('OwnedShortcuts')) {
+        foreach ($entry in ($state['OwnedShortcuts'] -split ',')) {
+            $parts = $entry -split '\|', 2
+            if ($parts.Count -lt 2 -or -not $parts[1]) { continue }
+            try { $link = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($parts[0])) } catch { continue }
+            $parent = [IO.Path]::GetDirectoryName($link)
+            if (-not ([string]::Equals($parent,$startMenu,[StringComparison]::OrdinalIgnoreCase) -or
+                      [string]::Equals($parent,$desktopDir,[StringComparison]::OrdinalIgnoreCase))) { continue }
+            if (-not $link.EndsWith('.lnk',[StringComparison]::OrdinalIgnoreCase)) { continue }
+            if (Test-Path -LiteralPath $link -PathType Leaf) {
+                if ((Get-FileHash -LiteralPath $link -Algorithm SHA256).Hash -eq $parts[1]) { Remove-Item -LiteralPath $link -Force }
+                else { Log ('Kept a shortcut changed since the installer wrote it: ' + $link) }
             }
         }
     }
     try { if ((Test-Path -LiteralPath $startMenu -PathType Container) -and -not (Get-ChildItem -LiteralPath $startMenu -Force -ErrorAction Stop | Select-Object -First 1)) { Remove-Item -LiteralPath $startMenu -Force } } catch {}
-    $desktopOwned = (($state.ContainsKey('DesktopOwned') -and $state['DesktopOwned'] -eq '1') -or ($state.ContainsKey('DesktopShortcut') -and $state['DesktopShortcut'] -eq '1'))
-    $desktopName='Sutram IDE.lnk'
-    if ($state.ContainsKey('DesktopLink') -and $state['DesktopLink'] -and $state['DesktopLink'] -notmatch '[\\/]') { $desktopName=$state['DesktopLink'] }   # R152: the name the installer made
-    $desktopLink=Join-Path ([Environment]::GetFolderPath('DesktopDirectory')) $desktopName
-    if ($desktopOwned -and (Test-Path -LiteralPath $desktopLink -PathType Leaf)) {
-        $shell=New-Object -ComObject WScript.Shell
-        if ($shell.CreateShortcut($desktopLink).TargetPath -eq (Join-Path $InstallDir 'sutram-ide-gui.exe')) {
-            Remove-Item -LiteralPath $desktopLink -Force
-        }
-    }
 
     $classKey='HKCU:\Software\Classes\Sutram.Source'
     $extKey='HKCU:\Software\Classes\.sm'

@@ -1039,7 +1039,8 @@ parameter, in `pankti_gan(s)`, as the base of `s[i]` and `s[a:b]`, and (a `mala`
 made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is. The same holds in a module-level `vitti` initializer (v310), and
 a `kosh` cannot be a module `vitti`'s initial value there either (`E_KOSH_DVARA`). From v311 the check is part of
 expression code generation itself: an expression reached by any other path is checked there, its own value as a number.
-**Size limits (v314, R152).** A program meets two limits, and each says which it is:
+**Size limits (v314, R152).** Two limits are about size, and each says which it is (they are not the only
+capacities - block nesting, the walk's own stack and others have theirs):
 - **the syntax tree**, 3 MiB - at most 43,690 nodes for the whole program, the libraries `yoj` brings in included.
   When it is full: `Sutram truti: vakya-vriksh seema atikram`, then *"Sanket: ... iyam vakya-vriksha-seema, na
   parikshana-seema"* - the syntax tree's limit, not the analysis limit; `--analysis-steps` does not help; make the

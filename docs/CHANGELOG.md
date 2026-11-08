@@ -15,6 +15,11 @@
   is `Sutram IDE (Sutram).lnk`, recorded and removed only when it points at this IDE; the checkbox names the IDE.
 - **The release binaries are the plain builds**, checked by gate `R137`: no mutant define, no lowered budget.
 - Guard v313 -> v314: ELF and PE 587 identical / 195 refused / 0 DIFFER (783 programs); refusal messages unchanged.
+- **R153, the package rebuilt (compiler unchanged): shortcut ownership** (ChatGPT R218 follow-up). v314's first
+  package could delete a user's own desktop link on uninstall (preserved by the helper, recorded as owned by the
+  caller, deleted on a matching target) and overwrite a link the user changed. `Set-OwnedShortcut` now decides and
+  records in one place; ownership is the .lnk's SHA-256 as written; uninstall removes only links whose bytes match.
+  Gate `R143 installer first contact` (16); native fixture `tests/windows/test_installer_shortcuts.ps1` (NOT RUN).
 
 ## v313 (Claude, R147) - the walk budget a defensive stop; the fourteen slice shapes; the licence label, the staging folder
 
