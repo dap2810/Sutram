@@ -1,0 +1,110 @@
+[
+  {
+    "name": "literal-10000",
+    "terms": 10000,
+    "source_sha256": "eac42be429b9af2b7d93dd33b24568b001e64c7dfad9f89b78ed005cf90163c2",
+    "command": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\literal-10000.sm",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\literal-10000.exe"
+    ],
+    "compile_exit": 0,
+    "compile_seconds": 0.024192399999719782,
+    "stdout": "Siddh: 194 baait sankalit\n",
+    "stderr": "",
+    "output_exists": true,
+    "pass": true,
+    "run_exit": 0,
+    "run_stdout": "10000\n",
+    "run_stderr": "",
+    "output_sha256": "cfcb2e4b5950fd21362002bfc9af6d62467a54d6b62a10e22d6c7ab9236dd69f"
+  },
+  {
+    "name": "literal-20000",
+    "terms": 20000,
+    "source_sha256": "29db445edd9003fbef18565cc3f096be5a55f5d4501864d408a1725ef0fafc76",
+    "command": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\literal-20000.sm",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\literal-20000.exe"
+    ],
+    "compile_exit": 1,
+    "compile_seconds": 0.022472099999959028,
+    "stdout": "Sutram truti: vakya-vriksh seema atikram\n",
+    "stderr": "",
+    "output_exists": false,
+    "pass": false
+  },
+  {
+    "name": "variable-10000",
+    "terms": 10000,
+    "source_sha256": "71a3fbb8d5f096f349e76e1767b095acb5686d0ba91095c19b1f37305ecd8da2",
+    "command": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\variable-10000.sm",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\variable-10000.exe"
+    ],
+    "compile_exit": 0,
+    "compile_seconds": 0.04599610000013854,
+    "stdout": "Siddh: 60191 baait sankalit\n",
+    "stderr": "",
+    "output_exists": true,
+    "pass": true,
+    "run_exit": 0,
+    "run_stdout": "10000\n",
+    "run_stderr": "",
+    "output_sha256": "9214c6fe70b33d42dd1b5c14089fb761787074d3d4d690fc7bedf0f715724d18"
+  },
+  {
+    "name": "variable-20000",
+    "terms": 20000,
+    "source_sha256": "5095e709bb82052e385b7e494b5449ca0b70d2b7f8d709ebcdbdb012ca710722",
+    "command": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\variable-20000.sm",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\variable-20000.exe"
+    ],
+    "compile_exit": 1,
+    "compile_seconds": 0.04238440000017363,
+    "stdout": "Sutram truti [E_VAKYA_SEEMA]: ekam vakyam ati-vistritam - tasya parikshanam 65536 padeshu na samaptam, ato na sankalyate\nSanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya)\n",
+    "stderr": "",
+    "output_exists": false,
+    "pass": true
+  },
+  {
+    "name": "global-variable-10000",
+    "terms": 10000,
+    "source_sha256": "88f9e0bcbf8c252315c557d9a0cd1cc112d6978e3b52786a7288d052700f867c",
+    "command": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\global-variable-10000.sm",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\global-variable-10000.exe"
+    ],
+    "compile_exit": 0,
+    "compile_seconds": 0.041942199999994045,
+    "stdout": "Siddh: 100212 baait sankalit\n",
+    "stderr": "",
+    "output_exists": true,
+    "pass": true,
+    "run_exit": 0,
+    "run_stdout": "10000\n",
+    "run_stderr": "",
+    "output_sha256": "ef2ca136c52f7e0d66036f762b584b5108b7913b270572bb6943b6356846b144"
+  },
+  {
+    "name": "global-variable-20000",
+    "terms": 20000,
+    "source_sha256": "514c68add8c3a6eba0381c5c413c96978ff0d1292094bf150ffdcc6c19ef2311",
+    "command": [
+      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\global-variable-20000.sm",
+      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\global-variable-20000.exe"
+    ],
+    "compile_exit": 1,
+    "compile_seconds": 0.04544639999994615,
+    "stdout": "Sutram truti [E_VAKYA_SEEMA]: ekam vakyam ati-vistritam - tasya parikshanam 65536 padeshu na samaptam, ato na sankalyate\nSanket: vakyam laghutareshu vibhaja (madhyamani mulyani namabhih rakshya)\n",
+    "stderr": "",
+    "output_exists": false,
+    "pass": true
+  }
+]

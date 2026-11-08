@@ -1,0 +1,40 @@
+{
+    "started":  "2026-11-08T11:21:57.0884463-05:00",
+    "method":  "WinEvent hook for console create/destroy/show/hide plus visible-window sampling and native engine process tracking, started before Settings uninstall.",
+    "baseline_console_handles":  [
+                                     199380,
+                                     199344
+                                 ],
+    "processes":  [
+                      {
+                          "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall-core.ps1\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SelfPath \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log\"",
+                          "parent":  25268,
+                          "pid":  16088,
+                          "name":  "powershell.exe",
+                          "started":  "2026-11-08T11:25:01.7228332-05:00"
+                      }
+                  ],
+    "samples":  [
+
+                ],
+    "dialogs":  [
+
+                ],
+    "window_events":  [
+
+                      ],
+    "finished":  true,
+    "hook_handle":  150143215,
+    "elapsed_seconds":  191.0000297,
+    "log_path":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log",
+    "ended":  "2026-11-08T11:25:08.3965617-05:00",
+    "process_results":  [
+                            {
+                                "exited":  true,
+                                "pid":  16088,
+                                "exit":  0,
+                                "exit_time":  "2026-11-08T11:25:08.3593592-05:00",
+                                "started":  "2026-11-08T11:25:01.7228332-05:00"
+                            }
+                        ]
+}

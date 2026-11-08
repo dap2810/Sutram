@@ -1,0 +1,74 @@
+{
+    "name":  "capture-retry",
+    "started":  "2026-11-08T11:19:59.5062898-05:00",
+    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe",
+    "setup_sha256":  "5cca529c3569d4558cce3243becffea72c0eb2745ea345d8c049bb7177cb3c1b",
+    "phase":  "finished",
+    "screens":  [
+                    {
+                        "position":  "top",
+                        "first_visible_line":  0,
+                        "file":  "capture-retry-licence-top.png"
+                    },
+                    {
+                        "position":  "middle",
+                        "first_visible_line":  20,
+                        "file":  "capture-retry-licence-middle.png"
+                    },
+                    {
+                        "position":  "sanskrit",
+                        "first_visible_line":  32,
+                        "file":  "capture-retry-licence-sanskrit.png"
+                    },
+                    {
+                        "position":  "bottom",
+                        "first_visible_line":  41,
+                        "file":  "capture-retry-licence-bottom.png"
+                    }
+                ],
+    "pid":  30096,
+    "process_started":  "2026-11-08T11:19:59.5807168-05:00",
+    "handle":  526718,
+    "licence_text":  "Sutram â€” The Complete Thread\r\nCopyright (c) 2026 Sutram Project\r\n\r\nPermission is hereby granted, free of charge, to any person obtaining a copy\r\nof this software and associated documentation files (the \"Software\"), to deal\r\nin the Software without restriction, including without limitation the rights\r\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom the Software is\r\nfurnished to do so, subject to the following conditions:\r\n\r\nThe above copyright notice and this permission notice shall be included in all\r\ncopies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\nSOFTWARE.\r\n\r\n---\r\n\r\nà¤¸à¥‚à¤¤à¥à¤°à¤®à¥ â€” à¤¸à¤®à¥à¤ªà¥‚à¤°à¥à¤£à¤‚ à¤¸à¥‚à¤¤à¥à¤°à¤®à¥\r\n\r\nà¤¯à¤¹ à¤¸à¥‰à¤«à¥à¤Ÿà¤µà¥‡à¤¯à¤° à¤¨à¤¿à¤ƒà¤¶à¥à¤²à¥à¤• à¤¹à¥ˆà¥¤ à¤‡à¤¸à¥‡ à¤®à¥à¤•à¥à¤¤ à¤°à¥‚à¤ª à¤¸à¥‡ à¤‰à¤ªà¤¯à¥‹à¤— à¤•à¤°à¥‡à¤‚, à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¿à¤¤ à¤•à¤°à¥‡à¤‚ à¤”à¤° à¤¬à¤¾à¤à¤Ÿà¥‡à¤‚à¥¤\r\n\r\nà®šà¯‚à®¤à¯à®°à®®à¯ â€” à®®à¯à®´à¯à®®à¯ˆà®¯à®¾à®© à®¨à¯‚à®²à¯\r\n\r\nà°¸à±‚à°¤à±à°°à°®à± â€” à°¸à°‚à°ªà±‚à°°à±à°£à°®à±ˆà°¨ à°¦à°¾à°°à°‚\r\n\r\nàª¸à«‚àª¤à«àª°àª®à« â€” àª¸àª‚àªªà«‚àª°à«àª£ àª¦à«‹àª°à«‹\r\n\r\nTHE COMPLETE THREAD â€” for every language, for every learner.\r\n",
+    "display_line_count":  49,
+    "accepted":  0,
+    "capture_warnings":  [
+
+                         ],
+    "observations":  [
+                         {
+                             "next":  "Install",
+                             "seconds":  0.5308771
+                         },
+                         {
+                             "next":  "Install",
+                             "seconds":  5.6748273
+                         },
+                         {
+                             "next":  "Install",
+                             "seconds":  10.8002291
+                         },
+                         {
+                             "next":  "Install",
+                             "seconds":  15.959083499999998
+                         },
+                         {
+                             "next":  "Install",
+                             "seconds":  21.0297335
+                         },
+                         {
+                             "next":  "Install",
+                             "seconds":  26.158701399999998
+                         }
+                     ],
+    "continued":  "2026-11-08T11:20:25.0412667-05:00",
+    "child":  {
+                  "pid":  36544,
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4793.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4793.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4793.tmp\\install.log\" -AddPath",
+                  "started":  "2026-11-08T11:20:26.1256569-05:00"
+              },
+    "finish_seconds":  27.910169099999997,
+    "finish_screenshot":  "capture-retry-finish.png",
+    "closed_after_finish":  true,
+    "child_exit":  0
+}

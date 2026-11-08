@@ -1,0 +1,19 @@
+{
+  "source_commit": "06324cefc5c50a3c50fb68b6a2a43f50b800d339",
+  "licence_exact_crlf_match": true,
+  "suite_counts": {
+    "SKIP_SIDE_EFFECT_OR_INLINE_ASM": 5,
+    "SKIP_LINUX_RAW_SYSCALL": 1,
+    "PASS": 322,
+    "NO_EXPECTATION": 3
+  },
+  "suite_seconds": 23.127582699999948,
+  "suite_change_percent": 24.341842473117993,
+  "budget_expectations_passed": 5,
+  "budget_expectations_total": 6,
+  "new_surviving_files": 2,
+  "engine_seconds": 6.636526,
+  "confirmation_to_exit_seconds": 6.7996,
+  "identity_pass": true,
+  "all_tracked_processes_closed": true
+}

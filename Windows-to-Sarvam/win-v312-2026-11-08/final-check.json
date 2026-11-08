@@ -1,0 +1,75 @@
+{
+    "time":  "2026-11-08T11:28:59.8315265-05:00",
+    "os":  {
+               "Caption":  "Microsoft Windows 11 Home",
+               "Version":  "10.0.26300",
+               "BuildNumber":  "26300"
+           },
+    "elevated_admin_token":  false,
+    "processes":  [
+                      {
+                          "same_process_alive":  false,
+                          "evidence":  "initial-install.json",
+                          "expected_start":  "2026-11-08T11:17:15.1163330-05:00",
+                          "pid":  17912
+                      },
+                      {
+                          "same_process_alive":  false,
+                          "evidence":  "capture-retry-install.json",
+                          "expected_start":  "2026-11-08T11:19:59.5807168-05:00",
+                          "pid":  30096
+                      },
+                      {
+                          "same_process_alive":  false,
+                          "evidence":  "capture-retry-install.json",
+                          "expected_start":  "2026-11-08T11:20:26.1256569-05:00",
+                          "pid":  36544
+                      },
+                      {
+                          "same_process_alive":  false,
+                          "evidence":  "reinstall-install.json",
+                          "expected_start":  "2026-11-08T11:26:12.4122791-05:00",
+                          "pid":  2548
+                      },
+                      {
+                          "same_process_alive":  false,
+                          "evidence":  "reinstall-install.json",
+                          "expected_start":  "2026-11-08T11:26:30.5544819-05:00",
+                          "pid":  28636
+                      },
+                      {
+                          "same_process_alive":  false,
+                          "evidence":  "observer-process.json",
+                          "expected_start":  "2026-11-08T11:21:55.9383386-05:00",
+                          "pid":  17384
+                      },
+                      {
+                          "same_process_alive":  false,
+                          "evidence":  "uninstall-observer.json",
+                          "expected_start":  "2026-11-08T11:25:01.7228332-05:00",
+                          "pid":  16088
+                      }
+                  ],
+    "preexisting_console_windows_identified_after_test":  [
+                                                              {
+                                                                  "handle":  199380,
+                                                                  "started":  "2026-11-08T11:13:03.7987444-05:00",
+                                                                  "class":  "PseudoConsoleWindow",
+                                                                  "pid":  27044,
+                                                                  "path":  "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\PowerShell.exe",
+                                                                  "title":  ""
+                                                              },
+                                                              {
+                                                                  "handle":  199344,
+                                                                  "started":  "2026-11-08T11:13:03.9375028-05:00",
+                                                                  "class":  "CASCADIA_HOSTING_WINDOW_CLASS",
+                                                                  "pid":  30852,
+                                                                  "path":  "C:\\Program Files\\WindowsApps\\Microsoft.WindowsTerminal_1.24.12741.0_x64__8wekyb3d8bbwe\\WindowsTerminal.exe",
+                                                                  "title":  "[ ! ] Action Required | Review SUTRAM-WINDOWS-V312.md | Sutram"
+                                                              }
+                                                          ],
+    "surviving_sutram_processes":  [
+
+                                   ],
+    "temp_residue_still_exists":  true
+}

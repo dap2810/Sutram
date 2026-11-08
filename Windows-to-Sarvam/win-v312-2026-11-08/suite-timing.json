@@ -1,0 +1,17 @@
+{
+  "command": [
+    "C:\\Users\\dmech\\miniconda3\\python.exe",
+    "E:\\Github_Projects\\Sutram\\build\\windows-v312\\tools\\test_windows_native.py"
+  ],
+  "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v312",
+  "started_epoch": 1794155246.2087479,
+  "elapsed_seconds": 23.127582699999948,
+  "exit": 0,
+  "stdout": "215_r12_wordfreq NO_EXPECTATION\r\n216_r12_expr NO_EXPECTATION\r\n219_sanskrit_kosh_aliases NO_EXPECTATION\r\n{'NO_EXPECTATION': 3, 'PASS': 322, 'SKIP_LINUX_RAW_SYSCALL': 1, 'SKIP_SIDE_EFFECT_OR_INLINE_ASM': 5}\r\n",
+  "stderr": "",
+  "python": "3.14.7 | packaged by Anaconda, Inc. | (main, Aug 14 2026, 10:12:46) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "comparison_reference_seconds": 18.6,
+  "ratio_to_reference": 1.24341842473118,
+  "measurement_scope": "One wall-clock run of the existing native suite. Run after reinstall and identity verification, without concurrent installer work; one sample, not a controlled compiler microbenchmark."
+}

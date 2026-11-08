@@ -1,0 +1,65 @@
+{
+    "confirmed":  "2026-11-08T11:25:01.5597599-05:00",
+    "observations":  [
+                         {
+                             "app_visible":  true,
+                             "seconds":  0.021228999999999998
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  0.5707161
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  1.0925095
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  1.6138063
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  2.1467804999999998
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  2.6766121999999997
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  3.2065405
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  3.7251502999999997
+                         },
+                         {
+                             "app_visible":  true,
+                             "seconds":  4.2557108999999995
+                         },
+                         {
+                             "app_visible":  false,
+                             "seconds":  4.7882384999999994
+                         },
+                         {
+                             "app_visible":  false,
+                             "seconds":  5.3193177999999994
+                         },
+                         {
+                             "app_visible":  false,
+                             "seconds":  5.8475376
+                         },
+                         {
+                             "app_visible":  false,
+                             "seconds":  6.3821236999999993
+                         },
+                         {
+                             "app_visible":  false,
+                             "seconds":  6.9205464
+                         }
+                     ],
+    "engine_finished_seen":  "2026-11-08T11:25:08.4851814-05:00",
+    "elapsed_seconds":  6.9222579999999994,
+    "final_app_exists":  false,
+    "ended":  "2026-11-08T11:25:10.6148352-05:00"
+}
