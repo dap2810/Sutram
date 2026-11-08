@@ -13,17 +13,29 @@ contract table, the Windows rounds 1-4 and the v297 IDE run.
 v312 is v311 plus (R143):
 - **the expression check's budget can be reached, and refuses.** v311's 200,000 steps could not be reached (the
   widest statement the compiler can hold takes 87,316), so its refusal was code no program could run. From v312 a
-  statement whose check takes more than 65,536 steps - about 16,400 terms in one expression - is refused
-  (`E_VAKYA_SEEMA`), with the release compiler; the largest check any program here makes takes 52.
+  statement whose check takes more than 65,536 steps - 8,200 to 16,400 terms in one expression, by its shape - is
+  refused (`E_VAKYA_SEEMA`), with the release compiler. **The largest statement in the 344 examples and 310 library
+  functions takes 52 steps and 11 terms; the most terms in one is 12. The margin is 1,260 times in steps and at
+  least 680 in terms** (R144; checked on every gate run).
 - **the installer's licence page** shows the licence as written: UTF-8 is decoded (the em dash in its first line
   showed as three characters, and its Sanskrit lines as noise) and its lines break (they ran together).
 - **the uninstall** opens no PowerShell window; a failure is shown in a message box with its log. And it removes
   `HKCU\Software\Classes\.sm\OpenWithProgids`, then `.sm`, when nothing is left in them.
 
-**Evidence scope for v312.** Everything about v312 above is measured on Linux and under Wine only: the gates,
-the guard, the Windows compiler under Wine, the licence conversion run from the wizard's own code. **v312 has not
-run on Windows.** In particular nobody has yet seen the licence page drawn, an uninstall without a window, or the
-registry after a v312 uninstall. The native evidence below is of v309 and v311, each on the commit it names.
+**Evidence scope for v312.** *The pinned v312 package (the setup committed with these notes - its hash is in `Sutram-Setup.sha256`, which a
+setup cannot carry inside itself - with the v312 compiler of commit `097ac45c`) passed the
+Linux gates, the byte-for-byte guard against v311 and the Windows compiler under Wine; it has not been installed,
+run or uninstalled on Windows, and untested guarantees remain unclaimed.* What v312 does **not** claim:
+- that the licence page draws correctly on Windows. The gate checks the characters the wizard puts in the page.
+  Under Wine the em dash and the line breaks draw, but the Devanagari and Tamil lines in that box draw as one empty
+  box per character after their first word - the same scripts draw in the wizard's sidebar once a font for them is
+  linked, so this is Wine's text box, but **how Windows draws them has not been seen**;
+- that the uninstall opens no window, removes the empty `.sm` keys, or shows its message box on failure - read
+  from the code and checked by the gate, not run;
+- the expression-check refusal on Windows (Linux and Wine only);
+- anything v311's native runs did not establish (below), and the compare-then-delete race under another writer.
+
+The native evidence below is of v309 and v311, each on the commit it names.
 
 v311 was v310 plus (R142):
 - **the expression check is inside expression code generation.** `gen_expr` generates without a check of its own

@@ -1037,9 +1037,14 @@ made a number by a call or `?:` (`dek(k) + 1`) is `E_KOSH_GANIT`, as `k + 1` is.
 a `kosh` cannot be a module `vitti`'s initial value there either (`E_KOSH_DVARA`). From v311 the check is part of
 expression code generation itself: an expression reached by any other path is checked there, its own value as a number.
 The check has a limit (v312): a statement whose check takes more than 65,536 steps - one step per node and per
-field that is not a node, about 16,400 terms in a single expression - is refused, `Sutram truti [E_VAKYA_SEEMA]`,
-exit 1, no program. Split such an expression over several statements. The largest statement in the examples,
-tests and library takes 52 steps.
+field that is not a node - is refused, `Sutram truti [E_VAKYA_SEEMA]`, exit 1, no program. Split such an
+expression over several statements. **Why that number (R144):** it is reachable, so the refusal is tested with the
+release compiler, and it is far above anything written. In one expression it takes between about 8,200 terms (8
+steps a term, as in `(z < z) + ...`) and about 16,400 (4 a term, `z + z + ...`). The largest statement in the 344
+examples and the 310 library functions takes 52 steps and 11 terms (`lib/brihat.smlib`, line 174); the most
+terms in one statement is 12 (`lib/ganita.smlib`, line 216, 35 steps). **The margin is 1,260 times in steps, and
+at least 680 times in terms.** Gate `R143 walk budget` checks it on every run: with the budget at 64, every
+example and library compiles exactly as with 65,536.
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
 An explicit end is evaluated once, where it is written.

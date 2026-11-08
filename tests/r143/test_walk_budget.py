@@ -11,12 +11,16 @@ refusal was code no program could reach. v312's budget is 65536 (R143_WALK_BUDGE
     output file, E_VAKYA_SEEMA naming 65536; the same as a module-level initializer (the walk at r56);
   * 10,000 terms compile and print 10000;
   * a test build of this source with -DR143_WALK_BUDGET=64 refuses 40 terms naming 64, and compiles 10;
-  * the source: the budget is that define, and it is spent before each entry is taken.
+  * the source: the budget is that define, and it is spent before each entry is taken;
+  * (R144) the margin: with the budget at 64, every example and every library compiles exactly as with the release
+    budget. Measured with a tracing build: the largest statement in them takes 52 steps (lib/brihat.smlib:174, 11
+    terms); the most terms, 12 (lib/ganita.smlib:216, 35 steps). The fewest terms that reach 65536 are about 8,200
+    (shapes of 8 steps a term, such as `(z < z) + ...`); the widest, 4 a term, about 16,400.
 
   python3 tests/r143/test_walk_budget.py [--compiler PATH]
 Last line: "r143 walk budget: N checks, M failed".
 """
-import os, re, shutil, subprocess, sys, tempfile
+import glob, os, re, shutil, subprocess, sys, tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -95,6 +99,32 @@ def main():
             check(ok, f'test build, budget 64: a 40-term statement - {got}')
             ok, got = prints(exe, 'small_ok', wide(10), '10\n')
             check(ok, f'test build, budget 64: a 10-term statement compiles - {got}')
+            # R144 (Sarvam R144 WS1-WS2, ChatGPT R212): the margin, on every run. Every example and every library
+            # compiles with the budget at 64 exactly as with the release budget: no real statement needs 64 steps,
+            # so the release budget is more than 1,024 times the largest statement anyone here has written.
+            progs = sorted(glob.glob(os.path.join(ROOT, 'examples', '*.sm')) + glob.glob(os.path.join(ROOT, 'examples', '*', '*.sm')))
+            for lib in sorted(glob.glob(os.path.join(ROOT, 'lib', '*.smlib'))):
+                lp = os.path.join(work, 'lib_' + os.path.basename(lib)[:-6] + '.sm')
+                open(lp, 'w').write(f'yoj {os.path.basename(lib)[:-6]}\nmukhya() {{\n    likha(1)\n}}\n')
+                progs.append(lp)
+            hit, differ = [], []
+            for i, pr in enumerate(progs):
+                o1, o2 = os.path.join(work, 'm_rel'), os.path.join(work, 'm_64')
+                for o in (o1, o2):
+                    if os.path.exists(o):
+                        os.remove(o)
+                r1 = subprocess.run([comp, pr, o1], cwd=ROOT, capture_output=True, text=True, errors='replace')
+                r2 = subprocess.run([exe, pr, o2], cwd=ROOT, capture_output=True, text=True, errors='replace')
+                if 'E_VAKYA_SEEMA' in r2.stdout + r2.stderr:
+                    hit.append(os.path.relpath(pr, ROOT))
+                elif r1.returncode != r2.returncode or os.path.exists(o1) != os.path.exists(o2) or \
+                        (os.path.exists(o1) and open(o1, 'rb').read() != open(o2, 'rb').read()):
+                    differ.append(os.path.relpath(pr, ROOT))
+            nlib = len(glob.glob(os.path.join(ROOT, 'lib', '*.smlib')))
+            check(not hit and not differ,
+                  f'the margin: with the budget at 64, all {len(progs) - nlib} examples and all {nlib} libraries compile as with '
+                  f'{budget} - the largest real statement takes fewer than 64 steps, a margin over 1,024x'
+                  + (f' (E_VAKYA_SEEMA: {hit[:3]})' if hit else '') + (f' (differ: {differ[:3]})' if differ else ''))
     print(f'r143 walk budget: {checks} checks, {fails} failed')
     return 1 if fails else 0
 

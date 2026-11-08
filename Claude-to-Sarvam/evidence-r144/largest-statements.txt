@@ -1,0 +1,48 @@
+# steps / nodes / terms (VAR, NUM, FLOAT, STR leaves) of the largest expression walk; a tracing build of v312's source
+## each library, imported alone (every function in it is walked: the count is the number of walks)
+aadhar 0 304 (52, 25, 11)
+ank 0 96 (23, 13, 7)
+anukram 0 77 (19, 11, 6)
+brihat 0 233 (52, 25, 11)
+chandas 0 74 (11, 7, 4)
+ganit 0 145 (19, 11, 5)
+ganita 0 470 (35, 20, 12)
+gudh 0 12 (11, 7, 4)
+kalana 0 101 (29, 15, 7)
+khand 0 393 (39, 21, 10)
+madhava 0 104 (35, 19, 10)
+mala 0 61 (24, 12, 6)
+nighantu 0 674 (39, 21, 10)
+patra 0 45 (16, 9, 5)
+phal 0 538 (35, 20, 12)
+roop 0 421 (18, 9, 5)
+sadhan 0 85 (19, 11, 6)
+samanvaya 0 95 (35, 15, 5)
+sangrah 0 827 (41, 21, 9)
+sankhyiki 0 129 (17, 9, 4)
+shreni 0 150 (17, 9, 3)
+suchi 0 449 (24, 12, 4)
+vakyank 0 302 (24, 14, 6)
+varna 0 374 (39, 21, 10)
+
+## all 768 programs (examples, tests/stdlib, tests/r*): 652 with walks, 104957 walks
+largest by steps:
+   [52, 25, 11] examples/338_r116_brihat_ank_se.sm
+   [52, 25, 11] examples/339_r116_brihat_ank_tak_laghu.sm
+   [52, 25, 11] tests/stdlib/baseconv_roundtrip.sm
+   [52, 25, 11] tests/stdlib/bigint_add.sm
+   [52, 25, 11] tests/stdlib/bigint_cmp.sm
+largest by terms:
+   [35, 20, 12] examples/202_brahmagupta_area.sm
+   [35, 20, 12] examples/280_r80_runtime_wraps.sm
+   [35, 20, 12] examples/336_r116_ganita_nirapeksh.sm
+   [35, 20, 12] examples/337_r116_brahmagupta_kshetr.sm
+   [35, 20, 12] examples/91_indian_number_theory.sm
+
+## the statements (source)
+            vitti p = pad8(x + i * 8) * pad8(y + j * 8) + pad8(r + (i + j) * 8) + carry
+    vitti neg = bk_kaarak(S, 0, f1) + bk_kaarak(S, 1, f2) + bk_kaarak(S, 2, f3) + bk_kaarak(S, 3, f4)
+
+## thresholds, release compiler (65536)
+(z<z)+... 8000 terms: compiles, prints 0; 8200 terms: E_VAKYA_SEEMA
+z+z+... 16000 terms: compiles; 16500: E_VAKYA_SEEMA (R143)

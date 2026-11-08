@@ -7,7 +7,7 @@
   on v311: the widest statement the AST heap holds, 21,829 terms, takes 87,316 steps; the largest walk in the 768
   programs takes 52. The budget is now `R143_WALK_BUDGET`, 65536: a 20,000-term statement, or module initializer,
   is refused with the release compiler (`E_VAKYA_SEEMA`, exit 1, no output; the message names the number), 10,000
-  terms compile, and a `-DR143_WALK_BUDGET=64` build refuses 40 terms. Gate `R143 walk budget` (6 checks).
+  terms compile, and a `-DR143_WALK_BUDGET=64` build refuses 40 terms. Gate `R143 walk budget` (7 checks).
 - **Installer, from the Windows v311 acceptance run** (gate `R143 installer first contact`, 10 checks):
   - the licence page: `license_to_utf16` widened UTF-8 byte by byte (U+2014 EM DASH showed as three characters,
     every Sanskrit line as noise) and kept bare LF, on which an EDIT control does not break. It now decodes
@@ -15,6 +15,9 @@
   - the uninstall script starts with `CREATE_NO_WINDOW`, and shows its own failure in a message box with its log;
   - the uninstaller removes `HKCU\Software\Classes\.sm\OpenWithProgids`, then `.sm`, only when empty.
 - Guard v311 -> v312: ELF and PE 587 identical / 181 refused / 0 DIFFER; refusal messages unchanged.
+- R144 (no compiler change): the margin, measured - the largest statement in the 344 examples and 310 library
+  functions takes 52 steps and 11 terms, the most terms 12; 65536 is reached only by 8,200-16,400 terms. Margin
+  1,260x in steps. The gate now checks every example and library under a budget of 64. Evidence scope rewritten.
 
 ## v311 (Claude, R142) - the check inside expression code generation, its own stack, no delete on a name
 
