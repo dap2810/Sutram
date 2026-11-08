@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-11-08T12:30:56.604330-05:00",
+  "source_commit": "d935506a56190dded437317512ad0721fc87fd2f",
+  "setup_sha256": "2356014dc0e66b1de1dabe3f868e55b7b73b1c3e17ad231802b2dbb5592643d6",
+  "declared_setup_sha256": "2356014dc0e66b1de1dabe3f868e55b7b73b1c3e17ad231802b2dbb5592643d6",
+  "embedded_compiler_sha256": "7ac8347032b6d9f754b4706d48c20f32f1a43f58324e4432d5463751031b6f93",
+  "repository_compiler_sha256": "7ac8347032b6d9f754b4706d48c20f32f1a43f58324e4432d5463751031b6f93",
+  "command": [
+    "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight-current-2026-11-08\\embedded-sutram.exe",
+    "--version"
+  ],
+  "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight-current-2026-11-08",
+  "exit": 0,
+  "stdout": "Sutram 1.0 (v312) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
+  "stderr": "",
+  "embedded_version_number": 312,
+  "required_minimum_version": 313,
+  "may_proceed": false,
+  "installation_attempted": false,
+  "tasks_A_to_D_run": false
+}
