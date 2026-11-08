@@ -21,7 +21,9 @@ v315 is v314 plus (R153-R154):
   wrote it (R153: v314 could delete a user's own desktop link on uninstall); PATH as the text of the one entry it
   added (`PathAdded`; uninstall removes that one entry, not every equal one); the `.sm` default as the value it set
   (`AssociationSet`); and uninstall removes the `Sutram.Source` values it wrote, and each key only when empty (v314
-  removed the whole tree, a verb a user added under it included).
+  removed the whole tree, a verb a user added under it included). A shortcut recorded before v315, without a hash,
+  is kept and never adopted (ChatGPT R220: a link changed only in its description or hotkey passed the old
+  field-by-field test); an upgrade from such a state makes its desktop link under a fresh name.
 
 **Evidence scope for v315.** *The pinned v315 package (the setup committed with these notes) passed the Linux
 gates, the byte-for-byte guard against v314 and the Windows compiler under Wine; it has not been installed, run or

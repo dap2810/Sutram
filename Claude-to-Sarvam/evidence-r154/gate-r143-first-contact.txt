@@ -12,10 +12,11 @@ PASS  on success uninstall removes its own %TEMP%\STMxxxx.tmp folder - only in T
 PASS  R153: one function (Set-OwnedShortcut) decides and records: a link is written only when its name is free or it is this installer's, unchanged since (its bytes have the recorded SHA-256); it is recorded with that hash as it is written; a kept link is not recorded; it is the only .Save() in the engine (5 call sites)
 PASS  R153: DesktopOwned comes from what Set-OwnedShortcut did, at the first free of ten names; unchecked, only an unchanged own link is removed
 PASS  R153: uninstall removes a shortcut only when it is recorded with a hash, is in the Start-menu folder or on the desktop, and its bytes still have that hash - not on a matching target, not on DesktopOwned
+PASS  R154 (ChatGPT R220): a record without a hash (before v315) is not ownership - the link is kept, never adopted on its target, arguments, folder and icon (a changed description or hotkey passed that test)
 PASS  R154: PATH is recorded as the text of the entry this install added (PathAdded), only when it added it or an earlier run did and it is still there; unchecked, that one entry is removed
 PASS  R154: uninstall removes one PATH entry, the one whose text is the recorded PathAdded - not every entry equal after expansion, and nothing on PathOwned
 PASS  R154: the .sm default is recorded as the value set (AssociationSet), carried on only while it is still that value; uninstall clears it only when recorded and still equal
 PASS  R154: uninstall removes the Sutram.Source values it wrote when they are still what it wrote, and each key only when empty - not the whole tree (a verb a user added stays)
 PASS  the desktop checkbox names what it makes ('Create a &desktop shortcut (Sutram IDE)')
 PASS  Sutram-Setup.exe embeds this uninstall-core.ps1
-r143 installer first contact: 20 checks, 0 failed
+r143 installer first contact: 21 checks, 0 failed

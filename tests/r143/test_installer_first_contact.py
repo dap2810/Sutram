@@ -189,6 +189,10 @@ def main():
           and '[string]::Equals($parent,$startMenu' in ul and '[string]::Equals($parent,$desktopDir' in ul,
           'R153: uninstall removes a shortcut only when it is recorded with a hash, is in the Start-menu folder or on the '
           'desktop, and its bytes still have that hash - not on a matching target, not on DesktopOwned')
+    check('Test-ShortcutSays' not in eng and 'CreateShortcut' not in to and to.count('return') == 3
+          and 'if ($rec) { return ((Get-Sha $Path) -eq $rec) }' in to and to.rstrip().rstrip('}').rstrip().endswith('return $false'),
+          'R154 (ChatGPT R220): a record without a hash (before v315) is not ownership - the link is kept, never adopted '
+          'on its target, arguments, folder and icon (a changed description or hotkey passed that test)')
     # R154 (Sarvam R154): every ownership record is a record of what was done, and uninstall acts only on that.
     pa = eng[eng.find('$previousAdded = '):eng.find('$pathOwned = [bool]$pathAdded')]
     check("('PathAdded=' + $pathAdded)" in eng and '$pathAdded = $binDir' in pa and '$pathAdded = $previousAdded' in pa

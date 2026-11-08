@@ -8,9 +8,10 @@ suite: NO-EXPECTATION=4  PASS=327  (331 run)
 Sutram 1.0 (v315) - sampurna sutra
 ```
 
+- **One gate run of three was not clean, and I name it.** After the R220 fix: `R126 kinds` failed once, on a Wine run (PE) of a program that returns its `kosh` parameter. `doc counts` failed with it, because the count did not match. The compiler bytes were the same as in the clean run before. Run alone twice more, `R126` gave 55/0 both times, and the full gates then gave 78/0/1. I take it to be Wine's, but **I did not find its cause** (`evidence-r154/gates-run2-r126-transient.txt`).
 - **Commit:** the one carrying this file (SHA in my chat report). Base: `21267969` (v314 + ROUND-154).
 - **`crash corpus: 227 cases + manifest, 0 failed`.**
-- **Installer, rebuilt** from an empty `--work` folder (the compiler, engine and uninstaller changed). `Sutram-Setup.sha256` = `06eba09b1b0064e854625542d1503e554b688df2b52d8760d0c370bfd50b8021`, `PASS payload v315 = compiler v315`, self-test exit 0 under Wine, gate `R140 package` 7/0. **This replaces R153's `573e5feb…` as the candidate.**
+- **Installer, rebuilt** from an empty `--work` folder (the compiler, engine and uninstaller changed). `Sutram-Setup.sha256` = `c592e8bc7aab7c0404069b79b0947fc450566d6c3d099c61199a31a5ecb37596` (rebuilt again for the R220 shortcut fix; the first R154 push, `308c2161`, carried `06eba09b…`), `PASS payload v315 = compiler v315`, self-test exit 0 under Wine, gate `R140 package` 7/0. **This replaces R153's `573e5feb…` as the candidate.**
 - **THE GUARD, v314 (`21267969`) → v315, 783 programs, compiled the ordinary way before and after, bytes compared:**
   - **Linux ELF: 587 identical, 196 refused identically, 0 DIFFER, 0 new.**
   - **Linux PE: 587 identical, 196 refused identically, 0 DIFFER, 0 new.**
@@ -20,7 +21,7 @@ Sutram 1.0 (v315) - sampurna sutra
 
 **Not done:**
 - **No native Windows run.** Nothing in this round needed one; every installer change below is read and gated, **not run**.
-- **No PowerShell here.** I wrote no new fixture for PATH or the association: a fixture would have to write the real `HKCU\Environment` and `HKCU\Software\Classes`, and I would not hand one over unrun that does that. The checks are structural (gate `R143 installer first contact`, 20 checks).
+- **No PowerShell here.** I wrote no new fixture for PATH or the association: a fixture would have to write the real `HKCU\Environment` and `HKCU\Software\Classes`, and I would not hand one over unrun that does that. The checks are structural (gate `R143 installer first contact`, 21 checks).
 
 ## WS1 - `PathOwned`: now a record of the entry
 
@@ -73,7 +74,7 @@ Sutram 1.0 (v315) - sampurna sutra
 
 | record | v314 | v315 | complies |
 |---|---|---|---|
-| `OwnedShortcuts` | path + hash of the link as written (R153) | unchanged | **yes** |
+| `OwnedShortcuts` | path + hash of the link as written (R153) - **but a record without a hash (before v315) was adopted on a four-field match** (ChatGPT R220) | **a hashless record is no longer ownership:** the link is kept, never adopted | **yes, from this commit** - it was not quite, at R153 |
 | `DesktopOwned` | written from the result of the one function (R153) | unchanged; **nothing deletes on it** - uninstall reads only `OwnedShortcuts` | **yes** - it is informational, and acts on nothing |
 | **`PathOwned`** | **a flag**; uninstall removed every equal entry | **`PathAdded`, the entry's text**; uninstall removes that one entry once; `PathOwned` is derived and unread | **yes, from v315** |
 | **`AssociationOwned`** | **a flag**, re-checked against the current value | **`AssociationSet`, the value**; uninstall removes it only if it still equals that | **yes, from v315** |
@@ -106,6 +107,28 @@ Sutram 1.0 (v315) - sampurna sutra
 - **"87": no.** `docs/LANGUAGE-REFERENCE.md` gives no gate counts. Its one "87" is 87,316, the widest statement's steps, which is still exact.
 - **"The two limits name themselves": not in those words,** but its "Size limits (v314)" paragraph said *"each says which it is"*. The tree's message did say which it was, but had no code. **And it repeated the wrong advice**: *"make the program smaller (split long statements, bring in fewer modules)"*.
 - **Both corrected:** the paragraph is "Size limits (v315)". It says v314's tree limit had no code, gives `E_VRIKSHA_SEEMA`, and says splitting a statement does not help.
+
+## ChatGPT R220 (arrived while I was pushing; it reviewed v314, before this round)
+
+**Most of it this round had already changed:**
+- **R219's class tree** (the whole `Sutram.Source` tree deleted on one matching command): **fixed in v315** (WS2).
+- **PATH's all-matches removal:** **fixed** (WS1). ChatGPT's table is the same as my reading: v314 never added a second equal entry, and it removed every normalized match. It also notes v314 did not merge duplicates the user already had; v315 does not either, and leaves them all alone.
+- **`AssociationOwned`:** now a value record (WS2).
+
+**One hole I had left, and it is right: hashless legacy shortcut adoption.**
+- A record from before v315 has a path and no hash. `Test-OwnedShortcut` then compared target, arguments, working folder and icon.
+- **A link changed only in its description, hotkey or window style passed that test.** It was then re-recorded as owned (so a later uninstall could delete it), or deleted at once when the desktop box was unchecked.
+- **Fixed, in this commit:** a hashless record is not ownership. The link is kept and not recorded. On the desktop a fresh name is used. `Test-ShortcutSays` is gone.
+- **The cost, named:** after an upgrade from a pre-v315 installation, its old links stay - on the desktop beside the new one, and in the Start-menu folder - and uninstall leaves them. **That is a leftover, not a deletion.** No pre-v315 package has been shipped; such states exist only on the test machines.
+- **Gate `R143 installer first contact` (21):** a new check that fails on the R154 engine as first pushed (`evidence-r154/first-contact-on-308c-engine.txt`). **`tests/windows/test_installer_shortcuts.ps1` case 5 is rewritten:** both legacy links - the exact template, and one with only its description and hotkey changed - are kept through reinstall, unchecked reinstall and uninstall. **NOT RUN.**
+
+**Its contract wording I adopt:** what the installer promises is *"remove the unchanged bytes at paths this installation recorded as created or updated"* - not that the hash proves who made the file now there. A user who deletes the link and puts back a byte-identical copy cannot be told apart, and the compare-then-delete race is still there.
+
+**Two small things it names that v315 leaves as they are:**
+- A `.sm` default that was **explicitly empty** before install is removed on uninstall, not put back as empty. Windows treats an empty default and an absent one the same.
+- **The `OpenWithProgids\Sutram.Source` value** is removed without a record of whether it was there before. Only Sutram writes a value under that name.
+
+**Its larger proposal** - an inventory of every resource-changing operation, not of variables named `Owned` - **is right, and is not done in this round.** The four records are closed; a fifth mechanism would not be caught by counting them.
 
 ## Also in v315 - Muse's fold guard (R150)
 

@@ -409,20 +409,15 @@ function Get-OldShortcutRecord([string]$Path) {
     }
     return $null
 }
-function Test-ShortcutSays([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
-    # every field this installer writes, as it would write it now (for a record from before v315, which has no hash)
-    try {
-        $sc = (New-Object -ComObject WScript.Shell).CreateShortcut($Path)
-        return ($sc.TargetPath -eq $Target -and $sc.Arguments -eq $Arguments -and $sc.WorkingDirectory -eq $WorkingDir -and
-                ($sc.IconLocation -replace ',0$','') -eq $Icon)
-    } catch { return $false }
-}
 function Test-OwnedShortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {
-    # true only for a link this installer wrote and nobody has changed since
+    # true only for a link at a path this installer recorded writing, whose bytes are still the ones it recorded.
+    # R154 (ChatGPT R220): a record from before v315 has the path and no hash. v315's first form adopted such a link
+    # when its target, arguments, working folder and icon were what this installer writes - but a link changed only
+    # in its description, hotkey or window style passed that test, was re-recorded as owned, and could be deleted.
+    # Nothing recorded what those bytes were, so a hashless record is not ownership: the link is kept, not adopted.
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
     $rec = Get-OldShortcutRecord $Path
     if ($rec) { return ((Get-Sha $Path) -eq $rec) }
-    if ($null -ne $rec) { return (Test-ShortcutSays $Path $Target $Arguments $WorkingDir $Icon) }
     return $false
 }
 function Set-OwnedShortcut([string]$Path,[string]$Target,[string]$Arguments,[string]$WorkingDir,[string]$Icon) {

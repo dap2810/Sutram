@@ -12,8 +12,9 @@
   entry this install added; uninstall removes that one entry, not every equal one; the installer adds nothing when an
   equal entry is there), `AssociationSet` (the value set, carried only while it is still the default), the
   `Sutram.Source` class removed value by value and key by key only when empty (v314 removed the whole tree), and the
-  shortcuts by their bytes (R153). `PathOwned`, `AssociationOwned` and `DesktopOwned` are still written, derived from
-  the records, and nothing acts on them. Gate `R143 installer first contact` (20).
+  shortcuts by their bytes (R153). A shortcut recorded without a hash (before v315) is not ownership: kept, never
+  adopted on a field-by-field match (ChatGPT R220; gate 21 checks). `PathOwned`, `AssociationOwned` and `DesktopOwned` are still written, derived from
+  the records, and nothing acts on them. Gate `R143 installer first contact` (21).
 - Guard v314 -> v315: ELF and PE 587 identical / 196 refused / 0 DIFFER; refusal messages unchanged.
 
 ## v314 (Claude, R152) - the foreign-function door; --analysis-steps=N; the two limits named; the desktop collision

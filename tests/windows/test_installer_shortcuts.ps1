@@ -10,7 +10,8 @@
 #   3  both usual names taken: both kept, the installer's is "Sutram IDE (Sutram 2).lnk"
 #   4  an empty desktop: "Sutram IDE.lnk" is made and uninstall removes it; the Notepad collision of the v312 run:
 #      the user's kept, the installer's made under the second name and removed by uninstall
-#   5  a record from before v315 (no hash): adopted only when the link says exactly what this installer writes
+#   5  a record from before v315 (no hash): never adopted - kept, and a fresh name used - even when the link says
+#      exactly what this installer writes, and when only its description or hotkey changed (ChatGPT R220)
 #   6  the box unchecked on a reinstall: the installer's unchanged link goes, a changed one stays
 #
 # Written in the Linux container, where PowerShell could not be run: NOT RUN by its author. For the native run:
@@ -20,7 +21,7 @@ $root=Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 function Parse-Engine([string]$Path){$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile($Path,[ref]$t,[ref]$e);if($e.Count){throw ($e|Out-String)};return $a}
 $ast=Parse-Engine (Join-Path $root 'windows\native-installer\install-core.ps1')
 $uast=Parse-Engine (Join-Path $root 'windows\native-installer\uninstall-core.ps1')
-foreach($name in @('Log','Get-Sha','Get-OldShortcutRecord','Test-ShortcutSays','Test-OwnedShortcut','Set-OwnedShortcut','Remove-OwnedShortcut')){
+foreach($name in @('Log','Get-Sha','Get-OldShortcutRecord','Test-OwnedShortcut','Set-OwnedShortcut','Remove-OwnedShortcut')){
     $f=$ast.Find({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq $name},$true)
     if(-not $f){throw ('Missing function '+$name)}
     . ([ScriptBlock]::Create($f.Extent.Text))
@@ -103,14 +104,19 @@ $made=Install-Desktop $c $true; Uninstall $c
 $checks.c4_notepad_kept_ours_removed=((Same $n $nb) -and $made -eq 'Sutram IDE (Sutram).lnk' -and -not [IO.File]::Exists((Join-Path $c.Desktop $made)))
 # 5
 $c=New-Case 'legacy'; $l=Join-Path $c.Desktop 'Sutram IDE.lnk'
-$sc=$shell.CreateShortcut($l); $sc.TargetPath=$c.Gui; $sc.WorkingDirectory=$c.Install; $sc.IconLocation=$c.Icon; $sc.Save()
+$sc=$shell.CreateShortcut($l); $sc.TargetPath=$c.Gui; $sc.WorkingDirectory=$c.Install; $sc.IconLocation=$c.Icon; $sc.Save(); $lb=[IO.File]::ReadAllBytes($l)
 $c.State=@{OwnedShortcuts=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($l)); DesktopOwned='1'; DesktopLink='Sutram IDE.lnk'}
 $made=Install-Desktop $c $true
-$checks.c5_legacy_template_adopted=($made -eq 'Sutram IDE.lnk')
-$c=New-Case 'legacy-changed'; $l=Join-Path $c.Desktop 'Sutram IDE.lnk'; $lb=User-Link $l $c.Gui '--changed'
+$checks.c5_legacy_template_kept_not_adopted=((Same $l $lb) -and $made -eq 'Sutram IDE (Sutram).lnk')
+Uninstall $c
+$checks.c5_legacy_template_survives_uninstall=(Same $l $lb)
+$c=New-Case 'legacy-description'; $l=Join-Path $c.Desktop 'Sutram IDE.lnk'
+$sc=$shell.CreateShortcut($l); $sc.TargetPath=$c.Gui; $sc.WorkingDirectory=$c.Install; $sc.IconLocation=$c.Icon; $sc.Description='my own'; $sc.Hotkey='CTRL+ALT+S'; $sc.Save(); $lb=[IO.File]::ReadAllBytes($l)
 $c.State=@{OwnedShortcuts=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($l)); DesktopOwned='1'; DesktopLink='Sutram IDE.lnk'}
-$made=Install-Desktop $c $true
-$checks.c5_legacy_changed_kept=((Same $l $lb) -and $made -eq 'Sutram IDE (Sutram).lnk')
+[void](Install-Desktop $c $false)
+$checks.c5_legacy_description_kept_when_unchecked=(Same $l $lb)
+$made=Install-Desktop $c $true; Uninstall $c
+$checks.c5_legacy_description_kept_through_reinstall_and_uninstall=((Same $l $lb) -and $made -eq 'Sutram IDE (Sutram).lnk')
 # 6
 $c=New-Case 'unchecked'; $made=Install-Desktop $c $true; [void](Install-Desktop $c $false)
 $checks.c6_unchecked_removes_unchanged=(-not [IO.File]::Exists((Join-Path $c.Desktop $made)))
