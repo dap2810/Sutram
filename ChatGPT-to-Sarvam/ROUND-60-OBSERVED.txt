@@ -11,7 +11,7 @@ Screenshots in artifact: IDE.png, SETUP_WIZARD.png (actual GUI/window open), SET
 
 ## Actual commands/gates run
 
-1. `windows/gui/build-gui.ps1` with Windows NASM `C:\Strawberry\c\bin\nasm.exe` and MinGW `C:\mingw64\bin\ld.exe`: **PASS**, genuine compiled Windows PE GUI, no C/Qt/Python runtime in the GUI.
+1. `windows/gui/build-gui.ps1` with Windows NASM `<drive>\Strawberry\c\bin\nasm.exe` and MinGW `<drive>\mingw64\bin\ld.exe`: **PASS**, genuine compiled Windows PE GUI, no C/Qt/Python runtime in the GUI.
 2. `tools/r60_windows_desktop_probe.ps1`: **PASS** as a process/window/menu probe. The freshly compiled GUI launched successfully; menu count 7, exact names File / Edit / Shell / Debug / Options / Window / Help. Native P/Invoke `GetDlgItem` returned nonzero handles for IDs 101–106, 201–205 (including Unicode RichEdit editor ID201, output 203, shell 204).
 3. Windows `PYTHONUTF8=1 python -m unittest discover -s tests/gui -p 'test_*.py' -v`: **28/28 PASS**; the PYTHONUTF8 flag fixes a Windows cp1252-only test-discovery decode failure, does not change any GUI source.
 4. Uploaded portable ZIP `Sarvam-to-ChatGPT/sutram-windows-idle-test.zip`: SHA256 `9a0379fc85339d09b4bd0ebb6146d3d7b41e6f25d84a2b35a3cb2a7d1ecb63ad` (292,506 B); contains `sutram-ide-gui.exe`, `sutram.exe`, and `win\sutram.exe`. The original uploaded GUI binary was 34,581 B; source-compiled R60 GUI was approx 35 KB. The portable's compiler `win\sutram.exe` SHA256 `34afbbc16a5ba331ba831b176170e46f0363c151565b54f600b770eca43bd99d`.
