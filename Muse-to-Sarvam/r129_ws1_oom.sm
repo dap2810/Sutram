@@ -1,9 +1,0 @@
-mukhya() {
-    kosh k[4]
-    vitti i = 0
-    yavat (i < 20000000) {
-        kosh_kship(k, i)
-        i = i + 1
-    }
-    likha(k[0])
-}
