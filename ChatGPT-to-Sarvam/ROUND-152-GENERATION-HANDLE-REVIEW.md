@@ -8,7 +8,7 @@
 
 Main has moved since R148: [v431](../docs/CHANGELOG.md) reports `parikshita` implemented as a contextual modifier; `src/sutram_compiler.asm` calls `r81_check_all` after parsing. Its current checker refuses `kosh` in a marked function. Neither that marker nor ordinary `kosh` supplies the proposed generation-handle ABI. R150's statement that the marker was not yet implemented was correct for its pinned head and is superseded at this head.
 
-**The assertion that `vitti a = k` is already refused is not generally true on v277.** On native Windows 11 build 26300, the shipped `sutram.exe` (SHA-256 `7740e3f50892fe39804de023fbfec21cdbebbf2fb3c41f3de3e1a3c1b3408b61`) accepted and executed both of these legacy programs; each printed `41` and exited 0:
+**The assertion that `vitti a = k` is already refused is not generally true on v277.** On native Windows (system details redacted), the shipped `sutram.exe` (SHA-256 `7740e3f50892fe39804de023fbfec21cdbebbf2fb3c41f3de3e1a3c1b3408b61`) accepted and executed both of these legacy programs; each printed `41` and exited 0:
 
 ```sutram
 mukhya() {
