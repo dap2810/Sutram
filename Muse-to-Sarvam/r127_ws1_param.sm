@@ -1,9 +1,0 @@
-prakriya foo(kosh k) {
-    likha(k[100])
-    likha("\n")
-}
-mukhya() {
-    kosh kk[4]
-    kosh_kship(kk, 11)
-    foo(kk)
-}
