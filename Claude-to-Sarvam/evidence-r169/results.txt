@@ -1,0 +1,65 @@
+# R169: every run. Sutram 1.0 (v315) - sampurna sutra, Linux, empty environment. probe.py: VmRSS / VmHWM / VmSize from /proc/<pid>/status and Anonymous from smaps_rollup, read while the program waits on grahan() at each numbered point; ms = the work since the previous point
+
+== w1
+run 1 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.56 ms | 2: RSS 195332 anon 195332 HWM 195332 size 1048808 +102.3 ms | 3: RSS 195332 anon 195332 HWM 195332 size 1048808 +0.04 ms | 4: RSS 195332 anon 195332 HWM 195332 size 1048808 +0.05 ms
+run 2 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.0 ms | 2: RSS 195328 anon 195328 HWM 195328 size 1048808 +90.45 ms | 3: RSS 195328 anon 195328 HWM 195328 size 1048808 +0.11 ms | 4: RSS 195328 anon 195328 HWM 195328 size 1048808 +0.0 ms
+run 3 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.0 ms | 2: RSS 195328 anon 195328 HWM 195328 size 1048808 +72.12 ms | 3: RSS 195328 anon 195328 HWM 195328 size 1048808 +0.09 ms | 4: RSS 195328 anon 195328 HWM 195328 size 1048808 +0.03 ms
+
+== w2
+run 1 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.02 ms | 2: RSS 195332 anon 195332 HWM 195332 size 1048808 +98.34 ms | 3: RSS 195332 anon 195332 HWM 195332 size 1048808 +30.57 ms
+run 2 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.01 ms | 2: RSS 195328 anon 195328 HWM 195328 size 1048808 +74.06 ms | 3: RSS 195328 anon 195328 HWM 195328 size 1048808 +30.63 ms
+run 3 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.01 ms | 2: RSS 195332 anon 195332 HWM 195332 size 1048808 +74.7 ms | 3: RSS 195332 anon 195332 HWM 195332 size 1048808 +29.98 ms
+run 4 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.01 ms | 2: RSS 195332 anon 195332 HWM 195332 size 1048808 +74.29 ms | 3: RSS 195332 anon 195332 HWM 195332 size 1048808 +28.44 ms
+run 5 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.0 ms | 2: RSS 195328 anon 195328 HWM 195328 size 1048808 +73.34 ms | 3: RSS 195328 anon 195328 HWM 195328 size 1048808 +29.17 ms
+
+== w2n
+run 1 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.01 ms | 2: RSS 195324 anon 195324 HWM 195324 size 1048808 +70.15 ms | 3: RSS 390636 anon 390636 HWM 390636 size 1048808 +93.0 ms
+run 2 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.01 ms | 2: RSS 195324 anon 195324 HWM 195324 size 1048808 +67.13 ms | 3: RSS 390636 anon 390636 HWM 390636 size 1048808 +71.24 ms
+run 3 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.01 ms | 2: RSS 195328 anon 195328 HWM 195328 size 1048808 +76.08 ms | 3: RSS 390640 anon 390640 HWM 390640 size 1048808 +76.22 ms
+run 4 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.01 ms | 2: RSS 195328 anon 195328 HWM 195328 size 1048808 +69.43 ms | 3: RSS 390640 anon 390640 HWM 390640 size 1048808 +70.57 ms
+run 5 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.01 ms | 2: RSS 195324 anon 195324 HWM 195324 size 1048808 +63.79 ms | 3: RSS 390636 anon 390636 HWM 390636 size 1048808 +63.69 ms
+
+== w3
+run 1 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.01 ms | 2: RSS 15676 anon 15676 HWM 15676 size 1114344 +8.26 ms | 3: RSS 15676 anon 15676 HWM 15676 size 1114344 +0.16 ms
+run 2 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.0 ms | 2: RSS 15680 anon 15680 HWM 15680 size 1114344 +8.4 ms | 3: RSS 15680 anon 15680 HWM 15680 size 1114344 +0.07 ms
+run 3 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.0 ms | 2: RSS 15676 anon 15676 HWM 15676 size 1114344 +8.15 ms | 3: RSS 15676 anon 15676 HWM 15676 size 1114344 +0.07 ms
+
+== w3b
+run 1 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.01 ms | 2: RSS 15680 anon 15680 HWM 15680 size 1114344 +7.22 ms | 3: RSS 15680 anon 15680 HWM 15680 size 1114344 +0.18 ms | 4: RSS 31340 anon 31340 HWM 31340 size 1179880 +9.17 ms | 5: RSS 31340 anon 31340 HWM 31340 size 1179880 +0.08 ms
+run 2 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.0 ms | 2: RSS 15680 anon 15680 HWM 15680 size 1114344 +7.92 ms | 3: RSS 15680 anon 15680 HWM 15680 size 1114344 +0.08 ms | 4: RSS 31340 anon 31340 HWM 31340 size 1179880 +8.62 ms | 5: RSS 31340 anon 31340 HWM 31340 size 1179880 +0.09 ms
+run 3 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.0 ms | 2: RSS 15680 anon 15680 HWM 15680 size 1114344 +7.93 ms | 3: RSS 15680 anon 15680 HWM 15680 size 1114344 +0.09 ms | 4: RSS 31340 anon 31340 HWM 31340 size 1179880 +6.9 ms | 5: RSS 31340 anon 31340 HWM 31340 size 1179880 +0.07 ms
+
+== w3n
+run 1 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.01 ms | 2: RSS 15680 anon 15680 HWM 15680 size 1114344 +7.6 ms
+run 2 exit 0: 1: RSS 16 anon 16 HWM 16 size 232 +0.0 ms | 2: RSS 15680 anon 15680 HWM 15680 size 1114344 +7.77 ms
+run 3 exit 0: 1: RSS 12 anon 12 HWM 12 size 232 +0.0 ms | 2: RSS 15676 anon 15676 HWM 15676 size 1114344 +6.3 ms
+
+== w4_4096
+run 1 exit 0: 0: RSS 24 anon 16 HWM 24 size 240 +0.01 ms | 11: RSS 60 anon 52 HWM 60 size 1048816 +0.08 ms | 12: RSS 60 anon 52 HWM 60 size 1048816 +0.03 ms | 21: RSS 92 anon 84 HWM 92 size 1048816 +0.04 ms | 22: RSS 92 anon 84 HWM 92 size 1048816 +0.02 ms | 31: RSS 124 anon 116 HWM 124 size 1048816 +0.05 ms | 32: RSS 124 anon 116 HWM 124 size 1048816 +0.02 ms | 41: RSS 156 anon 148 HWM 156 size 1048816 +0.04 ms | 42: RSS 156 anon 148 HWM 156 size 1048816 +0.02 ms | 51: RSS 188 anon 180 HWM 188 size 1048816 +0.03 ms | 52: RSS 188 anon 180 HWM 188 size 1048816 +0.02 ms
+run 2 exit 0: 0: RSS 24 anon 16 HWM 24 size 240 +0.0 ms | 11: RSS 60 anon 52 HWM 60 size 1048816 +0.0 ms | 12: RSS 60 anon 52 HWM 60 size 1048816 +0.0 ms | 21: RSS 92 anon 84 HWM 92 size 1048816 +0.0 ms | 22: RSS 92 anon 84 HWM 92 size 1048816 +0.0 ms | 31: RSS 124 anon 116 HWM 124 size 1048816 +0.0 ms | 32: RSS 124 anon 116 HWM 124 size 1048816 +0.0 ms | 41: RSS 156 anon 148 HWM 156 size 1048816 +0.0 ms | 42: RSS 156 anon 148 HWM 156 size 1048816 +0.0 ms | 51: RSS 188 anon 180 HWM 188 size 1048816 +0.0 ms | 52: RSS 188 anon 180 HWM 188 size 1048816 +0.0 ms
+run 3 exit 0: 0: RSS 24 anon 16 HWM 24 size 240 +0.02 ms | 11: RSS 60 anon 52 HWM 60 size 1048816 +0.05 ms | 12: RSS 60 anon 52 HWM 60 size 1048816 +0.02 ms | 21: RSS 92 anon 84 HWM 92 size 1048816 +0.04 ms | 22: RSS 92 anon 84 HWM 92 size 1048816 +0.02 ms | 31: RSS 124 anon 116 HWM 124 size 1048816 +0.03 ms | 32: RSS 124 anon 116 HWM 124 size 1048816 +0.02 ms | 41: RSS 156 anon 148 HWM 156 size 1048816 +0.03 ms | 42: RSS 156 anon 148 HWM 156 size 1048816 +0.02 ms | 51: RSS 188 anon 180 HWM 188 size 1048816 +0.03 ms | 52: RSS 188 anon 180 HWM 188 size 1048816 +0.02 ms
+
+== w4_4097
+run 1 exit 0: 0: RSS 20 anon 12 HWM 20 size 240 +0.01 ms | 11: RSS 92 anon 84 HWM 92 size 1114352 +0.07 ms | 12: RSS 92 anon 84 HWM 92 size 1114352 +0.04 ms | 21: RSS 160 anon 152 HWM 160 size 1179888 +0.07 ms | 22: RSS 160 anon 152 HWM 160 size 1179888 +0.02 ms | 31: RSS 228 anon 220 HWM 228 size 1245424 +0.04 ms | 32: RSS 228 anon 220 HWM 228 size 1245424 +0.02 ms | 41: RSS 296 anon 288 HWM 296 size 1310960 +0.05 ms | 42: RSS 296 anon 288 HWM 296 size 1310960 +0.02 ms | 51: RSS 364 anon 356 HWM 364 size 1376496 +0.05 ms | 52: RSS 364 anon 356 HWM 364 size 1376496 +0.02 ms
+run 2 exit 0: 0: RSS 20 anon 12 HWM 20 size 240 +0.0 ms | 11: RSS 92 anon 84 HWM 92 size 1114352 +0.04 ms | 12: RSS 92 anon 84 HWM 92 size 1114352 +0.02 ms | 21: RSS 160 anon 152 HWM 160 size 1179888 +0.04 ms | 22: RSS 160 anon 152 HWM 160 size 1179888 +0.02 ms | 31: RSS 228 anon 220 HWM 228 size 1245424 +0.04 ms | 32: RSS 228 anon 220 HWM 228 size 1245424 +0.02 ms | 41: RSS 296 anon 288 HWM 296 size 1310960 +0.04 ms | 42: RSS 296 anon 288 HWM 296 size 1310960 +0.02 ms | 51: RSS 364 anon 356 HWM 364 size 1376496 +0.04 ms | 52: RSS 364 anon 356 HWM 364 size 1376496 +0.02 ms
+run 3 exit 0: 0: RSS 20 anon 12 HWM 20 size 240 +0.0 ms | 11: RSS 92 anon 84 HWM 92 size 1114352 +0.04 ms | 12: RSS 92 anon 84 HWM 92 size 1114352 +0.02 ms | 21: RSS 160 anon 152 HWM 160 size 1179888 +0.04 ms | 22: RSS 160 anon 152 HWM 160 size 1179888 +0.02 ms | 31: RSS 228 anon 220 HWM 228 size 1245424 +0.03 ms | 32: RSS 228 anon 220 HWM 228 size 1245424 +0.02 ms | 41: RSS 296 anon 288 HWM 296 size 1310960 +0.04 ms | 42: RSS 296 anon 288 HWM 296 size 1310960 +0.02 ms | 51: RSS 364 anon 356 HWM 364 size 1376496 +0.04 ms | 52: RSS 364 anon 356 HWM 364 size 1376496 +0.02 ms
+
+== w4_7500
+run 1 exit 0: 0: RSS 24 anon 16 HWM 24 size 240 +0.01 ms | 11: RSS 120 anon 112 HWM 120 size 1114352 +0.19 ms | 12: RSS 120 anon 112 HWM 120 size 1114352 +0.03 ms | 21: RSS 212 anon 204 HWM 212 size 1179888 +0.13 ms | 22: RSS 212 anon 204 HWM 212 size 1179888 +0.03 ms | 31: RSS 304 anon 296 HWM 304 size 1245424 +0.1 ms | 32: RSS 304 anon 296 HWM 304 size 1245424 +0.02 ms | 41: RSS 396 anon 388 HWM 396 size 1310960 +0.09 ms | 42: RSS 396 anon 388 HWM 396 size 1310960 +0.03 ms | 51: RSS 488 anon 480 HWM 488 size 1376496 +0.08 ms | 52: RSS 488 anon 480 HWM 488 size 1376496 +0.04 ms
+run 2 exit 0: 0: RSS 20 anon 12 HWM 20 size 240 +0.02 ms | 11: RSS 116 anon 108 HWM 116 size 1114352 +0.09 ms | 12: RSS 116 anon 108 HWM 116 size 1114352 +0.02 ms | 21: RSS 208 anon 200 HWM 208 size 1179888 +0.08 ms | 22: RSS 208 anon 200 HWM 208 size 1179888 +0.02 ms | 31: RSS 300 anon 292 HWM 300 size 1245424 +0.08 ms | 32: RSS 300 anon 292 HWM 300 size 1245424 +0.03 ms | 41: RSS 392 anon 384 HWM 392 size 1310960 +0.08 ms | 42: RSS 392 anon 384 HWM 392 size 1310960 +0.02 ms | 51: RSS 484 anon 476 HWM 484 size 1376496 +0.08 ms | 52: RSS 484 anon 476 HWM 484 size 1376496 +0.02 ms
+run 3 exit 0: 0: RSS 24 anon 16 HWM 24 size 240 +0.0 ms | 11: RSS 120 anon 112 HWM 120 size 1114352 +0.09 ms | 12: RSS 120 anon 112 HWM 120 size 1114352 +0.02 ms | 21: RSS 212 anon 204 HWM 212 size 1179888 +0.08 ms | 22: RSS 212 anon 204 HWM 212 size 1179888 +0.02 ms | 31: RSS 304 anon 296 HWM 304 size 1245424 +0.09 ms | 32: RSS 304 anon 296 HWM 304 size 1245424 +0.02 ms | 41: RSS 396 anon 388 HWM 396 size 1310960 +0.08 ms | 42: RSS 396 anon 388 HWM 396 size 1310960 +0.02 ms | 51: RSS 488 anon 480 HWM 488 size 1376496 +0.08 ms | 52: RSS 488 anon 480 HWM 488 size 1376496 +0.02 ms
+
+== w4_8960
+run 1 exit 0: 0: RSS 24 anon 16 HWM 24 size 240 +0.01 ms | 11: RSS 132 anon 124 HWM 132 size 1114352 +0.14 ms | 12: RSS 132 anon 124 HWM 132 size 1114352 +0.05 ms | 21: RSS 236 anon 228 HWM 236 size 1179888 +0.1 ms | 22: RSS 236 anon 228 HWM 236 size 1179888 +0.02 ms | 31: RSS 340 anon 332 HWM 340 size 1245424 +0.08 ms | 32: RSS 340 anon 332 HWM 340 size 1245424 +0.02 ms | 41: RSS 444 anon 436 HWM 444 size 1310960 +0.09 ms | 42: RSS 444 anon 436 HWM 444 size 1310960 +0.02 ms | 51: RSS 548 anon 540 HWM 548 size 1376496 +0.09 ms | 52: RSS 548 anon 540 HWM 548 size 1376496 +0.02 ms
+run 2 exit 0: 0: RSS 24 anon 16 HWM 24 size 240 +0.03 ms | 11: RSS 132 anon 124 HWM 132 size 1114352 +0.08 ms | 12: RSS 132 anon 124 HWM 132 size 1114352 +0.02 ms | 21: RSS 236 anon 228 HWM 236 size 1179888 +0.08 ms | 22: RSS 236 anon 228 HWM 236 size 1179888 +0.02 ms | 31: RSS 340 anon 332 HWM 340 size 1245424 +0.08 ms | 32: RSS 340 anon 332 HWM 340 size 1245424 +0.02 ms | 41: RSS 444 anon 436 HWM 444 size 1310960 +0.09 ms | 42: RSS 444 anon 436 HWM 444 size 1310960 +0.02 ms | 51: RSS 548 anon 540 HWM 548 size 1376496 +0.11 ms | 52: RSS 548 anon 540 HWM 548 size 1376496 +0.02 ms
+run 3 exit 0: 0: RSS 20 anon 12 HWM 20 size 240 +0.03 ms | 11: RSS 128 anon 120 HWM 128 size 1114352 +0.09 ms | 12: RSS 128 anon 120 HWM 128 size 1114352 +0.02 ms | 21: RSS 232 anon 224 HWM 232 size 1179888 +0.08 ms | 22: RSS 232 anon 224 HWM 232 size 1179888 +0.02 ms | 31: RSS 336 anon 328 HWM 336 size 1245424 +0.13 ms | 32: RSS 336 anon 328 HWM 336 size 1245424 +0.02 ms | 41: RSS 440 anon 432 HWM 440 size 1310960 +0.08 ms | 42: RSS 440 anon 432 HWM 440 size 1310960 +0.02 ms | 51: RSS 544 anon 536 HWM 544 size 1376496 +0.08 ms | 52: RSS 544 anon 536 HWM 544 size 1376496 +0.02 ms
+
+== parimana() after each block (w4p_*: the point number, then the bytes)
+w4p_4096: 0 11 32832 12 21 65664 22 31 98496 32 41 131328 42 51 164160 52 
+w4p_4097: 0 11 98368 12 21 196736 22 31 295104 32 41 393472 42 51 491840 52 
+w4p_7500: 0 11 98368 12 21 196736 22 31 295104 32 41 393472 42 51 491840 52 
+w4p_8960: 0 11 163904 12 21 327808 22 31 491712 32 41 655616 42 51 819520 52 
+
+== w5: 40,000 blocks, each growing a kosh to 4,096 elements (env -i /usr/bin/time; its own ~300 KB is in the figure)
+163840000
+peak 1748864 KB, 1.27 s

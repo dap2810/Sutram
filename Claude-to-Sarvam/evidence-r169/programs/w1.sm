@@ -1,0 +1,17 @@
+prakriya ruk(n) {
+    likha(n)
+    vitti x = grahan()
+    nivartanam x
+}
+mukhya() {
+    vitti t = ruk(1)
+    mandapa {
+        vitti p = nirmmita(200000000)
+        chakra i = 0 tak 48827 {
+            p[i * 512] = 1
+        }
+        t = ruk(2)
+    }
+    t = ruk(3)
+    t = ruk(4)
+}

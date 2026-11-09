@@ -1,0 +1,13 @@
+mukhya() {
+    vitti s = 0
+    chakra j = 1 tak 40000 {
+        mandapa {
+            kosh k[1]
+            chakra i = 1 tak 4096 {
+                kosh_kship(k, i)
+            }
+            s = s + k[4095]
+        }
+    }
+    likha(s)
+}

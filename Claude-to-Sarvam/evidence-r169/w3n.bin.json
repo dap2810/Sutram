@@ -1,0 +1,68 @@
+[
+ {
+  "run": 1,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.01,
+    "VmSize": 232,
+    "VmHWM": 16,
+    "VmRSS": 16,
+    "Anon": 16
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 7.6,
+    "VmSize": 1114344,
+    "VmHWM": 15680,
+    "VmRSS": 15680,
+    "Anon": 15680
+   }
+  ]
+ },
+ {
+  "run": 2,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.0,
+    "VmSize": 232,
+    "VmHWM": 16,
+    "VmRSS": 16,
+    "Anon": 16
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 7.77,
+    "VmSize": 1114344,
+    "VmHWM": 15680,
+    "VmRSS": 15680,
+    "Anon": 15680
+   }
+  ]
+ },
+ {
+  "run": 3,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.0,
+    "VmSize": 232,
+    "VmHWM": 12,
+    "VmRSS": 12,
+    "Anon": 12
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 6.3,
+    "VmSize": 1114344,
+    "VmHWM": 15676,
+    "VmRSS": 15676,
+    "Anon": 15676
+   }
+  ]
+ }
+]

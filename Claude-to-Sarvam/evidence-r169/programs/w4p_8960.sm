@@ -1,0 +1,53 @@
+prakriya ruk(n) {
+    likha(n)
+    vitti x = grahan()
+    nivartanam x
+}
+mukhya() {
+    vitti t = ruk(0)
+    mandapa {
+        kosh k[1]
+        chakra i = 1 tak 8960 {
+            kosh_kship(k, i)
+        }
+        t = ruk(11)
+        likha(parimana())
+    }
+    t = ruk(12)
+    mandapa {
+        kosh k[1]
+        chakra i = 1 tak 8960 {
+            kosh_kship(k, i)
+        }
+        t = ruk(21)
+        likha(parimana())
+    }
+    t = ruk(22)
+    mandapa {
+        kosh k[1]
+        chakra i = 1 tak 8960 {
+            kosh_kship(k, i)
+        }
+        t = ruk(31)
+        likha(parimana())
+    }
+    t = ruk(32)
+    mandapa {
+        kosh k[1]
+        chakra i = 1 tak 8960 {
+            kosh_kship(k, i)
+        }
+        t = ruk(41)
+        likha(parimana())
+    }
+    t = ruk(42)
+    mandapa {
+        kosh k[1]
+        chakra i = 1 tak 8960 {
+            kosh_kship(k, i)
+        }
+        t = ruk(51)
+        likha(parimana())
+    }
+    t = ruk(52)
+}

@@ -1,0 +1,284 @@
+[
+ {
+  "run": 1,
+  "exit": 0,
+  "points": [
+   {
+    "point": "0",
+    "ms_since_previous": 0.01,
+    "VmSize": 240,
+    "VmHWM": 20,
+    "VmRSS": 20,
+    "Anon": 12
+   },
+   {
+    "point": "11",
+    "ms_since_previous": 0.07,
+    "VmSize": 1114352,
+    "VmHWM": 92,
+    "VmRSS": 92,
+    "Anon": 84
+   },
+   {
+    "point": "12",
+    "ms_since_previous": 0.04,
+    "VmSize": 1114352,
+    "VmHWM": 92,
+    "VmRSS": 92,
+    "Anon": 84
+   },
+   {
+    "point": "21",
+    "ms_since_previous": 0.07,
+    "VmSize": 1179888,
+    "VmHWM": 160,
+    "VmRSS": 160,
+    "Anon": 152
+   },
+   {
+    "point": "22",
+    "ms_since_previous": 0.02,
+    "VmSize": 1179888,
+    "VmHWM": 160,
+    "VmRSS": 160,
+    "Anon": 152
+   },
+   {
+    "point": "31",
+    "ms_since_previous": 0.04,
+    "VmSize": 1245424,
+    "VmHWM": 228,
+    "VmRSS": 228,
+    "Anon": 220
+   },
+   {
+    "point": "32",
+    "ms_since_previous": 0.02,
+    "VmSize": 1245424,
+    "VmHWM": 228,
+    "VmRSS": 228,
+    "Anon": 220
+   },
+   {
+    "point": "41",
+    "ms_since_previous": 0.05,
+    "VmSize": 1310960,
+    "VmHWM": 296,
+    "VmRSS": 296,
+    "Anon": 288
+   },
+   {
+    "point": "42",
+    "ms_since_previous": 0.02,
+    "VmSize": 1310960,
+    "VmHWM": 296,
+    "VmRSS": 296,
+    "Anon": 288
+   },
+   {
+    "point": "51",
+    "ms_since_previous": 0.05,
+    "VmSize": 1376496,
+    "VmHWM": 364,
+    "VmRSS": 364,
+    "Anon": 356
+   },
+   {
+    "point": "52",
+    "ms_since_previous": 0.02,
+    "VmSize": 1376496,
+    "VmHWM": 364,
+    "VmRSS": 364,
+    "Anon": 356
+   }
+  ]
+ },
+ {
+  "run": 2,
+  "exit": 0,
+  "points": [
+   {
+    "point": "0",
+    "ms_since_previous": 0.0,
+    "VmSize": 240,
+    "VmHWM": 20,
+    "VmRSS": 20,
+    "Anon": 12
+   },
+   {
+    "point": "11",
+    "ms_since_previous": 0.04,
+    "VmSize": 1114352,
+    "VmHWM": 92,
+    "VmRSS": 92,
+    "Anon": 84
+   },
+   {
+    "point": "12",
+    "ms_since_previous": 0.02,
+    "VmSize": 1114352,
+    "VmHWM": 92,
+    "VmRSS": 92,
+    "Anon": 84
+   },
+   {
+    "point": "21",
+    "ms_since_previous": 0.04,
+    "VmSize": 1179888,
+    "VmHWM": 160,
+    "VmRSS": 160,
+    "Anon": 152
+   },
+   {
+    "point": "22",
+    "ms_since_previous": 0.02,
+    "VmSize": 1179888,
+    "VmHWM": 160,
+    "VmRSS": 160,
+    "Anon": 152
+   },
+   {
+    "point": "31",
+    "ms_since_previous": 0.04,
+    "VmSize": 1245424,
+    "VmHWM": 228,
+    "VmRSS": 228,
+    "Anon": 220
+   },
+   {
+    "point": "32",
+    "ms_since_previous": 0.02,
+    "VmSize": 1245424,
+    "VmHWM": 228,
+    "VmRSS": 228,
+    "Anon": 220
+   },
+   {
+    "point": "41",
+    "ms_since_previous": 0.04,
+    "VmSize": 1310960,
+    "VmHWM": 296,
+    "VmRSS": 296,
+    "Anon": 288
+   },
+   {
+    "point": "42",
+    "ms_since_previous": 0.02,
+    "VmSize": 1310960,
+    "VmHWM": 296,
+    "VmRSS": 296,
+    "Anon": 288
+   },
+   {
+    "point": "51",
+    "ms_since_previous": 0.04,
+    "VmSize": 1376496,
+    "VmHWM": 364,
+    "VmRSS": 364,
+    "Anon": 356
+   },
+   {
+    "point": "52",
+    "ms_since_previous": 0.02,
+    "VmSize": 1376496,
+    "VmHWM": 364,
+    "VmRSS": 364,
+    "Anon": 356
+   }
+  ]
+ },
+ {
+  "run": 3,
+  "exit": 0,
+  "points": [
+   {
+    "point": "0",
+    "ms_since_previous": 0.0,
+    "VmSize": 240,
+    "VmHWM": 20,
+    "VmRSS": 20,
+    "Anon": 12
+   },
+   {
+    "point": "11",
+    "ms_since_previous": 0.04,
+    "VmSize": 1114352,
+    "VmHWM": 92,
+    "VmRSS": 92,
+    "Anon": 84
+   },
+   {
+    "point": "12",
+    "ms_since_previous": 0.02,
+    "VmSize": 1114352,
+    "VmHWM": 92,
+    "VmRSS": 92,
+    "Anon": 84
+   },
+   {
+    "point": "21",
+    "ms_since_previous": 0.04,
+    "VmSize": 1179888,
+    "VmHWM": 160,
+    "VmRSS": 160,
+    "Anon": 152
+   },
+   {
+    "point": "22",
+    "ms_since_previous": 0.02,
+    "VmSize": 1179888,
+    "VmHWM": 160,
+    "VmRSS": 160,
+    "Anon": 152
+   },
+   {
+    "point": "31",
+    "ms_since_previous": 0.03,
+    "VmSize": 1245424,
+    "VmHWM": 228,
+    "VmRSS": 228,
+    "Anon": 220
+   },
+   {
+    "point": "32",
+    "ms_since_previous": 0.02,
+    "VmSize": 1245424,
+    "VmHWM": 228,
+    "VmRSS": 228,
+    "Anon": 220
+   },
+   {
+    "point": "41",
+    "ms_since_previous": 0.04,
+    "VmSize": 1310960,
+    "VmHWM": 296,
+    "VmRSS": 296,
+    "Anon": 288
+   },
+   {
+    "point": "42",
+    "ms_since_previous": 0.02,
+    "VmSize": 1310960,
+    "VmHWM": 296,
+    "VmRSS": 296,
+    "Anon": 288
+   },
+   {
+    "point": "51",
+    "ms_since_previous": 0.04,
+    "VmSize": 1376496,
+    "VmHWM": 364,
+    "VmRSS": 364,
+    "Anon": 356
+   },
+   {
+    "point": "52",
+    "ms_since_previous": 0.02,
+    "VmSize": 1376496,
+    "VmHWM": 364,
+    "VmRSS": 364,
+    "Anon": 356
+   }
+  ]
+ }
+]

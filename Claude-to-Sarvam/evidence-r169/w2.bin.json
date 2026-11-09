@@ -1,0 +1,152 @@
+[
+ {
+  "run": 1,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.02,
+    "VmSize": 232,
+    "VmHWM": 16,
+    "VmRSS": 16,
+    "Anon": 16
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 98.34,
+    "VmSize": 1048808,
+    "VmHWM": 195332,
+    "VmRSS": 195332,
+    "Anon": 195332
+   },
+   {
+    "point": "3",
+    "ms_since_previous": 30.57,
+    "VmSize": 1048808,
+    "VmHWM": 195332,
+    "VmRSS": 195332,
+    "Anon": 195332
+   }
+  ]
+ },
+ {
+  "run": 2,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.01,
+    "VmSize": 232,
+    "VmHWM": 12,
+    "VmRSS": 12,
+    "Anon": 12
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 74.06,
+    "VmSize": 1048808,
+    "VmHWM": 195328,
+    "VmRSS": 195328,
+    "Anon": 195328
+   },
+   {
+    "point": "3",
+    "ms_since_previous": 30.63,
+    "VmSize": 1048808,
+    "VmHWM": 195328,
+    "VmRSS": 195328,
+    "Anon": 195328
+   }
+  ]
+ },
+ {
+  "run": 3,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.01,
+    "VmSize": 232,
+    "VmHWM": 16,
+    "VmRSS": 16,
+    "Anon": 16
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 74.7,
+    "VmSize": 1048808,
+    "VmHWM": 195332,
+    "VmRSS": 195332,
+    "Anon": 195332
+   },
+   {
+    "point": "3",
+    "ms_since_previous": 29.98,
+    "VmSize": 1048808,
+    "VmHWM": 195332,
+    "VmRSS": 195332,
+    "Anon": 195332
+   }
+  ]
+ },
+ {
+  "run": 4,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.01,
+    "VmSize": 232,
+    "VmHWM": 16,
+    "VmRSS": 16,
+    "Anon": 16
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 74.29,
+    "VmSize": 1048808,
+    "VmHWM": 195332,
+    "VmRSS": 195332,
+    "Anon": 195332
+   },
+   {
+    "point": "3",
+    "ms_since_previous": 28.44,
+    "VmSize": 1048808,
+    "VmHWM": 195332,
+    "VmRSS": 195332,
+    "Anon": 195332
+   }
+  ]
+ },
+ {
+  "run": 5,
+  "exit": 0,
+  "points": [
+   {
+    "point": "1",
+    "ms_since_previous": 0.0,
+    "VmSize": 232,
+    "VmHWM": 12,
+    "VmRSS": 12,
+    "Anon": 12
+   },
+   {
+    "point": "2",
+    "ms_since_previous": 73.34,
+    "VmSize": 1048808,
+    "VmHWM": 195328,
+    "VmRSS": 195328,
+    "Anon": 195328
+   },
+   {
+    "point": "3",
+    "ms_since_previous": 29.17,
+    "VmSize": 1048808,
+    "VmHWM": 195328,
+    "VmRSS": 195328,
+    "Anon": 195328
+   }
+  ]
+ }
+]
