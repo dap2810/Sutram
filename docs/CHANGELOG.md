@@ -24,6 +24,13 @@
   output (`$TMPDIR/sutram-gate-failures/`); R126's Wine check prints stdout and stderr apart on a failure.
 - **R155 follow-up (ChatGPT R221 follow-up):** `PathValueCreated` is carried from the old record only when the old
   PATH entry was kept; when it is appended again (same text, after the user removed it) it records what this run did.
+- **R162 (the installer, ChatGPT R223):** nothing changed before what decides it is read. The lock beside the
+  target is made with `CreateNew` and marked; a file already there is read first, and only a stale Sutram lock is
+  removed (up to R161 any file at that path was deleted when the lock closed, even by a run that then refused).
+  `-VerifyOnly` returns before the lock and the committed-transaction cleanup. Finishing an interrupted run replaces an
+  existing uninstaller only when its bytes are ones an installer wrote (the uninstaller's hash is journaled before it
+  is copied). Gate `R143 installer first contact` (28); fixture `tests/windows/test_installer_lock_file.ps1`
+  (NOT RUN). Five more reference sentences corrected (ChatGPT's 13-17) and added to `R158 doc currency`.
 - **R161 (documents, a gate, the uninstaller):** the nineteen reference claims Muse found wrong (R152-R154), each
   checked against the code: fifteen corrected in the reference and the memory model (the memory model's historical
   sentences keep their text and gain a "Superseded (R161)" note); two were already right in R156's box (1, 14); two

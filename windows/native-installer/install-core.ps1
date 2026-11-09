@@ -90,15 +90,57 @@ function Move-Into([string]$From,[string]$To) {
     if (-not [IO.Directory]::Exists($dir)) { [void][IO.Directory]::CreateDirectory($dir) }
     [IO.File]::Move($From,$To)
 }
+# R162 (ChatGPT R223 A): the lock is a file this installer creates and marks, and only such a file is taken. Up to
+# R161 it was opened with OpenOrCreate and DeleteOnClose: a file a user had at that path was opened and deleted when
+# the lock closed - by a run that then refused, too - and nothing read it first. Now the lock is made with CreateNew
+# (it must not exist yet), still DeleteOnClose, and a marker is written into it. A file already at the path is read
+# before anything is decided: held by another process -> another installer or uninstaller is working; a stale Sutram
+# lock (the marker, or empty - up to R161 nothing was written into it; a lock is left only if the machine stopped)
+# -> removed, after it was read, and the lock made again; anything else -> left as it is, and the run stops.
+function Open-SutramLock([string]$Path) {
+    $mark = [Text.Encoding]::ASCII.GetBytes("Sutram installer lock`r`n")
+    for ($try = 0; $try -lt 3; $try++) {
+        try {
+            $fs = [IO.FileStream]::new($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
+            $fs.Write($mark,0,$mark.Length)
+            $fs.Flush()
+            return $fs
+        } catch {
+            if (-not [IO.File]::Exists($Path)) {
+                if ($try -lt 2) { continue }
+                throw ('The installer lock could not be made: ' + $Path + ' - ' + $_.Exception.Message)
+            }
+        }
+        $len = -1
+        $head = $null
+        try {
+            $held = [IO.FileStream]::new($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::None)
+        } catch {
+            throw ('Another Sutram installer or uninstaller is working on this folder (its lock is ' + $Path + '). Let it finish, then run this one again.')
+        }
+        try {
+            $len = $held.Length
+            $head = New-Object byte[] ([int][Math]::Min([long]$len,[long]64))
+            [void]$held.Read($head,0,$head.Length)
+        } finally { $held.Dispose() }
+        $stale = ($len -eq 0) -or (($len -eq $mark.Length) -and ([Convert]::ToBase64String($head) -eq [Convert]::ToBase64String($mark)))
+        if (-not $stale) {
+            throw ('A file that is not a Sutram lock is at ' + $Path + ' (' + $len + ' bytes). It was not changed. Move it elsewhere, then run this again.')
+        }
+        [IO.File]::Delete($Path)
+    }
+    throw ('The installer lock could not be taken: ' + $Path + '. Run this again.')
+}
 # Read-Journal(path) -> what an earlier run recorded: whether it committed, and every hash it staged or published
 # for each file (those files are this installer's own, whatever version wrote them).
 function Read-Journal([string]$Path) {
-    $j = @{ Exists = $false; Committed = $false; Known = @{} }
+    $j = @{ Exists = $false; Committed = $false; Known = @{}; Uninstaller = @() }
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $j }
     $j.Exists = $true
     foreach ($line in [IO.File]::ReadAllLines($Path)) {
         $f = $line.Split("`t")
-        if ($f[0] -eq 'COMMITTED') { $j.Committed = $true; $j.Known = @{} }
+        if ($f[0] -eq 'COMMITTED') { $j.Committed = $true; $j.Known = @{}; $j.Uninstaller = @() }
+        elseif ($f[0] -eq 'UNINSTALLER' -and $f.Length -ge 2) { $j.Uninstaller += $f[1].ToUpperInvariant() }
         elseif ($f[0] -eq 'BEGIN') { $j.Committed = $false }
         elseif (($f[0] -eq 'STAGED' -or $f[0] -eq 'PUBLISHED') -and $f.Length -ge 3) {
             if (-not $j.Known.ContainsKey($f[1])) { $j.Known[$f[1]] = @() }
@@ -500,6 +542,30 @@ try {
         if ($unsafe -and [string]::Equals($InstallDir,[IO.Path]::GetFullPath($unsafe).TrimEnd('\'),[StringComparison]::OrdinalIgnoreCase)) { throw "Unsafe installation folder: $InstallDir" }
     }
 
+    # R162 (ChatGPT R223 B): verification changes nothing. Up to R161 -VerifyOnly returned only after the lock (a file
+    # made and deleted beside the target) and the cleanup of a committed transaction folder; now it returns here,
+    # having read only the embedded payload, in a private folder under TEMP that it removes.
+    if ($VerifyOnly) {
+        $vstage = Join-Path $env:TEMP ('Sutram-Payload-' + [guid]::NewGuid().ToString('N'))
+        try {
+            [void][IO.Directory]::CreateDirectory($vstage)
+            Log 'Extracting embedded payload (verify only).'
+            Expand-Archive -LiteralPath $PayloadZip -DestinationPath $vstage -Force
+            Verify-Payload $vstage
+            foreach ($need in @('sutram-ide-gui.exe','win\sutram.exe','bin\sutram.exe')) {
+                if (-not (Test-Path -LiteralPath (Join-Path $vstage $need) -PathType Leaf)) { throw ('Payload is missing ' + $need + '.') }
+            }
+            [void](Invoke-SutramSelfTest (Join-Path $vstage 'bin\sutram.exe') '--version' 'pre-install --version')
+            [void](Invoke-SutramSelfTest (Join-Path $vstage 'bin\sutram.exe') '--help' 'pre-install --help')
+        } finally {
+            $vFull = [IO.Path]::GetFullPath($vstage)
+            $tFull = [IO.Path]::GetFullPath($env:TEMP).TrimEnd('\')
+            if ($vFull.StartsWith($tFull + '\Sutram-Payload-',[StringComparison]::OrdinalIgnoreCase)) { Remove-Item -LiteralPath $vFull -Recurse -Force -ErrorAction SilentlyContinue }
+        }
+        Log 'VERIFY ONLY PASS: payload hashes and compiler checks; installation not performed.'
+        exit 0
+    }
+
     # R137 (ChatGPT R207 follow-up I2) and R141 (its R208 follow-up): one installer at a time, from before ANY
     # installation state is read - the registration, other installations, the state file, the pending record, the
     # journal - until the process ends. Up to R140 the state file and the pending record were read just before
@@ -511,8 +577,8 @@ try {
     $lockPath = Join-Path $lockParent ([IO.Path]::GetFileName($InstallDir) + '.sutram-lock')
     Assert-NoReparsePath $lockPath
     try {
-        $script:txnLock = New-Object IO.FileStream($lockPath,[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
-    } catch { throw ('Another Sutram installer or uninstaller is working on ' + $InstallDir + '. Let it finish, then run this one again.') }
+        $script:txnLock = Open-SutramLock $lockPath
+    } catch { throw $_.Exception.Message }
 
     $unKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram'
     $registered = Get-ItemProperty -LiteralPath $unKey -ErrorAction SilentlyContinue
@@ -575,13 +641,26 @@ try {
     }
     # R133: after a stopped installation the metadata is between two states (the marker written, the state not yet;
     # the uninstaller replaced, its hash not yet recorded); the pending record says whose they are.
+    $oldUninstaller=Join-Path $InstallDir 'Sutram-Uninstall.exe'
     if ((Test-SutramMarker $marker) -and -not $pending) {
         if (-not (Test-Path -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -PathType Leaf) -or
             -not $oldState.ContainsKey('UninstallerSHA256')) { throw 'Existing installation ownership metadata is incomplete.' }
-        $oldUninstaller=Join-Path $InstallDir 'Sutram-Uninstall.exe'
         if ((Test-Path -LiteralPath $oldUninstaller -PathType Leaf) -and
             (Get-FileHash -LiteralPath $oldUninstaller -Algorithm SHA256).Hash -ne $oldState['UninstallerSHA256']) {
             throw 'The existing uninstaller has been modified; refusing to overwrite it.'
+        }
+    }
+    # R162 (ChatGPT R223 C): finishing an interrupted installation is no licence to replace an uninstaller someone
+    # changed. Up to R161 the check above was skipped when a run was pending, and the copy below overwrote whatever
+    # was there. Now, pending or not, an existing uninstaller is replaced only when its bytes are ones an installer
+    # wrote: the previous installation's (UninstallerSHA256), the one the interrupted run journaled (UNINSTALLER),
+    # or this setup's own.
+    if ($pending -and (Test-Path -LiteralPath $oldUninstaller -PathType Leaf)) {
+        $haveU = Get-Sha $oldUninstaller
+        $knownU = @((Get-Sha $SetupExePath)) + @($earlier.Uninstaller)
+        if ($oldState.ContainsKey('UninstallerSHA256') -and $oldState['UninstallerSHA256']) { $knownU += $oldState['UninstallerSHA256'].ToUpperInvariant() }
+        if ($knownU -notcontains $haveU) {
+            throw ('The existing uninstaller is not one an installer wrote (' + $oldUninstaller + '); refusing to overwrite it. Move it elsewhere, then run this installer again.')
         }
     }
 
@@ -600,10 +679,6 @@ try {
         $v = Invoke-SutramSelfTest $testExe '--version' 'pre-install --version'
         $h = Invoke-SutramSelfTest $testExe '--help' 'pre-install --help'
 
-        if ($VerifyOnly) {
-            Log 'VERIFY ONLY PASS: payload hashes and compiler checks; installation not performed.'
-            exit 0
-        }
         # Refuse an upgrade that would replace user edits or newly conflicting files.
         # R133: a file is this installer's own - safe to replace - if it is what the previous installation's manifest
         # says, what an installation that stopped part-way was writing (payload.pending.sha256), or byte for byte
@@ -746,6 +821,9 @@ try {
         Write-Durable $previousManifest ([IO.File]::ReadAllText((Join-Path $stage 'payload.manifest.sha256'))) $false
         Journal "FINALIZE"
         Log 'Copying the uninstaller.'
+        # R162 (ChatGPT R223 C): the hash of the uninstaller this run writes is journaled first, so a run that finishes
+        # an interrupted one can tell that copy from one a user changed since.
+        Journal ("UNINSTALLER`t" + (Get-Sha $SetupExePath))
         [IO.File]::Copy($SetupExePath,(Join-Path $InstallDir 'Sutram-Uninstall.exe'),$true)
         Log 'Writing the installation marker.'
         [IO.File]::WriteAllText($marker,'Sutram Windows installation' + [Environment]::NewLine,([Text.UTF8Encoding]::new($false)))

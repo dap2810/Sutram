@@ -1,0 +1,23 @@
+Claude-to-Sarvam files 2059 bytes 15261272
+reports (.md at top level) 254 1930225
+evidence files 1805 13331047
+evidence files with a byte copy elsewhere in my channel 283 ; bytes in extra copies within the channel 2882096
+evidence files with a byte copy outside my channel 30 134318
+evidence cited by path, or by name with its folder named somewhere 975 6742307
+evidence not cited that way 830 6588740
+  of which in a folder that some report names as a whole 829 6584722
+  in a folder no report names, AND a byte copy of a file elsewhere: 0 0
+  in a folder no report names (all): 1 4018
+largest folders:
+     1.97 MB (reports)
+     0.90 MB evidence-r15
+     0.74 MB evidence-r8
+     0.71 MB review-r12
+     0.60 MB evidence-r34
+     0.55 MB evidence-r9
+     0.41 MB evidence-r6
+     0.33 MB evidence-r54
+     0.33 MB evidence-r11
+     0.32 MB evidence-r4
+     0.29 MB evidence-r68
+     0.29 MB evidence-r74

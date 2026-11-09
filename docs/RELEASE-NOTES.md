@@ -14,6 +14,10 @@ run on Windows; it is a candidate.** The last package run there is v312's (the e
 
 ## Status: what v315 closes, and what it does not (R140-R158)
 
+**The installer reads before it changes anything (R162):** a file of yours at `<folder>.sutram-lock` is no longer
+deleted (the installer stops and names it); verifying the package changes nothing; and finishing an interrupted
+installation will not replace an uninstaller someone changed. Not run on Windows.
+
 **The reference is corrected (R161):** nineteen claims the code did not support - among them that a program can
 bring in only two modules, that `s + k` is `E_VARTANI_CAT`, the empty-`kosh` messages, and a `kosh`'s size in
 `parimana()` - now say what the compiler does, and a gate holds them. **The uninstaller can be run again** if its

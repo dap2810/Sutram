@@ -1,4 +1,4 @@
-# From PR #68 (Windows, 664ff188/7ab8c439), taken into main in R142. One change: main's preflight begins with
+# From PR #68 (Windows, 664ff188/7ab8c439), taken into main in R142. R162: the lock statement is Open-SutramLock now. One change: main's preflight begins with
 # '$lockParent =' (the lock's folder), so that is accepted as its first statement too.
 # Run the actual ownership/lock preflight in child PowerShell processes.
 # Registry/discovery reads are stubs: only isolated workspace files are changed.
@@ -22,7 +22,7 @@ $work=Join-Path $root ('build\lock-fixture-'+[guid]::NewGuid().ToString('N'))
 $install=Join-Path $work 'installed'
 [void][IO.Directory]::CreateDirectory($install)
 $utf8=[Text.UTF8Encoding]::new($false)
-$definitions=foreach($name in @('Assert-NoReparsePath','Read-State','Read-Journal')){
+$definitions=foreach($name in @('Assert-NoReparsePath','Read-State','Read-Journal','Open-SutramLock')){
     $f=$ast.Find({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq $name},$true)
     if(-not $f){throw ('Missing '+$name)}
     $f.Extent.Text.Replace('function Read-State','function Read-StateImpl')
@@ -50,7 +50,7 @@ if($Barrier){
 }
 '@
 # Pause immediately before the real lock-acquisition statement to reproduce the reviewed interleaving.
-$lockTry=@($items|Where-Object {$_ -is [Management.Automation.Language.TryStatementAst] -and $_.Extent.Text.Contains('$script:txnLock = New-Object')})
+$lockTry=@($items|Where-Object {$_ -is [Management.Automation.Language.TryStatementAst] -and $_.Extent.Text.Contains('$script:txnLock = Open-SutramLock')})
 if($lockTry.Count -ne 1){throw 'Lock acquisition was not located'}
 $preflight=$preflight.Replace($lockTry[0].Extent.Text,($barrier+"`n"+$lockTry[0].Extent.Text))
 $tail=@'

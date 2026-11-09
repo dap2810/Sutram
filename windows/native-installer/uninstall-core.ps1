@@ -63,6 +63,47 @@ function Remove-UserPathEntryOnce([string]$Entry,[bool]$DeleteIfEmpty) {
     if ($removed) { Broadcast-EnvironmentChange }
     return $removed
 }
+# R162 (ChatGPT R223 A): the lock is a file this installer creates and marks, and only such a file is taken. Up to
+# R161 it was opened with OpenOrCreate and DeleteOnClose: a file a user had at that path was opened and deleted when
+# the lock closed - by a run that then refused, too - and nothing read it first. Now the lock is made with CreateNew
+# (it must not exist yet), still DeleteOnClose, and a marker is written into it. A file already at the path is read
+# before anything is decided: held by another process -> another installer or uninstaller is working; a stale Sutram
+# lock (the marker, or empty - up to R161 nothing was written into it; a lock is left only if the machine stopped)
+# -> removed, after it was read, and the lock made again; anything else -> left as it is, and the run stops.
+function Open-SutramLock([string]$Path) {
+    $mark = [Text.Encoding]::ASCII.GetBytes("Sutram installer lock`r`n")
+    for ($try = 0; $try -lt 3; $try++) {
+        try {
+            $fs = [IO.FileStream]::new($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
+            $fs.Write($mark,0,$mark.Length)
+            $fs.Flush()
+            return $fs
+        } catch {
+            if (-not [IO.File]::Exists($Path)) {
+                if ($try -lt 2) { continue }
+                throw ('The installer lock could not be made: ' + $Path + ' - ' + $_.Exception.Message)
+            }
+        }
+        $len = -1
+        $head = $null
+        try {
+            $held = [IO.FileStream]::new($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::None)
+        } catch {
+            throw ('Another Sutram installer or uninstaller is working on this folder (its lock is ' + $Path + '). Let it finish, then run this one again.')
+        }
+        try {
+            $len = $held.Length
+            $head = New-Object byte[] ([int][Math]::Min([long]$len,[long]64))
+            [void]$held.Read($head,0,$head.Length)
+        } finally { $held.Dispose() }
+        $stale = ($len -eq 0) -or (($len -eq $mark.Length) -and ([Convert]::ToBase64String($head) -eq [Convert]::ToBase64String($mark)))
+        if (-not $stale) {
+            throw ('A file that is not a Sutram lock is at ' + $Path + ' (' + $len + ' bytes). It was not changed. Move it elsewhere, then run this again.')
+        }
+        [IO.File]::Delete($Path)
+    }
+    throw ('The installer lock could not be taken: ' + $Path + '. Run this again.')
+}
 function Read-State([string]$Path) {
     $state = @{}
     if (Test-Path -LiteralPath $Path -PathType Leaf) {
@@ -145,8 +186,8 @@ try {
     if (-not (Test-SutramMarker (Join-Path $InstallDir '.sutram-install'))) { throw 'This folder is not marked as a valid Sutram installation.' }
     # R137: not while an installer holds the folder's lock (install-core.ps1); held until this process ends.
     try {
-        $script:lock = New-Object IO.FileStream(($InstallDir + '.sutram-lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
-    } catch { throw ('A Sutram installer is working on ' + $InstallDir + '. Let it finish, then uninstall.') }
+        $script:lock = Open-SutramLock ($InstallDir + '.sutram-lock')
+    } catch { throw $_.Exception.Message }
     $state=Read-State (Join-Path $InstallDir 'install-state.ini')
     $expectedSelf=Join-Path $InstallDir 'Sutram-Uninstall.exe'
     if (-not [string]::Equals([IO.Path]::GetFullPath($SelfPath),$expectedSelf,[StringComparison]::OrdinalIgnoreCase)) {

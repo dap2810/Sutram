@@ -300,6 +300,12 @@ REF_FORBID = [
     (17, MM, r"updates the named variable's pointer\.(?! \*\*Superseded \(R161\))"),
     (18, MM, r'every other alias is updated when a local\s+kosh grows\.(?! \*\*Superseded \(R161\))'),
     (19, MM, r"mapping is never released\.(?! \*\*Superseded \(R161\))"),
+    # R162: ChatGPT R223's further items (its 13-17; its 18, the "v29" header, went in R161)
+    (20, LR, r'it reads the shorter length - check the lengths yourself'),
+    (21, LR, r'Windows target \(name decides\)'),
+    (22, LR, r'so a shape above 200,000 is possible in principle'),
+    (23, LR, r'\*\*No limit on how many:\*\*'),
+    (24, LR, r'it waits for a stable `kosh` descriptor'),
 ]
 
 

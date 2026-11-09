@@ -256,6 +256,27 @@ def main():
               "Remove-Item -LiteralPath (Join-Path $InstallDir '.sutram-install')")),
           'R161: the Settings entry, the manifest, the state and the marker are removed only after the uninstaller has '
           'deleted itself - a retry after that loop runs out still finds a valid installation')
+    # R162 (ChatGPT R223 A-C): nothing is changed before what decides it has been read.
+    lk = [func(c, 'Open-SutramLock') for c in (eng, ucode)]
+    check(lk[0] and lk[0].strip() == lk[1].strip() and '[IO.FileMode]::CreateNew' in lk[0] and 'OpenOrCreate' not in eng
+          and 'OpenOrCreate' not in ucode and '$fs.Write($mark' in lk[0]
+          and 0 < lk[0].find('[void]$held.Read($head') < lk[0].find('[IO.File]::Delete($Path)')
+          and 'A file that is not a Sutram lock' in lk[0] and '$script:txnLock = Open-SutramLock $lockPath' in eng
+          and "Open-SutramLock ($InstallDir + '.sutram-lock')" in ucode,
+          'R162 A: the lock is made with CreateNew and marked; a file already at its path is read first, and only a '
+          'stale Sutram lock (the marker, or empty) is removed - anything else stops the run unchanged (install and '
+          'uninstall share one function)')
+    iv = eng.find('if ($VerifyOnly) {')
+    check(eng.count('if ($VerifyOnly) {') == 1 and 0 < iv < eng.find('$script:txnLock = Open-SutramLock')
+          and iv < eng.find('Remove-Item -LiteralPath $txnDir -Recurse') and iv < eng.find('$oldState = Read-State'),
+          'R162 B: -VerifyOnly returns before the lock, the committed-transaction cleanup and any installation read')
+    pend = eng[eng.find('if ($pending -and (Test-Path -LiteralPath $oldUninstaller -PathType Leaf)) {'):eng.find("$stage = Join-Path $env:TEMP ('Sutram-Payload-'")]
+    rj = func(eng, 'Read-Journal')
+    check('$knownU -notcontains $haveU' in pend and '$earlier.Uninstaller' in pend and "$oldState['UninstallerSHA256']" in pend
+          and "elseif ($f[0] -eq 'UNINSTALLER'" in rj
+          and 0 < eng.find('Journal ("UNINSTALLER`t"') < eng.find("[IO.File]::Copy($SetupExePath,(Join-Path $InstallDir 'Sutram-Uninstall.exe'),$true)"),
+          'R162 C: finishing an interrupted run replaces an existing uninstaller only when its bytes are ones an installer '
+          'wrote (the previous state, the journaled copy, or this setup); the copy is journaled before it is made')
     ck = re.search(r'b_ckdesk:\s+u16 "([^"]*)"', wiz)
     check(ck and 'Sutram IDE' in ck.group(1) and 'Terminal' not in ck.group(1),
           f'the desktop checkbox names what it makes ({ck.group(1) if ck else "?"!r})')

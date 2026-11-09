@@ -1,0 +1,29 @@
+PASS  the licence the wizard embeds: 1376 units, as the reference
+PASS  the licence with CR LF line ends: 1376 units, as the reference
+PASS  edge cases: 2/3/4-byte, a surrogate pair, overlong, a stray continuation, a CR alone, truncated: 20 units, as the reference
+PASS  a blob longer than the buffer: 4094 units, as the reference
+PASS  the reference agrees with Python's UTF-8 codec on the licence (CR LF line ends)
+PASS  the first line is "Sutram — The Complete Thread", then CR LF (U+2014 EM DASH, not three characters)
+PASS  the uninstall script is started with CREATE_NO_WINDOW (no PowerShell window), as the install is
+PASS  a failed uninstall says so in a message box, with its log - there is no console to see it in
+PASS  uninstall removes .sm\OpenWithProgids, then .sm, only when the key has no value and no subkey left
+PASS  the licence instruction label is 52 px high for (2, 2) lines (at its width and at 85% of it, 25 px a line of the 19 px body font) and ends above the licence box (62+52 <= 118), which ends above the radios
+PASS  on success uninstall removes its own %TEMP%\STMxxxx.tmp folder - only in TEMP, with the wizard's name, holding exactly its script and log, by exact paths and a non-recursive delete; a failure keeps it
+PASS  R153: one function (Set-OwnedShortcut) decides and records: a link is written only when its name is free or it is this installer's, unchanged since (its bytes have the recorded SHA-256); it is recorded with that hash as it is written; a kept link is not recorded; it is the only .Save() in the engine (5 call sites)
+PASS  R153: DesktopOwned comes from what Set-OwnedShortcut did, at the first free of ten names; unchecked, only an unchanged own link is removed
+PASS  R153: uninstall removes a shortcut only when it is recorded with a hash, is in the Start-menu folder or on the desktop, and its bytes still have that hash - not on a matching target, not on DesktopOwned
+PASS  R154 (ChatGPT R220): a record without a hash (before v315) is not ownership - the link is kept, never adopted on its target, arguments, folder and icon (a changed description or hotkey passed that test)
+PASS  R154: PATH is recorded as the text of the entry this install added (PathAdded), only when it added it or an earlier run did and it is still there; unchecked, that one entry is removed
+PASS  R154: uninstall removes one PATH entry, the one whose text is the recorded PathAdded - not every entry equal after expansion, and nothing on PathOwned
+PASS  R154: the .sm default is recorded as the value set (AssociationSet), carried on only while it is still that value; uninstall clears it only when recorded and still equal
+PASS  R154: uninstall removes the Sutram.Source values it wrote when they are still what it wrote, and each key only when empty - not the whole tree (a verb a user added stays)
+PASS  R155: no registry key that may exist is made with New-Item -Force (which deletes it, values and subkeys, first) - only Sutram's own uninstall key; .sm and its OpenWithProgids are opened, and the default is read before anything is set
+PASS  R155: PATH is changed by one entry and one separator - the other entries' text, empty entries and the value's kind stay; a PATH value the installer made (PathValueCreated - carried only when the old entry was kept, else what this run did) is removed when nothing else is left in it; install and uninstall share one removal function
+PASS  R155: what .sm's default was before (absent or empty) is recorded, and uninstall puts that back
+PASS  R161: the Settings entry, the manifest, the state and the marker are removed only after the uninstaller has deleted itself - a retry after that loop runs out still finds a valid installation
+FAIL  R162 A: the lock is made with CreateNew and marked; a file already at its path is read first, and only a stale Sutram lock (the marker, or empty) is removed - anything else stops the run unchanged (install and uninstall share one function)
+FAIL  R162 B: -VerifyOnly returns before the lock, the committed-transaction cleanup and any installation read
+FAIL  R162 C: finishing an interrupted run replaces an existing uninstaller only when its bytes are ones an installer wrote (the previous state, the journaled copy, or this setup); the copy is journaled before it is made
+PASS  the desktop checkbox names what it makes ('Create a &desktop shortcut (Sutram IDE)')
+PASS  Sutram-Setup.exe embeds this uninstall-core.ps1
+r143 installer first contact: 28 checks, 3 failed

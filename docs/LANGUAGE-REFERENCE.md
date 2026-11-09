@@ -1,4 +1,4 @@
-> **Status at compiler v315, 9 November 2026 (R161) — read this before the page below.**
+> **Status at compiler v315, 9 November 2026 (R162) — read this before the page below.**
 >
 > **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **79 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
@@ -34,7 +34,7 @@ mukhya()
 
 ```sh
 sutram hello.sm hello.bin && ./hello.bin     # Linux target
-sutram hello.sm hello.exe                     # Windows target (name decides)
+sutram hello.sm hello.exe                     # Windows target (on Linux the name decides; the Windows compiler always makes a Windows program)
 ```
 
 
@@ -194,7 +194,7 @@ warning naming the new one** (§4b).
 | `akshar_laghu` (was `char_lower`) | lowercase a character |
 | `sankhya_yog` | four 32-bit **float** lanes in raw memory, added: `sankhya_yog(dst, a, b)` (`addps`). No Sutram value holds 32-bit floats - `sankhya_bindu`, their dot-product sibling, is withdrawn (v295) |
 | `sankhya_gunan` | four 32-bit **float** lanes in raw memory, multiplied: `sankhya_gunan(dst, a, b)` (`mulps`); the same limit |
-| `sankhya_bindu` (was `sankhya_dot`) | **withdrawn (v295, R115):** refused when compiled - `E_PRATYAHRITA`, *"pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate"* (withdrawn: its result was wrong; awaiting repair). v292 read four 32-bit floats from each argument; v293 multiplied 8-byte cells as integers, which is wrong for a `kosh dasham`. **For two `kosh dasham`: `yoj sankhyiki`, then `bindu_gunan(a, b)`** (a `dasham`; it reads the shorter length - check the lengths yourself if they must match). |
+| `sankhya_bindu` (was `sankhya_dot`) | **withdrawn (v295, R115):** refused when compiled - `E_PRATYAHRITA`, *"pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate"* (withdrawn: its result was wrong; awaiting repair). v292 read four 32-bit floats from each argument; v293 multiplied 8-byte cells as integers, which is wrong for a `kosh dasham`. **For two `kosh dasham`: `yoj sankhyiki`, then `bindu_gunan(a, b)`** (a `dasham`; the two lengths must be equal - unequal lengths stop the program with `E_AKARA_ASAMYA`, as in section 3a; until R162 this cell said it read the shorter length, which v295 did). |
 | `jala` (was `netsock`) | create a socket |
 | `jala_bandh` (was `netbind`) | bind a socket |
 | `jala_shru` (was `netlisten`) | listen |
@@ -705,7 +705,7 @@ crashed. 500 levels, and the tree's deepest recursion (single digits), are far i
 
 | command | purpose |
 |---|---|
-| `sutram in.sm out.bin` | compile to a Linux executable |
+| `sutram in.sm out.bin` | compile to a Linux executable (with the Linux compiler: a name ending `.exe` gives a Windows one; the Windows compiler, `sutram.exe`, makes a Windows program whatever the name) |
 | `sutram in.sm out.exe` | compile to a Windows executable |
 | `sutram --lang gujarati in.sm out.exe` | compile with a language pack |
 | `sutram -i` | interactive shell (REPL) |
@@ -989,7 +989,7 @@ a[0]=99 k[0]=99
 a[0]=7 k[0]=7
 ```
 
-- **No limit on how many:** a small `kosh` is 32 bytes of the arena and its elements (20,000 koshes: one `mmap`).
+- **No count limit any more:** up to v301 each `kosh` took a 64 MiB region; from v302 a small `kosh` is 32 bytes of the arena and its elements (20,000 koshes: one `mmap`). How many a program can make is still bounded by memory and by the compiler's own capacities.
   Up to v301 each `kosh` was a 64 MiB region of its own, so a program under a 1 GiB address limit could make about
   15, and a second name parted from the `kosh` at 4,194,305 numbers; up to v283 it parted whenever something had
   been allocated after the `kosh`.
@@ -1068,9 +1068,10 @@ named themselves, but the tree limit had no code):
   names) or raise `--analysis-steps`, and that the syntax tree's limit (`E_VRIKSHA_SEEMA`) is separate. There is no source line: the
   check sees the statement after parsing, where positions are not kept (only `--debug` keeps them).
 - **How many steps a statement takes** depends on its shape, not only its terms: `z + z + ...` takes 4 a term
-  plus a few, `(z < z) + ...` 8. The widest statement the tree holds takes exactly 87,316 (`--analysis-steps=87315`
-  refuses it, `87316` compiles it); no measured statement reaches the default, though the bound for a statement
-  the tree holds is 349,521, so a shape above 200,000 is possible in principle (raise the flag for it). The largest statement in
+  plus a few, `(z < z) + ...` 8. The widest measured shape - one `z + z + ...` of 21,829 terms, the most the tree holds of that shape (`tests/r143/test_walk_budget.py`) - takes exactly 87,316 (`--analysis-steps=87315`
+  refuses it, `87316` compiles it); no measured statement reaches the default. 349,521 is an upper bound for any
+  statement the tree holds, not a statement anyone has built: whether a shape above 200,000 can be written is not
+  established (if one is, raise the flag for it). The largest statement in
   the example programs (`examples/*.sm` and `examples/*/*.sm`: 344 files, the set gate `R143 walk budget` compiles)
   and the 310 library functions takes 52 steps (`lib/brihat.smlib`, line 174; measured at v312, R144).
 - **History:** v311 200,000 fixed; v312 65,536 (16,384 terms of `x + x + ...` compile and 16,385 refuse - measured natively on Windows against the
@@ -1438,8 +1439,10 @@ a kosh of 1000 8288
 
 **One number, moving (`examples/318`):** `parimana()` is the arena and the `kosh` regions together, so it answers
 "how much am I holding" the same way for a program and for a test. A block's `nirmmita` comes back at its end; a
-`kosh`'s bytes do not, even one made in the block - its storage is kept for the program's life (§16; reclaiming
-it waits for a stable `kosh` descriptor, so that a growing `kosh` cannot leave a second name behind).
+`kosh`'s bytes do not, even one made in the block - its storage is kept for the program's life (§16). The descriptor is stable from v302, so a second name can no
+longer be left behind; what is still not done is giving a `kosh`'s storage back when its block ends - the check above reads
+its header after the block, so the header must stay. (Until R162 this sentence said reclaiming waited for a stable
+descriptor, which v302 delivered.)
 
 ### A budget: `mandapa parimita N` (v285)
 
