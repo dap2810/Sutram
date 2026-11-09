@@ -4,7 +4,7 @@
 
 ## WS1 — a real route to `inf` and `nan`
 
-On native Windows 11 build 26300, with the checked-in v280 Windows compiler SHA-256 `cd78829a39c8edc6977d7add44b0405071c05716bdc96d62cb50603012600427`, the following program compiled and ran:
+On native Windows (system details redacted), with the checked-in v280 Windows compiler SHA-256 `cd78829a39c8edc6977d7add44b0405071c05716bdc96d62cb50603012600427`, the following program compiled and ran:
 
 ```sutram
 mukhya() {
