@@ -225,11 +225,6 @@ try {
             }
         }
     }
-    $unKey='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram'
-    $registered=Get-ItemProperty -LiteralPath $unKey -ErrorAction SilentlyContinue
-    if ($registered -and $registered.InstallLocation -eq $InstallDir) {
-        Remove-Item -LiteralPath $unKey -Recurse -Force
-    }
     Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.manifest.sha256')
     # R133: an installation that stopped part-way left the payload it was installing, and perhaps unfinished copies.
     Remove-ManifestFiles $InstallDir (Join-Path $InstallDir 'payload.pending.sha256')
@@ -243,9 +238,6 @@ try {
     # they are the user's only copy of that installation, so uninstall leaves that folder and says where it is.
     $txnDir = $InstallDir + '.sutram-transaction'
     if (Test-Path -LiteralPath $txnDir -PathType Container) { Log ('Left in place (a stopped installation''s journal and backups): ' + $txnDir) }
-    Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -Force -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath (Join-Path $InstallDir 'install-state.ini') -Force -ErrorAction SilentlyContinue
-    Remove-Item -LiteralPath (Join-Path $InstallDir '.sutram-install') -Force -ErrorAction SilentlyContinue
 
     # The native launcher exits after starting this script. Delete only its
     # exact, hash-verified image, after Windows releases the executable mapping.
@@ -257,7 +249,19 @@ try {
             break
         } catch { Start-Sleep -Milliseconds 100 }
     }
-    if (-not $removed) { throw 'Uninstaller is still in use; close it and retry removal.' }
+    # R161 (ChatGPT R221): what a retry needs - the Settings entry, the manifest, the state with the uninstaller's hash,
+    # the marker - is removed only now that the uninstaller itself is gone. Before R161 they went first, so a retry
+    # after this loop ran out found 'not a valid Sutram installation' and no Settings entry. Every step above is safe
+    # to run again: each removes only what is still there and still matches its record.
+    if (-not $removed) { throw ('Uninstaller is still in use; close it and run uninstall again (Settings > Apps > Sutram, or ' + $expectedSelf + ').') }
+    $unKey='HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sutram'
+    $registered=Get-ItemProperty -LiteralPath $unKey -ErrorAction SilentlyContinue
+    if ($registered -and $registered.InstallLocation -eq $InstallDir) {
+        Remove-Item -LiteralPath $unKey -Recurse -Force
+    }
+    Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256') -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $InstallDir 'install-state.ini') -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath (Join-Path $InstallDir '.sutram-install') -Force -ErrorAction SilentlyContinue
     $installLog=Join-Path $InstallDir 'install.log'
     if ($state.ContainsKey('InstallLogSHA256') -and (Test-Path -LiteralPath $installLog -PathType Leaf) -and
         (Get-FileHash -LiteralPath $installLog -Algorithm SHA256).Hash -eq $state['InstallLogSHA256']) {

@@ -24,6 +24,14 @@
   output (`$TMPDIR/sutram-gate-failures/`); R126's Wine check prints stdout and stderr apart on a failure.
 - **R155 follow-up (ChatGPT R221 follow-up):** `PathValueCreated` is carried from the old record only when the old
   PATH entry was kept; when it is appended again (same text, after the user removed it) it records what this run did.
+- **R161 (documents, a gate, the uninstaller):** the nineteen reference claims Muse found wrong (R152-R154), each
+  checked against the code: fifteen corrected in the reference and the memory model (the memory model's historical
+  sentences keep their text and gain a "Superseded (R161)" note); two were already right in R156's box (1, 14); two
+  are true and stay, with their evidence (8: the crash was run in R152; 15: `likh` is refused through
+  `.pp_writemem`, R74). None needed a compiler change. Gate `R158 doc currency` gains a seventh check,
+  `reference`, which runs the compiler where a claim is measurable. The uninstaller keeps the Settings entry, the
+  manifest, the state and the marker until it has deleted itself, so a retry after the self-delete loop runs out
+  works (ChatGPT R221). `AGENTS.md` records that cited evidence stays and history is not rewritten.
 - **R157-R158 (documents and a gate):** the English and Sanskrit books have a memory chapter (19: `kosh` beside
   `mala`, `mandapa` with a measured number, `parimana()`, `mandapa parimita`, slices with `E_KOSH_VIBHAG` and
   `E_VIBHAG_ANKA`, running out of memory, what the language does not have); chapter 14 is retitled (it said "New

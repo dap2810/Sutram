@@ -16,6 +16,17 @@ checks it; do not rely on the gate to remember what you forgot - it catches a mi
 does not exist, a book example that does not run, a flag the compiler refuses; it does not catch a paragraph that is
 now false. (The owner's standing instruction: *"The docs should be up to date as we progress."* R158.)
 
+**Evidence stays, and so does the history (decided by Sarvam, R161).** The repository is large because every claim
+in it is backed by evidence - most of it from running each candidate on a second platform. A file a report names, a
+script made, or a wildcard in a report covers is part of the record: if the record says "the guard showed 587
+identical" and the guard's output is gone, the record is a claim without evidence. **Cited evidence is not deleted.**
+A file that is a byte-identical copy of one that stays may go, with a manifest of what went and where the kept copy
+is. **History is not rewritten.** Rewriting it would shrink the clone (most of the history is old binaries), but it
+would change every commit SHA - which hundreds of round records and the guard's baselines cite - force every clone,
+the owner's Windows clone among them, to be made again, and need a forced push. We keep the evidence and accept the
+size. If a small download is wanted for a release, make a new repository from the release tree and keep this one as
+the archive. Do not reopen this without the owner.
+
 
 These instructions apply to every automated coding assistant working in this repository, including ChatGPT, Sarvam and additional collaborators.
 

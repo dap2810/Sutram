@@ -1,6 +1,6 @@
 # R159: removed from the working tree; each is byte-identical to the file in the last column, which stays. All are in git at 2212c368b18a4fb9113de9fa527a449d679cfa78.
 # restore one: git show 2212c368b18a:<path> > <path>
-bytes	sha256	removed path	identical copy kept at
+removed path	bytes	sha256	identical copy kept at
 Windows-to-Sarvam/sarvam-acceptance-v297-2026-11-03/gui-log.txt	0	e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855	Windows-to-Sarvam/win-firstrun-paths-2026-11-08/terminal-stderr.txt
 Windows-to-Sarvam/win-test-2026-10-27/f_func.out	3	084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0	examples/r71/boundary_good.out
 Windows-to-Sarvam/win-test-2026-10-27/t_4b.out	37	08b49dea36a52deae29b9a6468cc8e8449ba939558d246765c79ed89d3d674e5	Muse-to-Sarvam/round39-whole-files/251_r38_alias_mala_oob.out

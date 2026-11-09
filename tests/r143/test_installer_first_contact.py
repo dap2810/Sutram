@@ -245,6 +245,17 @@ def main():
     check("('AssociationBefore=' + $associationBefore)" in eng and "if ($hadDefault) { $associationBefore='empty' }" in eng
           and "$state['AssociationBefore'] -eq 'empty') { $ext.SetValue('','',[Microsoft.Win32.RegistryValueKind]::String) }" in ucode,
           'R155: what .sm\'s default was before (absent or empty) is recorded, and uninstall puts that back')
+    # R161 (ChatGPT R221): the records a retry needs go only after the uninstaller itself is gone.
+    loop = ucode.find('for ($attempt=0;$attempt -lt 100;$attempt++)')
+    after = [ucode.find(x) for x in ("Remove-Item -LiteralPath $unKey -Recurse -Force",
+                                      "Remove-Item -LiteralPath (Join-Path $InstallDir 'install-state.ini')",
+                                      "Remove-Item -LiteralPath (Join-Path $InstallDir '.sutram-install')",
+                                      "Remove-Item -LiteralPath (Join-Path $InstallDir 'payload.manifest.sha256')")]
+    check(loop > 0 and all(x > loop for x in after) and all(ucode.count(x) == 1 for x in (
+              "Remove-Item -LiteralPath $unKey -Recurse -Force", "Remove-Item -LiteralPath (Join-Path $InstallDir 'install-state.ini')",
+              "Remove-Item -LiteralPath (Join-Path $InstallDir '.sutram-install')")),
+          'R161: the Settings entry, the manifest, the state and the marker are removed only after the uninstaller has '
+          'deleted itself - a retry after that loop runs out still finds a valid installation')
     ck = re.search(r'b_ckdesk:\s+u16 "([^"]*)"', wiz)
     check(ck and 'Sutram IDE' in ck.group(1) and 'Terminal' not in ck.group(1),
           f'the desktop checkbox names what it makes ({ck.group(1) if ck else "?"!r})')

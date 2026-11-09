@@ -1,0 +1,44 @@
+PASS  self-test: versions rejects a book made to fail
+PASS  self-test: symbols rejects a book made to fail
+PASS  self-test: examples rejects a book made to fail
+PASS  self-test: commands rejects a book made to fail
+PASS  self-test: memory rejects a book made to fail
+PASS  self-test: versions accepts a book made to pass
+PASS  self-test: symbols accepts a book made to pass
+PASS  self-test: examples accepts a book made to pass
+PASS  self-test: commands accepts a book made to pass
+PASS  self-test: memory accepts a book made to pass
+PASS  self-test: reference rejects a page where an old claim is back, or a superseded sentence lost its note
+PASS  self-test: changelog rejects a missing version and an entry without who and round
+PASS  versions: every current status line names v315; no book heading names another version; paused books say which version they describe
+PASS  symbols: every symbol and E_ code a current document cites exists
+PASS  examples: every complete program in the English and Sanskrit books (46) does what the book says on v315
+PASS  commands: every compiler flag a current document shows is one the compiler accepts, in the form shown
+PASS  memory: the memory chapter is in both books and covers the seven topics
+PASS  changelog: docs/CHANGELOG.md has every version to v315, each with who and the round
+FAIL  reference: the nineteen corrected reference claims (R161) stay corrected, and the measurable ones agree with the compiler
+      docs/LANGUAGE-REFERENCE.md: claim 2 of the nineteen is back: 'cannot drift from the code'
+      docs/LANGUAGE-REFERENCE.md: claim 3 of the nineteen is back: 'the first must be a **string literal** to select multi-value output'
+      docs/LANGUAGE-REFERENCE.md: claim 4 of the nineteen is back: 'at most two modules'
+      docs/LANGUAGE-REFERENCE.md: claim 5 of the nineteen is back: '`s + k` (a `kosh`), or a sometimes-string'
+      docs/LANGUAGE-REFERENCE.md: claim 6 of the nineteen is back: 'rikta kosh se'
+      docs/LANGUAGE-REFERENCE.md: claim 7 of the nineteen is back: 'three words'
+      docs/LANGUAGE-REFERENCE.md: claim 9 of the nineteen is back: 'a kosh of 1000 8272'
+      docs/LANGUAGE-REFERENCE.md: claim 10 of the nineteen is back: 'a `kosh` (it has its own region, section 16)'
+      docs/LANGUAGE-REFERENCE.md: claim 11 of the nineteen is back: 'each `kosh` now has its own region'
+      docs/LANGUAGE-REFERENCE.md: claim 12 of the nineteen is back: 'the 344 examples and 310 library'
+      docs/LANGUAGE-REFERENCE.md: claim 13 of the nineteen is back: "R148's measured boundary"
+      docs/MEMORY-MODEL.md: claim 16 of the nineteen is back: 'explicitly rejects growth on a kosh parameter.'
+      docs/MEMORY-MODEL.md: claim 17 of the nineteen is back: "updates the named variable's pointer."
+      docs/MEMORY-MODEL.md: claim 18 of the nineteen is back: 'every other alias is updated when a local\nkosh grows.'
+      docs/MEMORY-MODEL.md: claim 19 of the nineteen is back: 'mapping is never released.'
+      claim 5: the compiler answers `s + k` with 'E_KOSH_GANIT'; the page's row says 'nothing'
+      claim 6: an empty kosh_hri says 'Sutram truti: riktat koshat kosh_pop' (exit 1); the page does not quote it
+      claim 6: an empty kosh_apanay says 'Sutram truti: riktat koshat kosh_dequeue' (exit 1); the page does not quote it
+      claim 9: examples/317 prints ', nirmmita(1000) 1072\nafter the block 64\na kosh of 1000 8288'; the page's parimana() block differs
+      claim 4: the page's counterexample (examples/99, three or more modules) is gone or not cited
+      claim 12: the page counts no example files; the tree has 344
+      claim 7: the slice descriptor's size in the page and in r23_gen_slice no longer agree
+      claim 8: the crash the page cites is not in evidence-r152/ffi-shape.txt
+      claim 13: the 16,385 boundary the page cites is not in Windows-to-Sarvam/win-v313-2026-11-08/BUDGET.md
+r158 doc currency: 19 checks, 1 failed

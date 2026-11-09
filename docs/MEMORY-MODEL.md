@@ -39,9 +39,9 @@ Likewise, a library's `ok[0]` convention is error reporting, not a lifetime proo
 |---|---|---|
 | Scalars and function calls | The compiler describes qword values, register/stack locations and generated frame restoration. | No complete language lifetime/alias contract follows from a register convention. |
 | Indexed storage | The array fixture used by `set0` is mutated through a function argument and read by its caller. | No ownership transfer, exclusive borrow or copy-by-value collection guarantee. |
-| Typed `kosh` parameters | The accepted example 120 rejects raw/integer `kosh` passed to `kosh dasham`. The push emission explicitly rejects growth on a kosh parameter. | This is not generic collection typing or complete alias safety. |
+| Typed `kosh` parameters | The accepted example 120 rejects raw/integer `kosh` passed to `kosh dasham`. The push emission explicitly rejects growth on a kosh parameter. **Superseded (R161):** from v304 (R129) a `kosh` parameter may grow - every name shares one descriptor; the old refusal (`.ge_call_koshpush_param_bad`) is still in the source, and nothing jumps to it. | This is not generic collection typing or complete alias safety. |
 | `kosh` length/capacity | The inspected compiler uses logical length at pointer minus 16 and capacity at pointer minus 8; payload cells are qwords. | Treat those offsets as implementation observations, not a supported public ABI. |
-| Growth | The inspected push path allocates a new capacity, copies existing cells and updates the named variable's pointer. | No reclamation of the old buffer appears in that path. Allocation failure and huge-capacity arithmetic are not certified here. |
+| Growth | The inspected push path allocates a new capacity, copies existing cells and updates the named variable's pointer. **Superseded (R161):** from v302 growth updates the `kosh`'s shared descriptor (`[d]`), not a variable's pointer, so every name sees the new elements. | No reclamation of the old buffer appears in that path. **Superseded (R161):** a `kosh` whose elements are in a region gives the old region back when it grows - `munmap` on Linux (`src/r65_arena.inc`), `VirtualFree` on Windows (`win/winrt_blob.asm`); small elements left in the arena are not reused (reference §16). Allocation failure and huge-capacity arithmetic are not certified here. |
 | Clear/pop/dequeue | Clear only changes logical length. Pop/dequeue reduce length; dequeue copies remaining cells towards the front. | No destruction of resources stored in cells, secure erasure, automatic shrink or free is established. |
 | Raw memory operations | The compiler contains raw read/write, fill/copy and allocation builtins, and `yantra` permits inline bytes. | No checked ownership, valid-address, object-provenance, alignment or race guarantee is established. |
 | File and other handles | The language reference lists explicit handle operations such as `band`; allocation and I/O are distinct resources. | No automatic close on scope exit, return, error or abnormal termination is established. |
@@ -87,7 +87,8 @@ specifically motivated in the source by pointer replacement: replacing the
 callee's pointer would not update the caller's pointer-by-value view.
 
 That check does not establish that every other alias is updated when a local
-kosh grows. Raw addresses into a collection must not be advertised as stable
+kosh grows. **Superseded (R161):** the rejection is gone (v304), and every alias *is* updated, because every name
+holds the same descriptor (v302; R127 grew a `kosh` to 20,000,000 numbers with two names, and they agree). Raw addresses into a collection must not be advertised as stable
 across growth. Return values, escaping addresses into frames, aliasing across
 collections and overlapping raw copies require separate characterization and
 rules. The compiler source includes frame teardown; it is not evidence of
@@ -187,7 +188,9 @@ measurement, and the fix was determined to be compiler-side:
   `emit_nirmmita_from_rax` (`mmap`) for the new buffer, copies the
   cells, and stores the new pointer. A grep of the whole compiler
   source finds **no `munmap` / free emission anywhere** — the old
-  buffer's mapping is never released.
+  buffer's mapping is never released. **Superseded (R161):** the compiler now emits `munmap` (syscall 11,
+  `src/r65_arena.inc`) for a `kosh`'s old region, and the Windows runtime `VirtualFree`s it
+  (`win/winrt_blob.asm`).
 - **No free primitive exists in the language.** The `kosh` API
   (`kosh_push/pop/len/cap/clear/empty/peek/enqueue/dequeue`,
   `docs/reports/KOSH-BUILTINS.md`) has no free, and there is no general
@@ -201,7 +204,7 @@ measurement, and the fix was determined to be compiler-side:
 - **Fix (compiler-side, `src/` work, not this round):** emit a
   `munmap` of the old buffer in the growth path after the copy, or
   add a free primitive and a reclamation rule. The test above is
-  expected to FAIL until that lands; it is a diagnostic, not a
+  expected to FAIL until that lands (**superseded, R161:** it has landed - see the note above); it is a diagnostic, not a
   suite gate, because RSS is machine-dependent.
 
 The leak is therefore confirmed as a compiler defect, not a

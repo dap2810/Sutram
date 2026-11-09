@@ -1,4 +1,4 @@
-> **Status at compiler v315, 9 November 2026 (R158) — read this before the page below.**
+> **Status at compiler v315, 9 November 2026 (R161) — read this before the page below.**
 >
 > **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **79 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
@@ -16,9 +16,13 @@
 
 # Sutram — Language Reference
 
-Generated from the compiler source and the language packs, so it cannot drift from the code.
+Written by hand against the compiler source and the language packs, and checked by gates - so it **can** drift
+from the code, and has (R152-R161: nineteen claims the code did not support, now corrected). Where this page and
+the compiler disagree, the compiler is right and the page has a defect: report it. Gate `R158 doc currency`
+checks its versions, symbols and the claims corrected so far; a paragraph that has quietly become false needs a
+reader.
 
-**Compiler:** v29 source line · **Package:** v35 · patra extension `.sm`
+**Compiler:** v315 · patra extension `.sm`
 
 
 ## 1. Quick start
@@ -300,7 +304,9 @@ x = 42
 ```
 Both examples above end with one LF byte (`0A`), because printing the final numeric value adds it. Existing `examples/43_nested_likha.sm` uses this two-argument form, with an exact output golden.
 
-**Three to six values (R52):** when *exactly three* arguments are supplied, the first must be a **string literal** to select multi-value output. Four to six arguments always use multi-value output. Numeric intermediate values do not add newlines; the last numeric value adds one.
+**Three to six values (R52; v287):** three to six arguments always print each value in turn, whatever comes first -
+`likha(a, b, a)` with `a = 7`, `b = 9` prints `797` (up to v285 a three-argument `likha` whose first argument was
+not a string literal wrote raw bytes; see below). Numeric intermediate values do not add newlines; the last numeric value adds one.
 ```sutram
 mukhya() {
     vitti x = 42
@@ -373,8 +379,10 @@ no runtime dependency, the code becomes part of your binary. `lib/` ships:
 | varna | `yoj varna` | 13 — `varna_maap`, `akshar_sanket`, `asti_ank_akshar`, `asti_unnat_akshar`, `asti_avanat_akshar`, `asti_akshar_akshar`, `asti_avakash_akshar`, `gan_swar`, `gan_akshar`, `anwesh_akshar`, `asti_sarv_ank`, `unnat_sanket`, `avanat_sanket` |
 
 60 functions across six modules. `shankh_shreni` is markedly faster than `budbud_shreni` on real
-arrays. **Limitation:** a program can currently include at most two modules — the inliner's
-buffer overflows at three or more; this is a known compiler bug being fixed.
+arrays. **How many modules a program can bring in:** there is no count. `examples/99_ast_multimodule_capacity.sm`
+brings in seven. The limits are sizes: the program and everything it brings in, expanded, at most 128 KiB
+(`IMPORT_BUF_CAP`), and the syntax tree, 3 MiB (`E_VRIKSHA_SEEMA`, "Size limits" below). (Until R161 this page
+said a program could bring in only two modules, a limit fixed in R54; the sentence stayed.)
 
 Example:
 
@@ -435,7 +443,8 @@ variable, `s + t`, a string-returning `prakriya`); a parameter is a string when 
 | you write | refused with |
 |---|---|
 | a string beside a number - `s == 5`, `s < n`; or a variable that is a string in one place and a number in another (`s = "ab"` ... `s = 5`), compared with a string | **`E_VARTANI_TUL`** `'==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam` (*a string on one side and not on the other - both strings, or both numbers*) |
-| `s + 2.5`, `s + k` (a `kosh`), or a sometimes-string `+` a string | **`E_VARTANI_CAT`** |
+| `s + 2.5`, or a sometimes-string `+` a string | **`E_VARTANI_CAT`** |
+| `s + k` (a `kosh` in arithmetic, a string or not) | **`E_KOSH_GANIT`** `kosh-upari ganitam tulana va na sambhavati` - the `kosh` check comes first (until R161 this row said `E_VARTANI_CAT`) |
 | `s - t`, `s * 2`, `s / 2`, `s % 2`, a bit operator on a string | **`E_VARTANI_GANIT`** `vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti` |
 | `vitti x` with no value, in a function | **`E_MULYA_VINA`** (v286) - write `vitti x = 0`; a `mala`, a `kosh` and a module-level `vitti` are unchanged |
 
@@ -941,9 +950,9 @@ the program, R111-00). Measured on v292: `evidence-r112/kosh-iksh-v292.txt`.
 Full specification, measured behaviour, and the `kosh` vs `suchi`/`queue`
 comparison: `docs/reports/KOSH-BUILTINS.md`.
 
-Capacity doubles on growth. Empty `kosh_pop` / `kosh_peek` / `kosh_dequeue`
-abort with their own diagnostics — `rikta kosh se kosh_pop`,
-`rikta kosh se kosh_peek`, `rikta kosh se kosh_dequeue` — and exit
+Capacity doubles on growth. Empty `kosh_pop` / `kosh_peek` / `kosh_dequeue` (`kosh_hri` / `kosh_iksh` /
+`kosh_apanay`) abort with their own diagnostics — `Sutram truti: riktat koshat kosh_pop`,
+`Sutram truti: riktat koshat kosh_peek`, `Sutram truti: riktat koshat kosh_dequeue` — and exit
 1. Element types: integer (`kosh v`, the default) or binary64
 (`kosh dasham d`). `push`/`pop`/the builtins take a direct kosh variable.
 
@@ -992,8 +1001,9 @@ a[0]=7 k[0]=7
 - **A slice of a `kosh` is not kept in a name** (`vitti s = k[1:4]` is `E_KOSH_VIBHAG`): its element address is
   the elements' address when it was made, and a later `kosh_kship` may move them. Pass the slice on directly -
   `f(k[1:4])` - as before. **A slice is not given to a foreign function** (`--ffi`; v314, `E_KOSH_VIBHAG`): v313
-  passed the slice's descriptor - an address of its three words, not its elements - so the C side read an address,
-  or, as an `i64` count, crashed (Muse's reading, R151; confirmed). Pass the `kosh` itself - its elements' address,
+  passed the address of the slice's descriptor - two words, its elements' address and its length - not its elements,
+  so the C side summed those words (it printed `139676486729762`), and given as an `i64` count it crashed
+  (segmentation fault, exit 139; Muse's reading, R151; run in R152, `Claude-to-Sarvam/evidence-r152/ffi-shape.txt`). Pass the `kosh` itself - its elements' address,
   valid until it next grows - and the bounds as numbers. Earlier versions of this page said a slice's elements went
   to a `ptr` parameter; that was not what the compiler did.
 
@@ -1061,8 +1071,10 @@ named themselves, but the tree limit had no code):
   plus a few, `(z < z) + ...` 8. The widest statement the tree holds takes exactly 87,316 (`--analysis-steps=87315`
   refuses it, `87316` compiles it); no measured statement reaches the default, though the bound for a statement
   the tree holds is 349,521, so a shape above 200,000 is possible in principle (raise the flag for it). The largest statement in
-  the 344 examples and 310 library functions takes 52 steps (`lib/brihat.smlib`, line 174).
-- **History:** v311 200,000 fixed; v312 65,536 (refused 16,385 terms - R148's measured boundary); v313 349,521;
+  the example programs (`examples/*.sm` and `examples/*/*.sm`: 344 files, the set gate `R143 walk budget` compiles)
+  and the 310 library functions takes 52 steps (`lib/brihat.smlib`, line 174; measured at v312, R144).
+- **History:** v311 200,000 fixed; v312 65,536 (16,384 terms of `x + x + ...` compile and 16,385 refuse - measured natively on Windows against the
+  v312 baseline, `Windows-to-Sarvam/win-v313-2026-11-08/BUDGET.md`, and relayed in Sarvam's ROUND-148); v313 349,521;
   v314 200,000 and the flag (ChatGPT R214-R217's contract). Gates `R143 walk budget` and `R152 analysis steps`.
 
 **In `k[lo:]` the end is the length after `lo` is evaluated** (v305): `k[kosh_kship(k, 8) - 1:]` runs to the new end.
@@ -1389,8 +1401,10 @@ be there after the block. Giving the region back would make a dead `kosh` reachi
 if the address were reused, a silent read of another `kosh`) instead of `E_KOSH_MANDAPA` with its line - and
 in the tree it would give back nothing: the three programs that make a `kosh` in a block (`286`, `287`, `299`)
 peak at the same reading as a three-line program. **Measured (`tools/peak_rss.py`):** a block run 100,000
-times that makes a `kosh` of 100 numbers peaked at **about 100 MB** on v283, and at **400 MB** on Linux from
-v284 (each `kosh` now has its own region, one 4 KB page at least - section 16) - the same as without the block.
+times that makes a `kosh` of 100 numbers peaked at **about 100 MB** on v283, at **400 MB** on Linux from v284 to
+v301 (each `kosh` then had its own region, one 4 KB page at least), and at **106,240 KB** on v315 (`/usr/bin/time`;
+from v302 a small `kosh` is a 32-byte descriptor in the arena with its first elements after it - section 16) - the
+same as without the block.
 The block bounds `nirmmita` (10,000,000 `nirmmita(64)`, one block per pass: under 1 MB; without blocks: 625 MB),
 not `kosh` storage. Make a `kosh` that is reused once, outside the loop, and empty it with `kosh_clear` each
 pass: 0 MB. Reading
@@ -1408,12 +1422,13 @@ start 0
 after nirmmita(64) 64
 in a block, nirmmita(1000) 1072
 after the block 64
-a kosh of 1000 8272
+a kosh of 1000 8288
 ```
 
 - **What it counts:** the arena's persistent side (`nirmmita` outside a block; each rounded up to 16), its scratch
   side (what the open blocks hold - it falls when a block ends), and each `kosh`'s header and capacity, 8 bytes a
-  number (`kosh k[1]` grown to 1,000 has capacity 1,024: 16 + 8,192 bytes). A `kosh` keeps its bytes for the
+  number (`kosh k[1]` grown to 1,000 has capacity 1,024: its 32-byte descriptor + 8,192 bytes = 8,224, so the last
+  line is 64 + 8,224; until R161 this page said 16 + 8,192 and 8272, the figures before v302's descriptor). A `kosh` keeps its bytes for the
   program's life, so they never fall.
 - **It is not the resident memory** the kernel reports: pages, the program's code and its stack are not in it, and
   a `kosh`'s capacity counts whether or not every page has been touched. It is what the program asked for.
@@ -1457,7 +1472,8 @@ gives its memory back at its end (`examples/304`).
   `nirmmita(32)` and `nirmmita(33)` together are 32 + 48 = 80 bytes. **Nested budgets all hold:** an inner
   block's `nirmmita` counts against every budgeted block around it, and an inner block that ends gives its bytes
   back to the outer one.
-- **What does not count:** a `kosh` (it has its own region, section 16), and what a called `prakriya`
+- **What does not count:** a `kosh` (its storage is the `kosh`'s, not a `nirmmita` written in the block - a small
+  one is in the arena, a large one in a region, section 16), and what a called `prakriya`
   allocates - as the block itself covers only what is written inside it. `parimana()` (above) shows both.
 - **`parimita` is not reserved.** It is a budget only between `mandapa` and a number; `vitti parimita = 7`
   still works.

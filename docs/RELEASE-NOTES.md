@@ -14,6 +14,11 @@ run on Windows; it is a candidate.** The last package run there is v312's (the e
 
 ## Status: what v315 closes, and what it does not (R140-R158)
 
+**The reference is corrected (R161):** nineteen claims the code did not support - among them that a program can
+bring in only two modules, that `s + k` is `E_VARTANI_CAT`, the empty-`kosh` messages, and a `kosh`'s size in
+`parimana()` - now say what the compiler does, and a gate holds them. **The uninstaller can be run again** if its
+own file is still in use when it finishes: the records a retry needs are kept until the end (not run on Windows).
+
 **The books teach the memory model (R157):** chapter 19 of the English and Sanskrit books - `kosh` and `mala`,
 `mandapa`, `parimana()`, `mandapa parimita`, slices and their two refusals, running out of memory, and what the
 language does not have. Every complete program in both books now runs as the book says on v315; a new gate,

@@ -22,6 +22,11 @@ versions; they are not read except where a check says so.
                   seven topics
   6  changelog  - docs/CHANGELOG.md has an entry for every version from its oldest kept entry to the current one,
                   each naming who and the round: "## vNNN (Who, RNNN)"
+  7  reference  - R161: the nineteen claims Muse found wrong (R152-R154) cannot come back. Each has the false text
+                  it must not say again (a superseded historical sentence must carry its "Superseded (R161)" note),
+                  and where the fact can be measured, the compiler is run or the source read and the page must
+                  agree: likha's three values, the `s + k` code, the empty-kosh messages, example 317's output,
+                  the example count, the slice descriptor's size, the likh escape check, the cited evidence
 
 What it cannot check (ROUND-158 WS3): that a paragraph is still true. A version number and a symbol can be
 found; a false sentence cannot. Read the narrative.
@@ -275,6 +280,102 @@ def check_changelog(docs, current):
     return bad
 
 
+# ------------------------------------------------------------------------------------------------- 7 reference
+LR, MM = 'docs/LANGUAGE-REFERENCE.md', 'docs/MEMORY-MODEL.md'
+# (number in Muse's R154 list, document, a pattern the page must not match)
+REF_FORBID = [
+    (1, LR, r'every `kosh` has a region of its own'),
+    (2, LR, r'cannot drift from the code'),
+    (3, LR, r'the first must be a \*\*string literal\*\* to select multi-value output'),
+    (4, LR, r'at most two modules'),
+    (5, LR, r'`s \+ k` \(a `kosh`\), or a sometimes-string'),
+    (6, LR, r'rikta kosh se'),
+    (7, LR, r'three words'),
+    (9, LR, r'16 \+ 8,192 bytes\)|a kosh of 1000 8272'),
+    (10, LR, r'a `kosh` \(it has its own region, section 16\)'),
+    (11, LR, r'each `kosh` now has its own region'),
+    (12, LR, r'the 344 examples and 310 library'),
+    (13, LR, r"R148's measured boundary"),
+    (16, MM, r'explicitly rejects growth on a kosh parameter\.(?! \*\*Superseded \(R161\))'),
+    (17, MM, r"updates the named variable's pointer\.(?! \*\*Superseded \(R161\))"),
+    (18, MM, r'every other alias is updated when a local\s+kosh grows\.(?! \*\*Superseded \(R161\))'),
+    (19, MM, r"mapping is never released\.(?! \*\*Superseded \(R161\))"),
+]
+
+
+def check_reference(compiler, root, docs):
+    bad = []
+    for n, rel, pat in REF_FORBID:
+        t = docs.get(rel) or ''
+        m = re.search(pat, t)
+        if m:
+            bad.append(f'{rel}: claim {n} of the nineteen is back: {m.group(0)[:70]!r}')
+    lr, mm = docs.get(LR) or '', docs.get(MM) or ''
+    if not lr:
+        return bad + [f'{LR}: missing']
+    with tempfile.TemporaryDirectory() as tmp:
+        def run(src):
+            return run_program(compiler, root, src, tmp)
+        # 3: three values print whatever comes first
+        built, out, rc = run('mukhya() {\n    vitti a = 7\n    vitti b = 9\n    likha(a, b, a)\n}\n')
+        if not (built and out.strip() == '797'):
+            bad.append(f'claim 3: likha(a, b, a) does not print 797 any more: {out.strip()[:80]!r} - the page says it does')
+        # 5: s + k is E_KOSH_GANIT, and the page says so
+        built, out, rc = run('mukhya() {\n    kosh k[2]\n    kosh_kship(k, 1)\n    vitti s = "ab"\n    vitti t = s + k\n    likha(1)\n}\n')
+        code = re.search(r'\[(E_[A-Z_]+)\]', out)
+        row = re.search(r'^\| `s \+ k`[^\n]*', lr, re.M)
+        if built or not code or not row or code.group(1) not in row.group(0):
+            bad.append(f'claim 5: the compiler answers `s + k` with {code.group(1) if code else out.strip()[:60]!r}; '
+                       f'the page\'s row says {row.group(0)[:80] if row else "nothing"!r}')
+        # 6: the three empty-kosh messages, as the page quotes them
+        for fn in ('kosh_hri', 'kosh_iksh', 'kosh_apanay'):
+            built, out, rc = run('mukhya() {\n    kosh k[2]\n    likha(' + fn + '(k))\n}\n')
+            msg = out.strip().splitlines()[-1] if out.strip() else ''
+            if not (built and rc == 1 and msg and msg in lr):
+                bad.append(f'claim 6: an empty {fn} says {msg!r} (exit {rc}); the page does not quote it')
+        # 15: the page's claim is TRUE and both partners read it as false (r73_check_call does not list BN_LIKH, but
+        # likh is no call: it parses to AST_WRITEMEM, and .pp_writemem calls r73_check_stored, R74) - keep it true
+        built, out, rc = run('mukhya() {\n    vitti bahar = nirmmita(16)\n    mandapa {\n        vitti buf = nirmmita(16)\n'
+                             '        likh(bahar, buf)\n    }\n    likha(1)\n}\n')
+        if built or 'E_SCRATCH_ESCAPE' not in out or not re.search(r'a raw buffer\'s cell, `likh`', lr):
+            bad.append(f'claim 15: likh(outer, scratch) in a block {"compiles" if built else "gives " + out.strip()[:60]!r}; '
+                       f'the page says it is refused (E_SCRATCH_ESCAPE)')
+        # 9: example 317's output is the page's block
+        ex = sorted(glob.glob(os.path.join(root, 'examples', '317_*.sm')))
+        if ex:
+            built, out, rc = run_program(compiler, root, open(ex[0], encoding='utf-8').read(), tmp)
+            if not built or out.strip() not in lr:
+                bad.append(f'claim 9: examples/317 prints {out.strip()[-60:]!r}; the page\'s parimana() block differs')
+        else:
+            bad.append('claim 9: examples/317 is missing')
+    # 4: more than two modules is ordinary
+    p99 = os.path.join(root, 'examples', '99_ast_multimodule_capacity.sm')
+    if not os.path.exists(p99) or len(re.findall(r'(?m)^yoj ', open(p99, encoding='utf-8').read())) < 3 \
+            or '99_ast_multimodule_capacity' not in lr:
+        bad.append('claim 4: the page\'s counterexample (examples/99, three or more modules) is gone or not cited')
+    # 12: the example count the page states is the gate's set
+    n = len(glob.glob(os.path.join(root, 'examples', '*.sm')) + glob.glob(os.path.join(root, 'examples', '*', '*.sm')))
+    m = re.search(r'`examples/\*\.sm` and `examples/\*/\*\.sm`: (\d+) files', lr)
+    if not m or int(m.group(1)) != n:
+        bad.append(f'claim 12: the page counts {m.group(1) if m else "no"} example files; the tree has {n}')
+    # 7: the slice descriptor is two words
+    r23 = read(root, 'src/r23_capabilities.inc') or ''
+    if "this site's descriptor: 16 bytes" not in r23 or 'two words, its elements\' address and its length' not in lr:
+        bad.append('claim 7: the slice descriptor\'s size in the page and in r23_gen_slice no longer agree')
+    # 8, 13: the evidence the page cites says what the page says
+    ev = read(root, 'Claude-to-Sarvam/evidence-r152/ffi-shape.txt') or ''
+    if 'Segmentation fault' not in ev or 'evidence-r152/ffi-shape.txt' not in lr:
+        bad.append('claim 8: the crash the page cites is not in evidence-r152/ffi-shape.txt')
+    bud = read(root, 'Windows-to-Sarvam/win-v313-2026-11-08/BUDGET.md') or ''
+    if '16,385' not in bud or 'win-v313-2026-11-08/BUDGET.md' not in lr:
+        bad.append('claim 13: the 16,385 boundary the page cites is not in Windows-to-Sarvam/win-v313-2026-11-08/BUDGET.md')
+    # 17, 19: the reclamation the corrections describe is in the source
+    arena = read(root, 'src/r65_arena.inc') or ''
+    if 'mov eax,11 ; syscall' not in arena:
+        bad.append('claims 17/19: the munmap of a kosh\'s old region is no longer in src/r65_arena.inc')
+    return bad
+
+
 # ------------------------------------------------------------------------------------------------- main
 def load(root):
     rels = set(CURRENT) | set(BOOKS) | set(PAUSED_BOOKS) | {'docs/CHANGELOG.md'}
@@ -311,6 +412,12 @@ def self_test(compiler, root, flags, labels, codes_text, current):
         for name, found in results.items():
             ok.append((bool(found) == want_fail, f'self-test: {name} {"rejects" if want_fail else "accepts"} {label}'
                        + ('' if bool(found) == want_fail else f' -- got {found[:2]}')))
+    docs = load(root)
+    docs[LR] = (docs.get(LR) or '') + '\nA program can include at most two modules.\n'
+    docs[MM] = (docs.get(MM) or '').replace('Superseded (R161)', 'Later note')
+    found = check_reference(compiler, root, docs)
+    ok.append((any('claim 4' in f for f in found) and any('claim 16' in f for f in found) and any('claim 19' in f for f in found),
+               'self-test: reference rejects a page where an old claim is back, or a superseded sentence lost its note'))
     bad_log = {'docs/CHANGELOG.md': '## v315 (Claude, R154) - x\n## v313 - no who\n'}
     found = check_changelog(bad_log, current)
     ok.append((any('v314' in f for f in found) and any('v313' in f for f in found),
@@ -347,7 +454,8 @@ def main():
             ('examples', ex_bad, f'every complete program in the English and Sanskrit books ({n_prog}) does what the book says on v{current}'),
             ('commands', check_commands(compiler, root, docs, flags), 'every compiler flag a current document shows is one the compiler accepts, in the form shown'),
             ('memory', check_memory(docs), 'the memory chapter is in both books and covers the seven topics'),
-            ('changelog', check_changelog(docs, current), f'docs/CHANGELOG.md has every version to v{current}, each with who and the round')):
+            ('changelog', check_changelog(docs, current), f'docs/CHANGELOG.md has every version to v{current}, each with who and the round'),
+            ('reference', check_reference(compiler, root, docs), 'the nineteen corrected reference claims (R161) stay corrected, and the measurable ones agree with the compiler')):
         report(not found, f'{name}: {what}')
         for f in found:
             print('      ' + f)
