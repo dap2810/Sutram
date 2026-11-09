@@ -1,7 +1,7 @@
 > **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
 > unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
 
-> **Status at compiler v315, 9 November 2026 (R162) — read this before the page below.**
+> **Status at compiler v315, 9 November 2026 (R163) — read this before the page below.**
 >
 > **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **79 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >

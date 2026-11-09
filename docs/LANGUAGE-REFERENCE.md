@@ -1,4 +1,4 @@
-> **Status at compiler v315, 9 November 2026 (R162) — read this before the page below.**
+> **Status at compiler v315, 9 November 2026 (R163) — read this before the page below.**
 >
 > **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **79 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
@@ -989,7 +989,7 @@ a[0]=99 k[0]=99
 a[0]=7 k[0]=7
 ```
 
-- **No count limit any more:** up to v301 each `kosh` took a 64 MiB region; from v302 a small `kosh` is 32 bytes of the arena and its elements (20,000 koshes: one `mmap`). How many a program can make is still bounded by memory and by the compiler's own capacities.
+- **No count limit any more:** up to v301 each `kosh` took a 64 MiB region; from v302 a small `kosh` is a 32-byte descriptor in the arena and its elements (20,000 koshes: one `mmap`). **The descriptor:** four 8-byte words - `[d-16]` length, `[d-8]` capacity, `[d]` the elements' address, `[d+8]` the size of the region they are in (0: the arena); a program that makes a `kosh` inside a `mandapa` puts three more words before them in every `kosh` (R82's line, slot and generation): **56 bytes** (`src/r65_arena.inc`; measured by `parimana()`, gate `R158 doc currency`). How many a program can make is still bounded by memory and by the compiler's own capacities.
   Up to v301 each `kosh` was a 64 MiB region of its own, so a program under a 1 GiB address limit could make about
   15, and a second name parted from the `kosh` at 4,194,305 numbers; up to v283 it parted whenever something had
   been allocated after the `kosh`.

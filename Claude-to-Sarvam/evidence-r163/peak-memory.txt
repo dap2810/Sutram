@@ -1,0 +1,45 @@
+# R163 WS3: the chapter's two programs (chapter 19 section 2), compiled with Sutram 1.0 (v315) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha, Linux 6.18.44-fc-v310, /usr/bin/time -v, five runs each
+== blk.sm
+prakriya kaam(i) {
+    mandapa {
+        vitti b = nirmmita(256)
+        b[0] = i
+        nivartanam b[0]
+    }
+    nivartanam 0
+}
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        s = s + kaam(i)
+    }
+    likha(s)
+}
+20000100000 	Maximum resident set size (kbytes): 308 
+20000100000 	Maximum resident set size (kbytes): 308 
+20000100000 	Maximum resident set size (kbytes): 308 
+20000100000 	Maximum resident set size (kbytes): 308 
+20000100000 	Maximum resident set size (kbytes): 308 
+== noblk.sm
+prakriya kaam(i) {
+    vitti b = nirmmita(256)
+    b[0] = i
+    nivartanam b[0]
+}
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        s = s + kaam(i)
+    }
+    likha(s)
+}
+20000100000 	Maximum resident set size (kbytes): 49920 
+20000100000 	Maximum resident set size (kbytes): 49920 
+20000100000 	Maximum resident set size (kbytes): 49920 
+20000100000 	Maximum resident set size (kbytes): 49920 
+20000100000 	Maximum resident set size (kbytes): 49920 
+
+# then 50 more runs each, /usr/bin/time -f %M (KB), counted
+blk.bin (de31c1363bb824ec):      14 308      36 436 
+noblk.bin (b977fbd12c545b1c):      50 49920 

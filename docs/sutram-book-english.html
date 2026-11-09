@@ -764,8 +764,9 @@ for you when memory runs short. It describes the compiler as it is today (v315).
 
 <h3>1. A <code>mala</code> is a fixed row; a <code>kosh</code> grows</h3>
 <p>A <code><span class="k" data-tip="mala">mala</span></code> has the size you give it, for ever. A
-<code><span class="k" data-tip="growable array">kosh</span></code> starts small and grows each time you add to it
-with <code>kosh_kship</code>. <code>kosh_gan</code> tells you how many it holds.</p>
+<code><span class="k" data-tip="growable array">kosh</span></code> starts with room for as many numbers as you give it.
+When it is full and you add one more with <code>kosh_kship</code>, it makes room for twice as many, by itself, and
+carries on. <code>kosh_gan</code> tells you how many it holds; how many it has room for is its <b>capacity</b>.</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>() {
     <span class="k" data-tip="mala">mala</span> dinah[3]            <span class="cm"># exactly three numbers</span>
     dinah[0] = 30
@@ -805,9 +806,10 @@ block ends - however it ends (its last line, <code>nivartanam</code>, <code>kram
     <span class="k" data-tip="print">likha</span>(s)                  <span class="cm"># 20000100000</span>
 }</code></pre>
 <p><b>Measured</b> (Linux, v315, the largest resident memory of the whole run): this program, 200,000 calls
-each taking 256 bytes, peaks at <b>392 KB</b>. The same program without the <code>mandapa</code> line peaks at
-<b>49,920 KB</b>, because every one of the 200,000 buffers stays. That is one machine and one program, not a
-promise for every program. Numbers may leave a block. An <i>address</i> made inside it may not: putting one
+each taking 256 bytes, peaks at <b>308 or 436 KB</b> - in 75 runs it was one of those two each time; at this size
+the count moves by a few pages from run to run. The same program without the <code>mandapa</code> line peaks at
+<b>49,920 KB</b> every time, because every one of the 200,000 buffers stays: the block gives back more than 99% of
+it. That is one machine and one program, not a promise for every program. Numbers may leave a block. An <i>address</i> made inside it may not: putting one
 in a variable outside the block, or returning it, is refused at compile time (<code>E_SCRATCH_ESCAPE</code>). A
 block gives back what <code>nirmmita</code> made inside it. It does not undo anything else the block did -
 what it printed, or wrote to a file.</p>
@@ -824,7 +826,10 @@ what it printed, or wrote to a file.</p>
     }
     <span class="k" data-tip="print">likha</span>(parimana())              <span class="cm"># 0: the block gave it back</span>
 }</code></pre>
-<p>It counts what the program asked for, not what the operating system reports. A <code>kosh</code> keeps its bytes
+<p>It counts what the program asked for, not what the operating system reports. <b>A <code>kosh</code> is counted by its
+room, not by what is in it:</b> 32 bytes it uses to keep track of itself, and 8 bytes for every number it has room for,
+used or not. (A program that makes a <code>kosh</code> inside a <code>mandapa</code> gives every <code>kosh</code> 24
+bytes more of that bookkeeping - 56 in all.) A <code>kosh</code> keeps its bytes
 for the whole program, even one made inside a block, so its share of <code>parimana()</code> never falls.</p>
 
 <h3>4. <code>mandapa parimita N</code>: a budget that refuses</h3>
@@ -921,6 +926,10 @@ failure you can catch and carry on from.</p>
     <span class="k" data-tip="print">likha</span>(vargah[4])                 <span class="cm"># 25</span>
     <span class="k" data-tip="print">likha</span>(parimana())                <span class="cm"># 96: only the kosh - every block gave its 16 bytes back</span>
 }</code></pre>
+<p><b>Why 96, when the <code>kosh</code> holds five numbers - 40 bytes?</b> Because <code>parimana()</code> counts the
+<code>kosh</code>'s room, not its contents. It began with room for 4. The fifth number found it full, so it made room
+for 8. 96 is 32 bytes of the <code>kosh</code>'s own bookkeeping plus room for 8 numbers of 8 bytes: 32 + 64. Three of
+those 8 places are empty, waiting for the next three numbers.</p>
 <h3>7. What Sutram does not have</h3>
 <p>So that you know the shape of the thing: <b>no garbage collector</b> (nothing runs in the background looking for
 memory to reclaim); <b>no <code>free</code> for you to call</b> (memory comes back when a block ends, or when the

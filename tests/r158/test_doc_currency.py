@@ -27,6 +27,9 @@ versions; they are not read except where a check says so.
                   and where the fact can be measured, the compiler is run or the source read and the page must
                   agree: likha's three values, the `s + k` code, the empty-kosh messages, example 317's output,
                   the example count, the slice descriptor's size, the likh escape check, the cited evidence
+  8  sizes      - R163: every size of a `kosh` descriptor a current document or book gives ("a 32-byte
+                  descriptor", "56 bytes") is one the compiler makes - measured with parimana(): a kosh made outside
+                  any block, and one made inside a mandapa (R82's three more words)
 
 What it cannot check (ROUND-158 WS3): that a paragraph is still true. A version number and a symbol can be
 found; a false sentence cannot. Read the narrative.
@@ -382,6 +385,42 @@ def check_reference(compiler, root, docs):
     return bad
 
 
+# ------------------------------------------------------------------------------------------------- 8 sizes
+SIZE_PATTERNS = [r'(\d+)-byte (?:`?kosh`? )?descriptor', r'descriptor[^.\n|+]{0,80}?\*{0,2}(?<![\d,])(\d+) bytes',
+                 r'(\d+) bytes it uses to keep track of itself', r'bookkeeping - (\d+) in all',
+                 r'आत्मनः लेखाय (\d+) बाइट्', r'लेखं धारयति - सर्वं (\d+)']
+
+
+def descriptor_sizes(compiler, root):
+    """(outside a block, with a kosh made in a mandapa) - each from parimana(), less the elements' 8-byte cells."""
+    with tempfile.TemporaryDirectory() as tmp:
+        built, out, rc = run_program(compiler, root, 'mukhya() {\n    kosh k[2]\n    likha(parimana())\n}\n', tmp)
+        a = int(out.strip()) - 16 if built and out.strip().isdigit() else None
+        built, out, rc = run_program(compiler, root, 'mukhya() {\n    mandapa {\n        kosh k[1]\n        likha(parimana())\n    }\n}\n', tmp)
+        b = int(out.strip()) - 8 if built and out.strip().isdigit() else None
+    return a, b
+
+
+def check_sizes(docs, sizes):
+    a, b = sizes
+    if a is None or b is None:
+        return [f'the compiler did not report a kosh\'s size: {sizes}']
+    bad = []
+    for rel, t in docs.items():
+        if rel not in CURRENT or t is None:
+            continue
+        plain = html.unescape(re.sub(r'<[^>]+>', '', t)) if rel.endswith('.html') else t
+        for pat in SIZE_PATTERNS:
+            for m in re.finditer(pat, plain):
+                n = int(m.group(1))
+                if n not in (a, b):
+                    bad.append(f'{rel}: gives a kosh descriptor of {n} bytes ({m.group(0)[:50]!r}); the compiler makes {a}, or {b} when a kosh is made in a mandapa')
+    lr = docs.get('docs/LANGUAGE-REFERENCE.md') or ''
+    if f'{a}-byte descriptor' not in lr or f'{b} bytes' not in lr:
+        bad.append(f'docs/LANGUAGE-REFERENCE.md: does not give both sizes ({a}, and {b} with a kosh made in a mandapa)')
+    return bad
+
+
 # ------------------------------------------------------------------------------------------------- main
 def load(root):
     rels = set(CURRENT) | set(BOOKS) | set(PAUSED_BOOKS) | {'docs/CHANGELOG.md'}
@@ -424,6 +463,9 @@ def self_test(compiler, root, flags, labels, codes_text, current):
     found = check_reference(compiler, root, docs)
     ok.append((any('claim 4' in f for f in found) and any('claim 16' in f for f in found) and any('claim 19' in f for f in found),
                'self-test: reference rejects a page where an old claim is back, or a superseded sentence lost its note'))
+    sizes = descriptor_sizes(compiler, root)
+    found = check_sizes({'docs/LANGUAGE-REFERENCE.md': 'a 24-byte descriptor and a 32-byte descriptor, 56 bytes'}, sizes)
+    ok.append((len(found) == 1 and '24 bytes' in found[0], f'self-test: sizes rejects a 24-byte descriptor and accepts {sizes[0]} and {sizes[1]}'))
     bad_log = {'docs/CHANGELOG.md': '## v315 (Claude, R154) - x\n## v313 - no who\n'}
     found = check_changelog(bad_log, current)
     ok.append((any('v314' in f for f in found) and any('v313' in f for f in found),
@@ -461,7 +503,8 @@ def main():
             ('commands', check_commands(compiler, root, docs, flags), 'every compiler flag a current document shows is one the compiler accepts, in the form shown'),
             ('memory', check_memory(docs), 'the memory chapter is in both books and covers the seven topics'),
             ('changelog', check_changelog(docs, current), f'docs/CHANGELOG.md has every version to v{current}, each with who and the round'),
-            ('reference', check_reference(compiler, root, docs), 'the nineteen corrected reference claims (R161) stay corrected, and the measurable ones agree with the compiler')):
+            ('reference', check_reference(compiler, root, docs), 'the nineteen corrected reference claims (R161) stay corrected, and the measurable ones agree with the compiler'),
+            ('sizes', check_sizes(docs, descriptor_sizes(compiler, root)), 'every kosh descriptor size a current document gives is one the compiler makes (R163)')):
         report(not found, f'{name}: {what}')
         for f in found:
             print('      ' + f)

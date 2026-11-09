@@ -24,6 +24,12 @@
   output (`$TMPDIR/sutram-gate-failures/`); R126's Wine check prints stdout and stderr apart on a failure.
 - **R155 follow-up (ChatGPT R221 follow-up):** `PathValueCreated` is carried from the old record only when the old
   PATH entry was kept; when it is appended again (same text, after the user removed it) it records what this run did.
+- **R163 (documents and a gate):** the memory chapter's section 1 said a `kosh` "grows each time you add to it" - it
+  grows when it is full, doubling its room; the chapter now says what capacity is, and why `parimana()` gives 96 for
+  five numbers. The block's peak, re-measured over 75 runs, is 308 or 436 KB (the chapter said 392, one run); without
+  the block, 49,920 KB every time. The reference gives the descriptor's layout: 32 bytes, 56 when a program makes a
+  `kosh` in a `mandapa`. `R158 doc currency` check 8, `sizes`, measures both with `parimana()` and holds every size a
+  document gives to them.
 - **R162 (the installer, ChatGPT R223):** nothing changed before what decides it is read. The lock beside the
   target is made with `CreateNew` and marked; a file already there is read first, and only a stale Sutram lock is
   removed (up to R161 any file at that path was deleted when the lock closed, even by a run that then refused).
