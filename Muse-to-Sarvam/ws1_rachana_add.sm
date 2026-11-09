@@ -1,8 +1,0 @@
-rachana Point = { x, y, z }
-mukhya() {
-    vitti p = nirmmita(24)
-    p.x = 3
-    vitti q = nirmmita(24)
-    q.x = 3
-    likha(p + q)
-}
