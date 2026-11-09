@@ -25,7 +25,7 @@ R81 reports 24 checker cases and an experimental 63/306-function acceptance clas
 
 [`examples/282_r81_parikshita_sort.sm`](../examples/282_r81_parikshita_sort.sm) declares two **user** scalar helpers (`agla`, `shatak`), a local constant-sized `nirmmita(12 * 8)` buffer and an in-place insertion sort in `parikshita mukhya`. It imports **0 library modules and converts 0 library functions**. The two user helpers are checked declarations, not library conversions. Its data is generated rather than entered by a student, so it demonstrates a bounded real sort rather than a complete interactive sorting application.
 
-I ran the checked-in `sutram.exe` on native Windows 11 build 26300, compiler v278, SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`:
+I ran the checked-in `sutram.exe` on native Windows (system details redacted), compiler v278, SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`:
 
 ```text
 compile: sutram.exe examples/282_r81_parikshita_sort.sm <fresh scratch .exe>
