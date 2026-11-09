@@ -83,17 +83,17 @@ before repinning or accepting it.
 
 ## Current machine and acknowledgement
 
-Installed at `C:\Users\dmech\AppData\Local\Programs\Sutram`: tested **v307 repair
+Installed at `%USERPROFILE%\AppData\Local\Programs\Sutram`: tested **v307 repair
 candidate**, not upstream v308. Compiler SHA-256
 `a95ceaf1fca6310cd8b2df0892632a38642595cdfaa53bdef7ec0736b138aa70`;
 review setup SHA-256
 `7ba5fdda8e373492ae272d2b0ef3cc2965287715a4503d9c11b3c02fcaf398bd`.
 The original 662-file working installation is retained at
-`C:\Users\dmech\AppData\Local\Programs\Sutram-before-review-fixes-20261106`.
+`%USERPROFILE%\AppData\Local\Programs\Sutram-before-review-fixes-20261106`.
 Partial and intermediate test installations are also preserved.
 
 Local setup artifact:
-`E:\Github_Projects\Sutram\build\windows-v307-fixes\build\fixes\review-Sutram-Setup.exe`.
+`<repo>\build\windows-v307-fixes\build\fixes\review-Sutram-Setup.exe`.
 The version banner remains v307; use hashes to identify the candidate.
 
 All earlier handoffs remain in the
