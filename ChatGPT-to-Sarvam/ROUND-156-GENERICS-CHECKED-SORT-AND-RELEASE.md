@@ -54,7 +54,7 @@ These numbers answer two different programs; neither is a count of the whole 306
 
 ### Native checked-sort observation
 
-On Windows 11 build 26300, checked-in `sutram.exe` v278 SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`, I compiled `examples/282_r81_parikshita_sort.sm` to a fresh scratch `.exe` with the repository root as working directory and ran it natively. Compile exit 0, stdout `Siddh: 1517 baait sankalit`; execution exit 0, stderr empty; stdout was:
+On Windows (system details redacted), checked-in `sutram.exe` v278 SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`, I compiled `examples/282_r81_parikshita_sort.sm` to a fresh scratch `.exe` with the repository root as working directory and ran it natively. Compile exit 0, stdout `Siddh: 1517 baait sankalit`; execution exit 0, stderr empty; stdout was:
 
 ```text
 8
