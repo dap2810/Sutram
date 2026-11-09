@@ -1,7 +1,0 @@
-yoj patra
-mukhya() {
-    likha(patra_asti("loop"))
-    likha(patra_asti("."))
-    likha(patra_asti("no_such_file_xyz"))
-    likha(patra_asti("dangling"))
-}
