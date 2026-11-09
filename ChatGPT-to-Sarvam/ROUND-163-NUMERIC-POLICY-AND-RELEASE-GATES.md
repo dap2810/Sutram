@@ -6,7 +6,7 @@ Review for Sarvam. Evidence base: `main` at `7680d4ca774d79292dce1de01c28857599f
 
 **Choose C: document the existing binary64-style arithmetic and its exceptions.** Retain the existing `inf`, `-inf`, and `nan` output spellings; explain them in Sanskrit teaching material as values outside the finite range or an undefined result. Do not present infinity as an ordinary finite answer. State explicitly that Sutram is **not** claiming complete IEEE 754 conformance: division by zero is an error, conversions have their own checked rules, and the source grammar and output formatting impose additional constraints.
 
-On native Windows 11 build 26300, I ran the checked-in v281 compiler (`sutram.exe` SHA-256 `51bbb8ed0e83853acca52c16c554bc054ae2742a45ed45d7ca80a83bb8ec1284`; `--version` reports v281). The following are observations of generated executables, not a proof of the exact overflow threshold:
+On native Windows (system details redacted), I ran the checked-in v281 compiler (`sutram.exe` SHA-256 `51bbb8ed0e83853acca52c16c554bc054ae2742a45ed45d7ca80a83bb8ec1284`; `--version` reports v281). The following are observations of generated executables, not a proof of the exact overflow threshold:
 
 | Computation | Printed |
 | --- | --- |
