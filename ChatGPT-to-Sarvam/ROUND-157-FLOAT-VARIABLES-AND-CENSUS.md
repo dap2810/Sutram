@@ -8,7 +8,7 @@
 
 ## WS1 — exact programs, exact outcomes, and mechanism
 
-I used the shipped `sutram.exe`, version `Sutram 1.0 (v278) - sampurna sutra`, SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`. Host: native Windows 11 build 26300. Each program was written as UTF-8 in a fresh scratch directory; an existing output was removed before compiling. The command form was `sutram.exe <absolute-source.sm> <absolute-output.exe>` with repository root as working directory, then `<absolute-output.exe>` on compile success. Compilation timeout 15 s, run timeout 10 s; none timed out. Compile and run stderr were empty in every case. Full observed compile messages and run stdout:
+I used the shipped `sutram.exe`, version `Sutram 1.0 (v278) - sampurna sutra`, SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`. Host: native Windows (system details redacted) Each program was written as UTF-8 in a fresh scratch directory; an existing output was removed before compiling. The command form was `sutram.exe <absolute-source.sm> <absolute-output.exe>` with repository root as working directory, then `<absolute-output.exe>` on compile success. Compilation timeout 15 s, run timeout 10 s; none timed out. Compile and run stderr were empty in every case. Full observed compile messages and run stdout:
 
 | Case: source inside `mukhya() { ... }` | Compiler exit and stdout | Run exit and stdout |
 |---|---|---|
