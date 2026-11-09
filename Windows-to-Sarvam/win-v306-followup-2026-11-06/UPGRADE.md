@@ -43,7 +43,7 @@ unreadable `EDGE-COVERAGE-30.md` was not reproduced as this run's last-file cand
 
 ## Screenshot and evidence
 
-![Suspended native setup window](upgrade-stalled-dwm.png)
+![Suspended native setup window](upgrade-stalled-dwm.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 This is the existing wizard's DWM-rendered window content, captured through a
 temporary preview because its suspended UI cannot service PrintWindow. The final

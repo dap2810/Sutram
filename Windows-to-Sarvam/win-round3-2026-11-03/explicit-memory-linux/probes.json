@@ -1,6 +1,6 @@
 {
   "stage": "explicit-memory",
-  "host": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "host": "Linux-(kernel build redacted)-x86_64-with-glibc2.39",
   "compiler_sha256": "36cbf6737ec16071c39779db6d9286fff2f7df0923c573643463a120019b8fb4",
   "rows": [
     {

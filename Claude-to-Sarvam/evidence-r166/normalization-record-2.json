@@ -1,0 +1,342 @@
+{
+ "scope": "R166: 67 files changed after e199c90d - 36 normalised (21 UTF-16 text files the first pass read as binary; kernel builds the first gate did not look for) and 31 reports whose links to a removed screenshot now say so (some are both)",
+ "note": "Before digests identify the historical bytes (git history keeps them); after digests identify the normalized text, not new executions. Embedded product hashes are unchanged. No history rewrite.",
+ "files": [
+  {
+   "path": "ChatGPT-to-Sarvam/ROUND-102-OBSERVED.json",
+   "before_sha256": "755fb37d4032f747d4ea896088af394f15488f1c37aebd85ff58c99e249b0059",
+   "after_sha256": "c92f8599c84b2db098c1a748136c44ae6da55dbb8b05267355a0b7a437931d21"
+  },
+  {
+   "path": "ChatGPT-to-Sarvam/ROUND-71-RECLAIM-PROBE.json",
+   "before_sha256": "f5de801b9b4b84fa137d5d1224350317079ee938c6aef66d747f3d2b8599a04e",
+   "after_sha256": "42725fb6233aaae7e94819e9185d54c0b26ac56180843bea82423bbbd07aedba"
+  },
+  {
+   "path": "ChatGPT-to-Sarvam/WINDOWS-V306-FOLLOWUP-2026-11-06.md",
+   "before_sha256": "a51c2f3b3603d07d234daedc2d6455b53f64582ba5467bafbaddf14aad3595ca",
+   "after_sha256": "20b6c9266450b338d54077b0c555272c8ac16c0979ed33df87f2bfc44161de21"
+  },
+  {
+   "path": "ChatGPT-to-Sarvam/WINDOWS-V309-FINAL-FIXES-2026-11-07.md",
+   "before_sha256": "71f33ba784738e678d0b3db05ce23b946fe6a93b7c1e61866c9edb764e816e81",
+   "after_sha256": "8638c989a57e52c5eb0c411ba786fe224b18ac5db6f3153cbaa22cef3131f0f1"
+  },
+  {
+   "path": "ChatGPT-to-Sarvam/WINDOWS-V309-FIXES-2026-11-07.md",
+   "before_sha256": "3ac219d6aa5ddd03c194ec6a43be1cd18de4b6b0a0022e567d6c1200e12aa015",
+   "after_sha256": "d69769eb16c3e4eda11d174dd6e05172424c90761e66525885bf4d8fbf71f300"
+  },
+  {
+   "path": "Claude-to-Sarvam/evidence-r163/peak-memory-remeasured.txt",
+   "before_sha256": "97291ced1105ee17098f037112af435fe2b0939e24cdc94303e68623ce0a312d",
+   "after_sha256": "99dc7b82dce5621c9f90822f6b3d80bdf5c7979881ca0d48dd731dba42c6f253"
+  },
+  {
+   "path": "Claude-to-Sarvam/evidence-r163/peak-memory.txt",
+   "before_sha256": "7ce845b3bb649f36a1eebfd1f3155560a78c47f2ff2dbd9d7008102796f6262d",
+   "after_sha256": "28d4bac575cdbe13c4f7c98a6feb5df550e5948b61a214853b6b26ce52215681"
+  },
+  {
+   "path": "Claude-to-Sarvam/evidence-r34/gates-linux.txt",
+   "before_sha256": "312595c5449ca92758ef1d1fefb5e26f0e74f9b2845c52a67dd632c58c6eee09",
+   "after_sha256": "ade079045194fbd275e4b2aafb5325ebb08979ac9e0e9becc5b81b58c63ac40e"
+  },
+  {
+   "path": "Claude-to-Sarvam/evidence-r34/ordinary-path.txt",
+   "before_sha256": "a89c7be78b0d2af0128dc04446293d2abaa6688429bfb2b7947564ec98b65613",
+   "after_sha256": "b6ab9db6f41be49838dbdb3cc05435504c917d792bfe239464d95080059cddcb"
+  },
+  {
+   "path": "Windows-to-Sarvam/WIN-FFI-2026-10-21.md",
+   "before_sha256": "b9cf067a8002bd0ce79db9f77e5c65b0167d2d226f1a932daeccc8c31f676fdc",
+   "after_sha256": "4edccbafd9a77a306f654fff480d125b392ecce50f45c30868c30559446ba0b0"
+  },
+  {
+   "path": "Windows-to-Sarvam/WIN-IDE-V297-2026-11-03.md",
+   "before_sha256": "f5a09f2631030651d8a348706cdbf0d47bda5d45e528a5b2106b4a04f1860cee",
+   "after_sha256": "268424be8579a816d1c48e801d73a84c7069e450d61503e88cf6edeb90e962c9"
+  },
+  {
+   "path": "Windows-to-Sarvam/WIN-LINKER-2026-10-21.md",
+   "before_sha256": "dda2e0f6c6981dadad4c51fceb4a465e9f0c6146af325199d48ad73bf94ca584",
+   "after_sha256": "67c6b79948f6866510baf328df0f2dd074d44f8b5acc5f45032518cf5efbce32"
+  },
+  {
+   "path": "Windows-to-Sarvam/WIN-SARVAM-ACCEPTANCE-V297-2026-11-03.md",
+   "before_sha256": "fc457a99477128ef2444fcfb48b02297e6f6d5221ea7dda407987a9c9ae1c5ef",
+   "after_sha256": "fe9cb5ef5302d2cc0f0f7df39dc7067aa6d3dd2745d7ded3a3d4f281cbfac2f7"
+  },
+  {
+   "path": "Windows-to-Sarvam/ide-v297-2026-11-03/nested-transcript.txt",
+   "before_sha256": "65599d8d37fd6560ae7084a46391c4087eb54dc9c8d11351a82180d0ebb6dfd6",
+   "after_sha256": "cf7383bb4490e13928c5a451fa6dd12584150b4d5a113240f5c3ef699841d4ef"
+  },
+  {
+   "path": "Windows-to-Sarvam/ide-v297-2026-11-03/transcript.txt",
+   "before_sha256": "1729d377eedb82608326b9c0e204cbed0f6314f5fa8288e01b6e0446267ac07c",
+   "after_sha256": "ca2c51660037c21f3f36557a80a1acdb0f127cc2cb2dfece12a3bb9713260e4c"
+  },
+  {
+   "path": "Windows-to-Sarvam/sarvam-acceptance-v297-2026-11-03/path-check.txt",
+   "before_sha256": "bb80ca80aaabbc3e14cf75737a7d0d936672b30e2c51d62b04328fdb6f6cb21c",
+   "after_sha256": "3b2c75cfd3173166da0d2e8cd6034a88db2f2d101b672c452a57f377dd467f10"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-diag-v305-2026-11-06/IDE.md",
+   "before_sha256": "8e4426c5f2ea3d15ffeb7df43a8ebde30a108d47751a59ca26dbba12ed5b6534",
+   "after_sha256": "1580483113e3410f9625780e352486bafbef1a15105cca3e59273b8c87e24665"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-ffi-2026-10-21/r18-proofs-and-r29-wsl.txt",
+   "before_sha256": "d3c40a58d4f1de54503427b6a5ec2e82fb3d1473440db616a6659114e175d11b",
+   "after_sha256": "f063e324536cf487fae0939271ee21707a3d302605f48f7dcd9c154d79406c61"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-firstrun-paths-2026-11-08/DOCS.md",
+   "before_sha256": "fab0be2cd4893203091da1f71df3b0408dce92c539015c1968b35ea5701666bf",
+   "after_sha256": "e2c0e53cc65c944b0e911e4846459e8c0bedf69967f19540d2ad038ac8cd2355"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-firstrun-paths-2026-11-08/PATH-DECLINED.md",
+   "before_sha256": "262308e53e38078ba7289d24d4006b3d70c7a05b8caea1dda085cb510fa2b0f9",
+   "after_sha256": "a7ae93502d0cfae55fa26b2db525d485774039b82b101302781e29f050dadde2"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-firstrun-paths-2026-11-08/SHELL-OPEN.md",
+   "before_sha256": "b57a9fb082017490e2d5a4c3155d37185fb0f4784384ed11a0da58df2352eb18",
+   "after_sha256": "af8107770756d2bf87495c968391bb1b1fba639a931c7c65caea9a0cb58c02e2"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-firstrun-paths-2026-11-08/SHORTCUT.md",
+   "before_sha256": "1346973b60c558f5bc49b662f02e88eeaf6b84ebc160e8f22a0c4c30e3bef128",
+   "after_sha256": "84ed83341b4bde2726005699f9ca2ad9e51aac6a185c0aa903cfffce1d0da306"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-installer-diag-2026-11-06/HANG.md",
+   "before_sha256": "b9258f005f60dd5f553d5b22f9b457b958c6c663693cdcee0b6002999b81e338",
+   "after_sha256": "d91576114fa93af39a24f21f412870e13991488e29b3945a9a757fe062c791ed"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-repair-2026-11-06/RESULTS.md",
+   "before_sha256": "107c382501aa60ff908936ec29a076ca719142fc2777d43d4c44305c65e173bd",
+   "after_sha256": "4ae323ddc8ebcebdefececbc5d169f6156ed5a2cae05e30c37cfe09cdd8197c8"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-round2-2026-11-03/RESULTS.md",
+   "before_sha256": "4361b3701f8c906709ed98a31eca0e82df7a8da474a13b53c0453e2139900a51",
+   "after_sha256": "4c6b300f1a37720142f6126053b243c8543a237145b194c228cc221f63702784"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-round2-2026-11-03/linux-results.json",
+   "before_sha256": "e555b417dfc3594c1d1c8b7dabc7e001f43e4ac3b518b09fb4d171cc43d7ce7d",
+   "after_sha256": "15391a888344021b7a1f1673fa4349b0ee116271da15e89c384bd863958162b8"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-round3-2026-11-03/baseline-linux/probes.json",
+   "before_sha256": "58f53fc801be065c249e44c2f538353f7418d89db547c9ad7cc5c4f6aa171632",
+   "after_sha256": "c4ada265a3a2337e52f08381d77b9ee12206568bfef0b30188e0fb4a8dadcbf2"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-round3-2026-11-03/characters-linux/probes.json",
+   "before_sha256": "44903b521cc2d2dbd09b1cc07ff0a563d186d6839de9b5f3ac55ad53b121b24d",
+   "after_sha256": "75381da6fe35dc73943789807b24b10f1573c17b117e6c4515d15151f44156b0"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-round3-2026-11-03/concat-linux/probes.json",
+   "before_sha256": "455c46adcf03e0a9e93f890ea0abf95cc674c8dd18afbea06da09a1b3f4cd673",
+   "after_sha256": "5e9f8fa2c3cd64f76ae591a9af770e79bc9aa3be9606246ac3a301a105532654"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-round3-2026-11-03/explicit-memory-linux/probes.json",
+   "before_sha256": "33e5df5db2beff665eba94af43cfee052100465e9c2ad7c4da4e7c775a6186b3",
+   "after_sha256": "5c0a8823e4939198bd211baa98433dde1a8ead26c478659105fe1be5bd66014b"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-round3-2026-11-03/linux-contract-tests.log",
+   "before_sha256": "33798d58c36408c211bc6fe44143e183c1882c2f2c8377bddea8912466947280",
+   "after_sha256": "966536f90362c9ed31b99e72fc726e8fad0977372bc4ecad8923db8165db9f4c"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v297-2026-11-03/build-success.log",
+   "before_sha256": "569b975d04ec1c417496f4ab11c95e0294613dbd7c809704741eaee1a31d8ba0",
+   "after_sha256": "f5e3ca6934ba961b7614527e0212781c5f3d34d726d79eb6ac04aaee7d7b3528"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v297-2026-11-03/payload-check.log",
+   "before_sha256": "6c8919ad3752e46e12022a4766f1ca1e381540055724977d3ead2fa8b4f33de8",
+   "after_sha256": "49e8a8aead0e0fe06d213123c60591f907b84aaa78009701b15b0ca539acbce3"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v305-2026-11-06/RESULTS.md",
+   "before_sha256": "29b620346e2d1a25ff8ad7ed52428d5c6b641f30bdd8b54e314733b8acca8e2c",
+   "after_sha256": "6e37ced3f79531f97a8ea0d4094c8704447e55d5fd7c11c3f72300e6fd62a149"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v306-2026-11-06/IDE.md",
+   "before_sha256": "40936f4059bfb5253f05029e8e3b59751279b2dc65a3fa7e069ba62d50616283",
+   "after_sha256": "066d2c072c562e5ae95ad9d0d4eafed9a966ba9034871a6285b832924cc44bb8"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v306-2026-11-06/INSTALL.md",
+   "before_sha256": "5da74c4c8ec46a124cbaf73eea42d9b9d872351dff622112e42ce50341610e0b",
+   "after_sha256": "efef372a689b9609f4c28dd67fc428d8e8686aff1c2b20a29131ef97a5341278"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v306-followup-2026-11-06/UPGRADE.md",
+   "before_sha256": "9ee87da811f3e98a2971117ac3a9e557d1f3dbc40f6f3630d31c1343d7d5b2a1",
+   "after_sha256": "7e91bad20336c4c013f0e76a11619d6a5b9078e522f6d37fb2c8f9c065227cc4"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/UPGRADE.md",
+   "before_sha256": "d4720a8aa6dd08f537387020b32cc3f27c2687c0169bb6aff53d8f3ba5a32395",
+   "after_sha256": "6e5eeb157cba4211e3af5d0844527811c6a635debbe84198eeae0e4d7a73a6ba"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-fixes-2026-11-06/RESULTS.md",
+   "before_sha256": "0ee63effae98311daf7c8568929c0c8018c3e050b8ea054ffe8d2fa7ed2f0018",
+   "after_sha256": "8fa738ea8edb2e21e2271e502a7fb17a4e2f8255b37e510142f44929dbec4ff2"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/RECOVERY.md",
+   "before_sha256": "5ebf98d679c552c56109bc0ed525b76f28eb0b77a0fbe636e65d2653bdbbfc55",
+   "after_sha256": "b77bcb6919ea43e50c53570344c43ec050c2b04d76f0a204d603feb2cd9628ff"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/RESULTS.md",
+   "before_sha256": "3ff8b2a4de38d3cd72d15dddffc0ad77dae97f99cf6ab4de232f8ce8010eb1fd",
+   "after_sha256": "ff1e607573aff6ef19d61261fe984f3990b51f9299e300d51d08723d1cfb93cb"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/build-compiler.log",
+   "before_sha256": "5aa6a28283f83d185f365e84e4202b0925daf74815cf9b35ebc4eeab085a6df7",
+   "after_sha256": "20e46daff59fa2ca32e556f2e505061c93d1ac64da8d8b129feb538e2b901f30"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/build-installer.log",
+   "before_sha256": "ed30dfbbb630d754e7f45717c19cf3d16b150973d96e1a8bfceaa24451f90fd0",
+   "after_sha256": "111655b41124d9db1809305cc657e81a6544340752276bdb515e597cc21645db"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/final-verification.txt",
+   "before_sha256": "28f28e6b6b28e54e509429e0857d3d5f487345c939fc4953b733c6a5999fb980",
+   "after_sha256": "8affe0177969c5b096c0a0496c1a0564582f32d6bb5664bda8b12a780d14a9cd"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/lock-fixture.txt",
+   "before_sha256": "f2dcb4be962661d0aae5dc3113cd9044a3e1ec623d8e8df6f9410ff54e50f584",
+   "after_sha256": "03dac1dd3d6cfeb1abe84f30b15f0ecdb49f5032c20298e1eacbcce5c80bd499"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/r130-command-error.txt",
+   "before_sha256": "468a559688ec2882a11ee24486a2ca2a4d509fb1ef4f2585a43504d33d694ff6",
+   "after_sha256": "1d8b0ad16230e7b168e4b543aae9a6099d47cc684245f26c6d3fa7303b72529c"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/reuse-fixture.txt",
+   "before_sha256": "e4bb2775c775c1f08201cbdabd7aa1e904e1c3be2f1aa94be1cbedd4a87debd6",
+   "after_sha256": "19a112ebe5f417025e59de1a109e2a626e8fafb1d6268ce083579de4e2c5f6c9"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/RECOVERY.md",
+   "before_sha256": "e895600ffbc33eac363d6d488695e71d11da8f1d5ddfb36bd9ad899ef769b443",
+   "after_sha256": "3498729b4721fc105ebdb2d016e192c47dab1579eddd0505d4ba93aaedc34e04"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/RESULTS.md",
+   "before_sha256": "41e850eb107da85b9ec6a0b45d65663dba1b3a6024bf960948740b35c9acfeac",
+   "after_sha256": "a17ee31bd0e17b36d55785819f48385104da5ce460d06fa6d1e8bcca5cd5b40c"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/build-windows.log",
+   "before_sha256": "3508c33b8d5f667776ea647fc213907bccb9ea786ba6a86909c4d98c7a4b096e",
+   "after_sha256": "24ac5c3039860a166d5ebb1eaa03c434e7ea0b065aa907433195ea09f8ede1ba"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/final-verification.txt",
+   "before_sha256": "dc85cc936128be2fc148e90f5e39c94d0b3dfcdb79995a4cc556ac92e21d7d8c",
+   "after_sha256": "778545c94120fd453935d61f973a7a74f88c8f1be6eb6ad04d46a3475c678506"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/reuse-fixture-final.txt",
+   "before_sha256": "d490313adb8381f2ad0d8588d9a20f20809fb0b8d4e6f6c29a3e09d610ed4fd8",
+   "after_sha256": "98951c63897f0d7357c3a7995d99b5f200fd4fb107dffaee4b15f761fe822921"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-integrated-2026-11-07/RESULTS.md",
+   "before_sha256": "0b50905ecda382ad64512e9bb9020ebf20710d3896fc992890b1ee2db4e308bf",
+   "after_sha256": "2fbb6ba73c1a0b130f8ac13da0e8cead7dc2eaa78d877ea237426bbb14e0b2bb"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-integrated-2026-11-07/build-installer.log",
+   "before_sha256": "290e85023def1084c8b7ccc828796aac8f36031baad2a2c54302fd0fafd5c593",
+   "after_sha256": "4ea2340d97a28637b7885e7eba1cb8ec81fb3baf487cb2fa690bf471463a5915"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-integrated-2026-11-07/final-verification.txt",
+   "before_sha256": "4b01aa5aca2ade8e138fb3a5f2f77a76dcc257dae0491a650f1a5dd4203591ab",
+   "after_sha256": "3454cc42b8d3b91200b8d317770d404c44fd7ead63720612cb92430cfc27782b"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-integrated-2026-11-07/lock.txt",
+   "before_sha256": "8ac20d5f7a6ad53eb69536fbd18426d3df8ce25c11799a839f6831a381373c94",
+   "after_sha256": "aa9eed068b66b1521cf85b0efe0f8a714d79c06b16518ad4b1e8acd3b6c5f462"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-integrated-2026-11-07/reuse.txt",
+   "before_sha256": "9a81830d8eb70b8ffb99d92db0f7f3a9e56202bc75899fceb37f37f509eba7b9",
+   "after_sha256": "88e8fcdc681b92db47defb514a478693dadd6659917bae47c0c3eb7d78381bbb"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v310-2026-11-07/RESULTS.md",
+   "before_sha256": "b2cc8dbf8ca944936ed90e9af53dd80e17e6574f48cc9dc43a127481dc026ba2",
+   "after_sha256": "1787be0322ea9c76880dae8cb8220f7bf134775990460deb25f0985c589fa529"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-2026-11-07/RESULTS.md",
+   "before_sha256": "bb6c426a269bf3edda1788a6bcfdef087a50534e06e22432ab7f939c734dfce6",
+   "after_sha256": "ec578017fda87790cfbc2bc8c5cc5a87a582c7706866a776347328fc4656e688"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/FRESH-INSTALL.md",
+   "before_sha256": "90f0a50250f624dd3daea88d02a744eaf35cb710f221738df4dbdc7fc982ceeb",
+   "after_sha256": "54bcb1c81e53bf79bf0f9f8bcc18d087d32c651e992a24073a375dedb6b72849"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/IDE.md",
+   "before_sha256": "a0b3dab6cfa20e01733269f53556fecda34a4342c3c1a7a78ccdefd6bb3bdf1d",
+   "after_sha256": "b2f42601cbd89e66c138103ff4c5fa8a3d30a3e3d897867723639b2fbcd5514d"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/RESULTS.md",
+   "before_sha256": "a9040529a4e4d393e8aecfadc0d3f2e6cb04a081da898b9d50f0d97bafd7aca3",
+   "after_sha256": "0e7e7cf6f128b17175d01af94e329ad7a549068c9e888d1ad49cb22fd844070e"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/before-class.reg",
+   "before_sha256": "2de56156195576bf8402a1ca5cc393726ac4221bca6c7fb1952ad37af697184d",
+   "after_sha256": "f78514f7ea5e4cea51b022173ee602db969fb62260dcf78f6918ae9e0f50a66c"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/before-uninstall.reg",
+   "before_sha256": "707ce4ca9e935955867f34a81f5bd078003433291af20f2afaa25ac06291ca2a",
+   "after_sha256": "f1457ff080c507bd6589ff03859a45dbe3174521f3bb4bbae676963a045d67d4"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v312-2026-11-08/LICENCE.md",
+   "before_sha256": "4b43458da9414ab5ddd7ebcbfabcab919fdfe948ea9587dccafb13cc557e81cf",
+   "after_sha256": "3d608f74218c18c76302a453b5cc8ed183d092306c7a53c34e669442bd357ed2"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v312-2026-11-08/UNINSTALL.md",
+   "before_sha256": "efb98c82eed49f9e770b2afc2e10f0803808a4b6c1353c48a33a0cc3f128ea43",
+   "after_sha256": "9cbe5fb8ea31247e376284a8fb55d9a2bb23d278e5f1b5257f9878be15e4e447"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v313-2026-11-08/LICENCE.md",
+   "before_sha256": "ac169982aa4665331e64fde07a646435e1e4b308e2bd72952b9b3fe378f35a0a",
+   "after_sha256": "2be904a0624180dabba2ef2b6230deb12abd1e399720578e84bbddeb98bb8e0d"
+  }
+ ],
+ "base": "e199c90d (before: the bytes at that commit; a file also in evidence-r164/normalization-record.json was normalised twice - follow the chain)"
+}

@@ -18,8 +18,8 @@ Sutram entry. A fresh ordinary `cmd /d /c "sutram --version"` returned exit 1:
 operable program or batch file.
 ```
 
-Evidence: [defaults](install-options-default.png), [selected options](install-options-selected.png),
-[Ready](install-ready.png), [raw wizard record](install.json), [identity and clean-shell check](identity.json).
+Evidence: [defaults](install-options-default.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [selected options](install-options-selected.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*,
+[Ready](install-ready.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [raw wizard record](install.json), [identity and clean-shell check](identity.json).
 
 ## A2 — actual Start-menu terminal
 
@@ -42,14 +42,14 @@ Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
 The shortcut prepends its own compiler folder to the terminal's process PATH; the user's persistent PATH
 remains unchanged. It provides a working prompt and version banner, but no compile-command tutorial in that banner.
 
-Evidence: [startup](terminal-startup.png), [typed command](terminal-version.png),
+Evidence: [startup](terminal-startup.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [typed command](terminal-version.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*,
 [raw version](terminal-version.txt), [stderr](terminal-stderr.txt), [where](terminal-where.txt),
 [terminal process PATH](terminal-path.txt), [launch/commands record](terminal.json).
 
 ## A3 — recovery without reinstalling
 
 Both the Start-menu terminal and full-path execution of `bin\sutram.exe --version` work without reinstalling.
-The [Finish page](install-finish.png) says “You will find Sutram IDE and Sutram Terminal in your Start Menu.”
+The [Finish page](install-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)* says “You will find Sutram IDE and Sutram Terminal in your Start Menu.”
 It gives no additional instruction specific to declining PATH.
 The installed README points to `docs/WINDOWS-SETUP.md`; the English book is accessible through its Start-menu
 shortcut. Its §17.6, “Understanding PATH,” explicitly says to type the full path or run from the containing

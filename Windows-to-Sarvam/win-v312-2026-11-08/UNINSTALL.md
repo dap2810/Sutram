@@ -4,13 +4,13 @@ The Settings uninstall succeeds, removes the canonical installation and active r
 
 ## B1 — timeline and visible result
 
-The monitor started at 2026-11-08T11:21:57.0884463-05:00, before opening the uninstall menu. The v312 entry and Settings confirmation were verified with UI Automation. [Confirmation screenshot](settings-uninstall-confirmation.png).
+The monitor started at 2026-11-08T11:21:57.0884463-05:00, before opening the uninstall menu. The v312 entry and Settings confirmation were verified with UI Automation. [Confirmation screenshot](settings-uninstall-confirmation.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*.
 
 - Final Settings confirmation invoked: `2026-11-08T11:25:01.5597599-05:00`.
 - Native launcher's child PowerShell engine began: `2026-11-08T11:25:01.7228332-05:00`. Parent PID 25268 is reported by Windows; the short-lived launcher itself was not sampled, so no launcher exit code is claimed.
 - The Sutram row disappeared between 4.256 and 4.788 seconds after confirmation.
 - Engine PID 16088 exited 0 at `2026-11-08T11:25:08.3593592-05:00`: **6.637 seconds of engine lifetime**, **6.800 seconds from final confirmation**. Observation noticed completion at 6.922 seconds. Menu preparation/approval pauses are excluded from these durations.
-- Last product result: Settings has no matching app. [Verified final screenshot](settings-uninstall-final-recheck.png). No separate uninstall progress bar, completion window or error dialog was observed.
+- Last product result: Settings has no matching app. [Verified final screenshot](settings-uninstall-final-recheck.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*. No separate uninstall progress bar, completion window or error dialog was observed.
 
 **Console:** zero new visible console/Terminal windows in the WinEvent create/destroy/show/hide hook and repeated top-level sampling. **PowerShell window:** none attributable to uninstall; its child ran without one. Event hook used a dedicated message-pump thread; process/window sampling is not a continuous video. [Observer record](uninstall-observer.json), [engine log](uninstall-engine.log), [Settings timing](settings-uninstall.json).
 

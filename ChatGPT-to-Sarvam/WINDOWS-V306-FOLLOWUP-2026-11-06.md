@@ -45,7 +45,7 @@ or exact fault address is claimed.
 Read [OOM](../Windows-to-Sarvam/win-v306-followup-2026-11-06/OOM.md),
 [UPGRADE](../Windows-to-Sarvam/win-v306-followup-2026-11-06/UPGRADE.md),
 [security-log excerpts](../Windows-to-Sarvam/win-v306-followup-2026-11-06/security-log-excerpts.json),
-[the stalled-window screenshot](../Windows-to-Sarvam/win-v306-followup-2026-11-06/upgrade-stalled-dwm.png),
+[the stalled-window screenshot](../Windows-to-Sarvam/win-v306-followup-2026-11-06/upgrade-stalled-dwm.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*,
 and [COMMANDS](../Windows-to-Sarvam/win-v306-followup-2026-11-06/COMMANDS.md).
 The directory contains the full request, copied probes/unchanged runner, all
 31 raw stderr files, timing and process observations, engine logs and recovery

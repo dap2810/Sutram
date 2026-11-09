@@ -1290,6 +1290,12 @@ address made in the block.** Putting one in directly (`kosh_kship(k, buf)`, `k[i
 it gets in unseen is through a `prakriya` that hands the address back (below). A `kosh` of *numbers* used in a
 block works; its storage is ordinary memory, which the block does not reclaim.
 
+**Nor a `mala`.** A `mala` declared inside a block takes ordinary memory as well, which the block never reclaims:
+200,000 calls that each declare a `mala` of 31 numbers inside a block end with `parimana()` at 51,200,000 and the
+peak of a program with no block. Returning one from inside the block is not refused - its memory stays, so the
+address stays good - but putting it in an outer `vitti` is (`E_VITTI_PRAKAR`, the kind rule). Measured on v315
+(R166). Inside a block meant to give memory back, take it with `nirmmita`.
+
 ### Run time
 
 - **Entry** remembers the scratch cursor. Each `nirmmita` inside takes memory from the scratch side of the

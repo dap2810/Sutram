@@ -9,7 +9,7 @@ child console was observed. The observer closed the completed wizard normally.
 Its separately held `Process.ExitCode` was unavailable (`null`), so no independently
 captured numeric child exit code is claimed; Finish and the complete log were observed.
 
-![Native Finish page](a4-finish.png)
+![Native Finish page](a4-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 [A4 observations and actual child argv](a4.json), [engine log](a4-engine.log),
 [post-install snapshot](a4-after.json), [fresh-shell identity and hashes](identity.json).

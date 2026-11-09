@@ -785,11 +785,11 @@ cells of a board). <b>Use a <code>kosh</code></b> when you do not (the words in 
 Both are checked: reading <code>dinah[3]</code> stops the program with <code>Sutram truti: mala ank seema atikram</code>
 (<i>the index is past the end</i>) instead of reading whatever lies beyond.</p>
 
-<h3>2. <code>mandapa</code>: a block whose memory is given back</h3>
+<h3>2. <code>mandapa</code>: a block that gives back what <code>nirmmita</code> made in it</h3>
 <p><code>nirmmita(n)</code> gives you <code>n</code> bytes of fresh, zeroed memory. Outside a block it stays yours
 until the program ends. Inside a <code><span class="k" data-tip="scratch block">mandapa</span></code> it is
 <b>scratch</b>: everything made with <code>nirmmita</code> inside the block is given back, all at once, when the
-block ends - however it ends (its last line, <code>nivartanam</code>, <code>krama</code>).</p>
+block ends - however it ends (its last line, <code>nivartanam</code>, <code>krama</code>, <code>agrim</code>).</p>
 <pre><code><span class="k" data-tip="function">prakriya</span> kaam(i) {
     <span class="k" data-tip="scratch block">mandapa</span> {
         <span class="k" data-tip="variable">vitti</span> b = nirmmita(256)     <span class="cm"># 256 bytes of scratch</span>
@@ -817,6 +817,17 @@ inside one <code>mandapa</code> peak at 49,920 KB, exactly as with no block. Put
 - inside the loop, or inside the <code>prakriya</code> the loop calls, as above - and the peak is 264 KB. And only
 <code>nirmmita</code> written in the block's own lines is given back: a <code>prakriya</code> called from inside a
 block that makes memory outside any block of its own keeps it (49,920 KB again).</p>
+<p><b>What a block gives back, and what it does not.</b> Three kinds of memory, three answers:</p>
+<ul>
+<li><code>nirmmita</code> written in the block's own lines - <b>given back</b> when the block ends.</li>
+<li>a <code>kosh</code> made inside a block - <b>not given back</b>: it keeps its bytes for the whole program (section 3).
+Only its life ends with the block, and it may not leave it (<code>E_KOSH_MANDAPA</code>).</li>
+<li>a <code>mala</code> made inside a block - <b>never given back</b>: it keeps its bytes for the whole program, as a
+<code>mala</code> does anywhere. A <code>prakriya</code> may even return one from inside a block; nothing refuses that,
+because its memory stays. 200,000 calls that each make a <code>mala</code> of 31 numbers inside a block end holding
+51,200,000 bytes (<code>parimana()</code>) and peak at 49,920 KB - as if there were no block.</li>
+</ul>
+<p>So inside a block that is meant to give its memory back, take that memory with <code>nirmmita</code>.</p>
 <p> Numbers may leave a block. An <i>address</i> made inside it may not: putting one
 in a variable outside the block, or returning it, is refused at compile time (<code>E_SCRATCH_ESCAPE</code>). A
 block gives back what <code>nirmmita</code> made inside it. It does not undo anything else the block did -
@@ -855,7 +866,9 @@ Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sam
 <p>The program stops with exit status 1 and a sentence that names the line and the budget. <b>Why that is better than
 the alternative:</b> a program that simply keeps taking memory is stopped by the operating system - with no
 sentence, often after slowing the whole machine. A budget turns "the machine ran out" into "this block asked for more
-than you allowed, here". <code>N</code> must be a number written in the program. The budget covers the
+than you allowed, here". <code>N</code> must be a number written in the program. The budget counts what each <code>nirmmita</code> takes,
+rounded up to a multiple of 16 as <code>parimana()</code> counts it: <code>parimita 1000</code> refuses even one
+<code>nirmmita(1000)</code>, which takes 1008; <code>parimita 1008</code> allows it. The budget covers the
 <code>nirmmita</code> written inside the block, not a <code>kosh</code> and not what a called <code>prakriya</code>
 allocates.</p>
 
@@ -940,11 +953,11 @@ for 8. 96 is 32 bytes of the <code>kosh</code>'s own bookkeeping plus room for 8
 those 8 places are empty, waiting for the next three numbers.</p>
 <h3>7. What Sutram does not have</h3>
 <p>So that you know the shape of the thing: <b>no garbage collector</b> (nothing runs in the background looking for
-memory to reclaim); <b>no <code>free</code> for you to call</b> (memory comes back when a block ends, or when the
-program ends - you never call anything to give memory back); <b>no reuse inside a live block</b> (a block
+memory to reclaim); <b>no <code>free</code> for you to call</b> (what <code>nirmmita</code> made inside a block comes
+back when the block ends, everything else when the program ends - you never call anything to give memory back); <b>no reuse inside a live block</b> (a block
 gives its memory back only when it ends, all at once); <b>no threads</b> (one program does one thing at a time). And
 a <code>kosh</code> made inside a block cannot leave it (<code>E_KOSH_MANDAPA</code>). What you get instead is small
-and predictable: you can see where memory is held, ask how much (<code>parimana()</code>), cap it
+and predictable: you can tell from the program where memory is held, ask how much (<code>parimana()</code>), cap it
 (<code>parimita</code>), and a <code>kosh</code> that cannot grow, a block over its budget, or a block field that is full each
 stops the program with a sentence that says which, not a crash.</p>
 <div class="try"><b>Try it:</b> put a <code>mandapa parimita 4096</code> around a loop that calls

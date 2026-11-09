@@ -6,7 +6,7 @@ status. Packs given with --lang for the six pack examples.
 Windows (native, real Windows 11 Pro 10.0 (build redacted); win/sutram.exe v242 vs sutram.exe v243):
   562 programs: 475 byte-identical executables, 87 refused identically, 0 DIFFER
 
-Linux (WSL Ubuntu, kernel 6.6.87.2-microsoft-standard-WSL2; sutram_compiler v242 vs v243; a clean LF clone):
+Linux (WSL Ubuntu, kernel (kernel build redacted); sutram_compiler v242 vs v243; a clean LF clone):
   562 programs: 476 byte-identical executables, 86 refused identically, 0 DIFFER
 
 The one program whose split differs between the two hosts' runs is tests/stdlib/r11_sets_lists.sm: from CRLF

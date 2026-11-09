@@ -22,8 +22,8 @@ not “Sutram IDE.” The file loaded correctly. Default shell opening already w
 an additional explicit menu test, not a claim about all nondefault-handler configurations. No “Always” choice
 or default-application change was made.
 
-Screenshots: [spaces](shell-spaces.png), [Devanagari](shell-devanagari.png),
-[ampersand](shell-ampersand.png), [percent](shell-percent.png), [Open with](shell-openwith.png).
+Screenshots: [spaces](shell-spaces.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [Devanagari](shell-devanagari.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*,
+[ampersand](shell-ampersand.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [percent](shell-percent.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [Open with](shell-openwith.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*.
 Matching `shell-*.json` records include exact editor content, title, status, PID and close result.
 The original fixture bytes are preserved under `cases/`.
 

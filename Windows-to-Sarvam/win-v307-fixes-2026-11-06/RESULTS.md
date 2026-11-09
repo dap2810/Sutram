@@ -11,11 +11,11 @@ Main contains this record and logs. The main checkout subsequently advanced to
 
 | Attempt | Evidence | Result |
 | --- | --- | --- |
-| First upgrade, CRLF payload | [record](attempt1/upgrade.json), [Acronis](attempt1/security-log-excerpts.json), [log after stop](attempt1/upgrade-after-stop.log), [DWM screenshot](attempt1/upgrade-stalled-dwm.png), [restoration](attempt1/restore-upgrade.json) | Suspended by Acronis; recorded processes 32756 and 37664 stopped after evidence capture. 662 original files restored and verified. |
-| Normalized upgrade | [record](upgrade.json), [engine log](upgrade-engine.log), [Finish screenshot](upgrade-finish.png) | Finish 21.20 s; engine 0; 654 payload files unchanged; wizard closed after Finish. |
-| Clean install | [record](clean.json), [log](clean-engine.log), [Finish screenshot](clean-finish.png) | Finish 9.47 s; engine 0; wizard closed after Finish. |
+| First upgrade, CRLF payload | [record](attempt1/upgrade.json), [Acronis](attempt1/security-log-excerpts.json), [log after stop](attempt1/upgrade-after-stop.log), [DWM screenshot](attempt1/upgrade-stalled-dwm.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [restoration](attempt1/restore-upgrade.json) | Suspended by Acronis; recorded processes 32756 and 37664 stopped after evidence capture. 662 original files restored and verified. |
+| Normalized upgrade | [record](upgrade.json), [engine log](upgrade-engine.log), [Finish screenshot](upgrade-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)* | Finish 21.20 s; engine 0; 654 payload files unchanged; wizard closed after Finish. |
+| Clean install | [record](clean.json), [log](clean-engine.log), [Finish screenshot](clean-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)* | Finish 9.47 s; engine 0; wizard closed after Finish. |
 | Interrupted install | [record](interrupt.json), [log](interrupt-engine.log) | Observer killed only its own recorded handles after 17 complete filenames at 5.70 s; pending manifest retained. |
-| Recovery | [record](recovery.json), [log](recovery-engine.log), [partial screenshot](recovery-finish.png) | Finish 8.65 s; engine 0; pending record absent; wizard closed after Finish. |
+| Recovery | [record](recovery.json), [log](recovery-engine.log), [partial screenshot](recovery-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)* | Finish 8.65 s; engine 0; pending record absent; wizard closed after Finish. |
 
 Timing is measured from clicking Install until Finish is observed; it includes
 polling and UI latency and is not a benchmark guarantee. The clean and upgrade

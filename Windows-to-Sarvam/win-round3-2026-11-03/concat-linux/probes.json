@@ -1,6 +1,6 @@
 {
   "stage": "concat",
-  "host": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "host": "Linux-(kernel build redacted)-x86_64-with-glibc2.39",
   "compiler_sha256": "ab917a495553145627ca1d7362f248fa867a273eb799560f70994a5a9469e816",
   "rows": [
     {

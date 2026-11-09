@@ -1,0 +1,11 @@
+# R166 WS2: check 9 "figures" of R158 doc currency, run over the current documents at three commits
+
+d7f435a5 v315 as reviewed (the chapter said 392 KB): 2 found - FAIL
+  docs/sutram-book-english.html:808: gives '392 KB' - one shell's peak with the block (v315: 264 KB with env -i, 75 of 75)
+  docs/sutram-book-sanskrit.html:734: gives '392 KB' - one shell's peak with the block (v315: 264 KB with env -i, 75 of 75)
+
+d80079ca after R163 WS3 (the chapter said "308 or 436"): 2 found - FAIL
+  docs/sutram-book-english.html:809: gives '308 or 436' - R163's first figure, from 55 runs in one shell (v315: 264 KB with env -i)
+  docs/sutram-book-sanskrit.html:735: gives '308 अथवा 436' - R163's first figure, from 55 runs in one shell (v315: 264 KB with env -i)
+
+e199c90d before this round (264 KB with env -i): 0 found - PASS

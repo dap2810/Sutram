@@ -30,7 +30,7 @@ Exact current identities:
 | Embedded engine | `b78783ddbc62a1e9676f2b34c4b40236c8046362eb2153b33e832831d12bf08b` |
 | Manifest | `a534c832d00c1052e95d1d3577e2bcdb2c548bc6a3ee041d3facb5a90163943f` |
 
-Local runnable setup: `<repo>\build\windows-v309-fixes\build\native-v309-integrated\Sutram-Setup.exe`. The previous fully tested install was hash-verified and preserved before the upgrade; see [backup record](backup-before-v309.json). The final exact [machine identity](handoff-identity.json), [phase record](initial.json), [screenshot](initial-finish.png), [payload comparison](payload-comparison.json), and [closed process record](final-processes.json) are retained unchanged.
+Local runnable setup: `<repo>\build\windows-v309-fixes\build\native-v309-integrated\Sutram-Setup.exe`. The previous fully tested install was hash-verified and preserved before the upgrade; see [backup record](backup-before-v309.json). The final exact [machine identity](handoff-identity.json), [phase record](initial.json), [screenshot](initial-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [payload comparison](payload-comparison.json), and [closed process record](final-processes.json) are retained unchanged.
 
 Commands ran from the review worktree, with `C:\Program Files\mingw64\bin` prepended to process-local PATH:
 

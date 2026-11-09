@@ -5,7 +5,7 @@
 - **Crash corpus:** `crash corpus: 227 cases + manifest, 0 failed` (Linux, WSL)
 - **Suite:** `NO-EXPECTATION=4  PASS=218` (Linux, WSL); Windows: 215 of 218 examples match, the 3 known Windows-specific (below)
 - **Gates:** `tools/gates.sh` **28 PASS / 3 FAIL / 1 NOT-RUN** - **WSL Ubuntu on the owner's PC** (kernel
-  6.6.87.2-microsoft-standard-WSL2, GNU ld 2.42, NASM 3.01 through a path wrapper), a clean LF clone of `4c325b51`.
+  (kernel build redacted), GNU ld 2.42, NASM 3.01 through a path wrapper), a clean LF clone of `4c325b51`.
   The 3 FAILs are `main`'s own: library proofs and R29 (both `r18_srij_overflow_guard`, below), X11 (no display).
 - **Windows:** real Windows 11 Pro 10.0 (build redacted), a standard user, **not elevated**, a fresh clone with Git for
   Windows' defaults (`core.autocrlf=true` + the repository's `.gitattributes`).

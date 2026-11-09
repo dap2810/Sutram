@@ -64,7 +64,7 @@ The brief’s wording “that instruction does not exist on Windows” needs pre
 
 Windows compiler SHA-256: `ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e`.
 Linux compiler SHA-256: `a9868449a047482bd480ebc6ce05e73ebec57ce6aea1c691974aab8b17b25855`.
-Linux host: `Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39`, uid 1000. No root execution.
+Linux host: `Linux-(kernel build redacted)-x86_64-with-glibc2.39`, uid 1000. No root execution.
 
 Exact process argv arrays, cwd, output streams, output hex, exit codes and timings are in `windows-results.json` and `linux-results.json`. Every generated source is in `programs/*.sm`. `run.py`, `linux_compare.py`, and `report.py` reproduce the work. Five-second subprocess bounds were used; no test timed out.
 

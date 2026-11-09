@@ -162,9 +162,9 @@ the known v297 usability defect, reproduced rather than reported as new. The
 oversized file's SHA-256 was unchanged before and after, and the IDE closed on
 request without forced termination.
 
-![Hello World through the native IDE](ide-hello.png)
+![Hello World through the native IDE](ide-hello.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
-![Refusal with the old output still visible](ide-large-refusal.png)
+![Refusal with the old output still visible](ide-large-refusal.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 ## Delivery and limits
 

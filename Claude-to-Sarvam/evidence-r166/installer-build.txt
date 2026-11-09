@@ -1,0 +1,2 @@
+payload: 658 files, 1897930 bytes zipped; Sutram-Setup.exe 2050560 bytes, sha256 6f9cdbda02164cb521aa853ea920f60dd77d871eb2e70b32da3130b1ebb05018
+SETUP PASS: built <repo>/Sutram-Setup.exe; staging kept at <scratch>/inst

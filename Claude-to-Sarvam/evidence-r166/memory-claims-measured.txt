@@ -1,0 +1,169 @@
+# ROUND-166 WS3: each claim the chapter is to make, run on Sutram 1.0 (v315) - sampurna sutra, Linux. Peaks: env -i, /usr/bin/time %M
+
+== m2: a mala inside a block, then nirmmita(32) inside a block: parimana() before, inside, after
+mukhya() {
+    likha(parimana())
+    mandapa {
+        mala m[4]
+        m[0] = 7
+        likha(m[0])
+        likha(parimana())
+    }
+    likha(parimana())
+    mandapa {
+        vitti t = nirmmita(32)
+        t[0] = 1
+        likha(parimana())
+    }
+    likha(parimana())
+}
+-- compile:
+   Siddh: 2320 baait sankalit
+-- run (exit, output, peak):
+   0
+   7
+   48
+   48
+   80
+   48
+      peak 308 KB
+
+== m4: a kosh inside a block: parimana() before, inside, after
+mukhya() {
+    likha(parimana())
+    mandapa {
+        kosh k[4]
+        kosh_kship(k, 1)
+        likha(parimana())
+    }
+    likha(parimana())
+}
+-- compile:
+   Siddh: 2299 baait sankalit
+-- run (exit, output, peak):
+   0
+   96
+   96
+      peak 308 KB
+
+== m1: 200,000 calls, each making a mala of 31 numbers (256 bytes with its length word) inside a block: the sum, parimana() at the end, peak
+prakriya kaam(i) {
+    mandapa {
+        mala b[31]
+        b[0] = i
+        nivartanam b[0]
+    }
+    nivartanam 0
+}
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        s = s + kaam(i)
+    }
+    likha(s)
+    likha(parimana())
+}
+-- compile:
+   Siddh: 1254 baait sankalit
+-- run (exit, output, peak):
+   20000100000
+   51200000
+      peak 49920 KB
+
+== m5: 200,000 passes, each leaving its block by agrim (continue): the sum, parimana() at the end, peak
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        mandapa {
+            vitti b = nirmmita(256)
+            b[0] = i
+            s = s + b[0]
+            agrim
+        }
+    }
+    likha(s)
+    likha(parimana())
+}
+-- compile:
+   Siddh: 1014 baait sankalit
+-- run (exit, output, peak):
+   20000100000
+   0
+      peak 308 KB
+
+== m6: parimita 1000 and one nirmmita(1000) (1000 rounds up to 1008)
+mukhya() {
+    mandapa parimita 1000 {
+        vitti a = nirmmita(1000)
+        likha(parimana())
+    }
+    likha(1)
+}
+-- compile:
+   Siddh: 1408 baait sankalit
+-- run (exit, output, peak):
+   Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1000 baait)
+   Command exited with non-zero status 1
+      peak 308 KB
+
+== m6b: parimita 1008 and one nirmmita(1000)
+mukhya() {
+    mandapa parimita 1008 {
+        vitti a = nirmmita(1000)
+        likha(parimana())
+    }
+    likha(1)
+}
+-- compile:
+   Siddh: 1408 baait sankalit
+-- run (exit, output, peak):
+   1008
+   1
+      peak 308 KB
+
+== m3: a prakriya returning a mala made inside a block
+prakriya f() {
+    mandapa {
+        mala m[4]
+        m[0] = 7
+        nivartanam m
+    }
+    nivartanam 0
+}
+mukhya() {
+    vitti p = f()
+    likha(p)
+}
+-- compile:
+   Siddh: 852 baait sankalit
+-- run (exit, output, peak):
+   140533947170824
+      peak 308 KB
+
+== m3b: a mala made inside a block put into an outer vitti
+mukhya() {
+    vitti p = 0
+    mandapa {
+        mala m[4]
+        m[0] = 7
+        p = m
+    }
+    likha(p > 0)
+}
+-- compile:
+   Sutram truti [E_VITTI_PRAKAR]: 'p' sankhya (smriti-sthanam va) asti; mala tasyam na sthapyate
+   Sanket: ekasya vitteh prakarah sthirah - kosh, mala, vibhag athava sankhya; bhinnaya prakaraya anyam vittim ghoshaya
+
+== m3c: nirmmita made inside a block put into an outer vitti
+mukhya() {
+    vitti p = 0
+    mandapa {
+        vitti m = nirmmita(32)
+        m[0] = 7
+        p = m
+    }
+    likha(p > 0)
+}
+-- compile:
+   Sutram truti [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam bahya-vittau na sthapyate
+   Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati

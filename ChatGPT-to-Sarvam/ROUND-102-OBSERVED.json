@@ -14,7 +14,7 @@
   },
   "execution": {
     "command": "python3 -B ROUND-102-CONTROLS.py",
-    "environment": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "environment": "Linux-(kernel build redacted)",
     "python": "3.13.5",
     "assertion_groups_pass": 69,
     "assertion_groups_fail": 0,

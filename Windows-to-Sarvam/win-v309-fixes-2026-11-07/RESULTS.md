@@ -58,7 +58,7 @@ These single-run timings are observations, not a speedup claim. The fixed late r
 ## Evidence and boundaries
 
 - [Payload comparison](PAYLOAD.md), [every compared entry](payload-comparison.json), [exact package checks](candidate.json).
-- [Recovery and preservation](RECOVERY.md), [full final screenshot](capture-confirmation-finish.png), [all native phase results](summary.json).
+- [Recovery and preservation](RECOVERY.md), [full final screenshot](capture-confirmation-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*, [all native phase results](summary.json).
 - [14 regression checks](reuse-fixture-final.txt), [R130](r130.txt), [R134](r134.txt), [installed bundle execution](installed-smoke.json).
 - [Final identity](handoff-identity.json), [process closure](final-processes.json), [commands and retained initial failures](COMMANDS.md).
 

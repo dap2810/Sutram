@@ -63,19 +63,19 @@ Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
 
 ### Test 22
 
-![Test 22](sarvam-acceptance-v297-2026-11-03/test22-open.png)
+![Test 22](sarvam-acceptance-v297-2026-11-03/test22-open.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 ### Test 23
 
-![Test 23](sarvam-acceptance-v297-2026-11-03/test23.png)
+![Test 23](sarvam-acceptance-v297-2026-11-03/test23.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 ### Test 24
 
-![Test 24](sarvam-acceptance-v297-2026-11-03/test24.png)
+![Test 24](sarvam-acceptance-v297-2026-11-03/test24.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 ### Test 21
 
-![Test 21](sarvam-acceptance-v297-2026-11-03/test21.png)
+![Test 21](sarvam-acceptance-v297-2026-11-03/test21.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 ## Exact output and diagnostics
 
@@ -552,7 +552,8 @@ gui; exit: not captured by GUI
 
 output:
 ```text
-Sutram truti [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati
+Sutram truti [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati
+
 [karyakramah asamanya-rupena samaptah]
 ```
 

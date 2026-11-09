@@ -1,0 +1,40 @@
+PASS  self-test: 22 forbidden forms caught (2 in UTF-16), 19 placeholders pass, a name by its hash caught in text, a binary and UTF-16
+FAIL  ChatGPT-to-Sarvam/ROUND-102-OBSERVED.json:17: build (1 in the file) ~ text not shown
+FAIL  ChatGPT-to-Sarvam/ROUND-71-RECLAIM-PROBE.json:4: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r163/peak-memory-remeasured.txt:2: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r163/peak-memory.txt:2: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r34/gates-linux.txt:1: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r34/ordinary-path.txt:9: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/WIN-FFI-2026-10-21.md:9: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/WIN-LINKER-2026-10-21.md:8: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/ide-v297-2026-11-03/nested-transcript.txt:9: build (4 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/ide-v297-2026-11-03/transcript.txt:181: build (4 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/sarvam-acceptance-v297-2026-11-03/path-check.txt:1: home (4 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-ffi-2026-10-21/r18-proofs-and-r29-wsl.txt:2: build (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-round2-2026-11-03/RESULTS.md:67: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-round2-2026-11-03/linux-results.json:2: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-round3-2026-11-03/baseline-linux/probes.json:3: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-round3-2026-11-03/characters-linux/probes.json:3: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-round3-2026-11-03/concat-linux/probes.json:3: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-round3-2026-11-03/explicit-memory-linux/probes.json:3: build (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-round3-2026-11-03/linux-contract-tests.log:2: name projects (1 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v297-2026-11-03/build-success.log:1: name projects (51 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v297-2026-11-03/payload-check.log:1: drive (10 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/build-compiler.log:1: name projects (15 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/build-installer.log:1: name projects (16 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/final-verification.txt:5: home (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/lock-fixture.txt:4: drive (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/r130-command-error.txt:1: home (6 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/reuse-fixture.txt:9: drive (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-fixes-2026-11-07/build-windows.log:1: name projects (16 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-fixes-2026-11-07/final-verification.txt:5: home (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-fixes-2026-11-07/reuse-fixture-final.txt:9: drive (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-integrated-2026-11-07/build-installer.log:1: name projects (16 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-integrated-2026-11-07/final-verification.txt:5: home (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-integrated-2026-11-07/lock.txt:4: drive (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v309-integrated-2026-11-07/reuse.txt:9: drive (2 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v311-acceptance-2026-11-07/before-class.reg:3: home (4 in the file) ~ text not shown
+FAIL  Windows-to-Sarvam/win-v311-acceptance-2026-11-07/before-uninstall.reg:3: home (6 in the file) ~ text not shown
+known identifiers (the owner's names, by hash): 91 places
+policy forms (home folders, other drives, build machines, accounts, builds, hardware, addresses): 94 places
+r159 no personal paths: 10830 of 10830 tracked files inspected, 36 with system details (185: build 20, drive 62, home 12, name account 12, name projects 79)

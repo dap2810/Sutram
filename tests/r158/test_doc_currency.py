@@ -31,6 +31,9 @@ versions; they are not read except where a check says so.
                   descriptor", "56 bytes") is one the compiler makes - measured with parimana(): a kosh made outside
                   any block, and one made inside a mandapa (R82's three more words)
 
+  9  figures    - R166: a measured figure that was replaced is not given as current in a current document or
+                 book: the v284 mandapa measurement (52,760 / 13,480 KB), and the block peaks the R163 re-measurement
+                 refuted (392 KB; "308 or 436"). The changelog is history and is not read.
 What it cannot check (ROUND-158 WS3): that a paragraph is still true. A version number and a symbol can be
 found; a false sentence cannot. Read the narrative.
 
@@ -421,6 +424,27 @@ def check_sizes(docs, sizes):
     return bad
 
 
+# ------------------------------------------------------------------------------------------------- 9 figures
+# (pattern, what it is): each was once printed as a measurement and has been replaced by a measurement (R163, R166)
+STALE_FIGURES = [(r'(?<![\d,])52,?760\s*KB', 'the v284 measurement without a block (v315: 49,920 KB)'),
+                 (r'(?<![\d,])13,?480\s*KB', 'the v284 measurement with a block (v315: 264 KB with env -i)'),
+                 (r'(?<![\d,])392\s*KB', "one shell's peak with the block (v315: 264 KB with env -i, 75 of 75)"),
+                 (r'308 (?:or|अथवा) 436', 'R163\'s first figure, from 55 runs in one shell (v315: 264 KB with env -i)')]
+
+
+def check_figures(docs):
+    bad = []
+    for rel, t in docs.items():
+        if rel not in CURRENT or t is None:
+            continue
+        plain = html.unescape(re.sub(r'<[^>]+>', '', t)) if rel.endswith('.html') else t
+        for pat, what in STALE_FIGURES:
+            for m in re.finditer(pat, plain):
+                line = plain.count('\n', 0, m.start()) + 1
+                bad.append(f'{rel}:{line}: gives {m.group(0)!r} - {what}')
+    return bad
+
+
 # ------------------------------------------------------------------------------------------------- main
 def load(root):
     rels = set(CURRENT) | set(BOOKS) | set(PAUSED_BOOKS) | {'docs/CHANGELOG.md'}
@@ -466,6 +490,9 @@ def self_test(compiler, root, flags, labels, codes_text, current):
     sizes = descriptor_sizes(compiler, root)
     found = check_sizes({'docs/LANGUAGE-REFERENCE.md': 'a 24-byte descriptor and a 32-byte descriptor, 56 bytes'}, sizes)
     ok.append((len(found) == 1 and '24 bytes' in found[0], f'self-test: sizes rejects a 24-byte descriptor and accepts {sizes[0]} and {sizes[1]}'))
+    found = check_figures({LR: 'peaks at 52,760 KB without a block and 13,480 KB with one; 392 KB; 308 or 436 KB',
+                           'docs/sutram-book-english.html': '<p>264 KB with env -i, 49,920 KB without</p>'})
+    ok.append((len(found) == 4 and all(LR in f for f in found), 'self-test: figures rejects the four replaced figures and accepts 264 and 49,920'))
     bad_log = {'docs/CHANGELOG.md': '## v315 (Claude, R154) - x\n## v313 - no who\n'}
     found = check_changelog(bad_log, current)
     ok.append((any('v314' in f for f in found) and any('v313' in f for f in found),
@@ -504,7 +531,8 @@ def main():
             ('memory', check_memory(docs), 'the memory chapter is in both books and covers the seven topics'),
             ('changelog', check_changelog(docs, current), f'docs/CHANGELOG.md has every version to v{current}, each with who and the round'),
             ('reference', check_reference(compiler, root, docs), 'the nineteen corrected reference claims (R161) stay corrected, and the measurable ones agree with the compiler'),
-            ('sizes', check_sizes(docs, descriptor_sizes(compiler, root)), 'every kosh descriptor size a current document gives is one the compiler makes (R163)')):
+            ('sizes', check_sizes(docs, descriptor_sizes(compiler, root)), 'every kosh descriptor size a current document gives is one the compiler makes (R163)'),
+            ('figures', check_figures(docs), 'no current document gives a replaced measurement as current - 52,760 / 13,480 KB, 392 KB, 308 or 436 (R166)')):
         report(not found, f'{name}: {what}')
         for f in found:
             print('      ' + f)

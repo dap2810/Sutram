@@ -26,11 +26,11 @@ There is no collision warning in the captured visible wizard pages. Finish repor
 and points to the Start menu. Preservation is correct; the notice is only in `install.log`.
 
 Evidence: [shortcut targets/hashes](shortcuts.json), [before hash](preserve.json),
-[engine log](install-engine.log), [Finish](install-finish.png).
+[engine log](install-engine.log), [Finish](install-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*.
 
 ## C2 — actual desktop click
 
-![Real desktop icon, captured in place](desktop-collision.png)
+![Real desktop icon, captured in place](desktop-collision.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 The screenshot is an unaltered screen-region capture around the actual Desktop icon; unrelated personal
 desktop content was excluded. The visible label is **Sutram IDE**, with Notepad's icon.
@@ -43,7 +43,7 @@ another application. The observed wrong target supports a usability finding; no 
 The correct Start-menu IDE remains available.
 
 Additional visible mismatch: the installer checkbox reads **“Create a desktop shortcut (Sutram Terminal)”**,
-but the engine manages **Sutram IDE.lnk**. The [options screenshot](install-options-default.png) records it.
+but the engine manages **Sutram IDE.lnk**. The [options screenshot](install-options-default.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)* records it.
 
 See [desktop click record](desktop-click.json) and [final window cleanup](finish.json).
 The collision shortcut was moved into local preservation storage after testing, not deleted.

@@ -33,19 +33,19 @@ No source fix was made in this round.
 
 After compile error:
 
-![Syntax error replaces Hello output](B1-compile-error.png)
+![Syntax error replaces Hello output](B1-compile-error.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 After runtime error:
 
-![Division-by-zero replaces Hello output](B2-runtime-error.png)
+![Division-by-zero replaces Hello output](B2-runtime-error.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 After the known large-file refusal:
 
-![Hello editor and output remain alongside large-file refusal](B3-large-file-refusal.png)
+![Hello editor and output remain alongside large-file refusal](B3-large-file-refusal.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 After selecting arithmetic and running:
 
-![Arithmetic source and fresh x plus y equals 30 output](B3-recovered-after-run.png)
+![Arithmetic source and fresh x plus y equals 30 output](B3-recovered-after-run.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 The IDE closed normally after the run; no forced close was required. SHA-256
 checks show Hello, arithmetic, and the oversized example were unchanged.

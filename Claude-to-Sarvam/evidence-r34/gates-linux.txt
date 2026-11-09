@@ -1,4 +1,4 @@
-tools/gates.sh, WSL Ubuntu (kernel 6.6.87.2-microsoft-standard-WSL2), GNU ld 2.42, NASM 3.01 (the Windows nasm.exe through a path wrapper: WSL has no nasm).
+tools/gates.sh, WSL Ubuntu (kernel (kernel build redacted)), GNU ld 2.42, NASM 3.01 (the Windows nasm.exe through a path wrapper: WSL has no nasm).
 
 ===== BRANCH, final: claude/windows-linker at b88a7344 (v243), a clean LF clone - the FFI objects come from the repository now, no C compiler used =====
   regression suite (NO-EXPECTATION=4 PASS=218 ) PASS

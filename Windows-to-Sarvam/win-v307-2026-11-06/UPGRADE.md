@@ -12,7 +12,7 @@ test. Other PATH entries and the machine PATH were preserved.
 
 The v307 engine log records start at **22:39:04** and completion at **22:39:20**:
 about **16 seconds**, at one-second log resolution. It copied all 657 payload
-files. [clean-finish.png](clean-finish.png) shows native setup reporting success.
+files. [clean-finish.png](clean-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)* shows native setup reporting success.
 The first observer's JSON serialization problem delayed Finish observation;
 therefore no precise GUI completion duration or child exit code is claimed.
 The child was absent when the Finish screen was captured. The wizard remained
@@ -49,7 +49,7 @@ that Sutram is malware.
 
 The early snapshot independently records 28 suspended engine threads and five
 suspended wizard threads; two other wizard threads show EventPairLow waits.
-The UI stopped responding. [upgrade-stalled-dwm.png](upgrade-stalled-dwm.png)
+The UI stopped responding. [upgrade-stalled-dwm.png](upgrade-stalled-dwm.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 is the existing native setup window, captured without resuming it. Its provenance
 is in [dwm-screenshot.json](dwm-screenshot.json).
 
@@ -114,7 +114,7 @@ reached the native Finish page after **16.57 s**. Engine PID **26632** exited
 **0**. Wizard PID **40300** stayed on Finish until the observer unchecked Launch
 IDE and clicked Finish; it then exited. It did not close itself. Evidence:
 [recovery.json](recovery.json), [recovery-engine.log](recovery-engine.log),
-[recovery-finish.png](recovery-finish.png). The screenshot was visually inspected.
+[recovery-finish.png](recovery-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*. The screenshot was visually inspected.
 
 The full-window [Defender query](defender.json), from the first clean install
 through final verification, found only informational health events **1150/1151**,

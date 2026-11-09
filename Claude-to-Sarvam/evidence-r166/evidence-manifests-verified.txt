@@ -1,0 +1,8 @@
+Windows-to-Sarvam/win-firstrun-paths-2026-11-08/EVIDENCE.sha256: NORMALISED 29, OK 24, REMOVED 13
+Windows-to-Sarvam/win-v307-fixes-2026-11-06/evidence-sha256.json: COPY-KEPT 3, NORMALISED 25, OK 235, REMOVED 10
+Windows-to-Sarvam/win-v310-2026-11-07/EVIDENCE.sha256: NORMALISED 61, OK 1093, REMOVED 4
+Windows-to-Sarvam/win-v311-2026-11-07/EVIDENCE.sha256: NORMALISED 68, OK 1559, REMOVED 4
+Windows-to-Sarvam/win-v311-acceptance-2026-11-07/EVIDENCE.sha256: NORMALISED 34, OK 40, REMOVED 20
+Windows-to-Sarvam/win-v312-2026-11-08/EVIDENCE.sha256: NORMALISED 23, OK 50, REMOVED 14
+Windows-to-Sarvam/win-v313-2026-11-08/EVIDENCE.sha256: NORMALISED 6, OK 33, REMOVED 2
+Windows-to-Sarvam/win-v313-preflight-2026-11-08/EVIDENCE.sha256: NORMALISED 2, OK 10

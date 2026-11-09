@@ -111,8 +111,10 @@ block around a loop from blocks entered on every pass - the paragraph below now 
 
 ## R164 WS3 / R165 WS4 - what is fixed and what is not
 
-- **Fixed: the tree.** A fresh clone of this commit carries none of the strings in any text file, and the installer
-  built from it carries none.
+- **Fixed: the tree** - the files a clone of this commit *checks out*. (Corrected in R166: I first wrote "a fresh
+  clone carries none of the strings". A full clone downloads the history too, and the history holds them. And the
+  first gate could not read 21 UTF-16 files or a WSL kernel version, so they were not clean then either; they are
+  now - R166-00.) The installer built from this tree carries none.
 - **Not fixed: the history.** `git log -p`, `git show <old commit>`, every old blob - all still hold every string.
   Only a history rewrite removes them; it would change every commit SHA that hundreds of records cite and break every
   clone, the owner's Windows clone among them (the R161 decision; not reopened without the owner).

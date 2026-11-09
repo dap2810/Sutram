@@ -39,7 +39,7 @@ the install-page wait. Timing is one observation, not a performance guarantee.
 See [backup record](backup.json), [installer observations](install.json),
 [engine log](engine.log), and [transcript](install-transcript.txt).
 
-![Actual native installer Finish page](installer-finished.png)
+![Actual native installer Finish page](installer-finished.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 ## Verification results
 
@@ -64,9 +64,9 @@ Every manifest entry and native command/output is in
 [verification.json](verification.json). [ide.json](ide.json) records the actual
 desktop-shortcut launch, source/title/output text and normal close.
 
-![Installed Hello through desktop shortcut](installed-01_hello.png)
+![Installed Hello through desktop shortcut](installed-01_hello.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
-![Installed arithmetic](installed-02_arith.png)
+![Installed arithmetic](installed-02_arith.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 The broad before/after snapshots execute their PATH queries from the repository
 root, where a `sutram.exe` can also be found by Windows' current-directory search.

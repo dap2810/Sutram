@@ -1,0 +1,5 @@
+PASS  self-test: 22 forbidden forms caught (2 in UTF-16), 19 placeholders pass, a name by its hash caught in text, a binary and UTF-16
+PASS  normaliser self-test: an invalid escape and a key collision are refused; a key change is counted; a non-text value may not change; UTF-16 round-trips
+known identifiers (the owner's names, by hash): 0 places
+policy forms (home folders, other drives, build machines, accounts, builds, hardware, addresses): 0 places
+r159 no personal paths: 10844 of 10844 tracked files inspected, 0 with system details

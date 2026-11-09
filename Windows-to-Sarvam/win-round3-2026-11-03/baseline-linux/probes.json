@@ -1,6 +1,6 @@
 {
   "stage": "baseline",
-  "host": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "host": "Linux-(kernel build redacted)-x86_64-with-glibc2.39",
   "compiler_sha256": "a9868449a047482bd480ebc6ce05e73ebec57ce6aea1c691974aab8b17b25855",
   "rows": [
     {

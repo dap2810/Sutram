@@ -80,11 +80,11 @@ are [transcript-tail.txt](transcript-tail.txt).
 
 Owner-captured failure dialog at 20:43:21 local, preserved without alteration:
 
-![Installer explicitly says setup did not complete](owner-error-dialog.png)
+![Installer explicitly says setup did not complete](owner-error-dialog.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 Automated observation after the wait, showing the wizard back at Ready:
 
-![Wizard has returned to Ready, not Finish](after-70s-wizard.png)
+![Wizard has returned to Ready, not Finish](after-70s-wizard.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 No stuck PowerShell/input-prompt screenshot is fabricated: those conditions were
 not present in the measured attempts. Enter/Y input could not diagnose an

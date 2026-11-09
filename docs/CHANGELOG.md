@@ -27,6 +27,18 @@
 - **R163, the installer lock (ChatGPT R225):** nothing already at `<folder>.sutram-lock` is removed - not an empty
   file, not a marked one; the run stops and says whether another installer holds it, and how to recover. R162 had
   removed an empty or marked file as stale. Gate `R143 installer first contact`; fixture cases 3-4 now expect refusal.
+- **R166 (documents, the gates, the tree; the compiler unchanged):** the memory chapter (both books) says what a
+  block gives back - `nirmmita` written in it, yes; a `kosh` made in it, no (it keeps its bytes; only its life ends);
+  a `mala` made in it, never (and returning one is not refused) - its title and section 7 no longer say "memory"
+  unqualified, `agrim` is among the ways a block ends, and a budget counts each `nirmmita` rounded up to 16
+  (`parimita 1000` refuses one `nirmmita(1000)`); each measured on v315 first. Reference: a `mala` in a block.
+  `R158 doc currency` check 9, `figures`: a replaced measurement (52,760 / 13,480 KB, 392 KB, "308 or 436") may not
+  be given as current. `R159` decodes UTF-16 and `\u` escapes, reads lower-case drives, kernel builds, IPv4 and MAC
+  addresses, checks file names fully, never prints a name, and fails on a file it cannot read; it found 36 files the
+  first version passed (21 UTF-16), now normalised. `tools/normalize_personal_paths.py` checks every rewrite before
+  writing and refuses an unsafe one (ChatGPT's R226 follow-up). `tools/verify_evidence_manifest.py` explains a
+  manifest's digests after normalisation; a note sits beside each affected manifest, and 116 links to a removed
+  screenshot say so.
 - **R164-R165 (the tree, documents and a gate; the compiler unchanged):** the owner's system details - home folder,
   account and computer names, the projects drive, OS build numbers, the CPU - and the build machines' own folders are
   replaced in 806 tracked files, keeping what each line says (`%USERPROFILE%`, `<repo>`, `<scratch>`, "(build

@@ -1,5 +1,5 @@
 ===== mainclone at 4c325b51, compiler: Sutram 1.0 (v243) - sampurna sutra
-uname: 6.6.87.2-microsoft-standard-WSL2  vm.overcommit_memory=0  MemTotal: MemTotal: 48892060 kB  ulimit -v: unlimited
+uname: (kernel build redacted)  vm.overcommit_memory=0  MemTotal: MemTotal: 48892060 kB  ulimit -v: unlimited
 --- python3 tools/proof_lib.py --compiler ./sutram_compiler
 219 passed, 1 failed, 220 total
 FAIL r18_srij_overflow_guard:
@@ -9,7 +9,7 @@ arity: a wrong call into another module is refused by --separate, with the same 
 refusals: a missing module, a namespaced yoj, usage
 r29 separate: 253 programs with modules behave the same, 145 without are byte-identical, 1 failed
 ===== main298 at 1e8dc661, compiler: Sutram 1.0 (v244) - sampurna sutra
-uname: 6.6.87.2-microsoft-standard-WSL2  vm.overcommit_memory=0  MemTotal: MemTotal: 48892060 kB  ulimit -v: unlimited
+uname: (kernel build redacted)  vm.overcommit_memory=0  MemTotal: MemTotal: 48892060 kB  ulimit -v: unlimited
 --- python3 tools/proof_lib.py --compiler ./sutram_compiler
 219 passed, 1 failed, 220 total
 FAIL r18_srij_overflow_guard:

@@ -14,7 +14,7 @@ title **“The Sutram Book — Mozilla Firefox”**. Browser automation confirme
 and the rendered book contained its preface and “17.6 Understanding PATH.” The test book tab was closed afterward.
 
 Evidence: [shortcut target](shortcuts.json), [browser address/title and book hash](documentation-opened.json),
-[rendered page](documentation-opened.png). The screenshot captures only the book viewport, excluding other
+[rendered page](documentation-opened.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*. The screenshot captures only the book viewport, excluding other
 browser tabs and unrelated application content. It shows a Windows chapter section of the actual installed book.
 
 ## D2 — absent-book branch

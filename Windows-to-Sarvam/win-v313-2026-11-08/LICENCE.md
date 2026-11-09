@@ -4,7 +4,7 @@
 
 ## A1–A2: exact display and missing words
 
-Visible text in the [full page](prefixed-licence-default.png) and [exact instruction-control crop](prefixed-instruction-crop.png):
+Visible text in the [full page](prefixed-licence-default.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)* and [exact instruction-control crop](prefixed-instruction-crop.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*:
 
 > Please read the following license agreement. You must accept
 
@@ -14,7 +14,7 @@ Full source/control text:
 
 Missing from the display: **“the terms to continue.”** The label is **above the licence body**, not at the bottom as the brief describes. Its source is `b_lichead` in `windows/native-installer/sutram_wizard.asm`; LICENSE.txt contains the body, not this instruction.
 
-![Exact visible instruction control](prefixed-instruction-crop.png)
+![Exact visible instruction control](prefixed-instruction-crop.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 The default window is 1000 × 750 screen pixels; the label's screen rectangle is 663 × 33 pixels. The source allocates **530 × 26 logical pixels**, at y=62; the licence body begins at y=94. [Source excerpt](label-source.txt), [capture/process/geometry record](label-capture.json).
 

@@ -22,9 +22,9 @@ installed v306 IDE. Save was exercised on those copies only.
    retained its original hash. All four protected repository/installed original
    example hashes remained unchanged.
 
-![Refused load with cleared old output and retained Hello](C1-refused-load.png)
+![Refused load with cleared old output and retained Hello](C1-refused-load.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
-![Save still targets the retained Hello copy](C2-after-save.png)
+![Save still targets the retained Hello copy](C2-after-save.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 [Full control text, file hashes and assertions](ide.json), [automation](ide.ps1).
 The temporary IDE was closed after the test. No PE-structure-only acceptance is

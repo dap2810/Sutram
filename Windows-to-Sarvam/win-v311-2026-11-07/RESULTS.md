@@ -32,7 +32,7 @@ Embedded and installed payloads: 657/657 file hashes match; embedded compiler eq
 | E add/XOR | Refuse | Brief/original cases: E_VIBHAG_ANKA, exit 1 | Yes |
 | E length | 2 | 2, exit 0 | Yes |
 
-Native installer reached Finish in 23.722 seconds, child exit 0, closed after Finish; [viewed screenshot](initial-finish.png). Suite separately records 3 NO_EXPECTATION and 6 skipped platform/side-effect cases. Additional native fixtures: 19 boundary + 14 reuse + 7 lock assertions, all pass. All 12 full-install test wizard/engine processes are closed; final lock/pending state absent. Original installations and test trees are preserved.
+Native installer reached Finish in 23.722 seconds, child exit 0, closed after Finish; [viewed screenshot](initial-finish.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*. Suite separately records 3 NO_EXPECTATION and 6 skipped platform/side-effect cases. Additional native fixtures: 19 boundary + 14 reuse + 7 lock assertions, all pass. All 12 full-install test wizard/engine processes are closed; final lock/pending state absent. Original installations and test trees are preserved.
 
 Detailed reports: [INITIALIZER](INITIALIZER.md), [BUDGET](BUDGET.md), [OWNERSHIP](OWNERSHIP.md), [ARITHMETIC](ARITHMETIC.md), [commands](COMMANDS.md). Every probe, raw result, source hash, inventory and relevant screenshot is retained. Evidence hashes are in EVIDENCE.sha256.
 

@@ -6,7 +6,7 @@ The hello example was selected in the IDE and Run invoked. Deliberately invalid 
 
 ## B1 — B1-hello
 
-[B1-hello screenshot](B1-hello.png)
+[B1-hello screenshot](B1-hello.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 Window title: `01_hello.sm - Sutram sampadak`. Exact output control text:
 
@@ -16,7 +16,7 @@ Namaste, Sutram!
 
 ## B2 — B2-syntax
 
-[B2-syntax screenshot](B2-syntax.png)
+[B2-syntax screenshot](B2-syntax.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 Window title: `syntax.sm - Sutram sampadak`. Exact output control text:
 
@@ -30,7 +30,7 @@ Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
 
 ## B3 — B3-arithmetic
 
-[B3-arithmetic screenshot](B3-arithmetic.png)
+[B3-arithmetic screenshot](B3-arithmetic.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 Window title: `arithmetic.sm - Sutram sampadak`. Exact output control text:
 
@@ -42,7 +42,7 @@ Sanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam 
 
 ## B4 — B4-large-file
 
-[B4-large-file screenshot](B4-large-file.png)
+[B4-large-file screenshot](B4-large-file.png) *(screenshot removed under the privacy rule, 9 November 2026; the text keeps what it showed)*
 
 Window title: `arithmetic.sm - Sutram sampadak`. Exact output control text:
 
