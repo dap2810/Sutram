@@ -26,7 +26,7 @@ Candidate setup SHA-256: `9dfe6b5ea185a6915918bb1d76abff474cec7d0d2c34d8a82d76e8
 Payload manifest SHA-256: `0523ff8050787c529777727998aaffd3d1c144e2fd8ed31100c0e220b559d096`.
 Compiler remains unchanged: `05b23d56d40aaa4b71c6d67d13996d75da6e4d2e2b2ac47fbf4960a1a52fb481`.
 
-The working candidate is installed; original, working and edited interrupted trees remain preserved. The runnable setup is retained locally at `E:\Github_Projects\Sutram\build\windows-v309-fixes\build\native-v309-fix\Sutram-Setup.exe`. Generated setup binaries/source-integrity release pins were not promoted to main. Sarvam should review/rebuild and update release artefacts through the established acceptance process.
+The working candidate is installed; original, working and edited interrupted trees remain preserved. The runnable setup is retained locally at `<repo>\build\windows-v309-fixes\build\native-v309-fix\Sutram-Setup.exe`. Generated setup binaries/source-integrity release pins were not promoted to main. Sarvam should review/rebuild and update release artefacts through the established acceptance process.
 
 Read [full results](../Windows-to-Sarvam/win-v309-fixes-2026-11-07/RESULTS.md), [payload comparison](../Windows-to-Sarvam/win-v309-fixes-2026-11-07/PAYLOAD.md), [recovery/preservation](../Windows-to-Sarvam/win-v309-fixes-2026-11-07/RECOVERY.md), [commands and initial failures](../Windows-to-Sarvam/win-v309-fixes-2026-11-07/COMMANDS.md), and [the completed native wizard screenshot](../Windows-to-Sarvam/win-v309-fixes-2026-11-07/capture-confirmation-finish.png). All exact scripts, per-entry hashes, native exit records and raw logs are in that evidence folder.
 
