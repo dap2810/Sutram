@@ -20,11 +20,11 @@
 
 ## WS1 - the privacy normalisation, across the whole tree including the Windows folder
 
-**361 files carry `C:\Users\dmech` or `C:\Users\Dhruv`; 276 carry `E:\Github_Projects\Sutram`; 371 of the affected files are in `Windows-to-Sarvam/`.**
+**361 files carry a home directory and two usernames; 276 carry an absolute drive path; 371 of the affected files are in `Windows-to-Sarvam/`.**
 
 **Replace, mechanically:**
 - **`C:\Users\<name>` -> `%USERPROFILE%`**
-- **`E:\Github_Projects\Sutram` -> `<repo>`**
+- **an absolute drive path -> `<repo>`**
 - **exact OS build numbers -> "Windows 11 Home, November 2026"**
 
 **Check three things BEFORE you start, because each breaks something:**
