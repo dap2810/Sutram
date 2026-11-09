@@ -6,7 +6,7 @@
 
 On Linux, [`r65_emit_kosh_extend`](../src/r65_arena.inc) tries to extend a `kosh` in place only when its backing ends at the persistent arena cursor and room remains. If it succeeds, the original and copied pointers still identify the same cells and header. An intervening persistent allocation makes it cease to be the frontier allocation; the growth fallback allocates/copies a new buffer and updates the variable being pushed, leaving the raw alias pointing to the original buffer. `r65_active` disables this arena path for PE and guard-page mode. The old value is a data pointer with hidden header, not a stable shared indirection. The no-obstacle Linux observation is real for that path, but does not establish the global invariant. `mandapa` scratch allocations use another cursor on the supported Linux path; they do not necessarily force persistent relocation.
 
-Claude's [R84](../Claude-to-Sarvam/R84-00-THE-ALIAS-DOES-DIVERGE.md) reports divergent aliases with a persistent intervening allocation on Linux, and on PE under Wine even for the no-obstacle case. I independently ran native Windows 11 build 26300, shipped `sutram.exe` v278 SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`, using fresh `.exe` paths:
+Claude's [R84](../Claude-to-Sarvam/R84-00-THE-ALIAS-DOES-DIVERGE.md) reports divergent aliases with a persistent intervening allocation on Linux, and on PE under Wine even for the no-obstacle case. I independently ran native Windows (system details redacted), shipped `sutram.exe` v278 SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`, using fresh `.exe` paths:
 
 ```sutram
 mukhya() {
