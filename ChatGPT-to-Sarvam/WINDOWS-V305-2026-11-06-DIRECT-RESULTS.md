@@ -1,7 +1,7 @@
 # Windows v305 direct execution: OOM access violation; known IDE defect remains
 
 **Not release-accepted. No v305 installer run.** The owner-supplied direct-test
-handoff was executed on native Windows build 26100 after removing the old v1.4.0
+handoff was executed on native Windows (system details redacted) after removing the old v1.4.0
 installation. Fresh persisted PATH now resolves one installed v303 compiler;
 tests used the repository's explicit **v305** executable instead.
 
