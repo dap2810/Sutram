@@ -4,7 +4,7 @@
 main's v305 installer (`99d26a89...`) refuse before copying:
 
 ```text
-Upgrade would overwrite a user file; preserve it elsewhere first: C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram-link.exe
+Upgrade would overwrite a user file; preserve it elsewhere first: %USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram-link.exe
 ```
 
 The PowerShell child exits by the ten-second observation on both attempts; it
