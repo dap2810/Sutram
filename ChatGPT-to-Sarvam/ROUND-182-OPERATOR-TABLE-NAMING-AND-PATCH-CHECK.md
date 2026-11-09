@@ -94,8 +94,8 @@ Reason: the original hunk contains the v291 heading as context. Current main has
 Commands actually executed in separate local copies:
 
 ```sh
-git apply --check /workspace/scratch/17d02bf48610/R182-retrieved-R181.patch
-git apply /workspace/scratch/17d02bf48610/R182-retrieved-R181.patch
+git apply --check <scratch>/R182-retrieved-R181.patch
+git apply <scratch>/R182-retrieved-R181.patch
 ```
 
 The second command ran only on the original-base copy. This is an executed git test, not a native Sutram test.
