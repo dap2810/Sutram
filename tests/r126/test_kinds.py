@@ -142,8 +142,11 @@ def main():
                 r = subprocess.run([WINE, pexe], input=stdin, capture_output=True, timeout=120, cwd=d,
                                    env=dict(os.environ, WINEDEBUG='-all'))
                 got = (r.stdout + r.stderr).decode('latin-1').replace('\r', '')
-                check(c.returncode == 0 and got == want and r.returncode == wexit,
-                      f'runs (PE, Wine): {what}: {got!r} exit {r.returncode}')
+                okp = c.returncode == 0 and got == want and r.returncode == wexit
+                # R155: on a failure, everything needed to tell Wine's noise from the program's: what was wanted, the
+                # compile result, and stdout and stderr apart (R154 had one unexplained failure here).
+                check(okp, f'runs (PE, Wine): {what}: {got!r} exit {r.returncode}' + ('' if okp else
+                      f' (want {want!r} exit {wexit}; compile rc {c.returncode}; stdout {r.stdout[:300]!r}; stderr {r.stderr[:300]!r})'))
     print(f'r126 kinds: {checks} checks, {fails} failed')
     return 1 if fails else 0
 

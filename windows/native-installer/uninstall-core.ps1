@@ -37,23 +37,31 @@ namespace Sutram {
     $result = [UIntPtr]::Zero
     [void][Sutram.NativeMethods]::SendMessageTimeout([IntPtr]0xffff,0x001A,[UIntPtr]::Zero,'Environment',2,5000,[ref]$result)
 }
-# R154 (Sarvam R154 WS1): one entry, the one whose text is exactly what the installer recorded adding - not every
-# entry equal to it after expansion (a user's own equal entry stays), and nothing when there is no record.
-function Remove-UserPathEntryOnce([string]$Entry) {
+# R155: removes one entry - the first whose text (spaces around it aside) is the recorded one - and the one ';' that
+# joined it, and changes nothing else: the other entries' text, empty entries and the value's kind stay. When the
+# installer made the PATH value ($DeleteIfEmpty) and nothing else is left in it, the value itself goes.
+function Remove-UserPathEntryOnce([string]$Entry,[bool]$DeleteIfEmpty) {
     $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment',$true)
-    if (-not $key) { return }
+    if (-not $key) { return $false }
     $removed = $false
     try {
+        if (-not ($key.GetValueNames() -contains 'Path')) { return $false }
         $raw = [string]$key.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
-        $entries = New-Object System.Collections.Generic.List[string]
-        foreach ($item in ($raw -split ';')) {
-            if ([string]::IsNullOrWhiteSpace($item)) { continue }
+        $kind = $key.GetValueKind('Path')
+        $parts = $raw -split ';'
+        $rest = New-Object System.Collections.Generic.List[string]
+        foreach ($item in $parts) {
             if (-not $removed -and [string]::Equals($item.Trim(),$Entry,[StringComparison]::OrdinalIgnoreCase)) { $removed = $true; continue }
-            $entries.Add($item.Trim())
+            $rest.Add($item)
         }
-        if ($removed) { $key.SetValue('Path',[string]::Join(';',$entries.ToArray()),[Microsoft.Win32.RegistryValueKind]::ExpandString) }
+        if ($removed) {
+            $newPath = [string]::Join(';',$rest.ToArray())
+            if ($DeleteIfEmpty -and $newPath.Length -eq 0) { $key.DeleteValue('Path',$false) }
+            else { $key.SetValue('Path',$newPath,$kind) }
+        }
     } finally { $key.Dispose() }
     if ($removed) { Broadcast-EnvironmentChange }
+    return $removed
 }
 function Read-State([string]$Path) {
     $state = @{}
@@ -148,7 +156,7 @@ try {
     $selfHash=(Get-FileHash -LiteralPath $SelfPath -Algorithm SHA256).Hash
     if ($selfHash -ne $state['UninstallerSHA256']) { throw 'The uninstaller has changed; preserving it.' }
 
-    if ($state.ContainsKey('PathAdded') -and $state['PathAdded']) { Remove-UserPathEntryOnce $state['PathAdded'] }   # R154: the record, not PathOwned
+    if ($state.ContainsKey('PathAdded') -and $state['PathAdded']) { [void](Remove-UserPathEntryOnce $state['PathAdded'] ($state.ContainsKey('PathValueCreated') -and $state['PathValueCreated'] -eq '1')) }   # R154: the record, not PathOwned
     # R153 (ChatGPT R218 follow-up, Sarvam R153 WS1): a shortcut is removed only when it is one the installer
     # recorded as written - OwnedShortcuts, "<base64 path>|<SHA-256 of the .lnk>" - and its bytes are still those.
     # Not on a target that matches (a user's own link can point at the IDE), and not on DesktopOwned (v314's
@@ -198,7 +206,11 @@ try {
         if ($state.ContainsKey('AssociationSet') -and $state['AssociationSet']) { $setValue=$state['AssociationSet'] }
         if ($setValue -and (Test-Path -LiteralPath $extKey) -and (Get-Item -LiteralPath $extKey).GetValue('') -eq $setValue) {
             $ext=[Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Software\Classes\.sm',$true)
-            try { $ext.DeleteValue('', $false) } finally { $ext.Dispose() }
+            # R155: put back what was there before: an empty default if there was one, otherwise none.
+            try {
+                if ($state.ContainsKey('AssociationBefore') -and $state['AssociationBefore'] -eq 'empty') { $ext.SetValue('','',[Microsoft.Win32.RegistryValueKind]::String) }
+                else { $ext.DeleteValue('', $false) }
+            } finally { $ext.Dispose() }
         }
         Remove-ItemProperty -LiteralPath (Join-Path $extKey 'OpenWithProgids') -Name 'Sutram.Source' -ErrorAction SilentlyContinue
         # R143 (Windows v311 acceptance): the installer creates .sm\OpenWithProgids; removing its value left the key,

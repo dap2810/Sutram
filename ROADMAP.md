@@ -11,7 +11,7 @@
 >
 > **`nivartanam` is the return keyword; `prati` is a legacy alias.** 235 files across compiler, `lib/`, `examples/`, `tests/` and `docs/` — **zero goldens changed**, and a program written either way compiles to a byte-identical binary.
 > **Done and off every open list:** `likha` up to six values · 135 three-statement triples · the `lkhb` float bug · `arabhya ... paryantam` · **20 library names that described the wrong operation** · 7 wrong Devanagari words · 33 contract comments · Patch A's 12 variable names.
-> **The authoritative page is `docs/WHATS-LEFT.md`.** Where this page disagrees with it, that page is right.
+> **The open list is in the release notes** ("Not included in v1.0", "Limitations of what is included", `docs/RELEASE-NOTES.md`). Where this page disagrees with them, they are right. (`docs/WHATS-LEFT.md`, which this line named until R156, was last true at v258 and is archived in `docs/rounds/`.)
 >
 > **And the memory question is answered:** `nirmmita` emits **`mmap` per allocation** on Linux and **`VirtualAlloc`** on Windows, and there is **no `munmap` anywhere** — nothing ever returns memory. See `docs/MEMORY-MODEL.md`.
 

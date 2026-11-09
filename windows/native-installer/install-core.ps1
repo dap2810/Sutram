@@ -237,34 +237,41 @@ namespace Sutram {
     $result = [UIntPtr]::Zero
     [void][Sutram.NativeMethods]::SendMessageTimeout([IntPtr]0xffff,0x001A,[UIntPtr]::Zero,'Environment',2,5000,[ref]$result)
 }
+# R155 (Sarvam R155 WS2): the entry is added by appending it to PATH's text as it stands. Every other entry, its
+# spacing, empty entries and the value's kind (REG_SZ or REG_EXPAND_SZ) are left as they were - before R155 the whole
+# PATH was rewritten (entries trimmed, empty ones dropped, the kind made REG_EXPAND_SZ, so a REG_SZ entry holding a
+# literal '%' would have started to expand). A PATH value that did not exist is made REG_EXPAND_SZ, Windows' own kind
+# for it, and that is recorded ($script:pathValueCreated) so uninstall can remove the value it made.
+$script:pathValueCreated = $false
 function Set-UserPathEntry([string]$Entry,[bool]$ShouldExist) {
+    if (-not $ShouldExist) { throw 'Set-UserPathEntry only adds; removal is Remove-UserPathEntryOnce.' }
     $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment',$true)
     if (-not $key) { $key = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey('Environment') }
     if (-not $key) { throw 'Unable to open the current user Environment registry key.' }
-    $changed = $false
     try {
-        $raw = [string]$key.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
-        $entries = New-Object System.Collections.Generic.List[string]
+        $exists = ($key.GetValueNames() -contains 'Path')
+        $raw = ''
+        $kind = [Microsoft.Win32.RegistryValueKind]::ExpandString
+        if ($exists) {
+            $raw = [string]$key.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
+            $kind = $key.GetValueKind('Path')
+            if ($kind -ne [Microsoft.Win32.RegistryValueKind]::String -and $kind -ne [Microsoft.Win32.RegistryValueKind]::ExpandString) {
+                throw 'The user PATH is not a text value; it was not changed. Add the Sutram bin folder by hand.'
+            }
+        }
         $target = Normalize-PathEntry $Entry
-        $found = $false
         foreach ($item in ($raw -split ';')) {
             $n = Normalize-PathEntry $item
-            if ([string]::IsNullOrWhiteSpace($n)) { continue }
-            if ([string]::Equals($n,$target,[StringComparison]::OrdinalIgnoreCase)) {
-                $found = $true
-                if (-not $ShouldExist) { $changed = $true; continue }
-            }
-            $entries.Add($item.Trim())
+            if (-not [string]::IsNullOrWhiteSpace($n) -and [string]::Equals($n,$target,[StringComparison]::OrdinalIgnoreCase)) { return $false }
         }
-        if ($ShouldExist -and -not $found) { $entries.Add($Entry); $changed = $true }
-        if ($changed) {
-            $newPath = [string]::Join(';',$entries.ToArray())
-            if ($newPath.Length -gt 32760) { throw 'The user PATH would become too long.' }
-            $key.SetValue('Path',$newPath,[Microsoft.Win32.RegistryValueKind]::ExpandString)
-        }
+        $newPath = $Entry
+        if ($raw.Length -gt 0) { $newPath = $raw + ';' + $Entry }
+        if ($newPath.Length -gt 32760) { throw 'The user PATH would become too long.' }
+        $key.SetValue('Path',$newPath,$kind)
+        if (-not $exists) { $script:pathValueCreated = $true }
     } finally { $key.Dispose() }
-    if ($changed) { Broadcast-EnvironmentChange }
-    return $changed
+    Broadcast-EnvironmentChange
+    return $true
 }
 # R154 (Sarvam R154 WS1, Muse R151): PATH ownership is a record of the entry this installer added - its exact text -
 # not a flag. Set-UserPathEntry adds nothing when an equal entry (after expanding variables and trimming quotes and a
@@ -279,22 +286,43 @@ function Test-UserPathEntryText([string]$Entry) {
         return $false
     } finally { $key.Dispose() }
 }
-function Remove-UserPathEntryOnce([string]$Entry) {
+# R155: removes one entry - the first whose text (spaces around it aside) is the recorded one - and the one ';' that
+# joined it, and changes nothing else: the other entries' text, empty entries and the value's kind stay. When the
+# installer made the PATH value ($DeleteIfEmpty) and nothing else is left in it, the value itself goes.
+function Remove-UserPathEntryOnce([string]$Entry,[bool]$DeleteIfEmpty) {
     $key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('Environment',$true)
     if (-not $key) { return $false }
     $removed = $false
     try {
+        if (-not ($key.GetValueNames() -contains 'Path')) { return $false }
         $raw = [string]$key.GetValue('Path','',[Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames)
-        $entries = New-Object System.Collections.Generic.List[string]
-        foreach ($item in ($raw -split ';')) {
-            if ([string]::IsNullOrWhiteSpace($item)) { continue }
+        $kind = $key.GetValueKind('Path')
+        $parts = $raw -split ';'
+        $rest = New-Object System.Collections.Generic.List[string]
+        foreach ($item in $parts) {
             if (-not $removed -and [string]::Equals($item.Trim(),$Entry,[StringComparison]::OrdinalIgnoreCase)) { $removed = $true; continue }
-            $entries.Add($item.Trim())
+            $rest.Add($item)
         }
-        if ($removed) { $key.SetValue('Path',[string]::Join(';',$entries.ToArray()),[Microsoft.Win32.RegistryValueKind]::ExpandString) }
+        if ($removed) {
+            $newPath = [string]::Join(';',$rest.ToArray())
+            if ($DeleteIfEmpty -and $newPath.Length -eq 0) { $key.DeleteValue('Path',$false) }
+            else { $key.SetValue('Path',$newPath,$kind) }
+        }
     } finally { $key.Dispose() }
     if ($removed) { Broadcast-EnvironmentChange }
     return $removed
+}
+# R155 (Sarvam R155 WS2): a key under HKCU, opened if it is there and made if it is not. Nothing in it is removed.
+# New-Item -Force is not used on a registry key that may exist: PowerShell's registry provider then deletes the key
+# with every value and subkey (NewItem calls RemoveItem, which calls DeleteSubKeyTree) and makes it again empty.
+function Open-UserKey([string]$SubPath) {
+    $k = [Microsoft.Win32.Registry]::CurrentUser.CreateSubKey($SubPath)
+    if (-not $k) { throw ('Unable to open HKCU\' + $SubPath) }
+    return $k
+}
+function Set-UserKeyDefault([string]$SubPath,[string]$Value) {
+    $k = Open-UserKey $SubPath
+    try { $k.SetValue('',$Value,[Microsoft.Win32.RegistryValueKind]::String) } finally { $k.Dispose() }
 }
 function Read-State([string]$Path) {
     $state = @{}
@@ -742,9 +770,15 @@ try {
             }
         } elseif ($previousAdded) {
             Log 'Removing the PATH entry an earlier run of this installer added.'
-            [void](Remove-UserPathEntryOnce $previousAdded)
+            [void](Remove-UserPathEntryOnce $previousAdded ($oldState.ContainsKey('PathValueCreated') -and $oldState['PathValueCreated'] -eq '1'))
         }
         $pathOwned = [bool]$pathAdded
+        # R155: whether the PATH value itself was made by this installer - carried while its entry is still recorded.
+        $pathValueCreated = $false
+        if ($pathAdded) {
+            if ($pathAdded -eq $previousAdded) { $pathValueCreated = ($oldState.ContainsKey('PathValueCreated') -and $oldState['PathValueCreated'] -eq '1') }
+            else { $pathValueCreated = $script:pathValueCreated }
+        }
 
         # R130: the completion check that verifies something - a new terminal must run THIS compiler.
         if ($AddPath) {
@@ -809,26 +843,41 @@ try {
             $existing=(Get-Item -LiteralPath $commandKey).GetValue('')
             if ($existing -and $existing -ne $openCommand) { throw 'A conflicting Sutram.Source registration exists.' }
         }
-        [void](New-Item -Path $commandKey -Force)
-        Set-Item -LiteralPath $commandKey -Value $openCommand
-        [void](New-Item -Path (Join-Path $classKey 'DefaultIcon') -Force)
-        Set-Item -LiteralPath (Join-Path $classKey 'DefaultIcon') -Value $icon
-        [void](New-Item -Path $extKey -Force)
-        $existingDefault=(Get-Item -LiteralPath $extKey).GetValue('')
+        # R155 (Sarvam R155 WS2): v315 and earlier ran New-Item -Force on these keys. On .sm that deleted a user's own
+        # .sm key - its default (their association), every other program's OpenWithProgids entry - before the default
+        # was read, so it always read empty and the installer always took .sm. The keys are now opened, not remade.
+        Set-UserKeyDefault 'Software\Classes\Sutram.Source\shell\open\command' $openCommand
+        Set-UserKeyDefault 'Software\Classes\Sutram.Source\DefaultIcon' $icon
+        $ext = Open-UserKey 'Software\Classes\.sm'
+        try {
+            $hadDefault = ($ext.GetValueNames() -contains '')
+            $existingDefault = [string]$ext.GetValue('')
+        } finally { $ext.Dispose() }
         # R154: what this installer set as .sm's default, recorded as the value (AssociationSet), carried on only while
         # the default is still that value; before R154 a flag (AssociationOwned=1), which meant 'Sutram.Source'.
+        # R155: and what was there before it (AssociationBefore): 'absent' (no default value) or 'empty' (an empty one),
+        # so uninstall puts back exactly that. A default with a value is someone else's: it is left and not recorded.
         $associationSet=''
+        $associationBefore=''
         if (($oldState.ContainsKey('AssociationSet') -and $oldState['AssociationSet'] -eq 'Sutram.Source') -or
             ($oldState.ContainsKey('AssociationOwned') -and $oldState['AssociationOwned'] -eq '1')) {
             if ($existingDefault -eq 'Sutram.Source') { $associationSet='Sutram.Source' }
+            if ($associationSet) {
+                $associationBefore='absent'
+                if ($oldState.ContainsKey('AssociationBefore') -and $oldState['AssociationBefore'] -eq 'empty') { $associationBefore='empty' }
+            }
         }
         if (-not $existingDefault) {
-            Set-Item -LiteralPath $extKey -Value 'Sutram.Source'
+            $associationBefore='absent'
+            if ($hadDefault) { $associationBefore='empty' }
+            Set-UserKeyDefault 'Software\Classes\.sm' 'Sutram.Source'
             $associationSet='Sutram.Source'
+        } elseif (-not $associationSet) {
+            Log ('.sm already opens with ' + $existingDefault + '; left as it is (Sutram is offered under Open with).')
         }
         $associationOwned=[bool]$associationSet
-        [void](New-Item -Path (Join-Path $extKey 'OpenWithProgids') -Force)
-        [void](New-ItemProperty -Path (Join-Path $extKey 'OpenWithProgids') -Name 'Sutram.Source' -Value '' -PropertyType String -Force)
+        $ow = Open-UserKey 'Software\Classes\.sm\OpenWithProgids'
+        try { $ow.SetValue('Sutram.Source','',[Microsoft.Win32.RegistryValueKind]::String) } finally { $ow.Dispose() }
         New-Item -Path $unKey -Force | Out-Null
         New-ItemProperty -Path $unKey -Name DisplayName -Value 'Sutram' -PropertyType String -Force | Out-Null
         # R133: the version Windows shows is the compiler's (its --version 'Sutram X.Y (vN)' gives X.Y.N), not a fixed 0.1.0.
@@ -851,10 +900,12 @@ try {
             ('OwnedShortcuts=' + ($script:ownedShortcuts.ToArray() -join ',')),
             ('PathOwned=' + $pathOwnedValue),
             ('PathAdded=' + $pathAdded),
+            ('PathValueCreated=' + ([string][int]$pathValueCreated)),
             ('DesktopOwned=' + $desktopOwnedValue),
             ('DesktopLink=' + $desktopName),
             ('AssociationOwned=' + [int]$associationOwned),
             ('AssociationSet=' + $associationSet),
+            ('AssociationBefore=' + $associationBefore),
             ('UninstallerSHA256=' + (Get-FileHash -LiteralPath $SetupExePath -Algorithm SHA256).Hash)
         )
         [IO.File]::WriteAllLines($statePath,$stateLines,([Text.UTF8Encoding]::new($false)))

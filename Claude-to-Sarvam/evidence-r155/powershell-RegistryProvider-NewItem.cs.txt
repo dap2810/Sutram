@@ -1,0 +1,47 @@
+// From https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/System.Management.Automation/namespaces/RegistryProvider.cs, fetched 9 November 2026 (open-source PowerShell; the installer runs under Windows PowerShell 5.1, whose source is not published).
+            string resourceTemplate = RegistryProviderStrings.NewItemResourceTemplate;
+
+            string resource =
+                string.Format(
+                    Host.CurrentCulture,
+                    resourceTemplate,
+                    path);
+            if (ShouldProcess(resource, action))
+            {
+                // Check to see if the key already exists
+                IRegistryWrapper resultKey = GetRegkeyForPath(path, false);
+
+                if (resultKey != null)
+                {
+                    if (!Force)
+                    {
+                        Exception e = new System.IO.IOException(RegistryProviderStrings.KeyAlreadyExists);
+                        WriteError(new ErrorRecord(
+                            e,
+                            e.GetType().FullName,
+                            ErrorCategory.ResourceExists,
+                            resultKey));
+
+                        resultKey.Close();
+                        return;
+                    }
+                    else
+                    {
+                        // Remove the existing key before creating the new one
+                        resultKey.Close();
+                        RemoveItem(path, false);
+                    }
+                }
+
+                if (Force)
+                {
+                    if (!CreateIntermediateKeys(path))
+                    {
+                        // We are unable to create Intermediate keys. Just return.
+                        return;
+                    }
+                }
+
+                // Get the parent and child portions of the path
+
+                string parentPath = GetParentPath(path, null);

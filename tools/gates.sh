@@ -93,6 +93,7 @@ run_gate() {                      # name, then the command
   name=$1; shift
   out=$("$@" 2>&1)
   printf '%s' "$out" > /tmp/g_out.$$
+  f0=$FAIL
   case "$name" in
     "regression suite")
       s=$(tail -1 /tmp/g_out.$$ | grep -oE 'PASS=[0-9]+|FAIL=[0-9]+|NO-EXPECTATION=[0-9]+' | tr '\n' ' ')   # R109: the summary is the last line
@@ -177,6 +178,12 @@ run_gate() {                      # name, then the command
     "pack messages")    case "$(tail -1 /tmp/g_out.$$)" in OK*) ok "$name (12 sets x 11 cases)";; *) bad "$name" "$(grep -m1 -E 'FAIL|differ|Error' /tmp/g_out.$$ | cut -c1-60)";; esac ;;
     *)                  ok "$name" ;;
   esac
+  # R155 (Sarvam R155 WS3): a failing gate's whole output is kept, outside the tree. Before, it was deleted here, so a
+  # gate that failed once and then passed (R154: R126 kinds, under Wine) left nothing to find the cause in.
+  if [ "$FAIL" -gt "$f0" ]; then
+    keep="${TMPDIR:-/tmp}/sutram-gate-failures/$(date -u +%Y%m%dT%H%M%S)-$(printf '%s' "$name" | tr -c 'A-Za-z0-9' '_').txt"
+    mkdir -p "${TMPDIR:-/tmp}/sutram-gate-failures" && cp /tmp/g_out.$$ "$keep" && echo "      (its whole output: $keep)"
+  fi
   rm -f /tmp/g_out.$$
 }
 

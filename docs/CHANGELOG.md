@@ -16,6 +16,16 @@
   adopted on a field-by-field match (ChatGPT R220; gate 21 checks). `PathOwned`, `AssociationOwned` and `DesktopOwned` are still written, derived from
   the records, and nothing acts on them. Gate `R143 installer first contact` (21).
 - Guard v314 -> v315: ELF and PE 587 identical / 196 refused / 0 DIFFER; refusal messages unchanged.
+- **R155 (installer only; the compiler stays v315):** `.sm` and its `OpenWithProgids` are opened, no longer remade
+  with `New-Item -Force` (which deleted a user's existing `.sm` key, their association with it, before the default
+  was read); `AssociationBefore` records an empty default so uninstall restores it; PATH changes by one entry and
+  one separator, keeping the other entries' text and the value's kind, and `PathValueCreated` lets uninstall remove
+  a PATH value it made. Gate `R143 installer first contact` (24). The gate harness keeps a failing gate's whole
+  output (`$TMPDIR/sutram-gate-failures/`); R126's Wine check prints stdout and stderr apart on a failure.
+- **R156 (documents only):** `WHATS-LEFT.md`, `OPEN-ISSUES.md` (both last true at v258) and `WINDOWS-PORT-PLAN.md`
+  archived in `docs/rounds/`; the open list is the release notes'; the reference's status box, stale since v300,
+  is current; the release notes state the shipping condition; `Windows-to-Sarvam/win-v297-2026-11-03/Sutram-Setup-v297.exe`
+  removed, its SHA-256 kept beside it.
 
 ## v314 (Claude, R152) - the foreign-function door; --analysis-steps=N; the two limits named; the desktop collision
 

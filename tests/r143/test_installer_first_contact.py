@@ -216,6 +216,32 @@ def main():
           and '$empty=($k.ValueCount -eq 0 -and $k.SubKeyCount -eq 0)' in cls,
           'R154: uninstall removes the Sutram.Source values it wrote when they are still what it wrote, and each key only '
           'when empty - not the whole tree (a verb a user added stays)')
+    # R155 (Sarvam R155 WS2): PowerShell's registry provider deletes an existing key, every value and subkey, when
+    # New-Item -Force names it (NewItem -> RemoveItem -> DeleteSubKeyTree). v315 did that to .sm before reading its
+    # default. Only Sutram's own uninstall key may be made that way.
+    regnew = [m.group(0) for m in re.finditer(r'New-Item\b[^\n]*', eng) if 'ItemType Directory' not in m.group(0)]
+    reg = eng[eng.find("Set-UserKeyDefault 'Software\\Classes\\Sutram.Source\\shell\\open\\command'"):eng.find("('AssociationSet=' + $associationSet)")]
+    ok_ = func(eng, 'Open-UserKey')
+    check(regnew == ['New-Item -Path $unKey -Force | Out-Null'] and '.CreateSubKey($SubPath)' in ok_
+          and 0 <= reg.find("$ext = Open-UserKey 'Software\\Classes\\.sm'") < reg.find("$hadDefault = ($ext.GetValueNames() -contains '')")
+          < reg.find("Set-UserKeyDefault 'Software\\Classes\\.sm' 'Sutram.Source'")
+          and "$ow = Open-UserKey 'Software\\Classes\\.sm\\OpenWithProgids'" in reg,
+          'R155: no registry key that may exist is made with New-Item -Force (which deletes it, values and subkeys, '
+          'first) - only Sutram\'s own uninstall key; .sm and its OpenWithProgids are opened, and the default is read '
+          'before anything is set')
+    sp = func(eng, 'Set-UserPathEntry')
+    rs = [func(c, 'Remove-UserPathEntryOnce') for c in (eng, ucode)]
+    check("$kind = $key.GetValueKind('Path')" in sp and "$newPath = $raw + ';' + $Entry" in sp and '.Trim()' not in sp
+          and 'DoNotExpandEnvironmentNames' in sp and '$script:pathValueCreated = $true' in sp
+          and all('$rest.Add($item)' in r and "$key.SetValue('Path',$newPath,$kind)" in r and "$key.DeleteValue('Path',$false)" in r
+                  and 'IsNullOrWhiteSpace' not in r for r in rs) and rs[0].strip() == rs[1].strip()
+          and "('PathValueCreated=' + ([string][int]$pathValueCreated))" in eng and "$state['PathValueCreated'] -eq '1'" in ucode,
+          'R155: PATH is changed by one entry and one separator - the other entries\' text, empty entries and the value\'s '
+          'kind stay; a PATH value the installer made (PathValueCreated) is removed when nothing else is left in it; '
+          'install and uninstall share one removal function')
+    check("('AssociationBefore=' + $associationBefore)" in eng and "if ($hadDefault) { $associationBefore='empty' }" in eng
+          and "$state['AssociationBefore'] -eq 'empty') { $ext.SetValue('','',[Microsoft.Win32.RegistryValueKind]::String) }" in ucode,
+          'R155: what .sm\'s default was before (absent or empty) is recorded, and uninstall puts that back')
     ck = re.search(r'b_ckdesk:\s+u16 "([^"]*)"', wiz)
     check(ck and 'Sutram IDE' in ck.group(1) and 'Terminal' not in ck.group(1),
           f'the desktop checkbox names what it makes ({ck.group(1) if ck else "?"!r})')

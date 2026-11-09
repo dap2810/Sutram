@@ -1,3 +1,5 @@
+> **Archived in R156 (9 November 2026).** The plan of October 2026, when the port had "started". The port is done (v299 onward); its current state is in `docs/RELEASE-NOTES.md` and `docs/WINDOWS-SETUP.md`.
+
 # Sutram — Windows (native) port plan
 
 Status: **started**. Build toolchain verified; first primitive written.

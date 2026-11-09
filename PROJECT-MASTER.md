@@ -1,9 +1,9 @@
 > **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
 > unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
 
-> **Status at compiler v315, 9 November 2026 (R154) — read this before the page below.**
+> **Status at compiler v315, 9 November 2026 (R156) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **78 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315 (R154); the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **78 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -15,7 +15,7 @@
 >
 > **Memory:** on Linux and, from v299 (R123), on Windows: `nirmmita` comes from an arena, a `mandapa` block returns what it allocated, `mandapa parimita N` refuses past a budget, a `kosh` is a descriptor whose elements may move but whose names always agree (v302; v299-v301: a 64 MiB region per `kosh`), and `parimana()` reports the bytes held. **On Windows it commits only the pages a program touches** (v300; in v299 the arena was 1 GiB of commit from the first allocation and each `kosh` 64 MiB) (reference §16, §19; `docs/MEMORY-MODEL.md`).
 >
-> **The authoritative open list is `docs/WHATS-LEFT.md`.**
+> **The open list is in the release notes:** "Not included in v1.0" and "Limitations of what is included" (`docs/RELEASE-NOTES.md`), revised with each release. (`WHATS-LEFT.md` and `OPEN-ISSUES.md`, last true at compiler v258, are archived in `docs/rounds/`; R156.)
 
 # Sutram — Project Master Record
 

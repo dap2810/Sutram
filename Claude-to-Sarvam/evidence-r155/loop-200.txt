@@ -1,0 +1,2 @@
+want '41\n1\nSutram truti: mala ank seema atikram\n' 1
+runs 200 ok 200 failed 0

@@ -1,3 +1,5 @@
+> **Archived in R156 (9 November 2026).** Last true at compiler v258. The current open list is in `docs/RELEASE-NOTES.md` ("Not included in v1.0", "Limitations of what is included").
+
 > **Status at v405, 28 October 2026 — read this before the page below.**
 >
 > **Compiler v258.** Suite PASS=225 · crash corpus 227/0 · library proofs 226/226 · guard 0 DIFFER · gates 48 PASS / 0 FAIL / 1 NOT-RUN.

@@ -142,3 +142,23 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 **R154 (v315):** the compiler (the tree limit's code, the fold guard), the engine and the uninstaller (PATH,
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
+
+## What `install-state.ini` records (R153-R155)
+
+Every record is **what was done**, not a flag that something was done, and uninstall acts only on these:
+
+| record | what it holds | what uninstall does with it |
+|---|---|---|
+| `OwnedShortcuts` | `<base64 path>\|<SHA-256 of the .lnk as written>` for each link this installer wrote | removes a link only if it is in the Start-menu `Sutram` folder or on the desktop, ends `.lnk`, and its bytes still have that hash. A record without a hash (before v315) is not ownership: the link is kept |
+| `PathAdded` | the exact text of the one PATH entry this install added (empty if it added none - an equal entry was already there, and is the user's) | removes the first entry with that text and the one `;` that joined it; nothing else in PATH changes |
+| `PathValueCreated` | `1` if the user's PATH value did not exist and this install made it | then removes the value too, if nothing else is left in it |
+| `AssociationSet` | the value this installer set as `.sm`'s default (`Sutram.Source`), carried only while the default is still that | resets the default only if it still equals that |
+| `AssociationBefore` | `absent` or `empty` - what the default was before it was set | puts that back: no default, or an empty one |
+| `UninstallerSHA256` | the uninstaller's hash | an uninstaller that has changed is kept, and nothing is removed |
+
+`PathOwned`, `DesktopOwned` and `AssociationOwned` are still written, derived from the records above. **Nothing
+acts on them.** The `Sutram.Source` class is removed value by value (only values still equal to what the installer
+wrote) and key by key (only keys left empty). Registry keys are opened, never remade: `New-Item -Force` on an
+existing key deletes it, values and subkeys first (PowerShell's registry provider), and is used only for Sutram's
+own `Uninstall\Sutram` key.
+

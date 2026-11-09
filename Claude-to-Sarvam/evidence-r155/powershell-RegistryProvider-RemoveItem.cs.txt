@@ -1,0 +1,46 @@
+// From https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/System.Management.Automation/namespaces/RegistryProvider.cs, fetched 9 November 2026 (open-source PowerShell; the installer runs under Windows PowerShell 5.1, whose source is not published).
+        protected override void RemoveItem(
+            string path,
+            bool recurse)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw PSTraceSource.NewArgumentException(nameof(path));
+            }
+
+            s_tracer.WriteLine("recurse = {0}", recurse);
+
+            // Get the parent and child portions of the path
+
+            string parentPath = GetParentPath(path, null);
+            string childName = GetChildName(path);
+
+            // Get the parent key
+
+            IRegistryWrapper key = GetRegkeyForPathWriteIfError(parentPath, true);
+
+            if (key == null)
+            {
+                return;
+            }
+
+            // Confirm the remove item with the user
+
+            string action = RegistryProviderStrings.RemoveKeyAction;
+
+            string resourceTemplate = RegistryProviderStrings.RemoveKeyResourceTemplate;
+
+            string resource =
+                    string.Format(
+                        Host.CurrentCulture,
+                        resourceTemplate,
+                        path);
+
+            if (ShouldProcess(resource, action))
+            {
+                try
+                {
+                    key.DeleteSubKeyTree(childName);
+                }
+                catch (ArgumentException argumentException)
+                {

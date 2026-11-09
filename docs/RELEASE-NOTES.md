@@ -8,7 +8,21 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 (an example, a gate, or the reference). Sources: ChatGPT R197 (the corrections are applied below), the R116
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
-## Status: what v315 closes, and what it does not (R140-R154)
+**The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v315 package has not been
+run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
+
+## Status: what v315 closes, and what it does not (R140-R156)
+
+**The installer was revised after the compiler (R155; the compiler is v315 still).** It now leaves a user's `.sm`
+key as it found it. Until R155, `New-Item -Force` on `HKCU\Software\Classes\.sm` deleted that key - the user's own
+default (their association) and every other program's `OpenWithProgids` entry - before the installer read the
+default, so the installer always took `.sm` and uninstall could not give it back. The key is now opened, never
+remade; a default with a value is left alone (Sutram is still offered under *Open with*); what was there before
+an empty default was set is recorded (`AssociationBefore`) and put back. PATH is changed by the one entry and one
+separator: the other entries' text, empty entries and the value's kind (`REG_SZ` or `REG_EXPAND_SZ`) stay, and a
+PATH value the installer made is removed when nothing else is left in it (`PathValueCreated`). Read from
+PowerShell's source and gated (`R143 installer first contact`); **not run on Windows.**
 
 v315 is v314 plus (R153-R154):
 - **the syntax tree's limit has its own code,** `E_VRIKSHA_SEEMA`, and its advice is one that works (a smaller
@@ -85,7 +99,7 @@ visibly rendered, no uninstall window, the empty `.sm` key and its parent remove
 installation with 657/657 hashes, the variable and global 20,000-term refusals and 10,000-term controls, and 322
 suite cases; two acceptance findings were recorded (the clipped instruction label, the surviving uninstall
 staging folder - both fixed in v313), and untested guarantees remain unclaimed* (`Windows-to-Sarvam/win-v312-2026-11-08/`).
-**The licence rendering is verified on native Windows and not under Wine:** Wine draws the Devanagari and Tamil
+**The licence rendering is verified on native Windows (v312's package) and not under Wine:** Wine draws the Devanagari and Tamil
 lines in the licence box as empty boxes, a Wine font limitation. Not established by that run: a new machine or
 user profile, font coverage on other machines, the suite time (one sample, 24% slower than v311's, not attributed),
 a whole-machine cleanup guarantee, the out-of-memory exit, the race.
