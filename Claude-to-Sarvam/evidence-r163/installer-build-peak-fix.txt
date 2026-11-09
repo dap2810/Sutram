@@ -1,0 +1,3 @@
+self-test (Wine 64): exit 0 
+payload: 658 files, 1895804 bytes zipped; Sutram-Setup.exe 2048512 bytes, sha256 d27edbad8eb82f3afbc7d2190c2f0968ed960d9146b77104ecb74495010c13a4
+SETUP PASS: built /home/claude/sutram/Sutram-Setup.exe; staging kept at /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r163/inst-main-1794243569

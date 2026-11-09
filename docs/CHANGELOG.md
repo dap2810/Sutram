@@ -29,8 +29,10 @@
   removed an empty or marked file as stale. Gate `R143 installer first contact`; fixture cases 3-4 now expect refusal.
 - **R163 (documents and a gate):** the memory chapter's section 1 said a `kosh` "grows each time you add to it" - it
   grows when it is full, doubling its room; the chapter now says what capacity is, and why `parimana()` gives 96 for
-  five numbers. The block's peak, re-measured over 75 runs, is 308 or 436 KB (the chapter said 392, one run); without
-  the block, 49,920 KB every time. The reference gives the descriptor's layout: 32 bytes, 56 when a program makes a
+  five numbers. The block's peak: 264 KB in 75 runs of 75 started with an empty environment (`env -i`), between
+  264 and 436 KB started from a shell - at that size the count is mostly the program's pages and its environment
+  (the chapter said 392, one run; R163 first said "308 or 436 over 75 runs", from 55 recorded runs in one shell);
+  without the block, 49,920 KB (75 of 75). The reference gives the descriptor's layout: 32 bytes, 56 when a program makes a
   `kosh` in a `mandapa`. `R158 doc currency` check 8, `sizes`, measures both with `parimana()` and holds every size a
   document gives to them.
 - **R162 (the installer, ChatGPT R223):** nothing changed before what decides it is read. The lock beside the
