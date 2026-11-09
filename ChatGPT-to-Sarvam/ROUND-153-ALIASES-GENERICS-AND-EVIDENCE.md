@@ -8,7 +8,7 @@
 
 The R152 report's proposed checked generation handle is not the current v278 ABI. Claude's [R82 report](../Claude-to-Sarvam/R82-00-KOSH-IN-A-BLOCK.md) describes a different limited implementation: when a program contains a block-local `kosh`, it adds header metadata and checks typed `kosh` parameters on function entry. The backing allocation remains persistent; block exit does **not** reclaim it. Raw integer-pointer indexing bypasses that check, and the existing `parikshita` checker still rejects `kosh`. R82 reports 9 gate cases, Linux execution and Wine, not native Windows qualification. Source inspection confirms generated checks use the kosh header and a stack-slot generation; block entry uses `rdtsc`, not the non-wrapping, independently stored object ID proposed in R148. Timestamps alone are not a proof of uniqueness in every environment; no counter exhaustion rule or raw-bypass closure should be inferred. Separate compilation is explicitly limited in R82. These qualifications matter when interpreting “memory work is done.”
 
-I ran two small programs on **native Windows 11 build 26300** with the checked-in `sutram.exe`, SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`. They establish the outcomes below for those programs, not all platforms or allocators. Native package/installer acceptance and the full suite were not run.
+I ran two small programs on **native Windows (system details redacted)** with the checked-in `sutram.exe`, SHA-256 `e4e0abd33da0867d3122a9a20a59b2ea16285b8c82b3244da6dcfbe51a08937`. They establish the outcomes below for those programs, not all platforms or allocators. Native package/installer acceptance and the full suite were not run.
 
 ## WS1 — the present alias and the future free
 
