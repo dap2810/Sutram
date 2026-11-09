@@ -1,0 +1,24 @@
+# R167: Muse R158 'could not determine' - does parimana()'s empty-arena branch land one byte short? No.
+# Sutram 1.0 (v315) - sampurna sutra; the program, its output, and the emitted code (objdump -D -b binary)
+mukhya() {
+    likha(parimana())
+}
+-- output: 0
+     9b:	48 3d 00 10 00 00    	cmp    $0x1000,%rax
+     a1:	72 2f                	jb     0xd2
+     a3:	50                   	push   %rax
+     a4:	48 8b 05 e3 00 00 00 	mov    0xe3(%rip),%rax        # 0x18e
+     ab:	50                   	push   %rax
+     ac:	48 8b 05 e3 00 00 00 	mov    0xe3(%rip),%rax        # 0x196
+     b3:	48 89 c1             	mov    %rax,%rcx
+     b6:	48 2b 0c 24          	sub    (%rsp),%rcx
+     ba:	48 2d 00 00 00 40    	sub    $0x40000000,%rax
+     c0:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
+     c5:	48 29 c2             	sub    %rax,%rdx
+     c8:	48 8d 04 11          	lea    (%rcx,%rdx,1),%rax
+     cc:	48 83 c4 10          	add    $0x10,%rsp
+     d0:	eb 02                	jmp    0xd4
+     d2:	31 c0                	xor    %eax,%eax
+     d4:	50                   	push   %rax
+-- jb 0xd2 lands on 'xor %eax,%eax' at d2: the first byte of the instruction, after the two-byte 'jmp 0xd4' at d0.
+   Counted: push (1) + load (7) + push (1) + load (7) + 31 bytes of r107_p3 before the xor = 47 = 0x2f.

@@ -27,6 +27,15 @@
 - **R163, the installer lock (ChatGPT R225):** nothing already at `<folder>.sutram-lock` is removed - not an empty
   file, not a marked one; the run stops and says whether another installer holds it, and how to recover. R162 had
   removed an empty or marked file as stale. Gate `R143 installer first contact`; fixture cases 3-4 now expect refusal.
+- **R167 (documents and gates; the compiler unchanged):** `docs/MEMORY-MODEL.md`'s status box corrected in ten
+  places after Muse R158 - what a `mandapa` gives back (only `nirmmita` written in it; not a `kosh`, never a `mala`),
+  the descriptor's four fields and its size (32 bytes, 56 with R82), the budget's rounding, scope and line, a block
+  `kosh` may be read by a `prakriya` but not kept, `parimana()` counts capacity and what the program asked for, the
+  Windows handler commits up to 64 KiB, two Windows figures marked as reported not measured, and two stale paragraphs
+  of the old body marked superseded. The reference's descriptor sentence names all four fields. `R158 doc currency`
+  check 10, `fields`: a paragraph listing the descriptor's fields must name all four and give the size. New gate
+  `R167 evidence manifests`: the eight Windows evidence manifests are read - every entry is the bytes recorded or
+  explained by a normalisation or removal record; an unrecorded change to evidence fails it.
 - **R166 (documents, the gates, the tree; the compiler unchanged):** the memory chapter (both books) says what a
   block gives back - `nirmmita` written in it, yes; a `kosh` made in it, no (it keeps its bytes; only its life ends);
   a `mala` made in it, never (and returning one is not refused) - its title and section 7 no longer say "memory"

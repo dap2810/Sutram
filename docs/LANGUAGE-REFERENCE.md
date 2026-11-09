@@ -1,6 +1,6 @@
 > **Status at compiler v315, 9 November 2026 (R163) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **80 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **81 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -961,8 +961,9 @@ Capacity doubles on growth. Empty `kosh_pop` / `kosh_peek` / `kosh_dequeue` (`ko
 **`vitti a = k` (or `a = k`) makes a second name for the same `kosh`, not a copy.** Both names read and write
 the same cells, however the `kosh` grows.
 
-**From v302 (R127) a `kosh` is a descriptor that never moves.** It holds the length, the capacity and the
-address of the elements; every name of the `kosh` holds the descriptor. When the `kosh` grows past its capacity
+**From v302 (R127) a `kosh` is a descriptor that never moves** - 32 bytes, four 8-byte fields: the length, the
+capacity, the address of the elements and the region size (56 bytes, with three more words, in a program that makes a
+`kosh` inside a `mandapa`). Every name of the `kosh` holds the descriptor. When the `kosh` grows past its capacity
 its elements may move - into the arena while they are small, into a region of their own past 64 KiB - and the
 descriptor is updated, so every name sees the move. A region is reserved, not committed (only the pages used
 cost, on Linux and on Windows), and when a `kosh` outgrows it the elements move to a larger one and the old
