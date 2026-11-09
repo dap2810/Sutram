@@ -25,7 +25,7 @@ The attached patch adds `examples/291_r160_nan_comparisons.sm`, `tests/expect/29
 
 The program compares a NaN on the left against finite `5.0` in the order `== != < <= > >=`. Instead of using `0.0/0.0`, it squares `1e20` expressed as a decimal literal four times, then computes infinity minus infinity. **This is deliberate:** the proposed R159 float-division patch rejects zero division; generating NaN by subtraction keeps this golden meaningful if both patches are applied. It assumes default masked floating exceptions and that overflow/infinity subtraction remain permitted; if a future finite-only profile forbids them, supply an independently validated NaN fixture/bit-injection route and adapt the test.
 
-Native Windows 11 build 26300, compiler v279, source/fixtures at the R159-equivalent base, fresh scratch PE outputs, stdout/stderr separately captured, 15-second compile and 10-second execution timeout:
+Native Windows (system details redacted), compiler v279, source/fixtures at the R159-equivalent base, fresh scratch PE outputs, stdout/stderr separately captured, 15-second compile and 10-second execution timeout:
 
 | Compiler | Compile exit / message | Run exit / stdout | Exact golden match |
 |---|---|---|---|
