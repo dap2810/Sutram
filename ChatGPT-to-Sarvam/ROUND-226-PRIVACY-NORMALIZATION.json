@@ -1,0 +1,146 @@
+{
+  "scope": "ChatGPT-to-Sarvam text evidence normalization, 9 November 2026",
+  "note": "Before digests identify historical pre-normalization bytes. After digests identify sanitized text, not new executions. Embedded product hashes remain unchanged. No history rewrite.",
+  "files": [
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-100-HANDOFF.md",
+      "before_sha256": "d4bc11003112ec2b5af4c6f79f45bf23b2d0990fc203ac893e542cf3e04f211c",
+      "after_sha256": "76919bf55ca9a6a0ce97113b305da2e217b05903a377ca671b6f79a6e41f58cf"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-100-OBSERVED.json",
+      "before_sha256": "65bdbfb129d6ec684dfddda11fab3c595ba7ee265ff0b33f3b0a14c96b49c5f5",
+      "after_sha256": "4a52d000fe713d5c42af541ebf96f8aded2bb5becae539692e9967665d8ee950"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-150-TRANSITIVE-CHECKS-ARITHMETIC-AND-V1-GATE.md",
+      "before_sha256": "6987b901424813c39df5734b87c8a8cd829aebff1993c46f8935ac187350cbd3",
+      "after_sha256": "670ee4f387ba7c22bc8c56b326729eb7871d126fbd8ba175ab48a39e2d53a8b1"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-151-CHECKED-SORT-AND-PRIMITIVES.md",
+      "before_sha256": "d7bf21f69fc28c34ca8488cb3604ac6f5cd251f78dde0e46a7487661626f323d",
+      "after_sha256": "091740c644067d11fe5696161e92e8d63e156c4213d54500669a40ed64176317"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-152-GENERATION-HANDLE-REVIEW.md",
+      "before_sha256": "6fb5df3dfb30a2752d22baf2098fc04a395aa82880f7200663615e2a0109b7b0",
+      "after_sha256": "a427d8338b6424b04e0a2b678cbe2acc96986e9bbe0718d34d12b75bbeb0a518"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-153-ALIASES-GENERICS-AND-EVIDENCE.md",
+      "before_sha256": "8ba06cdc9f4ac94aecf3ed3deade5089015b15e3a5a568dc608c236c691028aa",
+      "after_sha256": "d80ef0f8ecfe1be83a4d26fcd7725a719c4a3f7890b01086176b0efae82ae943"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-154-RECYCLING-AND-ALIAS-EVIDENCE.md",
+      "before_sha256": "114069f396e2bf801e896f496f26546cf700cb81edd8b17a77c480f494b4029d",
+      "after_sha256": "65198edbbd7909c41ef55eab47f99f6a0d94f6241086a9f28b7c83195d342052"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-156-GENERICS-CHECKED-SORT-AND-RELEASE.md",
+      "before_sha256": "11b3c97c9093477a9038a17101d6b59c65a5b221493ed7f6f480ff6fed67670d",
+      "after_sha256": "7f927b3d8584762c95fb76726d6926bc37fa16105d6ff3314cbaf269137a4eb7"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-157-FLOAT-VARIABLES-AND-CENSUS.md",
+      "before_sha256": "8df18bf8a5b2a21cc9f128f15beec0e4f9aa151449e18e7dff356d58c0a0b13d",
+      "after_sha256": "67778245a23e4f271c31647ed9df5d3522f0763e110556db957dd0f16e4df531"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-158-V1-RELEASE-AND-TEACHING-AUDIT.md",
+      "before_sha256": "edde14c7b11be58fa93fea6d271ee36a035d45d1ae76841c44dd9c65f50f8c42",
+      "after_sha256": "70388db010272b56a05c2ab444747cf93f7cf46ff71fd4f33097ba0e53762e11"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-159-ADDITIONAL-PATCHES.md",
+      "before_sha256": "ff89cc07b824369c7b11350a8608f5adffba2ede39c31e4f34d28f6037d3a463",
+      "after_sha256": "b0e58b5279a2868c67c6c894c10f835108a65e3f22f49a968a463f64a102b10b"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-159-PATCH-HANDOFF.md",
+      "before_sha256": "6bb0da4d113b7b4ea1ec261e00b966e29d71e6e55b077d602ba2e364611df4c7",
+      "after_sha256": "ad2ebc1b9aafed81740dcdb0292e2a580ce476de6e3f80555d2dc969876fd11f"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-160-NAN-GOLDEN-CONVERSION-AND-INSTALLER.md",
+      "before_sha256": "4f7563e83b60feec4ddc0ec534ba08ed94ea6de0659d72fd9b8de4ac88fff900",
+      "after_sha256": "a9121ff637921c3f3a188fb5a218f5079c63e8bff8c85ce79b80a3c56831002f"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-161-RUNTIME-CONVERSION-AND-INSTALLER.md",
+      "before_sha256": "8005d16539d1b8c7d82166206e1c10ba88eaaab385eda64cca43fc4a31e35eeb",
+      "after_sha256": "3e3545e86b41fdb0f7cb99332a28407e2145aa169d9e7dbb1bfc4dacfa6eef5f"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-162-NONFINITE-AND-V280-CONVERSION.md",
+      "before_sha256": "f6100cdf53b7cf39609b406134ba4fdeb95227ee2b164dd52ce1ff9224f5b281",
+      "after_sha256": "79226d90afce0cb2ffd81e3ac37f046c574ebd92631e67553158bd60cc4ca53b"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-163-NUMERIC-POLICY-AND-RELEASE-GATES.md",
+      "before_sha256": "ef7fb50ee03ca88441084f292a7218a74213c5efa46572b353942046f849e687",
+      "after_sha256": "5f517f0426a64da6b4ab4c41ecd0512056b7d4bda37f554276a90a3c4ec0d378"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-182-OPERATOR-TABLE-NAMING-AND-PATCH-CHECK.md",
+      "before_sha256": "90b992e184963128c5ed3ac24066d9c1a1b549c66426a03604caf5054a6a4399",
+      "after_sha256": "37ce33a04378d3ed00a9f2ab5ceb87df069820fef114298d7bc0c8b1278b238d"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-220-V315-FOLLOWUP-PARTIAL-OWNERSHIP-FIXES.md",
+      "before_sha256": "ca78bb140bdb0096ad3e0f40a6713f4a4b89b281aeaba039e82e002553d6abfc",
+      "after_sha256": "06c30fd81751af380d820c969129dfe89b46bec69801279811270b6a5ab4b133"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-60-OBSERVED.txt",
+      "before_sha256": "423aec84bd5c5045b14be94ebc2460991ea67c9c40e208276bd6b5b784f608ec",
+      "after_sha256": "090e1a48aa628f44022d2b755c08c74ff7d733d1d10daebaeec0c2df249812e9"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-61-HANDOFF.md",
+      "before_sha256": "e3202a33bbc78eeca9dac14c83bc2066043233d09bc0976227296632bff685c7",
+      "after_sha256": "06b208b04628a2d1b54263c9d718b43a2bb374c0bbd0c8dd5997166e6c6cc44e"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/ROUND-62-OBSERVED.txt",
+      "before_sha256": "5e934d5979c7dceb5c241b2b18948ea9630c95e2403c0fbc73ad6e3a5bf8aff6",
+      "after_sha256": "a1cc2ed932b772db9c17a5aa3967d47444f26c1f29d42d7c3fd38ea97d35f871"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/WINDOWS-INSTALLER-DIAG-2026-11-06.md",
+      "before_sha256": "c5dfaf7b4865b37e1fcc6937234f1bd762a2b9af4034c5cc6a90131cb699ccb1",
+      "after_sha256": "2b747d913ba31f5bbb4af108e264b82cd07461c0c765b655117060acedc253aa"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/WINDOWS-V305-2026-11-06-DIRECT-RESULTS.md",
+      "before_sha256": "def560f136c9398a19913cf7e5408346f903a61831dc40b11bc6daf084e0b8b7",
+      "after_sha256": "bcc414caf3742153979515018a6cf7433f3d64a3f6440a97b04577151a34f560"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/WINDOWS-V307-FIXES-2026-11-06.md",
+      "before_sha256": "48d52f0a5151b6374df9274a9b321cee5722c07a581aac4bf1d646d02443d9ed",
+      "after_sha256": "4770a8da71abbde468eec20759a4e826fcefc81047f3667c046c5523a8c3090f"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/WINDOWS-V309-FINAL-FIXES-2026-11-07.md",
+      "before_sha256": "1fc1e7279b5caa42a0d9d4df51bceaa44bafd6f4cc84827c9c15cb79f0ccb65b",
+      "after_sha256": "71f33ba784738e678d0b3db05ce23b946fe6a93b7c1e61866c9edb764e816e81"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/WINDOWS-V309-FIXES-2026-11-07.md",
+      "before_sha256": "d190c9144222d62382e54f26b6b7a13e07d217a48e13deb293dbf54b78143583",
+      "after_sha256": "3ac219d6aa5ddd03c194ec6a43be1cd18de4b6b0a0022e567d6c1200e12aa015"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/windows-commit-oom-2026-11-06/baseline-oom.json",
+      "before_sha256": "d1e1995c6f4bc5e927f88ebcb2be5c311f4df364e2814be0134e5c69a5d16531",
+      "after_sha256": "e27705e3c552e9cfb20ca208eee94f1150b1d28cee6f92e49a4083469bca49c8"
+    },
+    {
+      "path": "ChatGPT-to-Sarvam/windows-commit-oom-2026-11-06/candidate-oom.json",
+      "before_sha256": "3a0bb789bf1d3be65644e0f3d098ee2cdcb50c759e85f7f8bd97021230abfad3",
+      "after_sha256": "0e3e18ed167831120ccda15d826cc26c92f943bddc4be4176c6cb61ba7ebb4ed"
+    }
+  ]
+}
