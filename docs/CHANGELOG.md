@@ -22,6 +22,14 @@
   one separator, keeping the other entries' text and the value's kind, and `PathValueCreated` lets uninstall remove
   a PATH value it made. Gate `R143 installer first contact` (24). The gate harness keeps a failing gate's whole
   output (`$TMPDIR/sutram-gate-failures/`); R126's Wine check prints stdout and stderr apart on a failure.
+- **R157-R158 (documents and a gate):** the English and Sanskrit books have a memory chapter (19: `kosh` beside
+  `mala`, `mandapa` with a measured number, `parimana()`, `mandapa parimita`, slices with `E_KOSH_VIBHAG` and
+  `E_VIBHAG_ANKA`, running out of memory, what the language does not have); chapter 14 is retitled (it said "New
+  Features: v22"); three book programs that failed on v315 are fixed (chapter 8 wrote past its `mala` - `tak` includes
+  its last number - and two used `mahattam`, renamed in v292); chapter 18's "no IDE on Windows" and "Windows has not
+  been run" are corrected; the Hindi, Tamil, Telugu and Gujarati books are marked archived at v294. **New gate
+  `R158 doc currency`** (versions, symbols, the books' programs, compiler flags, the memory chapter, the changelog);
+  it failed 3 of 6 on v315 as it stood. `AGENTS.md` carries the rule: docs are part of the change.
 - **R156 (documents only):** `WHATS-LEFT.md`, `OPEN-ISSUES.md` (both last true at v258) and `WINDOWS-PORT-PLAN.md`
   archived in `docs/rounds/`; the open list is the release notes'; the reference's status box, stale since v300,
   is current; the release notes state the shipping condition; `Windows-to-Sarvam/win-v297-2026-11-03/Sutram-Setup-v297.exe`

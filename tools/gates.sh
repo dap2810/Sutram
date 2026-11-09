@@ -118,6 +118,7 @@ run_gate() {                      # name, then the command
     "R121 builtins")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r121 builtins: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R123 PE memory")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r123 pe memory: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R124 lazy commit")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r124 lazy commit: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R158 doc currency") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r158 doc currency: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R126 kinds")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r126 kinds: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R127 descriptor")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r127 descriptor: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R130 installer engine")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r130 installer engine: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
@@ -258,6 +259,7 @@ run_gate "R140 package" python3 -B tests/r140/test_package.py   # R140: one exac
 run_gate "R143 walk budget" python3 -B tests/r143/test_walk_budget.py   # R143: the walk's budget refuses (E_VAKYA_SEEMA), reachable with the release compiler
 run_gate "R143 installer first contact" python3 -B tests/r143/test_installer_first_contact.py   # R143: licence decoded as UTF-8 with CR LF, no uninstall console, no empty .sm keys
 run_gate "R152 analysis steps" python3 -B tests/r152/test_analysis_steps.py   # R152: --analysis-steps=N, case by case to ChatGPT R217's contract
+run_gate "R158 doc currency" python3 -B tests/r158/test_doc_currency.py   # R158: the docs stay current - versions, symbols, book programs, flags, the memory chapter, the changelog
 run_gate "R133 handler registration" python3 -B tests/r133/test_veh_registration.py   # R133 (ChatGPT W1): a failed AddVectoredExceptionHandler stops with a message, not an access violation (Wine)
 run_gate "R93 installer gate" python3 -B tests/r93/test_installer_version.py   # R93: the installer check passes a current installer and fails each stale shape
 run_gate "installer version" python3 tools/check_installer_version.py   # R93: Sutram-Setup.exe must embed the compiler of this version (bin/ and win/sutram.exe), and Sutram-Setup.sha256 must be its hash - the installer fell behind twice with nothing failing

@@ -1,0 +1,39 @@
+PASS  self-test: versions rejects a book made to fail
+PASS  self-test: symbols rejects a book made to fail
+PASS  self-test: examples rejects a book made to fail
+PASS  self-test: commands rejects a book made to fail
+PASS  self-test: memory rejects a book made to fail
+PASS  self-test: versions accepts a book made to pass
+PASS  self-test: symbols accepts a book made to pass
+PASS  self-test: examples accepts a book made to pass
+PASS  self-test: commands accepts a book made to pass
+PASS  self-test: memory accepts a book made to pass
+PASS  self-test: changelog rejects a missing version and an entry without who and round
+FAIL  versions: every current status line names v315; no book heading names another version; paused books say which version they describe
+      docs/LANGUAGE-REFERENCE.md: status names v300, the compiler is v315
+      docs/sutram-book-english.html: no status line naming a version
+      docs/sutram-book-sanskrit.html: no status line naming a version
+      docs/sutram-book-english.html: heading or contents entry names v22: '14. New Features: v22'
+      docs/sutram-book-english.html: heading or contents entry names v29: 'v29 – v41'
+      docs/sutram-book-english.html: heading or contents entry names v41: 'v29 – v41'
+      docs/sutram-book-sanskrit.html: heading or contents entry names v22: '14. नूतनाः विशेषताः: v22 (New features)'
+      docs/sutram-book-sanskrit.html: heading or contents entry names v29: 'v29 – v41'
+      docs/sutram-book-sanskrit.html: heading or contents entry names v41: 'v29 – v41'
+      docs/sutram-book-hindi.html: a paused-language book that does not say which version it describes
+      docs/sutram-book-tamil.html: a paused-language book that does not say which version it describes
+      docs/sutram-book-telugu.html: a paused-language book that does not say which version it describes
+      docs/sutram-book-gujarati.html: a paused-language book that does not say which version it describes
+PASS  symbols: every symbol and E_ code a current document cites exists
+FAIL  examples: every complete program in the English and Sanskrit books (28) does what the book says on v315
+      docs/sutram-book-english.html program 10 ('mukhya()'): exit 1, want 0: Sutram truti: mala ank seema atikram
+      docs/sutram-book-english.html program 12 ('yoj ganit'): does not compile: Sutram truti: agyat prakriya: mahattam
+      docs/sutram-book-english.html program 13 ('yoj ganit'): does not compile: Sutram truti: agyat prakriya: mahattam
+      docs/sutram-book-sanskrit.html program 10 ('mukhya()'): exit 1, want 0: Sutram truti: mala ank seema atikram
+      docs/sutram-book-sanskrit.html program 12 ('yoj ganit'): does not compile: Sutram truti: agyat prakriya: mahattam
+      docs/sutram-book-sanskrit.html program 13 ('yoj ganit'): does not compile: Sutram truti: agyat prakriya: mahattam
+PASS  commands: every compiler flag a current document shows is one the compiler accepts, in the form shown
+FAIL  memory: the memory chapter is in both books and covers the seven topics
+      docs/sutram-book-english.html: no memory chapter (id="memory")
+      docs/sutram-book-sanskrit.html: no memory chapter (id="memory")
+PASS  changelog: docs/CHANGELOG.md has every version to v315, each with who and the round
+r158 doc currency: 17 checks, 3 failed

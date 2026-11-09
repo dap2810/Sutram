@@ -9,6 +9,13 @@ work on it.
 
 Then read **`docs/sutram-design-parameters.html`** — the design charter.
 
+**Docs are part of the change, not a task after it.** A round that changes behaviour updates the reference
+(`docs/LANGUAGE-REFERENCE.md`), the changelog (`docs/CHANGELOG.md`) and any book chapter that describes that behaviour
+(`docs/sutram-book-english.html`, `docs/sutram-book-sanskrit.html`), in the same commit. The gate `R158 doc currency`
+checks it; do not rely on the gate to remember what you forgot - it catches a missing version number, a symbol that
+does not exist, a book example that does not run, a flag the compiler refuses; it does not catch a paragraph that is
+now false. (The owner's standing instruction: *"The docs should be up to date as we progress."* R158.)
+
 
 These instructions apply to every automated coding assistant working in this repository, including ChatGPT, Sarvam and additional collaborators.
 

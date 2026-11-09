@@ -1,0 +1,14 @@
+# R159: removed from the working tree; each is byte-identical to the file in the last column, which stays. All are in git at 2212c368b18a4fb9113de9fa527a449d679cfa78.
+# restore one: git show 2212c368b18a:<path> > <path>
+bytes	sha256	removed path	identical copy kept at
+Windows-to-Sarvam/sarvam-acceptance-v297-2026-11-03/gui-log.txt	0	e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855	Windows-to-Sarvam/win-firstrun-paths-2026-11-08/terminal-stderr.txt
+Windows-to-Sarvam/win-test-2026-10-27/f_func.out	3	084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0	examples/r71/boundary_good.out
+Windows-to-Sarvam/win-test-2026-10-27/t_4b.out	37	08b49dea36a52deae29b9a6468cc8e8449ba939558d246765c79ed89d3d674e5	Muse-to-Sarvam/round39-whole-files/251_r38_alias_mala_oob.out
+Windows-to-Sarvam/win-v307-fixes-2026-11-06/clean-defender.json	98	c7e01abc870cc344ca2a174528f3a4e9db05cacacd2303f7de94c8d1d6806cbe	Windows-to-Sarvam/win-v307-fixes-2026-11-06/attempt1/upgrade-defender.json
+Windows-to-Sarvam/win-v307-fixes-2026-11-06/interrupt-defender.json	98	c7e01abc870cc344ca2a174528f3a4e9db05cacacd2303f7de94c8d1d6806cbe	Windows-to-Sarvam/win-v307-fixes-2026-11-06/attempt1/upgrade-defender.json
+Windows-to-Sarvam/win-v307-fixes-2026-11-06/recovery-defender.json	98	c7e01abc870cc344ca2a174528f3a4e9db05cacacd2303f7de94c8d1d6806cbe	Windows-to-Sarvam/win-v307-fixes-2026-11-06/attempt1/upgrade-defender.json
+Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/lock-after-owner.json	286	d1aa99626b99684f230ff1b5b04c8043fe8201d2582f2b3c3ff2eaed7ad60bd9	Windows-to-Sarvam/win-v311-2026-11-07/fixtures/lock-fixture-62a8ded21e924fa6871c75af20668460/after-owner.json
+Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/restore-d1-failed.json	170874	a06b161547a6cd1dc474cb7ca48bcf0e4a9363705b4f79c95c38104b7f5df79b	Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/recovery-attempt1/restore-d1-failed.json
+Windows-to-Sarvam/win-v309-fixes-2026-11-07/initial-identity.json	170162	0ba0bb84b9f5366fb3314ce148c24c3d45762be2f9dfcfba516d274459694086	Windows-to-Sarvam/win-v309-fixes-2026-11-07/final-identity.json
+Windows-to-Sarvam/win-v309-fixes-2026-11-07/initial-ready.png	81808	49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724	Windows-to-Sarvam/win-v309-2026-11-07/d1-retry-ready.png
+Windows-to-Sarvam/win-v309-integrated-2026-11-07/initial-identity.json	170162	d1e0d373a18430498b9d076df7742457e490e89fb9107a320bd42583d1f3d151	Windows-to-Sarvam/win-v309-integrated-2026-11-07/handoff-identity.json

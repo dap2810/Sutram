@@ -12,7 +12,12 @@ contract table, the Windows rounds 1-4 and the v297 IDE run.
 and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v315 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v315 closes, and what it does not (R140-R156)
+## Status: what v315 closes, and what it does not (R140-R158)
+
+**The books teach the memory model (R157):** chapter 19 of the English and Sanskrit books - `kosh` and `mala`,
+`mandapa`, `parimana()`, `mandapa parimita`, slices and their two refusals, running out of memory, and what the
+language does not have. Every complete program in both books now runs as the book says on v315; a new gate,
+`R158 doc currency`, holds that and five other checks.
 
 **The installer was revised after the compiler (R155; the compiler is v315 still).** It now leaves a user's `.sm`
 key as it found it. Until R155, `New-Item -Force` on `HKCU\Software\Classes\.sm` deleted that key - the user's own

@@ -72,10 +72,10 @@ pre .k, code .k { font-weight: 700; }
 <div class="badge">ENGLISH EDITION</div>
 </div>
 <div class="toc"><h2>Contents</h2><ol><li><a href="#ch1">What is Sutram?</a></li><li><a href="#ch2">Your First Program</a></li><li><a href="#ch3">Variables and Constants</a></li><li><a href="#ch4">Operators and Precedence</a></li><li><a href="#ch5">Making Decisions: <span class="k" data-tip="if">yadi</span> / <span class="k" data-tip="else">anya</span></a></li><li><a href="#ch6">Loops: <span class="k" data-tip="for">chakra</span>, <span class="k" data-tip="while">yavat</span>, <span class="k" data-tip="break">krama</span>, <span class="k" data-tip="continue">agrim</span></a></li><li><a href="#ch7">Functions: <span class="k" data-tip="function">prakriya</span></a></li><li><a href="#ch8">Arrays: <span class="k" data-tip="mala">mala</span></a></li><li><a href="#ch9">Enums and Constants: <span class="k" data-tip="enum">ganana</span>, <span class="k" data-tip="constant">sutra</span></a></li><li><a href="#ch10">The Sutram Shell (REPL)</a></li><li><a href="#ch11">Language Packs: Program in Your Language</a></li><li><a href="#ch12">Errors and Debugging</a></li><li><a href="#ch13">Complete Reference</a></li>
-<li><a href="#ch14">New Features</a></li>
+<li><a href="#ch14">More of the language: comments, shortcuts, the library</a></li>
 <li><a href="#ch15">Technical Glossary</a></li>
 <li><a href="#ch16">Sanskrit Roots</a></li>
-<li><a href="#ch17">Windows Setup — Native, No WSL <span class="en-gloss">(Windows setup)</span></a></li><li><a href="#whatsnew">18. What is new</a></li>
+<li><a href="#ch17">Windows Setup — Native, No WSL <span class="en-gloss">(Windows setup)</span></a></li><li><a href="#whatsnew">18. What is new</a></li><li><a href="#memory">19. Memory: kosh, mandapa, budgets and slices</a></li>
 </ol></div>
 <div class="ch" id="ch1"><h2>1. What is Sutram?</h2>
 <p><b>Sutram</b> (सूत्रम्) means <i>"a thread"</i> in Sanskrit — a thread that ties everything together.
@@ -220,13 +220,15 @@ mukhya()
 64-bit slots and gives you the pointer:</p>
 <pre><code><span class="k" data-tip="main">mukhya</span>()
     <span class="k" data-tip="mala">mala</span> tarika[5]
-    <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">tak</span> 5 {
+    <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">tak</span> 4 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="print">likha</span>(tarika[4])     <span class="cm">// 16</span>
     <span class="k" data-tip="print">likha</span>("\n")</code></pre>
-<p>Indexing with <code>arr[i]</code> reads and writes directly through the pointer — one machine
-instruction, no bounds checks, C speed.</p>
+<p><code>tak</code> includes its last number, so <code>0 tak 4</code> is the five places 0, 1, 2, 3, 4. Indexing
+with <code>arr[i]</code> is checked against the size: <code>tarika[5]</code> stops the program with
+<code>Sutram truti: mala ank seema atikram</code> (<i>the index is past the end</i>) instead of touching memory that
+is not the array's. For a row that grows, see chapter 19.</p>
 <div class="note">The older spelling <code><span class="k" data-tip="variable">vitti</span> tarika[5]</code> also works — <code><span class="k" data-tip="mala">mala</span></code>
 is the Sanskrit-correct way <span class="k" data-tip="range-to">to</span> say it.</div>
 </div>
@@ -357,7 +359,7 @@ in an afternoon.</p>
 </div>
 
 <div class="ch" id="ch14">
-<h2>14. New Features: v22</h2>
+<h2>14. More of the language: comments, shortcuts, the library</h2>
 
 <h3>Comments</h3>
 <p>Two styles — <code>#</code> (gudh) and <code>//</code> (dvigun slash). The compiler ignores them completely.</p>
@@ -414,12 +416,12 @@ n--      <span class="cm"># n = 5</span></code></pre>
 </div>
 
 
-<h3>v29 – v41</h3>
+<h3>Later additions: the ternary, <code>kuru</code> ... <code>yavat</code>, bounds checks, the library</h3>
 <p>Since this edition was written, Sutram has gained a ternary operator, a do-while loop, mala length and bounds checking, functions with up to six arguments, and a standard library. An out-of-range mala index is now a clean error instead of silent corruption, and keyboard input works in Windows programs. Every example below is checked by the project's own test suite.</p>
 <pre><code>yoj ganit
 
 mukhya()
-    likha(mahattam(48, 36))
+    likha(mahattam_samapavartak(48, 36))
     vitti n = 7
     likha(n &gt; 5 ? 100 : 200)
     vitti i = 0
@@ -435,7 +437,7 @@ mukhya()
 <p>Sutram ships a small standard library that you pull in with <code>yoj</code>. The module is inlined into your program at compile time, so there is no runtime dependency &mdash; the library code becomes part of your binary. Twelve modules ship today, and the full suchi is in <code>docs/sutram-stdlib.html</code>.</p>
 <table>
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
-<tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
+<tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam_samapavartak</code> <code>laghuttam_samapavartya</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
 <tr><td><code>ank</code></td><td><code>yoj ank</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
 <tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_kramabaddha</code> <code>dwi_anwesh</code></td></tr>
 <tr><td><code>varna</code></td><td><code>yoj varna</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
@@ -443,7 +445,7 @@ mukhya()
 <pre><code>yoj ganit
 
 mukhya()
-    likha(mahattam(48, 36))
+    likha(mahattam_samapavartak(48, 36))
     likha(" ")
     likha(kramgun(5))
     likha(" ")
@@ -739,8 +741,7 @@ toolchain. The installer is only packaging — it is not part of the language.</
     remembers earlier lines, so you can build something up a step at a time;</li>
     <li><b>Ctrl-S</b> save, <b>Ctrl-L</b> load, <b>Ctrl-Q</b> quit.</li>
   </ul>
-  <p>On Windows the IDE is not yet available; use the interactive shell (<code>sutram -i</code>)
-  instead.</p>
+  <p>On Windows the IDE is <code>sutram-ide-gui.exe</code>, installed with Sutram and on the Start menu.</p>
 
   <h3>Speed, measured rather than claimed</h3>
   <p>The compiler keeps variable values in processor registers instead of memory. On a representative
@@ -751,12 +752,189 @@ toolchain. The installer is only packaging — it is not part of the language.</
 
   <h3>What the project is careful about</h3>
   <p>Four memory-corruption bugs were found and fixed, each now covered by a permanent test. The
-  compiler is checked by <strong>160 tests</strong> and by <strong>twelve code-shape gates</strong>
-  that assert how much code a given construct is allowed to produce. Where the project cannot verify
-  something — Windows has not yet been run on a real Windows machine — it says so plainly rather than
-  implying otherwise.</p>
+  compiler is checked by <strong>327 example programs</strong> with known answers and by the project's
+  gates, among them twelve code-shape gates that assert how much code a given construct
+  is allowed to produce. Where the project has not verified something it says so plainly - each release's notes
+  say which package has been installed and run on a real Windows machine, and which has not.</p>
 </div>
-<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0</div>
+<div class="ch" id="memory">
+<h2>19. Memory: <span class="k" data-tip="growable array">kosh</span>, <span class="k" data-tip="scratch block">mandapa</span>, budgets and slices</h2>
+<p>Every program keeps its numbers somewhere. This chapter is about where, how much, and what Sutram does
+for you when memory runs short. It describes the compiler as it is today (v315).</p>
+
+<h3>1. A <code>mala</code> is a fixed row; a <code>kosh</code> grows</h3>
+<p>A <code><span class="k" data-tip="mala">mala</span></code> has the size you give it, for ever. A
+<code><span class="k" data-tip="growable array">kosh</span></code> starts small and grows each time you add to it
+with <code>kosh_kship</code>. <code>kosh_gan</code> tells you how many it holds.</p>
+<pre><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="mala">mala</span> dinah[3]            <span class="cm"># exactly three numbers</span>
+    dinah[0] = 30
+    dinah[1] = 28
+    dinah[2] = 31
+    <span class="k" data-tip="print">likha</span>(dinah[2])          <span class="cm"># 31</span>
+    <span class="k" data-tip="growable array">kosh</span> ankah[2]            <span class="cm"># room for two to start with, holding none</span>
+    kosh_kship(ankah, 5)
+    kosh_kship(ankah, 7)
+    kosh_kship(ankah, 9)        <span class="cm"># a third: the kosh grows by itself</span>
+    <span class="k" data-tip="print">likha</span>(kosh_gan(ankah))    <span class="cm"># 3</span>
+    <span class="k" data-tip="print">likha</span>(ankah[2])          <span class="cm"># 9</span>
+}</code></pre>
+<p><b>Use a <code>mala</code></b> when you know the count before the program runs (the days of a week, the
+cells of a board). <b>Use a <code>kosh</code></b> when you do not (the words in a file, the numbers a person types).
+Both are checked: reading <code>dinah[3]</code> stops the program with <code>Sutram truti: mala ank seema atikram</code>
+(<i>the index is past the end</i>) instead of reading whatever lies beyond.</p>
+
+<h3>2. <code>mandapa</code>: a block whose memory is given back</h3>
+<p><code>nirmmita(n)</code> gives you <code>n</code> bytes of fresh, zeroed memory. Outside a block it stays yours
+until the program ends. Inside a <code><span class="k" data-tip="scratch block">mandapa</span></code> it is
+<b>scratch</b>: everything made with <code>nirmmita</code> inside the block is given back, all at once, when the
+block ends - however it ends (its last line, <code>nivartanam</code>, <code>krama</code>).</p>
+<pre><code><span class="k" data-tip="function">prakriya</span> kaam(i) {
+    <span class="k" data-tip="scratch block">mandapa</span> {
+        <span class="k" data-tip="variable">vitti</span> b = nirmmita(256)     <span class="cm"># 256 bytes of scratch</span>
+        b[0] = i
+        <span class="k" data-tip="return">nivartanam</span> b[0]           <span class="cm"># a NUMBER leaves the block: allowed</span>
+    }
+    <span class="k" data-tip="return">nivartanam</span> 0
+}
+<span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="variable">vitti</span> s = 0
+    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">tak</span> 200000 {
+        s = s + kaam(i)
+    }
+    <span class="k" data-tip="print">likha</span>(s)                  <span class="cm"># 20000100000</span>
+}</code></pre>
+<p><b>Measured</b> (Linux, v315, the largest resident memory of the whole run): this program, 200,000 calls
+each taking 256 bytes, peaks at <b>392 KB</b>. The same program without the <code>mandapa</code> line peaks at
+<b>49,920 KB</b>, because every one of the 200,000 buffers stays. That is one machine and one program, not a
+promise for every program. Numbers may leave a block. An <i>address</i> made inside it may not: putting one
+in a variable outside the block, or returning it, is refused at compile time (<code>E_SCRATCH_ESCAPE</code>). A
+block gives back what <code>nirmmita</code> made inside it. It does not undo anything else the block did -
+what it printed, or wrote to a file.</p>
+
+<h3>3. <code>parimana()</code>: how much am I holding?</h3>
+<p><code>parimana()</code> returns the bytes your program's allocations hold right now.</p>
+<pre><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="print">likha</span>(parimana())              <span class="cm"># 0: nothing yet</span>
+    <span class="k" data-tip="scratch block">mandapa</span> {
+        <span class="k" data-tip="variable">vitti</span> t = nirmmita(1000)
+        t[0] = 42
+        <span class="k" data-tip="print">likha</span>(t[0])                <span class="cm"># 42</span>
+        <span class="k" data-tip="print">likha</span>(parimana())          <span class="cm"># 1008: 1000, rounded up to a multiple of 16</span>
+    }
+    <span class="k" data-tip="print">likha</span>(parimana())              <span class="cm"># 0: the block gave it back</span>
+}</code></pre>
+<p>It counts what the program asked for, not what the operating system reports. A <code>kosh</code> keeps its bytes
+for the whole program, even one made inside a block, so its share of <code>parimana()</code> never falls.</p>
+
+<h3>4. <code>mandapa parimita N</code>: a budget that refuses</h3>
+<p>Give a block a budget in bytes, and the allocation that would pass it is <b>refused before it happens</b>:</p>
+<pre data-exit="1"><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="scratch block">mandapa</span> parimita 1000 {
+        <span class="k" data-tip="variable">vitti</span> a = nirmmita(512)
+        <span class="k" data-tip="print">likha</span>(parimana())          <span class="cm"># 512</span>
+        <span class="k" data-tip="variable">vitti</span> b = nirmmita(512)     <span class="cm"># 1024 would pass 1000: refused</span>
+        <span class="k" data-tip="print">likha</span>(99)                  <span class="cm"># never reached</span>
+    }
+}</code></pre>
+<pre class="out-block"><code>512
+Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1000 baait)</code></pre>
+<p>The program stops with exit status 1 and a sentence that names the line and the budget. <b>Why that is better than
+the alternative:</b> a program that simply keeps taking memory is stopped by the operating system - with no
+sentence, often after slowing the whole machine. A budget turns "the machine ran out" into "this block asked for more
+than you allowed, here". <code>N</code> must be a number written in the program. The budget covers the
+<code>nirmmita</code> written inside the block, not a <code>kosh</code> and not what a called <code>prakriya</code>
+allocates.</p>
+
+<h3>5. A slice, and its one rule</h3>
+<p><code>k[1:3]</code> is a <b>slice</b>: a view of elements 1 and 2 of <code>k</code>, without copying them. A
+<code><span class="k" data-tip="slice parameter">vibhag</span></code> parameter takes one:</p>
+<pre><code><span class="k" data-tip="function">prakriya</span> yoga(<span class="k" data-tip="slice parameter">vibhag</span> s) {
+    <span class="k" data-tip="variable">vitti</span> y = 0
+    <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">tak</span> pankti_gan(s) - 1 {
+        y = y + s[i]
+    }
+    <span class="k" data-tip="return">nivartanam</span> y
+}
+<span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="growable array">kosh</span> k[4]
+    kosh_kship(k, 1)
+    kosh_kship(k, 2)
+    kosh_kship(k, 3)
+    kosh_kship(k, 4)
+    <span class="k" data-tip="print">likha</span>(yoga(k[1:3]))     <span class="cm"># 5: elements 1 and 2</span>
+    <span class="k" data-tip="print">likha</span>(yoga(k))          <span class="cm"># 10: a whole kosh is passed as k[:]</span>
+}</code></pre>
+<p><b>The rule: use a slice of a <code>kosh</code> where you make it - pass it straight to a <code>prakriya</code> that
+reads it - and do not keep it.</b> When a <code>kosh</code> grows, its elements move to a larger place, and a slice
+kept from before would still look at the old one. So the compiler refuses, before the program runs, every way a
+slice could be kept past a growth:</p>
+<pre data-expect="E_KOSH_VIBHAG"><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="growable array">kosh</span> k[4]
+    kosh_kship(k, 1)
+    <span class="k" data-tip="variable">vitti</span> s = k[0:1]      <span class="cm"># refused: E_KOSH_VIBHAG - a slice of a kosh is not kept in a name</span>
+    kosh_kship(k, 2)
+    <span class="k" data-tip="print">likha</span>(s[0])
+}</code></pre>
+<pre data-expect="E_KOSH_VIBHAG"><code><span class="k" data-tip="function">prakriya</span> badha(<span class="k" data-tip="growable array">kosh</span> k, <span class="k" data-tip="slice parameter">vibhag</span> s) {
+    kosh_kship(k, 50)           <span class="cm"># this prakriya can grow k ...</span>
+    <span class="k" data-tip="return">nivartanam</span> s[0]
+}
+<span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="growable array">kosh</span> k[2]
+    kosh_kship(k, 7)
+    <span class="k" data-tip="print">likha</span>(badha(k, k[0:1]))  <span class="cm"># ... so it may not be given a slice of k: E_KOSH_VIBHAG</span>
+}</code></pre>
+<p>And a slice is not a number. Using one in arithmetic, a comparison or a condition is refused with a different
+code, <code>E_VIBHAG_ANKA</code>. Read its elements with <code>s[i]</code> and its length with <code>pankti_gan(s)</code>:</p>
+<pre data-expect="E_VIBHAG_ANKA"><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="growable array">kosh</span> k[4]
+    kosh_kship(k, 1)
+    <span class="k" data-tip="variable">vitti</span> n = k[0:1] + 0  <span class="cm"># refused: E_VIBHAG_ANKA - a slice used as a number</span>
+    <span class="k" data-tip="print">likha</span>(n)
+}</code></pre>
+<p>So: <code>E_KOSH_VIBHAG</code> means "this slice could outlive a growth"; <code>E_VIBHAG_ANKA</code> means "this
+slice is being used as a number". Both are found by the compiler. Neither waits to see whether the <code>kosh</code>
+really grows.</p>
+
+<h3>6. When memory runs out</h3>
+<p>If <code>kosh_kship</code> needs more room and the machine has none to give, the program stops with this
+sentence and exit status 1:</p>
+<pre class="out-block"><code>Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva</code></pre>
+<p><i>No memory could be had to grow the kosh - the kosh is as it was.</i> The second half is the thing to know:
+<b>the <code>kosh</code> was not damaged.</b> It still holds exactly what it held before the push that failed, so
+the program never leaves a half-written <code>kosh</code> behind. The program still stops, though. That is not a
+failure you can catch and carry on from.</p>
+
+<h3>Putting it together</h3>
+<p>A <code>kosh</code> made outside, a budgeted block on every pass, and a number carried out of the block each time:</p>
+<pre><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="growable array">kosh</span> vargah[4]
+    <span class="k" data-tip="for">chakra</span> i = 1 <span class="k" data-tip="range-to">tak</span> 5 {
+        <span class="k" data-tip="scratch block">mandapa</span> parimita 256 {
+            <span class="k" data-tip="variable">vitti</span> t = nirmmita(16)
+            t[0] = i * i
+            kosh_kship(vargah, t[0])     <span class="cm"># the NUMBER goes into the kosh</span>
+        }
+    }
+    <span class="k" data-tip="print">likha</span>(kosh_gan(vargah))           <span class="cm"># 5</span>
+    <span class="k" data-tip="print">likha</span>(vargah[4])                 <span class="cm"># 25</span>
+    <span class="k" data-tip="print">likha</span>(parimana())                <span class="cm"># 96: only the kosh - every block gave its 16 bytes back</span>
+}</code></pre>
+<h3>7. What Sutram does not have</h3>
+<p>So that you know the shape of the thing: <b>no garbage collector</b> (nothing runs in the background looking for
+memory to reclaim); <b>no <code>free</code> for you to call</b> (memory comes back when a block ends, or when the
+program ends - you never call anything to give memory back); <b>no reuse inside a live block</b> (a block
+gives its memory back only when it ends, all at once); <b>no threads</b> (one program does one thing at a time). And
+a <code>kosh</code> made inside a block cannot leave it (<code>E_KOSH_MANDAPA</code>). What you get instead is small
+and predictable: you can see where memory is held, ask how much (<code>parimana()</code>), cap it
+(<code>parimita</code>), and a <code>kosh</code> that cannot grow, a block over its budget, or a block field that is full each
+stops the program with a sentence that says which, not a crash.</p>
+<div class="try"><b>Try it:</b> put a <code>mandapa parimita 4096</code> around a loop that calls
+<code>nirmmita(64)</code>, print <code>parimana()</code> each time round, and find the pass on which the budget
+refuses. Then move <code>mandapa</code> inside the loop, so the block starts again on every pass, and watch it never refuse.</div>
+</div>
+<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v315)</div>
 </div>
 </body>
 </html>

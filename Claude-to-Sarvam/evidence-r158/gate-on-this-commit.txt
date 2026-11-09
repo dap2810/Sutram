@@ -1,0 +1,18 @@
+PASS  self-test: versions rejects a book made to fail
+PASS  self-test: symbols rejects a book made to fail
+PASS  self-test: examples rejects a book made to fail
+PASS  self-test: commands rejects a book made to fail
+PASS  self-test: memory rejects a book made to fail
+PASS  self-test: versions accepts a book made to pass
+PASS  self-test: symbols accepts a book made to pass
+PASS  self-test: examples accepts a book made to pass
+PASS  self-test: commands accepts a book made to pass
+PASS  self-test: memory accepts a book made to pass
+PASS  self-test: changelog rejects a missing version and an entry without who and round
+PASS  versions: every current status line names v315; no book heading names another version; paused books say which version they describe
+PASS  symbols: every symbol and E_ code a current document cites exists
+PASS  examples: every complete program in the English and Sanskrit books (46) does what the book says on v315
+PASS  commands: every compiler flag a current document shows is one the compiler accepts, in the form shown
+PASS  memory: the memory chapter is in both books and covers the seven topics
+PASS  changelog: docs/CHANGELOG.md has every version to v315, each with who and the round
+r158 doc currency: 17 checks, 0 failed

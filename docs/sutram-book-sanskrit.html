@@ -72,11 +72,11 @@ pre .k, code .k { font-weight: 700; }
 <div class="badge">संस्कृत-संस्करणम्</div>
 </div>
 <div class="toc"><h2>विषयसूचिः</h2><ol><li><a href="#ch1">सूत्रम् किम्? <span class="en-gloss">(What is Sutram?)</span></a></li><li><a href="#ch2">भवतः प्रथमः क्रमादेशः <span class="en-gloss">(Your first program)</span></a></li><li><a href="#ch3">चराणि च स्थिराङ्काः <span class="en-gloss">(Variables and constants)</span></a></li><li><a href="#ch4">संक्रियाः पूर्वता च <span class="en-gloss">(Operators and precedence)</span></a></li><li><a href="#ch5">निर्णयः: <span class="k" data-tip="अर्थः: if">yadi</span> / <span class="k" data-tip="अर्थः: else">anya</span> <span class="en-gloss">(Decisions (if / else))</span></a></li><li><a href="#ch6">पाशाः: <span class="k" data-tip="अर्थः: for">chakra</span>, <span class="k" data-tip="अर्थः: while">yavat</span>, <span class="k" data-tip="अर्थः: break">krama</span>, <span class="k" data-tip="अर्थः: continue">agrim</span> <span class="en-gloss">(Loops)</span></a></li><li><a href="#ch7">फलनानि: <span class="k" data-tip="अर्थः: function">prakriya</span> <span class="en-gloss">(Functions)</span></a></li><li><a href="#ch8">पङ्क्तयः: <span class="k" data-tip="अर्थः: mala">mala</span> <span class="en-gloss">(Arrays)</span></a></li><li><a href="#ch9">गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">ganana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></a></li><li><a href="#ch10">सूत्रम्-कवचम् (REPL) <span class="en-gloss">(The Sutram shell (REPL))</span></a></li><li><a href="#ch11">भाषा-संकुलम्: स्वभाषायां क्रमादेशः <span class="en-gloss">(Language packs)</span></a></li><li><a href="#ch12">दोषाः दोषसुधारः च <span class="en-gloss">(Errors and debugging)</span></a></li><li><a href="#ch13">सम्पूर्णः सन्दर्भः <span class="en-gloss">(Complete reference)</span></a></li>
-<li><a href="#ch14">नूतनाः विशेषताः <span class="en-gloss">(New features)</span></a></li>
+<li><a href="#ch14">भाषायाः अन्यत्: टिप्पण्यः, लघुमार्गाः, ग्रन्थालयः <span class="en-gloss">(More of the language)</span></a></li>
 <li><a href="#ch15">पारिभाषिकशब्दकोशः <span class="en-gloss">(Technical glossary)</span></a></li>
 <li><a href="#ch16">धातवः — मूलानि <span class="en-gloss">(Sanskrit roots)</span></a></li>
 <li><a href="#ch17">विण्डोज़-स्थापनम् — मूलरूपेण <span class="en-gloss">(विण्डोज़-स्थापनम्)</span></a></li><li><a href="#whatsnew">18. What is new</a></li>
-</ol></div>
+<li><a href="#memory">19. स्मृतिः: kosh, mandapa, परिमितिः, विभागाः <span class="en-gloss">(Memory)</span></a></li></ol></div>
 <div class="ch" id="ch1"><h2>1. सूत्रम् किम्? <span class="en-gloss">(What is Sutram?)</span></h2>
 <p><b>सूत्रम्</b> इत्यस्य अर्थः "सूत्रम्" — यत् सर्वं बध्नाति। सूत्रम् एका कम्प्यूटर-भाषा अस्ति
 यस्याः कूटशब्दः्स् संस्कृतात् आगतानि, यस्याः संकलकःः शुद्धायां असेंबली-भाषायां लिखितः, या च सरलतया
@@ -204,12 +204,12 @@ mukhya()
 <code><span class="k" data-tip="अर्थः: mala">mala</span> tarika[5]</code> पञ्च 64-बिट्-स्थानानि ददाति:</p>
 <pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>()
     <span class="k" data-tip="अर्थः: mala">mala</span> tarika[5]
-    <span class="k" data-tip="अर्थः: for">chakra</span> i = 0 <span class="k" data-tip="अर्थः: range-to">tak</span> 5 {
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 0 <span class="k" data-tip="अर्थः: range-to">tak</span> 4 {
         tarika[i] = i * i
     }
     <span class="k" data-tip="अर्थः: print">likha</span>(tarika[4])     <span class="cm">// 16</span>
     <span class="k" data-tip="अर्थः: print">likha</span>("\n")</code></pre>
-<p><code>arr[i]</code> सरलतया पॉइन्टर्-द्वारा पठति-लिखति — एकः मशीन्-निर्देशः, C-वेगः।</p>
+<p><code>tak</code> अन्तिमम् अङ्कम् अपि गृह्णाति, अतः <code>0 tak 4</code> पञ्च स्थानानि: 0, 1, 2, 3, 4। <code>arr[i]</code> परिमाणेन परीक्ष्यते: <code>tarika[5]</code> <code>Sutram truti: mala ank seema atikram</code> (<i>सूचकः अन्तम् अतिक्रामति</i>) इति वदित्वा क्रमादेशं विरामयति, पङ्क्तेः बाह्यां स्मृतिं न स्पृशति। वर्धमानायै पङ्क्त्यै अध्यायः 19 द्रष्टव्यः।</p>
 </div>
 <div class="ch" id="ch9"><h2>9. गणनानि स्थिराङ्काः च — <span class="k" data-tip="अर्थः: enum">ganana</span>, <span class="k" data-tip="अर्थः: constant">sutra</span> <span class="en-gloss">(Enums and constants)</span></h2>
 <p><code><span class="k" data-tip="अर्थः: enum">ganana</span></code> (सृजनम्) नामकानि पूर्णाङ्क-स्थिराङ्कानि निर्माति — एकं enum:</p>
@@ -316,7 +316,7 @@ sutram --version                     <span class="cm"># संस्करणम
 </div>
 
 <div class="ch" id="ch14">
-<h2>14. नूतनाः विशेषताः: v22 <span class="en-gloss">(New features)</span></h2>
+<h2>14. भाषायाः अन्यत्: टिप्पण्यः, लघुमार्गाः, ग्रन्थालयः <span class="en-gloss">(More of the language: comments, shortcuts, the library)</span></h2>
 
 <h3>टिप्पनी (Comments)</h3>
 <p>क्रमादेशे टिप्पनीलेखनस्य द्वे रूपे स्तः — <code>#</code> तथा <code>//</code>। संकलकः एताः सम्पूर्णतया उपेक्षते।</p>
@@ -374,12 +374,12 @@ n--      <span class="cm"># n = 5</span></code></pre>
 </div>
 
 
-<h3>v29 – v41</h3>
+<h3>पश्चात् योजितानि: त्रि-पक्ष-संक्रिया, <code>kuru</code> ... <code>yavat</code>, सीमा-परीक्षा, ग्रन्थालयः</h3>
 <p>अस्मात् संस्करणात् परं Sutram इत्यस्मिन् त्रयाणां operands-युक्तः operator, do-while loop, mala length तथा bounds checking, षट्-arguments-युक्तानि functions, तथा च एका standard library योजिता अस्ति। इदानीं out-of-range mala index इत्यनेन विना कोलाहलं data corruption न भवति, अपि तु साक्षात् स्पष्टः error आगच्छति। Windows programs मध्ये keyboard input अपि सम्यक् कार्यं करोति। अधः दत्तं प्रत्येकं उदाहरणं project इत्यस्य स्वस्य test suite द्वारा परीक्षितम् अस्ति।</p>
 <pre><code>yoj ganit
 
 mukhya()
-    likha(mahattam(48, 36))
+    likha(mahattam_samapavartak(48, 36))
     vitti n = 7
     likha(n &gt; 5 ? 100 : 200)
     vitti i = 0
@@ -395,7 +395,7 @@ mukhya()
 <p>Sutram एकां लघ्वीं मानक-पुस्तकालयं प्रेषयति यं भवान् <code>yoj</code> इत्यनेन आनयति। सङ्कलनकाले सः विभागः भवतः कार्यक्रमे अन्तर्लिखितः भवति, अतः कापि रनटाइम-आश्रयता नास्ति - पुस्तकालयस्य सङ्केतः भवतः बाइनरी-अङ्गत्वेन भवति। अद्यत्वे द्वादश विभागाः सन्ति, पूर्णा सूची च <code>docs/sutram-stdlib.html</code> इत्यत्र अस्ति।</p>
 <table>
 <tr><th>module</th><th>include with</th><th>functions</th></tr>
-<tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam</code> <code>laghuttam</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
+<tr><td><code>ganit</code></td><td><code>yoj ganit</code></td><td>15 functions &mdash; <code>varg</code> <code>vargit</code> <code>ghan</code> <code>dvigun</code> <code>trigun</code> <code>vardh</code> <code>nirapeksh_mulya</code> <code>laghu2</code> <code>adhik2</code> <code>mahattam_samapavartak</code> <code>laghuttam_samapavartya</code> <code>ghat</code> <code>kramgun</code> <code>asti_abhajya</code> <code>yog_tak</code></td></tr>
 <tr><td><code>ank</code></td><td><code>yoj ank</code></td><td>10 functions &mdash; <code>asti_yugm</code> <code>asti_visham</code> <code>ank_gan</code> <code>ank_yog</code> <code>viparyay_ank</code> <code>asti_vilom</code> <code>seemit</code> <code>fib</code> <code>asti_sampurna</code> <code>collatz_charan</code></td></tr>
 <tr><td><code>shreni</code></td><td><code>yoj shreni</code></td><td>11 functions &mdash; <code>vinimay</code> <code>budbud_shreni</code> <code>shankh_shreni</code> <code>viparyay_mala</code> <code>laghu</code> <code>adhik</code> <code>yog</code> <code>anwesh_sarak</code> <code>gan</code> <code>asti_kramabaddha</code> <code>dwi_anwesh</code></td></tr>
 <tr><td><code>varna</code></td><td><code>yoj varna</code></td><td>13 functions &mdash; <code>varna_maap</code> <code>akshar_sanket</code> <code>asti_ank_akshar</code> <code>asti_unnat_akshar</code> <code>asti_avanat_akshar</code> <code>asti_akshar_akshar</code> <code>asti_avakash_akshar</code> <code>gan_swar</code> <code>gan_akshar</code> <code>anwesh_akshar</code> <code>asti_sarv_ank</code> <code>unnat_sanket</code> <code>avanat_sanket</code></td></tr>
@@ -403,7 +403,7 @@ mukhya()
 <pre><code>yoj ganit
 
 mukhya()
-    likha(mahattam(48, 36))
+    likha(mahattam_samapavartak(48, 36))
     likha(" ")
     likha(kramgun(5))
     likha(" ")
@@ -643,14 +643,14 @@ Sutram → Uninstall</b>। अनुस्थापकः केवलं स�
   <div class="try"><b>प्रयत्नं कुर्वन्तु:</b> परम्परागतमाड्युल-सङ्कुलानि वास्तविकं गणितं गणयन्ति — 61 इत्यस्य चक्रवालः x वर्गं - 61 y वर्गं = 1 इत्यस्य लघुतमं समाधानं प्रतिददाति, यत् x = 1766319049, y = 226153980 अस्ति। तत् सप्तमशताब्द्याः पद्धतिः अस्ति, यत् सम्यक् उत्तरस्य विरुद्धं प्रमाणीकृतम् अस्ति।</div>
   <h3>सूत्रम् IDE</h3>
   <p>भाषया सह स्थापितम्। एकः एव स्वदेशी कार्यक्रमः — न पायथन्, न व्याख्याता — रेखासङ्ख्याभिः वाक्यरचना-प्रकाशनैः च युक्तः सङ्केतसम्पादकः; भवता लिखितं सङ्कलितुं चालयितुं च Ctrl-R, परिणामः अधः दर्शितः; एकैकशः उदाहरणकार्यक्रमान् द्रष्टुं Ctrl-E; एकः अन्तर्क्रियाशीलः कमाण्ड-प्रवेशः यत्र भवान् कथनं टङ्कयति, Enter नुदति, तत् च चाल्यमानं पश्यति, यत्र सत्रं पूर्वतनीः पङ्क्तीः स्मरति येन भवान् एकैकं पदं कृत्वा किमपि निर्मातुं शक्नोति; तथा च रक्षितुं Ctrl-S, भारयितुं Ctrl-L, त्यक्तुं च Ctrl-Q।</p>
-  <p>विण्डोज् मध्ये IDE अद्यापि उपलब्धं नास्ति; तस्य स्थाने अन्तर्क्रियाशील-प्रवेशस्य उपयोगं कुर्वन्तु।</p>
+  <p>विण्डोज्-मध्ये IDE <code>sutram-ide-gui.exe</code> अस्ति - सूत्रेण सह स्थाप्यते, Start-सूच्यां च दृश्यते।</p>
   <h3>गतिः, न तु केवलं प्रतिपादितम्</h3>
   <p>सङ्कलकः चरराशीनां मूल्यानि स्मृतेः स्थाने प्रोसेसर-पञ्जिकासु स्थापयति। एकस्मिन् प्रतिनिधि-सङ्ख्यात्मक-कार्यक्रमे एतेन नूतनेषु चक्रेषु प्रायः 1.2 गुणितं मापितं वेगवर्धनं उत्पादितम्, तथा च एकस्मिन् दृढे पूर्णाङ्क-लूप् मध्ये उत्पादितः सङ्केतः 13 निर्देशाभ्यः 5 अभवत् — मापितं 4.9 गुणितम्। अस्मिन् खण्डे प्रत्येकं दावः तस्यामेव यन्त्रे पूर्वं पश्चात् च मापितः आसीत्, न तु अनुमानितः।</p>
   <h3>प्रकल्पः किमर्थं सावधानः अस्ति</h3>
-  <p>चत्वारः स्मृति-भ्रंश-दोषाः प्राप्ताः निवारिताः च, प्रत्येकम् इदानीं स्थायि-परीक्षणेन आच्छादितम् अस्ति। सङ्कलकः 160 परीक्षणैः तथा च द्वादश-सङ्केत-आकार-द्वारैः परीक्षितः भवति ये दावं कुर्वन्ति यत् दत्तं निर्माणं कियत् सङ्केतं उत्पादितुं अनुमतम् अस्ति। यत्र प्रकल्पः किमपि प्रमाणीकर्तुं न शक्नोति — विण्डोज् अद्यापि वास्तविके विण्डोज्-यन्त्रे न चालितम् — तत् अन्यथा सूचयितुं स्थाने स्पष्टतया कथयति।</p>
+  <p>चत्वारः स्मृति-भ्रंश-दोषाः प्राप्ताः निवारिताः च, प्रत्येकम् इदानीं स्थायि-परीक्षणेन आच्छादितम् अस्ति। सङ्कलकः ज्ञात-उत्तरैः 327 उदाहरण-क्रमादेशैः, प्रकल्पस्य द्वारैः च परीक्ष्यते - तेषु द्वादश सङ्केत-आकार-द्वाराणि, यानि दत्तं निर्माणं कियत् सङ्केतम् उत्पादयितुम् अनुमतम् इति दृढीकुर्वन्ति। यत् प्रकल्पेन न प्रमाणितं तत् स्पष्टं वदति - प्रत्येकस्य संस्करणस्य टिप्पण्यः वदन्ति कः सङ्कुलः वास्तविके विण्डोज्-यन्त्रे स्थापितः चालितः च, कः न।</p>
 </div>
 <div class="ch" id="codeappendix">
-  <h2>19. Code appendix for chapter 18</h2>
+  <h2>परिशिष्टम्: Code appendix for chapter 18</h2>
   <p>The examples are given here in Sutram source, which is the same in every edition of this book.</p>
   <h3>Floats</h3>
 <pre><span class="kw">dasham</span> x = 1.5
@@ -683,7 +683,179 @@ Sutram → Uninstall</b>। अनुस्थापकः केवलं स�
 <span class="kw">yoj</span> kalana
 <span class="kw">yoj</span> samanvaya</pre>
 </div>
-<div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0</div>
+<div class="ch" id="memory">
+<h2>19. स्मृतिः: <span class="k" data-tip="अर्थः: growable array">kosh</span>, <span class="k" data-tip="अर्थः: scratch block">mandapa</span>, परिमितिः, विभागाः च <span class="en-gloss">(Memory: kosh, mandapa, budgets and slices)</span></h2>
+<p>प्रत्येकः क्रमादेशः स्वान् अङ्कान् कुत्रचित् स्थापयति। अयम् अध्यायः वदति - कुत्र, कियत्, स्मृतौ न्यूनायां च सूत्रम्
+किं करोति इति। अद्यतनं सङ्कलकं (v315) वर्णयति।</p>
+
+<h3>1. <code>mala</code> स्थिरा पङ्क्तिः; <code>kosh</code> वर्धते <span class="en-gloss">(a mala is fixed; a kosh grows)</span></h3>
+<p><code><span class="k" data-tip="अर्थः: mala">mala</span></code> यत् परिमाणं दीयते तत् सदा धारयति।
+<code><span class="k" data-tip="अर्थः: growable array">kosh</span></code> लघुः आरभते, <code>kosh_kship</code> इत्यनेन
+यदा यदा योज्यते तदा तदा वर्धते। <code>kosh_gan</code> कति सन्ति इति वदति।</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: mala">mala</span> dinah[3]            <span class="cm"># ठीक त्रयः अङ्काः</span>
+    dinah[0] = 30
+    dinah[1] = 28
+    dinah[2] = 31
+    <span class="k" data-tip="अर्थः: print">likha</span>(dinah[2])          <span class="cm"># 31</span>
+    <span class="k" data-tip="अर्थः: growable array">kosh</span> ankah[2]            <span class="cm"># आरम्भे द्वयोः स्थानम्, किमपि नास्ति</span>
+    kosh_kship(ankah, 5)
+    kosh_kship(ankah, 7)
+    kosh_kship(ankah, 9)        <span class="cm"># तृतीयः: कोशः स्वयं वर्धते</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>(kosh_gan(ankah))    <span class="cm"># 3</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>(ankah[2])          <span class="cm"># 9</span>
+}</code></pre>
+<p><b><code>mala</code> उपयुज्यताम्</b> यदा सङ्ख्या पूर्वमेव ज्ञाता (सप्ताहस्य दिनानि, फलकस्य कोष्ठाः)। <b><code>kosh</code>
+उपयुज्यताम्</b> यदा न ज्ञाता (पत्रे शब्दाः, जनः यान् अङ्कान् लिखति)। उभे परीक्ष्येते: <code>dinah[3]</code> पठनं
+<code>Sutram truti: mala ank seema atikram</code> (<i>सूचकः अन्तम् अतिक्रामति</i>) इति वदित्वा क्रमादेशं विरामयति, परं
+स्थितं किमपि न पठति।</p>
+
+<h3>2. <code>mandapa</code>: यस्य स्मृतिः प्रत्यर्प्यते सः खण्डः <span class="en-gloss">(a block whose memory is given back)</span></h3>
+<p><code>nirmmita(n)</code> नवान् शून्यीकृतान् <code>n</code> बाइट्-परिमितान् स्मृतिभागान् ददाति। खण्डात् बहिः ते
+क्रमादेशस्य अन्तपर्यन्तं तिष्ठन्ति। <code><span class="k" data-tip="अर्थः: scratch block">mandapa</span></code>-मध्ये तु ते
+<b>क्षणिकाः</b>: खण्डे <code>nirmmita</code>-निर्मितं सर्वं खण्डस्य समाप्तौ एकवारं प्रत्यर्प्यते - यथा कथञ्चित् समाप्तः
+भवतु (अन्तिमा पङ्क्तिः, <code>nivartanam</code>, <code>krama</code>)।</p>
+<pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> kaam(i) {
+    <span class="k" data-tip="अर्थः: scratch block">mandapa</span> {
+        <span class="k" data-tip="अर्थः: variable">vitti</span> b = nirmmita(256)     <span class="cm"># 256 बाइट् क्षणिकम्</span>
+        b[0] = i
+        <span class="k" data-tip="अर्थः: return">nivartanam</span> b[0]           <span class="cm"># अङ्कः खण्डात् निर्गच्छति: अनुमतम्</span>
+    }
+    <span class="k" data-tip="अर्थः: return">nivartanam</span> 0
+}
+<span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: variable">vitti</span> s = 0
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">tak</span> 200000 {
+        s = s + kaam(i)
+    }
+    <span class="k" data-tip="अर्थः: print">likha</span>(s)                  <span class="cm"># 20000100000</span>
+}</code></pre>
+<p><b>मापितम्</b> (Linux, v315, सम्पूर्णे धावने सर्वाधिका निवासि-स्मृतिः): अयं क्रमादेशः - 200,000 आह्वानानि,
+प्रत्येकं 256 बाइट् - <b>392 KB</b> पर्यन्तं गच्छति। <code>mandapa</code>-पङ्क्तिं विना स एव <b>49,920 KB</b>, यतः
+200,000 अपि खण्डाः तिष्ठन्ति। एकं यन्त्रम्, एकः क्रमादेशः - न सर्वेषां क्रमादेशानां प्रतिज्ञा। अङ्काः खण्डात्
+निर्गन्तुं शक्नुवन्ति; खण्डे निर्मितः <i>स्थान-सङ्केतः</i> (address) न शक्नोति: बाह्य-चरे स्थापनं प्रत्यर्पणं वा सङ्कलन-समये
+निषिध्यते (<code>E_SCRATCH_ESCAPE</code>)। खण्डः केवलं तत्र <code>nirmmita</code>-निर्मितं प्रत्यर्पयति - यत् मुद्रितं,
+पत्रे लिखितं वा, तत् न निवर्तयति।</p>
+
+<h3>3. <code>parimana()</code>: अहं कियत् धारयामि? <span class="en-gloss">(how much am I holding?)</span></h3>
+<p><code>parimana()</code> क्रमादेशस्य आवण्टनानि इदानीं कति बाइट् धारयन्ति इति ददाति।</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: print">likha</span>(parimana())              <span class="cm"># 0: अद्यापि किमपि न</span>
+    <span class="k" data-tip="अर्थः: scratch block">mandapa</span> {
+        <span class="k" data-tip="अर्थः: variable">vitti</span> t = nirmmita(1000)
+        t[0] = 42
+        <span class="k" data-tip="अर्थः: print">likha</span>(t[0])                <span class="cm"># 42</span>
+        <span class="k" data-tip="अर्थः: print">likha</span>(parimana())          <span class="cm"># 1008: 1000, 16-गुणितं यावत् वर्धितम्</span>
+    }
+    <span class="k" data-tip="अर्थः: print">likha</span>(parimana())              <span class="cm"># 0: खण्डः प्रत्यर्पितवान्</span>
+}</code></pre>
+<p>क्रमादेशः यत् याचितवान् तत् गणयति, न तु यत् प्रचालन-तन्त्रं (operating system) वदति। <code>kosh</code> स्वान्
+बाइट्-भागान् सम्पूर्णं क्रमादेशं धारयति - खण्डे निर्मितः अपि - अतः <code>parimana()</code>-मध्ये तस्य भागः न न्यूनीभवति।</p>
+
+<h3>4. <code>mandapa parimita N</code>: निषेधन्ती परिमितिः <span class="en-gloss">(a budget that refuses)</span></h3>
+<p>खण्डाय बाइट्-परिमितिं ददातु; यत् आवण्टनं तां अतिक्रामेत् तत् <b>भवनात् पूर्वमेव निषिध्यते</b>:</p>
+<pre data-exit="1"><code><span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: scratch block">mandapa</span> parimita 1000 {
+        <span class="k" data-tip="अर्थः: variable">vitti</span> a = nirmmita(512)
+        <span class="k" data-tip="अर्थः: print">likha</span>(parimana())          <span class="cm"># 512</span>
+        <span class="k" data-tip="अर्थः: variable">vitti</span> b = nirmmita(512)     <span class="cm"># 1024 > 1000: निषिद्धम्</span>
+        <span class="k" data-tip="अर्थः: print">likha</span>(99)                  <span class="cm"># न प्राप्यते</span>
+    }
+}</code></pre>
+<pre class="out-block"><code>512
+Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1000 baait)</code></pre>
+<p>क्रमादेशः निर्गम-स्थितिः 1 इत्यनेन, पङ्क्तिं परिमितिं च नामयता वाक्येन विरमति। <b>किमर्थम् इदं श्रेयः:</b> यः
+क्रमादेशः केवलं स्मृतिं गृह्णाति, तं प्रचालन-तन्त्रं विरामयति - वाक्यं विना, प्रायः सम्पूर्णं यन्त्रं मन्दीकृत्य।
+परिमितिः "यन्त्रस्य स्मृतिः समाप्ता" इत्येतत् "अयं खण्डः अत्र अनुमतात् अधिकं याचितवान्" इति करोति। <code>N</code>
+क्रमादेशे लिखितः अङ्कः एव भवेत्। परिमितिः खण्डे लिखितं <code>nirmmita</code> गणयति - न <code>kosh</code>, न
+आहूतायाः <code>prakriya</code>-याः आवण्टनम्।</p>
+
+<h3>5. विभागः, तस्य एकः नियमः च <span class="en-gloss">(a slice, and its one rule)</span></h3>
+<p><code>k[1:3]</code> <b>विभागः</b> (slice): <code>k</code>-स्य 1, 2 तत्त्वयोः दर्शनम्, प्रतिलिपिं विना।
+<code><span class="k" data-tip="अर्थः: slice parameter">vibhag</span></code>-तर्कः तं गृह्णाति:</p>
+<pre><code><span class="k" data-tip="अर्थः: function">prakriya</span> yoga(<span class="k" data-tip="अर्थः: slice parameter">vibhag</span> s) {
+    <span class="k" data-tip="अर्थः: variable">vitti</span> y = 0
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 0 <span class="k" data-tip="अर्थः: range-to">tak</span> pankti_gan(s) - 1 {
+        y = y + s[i]
+    }
+    <span class="k" data-tip="अर्थः: return">nivartanam</span> y
+}
+<span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: growable array">kosh</span> k[4]
+    kosh_kship(k, 1)
+    kosh_kship(k, 2)
+    kosh_kship(k, 3)
+    kosh_kship(k, 4)
+    <span class="k" data-tip="अर्थः: print">likha</span>(yoga(k[1:3]))     <span class="cm"># 5: 1, 2 तत्त्वे</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>(yoga(k))          <span class="cm"># 10: सम्पूर्णः कोशः k[:] इव दीयते</span>
+}</code></pre>
+<p><b>नियमः: <code>kosh</code>-स्य विभागं यत्र रचयसि तत्रैव उपयुङ्क्ष्व - पठन्त्यै <code>prakriya</code>-यै साक्षात् प्रेषय -
+न तु रक्ष।</b> यदा <code>kosh</code> वर्धते तदा तस्य तत्त्वानि बृहत्तरं स्थानं गच्छन्ति; पूर्वं रक्षितः विभागः पुरातनं
+स्थानम् एव पश्येत्। अतः सङ्कलकः, क्रमादेशस्य धावनात् पूर्वमेव, वृद्धेः परं विभागस्य रक्षणस्य सर्वान् मार्गान् निषेधति:</p>
+<pre data-expect="E_KOSH_VIBHAG"><code><span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: growable array">kosh</span> k[4]
+    kosh_kship(k, 1)
+    <span class="k" data-tip="अर्थः: variable">vitti</span> s = k[0:1]      <span class="cm"># निषिद्धम्: E_KOSH_VIBHAG - कोश-विभागः नाम्नि न स्थाप्यते</span>
+    kosh_kship(k, 2)
+    <span class="k" data-tip="अर्थः: print">likha</span>(s[0])
+}</code></pre>
+<pre data-expect="E_KOSH_VIBHAG"><code><span class="k" data-tip="अर्थः: function">prakriya</span> badha(<span class="k" data-tip="अर्थः: growable array">kosh</span> k, <span class="k" data-tip="अर्थः: slice parameter">vibhag</span> s) {
+    kosh_kship(k, 50)           <span class="cm"># इयं प्रक्रिया k वर्धयितुं शक्नोति ...</span>
+    <span class="k" data-tip="अर्थः: return">nivartanam</span> s[0]
+}
+<span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: growable array">kosh</span> k[2]
+    kosh_kship(k, 7)
+    <span class="k" data-tip="अर्थः: print">likha</span>(badha(k, k[0:1]))  <span class="cm"># ... अतः k-विभागः तस्यै न दीयते: E_KOSH_VIBHAG</span>
+}</code></pre>
+<p>विभागः अङ्कः अपि न। गणिते, तुलनायां, प्रतिबन्धे वा तस्य उपयोगः अन्येन सङ्केतेन निषिध्यते, <code>E_VIBHAG_ANKA</code>।
+तत्त्वानि <code>s[i]</code> इत्यनेन पठ, दैर्घ्यं <code>pankti_gan(s)</code> इत्यनेन:</p>
+<pre data-expect="E_VIBHAG_ANKA"><code><span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: growable array">kosh</span> k[4]
+    kosh_kship(k, 1)
+    <span class="k" data-tip="अर्थः: variable">vitti</span> n = k[0:1] + 0  <span class="cm"># निषिद्धम्: E_VIBHAG_ANKA - विभागः अङ्कवत् उपयुक्तः</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>(n)
+}</code></pre>
+<p>अतः: <code>E_KOSH_VIBHAG</code> = "अयं विभागः वृद्धेः परं जीवेत्"; <code>E_VIBHAG_ANKA</code> = "अयं विभागः अङ्कवत्
+उपयुज्यते"। उभौ सङ्कलकः एव पश्यति - <code>kosh</code> वस्तुतः वर्धते वा न वा इति न प्रतीक्षते।</p>
+
+<h3>6. यदा स्मृतिः समाप्यते <span class="en-gloss">(when memory runs out)</span></h3>
+<p>यदि <code>kosh_kship</code>-याः अधिकं स्थानम् आवश्यकं, यन्त्रं च दातुं न शक्नोति, तर्हि क्रमादेशः इदं वाक्यं
+निर्गम-स्थितिः 1 च दत्त्वा विरमति:</p>
+<pre class="out-block"><code>Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva</code></pre>
+<p><i>कोशं वर्धयितुं स्मृतिः न लब्धा - कोशः यथा आसीत् तथा एव।</i> उत्तरार्धं ज्ञातव्यम्: <b><code>kosh</code> न दूषितः।</b>
+विफलात् योजनात् पूर्वं यत् धारयति स्म तत् एव धारयति - क्रमादेशः अर्धलिखितं कोशं कदापि न त्यजति। क्रमादेशः तु
+विरमति एव: इयं विफलता न गृहीत्वा अग्रे गन्तुं शक्या।</p>
+
+<h3>सर्वं मिलित्वा <span class="en-gloss">(putting it together)</span></h3>
+<p>बहिः निर्मितः <code>kosh</code>, प्रत्यावर्तं परिमितः खण्डः, प्रतिवारं खण्डात् बहिः नीतः अङ्कः:</p>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: growable array">kosh</span> vargah[4]
+    <span class="k" data-tip="अर्थः: for">chakra</span> i = 1 <span class="k" data-tip="अर्थः: range-to">tak</span> 5 {
+        <span class="k" data-tip="अर्थः: scratch block">mandapa</span> parimita 256 {
+            <span class="k" data-tip="अर्थः: variable">vitti</span> t = nirmmita(16)
+            t[0] = i * i
+            kosh_kship(vargah, t[0])     <span class="cm"># अङ्कः कोशं गच्छति</span>
+        }
+    }
+    <span class="k" data-tip="अर्थः: print">likha</span>(kosh_gan(vargah))           <span class="cm"># 5</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>(vargah[4])                 <span class="cm"># 25</span>
+    <span class="k" data-tip="अर्थः: print">likha</span>(parimana())                <span class="cm"># 96: केवलं कोशः - प्रत्येकः खण्डः स्वान् 16 बाइट् प्रत्यर्पितवान्</span>
+}</code></pre>
+<h3>7. सूत्रे किं नास्ति <span class="en-gloss">(what Sutram does not have)</span></h3>
+<p>वस्तुनः आकारं ज्ञातुम्: <b>अवकर-सङ्ग्राहकः (garbage collector) नास्ति</b> (पृष्ठभूमौ स्मृतिं प्रत्याहर्तुं किमपि न
+धावति); <b>भवता आह्वातव्यं <code>free</code> नास्ति</b> (स्मृतिः खण्डस्य समाप्तौ, क्रमादेशस्य समाप्तौ वा प्रत्यागच्छति -
+प्रत्यर्पणाय भवता किमपि न आह्वातव्यम्); <b>जीवति खण्डे पुनरुपयोगः नास्ति</b> (खण्डः समाप्तौ एव, एकवारं, स्मृतिं
+प्रत्यर्पयति); <b>तन्तवः (threads) न सन्ति</b> (एकः क्रमादेशः एकस्मिन् काले एकम् एव करोति)। खण्डे निर्मितः
+<code>kosh</code> खण्डं त्यक्तुं न शक्नोति (<code>E_KOSH_MANDAPA</code>)। तत्स्थाने यत् लभ्यते तत् लघु पूर्वानुमेयं
+च: स्मृतिः कुत्र धार्यते इति द्रष्टुं, कियत् इति प्रष्टुं (<code>parimana()</code>), तां सीमितुं (<code>parimita</code>)
+शक्यते; वर्धितुम् अशक्तः <code>kosh</code>, परिमितिम् अतिक्रान्तः खण्डः, पूर्णं खण्ड-क्षेत्रं वा - प्रत्येकं किम् इति
+वदता वाक्येन क्रमादेशं विरामयति, न तु भग्नतया।</p>
+<div class="try"><b>प्रयतस्व:</b> <code>nirmmita(64)</code> आह्वयन्तं पाशं <code>mandapa parimita 4096</code> इत्यनेन
+आवृणु, प्रतिवारं <code>parimana()</code> मुद्रय, कस्मिन् आवर्ते परिमितिः निषेधति इति अन्विष्य। ततः <code>mandapa</code>
+पाशस्य अन्तः नय - खण्डः प्रत्यावर्तं नवः आरभते - कदापि न निषेधति इति पश्य।</div>
+</div>
+<div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0 (compiler v315)</div>
 </div>
 </body>
 </html>
