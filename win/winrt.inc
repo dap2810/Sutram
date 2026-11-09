@@ -56,6 +56,15 @@ rt_init:
     lea rdi, [rel wn_closehandle]
     call win_resolve
     mov [rel p_closehandle], rax
+    lea rdi, [rel wn_getfileinfo]       ; R163
+    call win_resolve
+    mov [rel p_getfileinfo], rax
+    lea rdi, [rel wn_setendoffile]      ; R163
+    call win_resolve
+    mov [rel p_setendoffile], rax
+    lea rdi, [rel wn_getfiletype]       ; R163
+    call win_resolve
+    mov [rel p_getfiletype], rax
     lea rdi, [rel wn_virtualalloc]
     call win_resolve
     mov [rel p_virtualalloc], rax
@@ -207,6 +216,12 @@ os_open:
     jne .oo_done
     mov rax, -1
 .oo_done:
+    test rsi, rsi                ; R163: a file opened for reading is noted (src/r163_same_file.inc)
+    jnz .oo_ret
+    cmp rax, -1
+    je .oo_ret
+    call r163_note
+.oo_ret:
     mov rsp, r14
     pop r14
     pop rbx
@@ -510,6 +525,9 @@ wn_writefile:    db "WriteFile", 0
 wn_readfile:     db "ReadFile", 0
 wn_createfile:   db "CreateFileA", 0
 wn_closehandle:  db "CloseHandle", 0
+wn_getfileinfo:  db "GetFileInformationByHandle", 0
+wn_setendoffile: db "SetEndOfFile", 0
+wn_getfiletype:  db "GetFileType", 0
 wn_virtualalloc: db "VirtualAlloc", 0
 wn_exitprocess:  db "ExitProcess", 0
 wn_modulepath: db "GetModuleFileNameA",0
@@ -522,6 +540,9 @@ p_writefile:    resq 1
 p_readfile:     resq 1
 p_createfile:   resq 1
 p_closehandle:  resq 1
+p_getfileinfo:  resq 1
+p_setendoffile: resq 1
+p_getfiletype:  resq 1
 p_virtualalloc: resq 1
 p_exitprocess:  resq 1
 wn_written:     resd 1

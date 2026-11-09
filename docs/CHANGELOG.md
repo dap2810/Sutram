@@ -1,4 +1,30 @@
-> **The 20 newest entries.** Older ones, from "v295" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v296" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v316 (Claude, R163) - a file a tool read is never its output; an output that cannot be opened is an error
+
+- **`E_NIRGAM_NIVESH`** (Sarvam R163 WS1; found R162, Muse R156): up to v315 `sutram hello.sm hello.sm` compiled and
+  wrote the program over its source, exit 0; `--object`, `sutram-link a.smo a.smo`, `sutram-elf2smo a.o a.o` and
+  `sutram-coff2smo a.obj a.obj` did the same, and `tools/sutram_build.py main.sm -o main.sm` (found here: the
+  linker's inputs are the objects, so it cannot see the program) - the script now refuses by `os.path.samefile`. Every file opened for reading is now noted by its identity (`fstat`:
+  device, inode; Windows `GetFileInformationByHandle`: volume, file index) - the program, `yoj` modules, the
+  `--lang` pack, the `--ffi` file, and `--separate`'s root (opened and closed for this). The output is opened
+  without truncation (`O_WRONLY|O_CREAT`; Windows `OPEN_ALWAYS`), its own identity compared with every input's, and
+  only then cut (`ftruncate`; `SetEndOfFile`): no window between a check by name and the write (ChatGPT R225's
+  design). An identity that cannot be read is refused too. A device (`/dev/null`, `NUL`) is written as before.
+  `src/r163_same_file.inc` (new, used by the compiler, the linker and both object readers); `win/winrt.inc` resolves
+  `GetFileInformationByHandle`, `SetEndOfFile`, `GetFileType`. Reference §7.
+- **`E_NIRGAM_PATRA`** (found here; Muse R156 noted it for `--object`): an output that could not be opened - a
+  missing folder, the running compiler - printed `Siddh`, exit 0, and wrote nothing. It is now an error, exit 1.
+- Not changed, named in reference §7: the REPL's and the Linux IDEs' fixed scratch files; a write that fails
+  part-way is not reported; the shell's own `>` empties a file before any program runs.
+- Each input is noted once: `--debug` opens a module once for each statement it traces (542 opens of three files
+  for `examples/import_demo.sm`), which ran past the 256-input limit in the first staged build and refused every
+  `--debug` compile with a `yoj` (gate `R45 debug` found it; the guard compiles the ordinary way only).
+- `tests/windows/accept_v316.cmd` (R167): the eighteen steps the owner runs on Windows before this is merged -
+  18 of 18 under Wine on v316, 16 fail on v315; not run on Windows.
+- Gate `R163 output collision` (35 checks; 25 fail on v315 - 22 cases, and 3 ordinary ones whose input v315 had
+  already written over). Every program that compiled on v315 compiles to the same
+  bytes (guard, ELF and PE). Run under Wine (22 checks); not run on Windows. Installer rebuilt (payload v316).
 
 ## v315 (Claude, R154) - the tree limit's code; the fold guard; ownership records, not flags
 
@@ -417,24 +443,3 @@
   names, `346`/`347` the old library names, on purpose.
 - **Not changed, waiting for a decision:** the four pack-translated `kosh` messages (three compiled into
   programs) that name `kosh_pop` / `kosh_peek` / `kosh_dequeue` / `kosh_push`, and the shell help's `mala arr[5]`.
-
-## v296 (Claude, R116) - fifteen of the sixteen library contracts (ChatGPT R189); long string literals work
-
-- **The policy, in the library:** a mathematical library function gives the exact answer or fails through a
-  declared channel. *Stops* (stderr `Sutram truti [CODE]: function: ...`, exit 1): `dvigun`, `trigun`, `vardh`
-  (`E_ATIPRAVAH`); `nirapeksh_mulya`, `ganita_nirapeksh`, `mahattam_samapavartak`, `viparyay_ank`,
-  `brihat_ank_tak_laghu` (`E_PHALA_SEEMA`; bad digits `E_MULYA_AYOGYA`); `brahmagupta_kshetr` (exact multiword
-  formula; bad sides `E_MULYA_AYOGYA`, area past the range `E_ATIPRAVAH`); `adish_gunan`, `bindu_gunan` (unequal
-  lengths, `E_AKARA_ASAMYA` - v295 used the shorter). *Status*, nothing printed: `brihat_ank_se` (0, digits
-  cleared), `suchi_shreni` (0, list unchanged), `varna_tak_dashm` (leading zeros no longer spend digits: twenty
-  characters `00000000000000000001` are 1, not 0). `yog_seema` saturates only the final sum
-  (`yog_seema(2^62, 2^62)` is 2^62, was 2^63 - 1). Messages exactly as R189's matrix.
-- **Not built: `patra_asti`** (row 11) - its contract needs an operating-system metadata query the compiler does
-  not have; reported, not improvised.
-- **`abhava(cond, "text")`:** the assertion takes an optional message, written to stderr before exit 1 - the
-  compiler-emitted failure path the library uses (no OS call in a core module).
-- **A compiler defect found on the way, fixed:** a string literal of 127 bytes or more was jumped over with a
-  one-byte jump that wrapped backwards, so the program crashed (SIGSEGV or SIGILL), or ran on and printed
-  nothing or the wrong text; `likha` and `likha_rup` of a literal also wrote only its length modulo 256. The R189
-  messages are 88-151 bytes. Every literal of 126 bytes or fewer compiles to the same bytes as before.
-- Examples 330-344 (one per row) and 207 (now the refusal); the suite checks a `<name>.err` when one is recorded.
