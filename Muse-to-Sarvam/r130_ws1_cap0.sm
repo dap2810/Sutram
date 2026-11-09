@@ -1,5 +1,0 @@
-mukhya() {
-    kosh k[0]
-    kosh_kship(k, 11)
-    likha(k[0])
-}
