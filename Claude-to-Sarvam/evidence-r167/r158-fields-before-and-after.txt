@@ -1,0 +1,7 @@
+# R167 WS2: check 10 "fields" of R158 doc currency over the current documents; the compiler makes (32, 56)
+
+a2268abd (before this round): 2 found - FAIL
+  docs/LANGUAGE-REFERENCE.md:964: lists a kosh descriptor's fields without the region size (three fields read as 24 bytes)
+  docs/MEMORY-MODEL.md:7: lists a kosh descriptor's fields without the region size (three fields read as 24 bytes)
+
+working tree (this round's tree): 0 found - PASS

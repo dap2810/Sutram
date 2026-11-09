@@ -1,0 +1,42 @@
+# R167 WS2: claims the memory model now makes that R166's evidence did not already cover, run on v315
+
+== a kosh made in a block given to a prakriya that only reads it
+prakriya yoga(kosh k) {
+    vitti s = 0
+    chakra i = 0 tak kosh_gan(k) - 1 {
+        s = s + k[i]
+    }
+    nivartanam s
+}
+mukhya() {
+    mandapa {
+        kosh k[2]
+        kosh_kship(k, 3)
+        kosh_kship(k, 4)
+        likha(yoga(k))
+    }
+}
+-- compile: Siddh: 3545 baait sankalit
+-- output: 7
+
+== ... and to one that keeps it (returns it)
+prakriya rakh(kosh k) {
+    nivartanam k
+}
+mukhya() {
+    mandapa {
+        kosh k[2]
+        kosh_kship(k, 3)
+        vitti j = rakh(k)
+        likha(kosh_gan(j))
+    }
+}
+-- compile: Sutram truti [E_KOSH_MANDAPA]: mandape rachitah kosh tam prakriyam na gacchati ya tam rakshati (nivartayati, sthapayati, anyatra preshayati)
+
+== parimana() for kosh k[1000]: 32 + 1000 x 8
+mukhya() {
+    kosh k[1000]
+    likha(parimana())
+}
+-- compile: Siddh: 763 baait sankalit
+-- output: 8032

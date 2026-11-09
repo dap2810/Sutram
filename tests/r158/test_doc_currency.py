@@ -34,6 +34,9 @@ versions; they are not read except where a check says so.
   9  figures    - R166: a measured figure that was replaced is not given as current in a current document or
                  book: the v284 mandapa measurement (52,760 / 13,480 KB), and the block peaks the R163 re-measurement
                  refuted (392 KB; "308 or 436"). The changelog is history and is not read.
+ 10  fields     - R167: a paragraph that lists what a `kosh` descriptor holds (descriptor, length, capacity) names
+                 all four fields - the region size too - and gives the size in bytes. A field list with no size is
+                 a size nobody wrote and everybody computes: three fields read as 24 bytes (it is 32).
 What it cannot check (ROUND-158 WS3): that a paragraph is still true. A version number and a symbol can be
 found; a false sentence cannot. Read the narrative.
 
@@ -445,6 +448,26 @@ def check_figures(docs):
     return bad
 
 
+# ------------------------------------------------------------------------------------------------- 10 fields
+def check_fields(docs, sizes):
+    a, b = sizes
+    bad = []
+    for rel, t in docs.items():
+        if rel not in CURRENT or t is None or rel.endswith('.html'):
+            continue
+        for para in re.split(r'\n\s*\n|\n(?=[>|]? ?[-*|] )', t):
+            low = para.lower()
+            line = t.count('\n', 0, t.find(para)) + 1
+            # a paragraph that says what the descriptor holds - not one that only mentions it
+            if 'descriptor' in low and re.search(r'\blength\b', low) and re.search(r'\bcapacity\b', low) \
+                    and re.search(r'\b(holds|fields?|words?|its length)\b', low) and 'superseded' not in low.split('descriptor')[0][-200:]:
+                if not re.search(r'region size|size of the region', low):
+                    bad.append(f'{rel}:{line}: lists a kosh descriptor\'s fields without the region size (three fields read as 24 bytes)')
+                elif a is not None and not re.search(rf'\b{a}[ -]bytes?\b', para):
+                    bad.append(f'{rel}:{line}: lists a kosh descriptor\'s fields without its size ({a} bytes)')
+    return bad
+
+
 # ------------------------------------------------------------------------------------------------- main
 def load(root):
     rels = set(CURRENT) | set(BOOKS) | set(PAUSED_BOOKS) | {'docs/CHANGELOG.md'}
@@ -493,6 +516,11 @@ def self_test(compiler, root, flags, labels, codes_text, current):
     found = check_figures({LR: 'peaks at 52,760 KB without a block and 13,480 KB with one; 392 KB; 308 or 436 KB',
                            'docs/sutram-book-english.html': '<p>264 KB with env -i, 49,920 KB without</p>'})
     ok.append((len(found) == 4 and all(LR in f for f in found), 'self-test: figures rejects the four replaced figures and accepts 264 and 49,920'))
+    three = 'A `kosh` is a descriptor that never moves: it holds its length, capacity and the address of its elements.'
+    nosize = 'The descriptor holds four fields: the length, the capacity, the address of the elements and the region size.'
+    four = f'The descriptor holds four fields, {sizes[0]} bytes: the length, the capacity, the address of the elements and the region size.'
+    found = [bool(check_fields({LR: x}, sizes)) for x in (three, nosize, four, 'a 32-byte descriptor in the arena')]
+    ok.append((found == [True, True, False, False], 'self-test: fields rejects three fields, and four without a size; accepts four with the size, and a bare mention'))
     bad_log = {'docs/CHANGELOG.md': '## v315 (Claude, R154) - x\n## v313 - no who\n'}
     found = check_changelog(bad_log, current)
     ok.append((any('v314' in f for f in found) and any('v313' in f for f in found),
@@ -532,6 +560,7 @@ def main():
             ('changelog', check_changelog(docs, current), f'docs/CHANGELOG.md has every version to v{current}, each with who and the round'),
             ('reference', check_reference(compiler, root, docs), 'the nineteen corrected reference claims (R161) stay corrected, and the measurable ones agree with the compiler'),
             ('sizes', check_sizes(docs, descriptor_sizes(compiler, root)), 'every kosh descriptor size a current document gives is one the compiler makes (R163)'),
+            ('fields', check_fields(docs, descriptor_sizes(compiler, root)), 'a paragraph that lists a kosh descriptor\'s fields names all four and gives the size (R167)'),
             ('figures', check_figures(docs), 'no current document gives a replaced measurement as current - 52,760 / 13,480 KB, 392 KB, 308 or 436 (R166)')):
         report(not found, f'{name}: {what}')
         for f in found:
