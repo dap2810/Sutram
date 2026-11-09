@@ -1,6 +1,0 @@
-yoj brihat
-mukhya() {
-    mala a[1]
-    a[0] = 5
-    likha(brihat_ank_tak_laghu(a, 0 - 1))
-}
