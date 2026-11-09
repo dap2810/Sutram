@@ -103,6 +103,12 @@ forbidden forms at run time and needs each to fail, and 13 placeholder forms to 
 word. The hash keeps the names out of a reader's eye and a search engine; it does not keep them from someone who
 wants them - who has them anyway, in the history.
 
+**Muse R157 landed while I was committing** (its inventory: 526 files with the home folder or the repository's
+folder, 211 hashed by a manifest, 3 with a path as a JSON key - the same three - and no file name). Its report had one
+drive-letter example the gate fails (`` `<drive>:\Software`-style `` now, one edit, after my commit); with that, the
+gate passes on the tree Muse's commits and mine make together. Muse also found the chapter never distinguishes one
+block around a loop from blocks entered on every pass - the paragraph below now does.
+
 ## R164 WS3 / R165 WS4 - what is fixed and what is not
 
 - **Fixed: the tree.** A fresh clone of this commit carries none of the strings in any text file, and the installer

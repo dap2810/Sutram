@@ -77,7 +77,7 @@ The replacement is `%USERPROFILE%` for the home directory and `<repo>` for the r
 - **Exact OS build numbers:** 95 files carry a version-shaped build number (four distinct builds, plus patch levels). Flagged inconsistency: the October run files name one build, the November 3 files name another, and the November 6+ files name the first again — a reinstall, a second machine, or a reporting error; the tree does not say which.
 - **Hardware details:** the owner's CPU model and memory size appear in the Windows evidence (named in local notes only, not here).
 - **Machine name:** none anywhere (the hits for that pattern are all ordinary words).
-- **Other absolute Windows paths:** one other drive-letter root appears in the tree (`U:\Software`-style, in one place) plus single-letter drive forms that are false positives on reading (verified).
+- **Other absolute Windows paths:** one other drive-letter root appears in the tree (`<drive>:\Software`-style, in one place) plus single-letter drive forms that are false positives on reading (verified).
 
 ### Could not determine from source (Task 1)
 
