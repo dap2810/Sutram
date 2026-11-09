@@ -1,6 +1,6 @@
 {
   "command": [
-    "C:\\Users\\dmech\\miniconda3\\python.exe",
+    "%USERPROFILE%\\miniconda3\\python.exe",
     "-B",
     "tools/test_windows_native.py"
   ],

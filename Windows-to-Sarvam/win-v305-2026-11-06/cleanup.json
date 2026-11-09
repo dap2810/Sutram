@@ -1,6 +1,6 @@
 {
-    "target":  "C:\\Users\\dmech\\AppData\\Local\\Sutram",
-    "resolved":  "C:\\Users\\dmech\\AppData\\Local\\Sutram",
+    "target":  "%USERPROFILE%\\AppData\\Local\\Sutram",
+    "resolved":  "%USERPROFILE%\\AppData\\Local\\Sutram",
     "old_sha256":  "441DB69C3BCC04576BEBFC4D87B1D43A53D3B1E7497CCAEB7A00BFAC6E78C2A8",
     "canonical_sha256_before":  "4C05D5CBAD99B32BE1A38459F1B4B794E00F8B34F89A662EF1CA363C92EC1603",
     "started":  "2026-11-06T18:53:20.7526610-05:00",
@@ -56,7 +56,7 @@
                     "Ran the old installation own uninstaller and confirmed its removal dialog."
                 ],
     "uninstaller_sha256":  "B2B1C0800848EBA1F99A807D3868B7C48845B875FE1A29CA15E157B80F158084",
-    "command":  "\"C:\\Users\\dmech\\AppData\\Local\\Sutram\\uninstall.exe\" /uninstall",
+    "command":  "\"%USERPROFILE%\\AppData\\Local\\Sutram\\uninstall.exe\" /uninstall",
     "uninstaller_exit":  0,
     "old_folder_remains":  true,
     "status":  "FAIL",

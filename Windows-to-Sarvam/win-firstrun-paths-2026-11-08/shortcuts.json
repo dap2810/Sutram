@@ -1,37 +1,37 @@
 [
     {
-        "path":  "C:\\Users\\dmech\\OneDrive\\Desktop\\Sutram IDE.lnk",
+        "path":  "%USERPROFILE%\\OneDrive\\Desktop\\Sutram IDE.lnk",
         "sha256":  "F199B1A94FEBE2005F23D0C14DBCEFDF981A03D16AFD1910976D30922CF5B60A",
         "arguments":  "",
         "target":  "C:\\Windows\\System32\\notepad.exe",
         "cwd":  ""
     },
     {
-        "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Documentation.lnk",
+        "path":  "%USERPROFILE%\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Documentation.lnk",
         "sha256":  "A9AE64FA536B9E6D4EC3E4C2A9A1A86C411302F71D032E64DE0235198A3708A4",
         "arguments":  "",
-        "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
-        "cwd":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+        "target":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
+        "cwd":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram"
     },
     {
-        "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram IDE.lnk",
+        "path":  "%USERPROFILE%\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram IDE.lnk",
         "sha256":  "57E2FD5C2D8D66CBCC4C65F22C504C7A8AA7D64AE925C7790EA3EE9A79E30804",
         "arguments":  "",
-        "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
-        "cwd":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+        "target":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+        "cwd":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram"
     },
     {
-        "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Terminal.lnk",
+        "path":  "%USERPROFILE%\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Terminal.lnk",
         "sha256":  "7FA7BD4A74C067098FB8B6952B76E452E2704B639B16165A2D08673C461A79FE",
-        "arguments":  "/K \"set \"PATH=C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin;%PATH%\" \u0026\u0026 sutram --version\"",
+        "arguments":  "/K \"set \"PATH=%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin;%PATH%\" \u0026\u0026 sutram --version\"",
         "target":  "C:\\Windows\\System32\\cmd.exe",
-        "cwd":  "C:\\Users\\dmech"
+        "cwd":  "%USERPROFILE%"
     },
     {
-        "path":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Uninstall Sutram.lnk",
+        "path":  "%USERPROFILE%\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Uninstall Sutram.lnk",
         "sha256":  "14408B922AB9A6C32DADDC2EDA710333E0675413253827A5EEAA2C7788EBEED2",
         "arguments":  "--uninstall",
-        "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
-        "cwd":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+        "target":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
+        "cwd":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram"
     }
 ]

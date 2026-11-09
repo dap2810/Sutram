@@ -1,5 +1,5 @@
---- /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r42/v246.asm	2026-10-27 08:59:09.870178121 -0400
-+++ /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r42/muse.asm	2026-10-27 08:59:09.862178121 -0400
+--- <scratch>/r42/v246.asm	2026-10-27 08:59:09.870178121 -0400
++++ <scratch>/r42/muse.asm	2026-10-27 08:59:09.862178121 -0400
 @@ -12688,6 +12688,18 @@
      ; [AST_DECL][name_ptr][init_ptr][array_size_expr_or_0][type_marker]
      mov rdi, rbx              ; R23 WS3: vitti s = a[lo:hi] declares a slice

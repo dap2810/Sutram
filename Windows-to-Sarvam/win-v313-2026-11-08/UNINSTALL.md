@@ -6,10 +6,10 @@
 
 The read-only inspection at `2026-11-08T12:18:48.397333-05:00` confirms the previously observed directory still exists:
 
-`C:\Users\dmech\AppData\Local\Temp\STM7C1C.tmp`
+`%USERPROFILE%\AppData\Local\Temp\STM7C1C.tmp`
 
-- `C:\Users\dmech\AppData\Local\Temp\STM7C1C.tmp\uninstall-core.ps1` — 14901 bytes; SHA-256 `eb53ebd2f9eb817314237bf941bd09e02feee81233b5269d61eaf70b44fc0479`.
-- `C:\Users\dmech\AppData\Local\Temp\STM7C1C.tmp\uninstall.log` — 289 bytes; SHA-256 `f766a8cd0f17eebb123301ed6608145f52943f10400e0d9ec0008933d5f87b6a`.
+- `%USERPROFILE%\AppData\Local\Temp\STM7C1C.tmp\uninstall-core.ps1` — 14901 bytes; SHA-256 `eb53ebd2f9eb817314237bf941bd09e02feee81233b5269d61eaf70b44fc0479`.
+- `%USERPROFILE%\AppData\Local\Temp\STM7C1C.tmp\uninstall.log` — 289 bytes; SHA-256 `f766a8cd0f17eebb123301ed6608145f52943f10400e0d9ec0008933d5f87b6a`.
 
 These are the v312 uninstaller's script and successful-uninstall log, not unrelated files. Their hashes match the prior round's post-uninstall evidence exactly. The prior log reports removal of the empty Classes keys and then successful completion. This identifies the outstanding residue; it is not a new uninstall pass. [Current inventory](temp-inspection.json), [prior full uninstall evidence](../win-v312-2026-11-08/UNINSTALL.md).
 

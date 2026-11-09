@@ -3,7 +3,7 @@
     "name": "global +",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() + zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/0.sm",
       "/tmp/sutram-global-is098u1s/0.exe"
     ],
@@ -18,7 +18,7 @@
     "name": "local +",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() + zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/1.sm",
       "/tmp/sutram-global-is098u1s/1.exe"
     ],
@@ -33,7 +33,7 @@
     "name": "global -",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() - zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/2.sm",
       "/tmp/sutram-global-is098u1s/2.exe"
     ],
@@ -48,7 +48,7 @@
     "name": "local -",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() - zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/3.sm",
       "/tmp/sutram-global-is098u1s/3.exe"
     ],
@@ -63,7 +63,7 @@
     "name": "global *",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() * zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/4.sm",
       "/tmp/sutram-global-is098u1s/4.exe"
     ],
@@ -78,7 +78,7 @@
     "name": "local *",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() * zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/5.sm",
       "/tmp/sutram-global-is098u1s/5.exe"
     ],
@@ -93,7 +93,7 @@
     "name": "global /",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() / zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/6.sm",
       "/tmp/sutram-global-is098u1s/6.exe"
     ],
@@ -108,7 +108,7 @@
     "name": "local /",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() / zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/7.sm",
       "/tmp/sutram-global-is098u1s/7.exe"
     ],
@@ -123,7 +123,7 @@
     "name": "global %",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() % zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/8.sm",
       "/tmp/sutram-global-is098u1s/8.exe"
     ],
@@ -138,7 +138,7 @@
     "name": "local %",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() % zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/9.sm",
       "/tmp/sutram-global-is098u1s/9.exe"
     ],
@@ -153,7 +153,7 @@
     "name": "global ==",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() == zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/10.sm",
       "/tmp/sutram-global-is098u1s/10.exe"
     ],
@@ -168,7 +168,7 @@
     "name": "local ==",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() == zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/11.sm",
       "/tmp/sutram-global-is098u1s/11.exe"
     ],
@@ -183,7 +183,7 @@
     "name": "global !=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() != zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/12.sm",
       "/tmp/sutram-global-is098u1s/12.exe"
     ],
@@ -198,7 +198,7 @@
     "name": "local !=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() != zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/13.sm",
       "/tmp/sutram-global-is098u1s/13.exe"
     ],
@@ -213,7 +213,7 @@
     "name": "global <",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() < zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/14.sm",
       "/tmp/sutram-global-is098u1s/14.exe"
     ],
@@ -228,7 +228,7 @@
     "name": "local <",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() < zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/15.sm",
       "/tmp/sutram-global-is098u1s/15.exe"
     ],
@@ -243,7 +243,7 @@
     "name": "global <=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() <= zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/16.sm",
       "/tmp/sutram-global-is098u1s/16.exe"
     ],
@@ -258,7 +258,7 @@
     "name": "local <=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() <= zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/17.sm",
       "/tmp/sutram-global-is098u1s/17.exe"
     ],
@@ -273,7 +273,7 @@
     "name": "global >",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() > zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/18.sm",
       "/tmp/sutram-global-is098u1s/18.exe"
     ],
@@ -288,7 +288,7 @@
     "name": "local >",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() > zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/19.sm",
       "/tmp/sutram-global-is098u1s/19.exe"
     ],
@@ -303,7 +303,7 @@
     "name": "global >=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() >= zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/20.sm",
       "/tmp/sutram-global-is098u1s/20.exe"
     ],
@@ -318,7 +318,7 @@
     "name": "local >=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() >= zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/21.sm",
       "/tmp/sutram-global-is098u1s/21.exe"
     ],
@@ -333,7 +333,7 @@
     "name": "global &",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() & zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/22.sm",
       "/tmp/sutram-global-is098u1s/22.exe"
     ],
@@ -348,7 +348,7 @@
     "name": "local &",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() & zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/23.sm",
       "/tmp/sutram-global-is098u1s/23.exe"
     ],
@@ -363,7 +363,7 @@
     "name": "global |",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() | zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/24.sm",
       "/tmp/sutram-global-is098u1s/24.exe"
     ],
@@ -378,7 +378,7 @@
     "name": "local |",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() | zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/25.sm",
       "/tmp/sutram-global-is098u1s/25.exe"
     ],
@@ -393,7 +393,7 @@
     "name": "global ^",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() ^ zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/26.sm",
       "/tmp/sutram-global-is098u1s/26.exe"
     ],
@@ -408,7 +408,7 @@
     "name": "local ^",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() ^ zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/27.sm",
       "/tmp/sutram-global-is098u1s/27.exe"
     ],
@@ -423,7 +423,7 @@
     "name": "global &&",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() && zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/28.sm",
       "/tmp/sutram-global-is098u1s/28.exe"
     ],
@@ -438,7 +438,7 @@
     "name": "local &&",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() && zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/29.sm",
       "/tmp/sutram-global-is098u1s/29.exe"
     ],
@@ -453,7 +453,7 @@
     "name": "global ||",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() || zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/30.sm",
       "/tmp/sutram-global-is098u1s/30.exe"
     ],
@@ -468,7 +468,7 @@
     "name": "local ||",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() || zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/31.sm",
       "/tmp/sutram-global-is098u1s/31.exe"
     ],
@@ -483,7 +483,7 @@
     "name": "global <<",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() << zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/32.sm",
       "/tmp/sutram-global-is098u1s/32.exe"
     ],
@@ -498,7 +498,7 @@
     "name": "local <<",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() << zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/33.sm",
       "/tmp/sutram-global-is098u1s/33.exe"
     ],
@@ -513,7 +513,7 @@
     "name": "global >>",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() >> zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/34.sm",
       "/tmp/sutram-global-is098u1s/34.exe"
     ],
@@ -528,7 +528,7 @@
     "name": "local >>",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() >> zero\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/35.sm",
       "/tmp/sutram-global-is098u1s/35.exe"
     ],
@@ -543,7 +543,7 @@
     "name": "scalar global calls",
     "source": "vitti a = 8\nvitti b = double_value(a) + 1\nprakriya double_value(x) { nivartanam x * 2 }\nmukhya() { likha(b) likha(double_value(3)) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/36.sm",
       "/tmp/sutram-global-is098u1s/36.exe"
     ],
@@ -563,7 +563,7 @@
     "name": "global conditional kosh arithmetic",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = (zero ? make_kosh() : make_kosh()) + zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/37.sm",
       "/tmp/sutram-global-is098u1s/37.exe"
     ],
@@ -578,7 +578,7 @@
     "name": "direct global kosh",
     "source": "prakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh()\nmukhya() { likha(1) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/38.sm",
       "/tmp/sutram-global-is098u1s/38.exe"
     ],
@@ -593,7 +593,7 @@
     "name": "global scope ignores local string",
     "source": "vitti a = 8\nvitti b = a + 1\nmukhya() { vitti a = \"hello\" likha(b) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/39.sm",
       "/tmp/sutram-global-is098u1s/39.exe"
     ],
@@ -613,7 +613,7 @@
     "name": "global nested expression with return analysis",
     "source": "prakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nprakriya scalar() { nivartanam 2 }\nvitti zero = 0\nvitti leaked = (make_kosh() + zero) + scalar()\nmukhya() { likha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/40.sm",
       "/tmp/sutram-global-is098u1s/40.exe"
     ],
@@ -628,7 +628,7 @@
     "name": "local nested expression with return analysis",
     "source": "prakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nprakriya scalar() { nivartanam 2 }\nvitti zero = 0\nmukhya() { vitti leaked = (make_kosh() + zero) + scalar()\nlikha(leaked) }\n",
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
+      "/mnt<repo>/build/windows-v309-linux-checkout/build/linux-final-validation/sutram_compiler",
       "/tmp/sutram-global-is098u1s/41.sm",
       "/tmp/sutram-global-is098u1s/41.exe"
     ],

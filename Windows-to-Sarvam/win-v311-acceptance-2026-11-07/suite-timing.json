@@ -1,16 +1,16 @@
 {
   "command": [
-    "C:\\Users\\dmech\\miniconda3\\python.exe",
-    "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\tools\\test_windows_native.py"
+    "%USERPROFILE%\\miniconda3\\python.exe",
+    "<repo>\\build\\windows-v311-acceptance\\tools\\test_windows_native.py"
   ],
-  "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance",
+  "cwd": "<repo>\\build\\windows-v311-acceptance",
   "started_epoch": 1794082170.278563,
   "elapsed_seconds": 19.047598200006178,
   "exit": 0,
   "stdout": "215_r12_wordfreq NO_EXPECTATION\r\n216_r12_expr NO_EXPECTATION\r\n219_sanskrit_kosh_aliases NO_EXPECTATION\r\n{'NO_EXPECTATION': 3, 'PASS': 322, 'SKIP_LINUX_RAW_SYSCALL': 1, 'SKIP_SIDE_EFFECT_OR_INLINE_ASM': 5}\r\n",
   "stderr": "",
   "python": "3.14.7 | packaged by Anaconda, Inc. | (main, Aug 14 2026, 10:12:46) [MSC v.1942 64 bit (AMD64)]",
-  "platform": "Windows-11-10.0.26300-SP0",
+  "platform": "Windows-11-10.0 (build redacted)-SP0",
   "comparison_reference_seconds": 18.6,
   "ratio_to_reference": 1.0240644193551707,
   "measurement_scope": "One wall-clock run of the existing native suite. User was invited to exercise Settings uninstall concurrently; this is not a controlled compiler microbenchmark."

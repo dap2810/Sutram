@@ -1,6 +1,6 @@
 import json
-old = {(r['a'], r['b'], r['op']): r for r in json.load(open('/home/hatch/workspace/r101/ws1/trap_matrix.json'))}
-new = {(r['a'], r['b'], r['op']): r for r in json.load(open('/home/hatch/workspace/r102/ws1/trap_matrix_v2.json'))}
+old = {(r['a'], r['b'], r['op']): r for r in json.load(open('<workspace>/r101/ws1/trap_matrix.json'))}
+new = {(r['a'], r['b'], r['op']): r for r in json.load(open('<workspace>/r102/ws1/trap_matrix_v2.json'))}
 A = {"int": 5, "dasham": 2.5, "string": "ab", "kosh": None}
 B = {"int": 3, "dasham": 1.5, "string": "cd", "kosh": None}
 def classify(r):

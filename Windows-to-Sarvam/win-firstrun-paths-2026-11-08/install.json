@@ -35,7 +35,7 @@
                       "text":  [
                                    "Choose Install Location",
                                    "\u0026Install location:",
-                                   "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+                                   "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
                                    "Browse...",
                                    "Setup will install Sutram in the folder below. The installer needs write access to this folder.",
                                    "\u003c Back",
@@ -77,7 +77,7 @@
                       "text":  [
                                    "Ready to Install",
                                    "Setup is ready to install Sutram on your computer.",
-                                   "Destination folder: C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\r\nAdd to user PATH: no\r\nDesktop shortcut: yes\r\n\r\nClick Install to begin the installation.",
+                                   "Destination folder: %USERPROFILE%\\AppData\\Local\\Programs\\Sutram\r\nAdd to user PATH: no\r\nDesktop shortcut: yes\r\n\r\nClick Install to begin the installation.",
                                    "\u003c Back",
                                    "Install",
                                    "Cancel"
@@ -111,7 +111,7 @@
     "seconds":  27.7994295,
     "closed":  true,
     "child_exit":  0,
-    "user_path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin;C:\\Users\\dmech\\.cargo\\bin;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;\\msys64\\mingw64\\bin;C:\\msys64;C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Mozilla Firefox;C:\\Users\\dmech\\go\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python311\\Scripts;C:\\Users\\dmech\\AppData\\Roaming\\Python\\Python313\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Python\\bin;C:\\Users\\dmech\\miniconda3\\Scripts;C:\\Users\\dmech\\AppData\\Local\\Programs\\MovieBox-Tui\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Zed\\bin;C:\\Users\\dmech\\AppData\\Roaming\\npm;C:\\Users\\dmech\\AppData\\Local\\Programs\\Ollama;C:\\Users\\dmech\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;C:\\Users\\dmech\\.local\\bin;C:\\Users\\dmech\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim",
+    "user_path":  "%USERPROFILE%\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin;%USERPROFILE%\\.cargo\\bin;%USERPROFILE%\\AppData\\Local\\Microsoft\\WindowsApps;\\msys64\\mingw64\\bin;C:\\msys64;%USERPROFILE%\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Mozilla Firefox;%USERPROFILE%\\go\\bin;%USERPROFILE%\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;%USERPROFILE%\\AppData\\Roaming\\Python\\Python311\\Scripts;%USERPROFILE%\\AppData\\Roaming\\Python\\Python313\\Scripts;%USERPROFILE%\\AppData\\Local\\Python\\bin;%USERPROFILE%\\miniconda3\\Scripts;%USERPROFILE%\\AppData\\Local\\Programs\\MovieBox-Tui\\bin;%USERPROFILE%\\AppData\\Local\\Programs\\Zed\\bin;%USERPROFILE%\\AppData\\Roaming\\npm;%USERPROFILE%\\AppData\\Local\\Programs\\Ollama;%USERPROFILE%\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;%USERPROFILE%\\.local\\bin;%USERPROFILE%\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim",
     "capture_warnings":  [
 
                          ]

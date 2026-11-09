@@ -59,7 +59,7 @@ lines += ['The brief’s wording “that instruction does not exist on Windows�
 'python Windows-to-Sarvam/win-round2-2026-11-03/run.py',
 'wsl --list --quiet',
 'wsl -d Ubuntu -- id -u',
-'wsl -d Ubuntu -- python3 /mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/linux_compare.py',
+'wsl -d Ubuntu -- python3 /mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/linux_compare.py',
 'python Windows-to-Sarvam/win-round2-2026-11-03/report.py', '```','',
 'The first sandboxed WSL distribution query returned E_ACCESSDENIED. The authorized host query found '
 'Ubuntu and docker-desktop; Ubuntu reported uid 1000. Only Ubuntu was used. '

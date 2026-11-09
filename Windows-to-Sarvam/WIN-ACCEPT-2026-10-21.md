@@ -1,7 +1,7 @@
 # Sutram — Windows acceptance, 2026-10-21 (after R34)
 
-- **Where:** the owner's real Windows 11 Pro 10.0.26300 (build 26300.9711), AMD Ryzen 7 7700X, a standard
-  user, **not elevated**; Windows PowerShell 5.1.26100.9711.
+- **Where:** the owner's real Windows 11 Pro 10.0 (build redacted), [hardware detail redacted], a standard
+  user, **not elevated**; Windows PowerShell 5.1 (build redacted).
 - **What:** branch `claude/windows-linker` (R34) - compiler v243, `sutram-link.exe`, the fixed IDE, and
   `Sutram-Setup.exe` `285470a4a51c14eed7c23bd3342e068b4610f91301da1877f98fa0cfbe8c0c5b` rebuilt from it.
 - **Command, exactly as documented:** `powershell -NoProfile -ExecutionPolicy Bypass -File tools\accept-windows.ps1`

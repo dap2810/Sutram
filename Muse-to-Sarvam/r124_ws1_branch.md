@@ -7,7 +7,7 @@
   to the branch, no worktree deletion, no other agent's rounds.
 - **Branch:** local branch `pr65-wr4`, tip `029c06d4`
   ("Document concurrent v298 integration conflict and inherited string
-  compatibility gap"). Worktree: `/home/hatch/workspace/r121-124/tree-wr4`.
+  compatibility gap"). Worktree: `<workspace>/r121-124/tree-wr4`.
 - **Base divergence (important):** the merge-base of `pr65-wr4` against
   `origin/main` is `5d7d21cb` (Rounds 119+120), **not** current v298 main
   (`33cab2dc`). The branch therefore predates the v298 work. All verdicts below
@@ -23,7 +23,7 @@
   (what the branch claims to have tested), never as proof.
 - **Windows cannot be run from here.** The verdicts rest on code reading of the
   branch. Where a code path is shared with Linux, the equivalent was run on
-  Linux v298 in `/home/hatch/workspace/r121-124/tree298` (compiler
+  Linux v298 in `<workspace>/r121-124/tree298` (compiler
   `Sutram 1.0 (v298)`). Every such result is labelled **Linux v298, not PE
   proof**. The PE differences that matter are confined to (i) the allocator
   translation (`rt_syscall` → `VirtualAlloc`, see §0) and (ii) eager commit;

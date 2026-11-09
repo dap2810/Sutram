@@ -85,13 +85,13 @@
                                           ]
                             },
                             {
-                                "pattern":  "C:\\Users\\dmech\\AppData\\Local\\Microsoft\\WindowsApps\\*windbg*",
+                                "pattern":  "%USERPROFILE%\\AppData\\Local\\Microsoft\\WindowsApps\\*windbg*",
                                 "found":  [
 
                                           ]
                             },
                             {
-                                "pattern":  "C:\\Users\\dmech\\Downloads\\*procdump*.exe",
+                                "pattern":  "%USERPROFILE%\\Downloads\\*procdump*.exe",
                                 "found":  [
 
                                           ]

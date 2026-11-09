@@ -2,11 +2,11 @@
   {
     "layout": "bin",
     "compile_command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\library.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\bin.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\library.sm",
+      "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\bin.exe"
     ],
-    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke",
+    "cwd": "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke",
     "compile_exit": 0,
     "compile_stdout": "Siddh: 7335 baait sankalit\n",
     "compile_stderr": "",
@@ -18,11 +18,11 @@
   {
     "layout": "win",
     "compile_command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\win\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\library.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\win.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\win\\sutram.exe",
+      "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\library.sm",
+      "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke\\win.exe"
     ],
-    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke",
+    "cwd": "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\installed-smoke",
     "compile_exit": 0,
     "compile_stdout": "Siddh: 7335 baait sankalit\n",
     "compile_stderr": "",

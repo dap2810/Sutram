@@ -141,587 +141,587 @@
                 ],
     "files":  [
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\.sutram-install",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\.sutram-install",
                       "Length":  29,
                       "LastWriteTime":  "\/Date(1794016367053)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\install-state.ini",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\install-state.ini",
                       "Length":  248,
                       "LastWriteTime":  "\/Date(1794016367368)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\install.log",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\install.log",
                       "Length":  1481,
                       "LastWriteTime":  "\/Date(1794016367363)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt",
                       "Length":  1650,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\payload.manifest.sha256",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\payload.manifest.sha256",
                       "Length":  63662,
                       "LastWriteTime":  "\/Date(1794013882000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\README.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\README.md",
                       "Length":  10893,
                       "LastWriteTime":  "\/Date(1793658040000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
                       "Length":  142563,
                       "LastWriteTime":  "\/Date(1794013712000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
                       "Length":  1973717,
                       "LastWriteTime":  "\/Date(1794008572254)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico",
                       "Length":  36693,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram-link.exe",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram-link.exe",
                       "Length":  19870,
                       "LastWriteTime":  "\/Date(1794013712000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
                       "Length":  533163,
                       "LastWriteTime":  "\/Date(1794013712000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\bengali.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\bengali.lang",
                       "Length":  1014,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\bengali.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\bengali.sandesh",
                       "Length":  23206,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\gujarati.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\gujarati.lang",
                       "Length":  1588,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\gujarati.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\gujarati.sandesh",
                       "Length":  22485,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\hindi.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\hindi.lang",
                       "Length":  1110,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\hindi.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\hindi.sandesh",
                       "Length":  22591,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\kannada.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\kannada.lang",
                       "Length":  1166,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\kannada.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\kannada.sandesh",
                       "Length":  23266,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\malayalam.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\malayalam.lang",
                       "Length":  1148,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\malayalam.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\malayalam.sandesh",
                       "Length":  24569,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\marathi.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\marathi.lang",
                       "Length":  1115,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\marathi.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\marathi.sandesh",
                       "Length":  23368,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\odia.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\odia.lang",
                       "Length":  1091,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\odia.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\odia.sandesh",
                       "Length":  23510,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\punjabi.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\punjabi.lang",
                       "Length":  981,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\punjabi.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\punjabi.sandesh",
                       "Length":  22540,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\sanskrit.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\sanskrit.lang",
                       "Length":  3032,
                       "LastWriteTime":  "\/Date(1793386738000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\sanskrit.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\sanskrit.sandesh",
                       "Length":  23684,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\tamil.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\tamil.lang",
                       "Length":  1418,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\tamil.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\tamil.sandesh",
                       "Length":  25479,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\telugu.lang",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\telugu.lang",
                       "Length":  1186,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\telugu.sandesh",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lang\\telugu.sandesh",
                       "Length":  24085,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\aadhar.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\aadhar.smlib",
                       "Length":  3578,
                       "LastWriteTime":  "\/Date(1793744280000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ank.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ank.smlib",
                       "Length":  4631,
                       "LastWriteTime":  "\/Date(1793744738000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\anukram.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\anukram.smlib",
                       "Length":  4629,
                       "LastWriteTime":  "\/Date(1793217156000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\brihat.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\brihat.smlib",
                       "Length":  10601,
                       "LastWriteTime":  "\/Date(1793744738000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\chandas.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\chandas.smlib",
                       "Length":  3844,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ganit.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ganit.smlib",
                       "Length":  9899,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ganita.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\ganita.smlib",
                       "Length":  22996,
                       "LastWriteTime":  "\/Date(1793744738000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\gudh.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\gudh.smlib",
                       "Length":  1059,
                       "LastWriteTime":  "\/Date(1793218596000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\kalana.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\kalana.smlib",
                       "Length":  5846,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\khand.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\khand.smlib",
                       "Length":  17692,
                       "LastWriteTime":  "\/Date(1793377286000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\madhava.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\madhava.smlib",
                       "Length":  4972,
                       "LastWriteTime":  "\/Date(1793482642000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\mala.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\mala.smlib",
                       "Length":  2552,
                       "LastWriteTime":  "\/Date(1793211612000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\nighantu.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\nighantu.smlib",
                       "Length":  15559,
                       "LastWriteTime":  "\/Date(1793211612000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\patra.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\patra.smlib",
                       "Length":  2912,
                       "LastWriteTime":  "\/Date(1793641938000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\phal.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\phal.smlib",
                       "Length":  6154,
                       "LastWriteTime":  "\/Date(1793211612000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\roop.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\roop.smlib",
                       "Length":  20355,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sadhan.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sadhan.smlib",
                       "Length":  4692,
                       "LastWriteTime":  "\/Date(1793744336000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\samanvaya.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\samanvaya.smlib",
                       "Length":  5343,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sangrah.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sangrah.smlib",
                       "Length":  9805,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sankhyiki.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\sankhyiki.smlib",
                       "Length":  6540,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\shreni.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\shreni.smlib",
                       "Length":  5960,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\suchi.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\suchi.smlib",
                       "Length":  15565,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\vakyank.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\vakyank.smlib",
                       "Length":  12583,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\varna.smlib",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\lib\\varna.smlib",
                       "Length":  16119,
                       "LastWriteTime":  "\/Date(1793377286000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\AI-WORK-DIVISION.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\AI-WORK-DIVISION.md",
                       "Length":  3588,
                       "LastWriteTime":  "\/Date(1793458630000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
                       "Length":  5091,
                       "LastWriteTime":  "\/Date(1794013712000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\CHANGELOG.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\CHANGELOG.md",
                       "Length":  26947,
                       "LastWriteTime":  "\/Date(1794013786000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\CI-NOTIFICATION-POLICY.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\CI-NOTIFICATION-POLICY.md",
                       "Length":  4174,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ERROR-CONVENTION.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\ERROR-CONVENTION.md",
                       "Length":  8634,
                       "LastWriteTime":  "\/Date(1793213026000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\FREESTANDING.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\FREESTANDING.md",
                       "Length":  8600,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\INSTALLATION-ROUTES.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\INSTALLATION-ROUTES.md",
                       "Length":  4740,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\INSTALLER-REBUILD.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\INSTALLER-REBUILD.md",
                       "Length":  5973,
                       "LastWriteTime":  "\/Date(1794013882000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\LANGUAGE-REFERENCE.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\LANGUAGE-REFERENCE.md",
                       "Length":  92370,
                       "LastWriteTime":  "\/Date(1793826844000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\LIBRARY-BOUNDARY.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\LIBRARY-BOUNDARY.md",
                       "Length":  6356,
                       "LastWriteTime":  "\/Date(1793466062000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\MEMORY-MODEL.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\MEMORY-MODEL.md",
                       "Length":  15367,
                       "LastWriteTime":  "\/Date(1794013786000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html",
                       "Length":  9225,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\NUMERIC-CONTRACT.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\NUMERIC-CONTRACT.md",
                       "Length":  11155,
                       "LastWriteTime":  "\/Date(1793755168000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OBJECT-FORMAT.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\OBJECT-FORMAT.md",
                       "Length":  17537,
                       "LastWriteTime":  "\/Date(1793102814000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OPEN-ISSUES.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\OPEN-ISSUES.md",
                       "Length":  10030,
                       "LastWriteTime":  "\/Date(1793762944000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\OVERFLOW-SAFETY.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\OVERFLOW-SAFETY.md",
                       "Length":  5486,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\PATH-TO-COMPLETION.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\PATH-TO-COMPLETION.md",
                       "Length":  8783,
                       "LastWriteTime":  "\/Date(1794013786000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\RELEASE-NOTES.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\RELEASE-NOTES.md",
                       "Length":  17513,
                       "LastWriteTime":  "\/Date(1794013766000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SANDESH.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\SANDESH.md",
                       "Length":  3133,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\SPECIFICATION.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\SPECIFICATION.md",
                       "Length":  15712,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html",
                       "Length":  12778,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html",
                       "Length":  39573,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html",
                       "Length":  1709,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html",
                       "Length":  1716,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
                       "Length":  62392,
                       "LastWriteTime":  "\/Date(1793762944000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html",
                       "Length":  85760,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html",
                       "Length":  95112,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html",
                       "Length":  80891,
                       "LastWriteTime":  "\/Date(1793762944000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html",
                       "Length":  97554,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html",
                       "Length":  96942,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html",
                       "Length":  1710,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html",
                       "Length":  29177,
                       "LastWriteTime":  "\/Date(1793762972000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html",
                       "Length":  8020,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html",
                       "Length":  5193,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html",
                       "Length":  11614,
                       "LastWriteTime":  "\/Date(1793213026000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-performance.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-performance.html",
                       "Length":  16749,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-philosophy.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-philosophy.html",
                       "Length":  11475,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-project-status.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-project-status.html",
                       "Length":  16467,
                       "LastWriteTime":  "\/Date(1793762972000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-roadmap.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-roadmap.html",
                       "Length":  9368,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-scorecard.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-scorecard.html",
                       "Length":  14944,
                       "LastWriteTime":  "\/Date(1793762972000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib-reference.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib-reference.html",
                       "Length":  60771,
                       "LastWriteTime":  "\/Date(1793217382000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-stdlib.html",
                       "Length":  96624,
                       "LastWriteTime":  "\/Date(1793830162000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-vocabulary.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-vocabulary.html",
                       "Length":  43841,
                       "LastWriteTime":  "\/Date(1793762944000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\WHATS-LEFT.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\WHATS-LEFT.md",
                       "Length":  6438,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\WINDOWS-PORT-PLAN.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\WINDOWS-PORT-PLAN.md",
                       "Length":  2083,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\WINDOWS-SETUP.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\WINDOWS-SETUP.md",
                       "Length":  7252,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\_newchapter_en.html",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\_newchapter_en.html",
                       "Length":  6571,
                       "LastWriteTime":  "\/Date(1793762944000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\HANDOFF.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\HANDOFF.md",
                       "Length":  2274,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\NEXT_TASK_NATIVE_PE64.md",
                       "Length":  2701,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\REAL_MACHINE_RESULTS_2026-10-01.md",
                       "Length":  3024,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\START_HERE_FOR_AI.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\ai-handoff-notes\\START_HERE_FOR_AI.md",
                       "Length":  8595,
                       "LastWriteTime":  "\/Date(1793101892000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\ALIAS-DESIGN.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\ALIAS-DESIGN.md",
                       "Length":  8082,
                       "LastWriteTime":  "\/Date(1793466062000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-DECISION.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-DECISION.md",
                       "Length":  12662,
                       "LastWriteTime":  "\/Date(1793466062000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-DESIGN.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-DESIGN.md",
                       "Length":  6424,
                       "LastWriteTime":  "\/Date(1793466062000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-IMPROVEMENTS.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-IMPROVEMENTS.md",
                       "Length":  5528,
                       "LastWriteTime":  "\/Date(1793466062000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-MY-IDEA.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-MY-IDEA.md",
                       "Length":  5968,
                       "LastWriteTime":  "\/Date(1793466062000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-UNIQUE-HYBRID.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\MEMORY-UNIQUE-HYBRID.md",
                       "Length":  7640,
                       "LastWriteTime":  "\/Date(1793466062000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\R114-SUTRAM-TRUTI.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\decisions\\R114-SUTRAM-TRUTI.md",
                       "Length":  3288,
                       "LastWriteTime":  "\/Date(1793738586000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\reports\\COVERAGE-AUDIT.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\reports\\COVERAGE-AUDIT.md",
                       "Length":  2726,
                       "LastWriteTime":  "\/Date(1793494468000)\/"
                   },
                   {
-                      "FullName":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\reports\\EDGE-COVERAGE-30.md",
+                      "FullName":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\reports\\EDGE-COVERAGE-30.md",
                       "Length":  12691,
                       "LastWriteTime":  "\/Date(1794018765270)\/"
                   }

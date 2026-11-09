@@ -15,12 +15,12 @@ the original only by removal of the old Sutram entry; machine PATH is unchanged.
 
 ## Pinned identity
 
-- Test date: 2026-11-06; native Windows build 26100, x64.
+- Test date: 2026-11-06; native Windows build (redacted), x64.
 - Checkout: `7db8e24db956d5f3ec94f014f5ec4be532b0419c`.
 - Fetched main: `cb443c2a0e4c3cfe3beabef375143c46b3f72e4a`. Its only changes from
   the checkout were two partner briefs; compiler, IDE, library, tests, examples,
   and goldens were identical. Product binaries came from v305 commit `c7168137`.
-- Compiler: `E:\Github_Projects\Sutram\win\sutram.exe`.
+- Compiler: `<repo>\win\sutram.exe`.
 - Compiler SHA-256: `db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c`.
 - IDE SHA-256: `829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051`.
 - Direct `--version`, exit 0:

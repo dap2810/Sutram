@@ -123,10 +123,10 @@ lines += ['',
 'to the review commit. Intermediate outputs record the one-change-at-a-time verification.', '',
 'Host invocation patterns:', '```text',
 'python Windows-to-Sarvam/win-round3-2026-11-03/verify.py <stage>',
-'wsl -d Ubuntu -- python3 /mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/verify.py <stage>',
+'wsl -d Ubuntu -- python3 /mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/verify.py <stage>',
 'SUTRAM_COMPILER=<final native compiler> python -B -m unittest discover -s tests/windows_round3 -v',
-'wsl -d Ubuntu -- python3 /mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/regression.py',
-'wsl -d Ubuntu -- python3 /mnt/e/Github_Projects/Sutram/build/round3-review/tools/proof_lib.py --compiler /mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/explicit-memory-linux/compiler',
+'wsl -d Ubuntu -- python3 /mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/regression.py',
+'wsl -d Ubuntu -- python3 /mnt<repo>/build/round3-review/tools/proof_lib.py --compiler /mnt<repo>/build/round3-review/build/round3/explicit-memory-linux/compiler',
 '```','',
 '## Before and after probe output', '']
 for s in stages:

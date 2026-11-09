@@ -1,7 +1,7 @@
 {
     "name":  "initial",
     "moment":  "complete",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
     "setup_sha256":  "9D046B4E1B3D95222523E78304E48CB5BC10A69F951B33822A2673F0DC3BB533",
     "started":  "2026-11-07T10:09:37.5086713-05:00",
     "observations":  [

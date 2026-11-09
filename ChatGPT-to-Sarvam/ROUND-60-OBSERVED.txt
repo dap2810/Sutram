@@ -5,7 +5,7 @@
 Actual Windows-hosted GitHub Actions run **38562501834** (result: FAILED on two genuine end-to-end acceptance gates; other gates successful):
 https://github.com/dap2810/Sutram/actions/runs/38562501834
 
-Artifact name **r60-windows-desktop-evidence**, id **11892492523**, approx **2,457,616 bytes**, containing real-host screenshots and installer test files. GitHub Actions shows this under Artifacts on the run page; the archive is downloadable by a repo collaborator. Capture used real Win32 windows and Windows screen CopyFromScreen on Windows 10.0.26100.0, host runneradmin. Screenshots are captured but have NOT been visually inspected and should NOT be treated as proof of color accuracy or installed shortcut icon.
+Artifact name **r60-windows-desktop-evidence**, id **11892492523**, approx **2,457,616 bytes**, containing real-host screenshots and installer test files. GitHub Actions shows this under Artifacts on the run page; the archive is downloadable by a repo collaborator. Capture used real Win32 windows and Windows screen CopyFromScreen on Windows 10.0 (build redacted), host runneradmin. Screenshots are captured but have NOT been visually inspected and should NOT be treated as proof of color accuracy or installed shortcut icon.
 
 Screenshots in artifact: IDE.png, SETUP_WIZARD.png (actual GUI/window open), SETUP_PRE_INSTALL.png and SETUP_POST_INSTALL.png (actual installer before/after clicking Install); IDE_SYNTAX_TEST.png and IDE_SHELL_TEST.png were captured in earlier R60 Windows native control attempts, but are not guaranteed in the latest run because CLI preflight failed and editor step was skipped. Do not invent missing screenshots.
 

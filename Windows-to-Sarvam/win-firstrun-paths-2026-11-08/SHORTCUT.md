@@ -5,7 +5,7 @@
 Before installation, created this harmless user shortcut:
 
 ```text
-C:\Users\dmech\OneDrive\Desktop\Sutram IDE.lnk
+%USERPROFILE%\OneDrive\Desktop\Sutram IDE.lnk
   target: C:\Windows\System32\notepad.exe
   arguments: (empty)
 ```

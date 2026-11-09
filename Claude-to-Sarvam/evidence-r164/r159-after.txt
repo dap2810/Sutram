@@ -1,0 +1,2 @@
+PASS  self-test: 14 forbidden forms caught, 13 placeholders pass, a name by its hash caught
+r159 no personal paths: 11131 tracked files, 0 with system details

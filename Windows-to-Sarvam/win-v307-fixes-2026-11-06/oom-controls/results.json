@@ -1,13 +1,13 @@
 {
-  "compiler": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+  "compiler": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
   "compiler_sha256": "a95ceaf1fca6310cd8b2df0892632a38642595cdfaa53bdef7ec0736b138aa70",
   "expect_baseline_crash": false,
   "compilations": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.sm",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 1594 baait sankalit\n",
@@ -15,9 +15,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small.sm",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 1740 baait sankalit\n",
@@ -25,9 +25,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw.sm",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 471 baait sankalit\n",
@@ -35,9 +35,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null.sm",
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 214 baait sankalit\n",
@@ -47,9 +47,9 @@
   "checks": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-64MiB",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -66,9 +66,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-128MiB",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -85,9 +85,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-256MiB",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-256MiB",
       "limit_bytes": 268435456,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -104,9 +104,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw-64MiB",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\raw-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -123,9 +123,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-64MiB-invalid-stderr",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-64MiB-invalid-stderr",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": true,
@@ -142,9 +142,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small-128MiB",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\small-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -161,9 +161,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-2048MiB",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\kosh-2048MiB",
       "limit_bytes": 2147483648,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -180,9 +180,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null.exe"
+        "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null-128MiB",
+      "cwd": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\release-commit-oom\\null-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,

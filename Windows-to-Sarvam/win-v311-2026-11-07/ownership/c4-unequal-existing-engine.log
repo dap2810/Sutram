@@ -1,16 +1,16 @@
 Sutram Setup Log
 [2026-11-07 13:30:53] Starting installation.
 [2026-11-07 13:30:53] Checking for another Sutram installation.
-[2026-11-07 13:30:53] A previous installation stopped part-way (its journal is C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt); this run finishes it.
-[2026-11-07 13:30:53] A previous installation stopped part-way (it left C:\Users\dmech\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
+[2026-11-07 13:30:53] A previous installation stopped part-way (its journal is %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt); this run finishes it.
+[2026-11-07 13:30:53] A previous installation stopped part-way (it left %USERPROFILE%\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
 [2026-11-07 13:30:53] Extracting embedded payload.
 [2026-11-07 13:30:55] Native self-test start: pre-install --version
 [2026-11-07 13:30:55] Native self-test exit: pre-install --version code=0
 [2026-11-07 13:30:55] Native self-test start: pre-install --help
 [2026-11-07 13:30:56] Native self-test exit: pre-install --help code=0
-[2026-11-07 13:31:00] Transaction f904d3d2cbda47c1b5b51388fb17f0d7 begun (journal C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
+[2026-11-07 13:31:00] Transaction f904d3d2cbda47c1b5b51388fb17f0d7 begun (journal %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
 [2026-11-07 13:31:00] Recording the payload being installed (payload.pending.sha256).
-[2026-11-07 13:31:00] Staging 657 Sutram files in C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\stage.
+[2026-11-07 13:31:00] Staging 657 Sutram files in %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\stage.
 [2026-11-07 13:31:00] Already installed 1/657: assets\sutram.ico
 [2026-11-07 13:31:00] Already installed 2/657: bin\lang\bengali.lang
 [2026-11-07 13:31:00] Already installed 3/657: bin\lang\bengali.sandesh
@@ -669,6 +669,6 @@ Sutram Setup Log
 [2026-11-07 13:31:05] Already installed 655/657: win\lib\vakyank.smlib
 [2026-11-07 13:31:05] Already installed 656/657: win\lib\varna.smlib
 [2026-11-07 13:31:05] Already staged 657/657: win\sutram.exe
-[2026-11-07 13:31:05] Publishing 657 files into C:\Users\dmech\AppData\Local\Programs\Sutram.
-[2026-11-07 13:31:06] Not removed - the copy kept as C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD (BB8F7F7405C17B55C3B8CE2ADBC99B82AC39060A6D3931A8AA70CD7E55295F95) is not this file (31C7B5E5F5BD5DECAD64B3E34C9939E4F5C33C73149B22762BBDFEBC249D4DCE): C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md
-[2026-11-07 13:31:07] ERROR: A file was not moved aside, because the copy already kept under its name differs: C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md and C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD. Nothing was deleted. Move one of them elsewhere, then run this installer again.
+[2026-11-07 13:31:05] Publishing 657 files into %USERPROFILE%\AppData\Local\Programs\Sutram.
+[2026-11-07 13:31:06] Not removed - the copy kept as %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD (BB8F7F7405C17B55C3B8CE2ADBC99B82AC39060A6D3931A8AA70CD7E55295F95) is not this file (31C7B5E5F5BD5DECAD64B3E34C9939E4F5C33C73149B22762BBDFEBC249D4DCE): %USERPROFILE%\AppData\Local\Programs\Sutram\docs\BUILDING.md
+[2026-11-07 13:31:07] ERROR: A file was not moved aside, because the copy already kept under its name differs: %USERPROFILE%\AppData\Local\Programs\Sutram\docs\BUILDING.md and %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD. Nothing was deleted. Move one of them elsewhere, then run this installer again.

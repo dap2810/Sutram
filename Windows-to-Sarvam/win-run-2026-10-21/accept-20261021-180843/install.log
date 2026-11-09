@@ -9,4 +9,4 @@ Sutram Setup Log
 [2026-10-21 18:08:55] Native self-test start: post-install --version
 [2026-10-21 18:08:55] Native self-test exit: post-install --version code=0
 [2026-10-21 18:08:55] Ensuring Sutram is present in the current user PATH.
-[2026-10-21 18:08:56] Installation complete: C:\Users\Dhruv\AppData\Local\Programs\Sutram
+[2026-10-21 18:08:56] Installation complete: %USERPROFILE%\AppData\Local\Programs\Sutram

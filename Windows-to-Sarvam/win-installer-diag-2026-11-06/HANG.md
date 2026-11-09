@@ -27,7 +27,7 @@ This is the original v305 package, not a v306 or PR #66 build.
 Attempt 1 engine log, 20:39:19 local:
 
 ```text
-ERROR: Upgrade would overwrite a user file; preserve it elsewhere first: C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram-link.exe
+ERROR: Upgrade would overwrite a user file; preserve it elsewhere first: %USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram-link.exe
 ```
 
 Retry engine log, 20:42:30 local: the identical error. The retry started its
@@ -59,7 +59,7 @@ The later automated screenshot shows that Ready state.
 PID 36032; parent wizard PID 25936:
 
 ```text
-powershell.exe -NoProfile -File "C:\Users\dmech\AppData\Local\Temp\STMC098.tmp\install-core.ps1" -PayloadZip "C:\Users\dmech\AppData\Local\Temp\STMC098.tmp\payload.zip" -InstallDir "C:\Users\dmech\AppData\Local\Programs\Sutram" -SetupExePath "E:\Github_Projects\Sutram\Sutram-Setup.exe" -LogPath "C:\Users\dmech\AppData\Local\Temp\STMC098.tmp\install.log" -AddPath
+powershell.exe -NoProfile -File "%USERPROFILE%\AppData\Local\Temp\STMC098.tmp\install-core.ps1" -PayloadZip "%USERPROFILE%\AppData\Local\Temp\STMC098.tmp\payload.zip" -InstallDir "%USERPROFILE%\AppData\Local\Programs\Sutram" -SetupExePath "<repo>\Sutram-Setup.exe" -LogPath "%USERPROFILE%\AppData\Local\Temp\STMC098.tmp\install.log" -AddPath
 ```
 
 Process IDs, parents, start times and CPU observations are preserved in
@@ -112,26 +112,26 @@ in **user** PATH; a machine entry must not be inferred from the retired NSIS rec
 ```text
 Windows PowerShell transcript start
 Start time: 20261106204218
-Username: DHRUV\dmech
-RunAs User: DHRUV\dmech
+Username: <machine>\<user>
+RunAs User: <machine>\<user>
 Configuration Name: 
-Machine: DHRUV (Microsoft Windows NT 10.0.26300.0)
+Machine: <machine> (Microsoft Windows NT 10.0 (build redacted))
 Host Application: c:\windows\system32\windowspowershell\v1.0\powershell.exe -Command try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}
 & .\Windows-to-Sarvam\win-installer-diag-2026-11-06\run.ps1
 Process ID: 19552
-PSVersion: 5.1.26100.9711
+PSVersion: 5.1 (build redacted)
 PSEdition: Desktop
-PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
-BuildVersion: 10.0.26100.9711
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1 (build redacted)
+BuildVersion: 10.0 (build redacted)
 CLRVersion: 4.0.30319.42000
 WSManStackVersion: 3.0
 PSRemotingProtocolVersion: 2.3
 SerializationVersion: 1.1.0.1
 **********************
-Transcript started, output file is E:\Github_Projects\Sutram\Windows-to-Sarvam\win-installer-diag-2026-11-06\transcript.txt
+Transcript started, output file is <repo>\Windows-to-Sarvam\win-installer-diag-2026-11-06\transcript.txt
 Snapshot before saved; installed files: 137
-Starting current installer E:\Github_Projects\Sutram\Sutram-Setup.exe; SHA256 99D26A89F355A2B20BDF7FE1FBD94AA8E304C3EAE3A9B54C8364ECF8F1E6E6F5; unelevated.
-Installer child PID 36032: powershell.exe -NoProfile -File "C:\Users\dmech\AppData\Local\Temp\STMC098.tmp\install-core.ps1" -PayloadZip "C:\Users\dmech\AppData\Local\Temp\STMC098.tmp\payload.zip" -InstallDir "C:\Users\dmech\AppData\Local\Programs\Sutram" -SetupExePath "E:\Github_Projects\Sutram\Sutram-Setup.exe" -LogPath "C:\Users\dmech\AppData\Local\Temp\STMC098.tmp\install.log" -AddPath
+Starting current installer <repo>\Sutram-Setup.exe; SHA256 99D26A89F355A2B20BDF7FE1FBD94AA8E304C3EAE3A9B54C8364ECF8F1E6E6F5; unelevated.
+Installer child PID 36032: powershell.exe -NoProfile -File "%USERPROFILE%\AppData\Local\Temp\STMC098.tmp\install-core.ps1" -PayloadZip "%USERPROFILE%\AppData\Local\Temp\STMC098.tmp\payload.zip" -InstallDir "%USERPROFILE%\AppData\Local\Programs\Sutram" -SetupExePath "<repo>\Sutram-Setup.exe" -LogPath "%USERPROFILE%\AppData\Local\Temp\STMC098.tmp\install.log" -AddPath
 
 Observing for another 60 seconds without input.
 Snapshot after saved; installed files: 137

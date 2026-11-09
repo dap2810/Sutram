@@ -1,16 +1,16 @@
 Sutram Setup Log
 [2026-11-07 13:21:25] Starting installation.
 [2026-11-07 13:21:25] Checking for another Sutram installation.
-[2026-11-07 13:21:25] A previous installation stopped part-way (its journal is C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt); this run finishes it.
-[2026-11-07 13:21:25] A previous installation stopped part-way (it left C:\Users\dmech\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
+[2026-11-07 13:21:25] A previous installation stopped part-way (its journal is %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt); this run finishes it.
+[2026-11-07 13:21:25] A previous installation stopped part-way (it left %USERPROFILE%\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
 [2026-11-07 13:21:25] Extracting embedded payload.
 [2026-11-07 13:21:28] Native self-test start: pre-install --version
 [2026-11-07 13:21:28] Native self-test exit: pre-install --version code=0
 [2026-11-07 13:21:28] Native self-test start: pre-install --help
 [2026-11-07 13:21:28] Native self-test exit: pre-install --help code=0
-[2026-11-07 13:21:31] Transaction b9bae42d92c24db68edae6aa61c1588f begun (journal C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
+[2026-11-07 13:21:31] Transaction b9bae42d92c24db68edae6aa61c1588f begun (journal %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
 [2026-11-07 13:21:31] Recording the payload being installed (payload.pending.sha256).
-[2026-11-07 13:21:31] Staging 657 Sutram files in C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\stage.
+[2026-11-07 13:21:31] Staging 657 Sutram files in %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\stage.
 [2026-11-07 13:21:31] Already installed 1/657: assets\sutram.ico
 [2026-11-07 13:21:31] Already installed 2/657: bin\lang\bengali.lang
 [2026-11-07 13:21:31] Already installed 3/657: bin\lang\bengali.sandesh
@@ -669,7 +669,7 @@ Sutram Setup Log
 [2026-11-07 13:21:33] Already staged 655/657: win\lib\vakyank.smlib
 [2026-11-07 13:21:33] Already staged 656/657: win\lib\varna.smlib
 [2026-11-07 13:21:33] Already staged 657/657: win\sutram.exe
-[2026-11-07 13:21:33] Publishing 657 files into C:\Users\dmech\AppData\Local\Programs\Sutram.
+[2026-11-07 13:21:33] Publishing 657 files into %USERPROFILE%\AppData\Local\Programs\Sutram.
 [2026-11-07 13:21:33] PUBLISH 56/657: docs\BUILDING.md
 [2026-11-07 13:21:33] PUBLISH 59/657: docs\decisions\ALIAS-DESIGN.md
 [2026-11-07 13:21:33] PUBLISH 60/657: docs\decisions\MEMORY-DECISION.md

@@ -4,7 +4,7 @@
     "child_exit":  1,
     "after_retry_sha256":  "ECF1DE53B67CB8CDFC1550AAABB17CBA074173B32FA3A356102574AA31C9BCD9",
     "time":  "2026-11-07T11:33:27.0475080-05:00",
-    "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
+    "target":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
     "warning":  [
                     "OK",
                     "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."

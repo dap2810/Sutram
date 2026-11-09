@@ -263,7 +263,7 @@ How the one primitive closes each case:
 | Case | Why a string comparison misses it | Why identity catches it |
 |---|---|---|
 | Symlink (output is a symlink to the input, or vice versa) | the two spellings differ | `stat()` follows symlinks; both resolve to the same `(dev,ino)` |
-| Relative vs absolute (`hello.sm` vs `./hello.sm` vs `/home/u/hello.sm`) | the strings differ | `stat()` resolves both against the same CWD to the same file |
+| Relative vs absolute (`hello.sm` vs `./hello.sm` vs `/home/<you>/hello.sm`) | the strings differ | `stat()` resolves both against the same CWD to the same file |
 | Case-insensitive filesystem (`HELLO.SM` vs `hello.sm` on Windows) | byte comparison differs | the file ID is assigned by the filesystem, independent of the spelling used to open it |
 | Hard link (two names, one file) | the strings differ | hard links share `(dev,ino)` / the same file index by definition |
 | Different spelling (`dir/../hello.sm`, `//hello.sm`) | the strings differ | the kernel resolves the path before `stat()` returns |

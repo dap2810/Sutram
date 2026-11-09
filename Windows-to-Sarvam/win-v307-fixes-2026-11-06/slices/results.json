@@ -1,5 +1,5 @@
 {
-  "compiler": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+  "compiler": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
   "compiler_sha256": "a95ceaf1fca6310cd8b2df0892632a38642595cdfaa53bdef7ec0736b138aa70",
   "phase": "slice",
   "baseline": false,
@@ -9,9 +9,9 @@
       "sha256": "bb11d2cc21b0da13d795f38ebb403a810eabf9b1a046e14e93642b5d683a4773",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_cell_minimal.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_cell_minimal.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_cell_minimal.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_cell_minimal.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -25,9 +25,9 @@
       "sha256": "908ad692d440182dde6d93664985e5cfd3543914bede4f8d3fa45d80022a94d1",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_cell_write.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_cell_write.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_cell_write.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_cell_write.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -41,9 +41,9 @@
       "sha256": "76508e722f21f6a266c1bbab0529d4b62cd6c7d0ba71a8f764589bbd51539e66",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_funcval_large.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_funcval_large.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_funcval_large.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_funcval_large.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
@@ -57,9 +57,9 @@
       "sha256": "4fe5de60af53900c9a6db9794e8151d6b198165f9d0dd4ed0bc21b709530a75d",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_funcval_small.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_funcval_small.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_funcval_small.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_funcval_small.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
@@ -73,9 +73,9 @@
       "sha256": "bf83d33282ca256b70703a47f4a6dd05060df0d5cfb3ede999e48d23df851bcc",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_untyped_param.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_untyped_param.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_untyped_param.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_untyped_param.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -89,9 +89,9 @@
       "sha256": "7ae69119b92ff64c1cb4a84463625fd1c30e1e43811c04a274fe664fbd4e54d8",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_untyped_return.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_untyped_return.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws1_untyped_return.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws1_untyped_return.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -105,9 +105,9 @@
       "sha256": "aa20b7956b60465d1eee669a0803ac0efcf87eb12f90c06d318da204df5dcc81",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_cond_assign.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_cond_assign.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_cond_assign.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_cond_assign.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -121,9 +121,9 @@
       "sha256": "cdffa7d4d3ec5ae6c2ebea86b56e7cd2621b9027836217c1a5c2a52a8d257ec3",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_dasham_diag.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_dasham_diag.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_dasham_diag.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_dasham_diag.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -137,9 +137,9 @@
       "sha256": "a1fefec156f3a1fcf69ce59b0f70659d0514f2a907ae7feb6937e2f5b6fab140",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_dasham_param.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_dasham_param.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_dasham_param.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_dasham_param.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -153,9 +153,9 @@
       "sha256": "bc80b14f23f40db0e4f6f6e28903c0eff6d3cac5467caa3ffc1268984c1ed762",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_field.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_field.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_field.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_field.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -169,9 +169,9 @@
       "sha256": "a56cbf02489b10628b1f251a385f821daa792f55fcfed1e2fe60012fcc515f52",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_global.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_global.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_global.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_global.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -185,9 +185,9 @@
       "sha256": "e086e94c09194f2296a848645ec5342b267b6bde67e7210191c0ef20638dd92b",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_rawmem.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_rawmem.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_rawmem.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_rawmem.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -201,9 +201,9 @@
       "sha256": "339aca66eab41a8dbfc4224a6ff1d5a68b3464b315ccfb88c910ff56eec37322",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_ternary.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_ternary.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\Muse-to-Sarvam\\r136_ws2_ternary.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\r136_ws2_ternary.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -213,12 +213,12 @@
       "pass": true
     },
     {
-      "source": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-cell.sm",
+      "source": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-cell.sm",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-cell.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-cell.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-cell.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-cell.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 's' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -228,12 +228,12 @@
       "pass": true
     },
     {
-      "source": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-scalar.sm",
+      "source": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-scalar.sm",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-scalar.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-scalar.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-scalar.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-scalar.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 's' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -243,12 +243,12 @@
       "pass": true
     },
     {
-      "source": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-return.sm",
+      "source": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-return.sm",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-return.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-return.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-return.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-return.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti: vibhag prakriyayah na pratyarpaniyah\n",
@@ -258,12 +258,12 @@
       "pass": true
     },
     {
-      "source": "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-alias.sm",
+      "source": "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-alias.sm",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-alias.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-alias.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-alias.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\typed-alias.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 's' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -276,9 +276,9 @@
       "source": "examples/248_r23_slices.sm",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\examples\\248_r23_slices.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\248_r23_slices.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\examples\\248_r23_slices.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\248_r23_slices.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 9146 baait sankalit\n",
@@ -287,7 +287,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\248_r23_slices.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\248_r23_slices.exe"
         ],
         "exit": 0,
         "stdout": "55\n12\n55\n4\n4\n7\n52\n100\n50\n0\n",
@@ -300,9 +300,9 @@
       "source": "examples/246_r23_comparator_sort.sm",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\examples\\246_r23_comparator_sort.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\246_r23_comparator_sort.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\examples\\246_r23_comparator_sort.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\246_r23_comparator_sort.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 5212 baait sankalit\n",
@@ -311,7 +311,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\246_r23_comparator_sort.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\246_r23_comparator_sort.exe"
         ],
         "exit": 0,
         "stdout": "1 2 3 4 5 7 8 9 \n9 8 7 5 4 3 2 1 \n2 4 8 1 3 5 7 9 \n2 4 8 5 3 1 7 9 \n7\n",
@@ -324,9 +324,9 @@
       "source": "tests/r133/indirect/safe1.sm",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\tests\\r133\\indirect\\safe1.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\safe1.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\candidate.exe",
+          "<repo>\\build\\windows-v307-fixes\\tests\\r133\\indirect\\safe1.sm",
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\safe1.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 2281 baait sankalit\n",
@@ -335,7 +335,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\safe1.exe"
+          "<repo>\\build\\windows-v307-fixes\\build\\fixes\\verified-slices\\safe1.exe"
         ],
         "exit": 0,
         "stdout": "0\n99\n",

@@ -1,6 +1,6 @@
 {
   "phase": "arithmetic",
-  "compiler": "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
+  "compiler": "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
   "compiler_sha256": "bcb33e6dbb58c1e8556d29057c2f20128cc00f54e48cf860c7ea5496c0972532",
   "cases": [
     {
@@ -8,9 +8,9 @@
       "source_sha256": "77699b7cf6970b38ddddcdab00964c35a59cfb1dabac450a46275fabda166821",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\add.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\add.exe"
+          "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+          "<repo>\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\add.sm",
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\add.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
@@ -25,9 +25,9 @@
       "source_sha256": "3eaf1d670f19ed101331aee119b39cf0b4b8b2b8ae10c38ba1f1980f6cdd8a4a",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\xor.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\xor.exe"
+          "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+          "<repo>\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\xor.sm",
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\xor.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
@@ -42,9 +42,9 @@
       "source_sha256": "5c348f4342f19e0d347727b6a58a42ca7fe46d02c4295ba31820e2a0b9f52846",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\add-literal.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\add-literal.exe"
+          "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+          "<repo>\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\add-literal.sm",
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\add-literal.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
@@ -59,9 +59,9 @@
       "source_sha256": "842a2b0179671b7fb229289afe1ebf3e6f7a70902e7e24e1fc7a458665060673",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\condition.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\condition.exe"
+          "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+          "<repo>\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\condition.sm",
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\condition.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_VIBHAG_ANKA]: vibhagah 'k' sankhya iva upayujyate - vibhagah ganite, tulanayam, pratibandhe, likha-adau va na sankhya\nSanket: vibhagasya mulyam s[i] ityena pathya; dairghyam pankti_gan(s); vibhagam vibhag-tarke preshaya\n",
@@ -76,9 +76,9 @@
       "source_sha256": "11abfed25138626cb79c8320e43bbe1fd441aa4f941050985f394467e9d9b0d8",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\direct-print.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\direct-print.exe"
+          "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+          "<repo>\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\direct-print.sm",
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\direct-print.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh-vibhagah 'k' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...)\nSanket: vibhagah koshasya mulyani tada yatha asan tatha darshayati - tam sakshat vibhag-tarke preshaya (f(k[1:4])); sthapayitum pratilipim kuru\n",
@@ -93,9 +93,9 @@
       "source_sha256": "a518d45cdddeefb7613f5166216d68745907017261e19ae7ffdbf897075f6bd4",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\store.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\store.exe"
+          "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+          "<repo>\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\store.sm",
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\store.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: kosh 'k' vibhagah vittau na sthapyate - kosh vardhate cet tasya mulyani anyatra gacchanti\nSanket: kosh-vibhagam sakshat preshaya - f(k[1:4]); vittau kosh eva sthapaya (vitti b = k)\n",
@@ -110,9 +110,9 @@
       "source_sha256": "f7ad8965182d48142b02c4eb3443e9024ecb350049dd310920e8d7e2f8384f17",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\length.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\length.exe"
+          "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+          "<repo>\\build\\windows-v309-fixes\\Windows-to-Sarvam\\win-v309-final-fixes-2026-11-07\\arithmetic\\length.sm",
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\length.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 3584 baait sankalit\n",
@@ -122,7 +122,7 @@
       "output_file_exists": true,
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\length.exe"
+          "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\arithmetic\\length.exe"
         ],
         "exit": 0,
         "stdout": "2\n",

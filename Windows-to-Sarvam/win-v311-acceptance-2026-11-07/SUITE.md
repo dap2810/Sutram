@@ -16,4 +16,4 @@ The three no-expectation cases are `215_r12_wordfreq`, `216_r12_expr` and `219_s
 
 Measured wall time: **19.047598 seconds**, compared with the supplied v309 reference **18.6 seconds**: **+0.447598 seconds / +2.41%** (ratio 1.024064). No material slowdown is apparent in this one run. It is a single total-suite measurement, including process overhead and runtime, not an isolated compiler or `gen_expr` benchmark. The owner was invited to use Settings uninstall concurrently, so desktop load was not controlled; this cannot establish statistical performance parity or attribute the difference to the expression check.
 
-Environment: Windows 11 build 26300, Python 3.14.7 from Anaconda. No compiler, example, expectation or golden was changed. The requested suite was not repeatedly rerun to select a preferred timing.
+Environment: Windows 11 build (redacted), Python 3.14.7 from Anaconda. No compiler, example, expectation or golden was changed. The requested suite was not repeatedly rerun to select a preferred timing.

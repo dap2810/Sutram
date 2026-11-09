@@ -1,6 +1,6 @@
 PASS  build: coff2smo 0, compile 0, link 0 b'Siddh: 22 prakriya, 1136 baait\nSiddh: 7111 baait sankalit\nSiddh: 8249 baait sankalit\n'
 PASS  winffi.sm prints winffi.expect exactly (27 lines), exit 0
-PASS  sutram_build.py --ffi --foreign winffi.obj: b'sutram-build: 1 module, each compiled once and 1 foreign object, linked to C:\\Users\\Dhruv\\AppData\\Local\\Temp\\r35-lptkqop5\\b.exe\r\n'
+PASS  sutram_build.py --ffi --foreign winffi.obj: b'sutram-build: 1 module, each compiled once and 1 foreign object, linked to %USERPROFILE%\\AppData\\Local\\Temp\\r35-lptkqop5\\b.exe\r\n'
 PASS  the builder's program prints the same
 PASS  sidecar refused: sysv on the Windows compiler (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'
 PASS  sidecar refused: msabi under v1 (line 1, no object) b'Sutram Error: videshi-ghoshana-patram dushtam, pankti 1\n'

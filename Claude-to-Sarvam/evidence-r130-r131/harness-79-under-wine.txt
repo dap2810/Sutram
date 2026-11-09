@@ -1,4 +1,4 @@
-cwd: /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r130/foreign (outside the tree); source: /home/claude/sutram/examples/79_ayojan_cwd.sm
+cwd: <scratch>/r130/foreign (outside the tree); source: <repo>/examples/79_ayojan_cwd.sm
 --- win\sutram.exe (no lib\ beside it):
 Sutram truti [E_MODULE_MISSING]: yoj patra aprapt: ganit
 Sanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet

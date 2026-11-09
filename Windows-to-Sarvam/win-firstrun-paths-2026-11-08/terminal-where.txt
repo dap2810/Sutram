@@ -1,1 +1,1 @@
-C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe
+%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe

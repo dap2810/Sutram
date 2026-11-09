@@ -76,7 +76,7 @@ The final process observer initially treated JSON arrays as process records (Pow
 - Compiler: `{candidate['compiler_sha256']}`
 - Engine: `{candidate['engine_sha256']}`
 - Manifest: `{candidate['manifest_sha256']}`
-- Local setup: `E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe`
+- Local setup: `<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe`
 
 This is the working installed candidate, with original/working/interrupted/edited trees preserved. New source remains in PR #68; main carries handoff/evidence only. Native IDE checks above are specific exercised scenarios, not every IDE or uninstall acceptance gate. No uninstall, arbitrary concurrent-write proof, 15-minute timeout, full Linux example suite, general security-product compatibility, or universal language safety is claimed. No security settings, frozen baselines, workflow files or automatic CI triggers were changed. Release source pins intentionally still describe upstream v309 and must be updated only after independent review/rebuild.
 
@@ -85,7 +85,7 @@ Read [commands and provenance](COMMANDS.md), [all summary values](summary.json),
 (out/'RESULTS.md').write_text(results,encoding='utf8',newline='\n')
 commands='''# Commands and provenance
 
-All Windows commands below ran from `E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes` on 7 November 2026. Source edits were committed as 664ff188; generated executables stay local. The process-local linker preference was `C:\\Program Files\\mingw64\\bin` prepended to PATH. The ordinary native build scripts and the canonical NASM entry were used; the frozen source-pinned release build was not re-pinned.
+All Windows commands below ran from `<repo>\\build\\windows-v309-fixes` on 7 November 2026. Source edits were committed as 664ff188; generated executables stay local. The process-local linker preference was `C:\\Program Files\\mingw64\\bin` prepended to PATH. The ordinary native build scripts and the canonical NASM entry were used; the frozen source-pinned release build was not re-pinned.
 
 ```powershell
 python tests/r137/test_global_initializers.py --compiler win/sutram.exe --report Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/global-before-expanded.json
@@ -125,9 +125,9 @@ python Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/installed-smoke.py
 The recovery controller copies/verifies the known-good install, vacates only guarded canonical paths, stops only its own captured process handles, preserves edited trees, and restores the working backup. Every actual engine command is in the phase JSON. No broad process termination, recursive deletion of user installations, security-policy change or security-suspended-thread resume occurred. GUI windows are visible only for these requested UI tests; helper processes use hidden windows. Final process verification matches PID and start time, including the failed attempt.
 
 ```powershell
-wsl -d Ubuntu -- git -C /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout fetch /mnt/e/Github_Projects/Sutram codex/windows-v309-fixes
-wsl -d Ubuntu -- git -C /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout checkout --detach 664ff188
-wsl -d Ubuntu --cd /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout python3 /mnt/e/Github_Projects/Sutram/build/windows-v309-fixes/Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/linux-check.py
+wsl -d Ubuntu -- git -C /mnt<repo>/build/windows-v309-linux-checkout fetch /mnt<repo> codex/windows-v309-fixes
+wsl -d Ubuntu -- git -C /mnt<repo>/build/windows-v309-linux-checkout checkout --detach 664ff188
+wsl -d Ubuntu --cd /mnt<repo>/build/windows-v309-linux-checkout python3 /mnt<repo>/build/windows-v309-fixes/Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/linux-check.py
 python Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/compare-payloads.py
 ```
 

@@ -7,7 +7,7 @@
       "where sutram"
     ],
     "exit": 0,
-    "stdout": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\r\n",
+    "stdout": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\r\n",
     "stderr": ""
   },
   "version": {

@@ -5,7 +5,7 @@ r=json.loads((here/'preflight.json').read_text(encoding='utf8'))
 assert r['embedded_version_number']==312 and not r['may_proceed']
 assert not r['installation_attempted'] and not r['tasks_A_to_D_run']
 def write(name,text):(here/name).write_text(text,encoding='utf8',newline='\n')
-shutil.copy2('C:/Users/dmech/Downloads/SUTRAM-WINDOWS-V313-PREFLIGHT (1).md',here/'REQUEST.md')
+shutil.copy2('%USERPROFILE%/Downloads/SUTRAM-WINDOWS-V313-PREFLIGHT (1).md',here/'REQUEST.md')
 write('.gitattributes','* -text\n')
 write('PREFLIGHT.md',f'''# v313-or-later preflight — STOP: package is v312
 

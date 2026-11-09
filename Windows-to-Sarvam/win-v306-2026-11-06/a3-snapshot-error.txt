@@ -1,6 +1,6 @@
 Observed console output from the first A3 post-run snapshot, before orphan cleanup:
 
-Get-FileHash : The file 'C:\Users\dmech\AppData\Local\Programs\Sutram\docs\reports\EDGE-COVERAGE-30.md' cannot be read: The process cannot access the file because it is being used by another process.
+Get-FileHash : The file '%USERPROFILE%\AppData\Local\Programs\Sutram\docs\reports\EDGE-COVERAGE-30.md' cannot be read: The process cannot access the file because it is being used by another process.
 Snapshot a3-after saved; installed files: 117
 a3 result: NO_RESULT_AFTER_930_SECONDS; wizard closed: True
 

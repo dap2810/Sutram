@@ -1,8 +1,8 @@
 ﻿{
     "phase":  "recovery",
     "started":  "2026-11-06T23:08:56.6322732-05:00",
-    "backup":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-before-interruption-20261106",
-    "partial":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-recovery-partial-20261106",
+    "backup":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-before-interruption-20261106",
+    "partial":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-recovery-partial-20261106",
     "stopped":  [
                     {
                         "pid":  21616,

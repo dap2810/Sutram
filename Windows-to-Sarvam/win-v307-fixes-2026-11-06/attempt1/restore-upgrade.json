@@ -6,7 +6,7 @@
                 ],
     "restored":  true,
     "user_path_unchanged":  true,
-    "preserved":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-review-upgrade-20261106-234108",
+    "preserved":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-review-upgrade-20261106-234108",
     "files_verified":  662,
     "phase":  "upgrade",
     "security_changed":  false

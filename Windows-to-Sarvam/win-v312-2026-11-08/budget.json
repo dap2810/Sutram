@@ -4,9 +4,9 @@
     "terms": 10000,
     "source_sha256": "eac42be429b9af2b7d93dd33b24568b001e64c7dfad9f89b78ed005cf90163c2",
     "command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\literal-10000.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\literal-10000.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "<repo>\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\literal-10000.sm",
+      "<repo>\\build\\windows-v312\\build\\native-v312\\budget\\literal-10000.exe"
     ],
     "compile_exit": 0,
     "compile_seconds": 0.024192399999719782,
@@ -24,9 +24,9 @@
     "terms": 20000,
     "source_sha256": "29db445edd9003fbef18565cc3f096be5a55f5d4501864d408a1725ef0fafc76",
     "command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\literal-20000.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\literal-20000.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "<repo>\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\literal-20000.sm",
+      "<repo>\\build\\windows-v312\\build\\native-v312\\budget\\literal-20000.exe"
     ],
     "compile_exit": 1,
     "compile_seconds": 0.022472099999959028,
@@ -40,9 +40,9 @@
     "terms": 10000,
     "source_sha256": "71a3fbb8d5f096f349e76e1767b095acb5686d0ba91095c19b1f37305ecd8da2",
     "command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\variable-10000.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\variable-10000.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "<repo>\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\variable-10000.sm",
+      "<repo>\\build\\windows-v312\\build\\native-v312\\budget\\variable-10000.exe"
     ],
     "compile_exit": 0,
     "compile_seconds": 0.04599610000013854,
@@ -60,9 +60,9 @@
     "terms": 20000,
     "source_sha256": "5095e709bb82052e385b7e494b5449ca0b70d2b7f8d709ebcdbdb012ca710722",
     "command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\variable-20000.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\variable-20000.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "<repo>\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\variable-20000.sm",
+      "<repo>\\build\\windows-v312\\build\\native-v312\\budget\\variable-20000.exe"
     ],
     "compile_exit": 1,
     "compile_seconds": 0.04238440000017363,
@@ -76,9 +76,9 @@
     "terms": 10000,
     "source_sha256": "88f9e0bcbf8c252315c557d9a0cd1cc112d6978e3b52786a7288d052700f867c",
     "command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\global-variable-10000.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\global-variable-10000.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "<repo>\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\global-variable-10000.sm",
+      "<repo>\\build\\windows-v312\\build\\native-v312\\budget\\global-variable-10000.exe"
     ],
     "compile_exit": 0,
     "compile_seconds": 0.041942199999994045,
@@ -96,9 +96,9 @@
     "terms": 20000,
     "source_sha256": "514c68add8c3a6eba0381c5c413c96978ff0d1292094bf150ffdcc6c19ef2311",
     "command": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\global-variable-20000.sm",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\budget\\global-variable-20000.exe"
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "<repo>\\build\\windows-v312\\Windows-to-Sarvam\\win-v312-2026-11-08\\global-variable-20000.sm",
+      "<repo>\\build\\windows-v312\\build\\native-v312\\budget\\global-variable-20000.exe"
     ],
     "compile_exit": 1,
     "compile_seconds": 0.04544639999994615,

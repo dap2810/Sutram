@@ -1,7 +1,7 @@
 {
-    "powershell":  "5.1.26100.9711",
+    "powershell":  "5.1 (build redacted)",
     "source_sha256":  "6C80BB10093E888F5057CEEC8632ADF9FA677EE7C0D04E18471A526AE9BA630F",
-    "work":  "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\build\\fixes\\io-908cbcd5d41c43d5a87cc070698bdcf0",
+    "work":  "<repo>\\build\\windows-v307-fixes\\build\\fixes\\io-908cbcd5d41c43d5a87cc070698bdcf0",
     "checks":  [
                    {
                        "pass":  true,

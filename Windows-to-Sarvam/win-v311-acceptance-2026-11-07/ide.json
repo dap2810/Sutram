@@ -1,9 +1,9 @@
 {
     "started":  "2026-11-07T15:13:21.8592564-05:00",
     "launch":  "Start Menu shortcut",
-    "shortcut":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram IDE.lnk",
-    "shortcut_target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
-    "shortcut_working_directory":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "shortcut":  "%USERPROFILE%\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram IDE.lnk",
+    "shortcut_target":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+    "shortcut_working_directory":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "scenarios":  [
                       {
                           "name":  "B1-hello",

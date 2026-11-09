@@ -1,7 +1,7 @@
 {
     "name":  "d1-retry",
     "moment":  "complete",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe",
     "setup_sha256":  "9D046B4E1B3D95222523E78304E48CB5BC10A69F951B33822A2673F0DC3BB533",
     "started":  "2026-11-07T10:13:22.7580197-05:00",
     "observations":  [
@@ -34,15 +34,15 @@
     "live_log_opened":  false,
     "pid":  17420,
     "process_started":  "2026-11-07T10:13:22.7711594-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready_screenshot":  "d1-retry-ready.png",
     "child":  {
                   "parent":  17420,
                   "pid":  31812,
                   "started":  "2026-11-07T10:13:23.6710470-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4ADD.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4ADD.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4ADD.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM4ADD.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM4ADD.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v309-2026-11-07\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM4ADD.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM4ADD.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM4ADD.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  24.329699899999998,
     "finish_screenshot":  "d1-retry-finish.png",

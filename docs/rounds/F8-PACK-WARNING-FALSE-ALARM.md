@@ -5,7 +5,7 @@
 ## The reproduction
 
 ```
-I:\sutram-windows-test_2\Sutram-Windows-Test>sutram --lang hindi bad.sm o.exe
+<test-folder>>sutram --lang hindi bad.sm o.exe
 चेतावनी: भाषा पैक नहीं मिला: hindi
 bad.sm:1:18: Sutram Error [E_UNDEFINED_NAME]: अज्ञात नाम 'nosuchname'
   mukhya() { likha(nosuchname) }

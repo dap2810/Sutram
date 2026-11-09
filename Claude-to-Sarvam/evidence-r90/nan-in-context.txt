@@ -1,6 +1,6 @@
 # R90: NaN comparisons in every context I could think of; IEEE answer in the last column
 # source: ctx2.sm (below). v279 = origin/main; v280 = this commit. PE output identical to ELF for both.
-PE same as ELF: /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r90/guard/old/sutram_compiler
+PE same as ELF: <scratch>/r90/guard/old/sutram_compiler
 PE same as ELF: ./sutram_compiler
 v279           v280           IEEE
 vars 10110     vars 01000     vars 01000

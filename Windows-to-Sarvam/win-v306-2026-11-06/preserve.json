@@ -1,7 +1,7 @@
 ﻿{
     "status":  "PASS",
-    "backup":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-before-v306",
-    "source":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "backup":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-before-v306",
+    "source":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "reason":  "Preserve v305 before A3, because same-directory upgrade is permitted by source",
     "files_verified":  662
 }

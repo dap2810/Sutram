@@ -1,6 +1,6 @@
 {
   "edit": {
-    "target": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
+    "target": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
     "time": 1794076186.8111594,
     "engine_still_running": true,
     "last_target_absent": true,

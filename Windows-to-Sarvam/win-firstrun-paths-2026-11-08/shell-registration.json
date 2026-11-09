@@ -1,4 +1,4 @@
 {
   "preserved_test_key": "HKCU\\Software\\Classes\\Sutram.Source-TestedFirstRun20261108\\shell\\open\\command",
-  "command": "\"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" \"%1\""
+  "command": "\"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" \"%1\""
 }

@@ -6,7 +6,7 @@
     "-ExecutionPolicy",
     "Bypass",
     "-File",
-    "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\run-install.ps1",
+    "<repo>\\build\\windows-v311-verification\\Windows-to-Sarvam\\win-v311-2026-11-07\\run-install.ps1",
     "-Name",
     "ordinary-stop",
     "-Moment",

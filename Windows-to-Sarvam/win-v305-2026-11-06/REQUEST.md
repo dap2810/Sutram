@@ -57,7 +57,7 @@ reg query "HKCU\Environment" /v Path
 
 ### A2 — remove the old installation
 
-**Remove `C:\Users\dmech\AppData\Local\Sutram\` — the v1.4.0 one.**
+**Remove `%USERPROFILE%\AppData\Local\Sutram\` — the v1.4.0 one.**
 
 **Use its own uninstaller if it has one.** **If not, delete the folder and remove its PATH entry by hand.**
 

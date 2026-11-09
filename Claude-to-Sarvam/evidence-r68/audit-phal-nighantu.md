@@ -1,6 +1,6 @@
 # R68 audit — lib/phal, nighantu, sangrah, chandas, ganit, kalana
 
-Read-only audit of `/home/claude/sutram/lib/{phal,nighantu,sangrah,chandas,ganit,kalana}.smlib`
+Read-only audit of `<repo>/lib/{phal,nighantu,sangrah,chandas,ganit,kalana}.smlib`
 against the census `census-phal-nighantu-sangrah-chandas-ganit-kalana.txt` (30 prakriya, 61 write
 sites). Every body was read in full; helper semantics were taken from `lib/khand.smlib`
 (`khand_mukt` :61-76 writes cells `dst[0..n-1]` plus a 0 cell at `dst[n]`; `khand_tul` :438 reads
@@ -219,7 +219,7 @@ capacity in parentheses).
 
 ### B.5 cap-parameter consistency scan (header hazard from Part A)
 
-Scripted scan (`/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r68/capcheck.py`)
+Scripted scan (`<scratch>/r68/capcheck.py`)
 over the same scope: every `(buffer, cap)` argument pair passed to `nighantu_khip/grah/grah_mool/
 antah/apanay`, `rakh_yuj/antah/apanay`, `nighantu_mil`, the five sangrah set ops and
 `rakh_tak_mala` was compared with the cap the buffer got from `nighantu_srij`/`rakh_srij`/

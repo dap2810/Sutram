@@ -1,7 +1,7 @@
 {
     "name":  "reinstall",
     "started":  "2026-11-07T15:12:28.0874059-05:00",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\Sutram-Setup.exe",
     "setup_sha256":  "134fae95dc9d79a0cc7e563bbf59e6fc69983eae950c2c2799e20dea911a286b",
     "pages":  [
                   {
@@ -36,7 +36,7 @@
                       "text":  [
                                    "Choose Install Location",
                                    "\u0026Install location:",
-                                   "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+                                   "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
                                    "Browse...",
                                    "Setup will install Sutram in the folder below. The installer needs write access to this folder.",
                                    "\u003c Back",
@@ -64,7 +64,7 @@
                       "text":  [
                                    "Ready to Install",
                                    "Setup is ready to install Sutram on your computer.",
-                                   "Destination folder: C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\r\nAdd to user PATH: yes\r\nDesktop shortcut: no\r\n\r\nClick Install to begin the installation.",
+                                   "Destination folder: %USERPROFILE%\\AppData\\Local\\Programs\\Sutram\r\nAdd to user PATH: yes\r\nDesktop shortcut: no\r\n\r\nClick Install to begin the installation.",
                                    "\u003c Back",
                                    "Install",
                                    "Cancel"
@@ -132,22 +132,22 @@
     "pid":  2152,
     "process_started":  "2026-11-07T15:12:28.1723813-05:00",
     "licence_initially_accepted":  0,
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "default_add_path":  1,
     "default_desktop":  0,
     "child":  {
                   "pid":  37436,
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\install.log\" -AddPath",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM233C.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM233C.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v311-acceptance\\build\\native-v311-acceptance\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM233C.tmp\\install.log\" -AddPath",
                   "started":  "2026-11-07T15:12:30.3939115-05:00"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM233C.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM233C.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  40.1880119,
     "launch_ide_default":  1,
     "closed_before_finish_click":  false,
     "closed_after_finish_click":  true,
     "default_launched_ide":  {
-                                 "path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                                 "path":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
                                  "pid":  30708,
                                  "started":  "2026-11-07T15:13:14.8255292-05:00"
                              },

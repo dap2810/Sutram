@@ -14,7 +14,7 @@ this cannot read is reported UNREAD, never skipped.
 """
 import re, sys, glob, os, itertools
 
-ROOT = sys.argv[1] if len(sys.argv) > 1 else "/home/claude/sutram"
+ROOT = sys.argv[1] if len(sys.argv) > 1 else "<repo>"
 GRID = 6
 CONTRACT = re.compile(r'(?:>=\s*(?P<e1>[\w\s+*/()-]+?)\s*(?:cells|bytes|elements))|(?:must hold\s+(?P<e2>[\w\s+*/()-]+?)\s*elements)')
 PRAK = re.compile(r'^prakriya\s+(\w+)\s*\(([^)]*)\)')

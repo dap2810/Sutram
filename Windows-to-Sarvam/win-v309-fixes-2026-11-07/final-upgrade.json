@@ -1,7 +1,7 @@
 {
     "name":  "final-upgrade",
     "moment":  "complete",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe",
     "setup_sha256":  "9DFE6B5EA185A6915918BB1D76ABFF474CEC7D0D2C34D8A82D76E8850E00886F",
     "started":  "2026-11-07T11:37:02.9357872-05:00",
     "observations":  [
@@ -29,15 +29,15 @@
     "live_log_opened":  false,
     "pid":  26056,
     "process_started":  "2026-11-07T11:37:03.0088805-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready_screenshot":  "final-upgrade-ready.png",
     "child":  {
                   "parent":  26056,
                   "pid":  36276,
                   "started":  "2026-11-07T11:37:04.5493085-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STME7A8.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STME7A8.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STME7A8.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STME7A8.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STME7A8.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STME7A8.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STME7A8.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STME7A8.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  21.4338317,
     "finish_screenshot":  "final-upgrade-finish.png",

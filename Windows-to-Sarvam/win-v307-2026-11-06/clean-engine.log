@@ -676,10 +676,10 @@ Sutram Setup Log
 [2026-11-06 22:39:20] New-terminal check exit: code=0
 [2026-11-06 22:39:20] New-terminal check: Sutram 1.0 (v307) - sampurna sutra
 [2026-11-06 22:39:20] Creating Start-menu shortcuts.
-[2026-11-06 22:39:20] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram IDE.lnk
-[2026-11-06 22:39:20] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Terminal.lnk
-[2026-11-06 22:39:20] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Documentation.lnk
-[2026-11-06 22:39:20] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Uninstall Sutram.lnk
+[2026-11-06 22:39:20] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram IDE.lnk
+[2026-11-06 22:39:20] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Terminal.lnk
+[2026-11-06 22:39:20] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Documentation.lnk
+[2026-11-06 22:39:20] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Uninstall Sutram.lnk
 [2026-11-06 22:39:20] A pre-existing user desktop shortcut named Sutram IDE.lnk was preserved.
 [2026-11-06 22:39:20] Registering the .sm file type and the uninstaller.
-[2026-11-06 22:39:20] Installation complete: C:\Users\dmech\AppData\Local\Programs\Sutram
+[2026-11-06 22:39:20] Installation complete: %USERPROFILE%\AppData\Local\Programs\Sutram

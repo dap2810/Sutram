@@ -10,7 +10,7 @@ s3small: compiled; runs: 0 7 (exit 0)
 s3small_direct: refused E_KOSH_VIBHAG
 safe1: compiled; runs: 0 99 (exit 0)
 st1: compiled; runs: 99 (exit 0)
-##### /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r133/dev_compiler Sutram 1.0 (v306) - sampurna sutra
+##### <scratch>/r133/dev_compiler Sutram 1.0 (v306) - sampurna sutra
 alias_sl: refused E_KOSH_VIBHAG
 ind_fv_arg: refused E_KOSH_VIBHAG
 ind_k: refused E_KOSH_DVARA

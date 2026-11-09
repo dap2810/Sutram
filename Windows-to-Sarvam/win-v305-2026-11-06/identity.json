@@ -1,5 +1,5 @@
 {
-  "compiler_path": "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+  "compiler_path": "<repo>\\win\\sutram.exe",
   "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
   "ide_sha256": "829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051",
   "source_sha256": "7e419f6c7ec854290d3c2625418b7611e2350220be286ce3b946177ea4fefade",
@@ -12,10 +12,10 @@
   ],
   "version": {
     "command": [
-      "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+      "<repo>\\win\\sutram.exe",
       "--version"
     ],
-    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+    "cwd": "<repo>\\build\\windows-v305-2026-11-06",
     "timeout_seconds": 30,
     "exit": 0,
     "stdout": "Sutram 1.0 (v305) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",

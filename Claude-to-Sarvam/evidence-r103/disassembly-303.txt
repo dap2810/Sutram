@@ -1,5 +1,5 @@
 
-/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r103/m/d303:     file format binary
+<scratch>/r103/m/d303:     file format binary
 
 
 Disassembly of section .data:

@@ -11,7 +11,7 @@ v280 ELF:               r159 float division: 8 pass, 0 fail
   m5d20dc: r159 float comparison: 10 pass, 0 fail
   (the mode builds are of the NaN-patched source before the division patch; the division patch was run by ChatGPT in the combined mode build)
 
-## every NaN comparison in context - /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r90/t/ctx.sm, v279 then v280 (ELF; PE identical)
+## every NaN comparison in context - <scratch>/r90/t/ctx.sm, v279 then v280 (ELF; PE identical)
     prakriya dvi(a, b, c) {
         nivartanam a * 100 + b * 10 + c
     }

@@ -1,6 +1,6 @@
 {
     "phase":  "recovery",
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
     "started":  "2026-11-06T23:04:16.7799849-05:00",
     "elevated":  false,
@@ -64,16 +64,16 @@
                      ],
     "pid":  21616,
     "process_started":  "2026-11-06T23:04:16.8393800-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "recovery-ready.png",
     "child":  {
                   "parent":  21616,
                   "pid":  15264,
                   "started":  "2026-11-06T23:04:18.3050696-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMB8CF.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMB8CF.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log",
-    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log\u0027 because it is being used by another process.\"",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log",
+    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027%USERPROFILE%\\AppData\\Local\\Temp\\STMB8CF.tmp\\install.log\u0027 because it is being used by another process.\"",
     "dialog_text":  [
                         "OK",
                         "Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details."

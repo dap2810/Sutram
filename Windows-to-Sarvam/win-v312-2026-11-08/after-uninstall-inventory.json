@@ -1,40 +1,40 @@
 {
   "time": "2026-11-08T11:25:34.557674-05:00",
   "roots": {
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram": [],
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram.sutram-transaction": [],
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram.sutram-lock": [],
-    "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp": [
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram": [],
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram.sutram-transaction": [],
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram.sutram-lock": [],
+    "%USERPROFILE%\\AppData\\Local\\Temp\\STM1E91.tmp": [
       {
-        "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp",
+        "path": "%USERPROFILE%\\AppData\\Local\\Temp\\STM1E91.tmp",
         "directory": true
       },
       {
-        "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall-core.ps1",
+        "path": "%USERPROFILE%\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall-core.ps1",
         "directory": false,
         "bytes": 13794,
         "sha256": "3acf8a645e45f2d8dfb9be53d691b0336e165ff75a80aeae5bdbb89e3588e51d"
       },
       {
-        "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall.log",
+        "path": "%USERPROFILE%\\AppData\\Local\\Temp\\STM1E91.tmp\\uninstall.log",
         "directory": false,
         "bytes": 117,
         "sha256": "14c6bfcf4fa15cc0c1c00fab94c98a342d3d9ad32147cbcc73e6c4294c6bab4d"
       }
     ],
-    "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp": [
+    "%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp": [
       {
-        "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp",
+        "path": "%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp",
         "directory": true
       },
       {
-        "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall-core.ps1",
+        "path": "%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall-core.ps1",
         "directory": false,
         "bytes": 14901,
         "sha256": "eb53ebd2f9eb817314237bf941bd09e02feee81233b5269d61eaf70b44fc0479"
       },
       {
-        "path": "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log",
+        "path": "%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log",
         "directory": false,
         "bytes": 289,
         "sha256": "f766a8cd0f17eebb123301ed6608145f52943f10400e0d9ec0008933d5f87b6a"
@@ -42,64 +42,64 @@
     ]
   },
   "preserved_old_roots": [
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-A3-before-clean-v306",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-before-review-fixes-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-before-v306",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-before-v306-followup-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-before-v307-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-followup-partial-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-recovery-20261106-205221",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-review-clean-20261106-234957",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-review-upgrade-20261106-234108",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-review-upgrade-20261106-234935",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-before-interruption-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-before-interruption-repeat-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-before-upgrade-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-recovery-partial-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-upgrade-first-partial-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v307-upgrade-partial-20261106",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-before-d1-20261107-101319",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-before-d2-20261107-101348",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-before-d3-20261107-101433",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-before-v309-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-d3-failed-20261107-101454",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-d3-failed-20261107-101454.transaction",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-after-d3-20261107-122031",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-after-d3-20261107-122031.transaction",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-before-d1-20261107-121625",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-before-d1-20261107-121834",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-before-d2-20261107-121907",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-before-d3-20261107-122000",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-before-v309-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-d1-failed-20261107-121705",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-final-working-v309-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-fix-after-d3-20261107-113327",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-fix-after-d3-20261107-113327.transaction",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-fix-before-d1-20261107-113129",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-fix-before-d2-20261107-113202",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-fix-before-d3-20261107-113255",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-fix-before-v309-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-fix-working-v309-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-integrated-before-v309-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v309-working-v309-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-after-c3-20261107-132100",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-after-c4-20261107-132155",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-after-c4-20261107-132155.transaction",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-before-c1-20261107-132107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-before-c3-20261107-132038",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-before-ordinary-20261107-132235",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-before-v310-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v310-working-v310-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-acceptance-active-before-first-install-20261107-145633",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-acceptance-before-acceptance-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-after-c3-20261107-132959",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-after-c4-20261107-133108",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-after-c4-20261107-133108.transaction",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-before-c1-20261107-133006",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-before-c3-20261107-132927",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-before-ordinary-20261107-133115",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-before-v311-20261107",
-    "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-v311-working-v311-20261107"
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-A3-before-clean-v306",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-before-review-fixes-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-before-v306",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-before-v306-followup-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-before-v307-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-followup-partial-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-recovery-20261106-205221",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-review-clean-20261106-234957",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-review-upgrade-20261106-234108",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-review-upgrade-20261106-234935",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-before-interruption-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-before-interruption-repeat-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-before-upgrade-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-recovery-partial-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-upgrade-first-partial-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v307-upgrade-partial-20261106",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-before-d1-20261107-101319",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-before-d2-20261107-101348",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-before-d3-20261107-101433",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-before-v309-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-d3-failed-20261107-101454",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-d3-failed-20261107-101454.transaction",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-after-d3-20261107-122031",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-after-d3-20261107-122031.transaction",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-before-d1-20261107-121625",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-before-d1-20261107-121834",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-before-d2-20261107-121907",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-before-d3-20261107-122000",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-before-v309-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-d1-failed-20261107-121705",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-final-working-v309-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-fix-after-d3-20261107-113327",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-fix-after-d3-20261107-113327.transaction",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-fix-before-d1-20261107-113129",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-fix-before-d2-20261107-113202",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-fix-before-d3-20261107-113255",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-fix-before-v309-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-fix-working-v309-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-integrated-before-v309-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v309-working-v309-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-after-c3-20261107-132100",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-after-c4-20261107-132155",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-after-c4-20261107-132155.transaction",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-before-c1-20261107-132107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-before-c3-20261107-132038",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-before-ordinary-20261107-132235",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-before-v310-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v310-working-v310-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-acceptance-active-before-first-install-20261107-145633",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-acceptance-before-acceptance-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-after-c3-20261107-132959",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-after-c4-20261107-133108",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-after-c4-20261107-133108.transaction",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-before-c1-20261107-133006",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-before-c3-20261107-132927",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-before-ordinary-20261107-133115",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-before-v311-20261107",
+    "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-v311-working-v311-20261107"
   ],
   "registry": {
     "Software\\Classes\\.sm": null,
@@ -123,7 +123,7 @@
                     {
                       "name": "",
                       "type": 1,
-                      "value": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico"
+                      "value": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico"
                     }
                   ],
                   "subkeys": []
@@ -142,7 +142,7 @@
                             {
                               "name": "",
                               "type": 1,
-                              "value": "\"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" \"%1\""
+                              "value": "\"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" \"%1\""
                             }
                           ],
                           "subkeys": []
@@ -197,17 +197,17 @@
                 {
                   "name": "InstallLocation",
                   "type": 1,
-                  "value": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+                  "value": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram"
                 },
                 {
                   "name": "DisplayIcon",
                   "type": 1,
-                  "value": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico"
+                  "value": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\assets\\sutram.ico"
                 },
                 {
                   "name": "UninstallString",
                   "type": 1,
-                  "value": "\"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall"
+                  "value": "\"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall"
                 },
                 {
                   "name": "NoModify",

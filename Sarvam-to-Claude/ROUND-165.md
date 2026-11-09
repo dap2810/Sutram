@@ -12,11 +12,11 @@
 
 ## WS1 - and the personal paths come first
 
-**371 files in `Windows-to-Sarvam/` carry `C:\Users\dmech`, `C:\Users\Dhruv` or `E:\Github_Projects\Sutram`.**
+**371 files in `Windows-to-Sarvam/` carry `C:\Users\<account>`, `C:\Users\<computer name>` or `<drive>:\<projects folder>\Sutram`.**
 
 **Replace, mechanically:**
-- **`C:\Users\dmech` and `C:\Users\Dhruv` -> `%USERPROFILE%`**
-- **`E:\Github_Projects\Sutram` -> `<repo>`**
+- **`C:\Users\<account>` and `C:\Users\<computer name>` -> `%USERPROFILE%`**
+- **`<drive>:\<projects folder>\Sutram` -> `<repo>`**
 - **exact OS build numbers -> "Windows 11 Home, November 2026"**
 
 **And check three things before you start, because each would make the replacement break something:**

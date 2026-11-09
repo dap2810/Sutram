@@ -17,7 +17,7 @@
   },
   "full_path_recovery": {
     "argv": [
-      "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
       "--version"
     ],
     "exit": 0,

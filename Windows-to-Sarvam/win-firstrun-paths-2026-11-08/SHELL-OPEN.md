@@ -6,11 +6,11 @@ ignoring trailing whitespace. Screenshots show the corresponding marker. No file
 
 | Test | Exact path used | Marker | Actual |
 |---|---|---|---|
-| spaces | `E:\Github_Projects\Sutram\build\firstrun-2026-11-08\cases\My Sutram Files\hello.sm` | `"FIRST_RUN_SPACES"` | Loaded exactly; closed normally |
-| devanagari | `E:\Github_Projects\Sutram\build\firstrun-2026-11-08\cases\सूत्रम्\hello.sm` | `"FIRST_RUN_DEVANAGARI"` | Loaded exactly; closed normally |
-| ampersand | `E:\Github_Projects\Sutram\build\firstrun-2026-11-08\cases\Ampersand & Files\hello.sm` | `"FIRST_RUN_AMPERSAND"` | Loaded exactly; closed normally |
-| percent | `E:\Github_Projects\Sutram\build\firstrun-2026-11-08\cases\Percent %USERNAME% Files\hello.sm` | `"FIRST_RUN_PERCENT"` | Loaded exactly; closed normally |
-| openwith | `E:\Github_Projects\Sutram\build\firstrun-2026-11-08\cases\My Sutram Files\hello.sm` | `"FIRST_RUN_SPACES"` | Loaded exactly; closed normally |
+| spaces | `<repo>\build\firstrun-2026-11-08\cases\My Sutram Files\hello.sm` | `"FIRST_RUN_SPACES"` | Loaded exactly; closed normally |
+| devanagari | `<repo>\build\firstrun-2026-11-08\cases\सूत्रम्\hello.sm` | `"FIRST_RUN_DEVANAGARI"` | Loaded exactly; closed normally |
+| ampersand | `<repo>\build\firstrun-2026-11-08\cases\Ampersand & Files\hello.sm` | `"FIRST_RUN_AMPERSAND"` | Loaded exactly; closed normally |
+| percent | `<repo>\build\firstrun-2026-11-08\cases\Percent %USERNAME% Files\hello.sm` | `"FIRST_RUN_PERCENT"` | Loaded exactly; closed normally |
+| openwith | `<repo>\build\firstrun-2026-11-08\cases\My Sutram Files\hello.sm` | `"FIRST_RUN_SPACES"` | Loaded exactly; closed normally |
 
 B1–B3 used actual mouse double-clicks in Explorer, 80 ms apart, on the listed `hello.sm` file.
 All four opened the installed GUI and loaded the exact content. In particular, `%USERNAME%` remained literal

@@ -6,7 +6,7 @@ hashes and commands: [COMMANDS.md](COMMANDS.md). Security settings were unchange
 ## Clean installation
 
 All 662 files from the working v306 installation were preserved and hash-verified
-in `C:\Users\dmech\AppData\Local\Programs\Sutram-before-v307-20261106`.
+in `%USERPROFILE%\AppData\Local\Programs\Sutram-before-v307-20261106`.
 The canonical target was absent and its exact user-PATH entry removed for this
 test. Other PATH entries and the machine PATH were preserved.
 
@@ -78,7 +78,7 @@ identifies the third-party intervention.
 
 After observation, cleanup validated executable/command, PID and creation time,
 then stopped only engine 43868 and wizard 31584. The 663-file partial tree was
-preserved at `C:\Users\dmech\AppData\Local\Programs\Sutram-v307-upgrade-partial-20261106`.
+preserved at `%USERPROFILE%\AppData\Local\Programs\Sutram-v307-upgrade-partial-20261106`.
 All **662 restored files** matched the verified v307 backup; user/machine PATH
 were unchanged and the CLI returned v307 with exit 0. See
 [restore-upgrade.json](restore-upgrade.json).
@@ -106,7 +106,7 @@ and the retained [pending manifest](interrupted-payload.pending.sha256).
 The retry into that same partial folder logged at **23:09:38**:
 
 ```text
-A previous installation stopped part-way (it left C:\Users\dmech\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
+A previous installation stopped part-way (it left %USERPROFILE%\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
 ```
 
 It copied all **657 files**, recorded installation complete at **23:09:52**, and

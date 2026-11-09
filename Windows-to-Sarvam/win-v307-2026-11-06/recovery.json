@@ -1,6 +1,6 @@
 {
     "phase":  "recovery",
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
     "started":  "2026-11-06T23:09:35.6294221-05:00",
     "elevated":  false,
@@ -36,15 +36,15 @@
                      ],
     "pid":  40300,
     "process_started":  "2026-11-06T23:09:35.6774098-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "recovery-ready.png",
     "child":  {
                   "parent":  40300,
                   "pid":  26632,
                   "started":  "2026-11-06T23:09:36.9780392-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM959F.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM959F.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM959F.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM959F.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM959F.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM959F.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM959F.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM959F.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  16.57,
     "finish_screenshot":  "recovery-finish.png",

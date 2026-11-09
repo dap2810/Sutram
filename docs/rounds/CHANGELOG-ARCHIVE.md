@@ -4815,7 +4815,7 @@ has taken on the Windows side.**
 
 | | |
 |---|---|
-| **machine** | the owner's real Windows 11 Pro (build 26300.9711), Ryzen 7 7700X, **standard user, NOT ELEVATED** |
+| **machine** | the owner's real Windows 11 Pro (build redacted), [hardware detail redacted], **standard user, NOT ELEVATED** |
 | **required checks** | **16 PASS / 0 FAIL / 0 NOT-RUN** |
 | **the checker's own words** | *"ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree."* |
 | **the machine afterwards** | **clean** - no uninstall key, no install folder, no PATH entry |
@@ -4903,7 +4903,7 @@ acceptance, the first real run, and the raw logs.**
 
 | | |
 |---|---|
-| **machine** | **the owner's real Windows 11 Pro (build 26300.9711), AMD Ryzen 7 7700X, STANDARD USER, NOT ELEVATED** |
+| **machine** | **the owner's real Windows 11 Pro (build redacted), [hardware detail redacted], STANDARD USER, NOT ELEVATED** |
 | **branch** | `claude/windows-linker` (R34) - **compiler v243**, `sutram-link.exe`, the fixed IDE |
 | **required checks** | **16 PASS / 0 FAIL / 0 NOT-RUN** |
 | **the checker's own words** | ***"ACCEPTED: Windows, not elevated, every required check PASS, binaries match this tree."*** |
@@ -8978,7 +8978,7 @@ verified here, so the boundary is not blurred.
 ## v171 - Claude's Windows ROUND-03 merged: WINDOWS HAS NOW BEEN EXECUTED
 
 **This is the first time Windows has ever been run on this project.** Every previous report said "nothing
-Windows has ever been run". Claude ran it on a **real Windows 11 machine, build 26300, as a standard user,
+Windows has ever been run". Claude ran it on a **real Windows 11 machine, build (redacted), as a standard user,
 non-elevated** - and left the evidence.
 
 **Verified before merging:**
@@ -8988,9 +8988,9 @@ non-elevated** - and left the evidence.
 - **Linux side still green after the merge: suite 189 PASS / 4 NO-EXPECTATION.**
 - **The Windows compiler cross-builds** from the merged tree.
 
-**The evidence is real.** `environment.txt`: Windows NT 10.0.26300, NASM 3.01, ld 2.47,
+**The evidence is real.** `environment.txt`: Windows NT 10.0 (build redacted), NASM 3.01, ld 2.47,
 **"Standard user, non-elevated"**. `gui-smoke.json`: the IDE actually launched with a real path
-`C:\Users\Dhruv\AppData\Local\Temp\...`, pid 39976, checks passing. Screenshots of the running IDE and
+`%USERPROFILE%\AppData\Local\Temp\...`, pid 39976, checks passing. Screenshots of the running IDE and
 the installer.
 
 **What the screenshots show.** The Windows IDE runs with **Sanskrit menus** (`patra sampad chal bhasha

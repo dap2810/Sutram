@@ -1,6 +1,6 @@
 {
   "stage": "baseline",
-  "host": "Windows-11-10.0.26200-SP0",
+  "host": "Windows-11-10.0 (build redacted)-SP0",
   "compiler_sha256": "40026244b972a603d1601262fe130b84df3bea1c4d49418b4b489939a307cd14",
   "rows": [
     {
@@ -8,9 +8,9 @@
       "expected": "abcd\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_literal.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_literal.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_literal.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_literal.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 199 baait sankalit\n",
@@ -20,7 +20,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_literal.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_literal.exe"
         ],
         "exit": 3221225477,
         "stdout": "",
@@ -35,9 +35,9 @@
       "expected": "abcd\nabcd\nabcd\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_loop.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_loop.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_loop.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_loop.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 219 baait sankalit\n",
@@ -47,7 +47,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_loop.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_loop.exe"
         ],
         "exit": 3221225477,
         "stdout": "",
@@ -62,9 +62,9 @@
       "expected": "ab|cd|abcd",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_inputs.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_inputs.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_inputs.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_inputs.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 330 baait sankalit\n",
@@ -74,7 +74,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_inputs.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_inputs.exe"
         ],
         "exit": 3221225477,
         "stdout": "",
@@ -89,9 +89,9 @@
       "expected": "cdab",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_empty.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_empty.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\concat_empty.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_empty.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 255 baait sankalit\n",
@@ -101,7 +101,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\concat_empty.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\concat_empty.exe"
         ],
         "exit": 3221225477,
         "stdout": "",
@@ -116,9 +116,9 @@
       "expected": "B\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char66.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char66.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char66.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char66.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 155 baait sankalit\n",
@@ -128,7 +128,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char66.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char66.exe"
         ],
         "exit": 0,
         "stdout": "P\n",
@@ -143,9 +143,9 @@
       "expected": "a\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char97.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char97.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char97.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char97.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 155 baait sankalit\n",
@@ -155,7 +155,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char97.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char97.exe"
         ],
         "exit": 0,
         "stdout": "P\n",
@@ -170,9 +170,9 @@
       "expected": "Ba\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char_kept.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char_kept.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char_kept.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char_kept.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 285 baait sankalit\n",
@@ -182,7 +182,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char_kept.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char_kept.exe"
         ],
         "exit": 0,
         "stdout": "B�\u0013\n",
@@ -197,9 +197,9 @@
       "expected": "10000\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char_loop.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char_loop.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\char_loop.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char_loop.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 254 baait sankalit\n",
@@ -209,7 +209,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\char_loop.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\char_loop.exe"
         ],
         "exit": 0,
         "stdout": "10000\n",
@@ -224,9 +224,9 @@
       "expected": "0\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\memory_query.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\memory_query.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\memory_query.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\memory_query.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 191 baait sankalit\n",
@@ -236,7 +236,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\memory_query.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\memory_query.exe"
         ],
         "exit": 0,
         "stdout": "0\n",
@@ -251,9 +251,9 @@
       "expected": "",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\memory_budget.sm",
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\memory_budget.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\compiler.exe",
+          "<repo>\\build\\round3-review\\Windows-to-Sarvam\\win-round3-2026-11-03\\programs\\memory_budget.sm",
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\memory_budget.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 157 baait sankalit\n",
@@ -263,7 +263,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\baseline-windows\\memory_budget.exe"
+          "<repo>\\build\\round3-review\\build\\round3\\baseline-windows\\memory_budget.exe"
         ],
         "exit": 0,
         "stdout": "reached",

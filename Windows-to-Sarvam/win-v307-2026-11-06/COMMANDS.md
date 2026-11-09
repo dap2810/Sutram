@@ -1,7 +1,7 @@
 # v307 commands and provenance
 
-Working directory: `E:\Github_Projects\Sutram`; non-Administrator Windows user
-`dmech`. Requested scope: [REQUEST.md](REQUEST.md). Source under test:
+Working directory: `<repo>`; non-Administrator Windows user
+`<user>`. Requested scope: [REQUEST.md](REQUEST.md). Source under test:
 `75586a754371dc27f9ed850f592df6194b8e11a6`, which contains v307 implementation
 `60ce554d` and the later Muse probe reports. Product files stayed pinned during
 testing. No compiler, library, original example, golden, installer or workflow

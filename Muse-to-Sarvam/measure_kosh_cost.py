@@ -1,6 +1,6 @@
 import subprocess, os, time
-C = "/home/hatch/workspace/r103/tree/sutram_compiler"
-D = "/home/hatch/workspace/r103/ws2/probes"
+C = "<workspace>/r103/tree/sutram_compiler"
+D = "<workspace>/r103/ws2/probes"
 
 def gen(n, touched, name):
     lines = ["mukhya() {"]

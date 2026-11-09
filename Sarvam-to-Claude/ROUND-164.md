@@ -27,9 +27,9 @@
 
 ### AND THE PRIVACY FINDING, WHICH IS THE URGENT ONE
 **The repository is PUBLIC and contains the owner's personal system details:**
-- **`C:\Users\dmech` and `C:\Users\Dhruv` - 361 files**
-- **`E:\Github_Projects\Sutram` - 276 files**
-- **`Windows 11 Home build 26300` and other exact build numbers**
+- **`C:\Users\<account>` and `C:\Users\<computer name>` - 361 files**
+- **`<drive>:\<projects folder>\Sutram` - 276 files**
+- **`Windows 11 Home build (redacted)` and other exact build numbers**
 - **371 of the affected files are in `Windows-to-Sarvam/`; 2 in ChatGPT's, 1 in Muse's; none in `docs/` or Claude's**
 
 **No email, no credentials, no tokens, no IP address.** **It is a privacy exposure, not a security breach.**
@@ -45,8 +45,8 @@
 
 **The replacement is mechanical and must preserve every claim:**
 
-- **`C:\Users\dmech` and `C:\Users\Dhruv` -> `%USERPROFILE%`**
-- **`E:\Github_Projects\Sutram` -> `<repo>`**
+- **`C:\Users\<account>` and `C:\Users\<computer name>` -> `%USERPROFILE%`**
+- **`<drive>:\<projects folder>\Sutram` -> `<repo>`**
 - **exact OS build numbers -> "Windows 11 Home, November 2026"**
 
 **The evidence keeps its meaning; only the identifier goes.** **`%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe` says exactly what the absolute path said.**

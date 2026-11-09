@@ -1,6 +1,6 @@
 # v309 commands, probes and evidence
 
-Tested on the owner's native Windows machine, 7 November 2026. Shell: Windows PowerShell. Working directory: `E:\Github_Projects\Sutram`. The tested checkout was `7c92bc02ff6f81b4903a20c14712ad3fd566b0c4`; setup and compiler hashes are in [payload.json](payload.json). Use that commit to interpret the referenced harness/source, even if main later advances.
+Tested on the owner's native Windows machine, 7 November 2026. Shell: Windows PowerShell. Working directory: `<repo>`. The tested checkout was `7c92bc02ff6f81b4903a20c14712ad3fd566b0c4`; setup and compiler hashes are in [payload.json](payload.json). Use that commit to interpret the referenced harness/source, even if main later advances.
 
 ## Preparation and identity
 
@@ -38,9 +38,9 @@ All seven arithmetic compile commands, output paths, messages and native control
 The three OOM compile commands, expanded from `probes.py`, are:
 
 ```powershell
-& E:\Github_Projects\Sutram\win\sutram.exe E:\Github_Projects\Sutram\Windows-to-Sarvam\win-v309-2026-11-07\oom\B3.sm E:\Github_Projects\Sutram\build\windows-v309-2026-11-07\oom\B3.exe
-& E:\Github_Projects\Sutram\win\sutram.exe E:\Github_Projects\Sutram\Windows-to-Sarvam\win-v309-2026-11-07\oom\A3-mandapa.sm E:\Github_Projects\Sutram\build\windows-v309-2026-11-07\oom\A3-mandapa.exe
-& E:\Github_Projects\Sutram\win\sutram.exe E:\Github_Projects\Sutram\Windows-to-Sarvam\win-v309-2026-11-07\oom\A3-nirmmita-touch-pages.sm E:\Github_Projects\Sutram\build\windows-v309-2026-11-07\oom\A3-nirmmita-touch-pages.exe
+& <repo>\win\sutram.exe <repo>\Windows-to-Sarvam\win-v309-2026-11-07\oom\B3.sm <repo>\build\windows-v309-2026-11-07\oom\B3.exe
+& <repo>\win\sutram.exe <repo>\Windows-to-Sarvam\win-v309-2026-11-07\oom\A3-mandapa.sm <repo>\build\windows-v309-2026-11-07\oom\A3-mandapa.exe
+& <repo>\win\sutram.exe <repo>\Windows-to-Sarvam\win-v309-2026-11-07\oom\A3-nirmmita-touch-pages.sm <repo>\build\windows-v309-2026-11-07\oom\A3-nirmmita-touch-pages.exe
 ```
 
 `probes.py oom` invokes the unchanged `tests/windows/job_runner.py` at the pinned commit. B3 runs at 448, 480, 512, 544, 576, 608 and 640 MiB, three times each; mandapa at 64 MiB ten times; page-touch at 64 MiB once. It checks the accepted Windows Job Object limit before starting each child. This is per-process commit accounting, not a Wine or host memory simulation. [Every native argv, limit, cwd, exit, peak, runtime and message](oom/results.json); each corresponding subfolder preserves stderr/stdout bytes. No child timed out.

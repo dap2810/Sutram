@@ -19,7 +19,7 @@ mukhya() {
     likha("raw ", p[1], f(a), 3)
     likha("nest ", f(a / b), (a / b) % b, 4)
 }
-## /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r90/guard/old/sutram_compiler
+## <scratch>/r90/guard/old/sutram_compiler
 div 3
 1
 14

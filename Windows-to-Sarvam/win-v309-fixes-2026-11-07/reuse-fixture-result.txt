@@ -1,3 +1,3 @@
 tests/windows/test_installer_reuse.ps1: 9 checks passed
 Observed console: all_files_returned, matching_target_not_staged, matching_target_unchanged, missing_target_staged, changed_target_preserved, changed_target_replacement_staged, staged_copy_reused, only_two_copy_starts, reuse_visible = True
-Fixture: E:\Github_Projects\Sutram\build\windows-v309-fixes\build\reuse-fixture-dcebd473bc7d42e88c3a6d9348543cc3
+Fixture: <repo>\build\windows-v309-fixes\build\reuse-fixture-dcebd473bc7d42e88c3a6d9348543cc3

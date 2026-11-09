@@ -8,9 +8,9 @@ The **Sutram compiler host and Windows installer are working natively on Windows
 
 Verified on the user's real machine:
 
-- OS: Windows 11, build 26200
-- Kernel string: Windows NT 10.0.26200.0
-- PowerShell: 5.1.26100.9444
+- OS: Windows 11, build (redacted)
+- Kernel string: Windows NT 10.0 (build redacted)
+- PowerShell: 5.1 (build redacted)
 - NASM: `C:\mingw64\bin\nasm.exe`
 - MinGW GCC: `C:\msys64\ucrt64\bin\x86_64-w64-mingw32-gcc.exe`
 - Native compiler host builds as PE32+ x64.

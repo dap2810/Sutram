@@ -810,7 +810,14 @@ environment, <code>env -i</code>): this program, 200,000 calls each taking 256 b
 same in 75 runs of 75. Started from a shell it was between 264 and 436 KB on the same machine: at this size what is
 counted is mostly the program's own pages and the environment it was started with, not the buffers. The same program
 without the <code>mandapa</code> line peaks at <b>49,920 KB</b> (75 runs of 75), because every one of the 200,000
-buffers stays: with the block the peak is more than 99% lower. That is one machine and one program, not a promise for every program. Numbers may leave a block. An <i>address</i> made inside it may not: putting one
+buffers stays: with the block the peak is more than 99% lower. That is one machine and one program, not a promise for every program.</p>
+<p><b>Where the block is matters.</b> A block gives memory back when it <i>ends</i> - not before. Put one block
+around a loop and every pass's memory stays until the loop is over: the same 200,000 <code>nirmmita(256)</code>
+inside one <code>mandapa</code> peak at 49,920 KB, exactly as with no block. Put the block where it ends on every pass
+- inside the loop, or inside the <code>prakriya</code> the loop calls, as above - and the peak is 264 KB. And only
+<code>nirmmita</code> written in the block's own lines is given back: a <code>prakriya</code> called from inside a
+block that makes memory outside any block of its own keeps it (49,920 KB again).</p>
+<p> Numbers may leave a block. An <i>address</i> made inside it may not: putting one
 in a variable outside the block, or returning it, is refused at compile time (<code>E_SCRATCH_ESCAPE</code>). A
 block gives back what <code>nirmmita</code> made inside it. It does not undo anything else the block did -
 what it printed, or wrote to a file.</p>

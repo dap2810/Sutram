@@ -3,9 +3,9 @@
     "name": "global +",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() + zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\0.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\0.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\0.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\0.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -18,9 +18,9 @@
     "name": "local +",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() + zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\1.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\1.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\1.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\1.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -33,9 +33,9 @@
     "name": "global -",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() - zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\2.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\2.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\2.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\2.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -48,9 +48,9 @@
     "name": "local -",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() - zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\3.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\3.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\3.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\3.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -63,9 +63,9 @@
     "name": "global *",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() * zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\4.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\4.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\4.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\4.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -78,9 +78,9 @@
     "name": "local *",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() * zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\5.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\5.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\5.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\5.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -93,9 +93,9 @@
     "name": "global /",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() / zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\6.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\6.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\6.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\6.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -108,9 +108,9 @@
     "name": "local /",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() / zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\7.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\7.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\7.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\7.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -123,9 +123,9 @@
     "name": "global %",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() % zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\8.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\8.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\8.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\8.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -138,9 +138,9 @@
     "name": "local %",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() % zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\9.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\9.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\9.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\9.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -153,9 +153,9 @@
     "name": "global ==",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() == zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\10.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\10.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\10.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\10.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -168,9 +168,9 @@
     "name": "local ==",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() == zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\11.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\11.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\11.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\11.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -183,9 +183,9 @@
     "name": "global !=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() != zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\12.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\12.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\12.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\12.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -198,9 +198,9 @@
     "name": "local !=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() != zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\13.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\13.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\13.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\13.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -213,9 +213,9 @@
     "name": "global <",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() < zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\14.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\14.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\14.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\14.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -228,9 +228,9 @@
     "name": "local <",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() < zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\15.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\15.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\15.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\15.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -243,9 +243,9 @@
     "name": "global <=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() <= zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\16.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\16.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\16.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\16.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -258,9 +258,9 @@
     "name": "local <=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() <= zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\17.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\17.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\17.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\17.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -273,9 +273,9 @@
     "name": "global >",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() > zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\18.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\18.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\18.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\18.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -288,9 +288,9 @@
     "name": "local >",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() > zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\19.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\19.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\19.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\19.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -303,9 +303,9 @@
     "name": "global >=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() >= zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\20.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\20.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\20.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\20.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -318,9 +318,9 @@
     "name": "local >=",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() >= zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\21.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\21.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\21.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\21.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -333,9 +333,9 @@
     "name": "global &",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() & zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\22.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\22.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\22.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\22.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -348,9 +348,9 @@
     "name": "local &",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() & zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\23.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\23.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\23.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\23.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -363,9 +363,9 @@
     "name": "global |",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() | zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\24.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\24.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\24.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\24.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -378,9 +378,9 @@
     "name": "local |",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() | zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\25.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\25.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\25.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\25.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -393,9 +393,9 @@
     "name": "global ^",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() ^ zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\26.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\26.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\26.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\26.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -408,9 +408,9 @@
     "name": "local ^",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() ^ zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\27.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\27.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\27.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\27.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -423,9 +423,9 @@
     "name": "global &&",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() && zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\28.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\28.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\28.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\28.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -438,9 +438,9 @@
     "name": "local &&",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() && zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\29.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\29.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\29.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\29.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -453,9 +453,9 @@
     "name": "global ||",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() || zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\30.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\30.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\30.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\30.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -468,9 +468,9 @@
     "name": "local ||",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() || zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\31.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\31.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\31.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\31.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -483,9 +483,9 @@
     "name": "global <<",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() << zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\32.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\32.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\32.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\32.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -498,9 +498,9 @@
     "name": "local <<",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() << zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\33.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\33.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\33.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\33.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -513,9 +513,9 @@
     "name": "global >>",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh() >> zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\34.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\34.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\34.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\34.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -528,9 +528,9 @@
     "name": "local >>",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nmukhya() { vitti leaked = make_kosh() >> zero\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\35.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\35.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\35.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\35.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -543,9 +543,9 @@
     "name": "scalar global calls",
     "source": "vitti a = 8\nvitti b = double_value(a) + 1\nprakriya double_value(x) { nivartanam x * 2 }\nmukhya() { likha(b) likha(double_value(3)) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\36.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\36.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\36.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\36.exe"
     ],
     "exit": 0,
     "stdout": "Siddh: 411 baait sankalit\n",
@@ -563,9 +563,9 @@
     "name": "global conditional kosh arithmetic",
     "source": "vitti zero = 0\nprakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = (zero ? make_kosh() : make_kosh()) + zero\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\37.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\37.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\37.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\37.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -578,9 +578,9 @@
     "name": "direct global kosh",
     "source": "prakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nvitti leaked = make_kosh()\nmukhya() { likha(1) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\38.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\38.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\38.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\38.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_DVARA]: kosh 'make_kosh(...)' vaishvika-vittau na sthapyate\nSanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena\n",
@@ -593,9 +593,9 @@
     "name": "global scope ignores local string",
     "source": "vitti a = 8\nvitti b = a + 1\nmukhya() { vitti a = \"hello\" likha(b) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\39.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\39.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\39.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\39.exe"
     ],
     "exit": 0,
     "stdout": "Siddh: 243 baait sankalit\n",
@@ -613,9 +613,9 @@
     "name": "global nested expression with return analysis",
     "source": "prakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nprakriya scalar() { nivartanam 2 }\nvitti zero = 0\nvitti leaked = (make_kosh() + zero) + scalar()\nmukhya() { likha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\40.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\40.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\40.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\40.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",
@@ -628,9 +628,9 @@
     "name": "local nested expression with return analysis",
     "source": "prakriya make_kosh() { kosh k[1] kosh_kship(k, 7) nivartanam k }\nprakriya scalar() { nivartanam 2 }\nvitti zero = 0\nmukhya() { vitti leaked = (make_kosh() + zero) + scalar()\nlikha(leaked) }\n",
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\win\\sutram.exe",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\41.sm",
-      "C:\\Users\\dmech\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\41.exe"
+      "<repo>\\build\\windows-v309-fixes\\win\\sutram.exe",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\41.sm",
+      "%USERPROFILE%\\AppData\\Local\\Temp\\sutram-global-902qbu4v\\41.exe"
     ],
     "exit": 1,
     "stdout": "Sutram truti [E_KOSH_GANIT]: kosh-upari ganitam tulana va na sambhavati - kosh sankhya na\nSanket: k[i] tasya mulyam; kosh_gan(k) tasya dirghata - tani tulyantam\n",

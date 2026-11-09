@@ -1,0 +1,23 @@
+PASS  compile a.sm -> a.sm: rc 1, unchanged | Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram 'a.sm' nivesha-patram eva (pathitam) - tasmin na likhitam, tat y
+PASS  compile a.sm -> .\a.sm: rc 1, unchanged | Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram '.\a.sm' nivesha-patram eva (pathitam) - tasmin na likhitam, tat
+PASS  compile a.sm -> A.SM (another case): rc 1, unchanged | Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram 'A.SM' nivesha-patram eva (pathitam) - tasmin na likhitam, tat y
+PASS  compile a.sm -> a hard link to it: rc 1, unchanged | Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram 'hard.sm' nivesha-patram eva (pathitam) - tasmin na likhitam, ta
+PASS  object a.sm -> a.sm: rc 1, unchanged | Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram 'a.sm' nivesha-patram eva (pathitam) - tasmin na likhitam, tat y
+PASS  the module program compiles and prints '9'
+PASS  compile m.sm -> lib\ganit.smlib (a yoj module it read): rc 1, unchanged | Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram 'lib\ganit.smlib' nivesha-patram eva (pathitam) - tasmin na likh
+PASS  --separate b.sm -> its root file: rc 1, unchanged | Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram 'root.sm' nivesha-patram eva (pathitam) - tasmin na likhitam, ta
+PASS  compile over a larger existing output: exactly a fresh build
+PASS  it runs: '1'
+PASS  an output in a folder that does not exist: rc 1 | Sutram truti [E_NIRGAM_PATRA]: nirgam-patram 'no-such-folder\x.exe' na udghatitam (lekhanaya) - kima
+PASS  the running compiler as the output: rc 1 | Sutram truti [E_NIRGAM_PATRA]: nirgam-patram 'sutram.exe' na udghatitam (lekhanaya) - kimapi na likh
+PASS  NUL as the output: rc 0
+PASS  two objects made
+PASS  link -> its object: rc 1, unchanged | Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patram eva (pathitam) - na likhitam: a.smo
+PASS  link -> its second object: rc 1, unchanged | Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patram eva (pathitam) - na likhitam: b.smo
+PASS  link -> its object in another case: rc 1, unchanged | Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patram eva (pathitam) - na likhitam: A.SMO
+PASS  link over a larger existing output: exactly a fresh link
+PASS  it runs: '1'
+PASS  coff2smo f.obj -> f.obj: rc 1, unchanged | Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patram eva (pathitam) - na likhitam: f.obj
+PASS  coff2smo f.obj -> F.OBJ: rc 1, unchanged | Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patram eva (pathitam) - na likhitam: F.OBJ
+PASS  coff2smo over a larger existing output: exactly a fresh one
+wine collision: 22 checks, 0 failed (Wine wine-9.0 (Ubuntu 9.0~repack-4build3); Linux, not Windows)

@@ -1,27 +1,27 @@
 {
   "commit": "da349daf072c06378d1890dbb8552a3051c16b5c",
-  "compiler": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+  "compiler": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
   "compiler_sha256": "d3f3dc157baddec973947a4d5f5b1760203542b6576b11c15aab6a757f48df77",
   "expected_stderr_hex": "53757472616d2074727574693a20736d7269746968206e61206c61626468610a",
   "compilations": [
     {
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-followup-2026-11-06\\B3.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-v306-followup-2026-11-06\\B3.sm",
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06",
       "exit": 0,
       "stdout": "Siddh: 1594 baait sankalit\n",
       "stderr": ""
     },
     {
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-followup-2026-11-06\\A3-mandapa.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-v306-followup-2026-11-06\\A3-mandapa.sm",
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06",
       "exit": 0,
       "stdout": "Siddh: 1309 baait sankalit\n",
       "stderr": ""
@@ -30,9 +30,9 @@
   "runs": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-448-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-448-1",
       "limit_bytes": 469762048,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -57,9 +57,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-448-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-448-2",
       "limit_bytes": 469762048,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -84,9 +84,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-448-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-448-3",
       "limit_bytes": 469762048,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -111,9 +111,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-480-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-480-1",
       "limit_bytes": 503316480,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -138,9 +138,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-480-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-480-2",
       "limit_bytes": 503316480,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -165,9 +165,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-480-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-480-3",
       "limit_bytes": 503316480,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -192,9 +192,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-512-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-512-1",
       "limit_bytes": 536870912,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -219,9 +219,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-512-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-512-2",
       "limit_bytes": 536870912,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -246,9 +246,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-512-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-512-3",
       "limit_bytes": 536870912,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -273,9 +273,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-544-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-544-1",
       "limit_bytes": 570425344,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -300,9 +300,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-544-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-544-2",
       "limit_bytes": 570425344,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -327,9 +327,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-544-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-544-3",
       "limit_bytes": 570425344,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -354,9 +354,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-576-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-576-1",
       "limit_bytes": 603979776,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -381,9 +381,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-576-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-576-2",
       "limit_bytes": 603979776,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -408,9 +408,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-576-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-576-3",
       "limit_bytes": 603979776,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -435,9 +435,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-608-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-608-1",
       "limit_bytes": 637534208,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -462,9 +462,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-608-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-608-2",
       "limit_bytes": 637534208,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -489,9 +489,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-608-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-608-3",
       "limit_bytes": 637534208,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -516,9 +516,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-640-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-640-1",
       "limit_bytes": 671088640,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -543,9 +543,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-640-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-640-2",
       "limit_bytes": 671088640,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -570,9 +570,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\B3-640-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\B3-640-3",
       "limit_bytes": 671088640,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -597,9 +597,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-1",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-1",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -624,9 +624,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-2",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-2",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -651,9 +651,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-3",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-3",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -678,9 +678,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-4",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-4",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -705,9 +705,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-5",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-5",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -732,9 +732,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-6",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-6",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -759,9 +759,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-7",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-7",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -786,9 +786,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-8",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-8",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -813,9 +813,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-9",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-9",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -840,9 +840,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-10",
+      "cwd": "<repo>\\build\\windows-v306-followup-2026-11-06\\A3-mandapa-64-10",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,

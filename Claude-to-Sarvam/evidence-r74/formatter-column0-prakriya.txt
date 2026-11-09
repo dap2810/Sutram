@@ -7,8 +7,8 @@ mukhya()
     likha(f() + g)
 
 # formatter diff, before the fix:
---- /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r74/fd2.sm
-+++ /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r74/fd2.sm (formatted)
+--- <scratch>/r74/fd2.sm
++++ <scratch>/r74/fd2.sm (formatted)
 @@ -1,5 +1,5 @@
  prakriya f()
      nivartanam 1

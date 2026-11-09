@@ -22,7 +22,7 @@
                    "lock_removed_after_exit":  true
                },
     "blocked":  {
-                    "error":  "Another Sutram installer or uninstaller is working on E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\lock-fixture-ed113d00892c4a688ee72076bb21dbdc\\installed. Let it finish, then run this one again.",
+                    "error":  "Another Sutram installer or uninstaller is working on <repo>\\build\\windows-v309-fixes\\build\\lock-fixture-ed113d00892c4a688ee72076bb21dbdc\\installed. Let it finish, then run this one again.",
                     "state":  null,
                     "pending":  null,
                     "reads":  [

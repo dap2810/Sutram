@@ -1,7 +1,7 @@
 {
     "name":  "d3-stop",
     "moment":  "middle",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe",
     "setup_sha256":  "9DFE6B5EA185A6915918BB1D76ABFF474CEC7D0D2C34D8A82D76E8850E00886F",
     "started":  "2026-11-07T11:32:56.5009332-05:00",
     "observations":  [
@@ -29,15 +29,15 @@
     "live_log_opened":  false,
     "pid":  39464,
     "process_started":  "2026-11-07T11:32:56.5154357-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready_screenshot":  "d3-stop-ready.png",
     "child":  {
                   "parent":  39464,
                   "pid":  22220,
                   "started":  "2026-11-07T11:32:57.8736334-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2418.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2418.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2418.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM2418.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM2418.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM2418.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2418.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM2418.tmp\\install.log",
     "stop_observed_at":  "2026-11-07T11:33:15.3495713-05:00",
     "seconds":  17.490300599999998,
     "engine_age_seconds":  17.475937899999998,

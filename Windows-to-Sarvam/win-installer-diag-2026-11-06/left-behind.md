@@ -10,7 +10,7 @@ these were not removed by us.
 Reconstructed persisted PATH, queried in a new child process, resolves:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe
+%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe
 ```
 
 `sutram --version`, both before and after:

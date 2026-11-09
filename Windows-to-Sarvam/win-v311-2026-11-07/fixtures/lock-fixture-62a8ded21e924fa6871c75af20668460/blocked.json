@@ -1,5 +1,5 @@
 {
-    "error":  "Another Sutram installer or uninstaller is working on E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\lock-fixture-62a8ded21e924fa6871c75af20668460\\installed. Let it finish, then run this one again.",
+    "error":  "Another Sutram installer or uninstaller is working on <repo>\\build\\windows-v311-verification\\build\\lock-fixture-62a8ded21e924fa6871c75af20668460\\installed. Let it finish, then run this one again.",
     "state":  null,
     "pending":  null,
     "reads":  [

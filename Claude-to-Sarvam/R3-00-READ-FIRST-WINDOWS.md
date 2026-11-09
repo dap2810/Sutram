@@ -37,7 +37,7 @@ what was touched so the division of labour can be restored cleanly:
 **The IDE a Windows user gets from `Sutram-Setup.exe` now has a Sanskrit interface, indents with
 Tab, shows the thread icon everywhere, and compiles a Devanagari program through the sanskrit pack
 without being told to** — verified by 30 automated native checks, a wizard-driven install, a run from
-the Start Menu shortcut, and an uninstall, all as a standard user on Windows 11 build 26300.
+the Start Menu shortcut, and an uninstall, all as a standard user on Windows 11 build (redacted).
 
 **Nothing here is a release.** The r69 unit tests fail on the merged tree (two gates ChatGPT's
 scripts do not implement, one error that already fails on main), the wizard has the defects listed in

@@ -1,5 +1,5 @@
 {
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "99D26A89F355A2B20BDF7FE1FBD94AA8E304C3EAE3A9B54C8364ECF8F1E6E6F5",
     "started":  "2026-11-06T20:42:17.9899101-05:00",
     "elevated":  false,
@@ -12,14 +12,14 @@
                                               "ProcessId":  25936,
                                               "ParentProcessId":  19552,
                                               "Name":  "Sutram-Setup.exe",
-                                              "CommandLine":  "\"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" ",
+                                              "CommandLine":  "\"<repo>\\Sutram-Setup.exe\" ",
                                               "CreationDate":  "\/Date(1794015739024)\/"
                                           },
                                           {
                                               "ProcessId":  36032,
                                               "ParentProcessId":  25936,
                                               "Name":  "powershell.exe",
-                                              "CommandLine":  "powershell.exe -NoProfile -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMC098.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMC098.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMC098.tmp\\install.log\" -AddPath",
+                                              "CommandLine":  "powershell.exe -NoProfile -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMC098.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMC098.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMC098.tmp\\install.log\" -AddPath",
                                               "CreationDate":  "\/Date(1794015740649)\/"
                                           },
                                           {
@@ -65,7 +65,7 @@
                                               "ProcessId":  25936,
                                               "ParentProcessId":  19552,
                                               "Name":  "Sutram-Setup.exe",
-                                              "CommandLine":  "\"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" ",
+                                              "CommandLine":  "\"<repo>\\Sutram-Setup.exe\" ",
                                               "CreationDate":  "\/Date(1794015739024)\/"
                                           }
                                       ],
@@ -98,7 +98,7 @@
                                               "ProcessId":  25936,
                                               "ParentProcessId":  19552,
                                               "Name":  "Sutram-Setup.exe",
-                                              "CommandLine":  "\"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" ",
+                                              "CommandLine":  "\"<repo>\\Sutram-Setup.exe\" ",
                                               "CreationDate":  "\/Date(1794015739024)\/"
                                           }
                                       ],
@@ -133,9 +133,9 @@
     "pid":  25936,
     "main_hwnd":  2622248,
     "welcome":  "welcome.png",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "ready.png",
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMC098.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STMC098.tmp\\install.log",
     "observed":  "after-70s-wizard.png",
     "next_label":  "Install",
     "enter_test":  "NOT APPLICABLE: installer PowerShell already exited",

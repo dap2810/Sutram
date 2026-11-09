@@ -1,5 +1,5 @@
 import glob, os, subprocess, sys, re
-G=sys.argv[1]; R=G+'/r116/guard'; NEW='/home/claude/sutram'; OLD=R+'/old'
+G=sys.argv[1]; R=G+'/r116/guard'; NEW='<repo>'; OLD=R+'/old'
 sys.path.insert(0, NEW+'/tests'); import run_tests as RT
 PAT=['examples/*.sm','examples/*/*.sm','tests/stdlib/*.sm','tests/r*/*.sm','tests/r*/*/*.sm']
 rels=sorted({os.path.relpath(p,NEW) for pat in PAT for p in glob.glob(os.path.join(NEW,pat))} - {'examples/345_r116_long_literal.sm'})  # the guard's list: 345 was added after it ran

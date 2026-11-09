@@ -13,6 +13,6 @@ for name in ['ui-helper.ps1','desktop-helper.ps1','pin-fix-package.py','identity
 text=(OLD/'state.ps1').read_text(encoding='utf8').split("if(Test-Path -LiteralPath (Join-Path $out 'clear-active-state.json'))")[0]
 text=text.replace("[ValidateSet('snapshot','clear')]","[ValidateSet('snapshot')]").replace('native-v311-acceptance','native-v312')
 (OUT/'state.ps1').write_text(text,encoding='utf8',newline='\n')
-shutil.copy2('C:/Users/dmech/Downloads/SUTRAM-WINDOWS-V312.md',OUT/'REQUEST.md')
+shutil.copy2('%USERPROFILE%/Downloads/SUTRAM-WINDOWS-V312.md',OUT/'REQUEST.md')
 shutil.copy2(__file__,OUT/'prepare-v312.py')
 print(OUT)

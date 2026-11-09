@@ -39,7 +39,7 @@ to the same bytes.**
 
 ## What I ran, on what
 
-**Real Windows 11 Pro 10.0.26300, AMD Ryzen 7 7700X, a standard user, not elevated.** Linux in WSL (Ubuntu,
+**Real Windows 11 Pro 10.0 (build redacted), [hardware detail redacted], a standard user, not elevated.** Linux in WSL (Ubuntu,
 GNU ld 2.42). NASM 3.01.
 
 | Check | Result |

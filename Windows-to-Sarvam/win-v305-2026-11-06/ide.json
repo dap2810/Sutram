@@ -1,9 +1,9 @@
 {
-  "ide": "E:\\Github_Projects\\Sutram\\sutram-ide-gui.exe",
+  "ide": "<repo>\\sutram-ide-gui.exe",
   "ide_sha256": "829F8658DE55BE045C6273339244D099022B373725EAD3681228C00BA3D5C051",
-  "compiler": "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+  "compiler": "<repo>\\win\\sutram.exe",
   "compiler_sha256": "DB5EDA53871AAFA4749D593DDEF2D29E2841E3EB4D3CB7CDF680223FB45A073C",
-  "big_file": "E:\\Github_Projects\\Sutram\\examples\\105_block_nesting_capacity.sm",
+  "big_file": "<repo>\\examples\\105_block_nesting_capacity.sm",
   "big_bytes": 70422,
   "big_sha256_before": "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC",
   "started": "2026-11-06T18:57:08.7461143-05:00",

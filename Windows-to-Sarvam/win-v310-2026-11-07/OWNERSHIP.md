@@ -21,8 +21,8 @@ A read-only, non-delete-sharing handle on the later staged `win/sutram.exe` deli
 Two actual embedded-engine processes launched `0.021868` seconds apart. One completed with exit 0; the other refused with exit 1:
 
 ```text
-[2026-11-07 13:18:50] ERROR: Another Sutram installer or uninstaller is working on C:\Users\dmech\AppData\Local\Programs\Sutram. Let it finish, then run this one again.
-[2026-11-07 13:19:05] Installation complete: C:\Users\dmech\AppData\Local\Programs\Sutram
+[2026-11-07 13:18:50] ERROR: Another Sutram installer or uninstaller is working on %USERPROFILE%\AppData\Local\Programs\Sutram. Let it finish, then run this one again.
+[2026-11-07 13:19:05] Installation complete: %USERPROFILE%\AppData\Local\Programs\Sutram
 ```
 
 After both exited: **657/657 payload hashes match**, no target pathname disappeared, and no pending transaction remained. Only installation log/journal/state metadata changed. [Raw process results and comparison](ownership/c2-result.json), [first log](ownership/c2-first-engine.log), [second log](ownership/c2-second-engine.log). The recorded process seconds are observation upper bounds because the controller collected the first process before the second; they are not individual exit timestamps. This proves the concurrent-start case, not every possible arbitrary-writer race or delayed state-read interleaving.

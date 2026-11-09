@@ -1,6 +1,6 @@
 # v305: first success at 768 MiB; failure affects shared lazy commitment
 
-Diagnostic run on native Windows 11 build 26100, 6 November 2026 (local time).
+Diagnostic run on native Windows 11 build (redacted), 6 November 2026 (local time).
 Repository base `30be5ac8`; original v305 compiler and original B3 executable.
 No candidate runtime from PR #66 or v306 was used. See [commands](COMMANDS.md),
 [machine-readable results](oom.json), and [the requested round](REQUEST.md).

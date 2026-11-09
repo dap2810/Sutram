@@ -1,7 +1,7 @@
 {
     "name":  "reinstall",
     "started":  "2026-11-08T11:26:12.3150640-05:00",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe",
     "setup_sha256":  "5cca529c3569d4558cce3243becffea72c0eb2745ea345d8c049bb7177cb3c1b",
     "phase":  "finished",
     "screens":  [
@@ -68,7 +68,7 @@
     "continued":  "2026-11-08T11:26:29.4860418-05:00",
     "child":  {
                   "pid":  28636,
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMD718.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMD718.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMD718.tmp\\install.log\" -AddPath",
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMD718.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMD718.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMD718.tmp\\install.log\" -AddPath",
                   "started":  "2026-11-08T11:26:30.5544819-05:00"
               },
     "finish_seconds":  35.5116053,

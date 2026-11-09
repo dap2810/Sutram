@@ -9,7 +9,7 @@ maximum index against the capacity. Output: one text block per prakriya, to stdo
 """
 import re, sys, glob, os
 
-ROOT = sys.argv[1] if len(sys.argv) > 1 else "/home/claude/sutram"
+ROOT = sys.argv[1] if len(sys.argv) > 1 else "<repo>"
 FILES = sorted(glob.glob(os.path.join(ROOT, "lib", "*.smlib")))
 only = sys.argv[2:]
 

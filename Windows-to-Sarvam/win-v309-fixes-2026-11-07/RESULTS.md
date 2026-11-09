@@ -31,7 +31,7 @@ Built product source: `4536cc36a083a64a0382cfff14a78a298a5bae1b`. Review head wi
 | Payload manifest (both platforms) | `0523ff8050787c529777727998aaffd3d1c144e2fd8ed31100c0e220b559d096` |
 | Unchanged compiler | `05b23d56d40aaa4b71c6d67d13996d75da6e4d2e2b2ac47fbf4960a1a52fb481` |
 
-The candidate is retained at `E:\Github_Projects\Sutram\build\windows-v309-fixes\build\native-v309-fix\Sutram-Setup.exe`. Generated setup binaries/pins remain local; the PR contains source and tests. No compiler/runtime, library, examples, frozen expectations or workflow triggers were edited. No full CI was launched.
+The candidate is retained at `<repo>\build\windows-v309-fixes\build\native-v309-fix\Sutram-Setup.exe`. Generated setup binaries/pins remain local; the PR contains source and tests. No compiler/runtime, library, examples, frozen expectations or workflow triggers were edited. No full CI was launched.
 
 ## What changed
 

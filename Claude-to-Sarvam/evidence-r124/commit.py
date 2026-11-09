@@ -5,7 +5,7 @@ has committed - a proxy for Windows commit charge (native Windows not available 
 'ready' and waits on grahan; this script then sums the mappings and lets it finish. The Wine process's own
 baseline (a program that allocates nothing) is reported, and subtracted."""
 import os, subprocess, sys, time, tempfile
-G = '/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad'
+G = '<scratch>'
 comps = dict(a.split('=', 1) for a in sys.argv[1:])
 env = dict(os.environ, WINEDEBUG='-all', WINEPREFIX=G + '/r41/wineprefix')
 PROGS = [

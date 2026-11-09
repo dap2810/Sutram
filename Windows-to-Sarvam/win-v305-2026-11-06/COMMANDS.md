@@ -1,6 +1,6 @@
 # Exact execution commands
 
-Working directory: `E:\Github_Projects\Sutram`. Scripts and `.sm` probes are
+Working directory: `<repo>`. Scripts and `.sm` probes are
 retained on branch `codex/windows-v305-2026-11-06`, in this evidence folder.
 Full per-process argument arrays and CWDs are in the JSON logs; commands used no
 execution-policy bypass or Windows administrator elevation.
@@ -50,7 +50,7 @@ its SHA-256. Output was pipe-captured, not an interactive terminal screenshot.
 points, and expected compiler hash, then ran:
 
 ```text
-"C:\Users\dmech\AppData\Local\Sutram\uninstall.exe" /uninstall
+"%USERPROFILE%\AppData\Local\Sutram\uninstall.exe" /uninstall
 ```
 
 It confirmed only the owned uninstaller's removal and completion dialogs. The
@@ -79,7 +79,7 @@ suite commands ran concurrently; their output directories were disjoint.
 The original hash and override are in `suite-harness.json`; the suite's own
 compile/run commands are in `native-cases.json`. No failed case was removed.
 
-`ide.ps1` launched `E:\Github_Projects\Sutram\sutram-ide-gui.exe` with the project
+`ide.ps1` launched `<repo>\sutram-ide-gui.exe` with the project
 root as CWD in a visible window. It selected examples through their list control,
 sent the actual Run menu command, read the output, and captured only that window
 using PrintWindow. Both PNGs were visually inspected. An initial metadata field

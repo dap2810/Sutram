@@ -3316,10 +3316,10 @@
                              "relative":  "win\\lib\\varna.smlib"
                          }
                      ],
-    "restored":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "restored":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "original_files_verified":  663,
     "no_deletions":  true,
     "user_path_restored":  true,
-    "tested_install_preserved":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-firstrun-tested-20261108",
+    "tested_install_preserved":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-firstrun-tested-20261108",
     "time":  "2026-11-08T15:05:02.8986955-05:00"
 }

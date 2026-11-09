@@ -387,7 +387,7 @@ pe: 178 DIFFER run old and new: 175 same output and exit code, 3 changed
 
 --- diffrun.py
 import glob, os, subprocess, sys
-NEW = '/home/claude/sutram'; sys.path.insert(0, NEW + '/tests'); import run_tests as RT
+NEW = '<repo>'; sys.path.insert(0, NEW + '/tests'); import run_tests as RT
 R = sys.argv[1]; kind = sys.argv[2]           # kind: elf | pe
 PAT = ['examples/*.sm', 'examples/*/*.sm', 'tests/stdlib/*.sm', 'tests/r*/*.sm', 'tests/r*/*/*.sm']
 rels = sorted({os.path.relpath(p, NEW) for pat in PAT for p in glob.glob(os.path.join(NEW, pat))})

@@ -11,8 +11,8 @@ The actual setup GUI was interrupted after 58/657 target files. An ordinary clea
 Two complete embedded engine processes launched 0.015584 seconds apart. Exits: [1, 0]. Exactly one proceeds; the other refuses:
 
 ```text
-[2026-11-07 13:28:58] ERROR: Another Sutram installer or uninstaller is working on C:\Users\dmech\AppData\Local\Programs\Sutram. Let it finish, then run this one again.
-[2026-11-07 13:29:19] Installation complete: C:\Users\dmech\AppData\Local\Programs\Sutram
+[2026-11-07 13:28:58] ERROR: Another Sutram installer or uninstaller is working on %USERPROFILE%\AppData\Local\Programs\Sutram. Let it finish, then run this one again.
+[2026-11-07 13:29:19] Installation complete: %USERPROFILE%\AppData\Local\Programs\Sutram
 ```
 
 All 657 payload hashes match afterward. No target pathname disappeared; only install log/journal/state metadata changed. This is actual engine concurrency, not two wizard windows. The separate lock fixture below tests delayed acquisition/fresh reads with stubbed registry/discovery functions.
@@ -26,8 +26,8 @@ A line appended to already-published `docs/BUILDING.md` survived with SHA-256 `4
 Same construction as the v310 defect: target bytes declared owned by an interrupted journal; an older backup; the expected 12-hex-prefix filename precreated with unequal bytes. No hash collision is needed. v311 refuses before moving/deleting the target:
 
 ```text
-[2026-11-07 13:31:06] Not removed - the copy kept as C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD (BB8F7F7405C17B55C3B8CE2ADBC99B82AC39060A6D3931A8AA70CD7E55295F95) is not this file (31C7B5E5F5BD5DECAD64B3E34C9939E4F5C33C73149B22762BBDFEBC249D4DCE): C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md
-[2026-11-07 13:31:07] ERROR: A file was not moved aside, because the copy already kept under its name differs: C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md and C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD. Nothing was deleted. Move one of them elsewhere, then run this installer again.
+[2026-11-07 13:31:06] Not removed - the copy kept as %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD (BB8F7F7405C17B55C3B8CE2ADBC99B82AC39060A6D3931A8AA70CD7E55295F95) is not this file (31C7B5E5F5BD5DECAD64B3E34C9939E4F5C33C73149B22762BBDFEBC249D4DCE): %USERPROFILE%\AppData\Local\Programs\Sutram\docs\BUILDING.md
+[2026-11-07 13:31:07] ERROR: A file was not moved aside, because the copy already kept under its name differs: %USERPROFILE%\AppData\Local\Programs\Sutram\docs\BUILDING.md and %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\backup\_superseded\docs\BUILDING.md.31C7B5E5F5BD. Nothing was deleted. Move one of them elsewhere, then run this installer again.
 ```
 
 - Original target hash remains `31c7b5e5f5bd5decad64b3e34c9939e4f5c33c73149b22762bbdfebc249d4dce` at `target/docs/BUILDING.md`.

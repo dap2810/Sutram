@@ -1,6 +1,6 @@
 # Commands and execution record
 
-All commands ran from `E:\Github_Projects\Sutram` unless noted. PowerShell was
+All commands ran from `<repo>` unless noted. PowerShell was
 non-elevated. Sandbox approval allowed the installer to write the per-user
 installation; it did not grant Windows administrator privileges.
 
@@ -9,7 +9,7 @@ installation; it did not grant Windows administrator privileges.
 ```powershell
 Get-Content -LiteralPath PROJECT-MASTER.md
 Get-Content -LiteralPath docs/sutram-design-parameters.html
-Get-Content -LiteralPath 'C:\Users\dmech\Downloads\SUTRAM-WINDOWS-V303.md'
+Get-Content -LiteralPath '%USERPROFILE%\Downloads\SUTRAM-WINDOWS-V303.md'
 git status --short --branch
 git log -3 --oneline
 git fetch origin
@@ -38,13 +38,13 @@ The installer invoked this child process, observed through a read-only process
 query after the wizard timed out:
 
 ```text
-powershell.exe -NoProfile -File "C:\Users\dmech\AppData\Local\Temp\STM5B4A.tmp\install-core.ps1" -PayloadZip "C:\Users\dmech\AppData\Local\Temp\STM5B4A.tmp\payload.zip" -InstallDir "C:\Users\dmech\AppData\Local\Programs\Sutram" -SetupExePath "E:\Github_Projects\Sutram\build\windows-v303-review\Sutram-Setup.exe" -LogPath "C:\Users\dmech\AppData\Local\Temp\STM5B4A.tmp\install.log" -AddPath
+powershell.exe -NoProfile -File "%USERPROFILE%\AppData\Local\Temp\STM5B4A.tmp\install-core.ps1" -PayloadZip "%USERPROFILE%\AppData\Local\Temp\STM5B4A.tmp\payload.zip" -InstallDir "%USERPROFILE%\AppData\Local\Programs\Sutram" -SetupExePath "<repo>\build\windows-v303-review\Sutram-Setup.exe" -LogPath "%USERPROFILE%\AppData\Local\Temp\STM5B4A.tmp\install.log" -AddPath
 ```
 
 ```powershell
 Get-CimInstance Win32_Process -Filter "Name='powershell.exe' OR Name='Sutram-Setup.exe'" | Select-Object ProcessId,ParentProcessId,CommandLine | Format-List
-Get-Content -LiteralPath 'C:\Users\dmech\AppData\Local\Temp\STM5B4A.tmp\install.log'
-Get-Content -LiteralPath 'C:\Users\dmech\AppData\Local\Programs\Sutram\install.log' -Tail 12
+Get-Content -LiteralPath '%USERPROFILE%\AppData\Local\Temp\STM5B4A.tmp\install.log'
+Get-Content -LiteralPath '%USERPROFILE%\AppData\Local\Programs\Sutram\install.log' -Tail 12
 ```
 
 The sandbox denied the first CIM query; it succeeded after approval. It showed
@@ -55,9 +55,9 @@ the owner's report of manually closing PowerShell.
 
 ```powershell
 python Windows-to-Sarvam/win-v303-2026-11-06/verify.py identity
-Get-FileHash -LiteralPath 'C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe'
-Get-FileHash -LiteralPath 'C:\Users\dmech\AppData\Local\Sutram\bin\sutram.exe'
-Copy-Item -LiteralPath 'C:\Users\dmech\AppData\Local\Temp\STM5B4A.tmp\install.log' -Destination Windows-to-Sarvam/win-v303-2026-11-06/install-at-stop.log
+Get-FileHash -LiteralPath '%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe'
+Get-FileHash -LiteralPath '%USERPROFILE%\AppData\Local\Sutram\bin\sutram.exe'
+Copy-Item -LiteralPath '%USERPROFILE%\AppData\Local\Temp\STM5B4A.tmp\install.log' -Destination Windows-to-Sarvam/win-v303-2026-11-06/install-at-stop.log
 ```
 
 The first Python invocation had a syntax error in an unused probe-generation
@@ -66,7 +66,7 @@ executed these two commands with a 30-second timeout each, in
 `build/windows-v303-review/build/v303-probes`:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe --version
+%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe --version
 C:\WINDOWS\system32\cmd.exe /d /c "where sutram && sutram --version"
 ```
 

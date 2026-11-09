@@ -7,7 +7,7 @@
 - **Gates:** `tools/gates.sh` **28 PASS / 3 FAIL / 1 NOT-RUN** - **WSL Ubuntu on the owner's PC** (kernel
   6.6.87.2-microsoft-standard-WSL2, GNU ld 2.42, NASM 3.01 through a path wrapper), a clean LF clone of `4c325b51`.
   The 3 FAILs are `main`'s own: library proofs and R29 (both `r18_srij_overflow_guard`, below), X11 (no display).
-- **Windows:** real Windows 11 Pro 10.0.26300, a standard user, **not elevated**, a fresh clone with Git for
+- **Windows:** real Windows 11 Pro 10.0 (build redacted), a standard user, **not elevated**, a fresh clone with Git for
   Windows' defaults (`core.autocrlf=true` + the repository's `.gitattributes`).
 
 ## The plan was already delivered - this is its measurement on `main`

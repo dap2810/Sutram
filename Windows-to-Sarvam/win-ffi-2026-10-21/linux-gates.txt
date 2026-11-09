@@ -14,7 +14,7 @@ Sutram gates — 2026-10-22T03:13Z
   library proofs               FAIL     actual:   '129074682380288\n\n129050386370560\n\n0\n\n1\n\n'
   property proofs (86/86)      PASS
   layer check (14 core, 9 alloc, 1 std) PASS
-  stdlib inventory (Wrote /mnt/c/Users/Dhruv/AppData/Local/Temp/sutram-build/lclone35/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
+  stdlib inventory (Wrote %USERPROFILE%/AppData/Local/Temp/sutram-build/lclone35/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
   module graph                 PASS
   pack messages (12 sets x 11 cases) PASS
   keyword packs built in (11, = lang/*.lang) PASS

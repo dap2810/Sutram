@@ -1,6 +1,6 @@
 {
     "phase":  "interrupt",
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
     "started":  "2026-11-06T23:09:21.6871880-05:00",
     "elevated":  false,
@@ -29,15 +29,15 @@
                      ],
     "pid":  16540,
     "process_started":  "2026-11-06T23:09:22.0215642-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "interrupt-ready.png",
     "child":  {
                   "parent":  16540,
                   "pid":  18272,
                   "started":  "2026-11-06T23:09:23.6581235-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM61CE.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM61CE.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM61CE.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM61CE.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM61CE.tmp\\install.log",
     "interrupt_trigger":  "Filesystem count of complete payload filenames; live engine log deliberately unopened",
     "payload_count_at_trigger":  15,
     "interrupt_seconds":  10.852372599999999,

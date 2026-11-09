@@ -16,7 +16,7 @@ or security policy was changed. The unaccepted OOM candidate was not installed.
 All **137 existing files** were moved intact to:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram-recovery-20261106-205221
+%USERPROFILE%\AppData\Local\Programs\Sutram-recovery-20261106-205221
 ```
 
 Source/destination absolute paths and all ancestor/content reparse checks were
@@ -27,7 +27,7 @@ backup is retained locally, not uploaded as executable content.
 The current installer then installed into:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram
+%USERPROFILE%\AppData\Local\Programs\Sutram
 ```
 
 It ran unelevated, with Add to user PATH and Desktop Shortcut selected. Existing

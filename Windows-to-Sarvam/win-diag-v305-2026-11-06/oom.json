@@ -1,14 +1,14 @@
 {
-  "compiler": "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+  "compiler": "<repo>\\win\\sutram.exe",
   "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
-  "b3": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe",
+  "b3": "<repo>\\build\\windows-v305-2026-11-06\\B3.exe",
   "b3_sha256": "61c3928c8c34a5612ee5fcb6873f56710b5a92869b6510b0f6062e3913c0dcf2",
   "version": {
     "command": [
-      "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+      "<repo>\\win\\sutram.exe",
       "--version"
     ],
-    "cwd": "E:\\Github_Projects\\Sutram",
+    "cwd": "<repo>",
     "exit": 0,
     "stdout": "Sutram 1.0 (v305) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
     "stderr": "",
@@ -18,11 +18,11 @@
   "compilations": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A2-two-million.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A2-two-million.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "exit": 0,
       "stdout": "Siddh: 1594 baait sankalit\n",
       "stderr": "",
@@ -31,11 +31,11 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-first-page.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-first-page.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "exit": 0,
       "stdout": "Siddh: 445 baait sankalit\n",
       "stderr": "",
@@ -44,11 +44,11 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "exit": 0,
       "stdout": "Siddh: 1309 baait sankalit\n",
       "stderr": "",
@@ -57,11 +57,11 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "exit": 0,
       "stdout": "Siddh: 471 baait sankalit\n",
       "stderr": "",
@@ -70,11 +70,11 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa-small-budget.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa-small-budget.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "exit": 0,
       "stdout": "Siddh: 1309 baait sankalit\n",
       "stderr": "",
@@ -85,9 +85,9 @@
   "runs": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-64MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\B3-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -102,9 +102,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-128MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\B3-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -119,9 +119,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-256MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\B3-256MiB",
       "limit_bytes": 268435456,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -136,9 +136,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-384MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\B3-384MiB",
       "limit_bytes": 402653184,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -153,9 +153,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-512MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\B3-512MiB",
       "limit_bytes": 536870912,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -170,9 +170,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-640MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\B3-640MiB",
       "limit_bytes": 671088640,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -187,9 +187,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\B3-768MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\B3-768MiB",
       "limit_bytes": 805306368,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -204,9 +204,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-64MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -221,9 +221,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-128MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -238,9 +238,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-256MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million-256MiB",
       "limit_bytes": 268435456,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -255,9 +255,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-384MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million-384MiB",
       "limit_bytes": 402653184,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -272,9 +272,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-512MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million-512MiB",
       "limit_bytes": 536870912,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -289,9 +289,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-640MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million-640MiB",
       "limit_bytes": 671088640,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -306,9 +306,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A2-two-million-768MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A2-two-million-768MiB",
       "limit_bytes": 805306368,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -323,9 +323,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page-64MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-first-page-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -340,9 +340,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-64MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -357,9 +357,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages-64MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-nirmmita-touch-pages-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -374,9 +374,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget-64MiB",
+      "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06\\A3-mandapa-small-budget-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,

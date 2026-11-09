@@ -14,7 +14,7 @@
 == string_plus_then_shabda: exit 139 (139 = SIGSEGV)
 
 import subprocess
-C='/home/claude/sutram/sutram_compiler'
+C='<repo>/sutram_compiler'
 P = [
  ('uninit_vitti', 'prakriya f(n) {\n    vitti x\n    yadi (n == 1) {\n        x = 99\n    }\n    nivartanam x\n}\n\nmukhya() {\n    likha(f(0), " ", f(1), " ", f(0))\n}\n'),
  ('uninit_loop', 'mukhya() {\n    vitti i = 0\n    yavat (i < 3) {\n        vitti x\n        likha(x)\n        x = 50 + i\n        i = i + 1\n    }\n}\n'),

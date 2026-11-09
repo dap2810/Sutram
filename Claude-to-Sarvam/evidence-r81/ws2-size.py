@@ -2,7 +2,7 @@
 # copy of lib/, compile a program that loads each module; on a refusal, unmark the function named and
 # record why; repeat to a fixpoint. What is left marked passes the checker with every callee marked.
 import os, re, shutil, subprocess, sys, json
-G = sys.argv[1]; TREE = '/home/claude/sutram'
+G = sys.argv[1]; TREE = '<repo>'
 D = f'{G}/r81/m'; shutil.rmtree(D, ignore_errors=True); os.makedirs(D)
 shutil.copy(f'{G}/r81/c/sutram_compiler', D)
 for l in ('lang', 'win'): os.symlink(f'{TREE}/{l}', f'{D}/{l}')

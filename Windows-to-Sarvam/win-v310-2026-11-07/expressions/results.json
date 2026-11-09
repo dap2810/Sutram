@@ -2,7 +2,7 @@
   "compiler_sha256": "303d6eaca05ae01a1c8ac0a825d81a51965932cda003b0d9e9421e3df63f126c",
   "version": {
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
+      "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
       "--version"
     ],
     "exit": 0,
@@ -18,9 +18,9 @@
       "source_sha256": "6aaee1639f563b350695cd13262c4ae10e53dea1aae6167fb5057b2ba6bfc53f",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\global-direct.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\global-direct.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\global-direct.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\global-direct.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -38,9 +38,9 @@
       "source_sha256": "6e0cb7843894b02466a3e721a18f18e1c4f1d055a7a46436ac5a8bb3f89d6257",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\global-add.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\global-add.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\global-add.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\global-add.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -58,9 +58,9 @@
       "source_sha256": "3c851d2f4a72520f1dfa9e5967051b906d8e94750acac3e622670682cb2c997c",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\valid-global.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\valid-global.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\valid-global.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\valid-global.exe"
         ],
         "exit": 0,
         "exit_hex": "0x00000000",
@@ -73,7 +73,7 @@
       "expected": "7\n",
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\valid-global.exe"
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\valid-global.exe"
         ],
         "exit": 0,
         "exit_hex": "0x00000000",
@@ -89,9 +89,9 @@
       "source_sha256": "7a761f396e66ad81ff1a9396ec6963b008f76d7dd5cbf91c6f266fd271f15047",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\two-globals-no-main.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\two-globals-no-main.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\two-globals-no-main.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\two-globals-no-main.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -109,9 +109,9 @@
       "source_sha256": "abdb981d241b8ccc8687ca7bd5a2fc80afcb81e5d789d6aaf31edb8c92a5f5ba",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\record-literal.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\record-literal.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\record-literal.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\record-literal.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -129,9 +129,9 @@
       "source_sha256": "9cfd678aff1d6ac9bf13a0eb1061b2b634c2de947f2fbfc30ed1807083279db9",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\default-argument.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\default-argument.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\default-argument.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\default-argument.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -149,9 +149,9 @@
       "source_sha256": "05359b162522e859eff660c162a67ebca6ac78819d89b73409d0b3d1d9c184ff",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\two-globals-with-main.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\two-globals-with-main.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\two-globals-with-main.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\two-globals-with-main.exe"
         ],
         "exit": 0,
         "exit_hex": "0x00000000",
@@ -164,7 +164,7 @@
       "expected": "3\n",
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\two-globals-with-main.exe"
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\two-globals-with-main.exe"
         ],
         "exit": 0,
         "exit_hex": "0x00000000",
@@ -180,9 +180,9 @@
       "source_sha256": "aab0e432c4e5f2f04fea0f81a581992eff97b2f233fa02417c95aabe63015396",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\local-direct.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\local-direct.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\local-direct.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\local-direct.exe"
         ],
         "exit": 0,
         "exit_hex": "0x00000000",
@@ -200,9 +200,9 @@
       "source_sha256": "9201e43e5f50956973454d006a5b1a1120f777510b4ff0975d6aca3f2cfceebf",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\local-add.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\local-add.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\local-add.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\local-add.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -220,9 +220,9 @@
       "source_sha256": "2e47228236508b5dad0da4e2bad1b031b26b09608d4da7f0b99e1a79dd65b07e",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\add.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\add.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\add.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\add.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -240,9 +240,9 @@
       "source_sha256": "92914ca2c065b3e0b6e286e74743c476590e2e4728f434d9be2e9531e890b593",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\xor.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\xor.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\xor.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\xor.exe"
         ],
         "exit": 1,
         "exit_hex": "0x00000001",
@@ -260,9 +260,9 @@
       "source_sha256": "837bf8e1d69a3ffa7618a1c11d946ec3b7c0a87d0f52bde514746d4d259b4778",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\length.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\length.exe"
+          "<repo>\\build\\windows-v310-acceptance\\win\\sutram.exe",
+          "<repo>\\build\\windows-v310-acceptance\\Windows-to-Sarvam\\win-v310-2026-11-07\\expressions\\length.sm",
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\length.exe"
         ],
         "exit": 0,
         "exit_hex": "0x00000000",
@@ -275,7 +275,7 @@
       "expected": "2\n",
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\length.exe"
+          "<repo>\\build\\windows-v310-acceptance\\build\\native-v310\\expressions\\length.exe"
         ],
         "exit": 0,
         "exit_hex": "0x00000000",

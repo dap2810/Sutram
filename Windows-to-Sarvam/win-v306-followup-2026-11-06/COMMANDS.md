@@ -1,6 +1,6 @@
 # Follow-up commands and scope
 
-Working directory: `E:\Github_Projects\Sutram`, normal Windows user token.
+Working directory: `<repo>`, normal Windows user token.
 
 **Publication note:** upstream commit `60ce554d` introduced v307 after these
 measurements. It was integrated while publishing this evidence-only commit.

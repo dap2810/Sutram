@@ -13,16 +13,16 @@
   "fixed" version could not be tested. Everything below is the branch **tip**
   `0e71e546`, not the claimed fix. The tip's own message ("as built before
   ROUND-108-CORRECTION") is consistent with the fix being absent from it.
-- **Worktree:** `/home/hatch/workspace/r121-124/arena-branch`
+- **Worktree:** `<workspace>/r121-124/arena-branch`
   (detached HEAD at `0e71e546`; no other worktree touched or removed).
-- **Compiler built:** NASM from `/home/hatch/workspace/build-tools/nasm-inst/bin`
+- **Compiler built:** NASM from `<workspace>/build-tools/nasm-inst/bin`
   (`nasm -f elf64 -I. src/r68_compiler_entry.asm`, then `ld`), reporting
   `Sutram 1.0 (v290)`. The built binary was copied to the worktree root as
   the untracked `sutram_compiler_test`, used for all probes, and **deleted
   when done**; the tracked `./sutram_compiler` was never overwritten and
   `git status` in the branch worktree is clean. No code was changed on main
   or on the branch, nothing was pushed or merged.
-- **Probes:** `/home/hatch/workspace/r121-124/probes/` (chain*, field*,
+- **Probes:** `<workspace>/r121-124/probes/` (chain*, field*,
   two_kosh_grow, vitti_*, budget, bound, alias_direct, return_direct,
   visible_assign, reader_chain). Each probe was compiled with the branch
   compiler; when it compiled, it was run and its output recorded.

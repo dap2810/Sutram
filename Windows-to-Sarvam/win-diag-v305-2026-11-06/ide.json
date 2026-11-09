@@ -1,7 +1,7 @@
 {
-    "ide":  "E:\\Github_Projects\\Sutram\\sutram-ide-gui.exe",
+    "ide":  "<repo>\\sutram-ide-gui.exe",
     "ide_sha256":  "829F8658DE55BE045C6273339244D099022B373725EAD3681228C00BA3D5C051",
-    "compiler":  "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+    "compiler":  "<repo>\\win\\sutram.exe",
     "compiler_sha256":  "DB5EDA53871AAFA4749D593DDEF2D29E2841E3EB4D3CB7CDF680223FB45A073C",
     "started":  "2026-11-06T20:03:48.6772474-05:00",
     "scenarios":  [
@@ -82,30 +82,30 @@
                   ],
     "before":  [
                    {
-                       "Path":  "E:\\Github_Projects\\Sutram\\examples\\01_hello.sm",
+                       "Path":  "<repo>\\examples\\01_hello.sm",
                        "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
                    },
                    {
-                       "Path":  "E:\\Github_Projects\\Sutram\\examples\\02_arith.sm",
+                       "Path":  "<repo>\\examples\\02_arith.sm",
                        "Hash":  "A57DD05E5E5207A38FAEED35D330C16E83901A6D9FD1C0101A92C93DF0EAFA76"
                    },
                    {
-                       "Path":  "E:\\Github_Projects\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                       "Path":  "<repo>\\examples\\105_block_nesting_capacity.sm",
                        "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
                    }
                ],
     "status":  "OBSERVED",
     "after":  [
                   {
-                      "Path":  "E:\\Github_Projects\\Sutram\\examples\\01_hello.sm",
+                      "Path":  "<repo>\\examples\\01_hello.sm",
                       "Hash":  "6F92D201342A8DB12A68DBA9137F282145696A94762F6ECC4D756582F3A64EDD"
                   },
                   {
-                      "Path":  "E:\\Github_Projects\\Sutram\\examples\\02_arith.sm",
+                      "Path":  "<repo>\\examples\\02_arith.sm",
                       "Hash":  "A57DD05E5E5207A38FAEED35D330C16E83901A6D9FD1C0101A92C93DF0EAFA76"
                   },
                   {
-                      "Path":  "E:\\Github_Projects\\Sutram\\examples\\105_block_nesting_capacity.sm",
+                      "Path":  "<repo>\\examples\\105_block_nesting_capacity.sm",
                       "Hash":  "0B3827DFA439DA9B642AC2463F1BA3ABEC66AE301C037F57DDAD7183B5A1F4CC"
                   }
               ]

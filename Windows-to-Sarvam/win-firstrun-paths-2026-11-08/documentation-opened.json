@@ -7,7 +7,7 @@
                    "handle":  265978,
                    "pid":  34468
                },
-    "book":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
+    "book":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html",
     "book_sha256":  "C10CF13E001C16C0EBAD036615EE7F55F88FD61BBE126B71E639A6D997027700",
     "matching_ui":  [
                         "Sutram",
@@ -49,6 +49,6 @@
                         "sutram -i",
                         "सूत्रम् — the complete thread · English Edition · v1.0"
                     ],
-    "shortcut":  "C:\\Users\\dmech\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Documentation.lnk",
-    "address":  "file:///C:/Users/dmech/AppData/Local/Programs/Sutram/docs/sutram-book-english.html"
+    "shortcut":  "%USERPROFILE%\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Sutram\\Sutram Documentation.lnk",
+    "address":  "file:///%USERPROFILE%/AppData/Local/Programs/Sutram/docs/sutram-book-english.html"
 }

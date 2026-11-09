@@ -1,7 +1,7 @@
 {
     "name":  "initial",
     "moment":  "complete",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe",
     "setup_sha256":  "134FAE95DC9D79A0CC7E563BBF59E6FC69983EAE950C2C2799E20DEA911A286B",
     "started":  "2026-11-07T13:28:29.9169354-05:00",
     "observations":  [
@@ -34,15 +34,15 @@
     "live_log_opened":  false,
     "pid":  36224,
     "process_started":  "2026-11-07T13:28:30.0125482-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready_screenshot":  "initial-ready.png",
     "child":  {
                   "parent":  36224,
                   "pid":  36712,
                   "started":  "2026-11-07T13:28:31.1980779-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMEF68.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMEF68.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMEF68.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMEF68.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STMEF68.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  23.722202199999998,
     "finish_screenshot":  "initial-finish.png",

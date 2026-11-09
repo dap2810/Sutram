@@ -1,6 +1,6 @@
 {
   "mode": "native",
-  "compiler": "/home/claude/sutram/sutram_compiler",
+  "compiler": "<repo>/sutram_compiler",
   "compiler_sha256": "9063901e8b1bb0eccdc3eec5fefe8283b54476793e91c747652cb63777093ea2",
   "source_git_blobs": {
     "src/sutram_compiler.asm": "569ffdeb909a957e8d1534c6dbeb3edaff957022",

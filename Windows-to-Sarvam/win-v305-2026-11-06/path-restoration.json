@@ -1,6 +1,6 @@
 {
     "status":  "PASS",
-    "restored_entry":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin",
+    "restored_entry":  "%USERPROFILE%\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin",
     "position":  "original first position",
     "reason":  "Before/after audit detected this unrelated entry missing following old uninstaller cleanup",
     "old_sutram_entry_restored":  false,

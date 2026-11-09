@@ -1,4 +1,4 @@
-environment: Windows  windows Windows 10 Pro 26H2 build 26300.9711  PowerShell 5.1.26100.9711  elevated=False  commit=71dad56b7be90b8e8ff55cae354f8c225cafe7dc
+environment: Windows  windows Windows 10 Pro 26H2 build (redacted)  PowerShell 5.1 (build redacted)  elevated=False  commit=71dad56b7be90b8e8ff55cae354f8c225cafe7dc
 verdict in log: PASS
   PASS     runner-not-elevated            [Windows]  the acceptance process itself is not elevated
   PASS     setup-hash-file                [Windows]  matches the committed hash file

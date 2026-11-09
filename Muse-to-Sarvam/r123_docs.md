@@ -1,6 +1,6 @@
 # Muse Round 123 — Documentation audit (v297)
 
-Base: `/home/hatch/workspace/r121-124/tree297` (v297). Audit only. No doc edits, no code
+Base: `<workspace>/r121-124/tree297` (v297). Audit only. No doc edits, no code
 changes, no pushes, no merges were made. This is Muse Round 123 only; no other
 agent's rounds were worked.
 

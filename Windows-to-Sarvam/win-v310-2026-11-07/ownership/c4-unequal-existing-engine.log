@@ -1,16 +1,16 @@
 Sutram Setup Log
 [2026-11-07 13:21:40] Starting installation.
 [2026-11-07 13:21:40] Checking for another Sutram installation.
-[2026-11-07 13:21:40] A previous installation stopped part-way (its journal is C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt); this run finishes it.
-[2026-11-07 13:21:40] A previous installation stopped part-way (it left C:\Users\dmech\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
+[2026-11-07 13:21:40] A previous installation stopped part-way (its journal is %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt); this run finishes it.
+[2026-11-07 13:21:40] A previous installation stopped part-way (it left %USERPROFILE%\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
 [2026-11-07 13:21:40] Extracting embedded payload.
 [2026-11-07 13:21:43] Native self-test start: pre-install --version
 [2026-11-07 13:21:43] Native self-test exit: pre-install --version code=0
 [2026-11-07 13:21:43] Native self-test start: pre-install --help
 [2026-11-07 13:21:43] Native self-test exit: pre-install --help code=0
-[2026-11-07 13:21:48] Transaction 7079f2218b164f4f8629d2b23dcb0a7a begun (journal C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
+[2026-11-07 13:21:48] Transaction 7079f2218b164f4f8629d2b23dcb0a7a begun (journal %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
 [2026-11-07 13:21:48] Recording the payload being installed (payload.pending.sha256).
-[2026-11-07 13:21:48] Staging 657 Sutram files in C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\stage.
+[2026-11-07 13:21:48] Staging 657 Sutram files in %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\stage.
 [2026-11-07 13:21:48] Already installed 1/657: assets\sutram.ico
 [2026-11-07 13:21:48] Already installed 2/657: bin\lang\bengali.lang
 [2026-11-07 13:21:48] Already installed 3/657: bin\lang\bengali.sandesh
@@ -669,7 +669,7 @@ Sutram Setup Log
 [2026-11-07 13:21:50] Already installed 655/657: win\lib\vakyank.smlib
 [2026-11-07 13:21:50] Already installed 656/657: win\lib\varna.smlib
 [2026-11-07 13:21:50] Already staged 657/657: win\sutram.exe
-[2026-11-07 13:21:50] Publishing 657 files into C:\Users\dmech\AppData\Local\Programs\Sutram.
+[2026-11-07 13:21:50] Publishing 657 files into %USERPROFILE%\AppData\Local\Programs\Sutram.
 [2026-11-07 13:21:50] PUBLISH 56/657: docs\BUILDING.md
 [2026-11-07 13:21:54] PUBLISH 657/657: win\sutram.exe
 [2026-11-07 13:21:54] ERROR: Exception calling "Move" with "2" argument(s): "The process cannot access the file because it is being used by another process."

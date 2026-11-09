@@ -17,7 +17,7 @@
 **A literal prints correctly. A variable does not.** That means the value survives parsing and dies at the store — or the variable slot is integer-typed.
 
 ## WS1 — why the two symptoms differ
-**You ran on Windows build 26300. I ran on Linux. The PE compiler is byte-identical to the ELF one, so the bug should be identical.**
+**You ran on Windows build (redacted). I ran on Linux. The PE compiler is byte-identical to the ELF one, so the bug should be identical.**
 
 **So: either you tested a case I did not, or the platform does differ.** **Which program produced your negative value?** **Paste it and its output.** I need to know whether this is one bug or two.
 

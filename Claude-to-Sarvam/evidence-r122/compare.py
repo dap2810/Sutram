@@ -3,7 +3,7 @@
 (3a6292e), each in its own tree (so each with its own lib/), ELF; then both run (stdin from run_tests' table).
 Classes: identical bytes; both refused; refused by one only; different bytes - same run; different run."""
 import glob, os, subprocess, sys, tempfile, json
-G = '/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r122'
+G = '<scratch>/r122'
 BASE, ARENA = G + '/base', G + '/arena'
 sys.path.insert(0, ARENA + '/tests'); import run_tests as RT
 PAT = ['examples/*.sm', 'tests/stdlib/*.sm', 'tests/r*/*.sm', 'tests/r*/*/*.sm']

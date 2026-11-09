@@ -13,6 +13,6 @@
     "editor":  "mukhya() {\r\n    likha(\"FIRST_RUN_PERCENT\")\r\n}\r\n",
     "file_sha256":  "EFF2C55B0BF8649D5CA1C5442310BCBFE4F7E308B0D145343B9215BC292FC7A4",
     "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 44   |   sanchit",
-    "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\Percent %USERNAME% Files\\hello.sm",
+    "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\Percent %USERNAME% Files\\hello.sm",
     "method":  "Two real left clicks in Explorer, 80 ms apart"
 }

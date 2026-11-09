@@ -1,5 +1,5 @@
 {
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "99D26A89F355A2B20BDF7FE1FBD94AA8E304C3EAE3A9B54C8364ECF8F1E6E6F5",
     "started":  "2026-11-06T20:39:05.8303768-05:00",
     "elevated":  false,
@@ -12,7 +12,7 @@
                                               "ProcessId":  5552,
                                               "ParentProcessId":  31128,
                                               "Name":  "Sutram-Setup.exe",
-                                              "CommandLine":  "\"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" ",
+                                              "CommandLine":  "\"<repo>\\Sutram-Setup.exe\" ",
                                               "CreationDate":  "\/Date(1794015548076)\/"
                                           }
                                       ],
@@ -39,7 +39,7 @@
                                               "ProcessId":  5552,
                                               "ParentProcessId":  31128,
                                               "Name":  "Sutram-Setup.exe",
-                                              "CommandLine":  "\"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" ",
+                                              "CommandLine":  "\"<repo>\\Sutram-Setup.exe\" ",
                                               "CreationDate":  "\/Date(1794015548076)\/"
                                           }
                                       ],
@@ -62,7 +62,7 @@
     "pid":  5552,
     "main_hwnd":  3082530,
     "welcome":  "welcome.png",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "ready.png",
     "status":  "AWAITING_INPUT_DIAGNOSTIC"
 }

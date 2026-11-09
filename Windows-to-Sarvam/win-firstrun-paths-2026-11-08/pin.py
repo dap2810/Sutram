@@ -19,5 +19,5 @@ r={'commit':commit,'setup_sha256':sha(setup),'compiler_sha256':sha(compiler),'ve
 (out/'candidate.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf8')
 for name in ['ui-helper.ps1','desktop-helper.ps1']:
  (out/name).write_bytes((root/'Windows-to-Sarvam/win-v312-2026-11-08'/name).read_bytes())
-(out/'REQUEST.md').write_bytes(Path(r'C:\Users\dmech\Downloads\SUTRAM-WINDOWS-FIRSTRUN.md').read_bytes())
+(out/'REQUEST.md').write_bytes(Path(r'%USERPROFILE%\Downloads\SUTRAM-WINDOWS-FIRSTRUN.md').read_bytes())
 print(json.dumps({k:v for k,v in r.items() if k!='payload'},indent=2))

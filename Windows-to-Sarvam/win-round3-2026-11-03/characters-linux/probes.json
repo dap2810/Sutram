@@ -8,9 +8,9 @@
       "expected": "abcd\n",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_literal.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_literal.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_literal.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_literal.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 580 baait sankalit\n",
@@ -20,7 +20,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_literal.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_literal.bin"
         ],
         "exit": 0,
         "stdout": "abcd\n",
@@ -35,9 +35,9 @@
       "expected": "abcd\nabcd\nabcd\n",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_loop.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_loop.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_loop.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_loop.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 600 baait sankalit\n",
@@ -47,7 +47,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_loop.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_loop.bin"
         ],
         "exit": 0,
         "stdout": "abcd\nabcd\nabcd\n",
@@ -62,9 +62,9 @@
       "expected": "ab|cd|abcd",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_inputs.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_inputs.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_inputs.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_inputs.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 702 baait sankalit\n",
@@ -74,7 +74,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_inputs.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_inputs.bin"
         ],
         "exit": 0,
         "stdout": "ab|cd|abcd",
@@ -89,9 +89,9 @@
       "expected": "cdab",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_empty.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_empty.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/concat_empty.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_empty.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 992 baait sankalit\n",
@@ -101,7 +101,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/concat_empty.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/concat_empty.bin"
         ],
         "exit": 0,
         "stdout": "cdab",
@@ -116,9 +116,9 @@
       "expected": "B\n",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char66.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char66.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char66.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char66.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 487 baait sankalit\n",
@@ -128,7 +128,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char66.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char66.bin"
         ],
         "exit": 0,
         "stdout": "B\n",
@@ -143,9 +143,9 @@
       "expected": "a\n",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char97.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char97.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char97.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char97.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 487 baait sankalit\n",
@@ -155,7 +155,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char97.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char97.bin"
         ],
         "exit": 0,
         "stdout": "a\n",
@@ -170,9 +170,9 @@
       "expected": "Ba\n",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char_kept.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char_kept.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char_kept.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char_kept.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 1036 baait sankalit\n",
@@ -182,7 +182,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char_kept.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char_kept.bin"
         ],
         "exit": 0,
         "stdout": "Ba\n",
@@ -197,9 +197,9 @@
       "expected": "10000\n",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char_loop.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char_loop.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/char_loop.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char_loop.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 586 baait sankalit\n",
@@ -209,7 +209,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/char_loop.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/char_loop.bin"
         ],
         "exit": 0,
         "stdout": "10000\n",
@@ -224,9 +224,9 @@
       "expected": "0\n",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/memory_query.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/memory_query.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/memory_query.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/memory_query.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 302 baait sankalit\n",
@@ -236,7 +236,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/memory_query.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/memory_query.bin"
         ],
         "exit": 0,
         "stdout": "0\n",
@@ -251,9 +251,9 @@
       "expected": "",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/compiler",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/memory_budget.sm",
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/memory_budget.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/compiler",
+          "/mnt<repo>/build/round3-review/Windows-to-Sarvam/win-round3-2026-11-03/programs/memory_budget.sm",
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/memory_budget.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 1101 baait sankalit\n",
@@ -263,7 +263,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/characters-linux/memory_budget.bin"
+          "/mnt<repo>/build/round3-review/build/round3/characters-linux/memory_budget.bin"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_PARIMITA]: pankti 1 - mandape parimitat adhikam nirmmitam na sambhavati (parimitih 1 baait)\n",

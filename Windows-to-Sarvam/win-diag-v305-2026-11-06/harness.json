@@ -5,18 +5,18 @@
       "command": [
         "win\\sutram.exe",
         "examples\\79_ayojan_cwd.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-relative.exe"
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\root-relative.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "exit": 0,
       "stdout": "Siddh: 7335 baait sankalit\n",
       "stderr": "",
       "elapsed_seconds": 0.0212,
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-relative.exe"
+          "<repo>\\build\\windows-diag-v305-2026-11-06\\root-relative.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06",
+        "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06",
         "exit": 0,
         "stdout": "81\n",
         "stderr": "",
@@ -25,20 +25,20 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-absolute.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\examples\\79_ayojan_cwd.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\root-absolute.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "exit": 0,
       "stdout": "Siddh: 7335 baait sankalit\n",
       "stderr": "",
       "elapsed_seconds": 0.0146,
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\root-absolute.exe"
+          "<repo>\\build\\windows-diag-v305-2026-11-06\\root-absolute.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06",
+        "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06",
         "exit": 0,
         "stdout": "81\n",
         "stderr": "",
@@ -47,11 +47,11 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\harness-cwd.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\examples\\79_ayojan_cwd.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\harness-cwd.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\suite",
+      "cwd": "<repo>\\build\\windows-v305-2026-11-06\\suite",
       "exit": 1,
       "stdout": "Sutram truti [E_MODULE_MISSING]: yoj patra aprapt: ganit\nSanket: naam.smlib lib/ madhye srota-patrasya nirdeshikayam va bhavet\n",
       "stderr": "",
@@ -59,20 +59,20 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\bundle\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\portable-control.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\bundle\\sutram.exe",
+        "<repo>\\examples\\79_ayojan_cwd.sm",
+        "<repo>\\build\\windows-diag-v305-2026-11-06\\portable-control.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\suite",
+      "cwd": "<repo>\\build\\windows-v305-2026-11-06\\suite",
       "exit": 0,
       "stdout": "Siddh: 7335 baait sankalit\n",
       "stderr": "",
       "elapsed_seconds": 0.0238,
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06\\portable-control.exe"
+          "<repo>\\build\\windows-diag-v305-2026-11-06\\portable-control.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-diag-v305-2026-11-06",
+        "cwd": "<repo>\\build\\windows-diag-v305-2026-11-06",
         "exit": 0,
         "stdout": "81\n",
         "stderr": "",

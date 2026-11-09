@@ -1,7 +1,7 @@
 {
     "name":  "ordinary-stop",
     "moment":  "middle",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe",
     "setup_sha256":  "134FAE95DC9D79A0CC7E563BBF59E6FC69983EAE950C2C2799E20DEA911A286B",
     "started":  "2026-11-07T13:31:17.2278969-05:00",
     "observations":  [
@@ -29,15 +29,15 @@
     "live_log_opened":  false,
     "pid":  38668,
     "process_started":  "2026-11-07T13:31:17.3160301-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready_screenshot":  "ordinary-stop-ready.png",
     "child":  {
                   "parent":  38668,
                   "pid":  31540,
                   "started":  "2026-11-07T13:31:18.4167059-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM7C9B.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM7C9B.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v311-verification\\build\\native-v311\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM7C9B.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C9B.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM7C9B.tmp\\install.log",
     "stop_observed_at":  "2026-11-07T13:31:36.7529112-05:00",
     "seconds":  18.3530998,
     "engine_age_seconds":  18.3382056,

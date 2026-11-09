@@ -5,10 +5,10 @@
     1
   ],
   "lock_message": [
-    "[2026-11-07 13:18:50] ERROR: Another Sutram installer or uninstaller is working on C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram. Let it finish, then run this one again."
+    "[2026-11-07 13:18:50] ERROR: Another Sutram installer or uninstaller is working on %USERPROFILE%\\AppData\\Local\\Programs\\Sutram. Let it finish, then run this one again."
   ],
   "completion": [
-    "[2026-11-07 13:19:05] Installation complete: C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram"
+    "[2026-11-07 13:19:05] Installation complete: %USERPROFILE%\\AppData\\Local\\Programs\\Sutram"
   ],
   "pass_": true,
   "diff": {

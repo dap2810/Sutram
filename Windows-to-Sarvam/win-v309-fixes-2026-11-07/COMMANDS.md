@@ -1,6 +1,6 @@
 # Fix verification commands and retained evidence
 
-Owner instruction: implement fixes, verify them, then hand off. Product code lives on `codex/windows-v309-fixes` / [draft PR #68](https://github.com/dap2810/Sutram/pull/68). The native worktree was `E:\Github_Projects\Sutram\build\windows-v309-fixes`; the ordinary main checkout remains separate. No workflow changed or full CI ran.
+Owner instruction: implement fixes, verify them, then hand off. Product code lives on `codex/windows-v309-fixes` / [draft PR #68](https://github.com/dap2810/Sutram/pull/68). The native worktree was `<repo>\build\windows-v309-fixes`; the ordinary main checkout remains separate. No workflow changed or full CI ran.
 
 ## Build and payload comparison
 
@@ -21,15 +21,15 @@ A fresh Windows worktree at `8321f843` supplies the attribute-check samples. A s
 
 ```powershell
 git worktree add --detach build/windows-v309-fixes-fresh 8321f843
-wsl -d Ubuntu -- git clone --no-checkout --no-hardlinks /mnt/e/Github_Projects/Sutram /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout
-wsl -d Ubuntu -- git -C /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout -c core.autocrlf=false checkout --detach 8321f843
-wsl -d Ubuntu -- python3 /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/tools/build_installer_linux.py --work /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout/build/linux-payload --payload-only
+wsl -d Ubuntu -- git clone --no-checkout --no-hardlinks /mnt<repo> /mnt<repo>/build/windows-v309-linux-checkout
+wsl -d Ubuntu -- git -C /mnt<repo>/build/windows-v309-linux-checkout -c core.autocrlf=false checkout --detach 8321f843
+wsl -d Ubuntu -- python3 /mnt<repo>/build/windows-v309-linux-checkout/tools/build_installer_linux.py --work /mnt<repo>/build/windows-v309-linux-checkout/build/linux-payload --payload-only
 ```
 
 That first comparison had all 657 file contents equal but unequal manifest ordering; the JSON is retained. After the order correction, the local Linux clone was updated and rebuilt:
 
 ```sh
-cd /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout
+cd /mnt<repo>/build/windows-v309-linux-checkout
 git fetch origin codex/windows-v309-fixes
 git -c core.autocrlf=false checkout --detach 4536cc36
 python3 tools/build_installer_linux.py --work build/linux-payload-fixed --payload-only

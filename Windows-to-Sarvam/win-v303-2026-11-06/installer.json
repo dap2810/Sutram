@@ -1,14 +1,14 @@
 {
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v303-review\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v303-review\\Sutram-Setup.exe",
     "setup_sha256":  "0A278682F8333419FCDB874674910C5201E85DF741B7835F77FE061845B669E0",
-    "install":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "install":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "started":  "2026-11-06T18:35:11.3353303-05:00",
     "steps":  [
 
               ],
     "elevated":  false,
     "welcome":  "installer-welcome.png",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "installer-ready.png",
     "status":  "FAIL",
     "error":  "Exception calling \"Text\" with \"1\" argument(s): \"WM_GETTEXT timed out\""

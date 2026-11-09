@@ -4,7 +4,7 @@ spellings, library prakriya, every identifier in examples/ lib/ tests/, the elev
 the eleven .sandesh files, and compiled as an identifier, as a prakriya name and as a call on v296."""
 import os, re, subprocess, sys, tempfile, glob
 import os
-ROOT = os.environ.get('R118_ROOT', '/home/claude/sutram')
+ROOT = os.environ.get('R118_ROOT', '<repo>')
 NEW = sys.argv[1:]
 asm = open(f'{ROOT}/src/sutram_compiler.asm', encoding='utf-8', errors='replace').read()
 inc = ''.join(open(p, encoding='utf-8', errors='replace').read() for p in glob.glob(f'{ROOT}/src/*.inc'))

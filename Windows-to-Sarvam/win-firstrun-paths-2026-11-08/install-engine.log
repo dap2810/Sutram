@@ -6,9 +6,9 @@ Sutram Setup Log
 [2026-11-08 14:48:20] Native self-test exit: pre-install --version code=0
 [2026-11-08 14:48:20] Native self-test start: pre-install --help
 [2026-11-08 14:48:20] Native self-test exit: pre-install --help code=0
-[2026-11-08 14:48:22] Transaction d329cf7368ea4e0f9ada50473651f87e begun (journal C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
+[2026-11-08 14:48:22] Transaction d329cf7368ea4e0f9ada50473651f87e begun (journal %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
 [2026-11-08 14:48:22] Recording the payload being installed (payload.pending.sha256).
-[2026-11-08 14:48:22] Staging 657 Sutram files in C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\stage.
+[2026-11-08 14:48:22] Staging 657 Sutram files in %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\stage.
 [2026-11-08 14:48:22] START 1/657: assets\sutram.ico
 [2026-11-08 14:48:22] DONE  1/657: assets\sutram.ico
 [2026-11-08 14:48:22] START 2/657: bin\lang\bengali.lang
@@ -1323,7 +1323,7 @@ Sutram Setup Log
 [2026-11-08 14:48:33] DONE  656/657: win\lib\varna.smlib
 [2026-11-08 14:48:33] START 657/657: win\sutram.exe
 [2026-11-08 14:48:33] DONE  657/657: win\sutram.exe
-[2026-11-08 14:48:33] Publishing 657 files into C:\Users\dmech\AppData\Local\Programs\Sutram.
+[2026-11-08 14:48:33] Publishing 657 files into %USERPROFILE%\AppData\Local\Programs\Sutram.
 [2026-11-08 14:48:33] PUBLISH 1/657: assets\sutram.ico
 [2026-11-08 14:48:33] PUBLISH 2/657: bin\lang\bengali.lang
 [2026-11-08 14:48:33] PUBLISH 3/657: bin\lang\bengali.sandesh
@@ -1990,4 +1990,4 @@ Sutram Setup Log
 [2026-11-08 14:48:42] Creating Start-menu shortcuts.
 [2026-11-08 14:48:42] A pre-existing user desktop shortcut named Sutram IDE.lnk was preserved.
 [2026-11-08 14:48:42] Registering the .sm file type and the uninstaller.
-[2026-11-08 14:48:43] Installation complete: C:\Users\dmech\AppData\Local\Programs\Sutram
+[2026-11-08 14:48:43] Installation complete: %USERPROFILE%\AppData\Local\Programs\Sutram

@@ -4,13 +4,13 @@
     "description": "no memory to grow a kosh: a message",
     "compile": {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+        "<repo>\\win\\sutram.exe",
         "--fail-alloc",
         "3",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B3-forced-oom.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B3-forced-oom.exe"
+        "<repo>\\Windows-to-Sarvam\\win-v305-2026-11-06\\B3-forced-oom.sm",
+        "<repo>\\build\\windows-v305-2026-11-06\\B3-forced-oom.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "timeout_seconds": 30,
       "exit": 1,
       "stdout": "Sutram truti: nivesh patra aprapt\n",
@@ -26,11 +26,11 @@
     "description": "a kosh slice beside a growth that moves its region (R204 S1; v303 SIGSEGV)",
     "compile": {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7-S1-refusal.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B7-S1-refusal.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-v305-2026-11-06\\B7-S1-refusal.sm",
+        "<repo>\\build\\windows-v305-2026-11-06\\B7-S1-refusal.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "timeout_seconds": 30,
       "exit": 1,
       "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'pratham' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
@@ -46,11 +46,11 @@
     "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
     "compile": {
       "command": [
-        "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\original-repo-cwd.exe"
+        "<repo>\\win\\sutram.exe",
+        "<repo>\\examples\\79_ayojan_cwd.sm",
+        "<repo>\\build\\windows-v305-2026-11-06\\original-repo-cwd.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram",
+      "cwd": "<repo>",
       "timeout_seconds": 30,
       "exit": 0,
       "stdout": "Siddh: 7335 baait sankalit\n",
@@ -60,9 +60,9 @@
     },
     "run": {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\original-repo-cwd.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\original-repo-cwd.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v305-2026-11-06",
       "timeout_seconds": 30,
       "exit": 0,
       "stdout": "81\n",
@@ -76,11 +76,11 @@
     "compiler_sha256": "db5eda53871aafa4749d593ddef2d29e2841e3eb4d3cb7cdf680223fb45a073c",
     "compile": {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\bundle\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\examples\\79_ayojan_cwd.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\complete-bundle-unrelated-cwd.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\bundle\\sutram.exe",
+        "<repo>\\examples\\79_ayojan_cwd.sm",
+        "<repo>\\build\\windows-v305-2026-11-06\\complete-bundle-unrelated-cwd.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v305-2026-11-06",
       "timeout_seconds": 30,
       "exit": 0,
       "stdout": "Siddh: 7335 baait sankalit\n",
@@ -90,9 +90,9 @@
     },
     "run": {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\complete-bundle-unrelated-cwd.exe"
+        "<repo>\\build\\windows-v305-2026-11-06\\complete-bundle-unrelated-cwd.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v305-2026-11-06",
       "timeout_seconds": 30,
       "exit": 0,
       "stdout": "81\n",

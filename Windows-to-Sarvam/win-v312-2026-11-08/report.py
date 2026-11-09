@@ -152,7 +152,7 @@ write('RESULTS.md',f'''# Sutram v312 — Windows first-contact verification, 8 N
 
 **Devanagari, em dashes, licence line breaks, silent uninstall, the empty Classes key cleanup, the variable-based walk refusal, and all 322 native suite cases are verified on this Windows account. Two product findings remain: clipped licence-page instructions and uninstall's temporary script/log residue.** The illustrative literal sum also reaches a different diagnostic before the walk budget. No release acceptance is claimed.
 
-Pinned source: `{c['source_commit']}`. Windows 11 Home build 26300, non-elevated token, existing account. The canonical installation was absent at the start; older backups and Explorer history were present. No compiler, installer, library, example, golden or workflow changes were made. No CI workflow was launched.
+Pinned source: `{c['source_commit']}`. Windows 11 Home build (redacted), non-elevated token, existing account. The canonical installation was absent at the start; older backups and Explorer history were present. No compiler, installer, library, example, golden or workflow changes were made. No CI workflow was launched.
 
 | Test | Expected | Actual | Pass? |
 | --- | --- | --- | --- |

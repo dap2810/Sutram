@@ -1,8 +1,8 @@
 # R68 buffer audit — lib/roop.smlib and lib/khand.smlib
 
-Read-only audit. Sources quoted: /home/claude/sutram/lib/roop.smlib (676 lines),
-/home/claude/sutram/lib/khand.smlib (589 lines), the census at
-/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r68/census-roop-khand.txt,
+Read-only audit. Sources quoted: `<repo>`/lib/roop.smlib (676 lines),
+`<repo>`/lib/khand.smlib (589 lines), the census at
+`<scratch>`/r68/census-roop-khand.txt,
 and every call site under examples/, tests/ (not tests/negative/), lib/, tools/proof_props.py,
 tools/proof_lib.py (proof_lib.py contains no call to any roop_* or khand_* function).
 

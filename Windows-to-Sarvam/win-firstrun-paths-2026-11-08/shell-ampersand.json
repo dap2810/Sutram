@@ -13,6 +13,6 @@
     "editor":  "mukhya() {\r\n    likha(\"FIRST_RUN_AMPERSAND\")\r\n}\r\n",
     "file_sha256":  "81F977C65D793C7E04909AA58C3BEC439BD8732633A8235F01DF8699B240B793",
     "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 46   |   sanchit",
-    "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\Ampersand \u0026 Files\\hello.sm",
+    "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\Ampersand \u0026 Files\\hello.sm",
     "method":  "Two real left clicks in Explorer, 80 ms apart"
 }

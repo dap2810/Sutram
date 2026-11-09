@@ -7,7 +7,7 @@
                                  ],
     "processes":  [
                       {
-                          "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall-core.ps1\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SelfPath \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log\"",
+                          "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall-core.ps1\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SelfPath \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log\"",
                           "parent":  25268,
                           "pid":  16088,
                           "name":  "powershell.exe",
@@ -26,7 +26,7 @@
     "finished":  true,
     "hook_handle":  150143215,
     "elapsed_seconds":  191.0000297,
-    "log_path":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log",
+    "log_path":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp\\uninstall.log",
     "ended":  "2026-11-08T11:25:08.3965617-05:00",
     "process_results":  [
                             {

@@ -1,11 +1,11 @@
 {
   "source_commit": "1263356b6cb434871680c83c6f70a8c67eb016a3",
-  "compiler": "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+  "compiler": "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
   "compiler_sha256": "ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e",
-  "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source",
+  "cwd": "<repo>\\build\\windows-v297\\source",
   "version": {
     "command": [
-      "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+      "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
       "--version"
     ],
     "exit": 0,
@@ -20,11 +20,11 @@
       "source": "# R2-WS1a golden: a deliberate syntax error compiled with --lang hindi must\n# print the Hindi diagnostic as real Devanagari (not double-encoded bytes).\n# This file is expected to FAIL to compile.\nmukhya() {\n    vitti x = \n}\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
+          "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
           "--lang",
           "hindi",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\220_hindi_parse_error.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\A220.exe"
+          "<repo>\\build\\windows-v297\\source\\examples\\220_hindi_parse_error.sm",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\A220.exe"
         ],
         "exit": 1,
         "stdout": "भाषा पैक मिला: hindi\n\nSutram truti: व्याकरण दोष, पंक्ति 7:1, शब्द 'फ़ाइल का अंत'\n  \n  ^\nसंकेत: इस स्थान पर शब्द और व्याकरण जाँचें।\n",
@@ -38,9 +38,9 @@
       "source": "mukhya() {\n    likha(\"start=\", parimana())\n    mandapa {\n        vitti p = nirmmita(4096)\n        likha(\"in=\", parimana())\n    }\n    likha(\"after=\", parimana())\n}\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B1.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B1.exe"
+          "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B1.sm",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B1.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 635 baait sankalit\n",
@@ -50,7 +50,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B1.exe"
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B1.exe"
         ],
         "exit": 0,
         "stdout": "start=0\nin=0\nafter=0\n",
@@ -64,9 +64,9 @@
       "source": "mukhya() {\n    mandapa parimita 1048576 {\n        vitti s = 0\n        chakra i = 1 tak 20000 {\n            vitti p = nirmmita(64)\n            p[0] = i\n            s = s + p[0]\n        }\n        likha(s)\n    }\n}\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B2.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B2.exe"
+          "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B2.sm",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B2.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 354 baait sankalit\n",
@@ -76,7 +76,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B2.exe"
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B2.exe"
         ],
         "exit": 0,
         "stdout": "200010000\n",
@@ -90,9 +90,9 @@
       "source": "mukhya() {\n    kosh k[1]\n    kosh_push(k, 41)\n    vitti a = k\n    vitti obstacle = nirmmita(64)\n    kosh_push(k, 42)\n    k[0] = 99\n    likha(\"a[0]=\", a[0], \" k[0]=\", k[0])\n}\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B3.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B3.exe"
+          "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B3.sm",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B3.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 1280 baait sankalit\n",
@@ -102,7 +102,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B3.exe"
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B3.exe"
         ],
         "exit": 0,
         "stdout": "a[0]=41 k[0]=99\n",
@@ -116,9 +116,9 @@
       "source": "mukhya() {\n    shabda(anka_akshar(66))\n    likha(\"\\n\")\n}\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C1.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C1.exe"
+          "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C1.sm",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C1.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 155 baait sankalit\n",
@@ -128,7 +128,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C1.exe"
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C1.exe"
         ],
         "exit": 0,
         "stdout": "P\n",
@@ -142,9 +142,9 @@
       "source": "mukhya() {\n    vitti s = vartani_sandhi(\"ab\", \"cd\")\n    shabda(s)\n    likha(\"\\n\")\n}\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C2.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C2.exe"
+          "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C2.sm",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C2.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 199 baait sankalit\n",
@@ -154,7 +154,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C2.exe"
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\C2.exe"
         ],
         "exit": 3221225477,
         "stdout": "",
@@ -168,9 +168,9 @@
       "source": "# R108: parimana() - one number, the bytes the program's nirmmita and kosh hold now - moving as\n# allocations happen. A block gives back its nirmmita; a kosh (made inside a block or not) keeps its\n# header and capacity for the program's life: kosh storage is not reclaimed yet.\nmukhya() {\n    likha(\"start \", parimana(), \"\\n\")\n    kosh k[1]\n    kosh_kship(k, 1)\n    likha(\"a kosh of 1 \", parimana(), \"\\n\")\n    kosh_kship(k, 2)\n    kosh_kship(k, 3)\n    likha(\"grown to capacity 4 \", parimana(), \"\\n\")\n    mandapa {\n        vitti b = nirmmita(100)\n        likha(\"a block's nirmmita(100) \", parimana(), \"\\n\")\n        kosh m[8]\n        likha(\"and a kosh of 8 in it \", parimana(), \"\\n\")\n    }\n    likha(\"after the block \", parimana(), \"\\n\")\n}\n",
       "compile": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\win\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v297\\source\\examples\\318_r108_parimana_moves.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B318.exe"
+          "<repo>\\build\\windows-v297\\source\\win\\sutram.exe",
+          "<repo>\\build\\windows-v297\\source\\examples\\318_r108_parimana_moves.sm",
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B318.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 2322 baait sankalit\n",
@@ -180,7 +180,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B318.exe"
+          "<repo>\\Windows-to-Sarvam\\win-round2-2026-11-03\\programs\\B318.exe"
         ],
         "exit": 0,
         "stdout": "start 0\na kosh of 1 0\ngrown to capacity 4 0\na block's nirmmita(100) 0\nand a kosh of 8 in it 0\nafter the block 0\n",

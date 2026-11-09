@@ -9,8 +9,8 @@
 **1. TWO INSTALLATIONS COEXIST AND THE OLDER ONE WINS ON PATH.**
 A direct call to `AppData\Local\Programs\Sutram\bin\sutram.exe` prints `Sutram 1.0 (v303) - sampurna sutra` correctly. But a fresh `cmd.exe` resolving bare `sutram` gives:
 ```
-C:\Users\dmech\AppData\Local\Sutram\bin\sutram.exe        <- OLDER, wins
-C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe  <- v303
+%USERPROFILE%\AppData\Local\Sutram\bin\sutram.exe        <- OLDER, wins
+%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe  <- v303
 Sutram 1.4.0
 ```
 So a student who installs this and opens a new terminal gets an old version.

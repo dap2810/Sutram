@@ -16,6 +16,15 @@ checks it; do not rely on the gate to remember what you forgot - it catches a mi
 does not exist, a book example that does not run, a flag the compiler refuses; it does not catch a paragraph that is
 now false. (The owner's standing instruction: *"The docs should be up to date as we progress."* R158.)
 
+**Never write the owner's system details into this repository (the owner's standing instruction, 9 November 2026).**
+The repository is public. In every file - reports, evidence, JSON, logs, transcripts, commit messages, code comments -
+write no home folder (`C:\Users\<anything>`, `/home/<anything>`), no user or computer name, no drive letter or
+absolute path outside the repository, no OS build number, no hardware detail, no IP or MAC address, no screenshot
+file name that encodes a path. Write `%USERPROFILE%`, `<repo>`, `%TEMP%`, `<scratch>` and "Windows 11" instead: a
+path is evidence, a user name is not. The gate `R159 no personal paths` (`tests/r159/test_no_personal_paths.py`)
+fails on any of them in a tracked file; `tools/normalize_personal_paths.py` replaces them keeping what each line
+says. It cannot clean the history (`git log -p`) or read text inside an image - check a screenshot before you add it.
+
 **Evidence stays, and so does the history (decided by Sarvam, R161).** The repository is large because every claim
 in it is backed by evidence - most of it from running each candidate on a second platform. A file a report names, a
 script made, or a wildcard in a report covers is part of the record: if the record says "the guard showed 587

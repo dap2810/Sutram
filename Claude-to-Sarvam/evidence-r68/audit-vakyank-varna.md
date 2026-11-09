@@ -1,6 +1,6 @@
 # R68 audit — lib/vakyank.smlib, lib/varna.smlib, lib/aadhar.smlib, lib/anukram.smlib
 
-Read-only audit against /home/claude/sutram (nothing modified). Census: 19 prakriya, 108 write
+Read-only audit against `<repo>` (nothing modified). Census: 19 prakriya, 108 write
 sites. Every body was read in full; every loop's start/step and every branch was followed.
 Line numbers are from the files as they stand today.
 

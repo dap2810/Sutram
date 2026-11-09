@@ -4,7 +4,7 @@ program's life, as every kosh region is), pushes E elements into each, prints 'r
 script then reads /proc/PID/status (VmPeak/VmSize = address space; VmHWM/VmRSS = resident) and /proc/PID/maps
 (the mapping count), and lets it finish. A baseline with N = 0 is subtracted for the per-kosh cost."""
 import os, subprocess, sys, tempfile
-COMP = sys.argv[1] if len(sys.argv) > 1 else '/home/claude/sutram/sutram_compiler'
+COMP = sys.argv[1] if len(sys.argv) > 1 else '<repo>/sutram_compiler'
 d = tempfile.mkdtemp(dir=os.path.dirname(os.path.abspath(__file__)))
 def measure(n, e):
     src = os.path.join(d, f'k{n}_{e}.sm'); exe = src[:-3] + '.bin'

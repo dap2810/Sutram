@@ -1,6 +1,6 @@
 # Commands and scope
 
-Test checkout: `E:\Github_Projects\Sutram\build\windows-v310-acceptance`, pinned to candidate.json's source commit. It was created after `git fetch origin`, `git merge --ff-only origin/main`, and `git worktree add -b codex/windows-v310-2026-11-07 build/windows-v310-acceptance origin/main`.
+Test checkout: `<repo>\build\windows-v310-acceptance`, pinned to candidate.json's source commit. It was created after `git fetch origin`, `git merge --ff-only origin/main`, and `git worktree add -b codex/windows-v310-2026-11-07 build/windows-v310-acceptance origin/main`.
 
 Preparation: `python build/prepare-v310.py` from the original repository; a copy of that script is included here. It adapts prior observation/preservation helpers into this evidence folder without touching product source.
 

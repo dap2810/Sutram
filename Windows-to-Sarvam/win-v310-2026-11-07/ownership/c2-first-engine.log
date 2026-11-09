@@ -6,9 +6,9 @@ Sutram Setup Log
 [2026-11-07 13:18:53] Native self-test exit: pre-install --version code=0
 [2026-11-07 13:18:53] Native self-test start: pre-install --help
 [2026-11-07 13:18:53] Native self-test exit: pre-install --help code=0
-[2026-11-07 13:18:59] Transaction f4846685417141bb9d06260033053884 begun (journal C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
+[2026-11-07 13:18:59] Transaction f4846685417141bb9d06260033053884 begun (journal %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
 [2026-11-07 13:18:59] Recording the payload being installed (payload.pending.sha256).
-[2026-11-07 13:18:59] Staging 657 Sutram files in C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\stage.
+[2026-11-07 13:18:59] Staging 657 Sutram files in %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\stage.
 [2026-11-07 13:18:59] Already installed 1/657: assets\sutram.ico
 [2026-11-07 13:18:59] Already installed 2/657: bin\lang\bengali.lang
 [2026-11-07 13:18:59] Already installed 3/657: bin\lang\bengali.sandesh
@@ -666,7 +666,7 @@ Sutram Setup Log
 [2026-11-07 13:19:01] Already installed 655/657: win\lib\vakyank.smlib
 [2026-11-07 13:19:01] Already installed 656/657: win\lib\varna.smlib
 [2026-11-07 13:19:01] Already installed 657/657: win\sutram.exe
-[2026-11-07 13:19:01] Publishing 657 files into C:\Users\dmech\AppData\Local\Programs\Sutram.
+[2026-11-07 13:19:01] Publishing 657 files into %USERPROFILE%\AppData\Local\Programs\Sutram.
 [2026-11-07 13:19:05] Writing the payload manifest.
 [2026-11-07 13:19:05] Copying the uninstaller.
 [2026-11-07 13:19:05] Writing the installation marker.
@@ -677,10 +677,10 @@ Sutram Setup Log
 [2026-11-07 13:19:05] New-terminal check exit: code=0
 [2026-11-07 13:19:05] New-terminal check: Sutram 1.0 (v310) - sampurna sutra
 [2026-11-07 13:19:05] Creating Start-menu shortcuts.
-[2026-11-07 13:19:05] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram IDE.lnk
-[2026-11-07 13:19:05] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Terminal.lnk
-[2026-11-07 13:19:05] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Documentation.lnk
-[2026-11-07 13:19:05] Preserved pre-existing user shortcut: C:\Users\dmech\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Uninstall Sutram.lnk
+[2026-11-07 13:19:05] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram IDE.lnk
+[2026-11-07 13:19:05] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Terminal.lnk
+[2026-11-07 13:19:05] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Sutram Documentation.lnk
+[2026-11-07 13:19:05] Preserved pre-existing user shortcut: %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Sutram\Uninstall Sutram.lnk
 [2026-11-07 13:19:05] A pre-existing user desktop shortcut named Sutram IDE.lnk was preserved.
 [2026-11-07 13:19:05] Registering the .sm file type and the uninstaller.
-[2026-11-07 13:19:05] Installation complete: C:\Users\dmech\AppData\Local\Programs\Sutram
+[2026-11-07 13:19:05] Installation complete: %USERPROFILE%\AppData\Local\Programs\Sutram

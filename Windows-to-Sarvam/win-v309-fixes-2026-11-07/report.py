@@ -58,7 +58,7 @@ Built product source: `{candidate['source_commit']}`. Review head with expanded 
 | Payload manifest (both platforms) | `{candidate['manifest_sha256']}` |
 | Unchanged compiler | `{candidate['compiler_sha256']}` |
 
-The candidate is retained at `E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe`. Generated setup binaries/pins remain local; the PR contains source and tests. No compiler/runtime, library, examples, frozen expectations or workflow triggers were edited. No full CI was launched.
+The candidate is retained at `<repo>\\build\\windows-v309-fixes\\build\\native-v309-fix\\Sutram-Setup.exe`. Generated setup binaries/pins remain local; the PR contains source and tests. No compiler/runtime, library, examples, frozen expectations or workflow triggers were edited. No full CI was launched.
 
 ## What changed
 

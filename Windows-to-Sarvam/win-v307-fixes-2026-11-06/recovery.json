@@ -1,6 +1,6 @@
 {
     "phase":  "recovery",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v307-fixes\\Sutram-Setup.exe",
     "sha256":  "7BA5FDDA8E373492AE272D2B0EF3CC2965287715A4503D9C11B3C02FCAF398BD",
     "started":  "2026-11-06T23:50:14.2704934-05:00",
     "elevated":  false,
@@ -22,15 +22,15 @@
                      ],
     "pid":  6212,
     "process_started":  "2026-11-06T23:50:14.2893424-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "recovery-ready.png",
     "child":  {
                   "parent":  6212,
                   "pid":  35532,
                   "started":  "2026-11-06T23:50:15.3373228-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMCAA5.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMCAA5.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v307-fixes\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMCAA5.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCAA5.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STMCAA5.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  8.65,
     "finish_screenshot":  "recovery-finish.png",

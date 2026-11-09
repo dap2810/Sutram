@@ -1,11 +1,11 @@
 {
   "host": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
   "uid": 1000,
-  "compiler": "/mnt/e/Github_Projects/Sutram/build/windows-v297/source/sutram_compiler",
+  "compiler": "/mnt<repo>/build/windows-v297/source/sutram_compiler",
   "compiler_sha256": "a9868449a047482bd480ebc6ce05e73ebec57ce6aea1c691974aab8b17b25855",
   "version": {
     "command": [
-      "/mnt/e/Github_Projects/Sutram/build/windows-v297/source/sutram_compiler",
+      "/mnt<repo>/build/windows-v297/source/sutram_compiler",
       "--version"
     ],
     "exit": 0,
@@ -19,9 +19,9 @@
       "name": "C1",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/windows-v297/source/sutram_compiler",
-          "/mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/programs/C1.sm",
-          "/mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/programs/C1.bin"
+          "/mnt<repo>/build/windows-v297/source/sutram_compiler",
+          "/mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/programs/C1.sm",
+          "/mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/programs/C1.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 156 baait sankalit\n",
@@ -31,7 +31,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/programs/C1.bin"
+          "/mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/programs/C1.bin"
         ],
         "exit": 0,
         "stdout": "B\n",
@@ -44,9 +44,9 @@
       "name": "C2",
       "compile": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/build/windows-v297/source/sutram_compiler",
-          "/mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/programs/C2.sm",
-          "/mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/programs/C2.bin"
+          "/mnt<repo>/build/windows-v297/source/sutram_compiler",
+          "/mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/programs/C2.sm",
+          "/mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/programs/C2.bin"
         ],
         "exit": 0,
         "stdout": "Siddh: 200 baait sankalit\n",
@@ -56,7 +56,7 @@
       },
       "run": {
         "command": [
-          "/mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/programs/C2.bin"
+          "/mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/programs/C2.bin"
         ],
         "exit": 0,
         "stdout": "abcd\n",

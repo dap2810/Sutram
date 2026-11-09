@@ -22,32 +22,32 @@
     "token_elevated": 1,
     "in_administrators_role": true,
     "script_sha256": "d290257cdc7c94dfc4e9176ef411166f2d4261a98696658cd4ca5fb137e526ba",
-    "repo_root": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7",
+    "repo_root": "<scratch>\\r6\\acceptroot_r7",
     "git_commit": null,
     "started": "2026-10-19T14:09:00-04:00"
   },
   "artefacts": [
     {
       "role": "setup",
-      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\Sutram-Setup.exe",
+      "path": "<scratch>\\r6\\acceptroot_r7\\Sutram-Setup.exe",
       "sha256": "73fabd7146db294741a917f5fd748cdeeeb5b33e6cb2b2b672cc29984df8db48",
       "bytes": 1102219
     },
     {
       "role": "repo-compiler win\\sutram.exe",
-      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\win\\sutram.exe",
+      "path": "<scratch>\\r6\\acceptroot_r7\\win\\sutram.exe",
       "sha256": "b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b",
       "bytes": 186755
     },
     {
       "role": "repo-compiler sutram.exe",
-      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\sutram.exe",
+      "path": "<scratch>\\r6\\acceptroot_r7\\sutram.exe",
       "sha256": "b6e2bb342e75600a3e67b9263a27725f15494384804edbfa4c72234ec8b93b1b",
       "bytes": 186755
     },
     {
       "role": "repo-ide sutram-ide-gui.exe",
-      "path": "Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\sutram-ide-gui.exe",
+      "path": "<scratch>\\r6\\acceptroot_r7\\sutram-ide-gui.exe",
       "sha256": "528a4ee0cf421279f77a95240b244b880d572acfd40f2e2c0254ed7a52f0d4e7",
       "bytes": 99004
     }
@@ -78,7 +78,7 @@
       "status": "PASS",
       "required": true,
       "environment": "Wine",
-      "command": "\"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\Sutram-Setup.exe\" --self-test",
+      "command": "\"<scratch>\\r6\\acceptroot_r7\\Sutram-Setup.exe\" --self-test",
       "output": "",
       "detail": "embedded SHA-256 self-test exit 0",
       "time": "2026-10-19T14:09:00"
@@ -89,7 +89,7 @@
       "required": true,
       "environment": "Wine",
       "command": "BM_CLICK Next / I accept / Next / Next / Install / Finish (launch unchecked) on the wizard this script started",
-      "output": "page: welcome\r\npage: license\r\nNext enabled before accepting: False\r\nNext enabled after accepting: True\r\npage: location\r\ninstall folder (default, unchanged): C:\\users\\root\\AppData\\Local\\Programs\\Sutram\r\npage: components\r\nadd-to-PATH checked: 1\r\ndesktop shortcut checked: 0\r\npage: ready\r\noutcome: dialog: Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details. after 11 s\r\ninstall.log copied from C:\\users\\root\\Temp\\STM25e.tmp\r\n",
+      "output": "page: welcome\r\npage: license\r\nNext enabled before accepting: False\r\nNext enabled after accepting: True\r\npage: location\r\ninstall folder (default, unchanged): %USERPROFILE%\\AppData\\Local\\Programs\\Sutram\r\npage: components\r\nadd-to-PATH checked: 1\r\ndesktop shortcut checked: 0\r\npage: ready\r\noutcome: dialog: Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details. after 11 s\r\ninstall.log copied from %USERPROFILE%\\Temp\\STM25e.tmp\r\n",
       "detail": "outcome=dialog: Sutram setup did not complete. Check the install log in %TEMP% (unique STM folder) for details.; screenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-components.png, wizard-ready.png",
       "time": "2026-10-19T14:09:16"
     },
@@ -98,7 +98,7 @@
       "status": "NOT-RUN",
       "required": true,
       "environment": "Wine",
-      "command": "Start-Process -FilePath \"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\Sutram-Setup.exe\" (no RunAs verb)",
+      "command": "Start-Process -FilePath \"<scratch>\\r6\\acceptroot_r7\\Sutram-Setup.exe\" (no RunAs verb)",
       "output": "setup TokenElevationType=2 TokenElevation=1; consent.exe appeared during install: False",
       "detail": "Wine has no UAC; this check means something only on Windows",
       "time": "2026-10-19T14:09:16"
@@ -118,7 +118,7 @@
       "status": "PASS",
       "required": true,
       "environment": "Wine",
-      "command": "\"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\win\\sutram.exe\" --lang sanskrit 218_sanskrit_devanagari.sm; run it",
+      "command": "\"<scratch>\\r6\\acceptroot_r7\\win\\sutram.exe\" --lang sanskrit 218_sanskrit_devanagari.sm; run it",
       "output": "compile exit=0\nBhasha pak prapt: sanskrit\nSiddh: 276 byte sankalit\n\nrun exit=0\nयोगः = 15\n",
       "detail": "repository build; expects the line योगः = 15",
       "time": "2026-10-19T14:09:16"
@@ -128,7 +128,7 @@
       "status": "PASS",
       "required": true,
       "environment": "Wine",
-      "command": "Start-Process \"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\\sutram-ide-gui.exe\" -WorkingDirectory \"Z:\\tmp\\claude-0\\-home-claude\\6889af70-4aa6-567a-b665-1e4ff0074842\\scratchpad\\r6\\acceptroot_r7\"",
+      "command": "Start-Process \"<scratch>\\r6\\acceptroot_r7\\sutram-ide-gui.exe\" -WorkingDirectory \"<scratch>\\r6\\acceptroot_r7\"",
       "output": "pid=556 title=Untitled - Sutram sampadak TokenElevation=1",
       "detail": "repository build; screenshot ide-start.png",
       "time": "2026-10-19T14:09:17"

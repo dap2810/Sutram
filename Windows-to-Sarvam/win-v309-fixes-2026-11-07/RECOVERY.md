@@ -11,8 +11,8 @@ The real rebuilt wizard/engine were used, without changing security settings. In
 The edited tree and transaction remain intact at:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram-v309-fix-after-d3-20261107-113327
-C:\Users\dmech\AppData\Local\Programs\Sutram-v309-fix-after-d3-20261107-113327.transaction
+%USERPROFILE%\AppData\Local\Programs\Sutram-v309-fix-after-d3-20261107-113327
+%USERPROFILE%\AppData\Local\Programs\Sutram-v309-fix-after-d3-20261107-113327.transaction
 ```
 
 The known-good candidate backup was restored and verified ([inventory](restore-after-d3.json)). Final installed manifest/uninstaller exactly match the candidate, not merely a compiler with the same v309 version. [Final identity](handoff-identity.json).

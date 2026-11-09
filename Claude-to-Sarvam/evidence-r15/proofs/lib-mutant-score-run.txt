@@ -302,4 +302,4 @@ varna      varna_ant                    S=k  17/19   11.6s  (300 done, 1830 s)
 varna      varna_tul                    S=k  19/25   12.8s  (301 done, 1830 s)
 varna      varna_viparyay               S=k  26/38    7.3s  (302 done, 1837 s)
 varna      varna_gan                    S=k  19/24   43.5s  (303 done, 1873 s)
-wrote /tmp/claude-0/-home-claude/6889af70-4aa6-567a-b665-1e4ff0074842/scratchpad/r15/score-all.json
+wrote <scratch>/r15/score-all.json

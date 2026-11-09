@@ -1,6 +1,6 @@
 {
     "phase":  "a3",
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "E6006CAF2BACEBF378B9D3B8CD4527D63C1DE6AC2E96EFA630E5C268FF852E5F",
     "started":  "2026-11-06T21:32:31.7416634-05:00",
     "elevated":  false,
@@ -4309,14 +4309,14 @@
                          }
                      ],
     "pid":  36956,
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "a3-ready.png",
     "child":  {
                   "ProcessId":  27748,
                   "ParentProcessId":  36956,
-                  "CommandLine":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB9E1.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB9E1.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB9E1.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "CommandLine":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMB9E1.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMB9E1.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMB9E1.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMB9E1.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STMB9E1.tmp\\install.log",
     "status":  "NO_RESULT_AFTER_930_SECONDS",
     "closed":  true
 }

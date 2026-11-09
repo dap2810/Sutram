@@ -1,6 +1,6 @@
 {
     "phase":  "upgrade",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v307-fixes\\Sutram-Setup.exe",
     "sha256":  "9F98D3B7F266FF42FDAE4B4314909D781ADB4BCD32EB5BB1151C6B36AE8184AE",
     "started":  "2026-11-06T23:38:37.8950669-05:00",
     "elevated":  false,
@@ -183,15 +183,15 @@
                      ],
     "pid":  37664,
     "process_started":  "2026-11-06T23:38:38.2160049-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "upgrade-ready.png",
     "child":  {
                   "parent":  37664,
                   "pid":  32756,
                   "started":  "2026-11-06T23:38:39.5906278-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2CDF.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2CDF.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2CDF.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM2CDF.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM2CDF.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v307-fixes\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM2CDF.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM2CDF.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM2CDF.tmp\\install.log",
     "stall":  {
                   "seconds":  33.3226122,
                   "last_line":  "",

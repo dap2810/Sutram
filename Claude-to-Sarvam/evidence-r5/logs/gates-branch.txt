@@ -10,7 +10,7 @@ Sutram gates — 2026-10-19T14:02Z
   library proofs (191 passed, 0 failed, 191 total) PASS
   property proofs (86/86)      PASS
   layer check (14 core, 9 alloc, 1 std) PASS
-  stdlib inventory (Wrote /home/claude/sutram/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
+  stdlib inventory (Wrote <repo>/docs/sutram-stdlib.html: 24 modules, 303 functions) PASS
   module graph                 PASS
   X11 GUI protocol             FAIL   1 of 18 failed
   Windows execution            NOT-RUN cannot run here - never executed by anyone (Gate 6)

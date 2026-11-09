@@ -1167,7 +1167,7 @@ its base, `3512d34` its merge onto v168, `e95f727` manifest, `a39d2f9` the Sansk
 for this round directly, knowing ROUND-02 said *do not touch `windows/`*; R3-00 lists exactly what
 was touched and why.
 
-Gates on the branch, measured on Windows 11 build 26300 as a standard user: native goldens
+Gates on the branch, measured on Windows 11 build (redacted) as a standard user: native goldens
 **186 PASS / 3 NO_EXPECTATION / 2 SKIP** · GUI **30 / 30** · setup 7/7 · payload, preflight,
 contract PASS · `tests/gui` 28 OK · **`tests/r69` 2 FAIL (merge) + 1 ERROR (already on main)** ·
 Linux (WSL) suite **187 / 4** · codegen 12/12 · packs 33/33 · layers 14/9/1 · module_graph 18/18 ·

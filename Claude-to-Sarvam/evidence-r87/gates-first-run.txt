@@ -15,7 +15,7 @@ Sutram gates — 2026-10-31T15:52Z
   property proofs              FAIL   85/86 properties hold
   guard pages                  FAIL   guard pages: controls 5/5, suite PASS=257 FAIL=1, library proofs 229/229, property proofs 85/86, 2 failed
   layer check (14 core, 9 alloc, 1 std) PASS
-  stdlib inventory (Wrote /home/claude/sutram/docs/sutram-stdlib.html: 24 modules, 306 functions) PASS
+  stdlib inventory (Wrote <repo>/docs/sutram-stdlib.html: 24 modules, 306 functions) PASS
   module graph                 PASS
   pack messages (12 sets x 11 cases) PASS
   keyword packs built in (11, = lang/*.lang) PASS

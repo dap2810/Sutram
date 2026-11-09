@@ -25,8 +25,8 @@ nasm -f elf64 -I. src/r68_compiler_entry.asm -o /tmp/s.o && ld -o sutram_compile
 ./sutram_compiler Claude-to-Sarvam/04-ankatalika.sm /tmp/ankatalika.bin
 /tmp/ankatalika.bin > Claude-to-Sarvam/04-ankatalika.expected.txt ; echo "exit=$?"
 ./sutram_compiler --check Claude-to-Sarvam/04-ankatalika.sm
-cd /tmp && /home/claude/sutram/sutram_compiler /home/claude/sutram/Claude-to-Sarvam/04-ankatalika.sm a2.bin \
-  && ./a2.bin | diff - /home/claude/sutram/Claude-to-Sarvam/04-ankatalika.expected.txt && echo IDENTICAL
+cd /tmp && <repo>/sutram_compiler <repo>/Claude-to-Sarvam/04-ankatalika.sm a2.bin \
+  && ./a2.bin | diff - <repo>/Claude-to-Sarvam/04-ankatalika.expected.txt && echo IDENTICAL
 sha256sum /tmp/ankatalika.bin /tmp/a2.bin
 python3 -c "import statistics as s; m=[91,67,78,34,88,59,95,72,45]; print(sum(m)/9, s.pstdev(m))"
 ```

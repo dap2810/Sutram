@@ -1,7 +1,7 @@
 # R76: kuttaka (600 random cases) and meru (every C(n, k), n <= 70) against Python's exact integers.
 # usage: crosscheck.py COMPILER
 import random,math,subprocess,sys
-C=sys.argv[1]; T='/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r76/cc'
+C=sys.argv[1]; T='<scratch>/r76/cc'
 M=2**63-1; rnd=random.Random(76)
 def lit(v): return str(v) if v>=0 else f'0 - {-v}'
 cases=[]

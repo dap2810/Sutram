@@ -6,9 +6,9 @@ Sutram Setup Log
 [2026-11-07 11:33:01] Native self-test exit: pre-install --version code=0
 [2026-11-07 11:33:01] Native self-test start: pre-install --help
 [2026-11-07 11:33:01] Native self-test exit: pre-install --help code=0
-[2026-11-07 11:33:03] Transaction fc21ec5c403d4478b17fc044ef54243d begun (journal C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
+[2026-11-07 11:33:03] Transaction fc21ec5c403d4478b17fc044ef54243d begun (journal %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
 [2026-11-07 11:33:03] Recording the payload being installed (payload.pending.sha256).
-[2026-11-07 11:33:03] Staging 657 Sutram files in C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\stage.
+[2026-11-07 11:33:03] Staging 657 Sutram files in %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\stage.
 [2026-11-07 11:33:03] START 1/657: assets\sutram.ico
 [2026-11-07 11:33:03] DONE  1/657: assets\sutram.ico
 [2026-11-07 11:33:03] START 2/657: bin\lang\bengali.lang
@@ -1323,7 +1323,7 @@ Sutram Setup Log
 [2026-11-07 11:33:14] DONE  656/657: win\lib\varna.smlib
 [2026-11-07 11:33:14] START 657/657: win\sutram.exe
 [2026-11-07 11:33:14] DONE  657/657: win\sutram.exe
-[2026-11-07 11:33:14] Publishing 657 files into C:\Users\dmech\AppData\Local\Programs\Sutram.
+[2026-11-07 11:33:14] Publishing 657 files into %USERPROFILE%\AppData\Local\Programs\Sutram.
 [2026-11-07 11:33:14] PUBLISH 1/657: assets\sutram.ico
 [2026-11-07 11:33:14] PUBLISH 2/657: bin\lang\bengali.lang
 [2026-11-07 11:33:14] PUBLISH 3/657: bin\lang\bengali.sandesh

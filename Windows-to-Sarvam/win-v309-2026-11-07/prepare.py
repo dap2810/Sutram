@@ -24,5 +24,5 @@ record=dict(commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,t
 (HERE/'payload.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
 (HERE/'payload-all.json').write_text(json.dumps(all_payload,indent=2)+'\n',encoding='utf8')
 shutil.copy2(ROOT/'Windows-to-Sarvam/win-v307-fixes-2026-11-06/ui-helper.ps1',HERE/'ui-helper.ps1')
-shutil.copy2(Path(r'C:\Users\dmech\Downloads\SUTRAM-WINDOWS-V309.md'),HERE/'OWNER-INSTRUCTIONS.md')
+shutil.copy2(Path(r'%USERPROFILE%\Downloads\SUTRAM-WINDOWS-V309.md'),HERE/'OWNER-INSTRUCTIONS.md')
 print(json.dumps(record,indent=2))

@@ -1,5 +1,5 @@
 import subprocess, os, collections, re, json, sys
-os.chdir('/home/claude/sutram')
+os.chdir('<repo>')
 files = [f for f in subprocess.run(['git','ls-files','-z'],capture_output=True).stdout.decode().split('\0') if f]
 W = 'Windows-to-Sarvam/'
 KEEP_EXT = ('.md', '.ps1', '.py', '.sha256', '.psm1', '.sh', '.bat', '.cmd', '.html', '.htm')
@@ -41,4 +41,4 @@ for k, v in c.most_common(40): print(f'{v/1e6:7.2f} MB {n[k]:5d}  {k}')
 e = collections.Counter()
 for f, s in plan: e[os.path.splitext(f)[1].lower()] += s
 print(e.most_common(12))
-json.dump(plan, open('/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r155/plan2.json','w'))
+json.dump(plan, open('<scratch>/r155/plan2.json','w'))

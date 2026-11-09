@@ -8,7 +8,7 @@
         "-f",
         "win64",
         "-dWINDOWS",
-        "-IE:/Github_Projects/Sutram/build/windows-v309-fixes/",
+        "-I<repo>/build/windows-v309-fixes/",
         "entry.asm",
         "-o",
         "host.obj"
@@ -32,9 +32,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\host.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\local.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\local.exe"
+        "<repo>\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\host.exe",
+        "<repo>\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\local.sm",
+        "<repo>\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\local.exe"
       ],
       "exit": 1,
       "stdout": "Sutram truti [E_VISHLESHANA_SEEMA]: abhivyakti-vishleshana seema atikram\n",
@@ -43,9 +43,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\host.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\global.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\global.exe"
+        "<repo>\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\host.exe",
+        "<repo>\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\global.sm",
+        "<repo>\\build\\windows-v309-fixes\\build\\analysis-limit-ybvr4pd7\\global.exe"
       ],
       "exit": 1,
       "stdout": "Sutram truti [E_VISHLESHANA_SEEMA]: abhivyakti-vishleshana seema atikram\n",

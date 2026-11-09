@@ -35,7 +35,7 @@
 == int_shift_neg: exit 0: 's 9223372036854775804 2305843009213693951\n'
 
 import subprocess, sys, os
-C='/tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r94/g/old/sutram_compiler'
+C='<scratch>/r94/g/old/sutram_compiler'
 P = [
  ('int_wrap', 'vitti x = 4000000000\n    likha(x * x)'),
  ('int_div_neg', 'vitti a = 0 - 7\n    vitti b = 2\n    likha(a / b, " ", a % b)'),

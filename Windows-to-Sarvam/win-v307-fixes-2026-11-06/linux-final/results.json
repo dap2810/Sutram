@@ -4,7 +4,7 @@
     "command": [
       "tools/proof_lib.py",
       "--compiler",
-      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
+      "/mnt<repo>/build/windows-v307-fixes/build/fixes/linux/baseline/sutram_compiler"
     ],
     "exit": 0,
     "seconds": 41.383182086999994,
@@ -18,7 +18,7 @@
     "command": [
       "tools/proof_lib.py",
       "--compiler",
-      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+      "/mnt<repo>/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
     ],
     "exit": 0,
     "seconds": 37.774354277,
@@ -32,7 +32,7 @@
     "command": [
       "tests/r23/test_capabilities.py",
       "--compiler",
-      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
+      "/mnt<repo>/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler"
     ],
     "exit": 0,
     "seconds": 0.42270109199999695,
@@ -60,11 +60,11 @@
     "command": [
       "tools/test_v307_fix_regressions.py",
       "--compiler",
-      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
+      "/mnt<repo>/build/windows-v307-fixes/build/fixes/linux/candidate/sutram_compiler",
       "--phase",
       "slice",
       "--evidence",
-      "/mnt/e/Github_Projects/Sutram/build/windows-v307-fixes/build/fixes/linux-final/slices"
+      "/mnt<repo>/build/windows-v307-fixes/build/fixes/linux-final/slices"
     ],
     "exit": 0,
     "seconds": 1.0273833110000083,

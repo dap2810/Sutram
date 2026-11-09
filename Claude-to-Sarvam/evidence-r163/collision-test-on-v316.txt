@@ -1,0 +1,36 @@
+PASS  a: the source as its own output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  a: the source as ./name: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  a: a hard link to the source: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  a: a symbolic link to the source: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  b: --object with the source as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  c: the module program compiles and prints 9
+PASS  c: a --debug compile of the module program is not refused
+PASS  c: a yoj module (the source folder's lib/ganit.smlib, which the compile read) as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  d: the --lang pack (lang/gujarati.lang, read from the working folder) as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  e: the --ffi file as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  f: the object is made
+PASS  f: sutram-link with its object as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  f: sutram-link with its second object as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  f: an ordinary link still works
+PASS  g: a new output is made
+PASS  g: an existing output that is not an input is replaced, as before
+PASS  g: an existing larger output is cut first - its bytes are exactly a fresh compile's
+PASS  g: the same for --object
+PASS  g: the same for sutram-link
+PASS  h: an output in a folder that does not exist: refused, exit 1, E_NIRGAM_PATRA (v315 said Siddh, exit 0)
+PASS  h: the same with --object
+PASS  h: /dev/null is still an output (a device is not cut, and is no input)
+PASS  g: a .exe (PE) output naming its own source: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  i: --separate with its root file as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  j: /dev/stdout appended to the source (sutram a.sm /dev/stdout >> a.sm): refused, exit 1, the program intact (the refusal, printed on standard output, is what the shell appended)
+PASS  k: sutram-elf2smo with its input as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  k: sutram-elf2smo with a hard link to its input as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  k: sutram-elf2smo: an ordinary conversion works; a larger existing output ends exactly as a fresh one
+PASS  k: sutram-coff2smo with its input as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  k: sutram-coff2smo with a hard link to its input as the output: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  k: sutram-coff2smo: an ordinary conversion works; a larger existing output ends exactly as a fresh one
+PASS  l: sutram_build.py -o the program itself: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  l: sutram_build.py -o one of its modules: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  l: sutram_build.py -o its --foreign object: refused, exit 1, E_NIRGAM_NIVESH, unchanged
+PASS  l: an ordinary sutram_build.py build still works
+r163 output collision: 35 checks, 0 failed

@@ -1,34 +1,34 @@
 ﻿[
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-2026-11-06\\job_runner.py",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-v306-2026-11-06\\job_runner.py",
         "Hash":  "2B237CCBEDB955D0A4585AA309676D1CDFA783EC47F15BC83CD7B09CF606F133"
     },
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\job_runner.py",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\job_runner.py",
         "Hash":  "2B237CCBEDB955D0A4585AA309676D1CDFA783EC47F15BC83CD7B09CF606F133"
     },
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-2026-11-06\\B3.sm",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-v306-2026-11-06\\B3.sm",
         "Hash":  "2A27617609DB6F789EBE4AA04710F04387F4D15C976B07538B3E510BB51934B4"
     },
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\B3.sm",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\B3.sm",
         "Hash":  "2A27617609DB6F789EBE4AA04710F04387F4D15C976B07538B3E510BB51934B4"
     },
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-mandapa.sm",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-mandapa.sm",
         "Hash":  "A1F23C904927F8B3B96ADC4079CFA28B3FFBEBEC97F164DC5F1FBD5384F4C0F4"
     },
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa.sm",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-mandapa.sm",
         "Hash":  "A1F23C904927F8B3B96ADC4079CFA28B3FFBEBEC97F164DC5F1FBD5384F4C0F4"
     },
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-nirmmita-touch-pages.sm",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-nirmmita-touch-pages.sm",
         "Hash":  "862C2B4E4F87DE7CE5DB364E577A4E08F7EFF0BD641FD99C386EDBBE4D6465E9"
     },
     {
-        "Path":  "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.sm",
+        "Path":  "<repo>\\Windows-to-Sarvam\\win-diag-v305-2026-11-06\\A3-nirmmita-touch-pages.sm",
         "Hash":  "862C2B4E4F87DE7CE5DB364E577A4E08F7EFF0BD641FD99C386EDBBE4D6465E9"
     }
 ]

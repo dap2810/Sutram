@@ -1,6 +1,6 @@
 {
-    "shortcut":  "C:\\Users\\dmech\\OneDrive\\Desktop\\Sutram IDE.lnk",
-    "target":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+    "shortcut":  "%USERPROFILE%\\OneDrive\\Desktop\\Sutram IDE.lnk",
+    "target":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
     "target_sha256":  "829F8658DE55BE045C6273339244D099022B373725EAD3681228C00BA3D5C051",
     "started":  "2026-11-06T20:54:26.8182084-05:00",
     "cases":  [

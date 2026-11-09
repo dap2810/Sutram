@@ -1,7 +1,7 @@
 {
     "name":  "d3-stop",
     "moment":  "middle",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe",
     "setup_sha256":  "2751711704D0C48E4623CE0E700FA7E58E868764F8363BA4BAF78986ACBB2299",
     "started":  "2026-11-07T12:20:01.5201308-05:00",
     "observations":  [
@@ -29,15 +29,15 @@
     "live_log_opened":  false,
     "pid":  15312,
     "process_started":  "2026-11-07T12:20:01.5376770-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready_screenshot":  "d3-stop-ready.png",
     "child":  {
                   "parent":  15312,
                   "pid":  29808,
                   "started":  "2026-11-07T12:20:02.5130524-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3DD9.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3DD9.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3DD9.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM3DD9.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM3DD9.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM3DD9.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3DD9.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM3DD9.tmp\\install.log",
     "stop_observed_at":  "2026-11-07T12:20:19.9164986-05:00",
     "seconds":  17.4202135,
     "engine_age_seconds":  17.403446199999998,

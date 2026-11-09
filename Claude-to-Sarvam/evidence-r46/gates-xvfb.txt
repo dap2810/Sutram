@@ -14,7 +14,7 @@ Sutram gates — 2026-10-27T16:00Z
   library proofs (224 passed, 0 failed, 224 total) PASS
   property proofs (86/86)      PASS
   layer check (14 core, 9 alloc, 1 std) PASS
-  stdlib inventory (Wrote /home/claude/sutram/docs/sutram-stdlib.html: 24 modules, 305 functions) PASS
+  stdlib inventory (Wrote <repo>/docs/sutram-stdlib.html: 24 modules, 305 functions) PASS
   module graph                 PASS
   pack messages (12 sets x 11 cases) PASS
   keyword packs built in (11, = lang/*.lang) PASS

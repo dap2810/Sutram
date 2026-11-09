@@ -33,8 +33,8 @@ Evidence: [stop](d2-stop.json), [stop log](d2-stop-engine.log), [stop journal](d
 Appended exactly `\nV309 OWNER-EDIT RECOVERY PROBE: preserve this line.\n` to `docs/BUILDING.md`. The retry refuses before replacing it; the GUI reports that setup did not complete and points to the log. The log gives the specific reason and recovery instructions:
 
 ```text
-[2026-11-07 10:14:54] Not this installer's file (preserved): C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md
-[2026-11-07 10:14:54] ERROR: 1 file(s) in the installation folder are not what this installer wrote (changed since installation, or not Sutram's), so it will not replace them: C:\Users\dmech\AppData\Local\Programs\Sutram\docs\BUILDING.md. Nothing was changed. Move those files elsewhere, or move the whole folder aside (for example to C:\Users\dmech\AppData\Local\Programs\Sutram-recovery-20261107-101454), then run this installer again.
+[2026-11-07 10:14:54] Not this installer's file (preserved): %USERPROFILE%\AppData\Local\Programs\Sutram\docs\BUILDING.md
+[2026-11-07 10:14:54] ERROR: 1 file(s) in the installation folder are not what this installer wrote (changed since installation, or not Sutram's), so it will not replace them: %USERPROFILE%\AppData\Local\Programs\Sutram\docs\BUILDING.md. Nothing was changed. Move those files elsewhere, or move the whole folder aside (for example to %USERPROFILE%\AppData\Local\Programs\Sutram-recovery-20261107-101454), then run this installer again.
 ```
 
 | Evidence | SHA-256 |
@@ -47,8 +47,8 @@ Appended exactly `\nV309 OWNER-EDIT RECOVERY PROBE: preserve this line.\n` to `d
 The complete edited folder and transaction remain at:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram-v309-d3-failed-20261107-101454
-C:\Users\dmech\AppData\Local\Programs\Sutram-v309-d3-failed-20261107-101454.transaction
+%USERPROFILE%\AppData\Local\Programs\Sutram-v309-d3-failed-20261107-101454
+%USERPROFILE%\AppData\Local\Programs\Sutram-v309-d3-failed-20261107-101454.transaction
 ```
 
 Sources: [original](d3-original-BUILDING.md), [edited](d3-edited-BUILDING.md), [result](d3-edit-result.json), [retry log](d3-retry-engine.log), [error screenshot](d3-retry-error.png), [preservation/restore inventory](restore-d3-failed.json).

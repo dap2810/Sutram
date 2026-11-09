@@ -2,7 +2,7 @@
 
 Read-only audit. Census: 39 prakriya, 95 write sites. Every body was read in full
 (lib/suchi.smlib 1-530, lib/ganita.smlib 1-577, lib/shreni.smlib 1-230,
-lib/samanvaya.smlib 1-165). Nothing under /home/claude/sutram was modified.
+lib/samanvaya.smlib 1-165). Nothing under `<repo>` was modified.
 
 ## Preliminary facts established from the repo (used by several rows)
 

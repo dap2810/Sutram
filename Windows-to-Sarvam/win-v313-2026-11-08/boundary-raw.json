@@ -7,9 +7,9 @@
       "terms": 8200,
       "source_sha256": "bcfd4d50c83b7b1fad36cf8894c79049e1ba44ddbb88e27ec91b192f05935ad2",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-8200.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-8200.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-8200.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-8200.exe"
       ],
       "exit": 0,
       "seconds": 0.03989229999933741,
@@ -25,9 +25,9 @@
       "terms": 16400,
       "source_sha256": "e7efb0f02f52c05503b2e61613af6394739d2e65c152d1e4f7d881a3257fc8f1",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16400.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16400.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16400.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16400.exe"
       ],
       "exit": 1,
       "seconds": 0.04203320000033273,
@@ -40,9 +40,9 @@
       "terms": 12300,
       "source_sha256": "a38d01516b5a80346e89cdc98652b70d18b537b72d298ca30c7778b5cbe7e1d5",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-12300.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-12300.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-12300.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-12300.exe"
       ],
       "exit": 0,
       "seconds": 0.04507700000067416,
@@ -58,9 +58,9 @@
       "terms": 14350,
       "source_sha256": "67d8079dd18320425c889d6ac373ec28d36163dfebe68884a6be08a471fec9e1",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-14350.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-14350.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-14350.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-14350.exe"
       ],
       "exit": 0,
       "seconds": 0.0411087000002226,
@@ -76,9 +76,9 @@
       "terms": 15375,
       "source_sha256": "53ee706df0ecfda709659eb024d360e066ff3696fcf77937a04995c20d5a285c",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-15375.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-15375.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-15375.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-15375.exe"
       ],
       "exit": 0,
       "seconds": 0.043030699999690114,
@@ -94,9 +94,9 @@
       "terms": 15887,
       "source_sha256": "a02de9a77ada7fbedebe105257f4e7f69b97a480b1142bc4992311f552c884be",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-15887.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-15887.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-15887.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-15887.exe"
       ],
       "exit": 0,
       "seconds": 0.046472100000755745,
@@ -112,9 +112,9 @@
       "terms": 16143,
       "source_sha256": "9212de14d2765c4d6f263961cc20138bd1d14f32efe5ccb21d1916b6eb1a2e18",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16143.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16143.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16143.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16143.exe"
       ],
       "exit": 0,
       "seconds": 0.046153700000104436,
@@ -130,9 +130,9 @@
       "terms": 16271,
       "source_sha256": "d0f1b249e7e173b4f38f54e4699d3991d9742016a6b9e09375d2eece3fb84a36",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16271.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16271.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16271.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16271.exe"
       ],
       "exit": 0,
       "seconds": 0.05489099999977043,
@@ -148,9 +148,9 @@
       "terms": 16335,
       "source_sha256": "75812c38ed6fe756a146eec7fb702ee79cdcdf4b2ba171ee07e08c398e193ca6",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16335.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16335.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16335.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16335.exe"
       ],
       "exit": 0,
       "seconds": 0.04528440000012779,
@@ -166,9 +166,9 @@
       "terms": 16367,
       "source_sha256": "9c29d554c357933c4a35904a0debf3886ad02ee61ad2315353fdb05f7ee4d5fe",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16367.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16367.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16367.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16367.exe"
       ],
       "exit": 0,
       "seconds": 0.04672819999996136,
@@ -184,9 +184,9 @@
       "terms": 16383,
       "source_sha256": "477f656c475162db056d8ed7803360e6961510bf818b5523d1c2bdcc0ddc4d8e",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16383.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16383.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16383.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16383.exe"
       ],
       "exit": 0,
       "seconds": 0.045690900000408874,
@@ -202,9 +202,9 @@
       "terms": 16391,
       "source_sha256": "b060ade7e78e2822826e8d1185bc55953d26dfb841e188865c271529eabd9a8d",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16391.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16391.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16391.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16391.exe"
       ],
       "exit": 1,
       "seconds": 0.04265309999937017,
@@ -217,9 +217,9 @@
       "terms": 16387,
       "source_sha256": "c8ffd916adb848625762e4b6f7bd4c5c9cb1fe4876ba63bfc9314c98b6c58062",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16387.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16387.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16387.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16387.exe"
       ],
       "exit": 1,
       "seconds": 0.041134600000077626,
@@ -232,9 +232,9 @@
       "terms": 16385,
       "source_sha256": "a42ae24a7f5c90b6a6ea77be0702921abe5af3622160e39f6cc0e56afd7c60fb",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16385.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16385.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16385.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16385.exe"
       ],
       "exit": 1,
       "seconds": 0.04313189999993483,
@@ -247,9 +247,9 @@
       "terms": 16384,
       "source_sha256": "ca5f73376d999f6cef075e0b9eabce626111814328e435fb6e4c4b1c1619a9dc",
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16384.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16384.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\build\\windows-v313-preflight\\Windows-to-Sarvam\\win-v313-2026-11-08\\boundary-16384.sm",
+        "<repo>\\build\\windows-v313-preflight\\artifacts\\budget\\boundary-16384.exe"
       ],
       "exit": 0,
       "seconds": 0.047386899999764864,

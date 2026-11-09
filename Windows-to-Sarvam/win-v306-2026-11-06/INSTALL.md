@@ -22,7 +22,7 @@ New `cmd.exe /d /c` processes used the persisted machine and user PATH, from
 
 ```text
 where sutram
-C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe
+%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe
 
 sutram --version
 Sutram 1.0 (v306) - sampurna sutra
@@ -43,7 +43,7 @@ same-folder upgrades. Therefore, before risking A3, the entire original v305
 installation was copied to:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram-before-v306
+%USERPROFILE%\AppData\Local\Programs\Sutram-before-v306
 ```
 
 All 662 original file hashes were verified against the initial snapshot; the
@@ -87,7 +87,7 @@ line and start time before terminating only that child. The partial canonical
 tree was moved, not deleted, to:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram-A3-before-clean-v306
+%USERPROFILE%\AppData\Local\Programs\Sutram-A3-before-clean-v306
 ```
 
 Only the canonical Sutram bin entry was removed from the user's raw PATH before

@@ -5,7 +5,7 @@ changed only assignments to Claude and Muse. Original v305 compiler/IDE hashes
 were checked before execution. Product sources, library, examples, and goldens
 were not edited. No installer, v306 build, candidate fix, or CI was executed.
 
-From `E:\Github_Projects\Sutram` in PowerShell:
+From `<repo>` in PowerShell:
 
 ```powershell
 python Windows-to-Sarvam/win-diag-v305-2026-11-06/diagnose.py

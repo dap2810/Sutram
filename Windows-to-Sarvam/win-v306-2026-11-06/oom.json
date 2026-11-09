@@ -1,36 +1,36 @@
 {
-  "compiler": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+  "compiler": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
   "sha256": "d3f3dc157baddec973947a4d5f5b1760203542b6576b11c15aab6a757f48df77",
   "compilations": [
     {
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-2026-11-06\\B3.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-v306-2026-11-06\\B3.sm",
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06",
       "exit": 0,
       "stdout": "Siddh: 1594 baait sankalit\n",
       "stderr": ""
     },
     {
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-mandapa.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-mandapa.sm",
+        "<repo>\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06",
       "exit": 0,
       "stdout": "Siddh: 1309 baait sankalit\n",
       "stderr": ""
     },
     {
       "command": [
-        "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-nirmmita-touch-pages.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
+        "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+        "<repo>\\Windows-to-Sarvam\\win-v306-2026-11-06\\A3-nirmmita-touch-pages.sm",
+        "<repo>\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06",
       "exit": 0,
       "stdout": "Siddh: 471 baait sankalit\n",
       "stderr": ""
@@ -39,9 +39,9 @@
   "runs": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-64",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-64",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -57,9 +57,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-128",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-128",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -75,9 +75,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-256",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-256",
       "limit_bytes": 268435456,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -93,9 +93,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-512",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-512",
       "limit_bytes": 536870912,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -111,9 +111,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-640",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-640",
       "limit_bytes": 671088640,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -129,9 +129,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-768",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-768",
       "limit_bytes": 805306368,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -147,9 +147,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-1024",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-1024",
       "limit_bytes": 1073741824,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -165,9 +165,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\B3.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\B3-2048",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\B3-2048",
       "limit_bytes": 2147483648,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -183,9 +183,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\A3-mandapa.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-mandapa-64",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\A3-mandapa-64",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -201,9 +201,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
+        "<repo>\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages-64",
+      "cwd": "<repo>\\build\\windows-v306-2026-11-06\\A3-nirmmita-touch-pages-64",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,

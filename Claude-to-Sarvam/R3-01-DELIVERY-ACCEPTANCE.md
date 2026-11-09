@@ -1,6 +1,6 @@
 # R3-01 — ChatGPT's Windows delivery, accepted for real, then merged onto main v168
 
-**Machine:** Windows 11 10.0.26300, standard (non-administrator) account, no UAC prompt at any step,
+**Machine:** Windows 11 10.0 (build redacted), standard (non-administrator) account, no UAC prompt at any step,
 PowerShell 5.1 with `CurrentUser RemoteSigned`, NASM 3.01, GNU ld 2.47, Python 3.13. Console code page
 65001 at start; a child console at code page 437 was also used. `evidence/environment.txt`.
 

@@ -3,7 +3,7 @@
     "python3",
     "tests/run_tests.py"
   ],
-  "cwd": "/mnt/e/Github_Projects/Sutram/build/windows-oom-review",
+  "cwd": "/mnt<repo>/build/windows-oom-review",
   "exit": 1,
   "stdout": ".......................................................................................................???.?...............................................................................................................................................................................................................................\n--- 215_r12_wordfreq: NO-EXPECTATION - no golden, not counted as passing; its output (8 line(s)) is not checked:\n    | brown: 1\n    | dog: 1\n    | fox: 2\n    | jumps: 1\n    | lazy: 1\n    | ... 3 more\n--- 216_r12_expr: NO-EXPECTATION - no golden, not counted as passing; its output (8 line(s)) is not checked:\n    | 14\n    | \n    | 20\n    | \n    | 8\n    | ... 3 more\n--- 217_r12_report: NO-EXPECTATION - no golden, not counted as passing; its output (22 line(s)) is not checked:\n    | === Test Scores Report ===\n    | Count: 8\n    | \n    | Sum:   688\n    | \n    | ... 17 more\n--- 219_sanskrit_kosh_aliases: NO-EXPECTATION - no golden, not counted as passing; its output (4 line(s)) is not checked:\n    | 1\n    | 7\n    | 7\n    | 1\n\nsuite: NO-EXPECTATION=4  PASS=327  (331 run)\n",
   "stderr": "",

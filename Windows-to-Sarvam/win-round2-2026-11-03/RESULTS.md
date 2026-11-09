@@ -73,7 +73,7 @@ Host commands:
 python Windows-to-Sarvam/win-round2-2026-11-03/run.py
 wsl --list --quiet
 wsl -d Ubuntu -- id -u
-wsl -d Ubuntu -- python3 /mnt/e/Github_Projects/Sutram/Windows-to-Sarvam/win-round2-2026-11-03/linux_compare.py
+wsl -d Ubuntu -- python3 /mnt<repo>/Windows-to-Sarvam/win-round2-2026-11-03/linux_compare.py
 python Windows-to-Sarvam/win-round2-2026-11-03/report.py
 ```
 

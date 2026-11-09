@@ -27,6 +27,13 @@
 - **R163, the installer lock (ChatGPT R225):** nothing already at `<folder>.sutram-lock` is removed - not an empty
   file, not a marked one; the run stops and says whether another installer holds it, and how to recover. R162 had
   removed an empty or marked file as stale. Gate `R143 installer first contact`; fixture cases 3-4 now expect refusal.
+- **R164-R165 (the tree, documents and a gate; the compiler unchanged):** the owner's system details - home folder,
+  account and computer names, the projects drive, OS build numbers, the CPU - and the build machines' own folders are
+  replaced in 806 tracked files, keeping what each line says (`%USERPROFILE%`, `<repo>`, `<scratch>`, "(build
+  redacted)"); the digests before and after are in `Claude-to-Sarvam/evidence-r164/normalization-record.json`. The
+  history still holds the old text. Gate `R159 no personal paths`; the rule is in `AGENTS.md`. The memory chapter
+  says where a block must be: around a loop it gives memory back only when the loop is over (49,920 KB, as no
+  block); ended on every pass, 264 KB; memory a called `prakriya` makes outside a block of its own stays.
 - **R163 (documents and a gate):** the memory chapter's section 1 said a `kosh` "grows each time you add to it" - it
   grows when it is full, doubling its room; the chapter now says what capacity is, and why `parimana()` gives 96 for
   five numbers. The block's peak: 264 KB in 75 runs of 75 started with an empty environment (`env -i`), between

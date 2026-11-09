@@ -1,9 +1,9 @@
 {
     "status":  "PASS",
-    "resolved_target":  "C:\\Users\\dmech\\AppData\\Local\\Sutram",
+    "resolved_target":  "%USERPROFILE%\\AppData\\Local\\Sutram",
     "removed":  [
-                    "C:\\Users\\dmech\\AppData\\Local\\Sutram\\uninstall.exe",
-                    "C:\\Users\\dmech\\AppData\\Local\\Sutram"
+                    "%USERPROFILE%\\AppData\\Local\\Sutram\\uninstall.exe",
+                    "%USERPROFILE%\\AppData\\Local\\Sutram"
                 ],
     "recursive_delete":  false,
     "stale_user_path_removed":  true,

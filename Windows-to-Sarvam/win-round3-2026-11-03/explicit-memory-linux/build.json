@@ -7,7 +7,7 @@
       "-I.",
       "src/r68_compiler_entry.asm",
       "-o",
-      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/explicit-memory-linux/compiler.o"
+      "/mnt<repo>/build/round3-review/build/round3/explicit-memory-linux/compiler.o"
     ],
     "exit": 0,
     "stdout": "",
@@ -19,8 +19,8 @@
     "command": [
       "ld",
       "-o",
-      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/explicit-memory-linux/compiler",
-      "/mnt/e/Github_Projects/Sutram/build/round3-review/build/round3/explicit-memory-linux/compiler.o"
+      "/mnt<repo>/build/round3-review/build/round3/explicit-memory-linux/compiler",
+      "/mnt<repo>/build/round3-review/build/round3/explicit-memory-linux/compiler.o"
     ],
     "exit": 0,
     "stdout": "",

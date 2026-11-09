@@ -1,4 +1,4 @@
 Installer icon: resource directory RVA 2023424, 37201 bytes
 self-test (Wine 64): exit 0 
 payload: 658 files, 1868873 bytes zipped; Sutram-Setup.exe 1997312 bytes, sha256 134fae95dc9d79a0cc7e563bbf59e6fc69983eae950c2c2799e20dea911a286b
-SETUP PASS: built /home/claude/sutram/Sutram-Setup.exe; staging kept at /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r142/setup
+SETUP PASS: built <repo>/Sutram-Setup.exe; staging kept at <scratch>/r142/setup

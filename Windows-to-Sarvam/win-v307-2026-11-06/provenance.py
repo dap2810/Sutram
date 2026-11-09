@@ -7,7 +7,7 @@ r=dict(test_commit='75586a754371dc27f9ed850f592df6194b8e11a6',checks=[])
 def check(label,ok,**data):r['checks'].append(dict(check=label,passed=bool(ok),**data))
 for name,want in [('Sutram-Setup.exe','cbbfd0a66c0a9728c3fd88096631462430c0185cd8c6738964d5b885253e7481'),('win/sutram.exe','0444b43552f6140147ee4701aeac857d585086681bbe4e5bd71d8f90bedd3f7b'),('sutram.exe','0444b43552f6140147ee4701aeac857d585086681bbe4e5bd71d8f90bedd3f7b')]:
     actual=sha(ROOT/name);check(name,actual==want,sha256=actual)
-engine=Path(r'C:\Users\dmech\AppData\Local\Temp\STM43D7.tmp\install-core.ps1')
+engine=Path(r'%USERPROFILE%\AppData\Local\Temp\STM43D7.tmp\install-core.ps1')
 source=ROOT/'windows/native-installer/install-core.ps1'
 if engine.exists():
     check('Embedded engine equals repository text after newline/BOM normalization',engine.read_text(encoding='utf-8-sig')==source.read_text(encoding='utf-8-sig'),embedded_sha256=sha(engine),source_sha256=sha(source))

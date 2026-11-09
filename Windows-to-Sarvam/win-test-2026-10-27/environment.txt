@@ -1,4 +1,4 @@
-Windows : Microsoft Windows NT 10.0.26300.0
+Windows : Microsoft Windows NT 10.0 (build redacted)
 Elevated: False
 nasm    : NASM version 3.01 compiled on Jun 10 2026
 ld      : GNU ld (GNU Binutils) 2.47.20260726 (C:\msys64\ucrt64\bin\ld.exe)

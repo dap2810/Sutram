@@ -5,7 +5,7 @@ The desktop collision preserves the user's shortcut correctly, but clicking the 
 **Sutram IDE** opens **Notepad**; setup gives no visible collision warning. Confusion is an inference
 from that observed first-click mismatch, not a human usability study.
 
-Tested on Windows 11 Home, build 26300, standard non-elevated account, 2026-11-08.
+Tested on Windows 11 Home, build (redacted), standard non-elevated account, 2026-11-08.
 Pinned repository commit: `079c7b226fe968b3d9b5dfe248f097482f5d1fce`.
 Setup SHA-256: `2356014dc0e66b1de1dabe3f868e55b7b73b1c3e17ad231802b2dbb5592643d6`.
 Compiler SHA-256: `7ac8347032b6d9f754b4706d48c20f32f1a43f58324e4432d5463751031b6f93`.

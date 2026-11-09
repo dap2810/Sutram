@@ -1,10 +1,10 @@
 {
-  "target": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
+  "target": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\BUILDING.md",
   "owned_sha256": "31c7b5e5f5bd5decad64b3e34c9939e4f5c33c73149b22762bbdfebc249d4dce",
   "journal_declaration": "STAGED",
   "backup_sha256": "e552a1aaf4f3bc052aba2a516f15685ae944cb59a557c052cefb98bc12b36d01",
-  "superseded": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram.sutram-transaction\\backup\\_superseded\\docs\\BUILDING.md.31C7B5E5F5BD",
+  "superseded": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram.sutram-transaction\\backup\\_superseded\\docs\\BUILDING.md.31C7B5E5F5BD",
   "superseded_before_sha256": "bb8f7f7405c17b55c3b8ce2adbc99b82ac39060a6d3931a8aa70cd7e55295f95",
-  "blocked_staged_path": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram.sutram-transaction\\stage\\win\\sutram.exe",
+  "blocked_staged_path": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram.sutram-transaction\\stage\\win\\sutram.exe",
   "method": "Unchanged full embedded engine; synthetic journal-owned intermediate plus backup; later staged compiler held without delete-sharing to retain transaction before commit."
 }

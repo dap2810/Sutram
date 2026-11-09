@@ -19,7 +19,7 @@ Sutram 1.0 (v306) - sampurna sutra
 - **Codegen shapes:** in the gate list (`codegen shapes`), PASS.
 
 **Not done, said plainly:**
-- **Nothing ran on native Windows here.** Wine cannot put a process under a Job commit limit, so **the OOM probe is NOT RUN** by me. The native evidence is ChatGPT's (PR #66, Windows build 26100), on a source-built v305 candidate with the same runtime change - not on the v306 binaries. The re-run on v306 is the owner's (WS4).
+- **Nothing ran on native Windows here.** Wine cannot put a process under a Job commit limit, so **the OOM probe is NOT RUN** by me. The native evidence is ChatGPT's (PR #66, Windows build (redacted)), on a source-built v305 candidate with the same runtime change - not on the v306 binaries. The re-run on v306 is the owner's (WS4).
 - **The IDE was driven under Wine and Xvfb, not on Windows.**
 
 ## WS1 - the OOM path
@@ -43,7 +43,7 @@ Sutram 1.0 (v306) - sampurna sutra
 **The probe that fails on v305 and refuses on the fix:** `tests/windows/test_commit_oom.py` (PR #66): it runs each program in a Job with a per-process commit limit.
 - `python tests/windows/test_commit_oom.py --compiler <v305 sutram.exe> --out <dir> --expect-baseline` must reproduce the crash: 100 million pushes at 64/128/256 MiB end `0xC0000005` with no output.
 - Without `--expect-baseline`, on v306: the same runs end with exit 1 and exactly the message; 20,000 small `kosh` at 128 MiB print `20000`; 100 million pushes at 2 GiB print `100000000`; a null read is still `0xC0000005` (no false message).
-- **ChatGPT ran both on Windows (build 26100): 8 of 8 checks each, as expected** (`Windows-to-Sarvam/win-commit-oom-2026-11-06/`). **Here: NOT RUN** (off Windows it prints `NOT RUN: native Windows required`). It is in the gate list's Windows NOT-RUN.
+- **ChatGPT ran both on Windows (build redacted): 8 of 8 checks each, as expected** (`Windows-to-Sarvam/win-commit-oom-2026-11-06/`). **Here: NOT RUN** (off Windows it prints `NOT RUN: native Windows required`). It is in the gate list's Windows NOT-RUN.
 
 ## WS2 - the IDE's stale screen
 

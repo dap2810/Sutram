@@ -39,7 +39,7 @@
       "relevant_lines": [
         {
           "line": 5175,
-          "text": "2026-11-06 22:47:41.021452 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html.sutram-partial\" with operation flags [ UntrustedProcess ]"
+          "text": "2026-11-06 22:47:41.021452 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html.sutram-partial\" with operation flags [ UntrustedProcess ]"
         },
         {
           "line": 5176,
@@ -47,11 +47,11 @@
         },
         {
           "line": 5177,
-          "text": "2026-11-06 22:47:41.027694 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is deleting \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\" after fully reading it (previous data = 08,DDC,3D8) with operation flags [ UntrustedProcess ]"
+          "text": "2026-11-06 22:47:41.027694 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is deleting \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\" after fully reading it (previous data = 08,DDC,3D8) with operation flags [ UntrustedProcess ]"
         },
         {
           "line": 5178,
-          "text": "2026-11-06 22:47:41.027694 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html.sutram-partial\""
+          "text": "2026-11-06 22:47:41.027694 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html.sutram-partial\""
         },
         {
           "line": 5179,
@@ -59,11 +59,11 @@
         },
         {
           "line": 5180,
-          "text": "2026-11-06 22:47:41.027694 6832 [info]: [heuristic] \"Create Delete Full Read (Deleted)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\""
+          "text": "2026-11-06 22:47:41.027694 6832 [info]: [heuristic] \"Create Delete Full Read (Deleted)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\""
         },
         {
           "line": 5181,
-          "text": "2026-11-06 22:47:41.032013 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html.sutram-partial\" with operation flags [ UntrustedProcess ]"
+          "text": "2026-11-06 22:47:41.032013 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is creating file \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html.sutram-partial\" with operation flags [ UntrustedProcess ]"
         },
         {
           "line": 5182,
@@ -71,11 +71,11 @@
         },
         {
           "line": 5183,
-          "text": "2026-11-06 22:47:41.038461 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is deleting \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\" after fully reading it (previous data = 04,6DF,C38) with operation flags [ UntrustedProcess ]"
+          "text": "2026-11-06 22:47:41.038461 15316 [info]: [driver] Process  [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] is deleting \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\" after fully reading it (previous data = 04,6DF,C38) with operation flags [ UntrustedProcess ]"
         },
         {
           "line": 5184,
-          "text": "2026-11-06 22:47:41.039460 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html.sutram-partial\""
+          "text": "2026-11-06 22:47:41.039460 6832 [info]: [heuristic] \"Create Delete Full Read (Created)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html.sutram-partial\""
         },
         {
           "line": 5185,
@@ -83,7 +83,7 @@
         },
         {
           "line": 5186,
-          "text": "2026-11-06 22:47:41.040461 6832 [info]: [heuristic] \"Create Delete Full Read (Deleted)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\""
+          "text": "2026-11-06 22:47:41.040461 6832 [info]: [heuristic] \"Create Delete Full Read (Deleted)\" ran by [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] on \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\""
         },
         {
           "line": 5187,
@@ -95,15 +95,15 @@
         },
         {
           "line": 5189,
-          "text": "2026-11-06 22:47:41.041459 6832 [info]: \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"'s certificate couldn't be verified (cache)"
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: \"<repo>\\Sutram-Setup.exe\"'s certificate couldn't be verified (cache)"
         },
         {
           "line": 5190,
-          "text": "2026-11-06 22:47:41.041459 6832 [info]: Found suspicious parent process [34727 (internal), 31584 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\"] of process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: Found suspicious parent process [34727 (internal), 31584 (system-wide), \"<repo>\\Sutram-Setup.exe\"] of process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"]"
         },
         {
           "line": 5191,
-          "text": "2026-11-06 22:47:41.041459 6832 [info]: Process [34727 (internal), 31584 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\", E702EF40A7B40BF66AB5E09DC6054AF2793E334F] suspended successfully"
+          "text": "2026-11-06 22:47:41.041459 6832 [info]: Process [34727 (internal), 31584 (system-wide), \"<repo>\\Sutram-Setup.exe\", E702EF40A7B40BF66AB5E09DC6054AF2793E334F] suspended successfully"
         },
         {
           "line": 5192,
@@ -111,7 +111,7 @@
         },
         {
           "line": 5193,
-          "text": "2026-11-06 22:47:41.057096 6832 [info]: Process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] has modified the following files: \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html\", \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html\""
+          "text": "2026-11-06 22:47:41.057096 6832 [info]: Process [34728 (internal), 43868 (system-wide), \"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\"] has modified the following files: \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-icon-thread.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\mockup-setup.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-benchmark-report.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-english.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\LICENSE.txt\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-2.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-design-parameters.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-ide.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-gujarati.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-tamil.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-telugu.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-keyword-words.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-hindi.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-sanskrit.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-book-3.html\", \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\docs\\sutram-audit.html\""
         },
         {
           "line": 5194,

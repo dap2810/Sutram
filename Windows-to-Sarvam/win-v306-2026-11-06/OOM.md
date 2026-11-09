@@ -40,7 +40,7 @@ and IDE had finished:
 
 [Repeat raw results](oom-repeats.json), [repeat script](repeat_oom.py).
 Neither failed case timed out. Including the first run, each failed **6/6**.
-Windows SDK 10.0.26100.0 `shared/ntstatus.h:4410` names this exit status
+Windows SDK 10.0 (build redacted) `shared/ntstatus.h:4410` names this exit status
 `STATUS_STACK_OVERFLOW`. The exact mechanism producing it has not been diagnosed.
 The generic message now appears, but that alone does not close the OOM defect.
 

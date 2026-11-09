@@ -13,7 +13,7 @@ Exact commands, absolute working directories and outputs: [harness.json](harness
 | Same harness CWD, byte-identical compiler with adjacent unchanged `lib/` and `lang/` | exit 0 | exit 0, `81` |
 
 The actual previous harness CWD was
-`E:\Github_Projects\Sutram\build\windows-v305-2026-11-06\suite`.
+`<repo>\build\windows-v305-2026-11-06\suite`.
 Its output-directory override is recorded in
 [the previous harness log](../win-v305-2026-11-06/suite-harness.json).
 The checked-in harness's default CWD for this one test is

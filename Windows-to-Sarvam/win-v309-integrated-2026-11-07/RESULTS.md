@@ -30,7 +30,7 @@ Exact current identities:
 | Embedded engine | `b78783ddbc62a1e9676f2b34c4b40236c8046362eb2153b33e832831d12bf08b` |
 | Manifest | `a534c832d00c1052e95d1d3577e2bcdb2c548bc6a3ee041d3facb5a90163943f` |
 
-Local runnable setup: `E:\Github_Projects\Sutram\build\windows-v309-fixes\build\native-v309-integrated\Sutram-Setup.exe`. The previous fully tested install was hash-verified and preserved before the upgrade; see [backup record](backup-before-v309.json). The final exact [machine identity](handoff-identity.json), [phase record](initial.json), [screenshot](initial-finish.png), [payload comparison](payload-comparison.json), and [closed process record](final-processes.json) are retained unchanged.
+Local runnable setup: `<repo>\build\windows-v309-fixes\build\native-v309-integrated\Sutram-Setup.exe`. The previous fully tested install was hash-verified and preserved before the upgrade; see [backup record](backup-before-v309.json). The final exact [machine identity](handoff-identity.json), [phase record](initial.json), [screenshot](initial-finish.png), [payload comparison](payload-comparison.json), and [closed process record](final-processes.json) are retained unchanged.
 
 Commands ran from the review worktree, with `C:\Program Files\mingw64\bin` prepended to process-local PATH:
 
@@ -42,9 +42,9 @@ python build/prepare-v309-integration.py
 python tests/r130/test_installer_engine.py
 python tests/r134/test_install_transaction.py
 python Windows-to-Sarvam/win-v309-integrated-2026-11-07/pin-fix-package.py
-wsl -d Ubuntu -- git -C /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout fetch /mnt/e/Github_Projects/Sutram codex/windows-v309-fixes
-wsl -d Ubuntu -- git -C /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout checkout --detach 7ab8c439
-wsl -d Ubuntu --cd /mnt/e/Github_Projects/Sutram/build/windows-v309-linux-checkout python3 tools/build_installer_linux.py --payload-only --work build/linux-payload-integrated
+wsl -d Ubuntu -- git -C /mnt<repo>/build/windows-v309-linux-checkout fetch /mnt<repo> codex/windows-v309-fixes
+wsl -d Ubuntu -- git -C /mnt<repo>/build/windows-v309-linux-checkout checkout --detach 7ab8c439
+wsl -d Ubuntu --cd /mnt<repo>/build/windows-v309-linux-checkout python3 tools/build_installer_linux.py --payload-only --work build/linux-payload-integrated
 python Windows-to-Sarvam/win-v309-integrated-2026-11-07/compare-payloads.py
 python Windows-to-Sarvam/win-v309-integrated-2026-11-07/check-integration.py
 & Windows-to-Sarvam/win-v309-integrated-2026-11-07/initial-install.ps1

@@ -17,7 +17,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path('/home/hatch/workspace/Sutram')
+ROOT = Path('<workspace>/Sutram')
 DIRS = [ROOT / 'examples', ROOT / 'tests', ROOT / 'lib']
 PATTERNS = ['*.sm', '*.smlib']
 

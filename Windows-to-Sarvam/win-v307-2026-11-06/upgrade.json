@@ -1,6 +1,6 @@
 {
     "phase":  "upgrade",
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
     "started":  "2026-11-06T22:47:23.4575853-05:00",
     "elevated":  false,
@@ -995,16 +995,16 @@
                      ],
     "pid":  31584,
     "process_started":  "2026-11-06T22:47:23.7973451-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "upgrade-ready.png",
     "child":  {
                   "parent":  31584,
                   "pid":  43868,
                   "started":  "2026-11-06T22:47:25.2745802-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM43D7.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM43D7.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM43D7.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM43D7.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log",
-    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027C:\\Users\\dmech\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log\u0027 because it is being used by another process.\"",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log",
+    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027%USERPROFILE%\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log\u0027 because it is being used by another process.\"",
     "stall":  {
                   "seconds":  45.7279264,
                   "last_line":  "[2026-11-06 22:47:41] Copying 87/657: docs\\sutram-keyword-words.html",
@@ -1222,7 +1222,7 @@
                               "state":  "Wait"
                           }
                       ],
-    "log_snapshot_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027C:\\Users\\dmech\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log\u0027 because it is being used by another process.\"",
+    "log_snapshot_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027%USERPROFILE%\\AppData\\Local\\Temp\\STM43D7.tmp\\install.log\u0027 because it is being used by another process.\"",
     "status":  "NO_RESULT_AFTER_935_SECONDS",
     "observed_seconds":  936.39,
     "child_exited":  false,

@@ -1,7 +1,7 @@
 Sutram Setup Log
 [2026-11-06 23:04:20] Starting installation.
 [2026-11-06 23:04:21] Checking for another Sutram installation.
-[2026-11-06 23:04:21] A previous installation stopped part-way (it left C:\Users\dmech\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
+[2026-11-06 23:04:21] A previous installation stopped part-way (it left %USERPROFILE%\AppData\Local\Programs\Sutram\payload.pending.sha256); this run finishes it.
 [2026-11-06 23:04:21] Extracting embedded payload.
 [2026-11-06 23:04:30] Native self-test start: pre-install --version
 [2026-11-06 23:04:31] Native self-test exit: pre-install --version code=0

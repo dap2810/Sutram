@@ -1,4 +1,4 @@
---- /home/claude/sutram/src/sutram_compiler.asm	2026-10-31 10:18:50.435216062 -0400
+--- <repo>/src/sutram_compiler.asm	2026-10-31 10:18:50.435216062 -0400
 +++ src/sutram_compiler.asm	2026-10-31 10:22:03.584063664 -0400
 @@ -8769,6 +8769,10 @@
      mov rdx, [rax+8]

@@ -143,7 +143,7 @@ Remaining limits: full-hash-then-delete still has an arbitrary-writer race; this
 ''')
 write('COMMANDS.md','''# v311 commands
 
-Pinned checkout: `E:\\Github_Projects\\Sutram\\build\\windows-v311-verification`, source fae5319d2abf6dc1368d683b1aa4b80a8831ab5d.
+Pinned checkout: `<repo>\\build\\windows-v311-verification`, source fae5319d2abf6dc1368d683b1aa4b80a8831ab5d.
 
 ```powershell
 # Original repository: isolated checkout and adaptation of the v310 observation helpers

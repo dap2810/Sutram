@@ -4,7 +4,7 @@ The explicit first-run brief permits v312 and supersedes the earlier v313-only p
 The exact brief is [REQUEST.md](REQUEST.md). No product files were changed.
 
 Before installing, the existing canonical installation's **663 files** were hashed and moved to
-`C:\Users\dmech\AppData\Local\Programs\Sutram-before-firstrun-20261108`.
+`%USERPROFILE%\AppData\Local\Programs\Sutram-before-firstrun-20261108`.
 The current Start-menu folder and any existing desktop link were preserved; the three Sutram HKCU registry
 keys (`Classes\.sm`, `Classes\Sutram.Source`, `Uninstall\Sutram`) were renamed with a
 `-FirstRun20261108` suffix, retaining their complete contents. User PATH was recorded and its canonical
@@ -15,11 +15,11 @@ previous uninstall temp residue were left untouched.
 After testing:
 
 - The tested installation was moved, with all 663 files verified, to
-  `C:\Users\dmech\AppData\Local\Programs\Sutram-firstrun-tested-20261108`.
+  `%USERPROFILE%\AppData\Local\Programs\Sutram-firstrun-tested-20261108`.
 - The original installation was moved back and all original files verified.
 - Original registry keys, Start-menu shortcuts and user PATH were restored. The test registry keys remain
   under `-TestedFirstRun20261108` names. Test shortcuts, including the harmless desktop collision fixture,
-  remain in `E:\Github_Projects\Sutram\build\firstrun-2026-11-08\preserved\`.
+  remain in `<repo>\build\firstrun-2026-11-08\preserved\`.
 - **672 restoration checks passed**, including 663 original file hashes, original shortcut hashes,
   the complete three registry trees, and PATH comparisons. A fresh shell finds the canonical compiler and v312.
 - All five IDE instances and the setup wizard closed normally. The two test terminals were sent `exit`.

@@ -12,15 +12,15 @@ file was copied.
 
 ## Identity and scope
 
-- Date: 2026-11-06, native Windows build 26100, non-elevated user.
-- Request: [REQUEST.md](REQUEST.md), supplied as `C:\Users\dmech\Downloads\SUTRAM-WINDOWS-V303.md`.
+- Date: 2026-11-06, native Windows build (redacted), non-elevated user.
+- Request: [REQUEST.md](REQUEST.md), supplied as `%USERPROFILE%\Downloads\SUTRAM-WINDOWS-V303.md`.
 - Tested snapshot: `27f4fa74d22d6b246d955941b6e375a7a073c782`, the last main-history
   snapshot before v304. Its installer was introduced at `47c37912`.
 - Main was already v305 at fetched commit `f1f0b2a5`. A version choice was offered;
   with no reply, the supplied v303 request was followed using an isolated worktree.
   **These observations do not constitute testing of v305.**
 - Installer SHA-256: `0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0`.
-- Installed compiler: `C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe`.
+- Installed compiler: `%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe`.
 - Installed compiler SHA-256: `4c05d5cbad99b32be1a38459f1b4b794e00f8b34f89a662ef1ca363c92ec1603`.
   This is byte-identical to the pinned `win/sutram.exe` and agrees with R204's
   earlier static payload audit.
@@ -35,8 +35,8 @@ Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
 A new `cmd.exe /d /c "where sutram && sutram --version"` returned exit 0 and:
 
 ```text
-C:\Users\dmech\AppData\Local\Sutram\bin\sutram.exe
-C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe
+%USERPROFILE%\AppData\Local\Sutram\bin\sutram.exe
+%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe
 Sutram 1.4.0
 ```
 

@@ -35,9 +35,9 @@ All four requested command outputs, with exit codes and the complete Programs li
 
 The complete new residue found in the package/transaction/temp inventory is:
 
-- `C:\Users\dmech\AppData\Local\Temp\STM7C1C.tmp` — directory.
-- `C:\Users\dmech\AppData\Local\Temp\STM7C1C.tmp\uninstall-core.ps1` — 14901 bytes, SHA-256 `eb53ebd2f9eb817314237bf941bd09e02feee81233b5269d61eaf70b44fc0479`.
-- `C:\Users\dmech\AppData\Local\Temp\STM7C1C.tmp\uninstall.log` — 289 bytes, SHA-256 `f766a8cd0f17eebb123301ed6608145f52943f10400e0d9ec0008933d5f87b6a`.
+- `%USERPROFILE%\AppData\Local\Temp\STM7C1C.tmp` — directory.
+- `%USERPROFILE%\AppData\Local\Temp\STM7C1C.tmp\uninstall-core.ps1` — 14901 bytes, SHA-256 `eb53ebd2f9eb817314237bf941bd09e02feee81233b5269d61eaf70b44fc0479`.
+- `%USERPROFILE%\AppData\Local\Temp\STM7C1C.tmp\uninstall.log` — 289 bytes, SHA-256 `f766a8cd0f17eebb123301ed6608145f52943f10400e0d9ec0008933d5f87b6a`.
 
 The script hash equals this candidate's `windows/native-installer/uninstall-core.ps1`. The log records removal of the two empty Classes keys, then successful completion. The files were still present at the final check. The new v312 installation was subsequently restored as Task D requests; the after-uninstall snapshot above is the state **before** that reinstall.
 

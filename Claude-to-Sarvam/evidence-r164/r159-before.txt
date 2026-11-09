@@ -1,0 +1,43 @@
+PASS  self-test: 14 forbidden forms caught, 13 placeholders pass, a name by its hash caught
+FAIL  ChatGPT-to-Sarvam/ROUND-60-OBSERVED.txt:8: build (1 in the file) ~ text not shown
+FAIL  ChatGPT-to-Sarvam/windows-commit-oom-2026-11-06/linux-suite.json:6: name projects (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/04-REAL-PROGRAM.md:28: home (3 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/R131-00-THE-WINDOWS-OOM-PATH-REFUSES-AND-THE-IDE-SAYS-THE-EDITOR-IS-UNCHANGED.md:22: build (2 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/R132-00-YES-TWO-DECISIONS-CHANGE-THE-HANG-WAS-REAL-AND-ITS-WRECKAGE-IS-THE-REFUSAL.md:45: drive (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/R3-00-READ-FIRST-WINDOWS.md:40: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/R3-01-DELIVERY-ACCEPTANCE.md:3: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/R3-01-SOURCE-LOCKS.md:83: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/R34-00-HANDBACK.md:42: build (2 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/README.md:1170: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/ROUND-154-RECYCLING-AND-ALIAS-EVIDENCE.md:9: build (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r10/logs/gates.txt:13: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r10/logs/lib_proof_gaps.log:4: machine (4 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r100/first-term-traps-v283.txt:17: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r101/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r101a/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r103/disassembly-303.txt:2: machine (2 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r103/gates-first-run-before-303-skip.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r103/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r104/gates-first-run-muse-patch-verbatim.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r104/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r105/gates-first-run.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r105/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r106/gates-first-run.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r106/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r107/gates-first-run.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r107/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r108/gates-first-run.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r108/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r109/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r11/logs/gates.txt:13: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r110/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r111/gate-runner.diff:2: machine (2 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r111/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r112/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r113/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r114/gates-first-run.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r114/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r115/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  Claude-to-Sarvam/evidence-r116/gates.txt:18: home (1 in the file) ~ text not shown
+FAIL  ... and 765 more files
+r159 no personal paths: 11108 tracked files, 805 with system details (75707: account 15, build 102, drive 31771, hardware 7, home 5811, machine 609, name account 5324, name machine 279, name projects 31789)

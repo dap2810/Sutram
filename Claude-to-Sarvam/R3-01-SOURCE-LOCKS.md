@@ -80,7 +80,7 @@ $ objcopy --strip-all r69_built a; objcopy --strip-all <manual nasm/ld build> b;
 IDENTICAL after strip (only symbol/file metadata differs)
 ```
 The two unstripped binaries differ by 24 bytes because `r69_build.py` passes absolute paths to NASM:
-`strings` shows `/home/claude/sutram/src/r68_compiler_entry.asm` vs `src/r68_compiler_entry.asm`. A manual
+`strings` shows `<repo>/src/r68_compiler_entry.asm` vs `src/r68_compiler_entry.asm`. A manual
 build with the same absolute paths is byte-identical to `r69_build`'s output.
 
 **If you merge this branch without §6's compiler change**, the compiler pin must be `587567ce…` (v169),

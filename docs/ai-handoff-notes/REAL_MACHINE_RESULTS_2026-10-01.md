@@ -3,9 +3,9 @@
 ## Environment
 
 ```text
-Windows 11 build 26200
-Kernel: Windows NT 10.0.26200.0
-PowerShell: 5.1.26100.9444
+Windows 11 build (redacted)
+Kernel: Windows NT 10.0 (build redacted)
+PowerShell: 5.1 (build redacted)
 NASM: C:\mingw64\bin\nasm.exe
 MinGW GCC: C:\msys64\ucrt64\bin\x86_64-w64-mingw32-gcc.exe
 ```

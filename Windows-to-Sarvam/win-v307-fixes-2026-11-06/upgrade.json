@@ -1,6 +1,6 @@
 {
     "phase":  "upgrade",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v307-fixes\\Sutram-Setup.exe",
     "sha256":  "7BA5FDDA8E373492AE272D2B0EF3CC2965287715A4503D9C11B3C02FCAF398BD",
     "started":  "2026-11-06T23:46:02.6158496-05:00",
     "elevated":  false,
@@ -36,15 +36,15 @@
                      ],
     "pid":  44068,
     "process_started":  "2026-11-06T23:46:02.9628603-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "upgrade-ready.png",
     "child":  {
                   "parent":  44068,
                   "pid":  19252,
                   "started":  "2026-11-06T23:46:04.4028689-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMF66C.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMF66C.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v307-fixes\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMF66C.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMF66C.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMF66C.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v307-fixes\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMF66C.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMF66C.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STMF66C.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  21.2,
     "finish_screenshot":  "upgrade-finish.png",

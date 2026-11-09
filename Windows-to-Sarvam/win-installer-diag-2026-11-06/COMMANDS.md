@@ -1,6 +1,6 @@
 # Installer diagnostic commands
 
-Repository: `E:\Github_Projects\Sutram`, main `f77a7464`.
+Repository: `<repo>`, main `f77a7464`.
 The current package was hashed before launch. Its native wizard was used with
 the existing default per-user destination, Add to user PATH selected and Desktop
 Shortcut deselected. This was an upgrade attempt, not a fresh installation.

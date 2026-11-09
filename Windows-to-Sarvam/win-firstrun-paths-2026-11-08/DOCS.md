@@ -5,7 +5,7 @@
 The Start menu contains **Sutram Documentation.lnk**, targeting:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram\docs\sutram-book-english.html
+%USERPROFILE%\AppData\Local\Programs\Sutram\docs\sutram-book-english.html
 ```
 
 There is no documentation shortcut on either Desktop. The Start-menu shortcut satisfies D1.

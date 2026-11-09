@@ -2,7 +2,7 @@
 # Scratch-only: reproduce windows/native-installer/build-installer.ps1 + build-gui.ps1 on Linux so the
 # acceptance script has a real Sutram-Setup.exe to drive under Wine. Not part of the delivery.
 set -e
-REPO=/home/claude/sutram; R6=$(dirname "$0"); T=$R6/acceptroot; PW=/tmp/claude-0/pwsh/pwsh
+REPO=<repo>; R6=$(dirname "$0"); T=$R6/acceptroot; PW=<tmp>/pwsh/pwsh
 rm -rf $T; mkdir -p $T
 (cd $REPO && git archive HEAD) | tar -x -C $T
 cd $T; mkdir -p build/windows win

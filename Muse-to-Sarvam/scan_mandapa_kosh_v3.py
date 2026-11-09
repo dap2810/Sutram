@@ -4,7 +4,7 @@ RHS (inside the block) mentions the kosh name or an alias anywhere --
 covering call-mediated aliases (bahar = rakh(k), 316's form) as well as
 bare ones (bahar = k, 287's form)."""
 import re, os, sys
-TREE = sys.argv[1] if len(sys.argv) > 1 else "/home/hatch/workspace/r104/tree"
+TREE = sys.argv[1] if len(sys.argv) > 1 else "<workspace>/r104/tree"
 EX = os.path.join(TREE, "examples")
 
 def strip_lit(ln):

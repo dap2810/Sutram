@@ -13,65 +13,65 @@
                         "windows_display_version":  "26H2",
                         "windows_build":  "26300",
                         "windows_ubr":  "9711",
-                        "os_version":  "Microsoft Windows NT 10.0.26300.0",
+                        "os_version":  "Microsoft Windows NT 10.0 (build redacted)",
                         "architecture":  "AMD64",
-                        "powershell":  "5.1.26100.9711",
+                        "powershell":  "5.1 (build redacted)",
                         "powershell_edition":  "Desktop",
                         "elevated":  false,
                         "token_elevation_type":  3,
                         "token_elevated":  0,
                         "in_administrators_role":  false,
                         "script_sha256":  "7c4b1eec0b4eb79c64fc405beb88632ccba36128b18e6407d9944c6f96b21ff7",
-                        "repo_root":  "E:\\Github Projects\\Sutram",
+                        "repo_root":  "<repo>",
                         "git_commit":  "71dad56b7be90b8e8ff55cae354f8c225cafe7dc",
                         "started":  "2026-10-21T20:38:19-04:00"
                     },
     "artefacts":  [
                       {
                           "role":  "setup",
-                          "path":  "E:\\Github Projects\\Sutram\\Sutram-Setup.exe",
+                          "path":  "<repo>\\Sutram-Setup.exe",
                           "sha256":  "285470a4a51c14eed7c23bd3342e068b4610f91301da1877f98fa0cfbe8c0c5b",
                           "bytes":  1530970
                       },
                       {
                           "role":  "repo-compiler win\\sutram.exe",
-                          "path":  "E:\\Github Projects\\Sutram\\win\\sutram.exe",
+                          "path":  "<repo>\\win\\sutram.exe",
                           "sha256":  "4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c",
                           "bytes":  401750
                       },
                       {
                           "role":  "repo-compiler sutram.exe",
-                          "path":  "E:\\Github Projects\\Sutram\\sutram.exe",
+                          "path":  "<repo>\\sutram.exe",
                           "sha256":  "4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c",
                           "bytes":  401750
                       },
                       {
                           "role":  "repo-ide sutram-ide-gui.exe",
-                          "path":  "E:\\Github Projects\\Sutram\\sutram-ide-gui.exe",
+                          "path":  "<repo>\\sutram-ide-gui.exe",
                           "sha256":  "829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051",
                           "bytes":  143073
                       },
                       {
                           "role":  "installed bin\\sutram.exe",
-                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+                          "path":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
                           "sha256":  "4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c",
                           "bytes":  401750
                       },
                       {
                           "role":  "installed win\\sutram.exe",
-                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\win\\sutram.exe",
+                          "path":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\win\\sutram.exe",
                           "sha256":  "4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c",
                           "bytes":  401750
                       },
                       {
                           "role":  "installed sutram-ide-gui.exe",
-                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
+                          "path":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe",
                           "sha256":  "829f8658de55be045c6273339244d099022b373725ead3681228c00ba3d5c051",
                           "bytes":  143073
                       },
                       {
                           "role":  "installed Sutram-Uninstall.exe",
-                          "path":  "C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
+                          "path":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe",
                           "sha256":  "285470a4a51c14eed7c23bd3342e068b4610f91301da1877f98fa0cfbe8c0c5b",
                           "bytes":  1530970
                       }
@@ -102,7 +102,7 @@
                        "status":  "PASS",
                        "required":  true,
                        "environment":  "Windows",
-                       "command":  "\"E:\\Github Projects\\Sutram\\Sutram-Setup.exe\" --self-test",
+                       "command":  "\"<repo>\\Sutram-Setup.exe\" --self-test",
                        "output":  "",
                        "detail":  "embedded SHA-256 self-test exit 0",
                        "time":  "2026-10-21T20:38:19"
@@ -113,7 +113,7 @@
                        "required":  true,
                        "environment":  "Windows",
                        "command":  "BM_CLICK Next / I accept / Next / Next / Install / Finish (launch unchecked) on the wizard this script started",
-                       "output":  "page: welcome\r\npage: license\r\nNext enabled before accepting: False\r\nNext enabled after accepting: True\r\npage: location\r\ninstall folder (default, unchanged): C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\r\npage: components\r\nadd-to-PATH checked: 1\r\ndesktop shortcut checked: 0\r\npage: ready\r\noutcome: done page after 8 s\r\npage: done\r\ninstall.log copied from C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram (the staging folder was removed after success)\r\n",
+                       "output":  "page: welcome\r\npage: license\r\nNext enabled before accepting: False\r\nNext enabled after accepting: True\r\npage: location\r\ninstall folder (default, unchanged): %USERPROFILE%\\AppData\\Local\\Programs\\Sutram\r\npage: components\r\nadd-to-PATH checked: 1\r\ndesktop shortcut checked: 0\r\npage: ready\r\noutcome: done page after 8 s\r\npage: done\r\ninstall.log copied from %USERPROFILE%\\AppData\\Local\\Programs\\Sutram (the staging folder was removed after success)\r\n",
                        "detail":  "outcome=done page; screenshots: wizard-welcome.png, wizard-license.png, wizard-location.png, wizard-components.png, wizard-ready.png, wizard-done.png",
                        "time":  "2026-10-21T20:38:31"
                    },
@@ -122,7 +122,7 @@
                        "status":  "PASS",
                        "required":  true,
                        "environment":  "Windows",
-                       "command":  "Start-Process -FilePath \"E:\\Github Projects\\Sutram\\Sutram-Setup.exe\" (no RunAs verb)",
+                       "command":  "Start-Process -FilePath \"<repo>\\Sutram-Setup.exe\" (no RunAs verb)",
                        "output":  "setup TokenElevationType=3 TokenElevation=0; consent.exe appeared during install: False",
                        "detail":  "setup ran unelevated and no UAC consent prompt appeared",
                        "time":  "2026-10-21T20:38:31"
@@ -142,7 +142,7 @@
                        "status":  "PASS",
                        "required":  true,
                        "environment":  "Windows",
-                       "command":  "\"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\" --lang sanskrit 218_sanskrit_devanagari.sm; run it",
+                       "command":  "\"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\" --lang sanskrit 218_sanskrit_devanagari.sm; run it",
                        "output":  "compile exit=0\nभाषा-पुटः प्राप्तः: sanskrit\nसिद्धम्: 276 बाइट् सङ्कलिताः\n\nrun exit=0\nयोगः = 15\n",
                        "detail":  "installed copy; expects the line योगः = 15",
                        "time":  "2026-10-21T20:38:31"
@@ -152,7 +152,7 @@
                        "status":  "PASS",
                        "required":  true,
                        "environment":  "Windows",
-                       "command":  "\"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\" --object 01_hello.sm; \"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\bin\\sutram-link.exe\"; run it",
+                       "command":  "\"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\" --object 01_hello.sm; \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram-link.exe\"; run it",
                        "output":  "object exit=0\nSiddh: 108 baait sankalit\n\nlink exit=0\nSiddh: 108 baait sankalit\n\nrun exit=0\nNamaste, Sutram!\n",
                        "detail":  "installed copy; expects Namaste, Sutram!",
                        "time":  "2026-10-21T20:38:31"
@@ -162,7 +162,7 @@
                        "status":  "PASS",
                        "required":  true,
                        "environment":  "Windows",
-                       "command":  "Start-Process \"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" -WorkingDirectory \"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\"",
+                       "command":  "Start-Process \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\sutram-ide-gui.exe\" -WorkingDirectory \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\"",
                        "output":  "pid=34648 title=Untitled - Sutram sampadak TokenElevation=0",
                        "detail":  "installed copy; screenshot ide-start.png",
                        "time":  "2026-10-21T20:38:32"
@@ -242,7 +242,7 @@
                        "status":  "PASS",
                        "required":  true,
                        "environment":  "Windows",
-                       "command":  "\"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall   (the Start Menu \"Uninstall Sutram\" target)",
+                       "command":  "\"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall   (the Start Menu \"Uninstall Sutram\" target)",
                        "output":  "sutram-ide-gui.exe removed = True\nbin\\sutram.exe removed = True\nbin\\sutram-link.exe removed = True\nwin\\sutram.exe removed = True\npayload.manifest.sha256 removed = True\nStart Menu folder removed = True\nHKCU uninstall key removed = True\nHKCU Classes\\Sutram.Source removed = True\nuser PATH entry removed = True\n[uninstall.log]\nSutram Uninstall Log\r\n2026-10-21 20:38:37 Uninstall completed; user-created and user-modified files were preserved.\r\n",
                        "detail":  "failure box: ; not removed: ",
                        "time":  "2026-10-21T20:38:39"
@@ -252,7 +252,7 @@
                        "status":  "PASS",
                        "required":  false,
                        "environment":  "Windows",
-                       "command":  "Test-Path \"C:\\Users\\Dhruv\\AppData\\Local\\Programs\\Sutram\"",
+                       "command":  "Test-Path \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\"",
                        "output":  "exists=False",
                        "detail":  "the install folder itself (it is kept when it holds user files)",
                        "time":  "2026-10-21T20:38:39"

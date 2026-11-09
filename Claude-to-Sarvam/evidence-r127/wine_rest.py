@@ -1,5 +1,5 @@
 import glob,os,subprocess,sys
-G=sys.argv[1]; NEW='/home/claude/sutram'
+G=sys.argv[1]; NEW='<repo>'
 PAT=['examples/*.sm','examples/*/*.sm','tests/stdlib/*.sm','tests/r*/*.sm','tests/r*/*/*.sm']
 rels=sorted({os.path.relpath(p,NEW) for pat in PAT for p in glob.glob(os.path.join(NEW,pat))})
 same=diff=refsame=0

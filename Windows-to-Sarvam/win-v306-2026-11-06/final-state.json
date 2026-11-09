@@ -6,16 +6,16 @@
     "original_backup_files":  662,
     "partial_backup_files":  117,
     "formerly_locked_file":  {
-                                 "Path":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram-A3-before-clean-v306\\docs\\reports\\EDGE-COVERAGE-30.md",
+                                 "Path":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram-A3-before-clean-v306\\docs\\reports\\EDGE-COVERAGE-30.md",
                                  "Hash":  "24D2B49A74F560D08ACB4EE5ACB2D693D6F4DC8C61D9E93CF4844CD7E7021D9D"
                              },
     "compiler_copies":  [
                             {
-                                "Path":  "E:\\Github_Projects\\Sutram\\sutram.exe",
+                                "Path":  "<repo>\\sutram.exe",
                                 "Hash":  "D3F3DC157BADDEC973947A4D5F5B1760203542B6576B11C15AAB6A757F48DF77"
                             },
                             {
-                                "Path":  "E:\\Github_Projects\\Sutram\\win\\sutram.exe",
+                                "Path":  "<repo>\\win\\sutram.exe",
                                 "Hash":  "D3F3DC157BADDEC973947A4D5F5B1760203542B6576B11C15AAB6A757F48DF77"
                             }
                         ]

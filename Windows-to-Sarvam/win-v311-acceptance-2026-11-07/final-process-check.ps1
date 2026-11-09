@@ -24,7 +24,7 @@ foreach($item in $owned){
 $children=@(Get-CimInstance Win32_Process -Filter 'ParentProcessId = 23144' | Select-Object ProcessId,ParentProcessId,CreationDate,Name,CommandLine)
 $windows=@([AcceptanceWindow]::All() | Where-Object {$_.title -eq 'Sutram v311 acceptance - first program' -or $_.title -eq 'Sutram Setup' -or $_.title -like '* - Sutram sampadak'})
 $r=@{time=[DateTime]::Now.ToString('o');owned=$rows;attempt2_remaining_children=$children;test_windows=$windows;pass=(@($rows|Where-Object {$_.same_process_still_running}).Count -eq 0 -and $children.Count -eq 0 -and $windows.Count -eq 0);note='Read-only final check; no process was stopped. Existing user Settings was not closed.'}
-$log=Get-Item -LiteralPath 'C:\Users\dmech\AppData\Local\Temp\STMFB5F.tmp\uninstall.log'
+$log=Get-Item -LiteralPath '%USERPROFILE%\AppData\Local\Temp\STMFB5F.tmp\uninstall.log'
 $logRecord=@{source=$log.FullName;last_write=$log.LastWriteTime.ToString('o');sha256=(Get-FileHash -LiteralPath $log.FullName).Hash;copied_file='uninstall-engine.log';copy_sha256=(Get-FileHash -LiteralPath (Join-Path $out 'uninstall-engine.log')).Hash;note='Only matching fresh uninstall log found after the first install; owner performed Settings uninstall before observer started.'}
 $utf8=[Text.UTF8Encoding]::new($false)
 [IO.File]::WriteAllText((Join-Path $out 'uninstall-log-source.json'),($logRecord|ConvertTo-Json -Depth 6),$utf8)

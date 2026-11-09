@@ -57,7 +57,7 @@ The final process observer initially treated JSON arrays as process records (Pow
 - Compiler: `bcb33e6dbb58c1e8556d29057c2f20128cc00f54e48cf860c7ea5496c0972532`
 - Engine: `9eb6174c35ef43e3a02ff792b1e3b187558f693c005a93d66719fe65dadd3e53`
 - Manifest: `53d8102fde97f51e43deda3c03232ab7e25226096d254a797c9cd32e5e8ce12d`
-- Local setup: `E:\Github_Projects\Sutram\build\windows-v309-fixes\build\native-v309-final-fix\Sutram-Setup.exe`
+- Local setup: `<repo>\build\windows-v309-fixes\build\native-v309-final-fix\Sutram-Setup.exe`
 
 This is the working installed candidate, with original/working/interrupted/edited trees preserved. New source remains in PR #68; main carries handoff/evidence only. Native IDE checks above are specific exercised scenarios, not every IDE or uninstall acceptance gate. No uninstall, arbitrary concurrent-write proof, 15-minute timeout, full Linux example suite, general security-product compatibility, or universal language safety is claimed. No security settings, frozen baselines, workflow files or automatic CI triggers were changed. Release source pins intentionally still describe upstream v309 and must be updated only after independent review/rebuild.
 

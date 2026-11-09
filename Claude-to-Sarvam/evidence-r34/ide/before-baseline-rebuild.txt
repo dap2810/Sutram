@@ -1,4 +1,4 @@
-Sutram IDE, every example: MATCH=193  DIFFER=19  NO-INPUT-HANG=2  IDE-HUNG=3  NO-INPUT-OK=1 IDE sutram-ide-gui.exe c4731c2b894490c072ff6ccb2616738ec9bdd5543d03ad455a6b1dcfbd7d56ca compiler win\sutram.exe 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c Windows 10.0.26300.0  PowerShell 5.1.26100.9711 opened: ide-open.png 
+Sutram IDE, every example: MATCH=193  DIFFER=19  NO-INPUT-HANG=2  IDE-HUNG=3  NO-INPUT-OK=1 IDE sutram-ide-gui.exe c4731c2b894490c072ff6ccb2616738ec9bdd5543d03ad455a6b1dcfbd7d56ca compiler win\sutram.exe 4533c46c841901e918830e167e211a53c4f49f3c9ad94b5110d8c3ced7ecbf9c Windows 10.0 (build redacted)  PowerShell 5.1 (build redacted) opened: ide-open.png 
 DIFFER       105_block_nesting_capacity               expected the diagnostic: Sutram Error: khand gahrai seema atikram
 DIFFER       149_namespaced_colliding_imports         line 1: expected [13] got [Sutram Error: ghatak patra aprapt]
 DIFFER       150_namespaced_same_module_two_aliases   line 1: expected [13] got [Sutram Error: ghatak patra aprapt]

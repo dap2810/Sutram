@@ -14,4 +14,4 @@
     "failed_publication_not_journaled":  true,
     "retry_restages_and_publishes":  true
 }
-Fixture retained at E:\Github_Projects\Sutram\build\windows-v311-verification\build\reuse-fixture-fe0074582c524bf0af896b1ddc15e14a
+Fixture retained at <repo>\build\windows-v311-verification\build\reuse-fixture-fe0074582c524bf0af896b1ddc15e14a

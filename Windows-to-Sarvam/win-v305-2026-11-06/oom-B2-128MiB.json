@@ -1,11 +1,11 @@
 {
   "test": "B2-under-128MiB-commit-limit",
-  "executable": "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B2.exe",
+  "executable": "<repo>\\build\\windows-v305-2026-11-06\\B2.exe",
   "executable_sha256": "54b47443313313c3f1ba781022b19e56ab8896cc269d51b67aecaf88f520071c",
   "process_commit_limit_bytes": 134217728,
   "timeout_seconds": 60,
   "command": [
-    "E:\\Github_Projects\\Sutram\\build\\windows-v305-2026-11-06\\B2.exe"
+    "<repo>\\build\\windows-v305-2026-11-06\\B2.exe"
   ],
   "mechanism": "Windows Job Object, process memory limit; child assigned while suspended",
   "timed_out": false,

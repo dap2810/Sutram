@@ -18,4 +18,4 @@ PASS edit_ahead_stops_the_run
 PASS edit_ahead_kept
 PASS edit_ahead_earlier_file_published
 PASS edit_in_window_not_lost
-Evidence: E:\Github_Projects\Sutram\build\windows-v311-verification\build\boundary-fixture-43e57290ec5a4867bc30133c9e69f0f8
+Evidence: <repo>\build\windows-v311-verification\build\boundary-fixture-43e57290ec5a4867bc30133c9e69f0f8

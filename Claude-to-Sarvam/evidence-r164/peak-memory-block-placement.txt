@@ -1,0 +1,115 @@
+# R164 WS4c/d: where the block is. Sutram 1.0 (v315) - sampurna sutra; Linux; env -i /usr/bin/time -f %M (KB); 20 runs each
+# each program does 200,000 nirmmita(256) in all (51,200,000 bytes) and prints the sum of what it stored
+
+== A: ONE block around the loop of 200,000   (binary b90b45e6703376a4)
+mukhya() {
+    vitti s = 0
+    mandapa {
+        chakra i = 1 tak 200000 {
+            vitti b = nirmmita(256)
+            b[0] = i
+            s = s + b[0]
+        }
+    }
+    likha(s)
+}
+-- output 20000100000  / peak KB:  20 49920;
+
+== B: A without the block   (binary 3634bea58058b99d)
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        vitti b = nirmmita(256)
+        b[0] = i
+        s = s + b[0]
+    }
+    likha(s)
+}
+-- output 20000100000  / peak KB:  20 49920;
+
+== C: 1,000 blocks one after another, 200 each, inside the loop   (binary 1cc01c0a77680eb3)
+mukhya() {
+    vitti s = 0
+    chakra j = 1 tak 1000 {
+        mandapa {
+            chakra i = 1 tak 200 {
+                vitti b = nirmmita(256)
+                b[0] = i
+                s = s + b[0]
+            }
+        }
+    }
+    likha(s)
+}
+-- output 20100000  / peak KB:  20 264;
+
+== D: C without the block   (binary ec740c9893dd124c)
+mukhya() {
+    vitti s = 0
+    chakra j = 1 tak 1000 {
+        chakra i = 1 tak 200 {
+            vitti b = nirmmita(256)
+            b[0] = i
+            s = s + b[0]
+        }
+    }
+    likha(s)
+}
+-- output 20100000  / peak KB:  20 49920;
+
+== E: C, but the nirmmita is in a prakriya the block calls (not written inside the block)   (binary 6418ff8335e65703)
+prakriya kaam(i) {
+    vitti b = nirmmita(256)
+    b[0] = i
+    nivartanam b[0]
+}
+mukhya() {
+    vitti s = 0
+    chakra j = 1 tak 1000 {
+        mandapa {
+            chakra i = 1 tak 200 {
+                s = s + kaam(i)
+            }
+        }
+    }
+    likha(s)
+}
+-- output 20100000  / peak KB:  2 49792; 18 49920;
+
+== blk: the chapter's program (section 2): the block inside the prakriya, called 200,000 times   (binary de31c1363bb824ec)
+prakriya kaam(i) {
+    mandapa {
+        vitti b = nirmmita(256)
+        b[0] = i
+        nivartanam b[0]
+    }
+    nivartanam 0
+}
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        s = s + kaam(i)
+    }
+    likha(s)
+}
+-- output 20000100000  / peak KB:  20 264;
+
+== noblk: the chapter's program without the block   (binary b977fbd12c545b1c)
+prakriya kaam(i) {
+    vitti b = nirmmita(256)
+    b[0] = i
+    nivartanam b[0]
+}
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        s = s + kaam(i)
+    }
+    likha(s)
+}
+-- output 20000100000  / peak KB:  20 49920;
+
+Reading: a block gives back what nirmmita made inside it when the block ENDS. Around a loop (A) it ends once, after
+all 200,000: 49,920 KB, as without it (B). Ended on every pass (C; the chapter's program, where the block is in the
+called prakriya): 264 KB. Only nirmmita written in the block's own lines is given back: memory a called prakriya
+makes outside any block of its own stays (E: 49,920 KB).

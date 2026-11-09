@@ -1,0 +1,390 @@
+{
+ "scope": "R164/R165: screenshots, the owner's names and OS build numbers covered where OCR read them",
+ "note": "tesseract --psm 11 at 2x; only the matched characters are covered (grey); the history keeps the original images",
+ "files": [
+  {
+   "path": "Claude-to-Sarvam/evidence-r34/accept-windows/wizard-location.png",
+   "covered": 1,
+   "before_sha256": "09b92f7ed1fbfcb29a572001ac181a67f518fdc54f92a601b375a9b3867933bf",
+   "after_sha256": "cb6f83b3ae83e0cafaea6425ca310c004a1591985641054efff70b95732c3039"
+  },
+  {
+   "path": "Claude-to-Sarvam/evidence-r34/accept-windows/wizard-ready.png",
+   "covered": 1,
+   "before_sha256": "067a13693a45ea7169f4de1664803be2a39b191793d08fc817611830feb6829d",
+   "after_sha256": "b77d392a20fc3b1c80b8bf5c2f42a5cba335db46638927a27f0bc0486b22e901"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-firstrun-paths-2026-11-08/install-ready.png",
+   "covered": 1,
+   "before_sha256": "b6782d04293a7670b0bf5b2a38792496eea5d68a12f455e131f40798f421c992",
+   "after_sha256": "3e712727c0a745b350c134172483154891319f0bb5901f583a3b2965e7a42d34"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-firstrun-paths-2026-11-08/terminal-startup.png",
+   "covered": 1,
+   "before_sha256": "e90dff53ff9764e6cc28ce21875742755ce38c76b1f0ab894f0a1bf0d9464e24",
+   "after_sha256": "707eca8a0a04a00ae40409f8e70c276d5aca8aa398ac6c6c91ca7d0a60b109eb"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-firstrun-paths-2026-11-08/terminal-version.png",
+   "covered": 2,
+   "before_sha256": "87ec5c194b8b421975a76c08f8bf9f2fad731cf7120b2810425a272f8aaa0c01",
+   "after_sha256": "63f1659ca0e7a1a0c816f841ca24e541d127accf2b5e5748e525928fdfe14be4"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-installer-diag-2026-11-06/after-70s-wizard.png",
+   "covered": 1,
+   "before_sha256": "f8e712d479d1daec6b4b9c6411f9b5eb910d2bbb7b9763bf12ae8e92b2efaed3",
+   "after_sha256": "cbee7fb4de0993e1b35b27010a5a73ee55a1a57fb0cf6613d930b34d58c4108e"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-installer-diag-2026-11-06/attempt1/ready.png",
+   "covered": 1,
+   "before_sha256": "2d789ee7a8f59c2257aa8f5c6a2b972863a0f0c88f7c6b0471ba2fc1360c64b5",
+   "after_sha256": "a2995b38a810cffddfa1ce7d4d0b588b4ac0ea37a1832398ea0b63e59f45227e"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-installer-diag-2026-11-06/ready.png",
+   "covered": 1,
+   "before_sha256": "2d789ee7a8f59c2257aa8f5c6a2b972863a0f0c88f7c6b0471ba2fc1360c64b5",
+   "after_sha256": "a2995b38a810cffddfa1ce7d4d0b588b4ac0ea37a1832398ea0b63e59f45227e"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-repair-2026-11-06/ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-run-2026-10-21/accept-20261021-180843/wizard-location.png",
+   "covered": 1,
+   "before_sha256": "6f5c343895846e5ee1775b60e9bbe6c5198d22d603b1625be210d9cd417b9ae4",
+   "after_sha256": "116e19d606cecd38732aee69285e5f9e675d1a2a0b97517e8b6560c8312ac9d8"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-run-2026-10-21/accept-20261021-180843/wizard-ready.png",
+   "covered": 1,
+   "before_sha256": "6f19a7a410737f92f6e9a8e2248e8122cf29c5f4a5be3e0b3c753fdd62774d75",
+   "after_sha256": "7ce240581503e0706a4d293dfdcdf98e22ab1efd43a600688b0963556bbc1a3d"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-run-2026-10-21/f8/f8-console-conhost.png",
+   "covered": 2,
+   "before_sha256": "10889b49f91914e421f8f0ac44bd360e3ffa01dea6ebc9d1c4a2cf750582f614",
+   "after_sha256": "57f331bc5903e07275554b76449456a4569c69500346f22ea45609714ba5549a"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v306-2026-11-06/a3-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v306-2026-11-06/a4-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v306-followup-2026-11-06/upgrade-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/clean-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/interrupt-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/reader-interference/interrupt-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/reader-interference/recovery-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/recovery-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/upgrade-observer-failed-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-2026-11-06/upgrade-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-fixes-2026-11-06/attempt1/upgrade-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-fixes-2026-11-06/clean-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-fixes-2026-11-06/interrupt-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-fixes-2026-11-06/recovery-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v307-fixes-2026-11-06/upgrade-ready.png",
+   "covered": 1,
+   "before_sha256": "36a065f5f87b2b0d1ae3a54f0bcc7bd703fa62a67a673f6260deabea377d120c",
+   "after_sha256": "d30aaf73b0e8a17cdb141c595e1fda3e4eadd489708de32f64c6eb61aa931365"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/d1-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/d1-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/d2-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/d2-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/d3-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/d3-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-2026-11-07/initial-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/d1-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "428d04b3495a319a032d1a543911d4d47a96c26b55f96d40c62e31b1dc463913",
+   "after_sha256": "398b8ae0f1cfb8c4d8f18296c517406bca715b3324e86ade145af9ecdbd268a0"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/d1-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "9bc271393c80d4212bda0f3d4f8a588c90f8a43832854d8a5ea8f1eb55f06860",
+   "after_sha256": "0377d251dd939431d73bcbb6b93a67458d6314eb783127f8f580ea8231ab651b"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/d2-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "49a21ff9ccc9ae68b203c0d7674386a6a939bfd6d93029cd775b081ec67b71d3",
+   "after_sha256": "1c05f02f3e1adb1852ceb9428ad3744efd5c2edd6a5d9c35210050a63bb89288"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/d2-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "0637718b45c81949e7095618afb72572072074a89ded347f9756f73af56f4a8f",
+   "after_sha256": "b58e48de6bc3253e2c9a9209dff6c05e2dff66f9be6645e41a09f2f86e93d200"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/d3-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "46459369fe7a5268e00cca433d07d154fde0aaa2adef5a34a324bbf1a358baf3",
+   "after_sha256": "258a84937247af16668b2400b66066307a28ab81658263881fb17ea8917b258b"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/d3-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "705735c5d5e0e3dd8c3b236110da12c055bdb3a3932fae98588d0946fa718b3b",
+   "after_sha256": "d9cc5d6a6c6544084e277e2f645cbba0728b9f5c9d28d34d107d5c515e9ce4a7"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/final-upgrade-ready.png",
+   "covered": 1,
+   "before_sha256": "55d5faa8aeba502be623cee3c2a6c109626351283cbe60681095d9748befd7d5",
+   "after_sha256": "87de0d3ebb31a8fe6be80ba6d4a7d81d978f994b97d49805ba1e06f7bea265ae"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/initial-ready.png",
+   "covered": 1,
+   "before_sha256": "94e0021e7a1470190fd80fea98ae74c42a6ad93a72b2e148b776c8770e0e7293",
+   "after_sha256": "d61749120ce675c4da5ab0f31488ac48355060fd8ab2a5b298d079afb530c215"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/recovery-attempt1/d1-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "d70d588434c693623ed9047444906587290af91986e42168932d51b2ad4c9685",
+   "after_sha256": "e3ad935e781a570266a4cd4baed93c79563c80f18b5844e339fb6b43b7d7f88b"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-final-fixes-2026-11-07/recovery-attempt1/d1-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "2c8a576c36b8a44ee1bdce8c705f101c63d8ec8874427e1d8391d7566a250a58",
+   "after_sha256": "85f80ca951db982a6620d4245d97e5133fee2c3abf1e8779d52001259fd9d091"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/capture-confirmation-ready.png",
+   "covered": 1,
+   "before_sha256": "81dfcfaa183a5866d9d503cabbea97a2a569494fe9579816b98b3912ac516f30",
+   "after_sha256": "12e17b782b9f4b4632f933dd0639c6203df03589107ea441b24085c0e98225e9"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/d1-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/d1-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/d2-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/d2-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/d3-retry-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/d3-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-fixes-2026-11-07/final-upgrade-ready.png",
+   "covered": 1,
+   "before_sha256": "49b008ac056cc2416a76f2d5489a220780682b140e3ee3095a20fba6971c7724",
+   "after_sha256": "f0bb458528cfefda97e9a6394d14eb338bed8df8b5e6d219a5a28454aa47a487"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v309-integrated-2026-11-07/initial-ready.png",
+   "covered": 1,
+   "before_sha256": "7d28fbf88241e05dfee6e62f34bf7ffd1effb0c840feca59e2fbd02204b1e141",
+   "after_sha256": "cb48773dd771642d39fb8825392025ef41381803c656b57926e1d16c131d717b"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v310-2026-11-07/c1-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "2deafd9aa44644a237d449243973e6438d9da8c095bdf66aff756d12d9c96157",
+   "after_sha256": "f320f1c9ec9f92c819df615748bf30c4ff8d4dde92050eb68357b89a39623dcc"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v310-2026-11-07/initial-ready.png",
+   "covered": 1,
+   "before_sha256": "9c9ce887f3e3a78e8f6940b8cbb457e981da47da652412086646120d95659b35",
+   "after_sha256": "c56290fa2feff4e03e21f1ee1d259e629ba3f401aef717ac97049e55c01256e2"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v310-2026-11-07/ordinary-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "75bfe8172659684c91df0431a466ddd7625dcd502a11989db0d6f1068abf2d04",
+   "after_sha256": "49dc8a55fad7fd7af70644b3b0af6ec2a7be27d01447680c5bc04e555fe3113e"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-2026-11-07/c1-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "0f07ec4d7fd485e03621051372ddecc99b80979c810f8303466a47c928333ec7",
+   "after_sha256": "4e81fd7b5013e380cd51976f172d70069a53f5a742b587ed2acb43eb0a296eb8"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-2026-11-07/initial-ready.png",
+   "covered": 1,
+   "before_sha256": "e97c50736ce8ba53ec2e216f7980fcb764643397d06e54951bf0a0356c6998cf",
+   "after_sha256": "19a0f7810de344253135c96bdd4e435c5289f9de0d0ab95d0166ab5670568340"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-2026-11-07/ordinary-stop-ready.png",
+   "covered": 1,
+   "before_sha256": "658e7dda631cc620e605896f3d754e8dac123d06af3888681e0c4d48673c2fac",
+   "after_sha256": "465e852d019f1fab7f22698b9c42d046be819db249a64bd961048658bb0b4363"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/first-install-location.png",
+   "covered": 1,
+   "before_sha256": "c1582d1b3da3e92fe07ee2352a702aa1cc1caefa496ec1b7605a166bda197f71",
+   "after_sha256": "2661c8ecf4469cbc1e472065aea22e433eb3f9290ebae0f84c942b17673374f8"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/first-install-ready.png",
+   "covered": 1,
+   "before_sha256": "20bc608625a4467e7143b77cc901288f76cced4a6ee7f6a83df9fad84cd1560d",
+   "after_sha256": "eb1d6319cd87c920b727f4d1aa2a3b5598bc2d837bff9a43f20f0efa1e2e1177"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/first-program-command-prompt.png",
+   "covered": 2,
+   "before_sha256": "78cb5a8a4112bf9c95da22b15666ce42d2bc07dd9bb4af8a297735f06910e4df",
+   "after_sha256": "b1b02ddbd0f5fab0e2a39f45ae090caacee5c021b046ec9d34cc557c00277949"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/reinstall-location.png",
+   "covered": 1,
+   "before_sha256": "a41ecf245d0b430cd76fad17a88f2f4fa1f9d92d8ecb4db8226bdb1e495b409b",
+   "after_sha256": "371c739006a2eb029688c34f9709e9656f2b45ac539eb1d32b49603c99da074e"
+  },
+  {
+   "path": "Windows-to-Sarvam/win-v311-acceptance-2026-11-07/reinstall-ready.png",
+   "covered": 1,
+   "before_sha256": "6c6d22649c1c0d4daef1392af1b30c16ec205a9d83de57e010f1d733ce9cf947",
+   "after_sha256": "6bfa8e17d1d8de7672b0125503ac2c2ee49c8fceff28ce1f5cde9c38cf7a6c05"
+  }
+ ]
+}

@@ -8,7 +8,7 @@
       "-dWINDOWS",
       "src/r68_compiler_entry.asm",
       "-o",
-      "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\explicit-memory-windows\\compiler.o"
+      "<repo>\\build\\round3-review\\build\\round3\\explicit-memory-windows\\compiler.o"
     ],
     "exit": 0,
     "stdout": "",
@@ -22,8 +22,8 @@
       "-mi386pep",
       "--entry=_start",
       "-o",
-      "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\explicit-memory-windows\\compiler.exe",
-      "E:\\Github_Projects\\Sutram\\build\\round3-review\\build\\round3\\explicit-memory-windows\\compiler.o"
+      "<repo>\\build\\round3-review\\build\\round3\\explicit-memory-windows\\compiler.exe",
+      "<repo>\\build\\round3-review\\build\\round3\\explicit-memory-windows\\compiler.o"
     ],
     "exit": 0,
     "stdout": "",

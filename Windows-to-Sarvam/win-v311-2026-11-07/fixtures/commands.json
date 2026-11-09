@@ -9,10 +9,10 @@
       "-ExecutionPolicy",
       "Bypass",
       "-File",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\tests\\windows\\test_installer_boundaries.ps1"
+      "<repo>\\build\\windows-v311-verification\\tests\\windows\\test_installer_boundaries.ps1"
     ],
     "exit": 0,
-    "stdout": "  18 boundaries, 36 stopped-and-rerun installations\r\nPASS superseded_identical_completes\r\nPASS superseded_identical_copy_kept\r\nPASS superseded_identical_original_kept\r\nPASS superseded_differs_refused\r\nPASS superseded_differs_target_kept\r\nPASS superseded_differs_other_copy_kept\r\nPASS superseded_differs_original_kept\r\nPASS superseded_differs_not_journaled\r\nPASS superseded_absent_completes\r\nPASS superseded_absent_copy_kept\r\nPASS superseded_absent_original_kept\r\nPASS interruption_reference_run\r\nPASS interruption_every_boundary_recovers\r\nPASS suffix_file_left_by_installer_and_uninstaller\r\nPASS suffix_file_named_in_the_log\r\nPASS edit_ahead_stops_the_run\r\nPASS edit_ahead_kept\r\nPASS edit_ahead_earlier_file_published\r\nPASS edit_in_window_not_lost\r\nEvidence: E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\boundary-fixture-43e57290ec5a4867bc30133c9e69f0f8\r\n",
+    "stdout": "  18 boundaries, 36 stopped-and-rerun installations\r\nPASS superseded_identical_completes\r\nPASS superseded_identical_copy_kept\r\nPASS superseded_identical_original_kept\r\nPASS superseded_differs_refused\r\nPASS superseded_differs_target_kept\r\nPASS superseded_differs_other_copy_kept\r\nPASS superseded_differs_original_kept\r\nPASS superseded_differs_not_journaled\r\nPASS superseded_absent_completes\r\nPASS superseded_absent_copy_kept\r\nPASS superseded_absent_original_kept\r\nPASS interruption_reference_run\r\nPASS interruption_every_boundary_recovers\r\nPASS suffix_file_left_by_installer_and_uninstaller\r\nPASS suffix_file_named_in_the_log\r\nPASS edit_ahead_stops_the_run\r\nPASS edit_ahead_kept\r\nPASS edit_ahead_earlier_file_published\r\nPASS edit_in_window_not_lost\r\nEvidence: <repo>\\build\\windows-v311-verification\\build\\boundary-fixture-43e57290ec5a4867bc30133c9e69f0f8\r\n",
     "stderr": ""
   },
   {
@@ -25,10 +25,10 @@
       "-ExecutionPolicy",
       "Bypass",
       "-File",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\tests\\windows\\test_installer_reuse.ps1"
+      "<repo>\\build\\windows-v311-verification\\tests\\windows\\test_installer_reuse.ps1"
     ],
     "exit": 0,
-    "stdout": "{\r\n    \"all_files_returned\":  true,\r\n    \"matching_target_not_staged\":  true,\r\n    \"matching_target_unchanged\":  true,\r\n    \"missing_target_staged\":  true,\r\n    \"changed_target_preserved\":  true,\r\n    \"changed_target_replacement_staged\":  true,\r\n    \"staged_copy_reused\":  true,\r\n    \"only_two_copy_starts\":  true,\r\n    \"reuse_visible\":  true,\r\n    \"edit_after_reuse_refused\":  true,\r\n    \"known_changed_copy_not_moved_without_replacement\":  true,\r\n    \"removed_copy_requires_restage\":  true,\r\n    \"failed_publication_not_journaled\":  true,\r\n    \"retry_restages_and_publishes\":  true\r\n}\r\nFixture retained at E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\reuse-fixture-fe0074582c524bf0af896b1ddc15e14a\n",
+    "stdout": "{\r\n    \"all_files_returned\":  true,\r\n    \"matching_target_not_staged\":  true,\r\n    \"matching_target_unchanged\":  true,\r\n    \"missing_target_staged\":  true,\r\n    \"changed_target_preserved\":  true,\r\n    \"changed_target_replacement_staged\":  true,\r\n    \"staged_copy_reused\":  true,\r\n    \"only_two_copy_starts\":  true,\r\n    \"reuse_visible\":  true,\r\n    \"edit_after_reuse_refused\":  true,\r\n    \"known_changed_copy_not_moved_without_replacement\":  true,\r\n    \"removed_copy_requires_restage\":  true,\r\n    \"failed_publication_not_journaled\":  true,\r\n    \"retry_restages_and_publishes\":  true\r\n}\r\nFixture retained at <repo>\\build\\windows-v311-verification\\build\\reuse-fixture-fe0074582c524bf0af896b1ddc15e14a\n",
     "stderr": ""
   },
   {
@@ -41,10 +41,10 @@
       "-ExecutionPolicy",
       "Bypass",
       "-File",
-      "E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\tests\\windows\\test_installer_lock.ps1"
+      "<repo>\\build\\windows-v311-verification\\tests\\windows\\test_installer_lock.ps1"
     ],
     "exit": 0,
-    "stdout": "PASS concurrent_owner_refused\r\nPASS no_ownership_reads_while_locked\r\nPASS next_owner_succeeds\r\nPASS refreshed_state\r\nPASS refreshed_pending\r\nPASS all_reads_under_lock\r\nPASS lock_removed_after_exit\r\nEvidence: E:\\Github_Projects\\Sutram\\build\\windows-v311-verification\\build\\lock-fixture-62a8ded21e924fa6871c75af20668460\r\n",
+    "stdout": "PASS concurrent_owner_refused\r\nPASS no_ownership_reads_while_locked\r\nPASS next_owner_succeeds\r\nPASS refreshed_state\r\nPASS refreshed_pending\r\nPASS all_reads_under_lock\r\nPASS lock_removed_after_exit\r\nEvidence: <repo>\\build\\windows-v311-verification\\build\\lock-fixture-62a8ded21e924fa6871c75af20668460\r\n",
     "stderr": ""
   }
 ]

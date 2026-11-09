@@ -15,9 +15,9 @@
       "where.exe",
       "sutram"
     ],
-    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+    "cwd": "<repo>\\build\\windows-repair-2026-11-06",
     "exit": 0,
-    "stdout": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\r\n",
+    "stdout": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe\r\n",
     "stderr": ""
   },
   "version": {
@@ -27,7 +27,7 @@
       "/c",
       "sutram --version"
     ],
-    "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+    "cwd": "<repo>\\build\\windows-repair-2026-11-06",
     "exit": 0,
     "stdout": "Sutram 1.0 (v305) - sampurna sutra\nSamskrita-mukhya bhasha -> x86-64 yantra-bhasha\n",
     "stderr": ""
@@ -37,20 +37,20 @@
       "name": "01_hello",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\examples\\01_hello.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06\\01_hello.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\examples\\01_hello.sm",
+          "<repo>\\build\\windows-repair-2026-11-06\\01_hello.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+        "cwd": "<repo>\\build\\windows-repair-2026-11-06",
         "exit": 0,
         "stdout": "Siddh: 108 baait sankalit\n",
         "stderr": ""
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06\\01_hello.exe"
+          "<repo>\\build\\windows-repair-2026-11-06\\01_hello.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+        "cwd": "<repo>\\build\\windows-repair-2026-11-06",
         "exit": 0,
         "stdout": "Namaste, Sutram!\n",
         "stderr": ""
@@ -61,20 +61,20 @@
       "name": "02_arith",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\examples\\02_arith.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06\\02_arith.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\examples\\02_arith.sm",
+          "<repo>\\build\\windows-repair-2026-11-06\\02_arith.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+        "cwd": "<repo>\\build\\windows-repair-2026-11-06",
         "exit": 0,
         "stdout": "Siddh: 251 baait sankalit\n",
         "stderr": ""
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06\\02_arith.exe"
+          "<repo>\\build\\windows-repair-2026-11-06\\02_arith.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+        "cwd": "<repo>\\build\\windows-repair-2026-11-06",
         "exit": 0,
         "stdout": "x + y = 30\n",
         "stderr": ""
@@ -85,20 +85,20 @@
       "name": "79_ayojan_cwd",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\examples\\79_ayojan_cwd.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06\\79_ayojan_cwd.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\examples\\79_ayojan_cwd.sm",
+          "<repo>\\build\\windows-repair-2026-11-06\\79_ayojan_cwd.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+        "cwd": "<repo>\\build\\windows-repair-2026-11-06",
         "exit": 0,
         "stdout": "Siddh: 7335 baait sankalit\n",
         "stderr": ""
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06\\79_ayojan_cwd.exe"
+          "<repo>\\build\\windows-repair-2026-11-06\\79_ayojan_cwd.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-repair-2026-11-06",
+        "cwd": "<repo>\\build\\windows-repair-2026-11-06",
         "exit": 0,
         "stdout": "81\n",
         "stderr": ""
@@ -109,8 +109,8 @@
   "registration": {
     "DisplayName": "Sutram",
     "DisplayVersion": "0.1.0",
-    "InstallLocation": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
-    "UninstallString": "\"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall"
+    "InstallLocation": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
+    "UninstallString": "\"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\Sutram-Uninstall.exe\" --uninstall"
   },
   "manifest_checks": [
     {

@@ -26,7 +26,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-ROOT = Path('/home/hatch/workspace/Sutram')
+ROOT = Path('<workspace>/Sutram')
 COMP = str(ROOT / 'sutram_compiler')
 DEV_RE = re.compile(r'[\u0900-\u097f]')
 

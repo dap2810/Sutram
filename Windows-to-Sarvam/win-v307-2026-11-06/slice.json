@@ -1,5 +1,5 @@
 {
-  "compiler": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+  "compiler": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
   "compiler_sha256": "0444b43552f6140147ee4701aeac857d585086681bbe4e5bd71d8f90bedd3f7b",
   "runs": [
     {
@@ -9,11 +9,11 @@
       "expected": null,
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_cell_minimal.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_minimal.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_cell_minimal.sm",
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\cell_minimal.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "Siddh: 3378 baait sankalit\n",
@@ -22,9 +22,9 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_minimal.exe"
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\cell_minimal.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "1441560\n",
@@ -40,11 +40,11 @@
       "expected": "99\n",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_cell_write.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_write.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_cell_write.sm",
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\cell_write.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "Siddh: 3560 baait sankalit\n",
@@ -53,9 +53,9 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\cell_write.exe"
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\cell_write.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "7\n",
@@ -71,11 +71,11 @@
       "expected": "77\n77\n",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_untyped_param.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_param.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_untyped_param.sm",
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\untyped_param.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "Siddh: 3295 baait sankalit\n",
@@ -84,9 +84,9 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_param.exe"
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\untyped_param.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "77\n7\n",
@@ -102,11 +102,11 @@
       "expected": "99\n99\n",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_untyped_return.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_return.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_untyped_return.sm",
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\untyped_return.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "Siddh: 3403 baait sankalit\n",
@@ -115,9 +115,9 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\untyped_return.exe"
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\untyped_return.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 0,
         "exit_hex": "0x00000000",
         "stdout": "7\n99\n",
@@ -133,11 +133,11 @@
       "expected": "0\n99\n",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_funcval_small.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\funcval_small.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_funcval_small.sm",
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\funcval_small.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 1,
         "exit_hex": "0x00000001",
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",
@@ -153,11 +153,11 @@
       "expected": "1\n",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_funcval_large.sm",
-          "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices\\funcval_large.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\win-v307-2026-11-06\\r136_ws1_funcval_large.sm",
+          "<repo>\\build\\windows-v307-2026-11-06\\slices\\funcval_large.exe"
         ],
-        "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\slices",
+        "cwd": "<repo>\\build\\windows-v307-2026-11-06\\slices",
         "exit": 1,
         "exit_hex": "0x00000001",
         "stdout": "Sutram truti [E_KOSH_VIBHAG]: prakriya 'f' - kosh-vibhagah anyena ahvana-yuktena tarkena saha na diyate (tad ahvanam kosham vardhayet)\nSanket: kosham eva preshaya (kosh k) athava vibhagam purvam anyatra pratilipya; kosh_kship pashchat\n",

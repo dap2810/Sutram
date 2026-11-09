@@ -1,7 +1,7 @@
 # For each guard DIFFER: (a) v296 compiler + v295 lib/source  vs  v295 compiler + v295 lib/source  -> isolates the compiler change
 #                        (b) v295 compiler + v296 lib/source vs v295 compiler + v295 lib/source     -> isolates the library change
 import subprocess, sys, os, filecmp, shutil
-G, NEW, OLD = sys.argv[1], '/home/claude/sutram', sys.argv[1] + '/r116/guard/old'
+G, NEW, OLD = sys.argv[1], '<repo>', sys.argv[1] + '/r116/guard/old'
 NC, OC = NEW + '/sutram_compiler', OLD + '/sutram_compiler'
 T = G + '/r117/split'; os.makedirs(T, exist_ok=True)
 differ = [l.split()[1] for l in open(G + '/r116/guard/guard-elf.txt') if l.startswith('DIFFER')]

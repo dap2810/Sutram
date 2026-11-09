@@ -1,6 +1,6 @@
 # Commands and reproduction
 
-Working directory: `E:\Github_Projects\Sutram`; Windows PowerShell, normal user.
+Working directory: `<repo>`; Windows PowerShell, normal user.
 Fetched origin and fast-forwarded main to the tested source
 `d0907ccccc500c7c98f9eec28be6326669f0a8ff` before verification:
 

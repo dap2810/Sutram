@@ -51,7 +51,7 @@ write('UNINSTALL.md',f'''# Temporary-directory finding — preflight inventory
 
 The read-only inspection at `{temp['time']}` confirms the previously observed directory still exists:
 
-`C:\\Users\\dmech\\AppData\\Local\\Temp\\STM7C1C.tmp`
+`%USERPROFILE%\\AppData\\Local\\Temp\\STM7C1C.tmp`
 
 {filelist}
 

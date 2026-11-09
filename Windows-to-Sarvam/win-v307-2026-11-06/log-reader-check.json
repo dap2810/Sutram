@@ -1,9 +1,9 @@
 ﻿{
     "at":  "2026-11-06T23:05:41.5710791-05:00",
-    "powershell":  "5.1.26100.9711",
-    "fixture":  "E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\log-sharing-fixture.txt",
+    "powershell":  "5.1 (build redacted)",
+    "fixture":  "<repo>\\build\\windows-v307-2026-11-06\\log-sharing-fixture.txt",
     "reader_share":  "ReadWrite | Delete",
     "add_content_with_reader":  "FAIL",
-    "error":  "The process cannot access the file \u0027E:\\Github_Projects\\Sutram\\build\\windows-v307-2026-11-06\\log-sharing-fixture.txt\u0027 because it is being used by another process.",
+    "error":  "The process cannot access the file \u0027<repo>\\build\\windows-v307-2026-11-06\\log-sharing-fixture.txt\u0027 because it is being used by another process.",
     "add_content_after_reader_closed":  "PASS"
 }

@@ -1,6 +1,6 @@
 self-test (Wine 64): exit 0 
 payload: 657 files, 1846569 bytes zipped; Sutram-Setup.exe 1967061 bytes, sha256 0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0
-SETUP PASS: built /home/claude/sutram/Sutram-Setup.exe; staging kept at /tmp/claude-0/-home-claude/e35834e8-b611-5238-b1df-59668dfdca3d/scratchpad/r128/setup3
+SETUP PASS: built <repo>/Sutram-Setup.exe; staging kept at <scratch>/r128/setup3
 PASS payload v303 = compiler v303 (bin/ and win/sutram.exe, packed 2026-11-04; the wizard has no version of its own; 0 of its 138 lib/lang files differ from the tree; sutram_compiler, sutram.exe, win/sutram.exe v303; sha256 0a278682f8333419...)
 payload compilers under Wine: bin\sutram.exe and win\sutram.exe --version: Sutram 1.0 (v303) - sampurna sutra; sha256 = win/sutram.exe 4c05d5cbad99b32b...
 Sutram-Setup.exe sha256 0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0 ; Sutram-Setup.sha256: 0a278682f8333419fcdb874674910c5201e85df741b7835f77fe061845b669e0 *Sutram-Setup.exe

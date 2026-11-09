@@ -1,8 +1,8 @@
 {
   "base_commit": "e282e237d30cd27c2acc63126ab8f566e350e9bd",
-  "python": "C:\\Users\\dmech\\miniconda3\\python.exe",
+  "python": "%USERPROFILE%\\miniconda3\\python.exe",
   "python_version": "3.14.7 | packaged by Anaconda, Inc. | (main, Aug 14 2026, 10:12:46) [MSC v.1942 64 bit (AMD64)]",
-  "platform": "Windows-11-10.0.26300-SP0",
+  "platform": "Windows-11-10.0 (build redacted)-SP0",
   "artifacts": {
     "build\\fixes\\candidate.exe": "a95ceaf1fca6310cd8b2df0892632a38642595cdfaa53bdef7ec0736b138aa70",
     "build\\fixes\\baseline.exe": "a1a2f038555f7dcdeb7eb36dca9f814102bd21efedf4e199d4e65cf55fd91de9",

@@ -13,6 +13,6 @@
     "screenshot":  "shell-openwith.png",
     "editor":  "mukhya() {\r\n    likha(\"FIRST_RUN_SPACES\")\r\n}\r\n",
     "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 43   |   sanchit",
-    "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files\\hello.sm",
+    "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files\\hello.sm",
     "method":  "Explorer right click -\u003e Open with -\u003e sutram-ide-gui"
 }

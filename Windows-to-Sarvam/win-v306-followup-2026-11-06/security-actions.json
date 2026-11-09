@@ -7,7 +7,7 @@
   {
     "file": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.75.log",
     "line": 4764,
-    "text": "2026-11-06 22:05:53.312099 6832 [info]: Process [32755 (internal), 42236 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\", 4F1ACE2A3E5A6027C55EA87E5710D70785259700] suspended successfully"
+    "text": "2026-11-06 22:05:53.312099 6832 [info]: Process [32755 (internal), 42236 (system-wide), \"<repo>\\Sutram-Setup.exe\", 4F1ACE2A3E5A6027C55EA87E5710D70785259700] suspended successfully"
   },
   {
     "file": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.72.log.gz",
@@ -17,6 +17,6 @@
   {
     "file": "C:\\ProgramData\\Acronis\\ActiveProtection\\Logs\\active_protection.20261104-185747-731242.72.log.gz",
     "line": 1205,
-    "text": "2026-11-06 21:32:45.270280 6832 [info]: Process [30983 (internal), 36956 (system-wide), \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\", 4F1ACE2A3E5A6027C55EA87E5710D70785259700] suspended successfully"
+    "text": "2026-11-06 21:32:45.270280 6832 [info]: Process [30983 (internal), 36956 (system-wide), \"<repo>\\Sutram-Setup.exe\", 4F1ACE2A3E5A6027C55EA87E5710D70785259700] suspended successfully"
   }
 ]

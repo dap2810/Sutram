@@ -21,7 +21,7 @@ def write(n,s):
  if n.endswith('.md'):s=s.replace('\\\\','\\')
  (dest/n).write_text(s.rstrip()+'\n',encoding='utf8',newline='\n')
 write('.gitattributes','* -text')
-common=f'''Tested on Windows 11 Home, build 26300, standard non-elevated account, 2026-11-08.
+common=f'''Tested on Windows 11 Home, build (redacted), standard non-elevated account, 2026-11-08.
 Pinned repository commit: `{c['commit']}`.
 Setup SHA-256: `{c['setup_sha256']}`.
 Compiler SHA-256: `{c['compiler_sha256']}`.
@@ -109,7 +109,7 @@ The terminal immediately displays the version, then a command prompt. Typing `su
 {c['version'].rstrip()}
 ```
 
-`where sutram` reports only `C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe`.
+`where sutram` reports only `%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe`.
 The shortcut prepends its own compiler folder to the terminal's process PATH; the user's persistent PATH
 remains unchanged. It provides a working prompt and version banner, but no compile-command tutorial in that banner.
 
@@ -166,7 +166,7 @@ write('SHORTCUT.md',r'''# Desktop shortcut collision
 Before installation, created this harmless user shortcut:
 
 ```text
-C:\Users\dmech\OneDrive\Desktop\Sutram IDE.lnk
+%USERPROFILE%\OneDrive\Desktop\Sutram IDE.lnk
   target: C:\Windows\System32\notepad.exe
   arguments: (empty)
 ```
@@ -216,7 +216,7 @@ write('DOCS.md',r'''# Documentation shortcut
 The Start menu contains **Sutram Documentation.lnk**, targeting:
 
 ```text
-C:\Users\dmech\AppData\Local\Programs\Sutram\docs\sutram-book-english.html
+%USERPROFILE%\AppData\Local\Programs\Sutram\docs\sutram-book-english.html
 ```
 
 There is no documentation shortcut on either Desktop. The Start-menu shortcut satisfies D1.
@@ -241,7 +241,7 @@ The explicit first-run brief permits v312 and supersedes the earlier v313-only p
 The exact brief is [REQUEST.md](REQUEST.md). No product files were changed.
 
 Before installing, the existing canonical installation's **663 files** were hashed and moved to
-`C:\Users\dmech\AppData\Local\Programs\Sutram-before-firstrun-20261108`.
+`%USERPROFILE%\AppData\Local\Programs\Sutram-before-firstrun-20261108`.
 The current Start-menu folder and any existing desktop link were preserved; the three Sutram HKCU registry
 keys (`Classes\\.sm`, `Classes\\Sutram.Source`, `Uninstall\\Sutram`) were renamed with a
 `-FirstRun20261108` suffix, retaining their complete contents. User PATH was recorded and its canonical
@@ -252,11 +252,11 @@ previous uninstall temp residue were left untouched.
 After testing:
 
 - The tested installation was moved, with all 663 files verified, to
-  `C:\Users\dmech\AppData\Local\Programs\Sutram-firstrun-tested-20261108`.
+  `%USERPROFILE%\AppData\Local\Programs\Sutram-firstrun-tested-20261108`.
 - The original installation was moved back and all original files verified.
 - Original registry keys, Start-menu shortcuts and user PATH were restored. The test registry keys remain
   under `-TestedFirstRun20261108` names. Test shortcuts, including the harmless desktop collision fixture,
-  remain in `E:\Github_Projects\Sutram\build\firstrun-2026-11-08\preserved\`.
+  remain in `<repo>\build\firstrun-2026-11-08\preserved\`.
 - **672 restoration checks passed**, including 663 original file hashes, original shortcut hashes,
   the complete three registry trees, and PATH comparisons. A fresh shell finds the canonical compiler and v312.
 - All five IDE instances and the setup wizard closed normally. The two test terminals were sent `exit`.
@@ -298,7 +298,7 @@ Review their fixed test paths and guards before any reuse. No CI workflow or ful
 changed or launched for this observational round.
 ''')
 # Extract from the exact tested package, retained after restoration, not from a changing checkout.
-tested=Path(r'C:\Users\dmech\AppData\Local\Programs\Sutram-firstrun-tested-20261108')
+tested=Path(r'%USERPROFILE%\AppData\Local\Programs\Sutram-firstrun-tested-20261108')
 book=(tested/'docs/sutram-book-english.html').read_text(encoding='utf8')
 start=book.index('<h3>17.6 Understanding PATH</h3>');end=book.index('<h3>17.7',start)
 write('book-path-excerpt.html',book[start:end])

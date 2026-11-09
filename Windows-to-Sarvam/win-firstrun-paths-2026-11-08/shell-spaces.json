@@ -13,6 +13,6 @@
     "editor":  "mukhya() {\r\n    likha(\"FIRST_RUN_SPACES\")\r\n}\r\n",
     "file_sha256":  "1D317A5114DDA89A8993DB086DBAFD4A714862918B34D92B5A1BB818B0857A0C",
     "status":  "pankti 1   stambh 1   |   bhasha: swayam   |   akshara: 43   |   sanchit",
-    "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files\\hello.sm",
+    "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files\\hello.sm",
     "method":  "Two real left clicks in Explorer, 80 ms apart"
 }

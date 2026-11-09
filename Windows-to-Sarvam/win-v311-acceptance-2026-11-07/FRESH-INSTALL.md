@@ -70,7 +70,7 @@ A new cmd.exe was created with CREATE_NEW_CONSOLE and current registry PATH, hos
 
 ```text
 > where sutram
-C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe
+%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe
 > sutram --version
 Sutram 1.0 (v311) - sampurna sutra
 Samskrita-mukhya bhasha -> x86-64 yantra-bhasha

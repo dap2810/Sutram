@@ -10,8 +10,8 @@ Executed 2026-11-03 against the exact examples from `SUTRAM-WINDOWS-TEST.md` sup
 
 Direct-compiler route (Route B semantics), using the already installed v297 binary rather than the repository-root binary. Installation, uninstall and a new desktop CMD session were not performed. The existing installation was preserved. This is not full installer acceptance. No tracked compiler, library, pack or golden was changed; only requested report/evidence files were created.
 
-Windows: `Windows-11-10.0.26200-SP0`. Console/harness: Windows PowerShell 5.1 launcher; Python subprocess capture (developer harness only).
-Compiler: `C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe`.
+Windows: `Windows-11-10.0 (build redacted)-SP0`. Console/harness: Windows PowerShell 5.1 launcher; Python subprocess capture (developer harness only).
+Compiler: `%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe`.
 Compiler SHA-256: `ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e`.
 
 Exact full version output:

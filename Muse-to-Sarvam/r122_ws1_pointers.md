@@ -1,6 +1,6 @@
 # Muse Round 122 WS1 — Pointer-return audit of the Sutram library
 
-- **Base:** `/home/hatch/workspace/r121-124/tree297` (v297; compiler banner
+- **Base:** `<workspace>/r121-124/tree297` (v297; compiler banner
   `Sutram 1.0 (v297) - sampurna sutra`, `src/sutram_compiler.asm:249`).
 - **Scope:** `lib/*.smlib` only, plus — because the task names them explicitly —
   the two builtins `anka_akshar` and `vartani_sandhi`, which are **not** in

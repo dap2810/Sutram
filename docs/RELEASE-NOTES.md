@@ -108,7 +108,7 @@ the 21,829-term statement on Windows; anything the v312 and v311 native runs did
 compare-then-delete race under another writer.
 
 **Evidence scope for v312, on Windows.** *The pinned v312 package (`5cca529c...`, source `06324ce`) passed the
-reported Windows first-contact checks on one existing user account (Windows 11 Home build 26300, not elevated):
+reported Windows first-contact checks on one existing user account (Windows 11 Home build (redacted), not elevated):
 the em dash as one U+2014, CR LF line ends with the text equal to the licence source, the Sanskrit and Hindi lines
 visibly rendered, no uninstall window, the empty `.sm` key and its parent removed, PATH restored, one canonical
 installation with 657/657 hashes, the variable and global 20,000-term refusals and 10,000-term controls, and 322
@@ -346,7 +346,7 @@ succeeded; use the checked form when the program must detect a failure and go on
   - The native Windows runs: rounds 1-4 (v297: 305 passes and 8 failures; then 312 passes and 0 failures, merged as
     v299), and v305 (6 November: 321 passes, 1 compile failure that was the harness's working folder, fixed in
     R131; the memory probes passed except the out-of-memory one, fixed in v306). ChatGPT's PR #66 runs (a v305
-    source build with the v306 out-of-memory change, Windows build 26100): 8 of 8 out-of-memory checks.
+    source build with the v306 out-of-memory change, Windows build (redacted)): 8 of 8 out-of-memory checks.
   - **Native Windows execution of v307 is not yet done.** Acceptance applies to the exact binary hashes run.
 - **An open observation under Wine:** about 1 run in 200 of a finished program, Wine reports an unhandled page
   fault at exit - after all the output, with exit code 0, at the same address in Wine's own code each time. Seen

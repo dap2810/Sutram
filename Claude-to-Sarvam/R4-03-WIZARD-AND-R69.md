@@ -80,7 +80,7 @@ platform-independent.
 - Nothing deletes `payload.zip`, the two scripts or the log.
 
 **The reproduction.** After the run in §1, which ended on the success page,
-`…/users/root/Temp/STM821d.tmp/` still held `install-core.ps1` (25157 B), `uninstall-core.ps1` (11729 B)
+`…/%USERPROFILE%/Temp/STM821d.tmp/` still held `install-core.ps1` (25157 B), `uninstall-core.ps1` (11729 B)
 and `payload.zip`. On Windows, R3 measured six such folders, 4.8 MB.
 
 **Fix, for ChatGPT:** as R3-03 §3 says, delete the files and remove the folder only after the child exits 0.

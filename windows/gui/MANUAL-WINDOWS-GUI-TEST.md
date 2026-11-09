@@ -186,7 +186,7 @@ step, and screenshots before declaring release acceptance.
 
 ## Round 73 (Claude): Sanskrit interface, editor keys, status line, bhasha pack, icon
 
-**Status of Round 73 source: assembled, linked and executed on Windows 11 build 26300 as a
+**Status of Round 73 source: assembled, linked and executed on Windows 11 build (redacted) as a
 standard user; `tools/test_windows_gui.py` runs 30 native checks (16 earlier + 14 new) against
 the freshly built executable.** The original "NOT assembled or executed on Windows" status above
 is history, kept for the record. Every visible word is now Sanskrit (Latin transliteration, the

@@ -2,7 +2,7 @@
 
 **Devanagari, em dashes, licence line breaks, silent uninstall, the empty Classes key cleanup, the variable-based walk refusal, and all 322 native suite cases are verified on this Windows account. Two product findings remain: clipped licence-page instructions and uninstall's temporary script/log residue.** The illustrative literal sum also reaches a different diagnostic before the walk budget. No release acceptance is claimed.
 
-Pinned source: `06324cefc5c50a3c50fb68b6a2a43f50b800d339`. Windows 11 Home build 26300, non-elevated token, existing account. The canonical installation was absent at the start; older backups and Explorer history were present. No compiler, installer, library, example, golden or workflow changes were made. No CI workflow was launched.
+Pinned source: `06324cefc5c50a3c50fb68b6a2a43f50b800d339`. Windows 11 Home build (redacted), non-elevated token, existing account. The canonical installation was absent at the start; older backups and Explorer history were present. No compiler, installer, library, example, golden or workflow changes were made. No CI workflow was launched.
 
 | Test | Expected | Actual | Pass? |
 | --- | --- | --- | --- |

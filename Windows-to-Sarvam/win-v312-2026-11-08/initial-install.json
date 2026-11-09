@@ -1,7 +1,7 @@
 {
     "name":  "initial",
     "started":  "2026-11-08T11:17:15.0233132-05:00",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v312\\build\\native-v312\\Sutram-Setup.exe",
     "setup_sha256":  "5cca529c3569d4558cce3243becffea72c0eb2745ea345d8c049bb7177cb3c1b",
     "phase":  "licence",
     "screens":  [

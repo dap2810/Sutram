@@ -27,9 +27,9 @@
 
 ### AND THE PRIVACY FINDING, WHICH IS THE URGENT ONE
 **The repository is PUBLIC and contains the owner's personal system details:**
-- **`C:\Users\dmech` and `C:\Users\Dhruv` - 361 files**
-- **`E:\Github_Projects\Sutram` - 276 files**
-- **`Windows 11 Home build 26300` and other exact build numbers**
+- **`C:\Users\<account>` and `C:\Users\<computer name>` - 361 files**
+- **`<drive>:\<projects folder>\Sutram` - 276 files**
+- **`Windows 11 Home build (redacted)` and other exact build numbers**
 - **371 of the affected files are in `Windows-to-Sarvam/`; 2 in ChatGPT's, 1 in Muse's; none in `docs/` or Claude's**
 
 **No email, no credentials, no tokens, no IP address.** **It is a privacy exposure, not a security breach.**

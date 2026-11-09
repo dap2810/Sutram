@@ -10,5 +10,5 @@ for name in ['ui-helper.ps1','run-install.ps1','preserve.ps1','identity.py','pin
     text=(old/name).read_text(encoding='utf8').replace('v309-integrated','v310').replace('v309','v310').replace('1.0.309','1.0.310')
     (out/name).write_text(text,encoding='utf8',newline='\n')
 shutil.copy2(base/'build/prepare-v310.py',out/'prepare-v310.py')
-shutil.copy2(Path('C:/Users/dmech/Downloads/SUTRAM-WINDOWS-V310.md'),out/'REQUEST.md')
+shutil.copy2(Path('%USERPROFILE%/Downloads/SUTRAM-WINDOWS-V310.md'),out/'REQUEST.md')
 print(out)

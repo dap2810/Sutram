@@ -3,7 +3,7 @@ SUTRAMO2, the bounded runtime-call table), every .sm in examples/, examples/*/, 
 (recursive): the output executable's bytes, the compiler's stdout+stderr (output path normalised) and its exit
 status. Packs given with --lang for the six pack examples.
 
-Windows (native, real Windows 11 Pro 10.0.26300; win/sutram.exe v242 vs sutram.exe v243):
+Windows (native, real Windows 11 Pro 10.0 (build redacted); win/sutram.exe v242 vs sutram.exe v243):
   562 programs: 475 byte-identical executables, 87 refused identically, 0 DIFFER
 
 Linux (WSL Ubuntu, kernel 6.6.87.2-microsoft-standard-WSL2; sutram_compiler v242 vs v243; a clean LF clone):

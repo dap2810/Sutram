@@ -7,7 +7,7 @@ Blocks: braced `mandapa { ... }` (all, including nested) and indented
 `mandapa` blocks. String literals stripped; full-line comments dropped.
 Every hit is hand-verified."""
 import re, os, sys
-TREE = sys.argv[1] if len(sys.argv) > 1 else "/home/hatch/workspace/r103/tree"
+TREE = sys.argv[1] if len(sys.argv) > 1 else "<workspace>/r103/tree"
 EX = os.path.join(TREE, "examples")
 
 def strip_lit(ln):

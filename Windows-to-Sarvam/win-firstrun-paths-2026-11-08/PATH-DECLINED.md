@@ -28,7 +28,7 @@ This launches the actual installed shortcut; it was not a reconstructed command.
 It targets `cmd.exe` with these recorded arguments:
 
 ```text
-/K "set "PATH=C:\Users\dmech\AppData\Local\Programs\Sutram\bin;%PATH%" && sutram --version"
+/K "set "PATH=%USERPROFILE%\AppData\Local\Programs\Sutram\bin;%PATH%" && sutram --version"
 ```
 
 The terminal immediately displays the version, then a command prompt. Typing `sutram --version` displays:
@@ -38,7 +38,7 @@ Sutram 1.0 (v312) - sampurna sutra
 Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
 ```
 
-`where sutram` reports only `C:\Users\dmech\AppData\Local\Programs\Sutram\bin\sutram.exe`.
+`where sutram` reports only `%USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe`.
 The shortcut prepends its own compiler folder to the terminal's process PATH; the user's persistent PATH
 remains unchanged. It provides a working prompt and version banner, but no compile-command tutorial in that banner.
 

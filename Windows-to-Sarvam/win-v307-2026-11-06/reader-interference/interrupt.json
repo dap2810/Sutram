@@ -1,6 +1,6 @@
 {
     "phase":  "interrupt",
-    "setup":  "E:\\Github_Projects\\Sutram\\Sutram-Setup.exe",
+    "setup":  "<repo>\\Sutram-Setup.exe",
     "sha256":  "CBBFD0A66C0A9728C3FD88096631462430C0185CD8C6738964D5B885253E7481",
     "started":  "2026-11-06T23:03:42.0845231-05:00",
     "elevated":  false,
@@ -57,16 +57,16 @@
                      ],
     "pid":  31940,
     "process_started":  "2026-11-06T23:03:42.4321290-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready":  "interrupt-ready.png",
     "child":  {
                   "parent":  31940,
                   "pid":  16276,
                   "started":  "2026-11-06T23:03:44.0364915-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STM3315.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STM3315.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STM3315.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install.log",
-    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027C:\\Users\\dmech\\AppData\\Local\\Temp\\STM3315.tmp\\install.log\u0027 because it is being used by another process.\"",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STM3315.tmp\\install.log",
+    "transient_log_read_error":  "Exception calling \"Open\" with \"4\" argument(s): \"The process cannot access the file \u0027%USERPROFILE%\\AppData\\Local\\Temp\\STM3315.tmp\\install.log\u0027 because it is being used by another process.\"",
     "interrupt_trigger":  "[2026-11-06 23:04:15] Copying 8/657: bin\\lang\\bengali.sandesh",
     "interrupt_seconds":  31.7276812,
     "status":  "INTERRUPTED_AS_REQUESTED",

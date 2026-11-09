@@ -1,6 +1,6 @@
 # Commands, probes and observation limitations
 
-Pinned checkout: `E:\Github_Projects\Sutram\build\windows-v311-acceptance`, branch `codex/windows-v311-acceptance-2026-11-07`, source `2e8f2ea4085925f862450b16d444313eefdbb007`. Working artifacts: `build/native-v311-acceptance`. Every command below is relative to that checkout unless stated otherwise. GUI/state changes ran under the existing Windows user, outside the automation sandbox when required; no administrator account or security exclusions were used.
+Pinned checkout: `<repo>\build\windows-v311-acceptance`, branch `codex/windows-v311-acceptance-2026-11-07`, source `2e8f2ea4085925f862450b16d444313eefdbb007`. Working artifacts: `build/native-v311-acceptance`. Every command below is relative to that checkout unless stated otherwise. GUI/state changes ran under the existing Windows user, outside the automation sandbox when required; no administrator account or security exclusions were used.
 
 These are the commands used for evidence collection, not a request to rerun destructive state transitions automatically. `state.ps1 -Action clear` refuses a second execution; preservation must precede another fresh-state test. The setup snapshot was copied from the exact repository artifact by `pin-fix-package.py`, not rebuilt.
 

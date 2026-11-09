@@ -1,7 +1,7 @@
 {
     "os":  {
                "Caption":  "Microsoft Windows 11 Home",
-               "Version":  "10.0.26300",
+               "Version":  "10.0 (build redacted)",
                "BuildNumber":  "26300"
            },
     "notepad_window_still_present":  false,
@@ -13,31 +13,31 @@
     "standard_user":  true,
     "explorer_closed":  [
                             {
-                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
                                 "handle":  4065652
                             },
                             {
-                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
                                 "handle":  2230844
                             },
                             {
-                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
                                 "handle":  1379154
                             },
                             {
-                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
                                 "handle":  1051496
                             },
                             {
-                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
                                 "handle":  1182522
                             },
                             {
-                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
                                 "handle":  331156
                             },
                             {
-                                "path":  "E:\\Github_Projects\\Sutram\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
+                                "path":  "<repo>\\build\\firstrun-2026-11-08\\cases\\My Sutram Files",
                                 "handle":  1641276
                             }
                         ]

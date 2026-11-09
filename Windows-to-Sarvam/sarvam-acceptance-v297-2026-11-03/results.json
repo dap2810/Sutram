@@ -1,7 +1,7 @@
 {
-  "windows": "Windows-11-10.0.26200-SP0",
+  "windows": "Windows-11-10.0 (build redacted)-SP0",
   "console": "Windows PowerShell 5.1 launcher; Python subprocess capture (developer harness only)",
-  "compiler": "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+  "compiler": "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
   "sha256": "ccc8368eb57e91da54a3bed5c824bf63892bc5f9329ff34bf5f16cc1d3a1370e",
   "rows": [
     {
@@ -16,7 +16,7 @@
       "result": "PASS",
       "run": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
           "--version"
         ],
         "exit": 0,
@@ -44,9 +44,9 @@
       "source": "hello.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 98 baait sankalit\n",
@@ -55,7 +55,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\hello.exe"
         ],
         "exit": 0,
         "stdout": "namaste",
@@ -69,9 +69,9 @@
       "result": "PASS",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\does_not_exist.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\missing.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\does_not_exist.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\missing.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti: nivesh patra aprapt\n",
@@ -86,9 +86,9 @@
       "source": "str1.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 554 baait sankalit\n",
@@ -97,7 +97,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str1.exe"
         ],
         "exit": 0,
         "stdout": "eq: 1\nne: 1\n",
@@ -112,9 +112,9 @@
       "source": "str2.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 548 baait sankalit\n",
@@ -123,7 +123,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str2.exe"
         ],
         "exit": 0,
         "stdout": "lt: 1\ngt: 0\n",
@@ -138,9 +138,9 @@
       "source": "str3.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 116 baait sankalit\n",
@@ -149,7 +149,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\str3.exe"
         ],
         "exit": 0,
         "stdout": "abcd",
@@ -164,9 +164,9 @@
       "source": "likha3.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 376 baait sankalit\n",
@@ -175,7 +175,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\likha3.exe"
         ],
         "exit": 0,
         "stdout": "5 7\n",
@@ -190,9 +190,9 @@
       "source": "kosh1.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 1154 baait sankalit\n",
@@ -201,7 +201,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh1.exe"
         ],
         "exit": 0,
         "stdout": "gan=2\nhri=20\nrikt=0\n",
@@ -216,9 +216,9 @@
       "source": "kosh2.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 463 baait sankalit\n",
@@ -227,7 +227,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\kosh2.exe"
         ],
         "exit": 0,
         "stdout": "1\n",
@@ -242,9 +242,9 @@
       "source": "divzero.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 543 baait sankalit\n",
@@ -253,7 +253,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\divzero.exe"
         ],
         "exit": 1,
         "stdout": "Sutram truti [E_SHUNYA_BHAJAN]: pankti 4 - shunye vibhajanam na sambhavati\n",
@@ -268,9 +268,9 @@
       "source": "loopbound.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\loopbound.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\loopbound.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\loopbound.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\loopbound.exe"
         ],
         "exit": 1,
         "stdout": "loopbound.sm:2:22: Sutram truti [E_CHAKRA_DASHAM]: chakra purnankaih eva gananam karoti - dashama-sankhya na sambhavati\n      chakra i = 0 tak 3.0 {\n                       ^\nSanket: chakra i = 0 tak 3 likhyatam; dashamaya yavat upayujyatam\n",
@@ -285,9 +285,9 @@
       "source": "overflow.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 7340 baait sankalit\n",
@@ -296,7 +296,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\overflow.exe"
         ],
         "exit": 1,
         "stdout": "",
@@ -311,9 +311,9 @@
       "source": "ok.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 7335 baait sankalit\n",
@@ -322,7 +322,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\ok.exe"
         ],
         "exit": 0,
         "stdout": "10\n",
@@ -337,9 +337,9 @@
       "source": "abscase.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 7340 baait sankalit\n",
@@ -348,7 +348,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\abscase.exe"
         ],
         "exit": 1,
         "stdout": "",
@@ -363,9 +363,9 @@
       "source": "mem1.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 635 baait sankalit\n",
@@ -374,7 +374,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem1.exe"
         ],
         "exit": 0,
         "stdout": "start=0\nin=0\nafter=0\n",
@@ -389,9 +389,9 @@
       "source": "mem2.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 354 baait sankalit\n",
@@ -400,7 +400,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\mem2.exe"
         ],
         "exit": 0,
         "stdout": "200010000\n",
@@ -415,9 +415,9 @@
       "source": "withdrawn.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\withdrawn.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\withdrawn.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\withdrawn.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\withdrawn.exe"
         ],
         "exit": 1,
         "stdout": "withdrawn.sm:4:11: Sutram truti [E_PRATYAHRITA]: sankhya_bindu (sankhya_dot) pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate\n      likha(sankhya_bindu(a, a))\n            ^\nSanket: dvayoh kosh dasham bindu-gunanaya: yoj sankhyiki, bindu_gunan(a, b) - laghutara dirghata eva pathyate\n",
@@ -432,9 +432,9 @@
       "source": "deva.sm",
       "compile": {
         "command": [
-          "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.sm",
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.exe"
+          "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\\bin\\sutram.exe",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.sm",
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.exe"
         ],
         "exit": 0,
         "stdout": "Siddh: 109 baait sankalit\n",
@@ -443,7 +443,7 @@
       },
       "run": {
         "command": [
-          "E:\\Github_Projects\\Sutram\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.exe"
+          "<repo>\\Windows-to-Sarvam\\sarvam-acceptance-v297-2026-11-03\\programs\\deva.exe"
         ],
         "exit": 0,
         "stdout": "नमस्ते",

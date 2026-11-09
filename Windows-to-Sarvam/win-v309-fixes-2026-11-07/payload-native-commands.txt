@@ -1,13 +1,13 @@
 > certutil -hashfile docs\LANGUAGE-REFERENCE.md SHA256
-SHA256 hash of E:\Github_Projects\Sutram\build\windows-v309-fixes\docs\LANGUAGE-REFERENCE.md:
+SHA256 hash of <repo>\build\windows-v309-fixes\docs\LANGUAGE-REFERENCE.md:
 cf7b12be17408c17b4f21200a6dcf8f27486dd9c957a9b1650e00a8704b227d1
 CertUtil: -hashfile command completed successfully.
 > certutil -hashfile lang\sanskrit.lang SHA256
-SHA256 hash of E:\Github_Projects\Sutram\build\windows-v309-fixes\lang\sanskrit.lang:
+SHA256 hash of <repo>\build\windows-v309-fixes\lang\sanskrit.lang:
 0b1940860bbfd54c1a5ee65f45bf31ffd1d4e68a0d95c5b5106ef1abdc1d0d9f
 CertUtil: -hashfile command completed successfully.
 > certutil -hashfile README.md SHA256
-SHA256 hash of E:\Github_Projects\Sutram\build\windows-v309-fixes\README.md:
+SHA256 hash of <repo>\build\windows-v309-fixes\README.md:
 9e08391ad8f82317de1a366da727a73e2e0f49f28b91029e71168b307168e8de
 CertUtil: -hashfile command completed successfully.
 > (Get-Content -Raw docs\LANGUAGE-REFERENCE.md) -match "`r`n"

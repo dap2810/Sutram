@@ -42,7 +42,7 @@ It is the only file with a timestamp from that evening; the others keep the payl
 
 **Still unknown: why the copy blocked on that file.** It is not in the source. The candidates are what blocks a process inside a file copy: a filter driver (antivirus, a backup agent - Acronis filter drivers are on this machine's PATH), or a write to the visible console that QuickEdit had paused. **I cannot tell which from here.** It blocked on file 132 of 657 on one run; the v305 install after the repair copied all 657 in 15 s.
 
-(A smaller correction: HANG.md says the installed `bin\sutram.exe` "prints v305". The snapshot's `where sutram` lists the repository's own `E:\...\Sutram\sutram.exe` first. The installed file's hash is the v303 payload's, `4c05d5cb…`.)
+(A smaller correction: HANG.md says the installed `bin\sutram.exe` "prints v305". The snapshot's `where sutram` lists the repository's own `<repo>\sutram.exe` first. The installed file's hash is the v303 payload's, `4c05d5cb…`.)
 
 ### 2. Decision changed: the log must name the file it is copying. My R130 hand-back was wrong.
 

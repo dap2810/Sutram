@@ -6,9 +6,9 @@ Sutram Setup Log
 [2026-11-07 15:12:34] Native self-test exit: pre-install --version code=0
 [2026-11-07 15:12:34] Native self-test start: pre-install --help
 [2026-11-07 15:12:34] Native self-test exit: pre-install --help code=0
-[2026-11-07 15:12:38] Transaction 27f11192e5794a16bcdc538887b82be0 begun (journal C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
+[2026-11-07 15:12:38] Transaction 27f11192e5794a16bcdc538887b82be0 begun (journal %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\journal.txt).
 [2026-11-07 15:12:38] Recording the payload being installed (payload.pending.sha256).
-[2026-11-07 15:12:38] Staging 657 Sutram files in C:\Users\dmech\AppData\Local\Programs\Sutram.sutram-transaction\stage.
+[2026-11-07 15:12:38] Staging 657 Sutram files in %USERPROFILE%\AppData\Local\Programs\Sutram.sutram-transaction\stage.
 [2026-11-07 15:12:38] START 1/657: assets\sutram.ico
 [2026-11-07 15:12:38] DONE  1/657: assets\sutram.ico
 [2026-11-07 15:12:38] START 2/657: bin\lang\bengali.lang
@@ -1323,7 +1323,7 @@ Sutram Setup Log
 [2026-11-07 15:12:52] DONE  656/657: win\lib\varna.smlib
 [2026-11-07 15:12:52] START 657/657: win\sutram.exe
 [2026-11-07 15:12:53] DONE  657/657: win\sutram.exe
-[2026-11-07 15:12:53] Publishing 657 files into C:\Users\dmech\AppData\Local\Programs\Sutram.
+[2026-11-07 15:12:53] Publishing 657 files into %USERPROFILE%\AppData\Local\Programs\Sutram.
 [2026-11-07 15:12:53] PUBLISH 1/657: assets\sutram.ico
 [2026-11-07 15:12:53] PUBLISH 2/657: bin\lang\bengali.lang
 [2026-11-07 15:12:53] PUBLISH 3/657: bin\lang\bengali.sandesh
@@ -1992,4 +1992,4 @@ Sutram Setup Log
 [2026-11-07 15:13:08] New-terminal check: Sutram 1.0 (v311) - sampurna sutra
 [2026-11-07 15:13:08] Creating Start-menu shortcuts.
 [2026-11-07 15:13:08] Registering the .sm file type and the uninstaller.
-[2026-11-07 15:13:09] Installation complete: C:\Users\dmech\AppData\Local\Programs\Sutram
+[2026-11-07 15:13:09] Installation complete: %USERPROFILE%\AppData\Local\Programs\Sutram

@@ -1,7 +1,7 @@
 {
     "name":  "initial",
     "moment":  "complete",
-    "setup":  "E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe",
+    "setup":  "<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe",
     "setup_sha256":  "2751711704D0C48E4623CE0E700FA7E58E868764F8363BA4BAF78986ACBB2299",
     "started":  "2026-11-07T12:09:41.8487155-05:00",
     "observations":  [
@@ -34,15 +34,15 @@
     "live_log_opened":  false,
     "pid":  37132,
     "process_started":  "2026-11-07T12:09:41.9462920-05:00",
-    "destination":  "C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram",
+    "destination":  "%USERPROFILE%\\AppData\\Local\\Programs\\Sutram",
     "ready_screenshot":  "initial-ready.png",
     "child":  {
                   "parent":  37132,
                   "pid":  24552,
                   "started":  "2026-11-07T12:09:43.6556866-05:00",
-                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCC6E.tmp\\install-core.ps1\" -PayloadZip \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCC6E.tmp\\payload.zip\" -InstallDir \"C:\\Users\\dmech\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"E:\\Github_Projects\\Sutram\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe\" -LogPath \"C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCC6E.tmp\\install.log\" -AddPath -DesktopShortcut"
+                  "command":  "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%USERPROFILE%\\AppData\\Local\\Temp\\STMCC6E.tmp\\install-core.ps1\" -PayloadZip \"%USERPROFILE%\\AppData\\Local\\Temp\\STMCC6E.tmp\\payload.zip\" -InstallDir \"%USERPROFILE%\\AppData\\Local\\Programs\\Sutram\" -SetupExePath \"<repo>\\build\\windows-v309-fixes\\build\\native-v309-final-fix\\Sutram-Setup.exe\" -LogPath \"%USERPROFILE%\\AppData\\Local\\Temp\\STMCC6E.tmp\\install.log\" -AddPath -DesktopShortcut"
               },
-    "engine_log":  "C:\\Users\\dmech\\AppData\\Local\\Temp\\STMCC6E.tmp\\install.log",
+    "engine_log":  "%USERPROFILE%\\AppData\\Local\\Temp\\STMCC6E.tmp\\install.log",
     "status":  "FINISH",
     "finish_seconds":  22.4630094,
     "finish_screenshot":  "initial-finish.png",
