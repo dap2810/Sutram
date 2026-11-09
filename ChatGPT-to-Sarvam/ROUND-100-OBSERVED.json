@@ -56,7 +56,7 @@
       "Windows_owner_acceptance": {
         "branch": "claude/windows-linker",
         "compiler": "v243",
-        "platform": "Windows 11 Pro build 26300.9711, standard user non-elevated, AMD Ryzen 7 7700X",
+        "platform": "Windows (system details redacted), standard user non-elevated, [hardware detail redacted]",
         "required": "16 PASS, 0 FAIL, 0 NOT_RUN",
         "actual_Windows_C_FFI": "NOT IMPLEMENTED/NOT RUN",
         "advisories": "temp-staging-cleaned FAIL; shift-tab-keyboard NOT_RUN",
