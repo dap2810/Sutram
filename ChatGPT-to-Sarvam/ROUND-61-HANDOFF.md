@@ -34,7 +34,7 @@ Use a genuine 64-bit Windows desktop with NASM + MinGW PE64 `ld` in PATH (or pas
 
 ```powershell
 powershell.exe -NoProfile -File tools/r61_windows_compiler_diagnostics.ps1 -TimeoutMs 8000
-# Optional A/B: add -LegacyCompiler "C:\path\to\old\win\sutram.exe"
+# Optional A/B: add -LegacyCompiler "<drive>\path\to\old\win\sutram.exe"
 ```
 
 Inspect `R61_PE_NORMAL_SIZE`, `R61_WINDOWS_COMPILE_EXECUTE_PASS`, exact program stdout, logs and exit code. Verify generated PE section size, and include provenance of **real** Windows run, not inferred from source. Check fresh compiler output remains small, and report errors honestly. Then rebuild installer *with corrected compiler embedded*, run per-user GUI installer using existing R60 bounded acceptance scripts on ephemeral Windows, inspect installer log (`Sutram-Setup\install.log` or actual path), verify no elevation, HKCU uninstall key, Start Menu shortcut target/ICO and installed GUI launch. Exercise editor Run and `>>>` separately, capture screenshot containing a test file with orange keywords / teal builtins / green strings / purple numbers / grey comments, **actually review the image**. On Linux independently build/test compiler and run accepted 186/3, 12/12, 30/30, 18/18, 161/161 `proof_lib`, 49/49 `proof_props` and R57/R58/R59 frozen baselines; do not rewrite goldens.
