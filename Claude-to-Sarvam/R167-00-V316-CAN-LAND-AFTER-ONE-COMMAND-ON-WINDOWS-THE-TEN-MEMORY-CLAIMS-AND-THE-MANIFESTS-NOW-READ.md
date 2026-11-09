@@ -8,15 +8,16 @@ main (the commit carrying this file; SHA in my chat report): Sutram 1.0 (v315) -
      gates: 81 PASS / 0 FAIL / 1 NOT-RUN  (sh tools/gates.sh, Linux, Xvfb; NOT-RUN = Windows execution; +1: R167 evidence manifests)
      suite: NO-EXPECTATION=4 PASS=327 (331 run) · crash corpus: 227 cases + manifest, 0 failed
      installer d8ae75c94bf94cedab31ce7cd7fb261c70ea93edc8cb6b1b0fbcb4da0f7cadc9 (docs in the payload changed)
-staged  branch r167-v316-on-main, one commit 694536e7 on main's c239b2f5: Sutram 1.0 (v316) - sampurna sutra
+staged  branch v316-ready: one commit whose parent is the commit carrying this file (its SHA in my chat report)
+        Sutram 1.0 (v316) - sampurna sutra
      gates: 82 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb) · installer e040c9c6f82b144bb1b2e63275c51e7e4f7d60dea744883c5b5a6dd027aff972
      its code and all seven binaries are byte for byte 315660ec's, where the guard ran:
      ELF and PE, 783 programs: 587 byte-identical, 196 refused identically, 0 DIFFER; 196 refusal messages unchanged
      tests\windows\accept_v316.cmd under Wine (Linux, not Windows): 18 passed, 0 failed; on v315: 2 passed, 16 failed
 ```
 
-`315660ec` (branch `r163-output-collision`) stays as it is; `r167-v316-on-main` is the same change carried onto
-today's main - only documents, the gate list, the installer and the acceptance script differ. No force push.
+`315660ec` (branch `r163-output-collision`) stays as it is; `v316-ready` is the same change carried onto
+today's main (gated in full as `694536e7` on branch `r167-v316-on-main`, one commit earlier on main) - only documents, the gate list, the installer and the acceptance script differ. No force push.
 
 ## WS1 - can v316 land today?
 
@@ -35,12 +36,12 @@ object readers and `tools/sutram_build.py`. For programs that compile, nothing c
 
 | ☐ | command | expected | what it proves |
 |---|---|---|---|
-| ☐ 1 | `git fetch origin` then `git switch --detach origin/r167-v316-on-main` | `HEAD is now at 694536e7` | you are testing the staged tree, not main |
+| ☐ 1 | `git fetch origin` then `git switch --detach origin/v316-ready`, then `git log -1 --format=%s` | `R163 WS1 (staged, v316, on main as of R167): ...` | you are testing the staged tree, not main |
 | ☐ 2 | `tests\windows\accept_v316.cmd` | last line: `v316 acceptance: 18 passed, 0 failed, 0 skipped`; exit 0 | the eighteen rows below. Installs nothing; works in a new folder under `%TEMP%` and removes it |
 | ☐ 3 | in an empty folder: `<repo>\win\sutram.exe -i`, type `likha(2+3)`, Enter; `likha(6*7)`, Enter; `nirgat` | `5`, then `42` | the interactive shell compiles over its own scratch program each time - an output that already exists, every run |
 | ☐ 4 | `sutram-ide-gui.exe`: Load example, `01_hello.sm`, Run | the greeting in the output pane | the IDE's compile and run with the v316 compiler |
 | ☐ 5 | (if your Documents folder is on OneDrive, or you have a USB stick) copy any `.sm` there and compile it there | it compiles and runs | file identity can be read on that kind of disk too. If it says `na nishchitam`, v316 cannot compile on that disk: tell me, and do not merge |
-| ☐ 6 | all of 2-4 passed: `git switch main`, `git merge origin/r167-v316-on-main`, `git push` - or say "land it" and I do it and run the Linux gates | a merge with no conflict; `Sutram-Setup.sha256` reads `e040c9c6...` | main is v316 with the package you just tested, bit for bit (main changed nothing the installer carries since the branch point) |
+| ☐ 6 | all of 2-4 passed: `git switch main`, `git merge origin/v316-ready`, `git push` - or say "land it" and I do it and run the Linux gates | a merge with no conflict; `Sutram-Setup.sha256` reads `e040c9c6...` | main is v316 with the package you just tested, bit for bit (main changed nothing the installer carries since the branch point) |
 | ☐ 7 | the full native run, on the merged package: `tools\accept-windows.ps1`, `tests\windows\test_installer_e2e.py --i-understand-this-installs`, `tests\r34\test_link_windows.py`, `tests\r35\test_ffi_windows.py`, `tools\ide_examples_windows.ps1`, `tests\windows\test_commit_oom.py`, `tests\windows\test_oom_headroom.py` | each one's own PASS line | the release run - the gates' one NOT-RUN |
 
 **If step 2 prints any FAIL:** do not merge. Run step 7 on main (v315) as planned, and send
@@ -164,3 +165,23 @@ nothing is changed, but the message is the wrong one. No design question of Chat
 - **The installer engine** - not touched this round (the lock's wrong message for a folder is left for after the run).
 - **Muse's remaining R156 chapter notes** - not in this round's list.
 - **The REPL's and the Linux IDEs' fixed scratch names, and writes that fail part-way** - still named, not fixed.
+
+## Addendum - ChatGPT's R226 follow-up 2, which landed while I wrote this
+
+It reviewed R166's verifier and normaliser and found four ways they still fail open. All four are closed:
+
+- **The verifier reads a manifest whole or not at all.** Only the two formats in use are accepted (`sha256sum`
+  lines; the list of `{"file", "sha256"}`); a line that is not an entry, malformed JSON, another shape, a missing or
+  malformed digest, a repeated key, one path with two digests, an empty manifest, a path leaving the tree - each is
+  INVALID, exit 1. No manifest named is exit 2.
+- **NORMALISED follows a connected chain**: from the recorded digest, each step's "before" must be the digest
+  reached so far, until the file's bytes; one digest sent two ways is an error.
+- **REMOVED checks the digest**, not only the path - the removed image's, or one that leads to it through the
+  recorded covering.
+- **Paths resolve one way**, relative to the manifest, with real containment.
+- **The normaliser** checks JSON on the decoded text (UTF-16 JSON no longer refuses), and if a write fails part-way it
+  says which files are as before, after or neither - it does not call itself a transaction.
+
+`R167 evidence manifests` now self-tests ChatGPT's proposed fixtures (21 checks): every refusal, a connected and a
+broken chain, a removed image with a wrong digest. The eight manifests still pass: 3,362 entries, all explained.
+

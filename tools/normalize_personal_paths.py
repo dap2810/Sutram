@@ -13,6 +13,8 @@ file it cannot read, a JSON file that would no longer parse, a key repeated in o
 paths would make), a JSON structure or non-text value that would move, or a key that would change without
 --allow-key-changes - and any of them stops it, exit 1, nothing written. UTF-16 text is decoded, normalised and
 written back in its own encoding; a binary is never changed. Its own self-test runs first (--self-test alone).
+Applying is checked before, not transactional: the record is written, then each file; if a write fails part-way it
+says which files are as before, as after, or neither, and exits 1.
 
 The rules are byte rules, ordered; each keeps the separators and the rest of the path. Placeholders:
 %USERPROFILE% for the home folder, <repo> for the repository's folder, <user> / <machine> for an account and a
@@ -268,7 +270,7 @@ def main(argv):
             problems.append(f'{f}: would not read back as written')
             continue
         if f.lower().endswith('.json'):
-            pr, kc = json_problems(b, nb)
+            pr, kc = json_problems(t, nt)      # the decoded text: a UTF-16 JSON file is checked like any other
             problems += [f'{f}: {x}' for x in pr]
             if kc:
                 key_changes.append(f'{f}: {kc} keys change')
@@ -323,11 +325,29 @@ def main(argv):
                            'No history rewrite.',
                    'files': rec}, open(record, 'w'), indent=1)
         open(record, 'a').write('\n')
+        # Not a transaction: the record (what is intended) is written first, then the files one by one. If a write
+        # fails part-way, some files are as before and some as after; say exactly which, so nothing is guessed.
+        failure = None
         for f, (_, nb) in changed.items():
-            open(f, 'wb').write(nb)
-        bad = [f for f, (_, nb) in changed.items() if open(f, 'rb').read() != nb]
-        if bad:
-            print(f'FAILED: {len(bad)} files do not read back as written: {bad[:5]}')
+            try:
+                open(f, 'wb').write(nb)
+            except OSError as e:
+                failure = f'{f}: {e.__class__.__name__}'
+                break
+        state = {'before': [], 'after': [], 'neither': []}
+        for f, (b, nb) in changed.items():
+            try:
+                cur = open(f, 'rb').read()
+            except OSError:
+                cur = None
+            state['after' if cur == nb else 'before' if cur == b else 'neither'].append(f)
+        if failure or state['before'] or state['neither']:
+            print(f'FAILED - applied in part ({failure or "a file does not read back as written"}). The record {record} '
+                  f'lists what was intended, not what is: {len(state["after"])} files are as after, '
+                  f'{len(state["before"])} as before, {len(state["neither"])} neither.')
+            for k in ('before', 'neither'):
+                for f in state[k][:20]:
+                    print(f'  {k}: {f}')
             return 1
         print(f'applied: {len(changed)} files; record {record}')
     return 0
