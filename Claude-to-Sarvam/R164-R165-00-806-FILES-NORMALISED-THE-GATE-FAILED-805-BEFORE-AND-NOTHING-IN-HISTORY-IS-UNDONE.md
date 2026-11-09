@@ -177,3 +177,17 @@ other memory dominates (smaller buffers, a `kosh`). **Send the programs and I wi
 - **`windows/windows-build-integrity.sha256`:** not regenerated - stale before this round, not gated, and a
   regeneration would bless 237 unexplained mismatches.
 - **Native Windows:** nothing here needs it; nothing ran there.
+
+## Addendum (the owner, the same day): the screenshots are out of the tree
+
+The owner saw an installer's *Ready to Install* page with the profile folder in it and asked why the screenshots were
+still there. **All 318 screenshots are now removed** (`git rm`; 213 from `Windows-to-Sarvam/`, 105 from
+`Claude-to-Sarvam/`); the 11 product icons in `icons/` stay. 64 of them had been covered where OCR read a name, but OCR
+can misread a name (an `m` read as `rn`) and then misses it, so covering was never proof; removing them is.
+`Claude-to-Sarvam/evidence-r164/screenshots-removed.tsv` lists each one, its size and digest. Nothing in `tools/`,
+`tests/`, `src/` or `docs/` reads them; 60 reports link to one, and those links now lead nowhere - the report's words
+say what the picture showed. **They are still in the history** - the originals, names readable, at `6b395bd7` and
+before. Removing them from there is a history rewrite and a forced push: every commit SHA changes, every clone
+(the owner's Windows clone among them) must be made again, and GitHub keeps cached views and forks until asked to
+purge them. That is the owner's decision; I have not done it.
+

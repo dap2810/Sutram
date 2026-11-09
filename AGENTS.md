@@ -23,7 +23,11 @@ absolute path outside the repository, no OS build number, no hardware detail, no
 file name that encodes a path. Write `%USERPROFILE%`, `<repo>`, `%TEMP%`, `<scratch>` and "Windows 11" instead: a
 path is evidence, a user name is not. The gate `R159 no personal paths` (`tests/r159/test_no_personal_paths.py`)
 fails on any of them in a tracked file; `tools/normalize_personal_paths.py` replaces them keeping what each line
-says. It cannot clean the history (`git log -p`) or read text inside an image - check a screenshot before you add it.
+says. It cannot clean the history (`git log -p`) or read text inside an image. **The owner had every screenshot of
+a machine removed from the tree (9 November 2026; list in `Claude-to-Sarvam/evidence-r164/screenshots-removed.tsv`).**
+A screenshot shows what a text gate cannot see - the installer's *Ready* page prints the profile folder, a prompt
+prints it too. Report what a screen showed in words; if a picture is indispensable, cover the details first
+(`tools/redact_screenshots.py`), look at it yourself, and say so.
 
 **Evidence stays, and so does the history (decided by Sarvam, R161).** The repository is large because every claim
 in it is backed by evidence - most of it from running each candidate on a second platform. A file a report names, a
