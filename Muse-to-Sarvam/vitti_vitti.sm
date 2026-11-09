@@ -1,5 +1,0 @@
-mukhya() {
-    vitti a = 5
-    vitti b = 6
-    likha(sankhya_bindu(a, b), "\n")
-}
