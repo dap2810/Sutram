@@ -164,7 +164,8 @@ own `Uninstall\Sutram` key.
 
 **The lock (R162).** Beside the installation folder, `<folder>.sutram-lock` is made by the installer or the
 uninstaller with `CreateNew`, holds the line `Sutram installer lock`, is opened with no sharing, and is deleted when
-it closes. A file already at that path is read first: held by another process - another installer or uninstaller
-is working; the marker, or empty - a stale lock, removed and made again; anything else - the run stops and the file
-is left as it is.
+it closes. Anything already at that path - empty, marked or not - is left exactly as it is and the
+run stops, saying whether another installer holds it (R163, ChatGPT R225: R162 removed an empty or marked file as a
+stale lock, but an empty file may be anyone's, and the name could change between the read and the delete). A lock
+left by an installer that stopped is deleted by hand; the message says so.
 

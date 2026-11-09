@@ -24,6 +24,9 @@
   output (`$TMPDIR/sutram-gate-failures/`); R126's Wine check prints stdout and stderr apart on a failure.
 - **R155 follow-up (ChatGPT R221 follow-up):** `PathValueCreated` is carried from the old record only when the old
   PATH entry was kept; when it is appended again (same text, after the user removed it) it records what this run did.
+- **R163, the installer lock (ChatGPT R225):** nothing already at `<folder>.sutram-lock` is removed - not an empty
+  file, not a marked one; the run stops and says whether another installer holds it, and how to recover. R162 had
+  removed an empty or marked file as stale. Gate `R143 installer first contact`; fixture cases 3-4 now expect refusal.
 - **R163 (documents and a gate):** the memory chapter's section 1 said a `kosh` "grows each time you add to it" - it
   grows when it is full, doubling its room; the chapter now says what capacity is, and why `parimana()` gives 96 for
   five numbers. The block's peak, re-measured over 75 runs, is 308 or 436 KB (the chapter said 392, one run); without

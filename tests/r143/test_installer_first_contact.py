@@ -259,13 +259,12 @@ def main():
     # R162 (ChatGPT R223 A-C): nothing is changed before what decides it has been read.
     lk = [func(c, 'Open-SutramLock') for c in (eng, ucode)]
     check(lk[0] and lk[0].strip() == lk[1].strip() and '[IO.FileMode]::CreateNew' in lk[0] and 'OpenOrCreate' not in eng
-          and 'OpenOrCreate' not in ucode and '$fs.Write($mark' in lk[0]
-          and 0 < lk[0].find('[void]$held.Read($head') < lk[0].find('[IO.File]::Delete($Path)')
-          and 'A file that is not a Sutram lock' in lk[0] and '$script:txnLock = Open-SutramLock $lockPath' in eng
-          and "Open-SutramLock ($InstallDir + '.sutram-lock')" in ucode,
-          'R162 A: the lock is made with CreateNew and marked; a file already at its path is read first, and only a '
-          'stale Sutram lock (the marker, or empty) is removed - anything else stops the run unchanged (install and '
-          'uninstall share one function)')
+          and 'OpenOrCreate' not in ucode and '$fs.Write($mark' in lk[0] and '[IO.File]::Delete' not in lk[0] and 'Remove-Item' not in lk[0]
+          and 0 < lk[0].find('$fs.Write($mark') < lk[0].find('$fs.Dispose()') and 'and no installer is using it. It was not changed.' in lk[0]
+          and '$script:txnLock = Open-SutramLock $lockPath' in eng and "Open-SutramLock ($InstallDir + '.sutram-lock')" in ucode,
+          'R162 A, R163 (ChatGPT R225): the lock is made with CreateNew and marked, and disposed if the marker cannot be '
+          'written; anything already at its path - empty, marked or not - is left as it is and the run stops; nothing '
+          'is deleted (install and uninstall share one function)')
     iv = eng.find('if ($VerifyOnly) {')
     check(eng.count('if ($VerifyOnly) {') == 1 and 0 < iv < eng.find('$script:txnLock = Open-SutramLock')
           and iv < eng.find('Remove-Item -LiteralPath $txnDir -Recurse') and iv < eng.find('$oldState = Read-State'),

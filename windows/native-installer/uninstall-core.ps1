@@ -63,46 +63,34 @@ function Remove-UserPathEntryOnce([string]$Entry,[bool]$DeleteIfEmpty) {
     if ($removed) { Broadcast-EnvironmentChange }
     return $removed
 }
-# R162 (ChatGPT R223 A): the lock is a file this installer creates and marks, and only such a file is taken. Up to
-# R161 it was opened with OpenOrCreate and DeleteOnClose: a file a user had at that path was opened and deleted when
-# the lock closed - by a run that then refused, too - and nothing read it first. Now the lock is made with CreateNew
-# (it must not exist yet), still DeleteOnClose, and a marker is written into it. A file already at the path is read
-# before anything is decided: held by another process -> another installer or uninstaller is working; a stale Sutram
-# lock (the marker, or empty - up to R161 nothing was written into it; a lock is left only if the machine stopped)
-# -> removed, after it was read, and the lock made again; anything else -> left as it is, and the run stops.
+# R162 (ChatGPT R223 A) and R163 (its R225): the lock is a file this run creates; nothing already at its path is
+# taken or removed. Up to R161 it was opened with OpenOrCreate and DeleteOnClose, so a file a user had at that path
+# was deleted when the lock closed. R162 read such a file and removed it if it was empty or held the marker - but an
+# empty file of anyone's is indistinguishable from an old empty lock, and the name could be replaced between the
+# read and the delete. Now: CreateNew (the path must be free), DeleteOnClose, the marker written; if anything is
+# already there, it is left exactly as it is and the run stops, saying whether another installer holds it.
 function Open-SutramLock([string]$Path) {
     $mark = [Text.Encoding]::ASCII.GetBytes("Sutram installer lock`r`n")
-    for ($try = 0; $try -lt 3; $try++) {
-        try {
-            $fs = [IO.FileStream]::new($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
-            $fs.Write($mark,0,$mark.Length)
-            $fs.Flush()
-            return $fs
-        } catch {
-            if (-not [IO.File]::Exists($Path)) {
-                if ($try -lt 2) { continue }
-                throw ('The installer lock could not be made: ' + $Path + ' - ' + $_.Exception.Message)
-            }
+    $fs = $null
+    try {
+        $fs = [IO.FileStream]::new($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None,1,[IO.FileOptions]::DeleteOnClose)
+    } catch {
+        if ([IO.File]::Exists($Path) -or [IO.Directory]::Exists($Path)) {
+            $held = $true
+            try { $probe = [IO.FileStream]::new($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::None); $probe.Dispose(); $held = $false } catch { }
+            if ($held) { throw ('Another Sutram installer or uninstaller is working on this folder (its lock is ' + $Path + '). Let it finish, then run this one again.') }
+            throw ('Something is already at ' + $Path + ', and no installer is using it. It was not changed. If it is a lock left by an installer that stopped (empty, or one line "Sutram installer lock"), delete it yourself; if it is yours, move it elsewhere. Then run this again.')
         }
-        $len = -1
-        $head = $null
-        try {
-            $held = [IO.FileStream]::new($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::None)
-        } catch {
-            throw ('Another Sutram installer or uninstaller is working on this folder (its lock is ' + $Path + '). Let it finish, then run this one again.')
-        }
-        try {
-            $len = $held.Length
-            $head = New-Object byte[] ([int][Math]::Min([long]$len,[long]64))
-            [void]$held.Read($head,0,$head.Length)
-        } finally { $held.Dispose() }
-        $stale = ($len -eq 0) -or (($len -eq $mark.Length) -and ([Convert]::ToBase64String($head) -eq [Convert]::ToBase64String($mark)))
-        if (-not $stale) {
-            throw ('A file that is not a Sutram lock is at ' + $Path + ' (' + $len + ' bytes). It was not changed. Move it elsewhere, then run this again.')
-        }
-        [IO.File]::Delete($Path)
+        throw ('The installer lock could not be made: ' + $Path + ' - ' + $_.Exception.Message)
     }
-    throw ('The installer lock could not be taken: ' + $Path + '. Run this again.')
+    try {
+        $fs.Write($mark,0,$mark.Length)
+        $fs.Flush()
+    } catch {
+        $fs.Dispose()
+        throw ('The installer lock could not be written: ' + $Path + ' - ' + $_.Exception.Message)
+    }
+    return $fs
 }
 function Read-State([string]$Path) {
     $state = @{}

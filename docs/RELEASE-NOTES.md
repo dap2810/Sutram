@@ -15,7 +15,8 @@ run on Windows; it is a candidate.** The last package run there is v312's (the e
 ## Status: what v315 closes, and what it does not (R140-R158)
 
 **The installer reads before it changes anything (R162):** a file of yours at `<folder>.sutram-lock` is no longer
-deleted (the installer stops and names it); verifying the package changes nothing; and finishing an interrupted
+deleted - nothing already at that path is touched; the installer stops and names it; verifying the package
+installs nothing and changes nothing of the target; and finishing an interrupted
 installation will not replace an uninstaller someone changed. Not run on Windows.
 
 **The reference is corrected (R161):** nineteen claims the code did not support - among them that a program can

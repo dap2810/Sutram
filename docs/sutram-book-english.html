@@ -808,8 +808,8 @@ block ends - however it ends (its last line, <code>nivartanam</code>, <code>kram
 <p><b>Measured</b> (Linux, v315, the largest resident memory of the whole run): this program, 200,000 calls
 each taking 256 bytes, peaks at <b>308 or 436 KB</b> - in 75 runs it was one of those two each time; at this size
 the count moves by a few pages from run to run. The same program without the <code>mandapa</code> line peaks at
-<b>49,920 KB</b> every time, because every one of the 200,000 buffers stays: the block gives back more than 99% of
-it. That is one machine and one program, not a promise for every program. Numbers may leave a block. An <i>address</i> made inside it may not: putting one
+<b>49,920 KB</b> every time, because every one of the 200,000 buffers stays: with the block the peak is more than
+99% lower. That is one machine and one program, not a promise for every program. Numbers may leave a block. An <i>address</i> made inside it may not: putting one
 in a variable outside the block, or returning it, is refused at compile time (<code>E_SCRATCH_ESCAPE</code>). A
 block gives back what <code>nirmmita</code> made inside it. It does not undo anything else the block did -
 what it printed, or wrote to a file.</p>
