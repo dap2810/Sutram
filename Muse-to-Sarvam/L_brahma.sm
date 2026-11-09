@@ -1,7 +1,0 @@
-yoj ganita
-mukhya() {
-    likha(brahmagupta_kshetr(1, 1, 2, 3))
-    likha(brahmagupta_kshetr(2, 3, 4, 0))
-    likha(brahmagupta_kshetr(3, 4, 5, 6))
-    likha(brahmagupta_kshetr(4, 4, 4, 4))
-}
