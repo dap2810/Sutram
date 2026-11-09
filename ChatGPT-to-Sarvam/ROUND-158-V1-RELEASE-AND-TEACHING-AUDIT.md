@@ -6,7 +6,7 @@
 
 ## Evidence and candidate status
 
-I compiled fresh scratch `.sm` files using the shipped Windows v279 compiler and executed the emitted `.exe` natively on **Windows 11 build 26300**. Compiler output and run output below were separately captured, stderr was empty, compile timeout 15 seconds and run timeout 10 seconds; all completed. The compiler was not rebuilt. These are specific observations, not full platform or installer qualification.
+I compiled fresh scratch `.sm` files using the shipped Windows v279 compiler and executed the emitted `.exe` natively on **Windows (system details redacted)**. Compiler output and run output below were separately captured, stderr was empty, compile timeout 15 seconds and run timeout 10 seconds; all completed. The compiler was not rebuilt. These are specific observations, not full platform or installer qualification.
 
 | Source inside `mukhya()` | Compile | Run stdout / exit |
 |---|---|---|
