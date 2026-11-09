@@ -1,7 +1,0 @@
-yoj sadhan
-mukhya() {
-    likha(yog_seema(0, 10))
-    likha(yog_seema(4611686018427387904, 4611686018427387904))
-    likha(yog_seema(0, 9223372036854775807))
-    likha(yog_seema(5, 3))
-}
