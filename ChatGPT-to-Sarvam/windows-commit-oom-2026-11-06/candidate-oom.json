@@ -1,13 +1,13 @@
 {
-  "compiler": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
+  "compiler": "<repo>\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
   "compiler_sha256": "3bad012af185440276874a4315961e4c1e1a15532cda7c681e60300540c2f568",
   "expect_baseline_crash": false,
   "compilations": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.sm",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 1594 baait sankalit\n",
@@ -15,9 +15,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\small.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\small.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\small.sm",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\small.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 1740 baait sankalit\n",
@@ -25,9 +25,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw.sm",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 471 baait sankalit\n",
@@ -35,9 +35,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\null.sm",
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\null.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched\\sutram.exe",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\null.sm",
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\null.exe"
       ],
       "exit": 0,
       "stdout": "Siddh: 214 baait sankalit\n",
@@ -47,9 +47,9 @@
   "checks": [
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-64MiB",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -66,9 +66,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-128MiB",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -85,9 +85,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-256MiB",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-256MiB",
       "limit_bytes": 268435456,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -104,9 +104,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw-64MiB",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\raw-64MiB",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -123,9 +123,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-64MiB-invalid-stderr",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-64MiB-invalid-stderr",
       "limit_bytes": 67108864,
       "timeout_seconds": 60,
       "invalid_stderr": true,
@@ -142,9 +142,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\small.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\small.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\small-128MiB",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\small-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -161,9 +161,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-2048MiB",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\kosh-2048MiB",
       "limit_bytes": 2147483648,
       "timeout_seconds": 60,
       "invalid_stderr": false,
@@ -180,9 +180,9 @@
     },
     {
       "command": [
-        "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\null.exe"
+        "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\null.exe"
       ],
-      "cwd": "E:\\Github_Projects\\Sutram\\build\\windows-oom-review\\build\\oom\\patched-checks\\null-128MiB",
+      "cwd": "<repo>\\build\\windows-oom-review\\build\\oom\\patched-checks\\null-128MiB",
       "limit_bytes": 134217728,
       "timeout_seconds": 60,
       "invalid_stderr": false,
