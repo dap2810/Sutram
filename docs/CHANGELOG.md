@@ -22,6 +22,8 @@
   one separator, keeping the other entries' text and the value's kind, and `PathValueCreated` lets uninstall remove
   a PATH value it made. Gate `R143 installer first contact` (24). The gate harness keeps a failing gate's whole
   output (`$TMPDIR/sutram-gate-failures/`); R126's Wine check prints stdout and stderr apart on a failure.
+- **R155 follow-up (ChatGPT R221 follow-up):** `PathValueCreated` is carried from the old record only when the old
+  PATH entry was kept; when it is appended again (same text, after the user removed it) it records what this run did.
 - **R157-R158 (documents and a gate):** the English and Sanskrit books have a memory chapter (19: `kosh` beside
   `mala`, `mandapa` with a measured number, `parimana()`, `mandapa parimita`, slices with `E_KOSH_VIBHAG` and
   `E_VIBHAG_ANKA`, running out of memory, what the language does not have); chapter 14 is retitled (it said "New

@@ -761,10 +761,12 @@ try {
         elseif ($oldState.ContainsKey('PathOwned') -and $oldState['PathOwned'] -eq '1') { $previousAdded = $binDir }
         if ($previousAdded -and -not [string]::Equals((Normalize-PathEntry $previousAdded),(Normalize-PathEntry $binDir),[StringComparison]::OrdinalIgnoreCase)) { $previousAdded = '' }
         $pathAdded = ''
+        $pathRetained = $false
         if ($AddPath) {
             Log 'Ensuring Sutram is present in the current user PATH.'
             if ($previousAdded -and (Test-UserPathEntryText $previousAdded)) {
                 $pathAdded = $previousAdded               # the entry an earlier run added is still there: still this installer's
+                $pathRetained = $true
             } elseif ([bool](Set-UserPathEntry $binDir $true)) {
                 $pathAdded = $binDir                      # added now; an equal entry already there is the user's, and stays unrecorded
             }
@@ -773,12 +775,13 @@ try {
             [void](Remove-UserPathEntryOnce $previousAdded ($oldState.ContainsKey('PathValueCreated') -and $oldState['PathValueCreated'] -eq '1'))
         }
         $pathOwned = [bool]$pathAdded
-        # R155: whether the PATH value itself was made by this installer - carried while its entry is still recorded.
+        # R155: whether the PATH value itself was made by this installer. Carried from the old record only when the old
+        # entry was kept; when the entry was appended now (ChatGPT R221 follow-up: also when it has the same text as the
+        # old record, after the user had removed it), it is what this run did - so a PATH value the user made in between
+        # is not taken for the installer's, and one this run made is.
         $pathValueCreated = $false
-        if ($pathAdded) {
-            if ($pathAdded -eq $previousAdded) { $pathValueCreated = ($oldState.ContainsKey('PathValueCreated') -and $oldState['PathValueCreated'] -eq '1') }
-            else { $pathValueCreated = $script:pathValueCreated }
-        }
+        if ($pathRetained) { $pathValueCreated = ($oldState.ContainsKey('PathValueCreated') -and $oldState['PathValueCreated'] -eq '1') }
+        elseif ($pathAdded) { $pathValueCreated = $script:pathValueCreated }
 
         # R130: the completion check that verifies something - a new terminal must run THIS compiler.
         if ($AddPath) {

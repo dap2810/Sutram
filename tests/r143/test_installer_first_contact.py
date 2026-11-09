@@ -235,9 +235,12 @@ def main():
           and 'DoNotExpandEnvironmentNames' in sp and '$script:pathValueCreated = $true' in sp
           and all('$rest.Add($item)' in r and "$key.SetValue('Path',$newPath,$kind)" in r and "$key.DeleteValue('Path',$false)" in r
                   and 'IsNullOrWhiteSpace' not in r for r in rs) and rs[0].strip() == rs[1].strip()
-          and "('PathValueCreated=' + ([string][int]$pathValueCreated))" in eng and "$state['PathValueCreated'] -eq '1'" in ucode,
+          and "('PathValueCreated=' + ([string][int]$pathValueCreated))" in eng and "$state['PathValueCreated'] -eq '1'" in ucode
+          and "if ($pathRetained) { $pathValueCreated = ($oldState" in eng and "elseif ($pathAdded) { $pathValueCreated = $script:pathValueCreated }" in eng
+          and '$pathAdded -eq $previousAdded' not in eng,
           'R155: PATH is changed by one entry and one separator - the other entries\' text, empty entries and the value\'s '
-          'kind stay; a PATH value the installer made (PathValueCreated) is removed when nothing else is left in it; '
+          'kind stay; a PATH value the installer made (PathValueCreated - carried only when the old entry was kept, '
+          'else what this run did) is removed when nothing else is left in it; '
           'install and uninstall share one removal function')
     check("('AssociationBefore=' + $associationBefore)" in eng and "if ($hadDefault) { $associationBefore='empty' }" in eng
           and "$state['AssociationBefore'] -eq 'empty') { $ext.SetValue('','',[Microsoft.Win32.RegistryValueKind]::String) }" in ucode,
