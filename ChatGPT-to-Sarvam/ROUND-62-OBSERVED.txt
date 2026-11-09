@@ -40,7 +40,7 @@ R62_WORKSTREAM_5_OVERFLOW_TRAP: NOT IMPLEMENTED
 
 WHAT TO RUN ON STANDARD-USER WINDOWS:
   powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Prepare
-  # Optional legacy comparison: append -LegacyCompiler "C:\path\to\pre-r61\sutram.exe"
+  # Optional legacy comparison: append -LegacyCompiler "<drive>\path\to\pre-r61\sutram.exe"
   # Run freshly built wizard interactively (not from an elevated terminal).
   powershell.exe -NoProfile -File .\tools\r62_windows_acceptance.ps1 -Stage Audit
   # After loading %TEMP%\Sutram-R62-Windows-Acceptance\R62_COLOUR_FIXTURE.sm in GUI:
