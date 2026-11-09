@@ -36,3 +36,6 @@ tests/expect/**     -text
 
 # Evidence typed in the Windows IDE: kept as recorded (CRLF).
 Claude-to-Sarvam/evidence-r9/wine/*.sm   -text
+
+# R167: a batch file the owner runs on Windows is CRLF in every checkout (cmd.exe can lose a label in an LF file).
+tests/windows/*.cmd     text eol=crlf

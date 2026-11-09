@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R163 (v316):** the compiler and `sutram-link.exe` (a file they read is never their output) changed; the engine,
+the uninstaller, the wizard and the runtime are unchanged since R163's lock fix. Built from an empty `--work` folder.
+
 ## What `install-state.ini` records (R153-R155)
 
 Every record is **what was done**, not a flag that something was done, and uninstall acts only on these:

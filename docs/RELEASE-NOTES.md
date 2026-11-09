@@ -1,7 +1,7 @@
-# Sutram 1.0 (v315) — release notes
+# Sutram 1.0 (v316) — release notes
 
-**Compiler `Sutram 1.0 (v315) - sampurna sutra`, 9 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v315). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v316) - sampurna sutra`, 9 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v316). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,23 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v315 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v316 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v315 closes, and what it does not (R140-R158)
+## Status: what v316 closes, and what it does not (R140-R163)
+
+**A file that was read is never written over (R163, v316).** Up to v315 `sutram hello.sm hello.sm` compiled and
+then wrote the program over `hello.sm` - the source gone, exit 0 - and so did `--object`, `sutram-link` naming one
+of its objects as the output, `sutram-elf2smo` / `sutram-coff2smo` naming their input, and `tools/sutram_build.py`
+with `-o` naming the program or a module. Now every file a tool
+opens to read is noted by its identity (Linux: device and inode; Windows: volume and file index), the output is
+opened without being emptied, and it is cut and written only if it is none of them - otherwise the tool stops,
+`E_NIRGAM_NIVESH`, exit 1, and the file is as it was. That covers another spelling (`./a.sm`, `A.SM` on Windows),
+a hard or symbolic link, a `yoj` module, the `--lang` pack, the `--ffi` file and `--separate`'s root. And an output
+that cannot be opened (a folder that does not exist; the running compiler itself) is now `E_NIRGAM_PATRA`, exit 1:
+up to v315 the compiler said `Siddh`, exit 0, and wrote nothing. Every program that compiled before compiles to the
+same bytes (the guard). Run under Wine; **not run on Windows.** Not changed: the REPL's and the Linux IDEs' fixed
+scratch names (reference §7).
 
 **The installer reads before it changes anything (R162):** a file of yours at `<folder>.sutram-lock` is no longer
 deleted - nothing already at that path is touched; the installer stops and names it; verifying the package
@@ -54,8 +67,8 @@ v315 is v314 plus (R153-R154):
   is kept and never adopted (ChatGPT R220: a link changed only in its description or hotkey passed the old
   field-by-field test); an upgrade from such a state makes its desktop link under a fresh name.
 
-**Evidence scope for v315.** *The pinned v315 package (the setup committed with these notes) passed the Linux
-gates, the byte-for-byte guard against v314 and the Windows compiler under Wine; it has not been installed, run or
+**Evidence scope for v316.** *The pinned v316 package (the setup committed with these notes) passed the Linux
+gates, the byte-for-byte guard against v315 and the Windows compiler, linker and COFF reader under Wine; it has not been installed, run or
 uninstalled on Windows, and untested guarantees remain unclaimed.* Not claimed: any of the installer's ownership
 changes on Windows (`tests/windows/test_installer_shortcuts.ps1` is written, not run), and what earlier native runs
 did not establish.
@@ -447,6 +460,8 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v316:** a file a tool read is never its output (`E_NIRGAM_NIVESH`); an output that cannot be opened is an
+  error (`E_NIRGAM_PATRA`), not a silent success.
 - **v315:** the tree limit's own code (`E_VRIKSHA_SEEMA`); the fold guard; the installer records what it did -
   shortcuts by their bytes, PATH by the entry, the association by its value, the class by what it wrote.
 - **v314:** a slice is not given to a foreign function; `--analysis-steps=N` (default 200,000); the analysis limit

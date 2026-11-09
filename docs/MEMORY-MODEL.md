@@ -1,4 +1,4 @@
-> **Status at compiler v315 (9 November 2026, R167). The body below is the R70 research snapshot - historical; this box is the current model.** Each line of the box was checked against the code or measured on v315 (Muse R158 read 49 claims; R167 corrected ten).
+> **Status at compiler v316 (9 November 2026, R167; the memory model is v315's - v316 changed how outputs are written, nothing here). The body below is the R70 research snapshot - historical; this box is the current model.** Each line of the box was checked against the code or measured on v315 (Muse R158 read 49 claims; R167 corrected ten).
 >
 > **What a program's memory does today, on Linux ELF and (from v299) Windows PE** (reference §16 and §19 have the detail and the measurements):
 > - **`nirmmita(n)`** takes `n` zeroed bytes from an **arena** (a pointer bump, rounded to 16; past 1 GiB its own `mmap`). Outside a block they live as long as the program.

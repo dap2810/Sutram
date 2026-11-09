@@ -122,9 +122,8 @@ r28_write_object:
     jmp .r34_holes
 .r34_holes_done:
     mov rdi, rbx
-    mov rsi, 0x241                  ; O_WRONLY|O_CREAT|O_TRUNC
     mov rdx, 0o644
-    call os_open
+    call r163_out                   ; R163: opened untruncated, checked against every input, then cut to 0
     test rax, rax
     js .done
     mov [rel out_fd], rax

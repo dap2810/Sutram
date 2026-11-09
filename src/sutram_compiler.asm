@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v315) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v316) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -833,6 +833,13 @@ r54_builtin_arity_table:
     repl_prog_hdr db "mukhya() {", 10, 0
     repl_prog_ftr db 10, "}", 10, 0
     msg_open_err  db "Sutram truti: nivesh patra aprapt", 10, 0
+    ; R163: the output named a file the compile had read
+    r163_m1 db "Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram '", 0   ; the code names the class: the output, not an input
+    r163_m2 db "' nivesha-patram eva (pathitam) - tasmin na likhitam, tat yatha asit tatha eva", 10, 0
+    r163_m3 db "Sanket: anyat nirgam-nama dehi - yatha 'sutram hello.sm hello'", 10, 0
+    r163_m0 db "Sutram truti [E_NIRGAM_PATRA]: nirgam-patram '", 0
+    r163_m5 db "' na udghatitam (lekhanaya) - kimapi na likhitam", 10, 0
+    r163_m4 db "' - nivesha-patrebhyah bhinnam iti na nishchitam (abhijnanam na labdham) - tasmin na likhitam", 10, 0
     msg_ok        db "Siddh: ", 0
     msg_bytes     db " baait sankalit", 10, 0
     dbg_pfb       db 0
@@ -2985,6 +2992,14 @@ _start:
     jl .r29_no_root                ; modules, as in the whole-program compile
     mov rax, R49_ARG(40)
     mov [rel r29_yoj_root], rax
+    mov rdi, rax                   ; R163: the root is a file this compile depends on, though it is not read -
+    xor esi, esi                   ; opened and closed so that it is noted as an input, and the output is never it
+    xor edx, edx
+    call os_open
+    test rax, rax
+    js .r29_no_root
+    mov rdi, rax
+    call os_close
 .r29_no_root:
     mov rax, R49_ARG(24)
     mov R49_ARG(16), rax
@@ -32654,6 +32669,51 @@ r65_emit_div_overflow_guard:
 
 %endif
 
+; R163: rdi = the output path, rdx = its mode -> rax = the output, open for writing at length 0 (or a negative
+; error, as os_open gave). If it is a file this run read (the source, a module, the pack, the FFI file), or its
+; identity cannot be read, nothing is written: a sentence, exit 1 (src/r163_same_file.inc).
+r163_out:
+    call r163_open_out
+    cmp rax, R163_SAME
+    je .same
+    cmp rax, R163_UNSURE
+    je .unsure
+    test rax, rax                ; R163: an output that cannot be opened was ignored - the compiler said "Siddh",
+    js .noopen                   ; exit 0, and wrote nothing (a missing folder, the running compiler itself)
+    ret
+.noopen:
+    push rdi
+    lea rdi, [rel r163_m0]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    lea rdi, [rel r163_m5]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.same:
+    push rdi
+    lea rdi, [rel r163_m1]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    lea rdi, [rel r163_m2]
+    call print_str_z
+    lea rdi, [rel r163_m3]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+.unsure:
+    push rdi
+    lea rdi, [rel r163_m1]
+    call print_str_z
+    pop rdi
+    call print_str_z
+    lea rdi, [rel r163_m4]
+    call print_str_z
+    mov rdi, 1
+    call os_exit
+
 ; ============================================================
 ; ELF WRITER
 ; ============================================================
@@ -32664,10 +32724,9 @@ write_elf:
     jne write_pe
     push rbx
     mov rbx, rdi              ; filename
-    ; Create file
-    mov rsi, 0x241             ; O_WRONLY|O_CREAT|O_TRUNC
+    ; Create file - R163: opened without truncation, checked against every input, then cut to 0
     mov rdx, 0o755
-    call os_open
+    call r163_out
     mov [rel out_fd], rax
     ; Build headers on stack
     sub rsp, 64
@@ -33482,9 +33541,8 @@ write_pe:
     push r12
     push r13
     mov rbx, rdi
-    mov rsi, 0x241
     mov rdx, 0o755
-    call os_open
+    call r163_out             ; R163: as write_elf
     mov [rel out_fd], rax
     ; --- zero the 512-byte header block ---
     lea rdi, [rel pe_hdr]
@@ -33686,6 +33744,12 @@ os_read:
 os_open:
     mov rax, 2
     syscall
+    test rsi, rsi                    ; R163: a file opened for reading is noted, so it is never written over
+    jnz .r163_ret
+    test rax, rax
+    js .r163_ret
+    call r163_note
+.r163_ret:
     ret
 os_close:
     mov rax, 3
@@ -33702,3 +33766,4 @@ os_readlink:
 %else
 %include "win/winrt.inc"
 %endif
+%include "src/r163_same_file.inc"   ; R163: the output is not an input
