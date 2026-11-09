@@ -240,19 +240,19 @@ PATH entry.
 **Does an older entry take precedence because it is earlier in the list? Yes.** On Windows,
 when a command is resolved, the **system (machine) PATH is searched before the user PATH** —
 a process's PATH is constructed as (machine PATH) + (user PATH), in that order. So the older
-machine entry (`C:\Users\dmech\AppData\Local\Sutram\bin\sutram.exe`, from the retired NSIS
+machine entry (`%USERPROFILE%\AppData\Local\Sutram\bin\sutram.exe`, from the retired NSIS
 installer) is searched before the newer user entry
-(`C:\Users\dmech\AppData\Local\Programs\Sutram\bin`, from the new installer), so the older
+(`%USERPROFILE%\AppData\Local\Programs\Sutram\bin`, from the new installer), so the older
 version wins, and a student typing `sutram` in a fresh `cmd.exe` gets `Sutram 1.4.0` (the old
 one), not v303/v305 (the new one). The installer writes only to user PATH, so it **cannot**
 fix the old machine entry: it does not even look at it, and removing a machine PATH entry
 would require administrator rights, which a per-user installer (no UAC prompt, by design) does
 not have. The order, as the student experiences it, is:
 
-1. `C:\Users\dmech\AppData\Local\Sutram\bin` — **older, machine PATH, wins** (from the retired
+1. `%USERPROFILE%\AppData\Local\Sutram\bin` — **older, machine PATH, wins** (from the retired
    NSIS installer; the new installer does not see it, does not remove it, and cannot remove it
    without admin rights).
-2. `C:\Users\dmech\AppData\Local\Programs\Sutram\bin` — **newer, user PATH, loses** (from the
+2. `%USERPROFILE%\AppData\Local\Programs\Sutram\bin` — **newer, user PATH, loses** (from the
    new installer; it is added correctly, but it is searched after the machine PATH).
 
 Nothing tells the student this. The fix (for Claude/owner) is for the installer to **detect**
