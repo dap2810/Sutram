@@ -21,7 +21,7 @@ GE: ucomisd xmm0,xmm1; setae al;                     movzx rax,al
 
 `setcc` does not modify flags; the compiler-side operator-selection comparisons run while **emitting** bytes, not in the generated program. `dl` is a runtime scratch byte, not one of the generated variable registers (the source maps variables to `rbx`, `r12`–`r15`). No branch or runtime library is introduced. This addresses unordered results for the two named paths; do not assert that every alternative compilation mode or NaN payload is qualified from this small test.
 
-**Native Windows execution:** host Windows 11 build 26300. Built the proposed compiler from the patched tree, not the shipped binary:
+**Native Windows execution:** host Windows (system details redacted) Built the proposed compiler from the patched tree, not the shipped binary:
 
 ```powershell
 nasm -f win64 -dWINDOWS -I. src/r68_compiler_entry.asm -o ../r159.obj
