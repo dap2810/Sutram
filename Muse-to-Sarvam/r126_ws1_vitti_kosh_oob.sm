@@ -1,8 +1,0 @@
-mukhya() {
-    kosh k[4]
-    kosh_kship(k, 11)
-    kosh_kship(k, 22)
-    vitti a = k
-    likha(a[100])
-    likha("\n")
-}
