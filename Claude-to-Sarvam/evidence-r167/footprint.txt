@@ -1,0 +1,16 @@
+Claude-to-Sarvam: 2014 files, 13715314 bytes
+  reports at the top level: 271 files, 2041698 bytes
+  evidence: 1743 files, 11673616 bytes
+    cited by path: 404 files, 2556450 bytes
+    cited by name in a report that names its folder: 178 files, 1197268 bytes
+    not named itself; its folder is named by a report: 1161 files, 7919898 bytes
+    UNCITED: neither it nor its folder is named: 0 files, 0 bytes
+byte-identical copies (empty files not counted):
+  evidence files sharing their bytes with another file in the channel: 283; bytes in the extra copies: 2914611
+  evidence files sharing their bytes with a file outside the channel: 30, 134318 bytes
+    of the copies, cited by path: 9 files, 73013 bytes
+    of the copies, cited by name: 10 files, 62649 bytes
+    of the copies, only its folder is named: 283 files, 4108405 bytes
+    of the copies, UNCITED: 0 files, 0 bytes
+UNCITED files (0):
+empty files: 1

@@ -1,0 +1,20 @@
+Sutram v316 acceptance on Windows - tests\windows\accept_v316.cmd
+FAIL  01 the compiler starts and is v316 - GetFileInformationByHandle, SetEndOfFile and GetFileType were found
+PASS  02 an ordinary compile is not refused on this disk, and its program prints 42
+FAIL  03 the source as its own output: refused, exit 1, the source unchanged
+FAIL  04 the source as .\name: refused, exit 1, the source unchanged
+FAIL  05 the source in another case, on a file system that ignores case: refused, exit 1, the source unchanged
+FAIL  06 the source by its full path: refused, exit 1, the source unchanged
+FAIL  07 the source through a folder and back: refused, exit 1, the source unchanged
+FAIL  08 a hard link to the source: refused, exit 1, the source unchanged
+FAIL  09 --object with the source as its output: refused, exit 1, the source unchanged
+PASS  10 a program with yoj compiles and prints 9
+FAIL  11 the output naming a yoj module the compile read: refused, exit 1, the module unchanged
+FAIL  12 an existing larger output is replaced exactly - no old bytes left after the new program
+FAIL  13 an output in a folder that does not exist: an error, exit 1
+FAIL  14 NUL as the output still works - a device is written as before
+FAIL  15 sutram-link with its object as the output: refused, exit 1, the object unchanged
+FAIL  16 an ordinary link works and its program prints 42
+FAIL  17 the linker replaces an existing larger output exactly
+FAIL  18 after every step the source is byte for byte what it was
+v316 acceptance: 2 passed, 16 failed, 0 skipped
