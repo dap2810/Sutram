@@ -1,9 +1,0 @@
-yoj ganit
-mukhya() {
-    likha(dvigun(9223372036854775807))
-    likha(trigun(3074457345618258603))
-    likha(vardh(9223372036854775807))
-    vitti mn = 0 - 9223372036854775807 - 1
-    likha(nirapeksh_mulya(mn))
-    likha(mahattam_samapavartak(mn, 0))
-}
