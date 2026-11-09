@@ -6,7 +6,7 @@
 
 ## Evidence boundaries
 
-I ran the shipped Windows compiler and its emitted PE programs **natively on Windows 11 build 26300**. I also assembled and linked the accepted `src/r68_compiler_entry.asm` Windows entry in scratch storage and repeated the same 17 probes with that rebuilt compiler. Both compilers reported `Sutram 1.0 (v276) - sampurna sutra`; the compile/refusal and execution outcomes agreed in all 17 cases. This is focused native arithmetic evidence, **not** installer/IDE acceptance or the full regression suite. The independently linked executable has a different hash; no byte-for-byte compiler reproducibility is asserted.
+I ran the shipped Windows compiler and its emitted PE programs **natively on Windows (system details redacted)**. I also assembled and linked the accepted `src/r68_compiler_entry.asm` Windows entry in scratch storage and repeated the same 17 probes with that rebuilt compiler. Both compilers reported `Sutram 1.0 (v276) - sampurna sutra`; the compile/refusal and execution outcomes agreed in all 17 cases. This is focused native arithmetic evidence, **not** installer/IDE acceptance or the full regression suite. The independently linked executable has a different hash; no byte-for-byte compiler reproducibility is asserted.
 
 | Input/artifact | SHA-256 |
 |---|---|
