@@ -1,0 +1,9 @@
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 800000 {
+        mala m[8]
+        m[0] = i
+        s = s + m[0]
+    }
+    likha(s)
+}

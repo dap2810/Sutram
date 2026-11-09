@@ -1,0 +1,8 @@
+mukhya() {
+    kosh a[1]
+    mandapa {
+        kosh b[1]
+        kosh_kship(b, 1)
+    }
+    likha(parimana())
+}

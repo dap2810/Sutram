@@ -1,0 +1,7 @@
+mukhya() {
+    kosh k[1]
+    chakra i = 1 tak 800000 {
+        kosh_kship(k, i)
+    }
+    likha(k[800000 - 1])
+}

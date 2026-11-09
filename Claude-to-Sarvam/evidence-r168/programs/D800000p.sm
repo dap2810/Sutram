@@ -1,0 +1,12 @@
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 800000 {
+        mandapa {
+            kosh temp[1]
+            kosh_kship(temp, i)
+            s = s + temp[0]
+        }
+    }
+    likha(s)
+    likha(parimana())
+}

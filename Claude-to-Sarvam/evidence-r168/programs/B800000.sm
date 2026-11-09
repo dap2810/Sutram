@@ -1,0 +1,11 @@
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 800000 {
+        mandapa {
+            vitti p = nirmmita(64)
+            p[0] = i
+            s = s + p[0]
+        }
+    }
+    likha(s)
+}
