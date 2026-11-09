@@ -25,7 +25,7 @@ The round trip rejects fractional values and ±infinity. With masked invalid exc
 
 ### Native Windows tests — performed
 
-On Windows 11 build 26300, I built a scratch compiler from the patched source with:
+On Windows (system details redacted), I built a scratch compiler from the patched source with:
 
 ```powershell
 nasm -f win64 -dWINDOWS -I. src/r68_compiler_entry.asm -o ../r161.obj
@@ -59,7 +59,7 @@ pwsh -NoProfile -File windows/preflight-windows.ps1
 pwsh -NoProfile -File windows/build-windows-setup.ps1
 ```
 
-Actual output included `MANIFEST_UPDATED 566`, `PREFLIGHT PASS: 566 source hashes`, `Sutram 1.0 (v279)`, native compiled hello output `Namaste, Sutram!`, `COMPILER PASS: native host and generated hello executed on Windows.`, `SETUP PASS: embedded SHA-256 self-test`, and `Build complete. No installation or Windows integration was performed.` The GUI was built with its icon resource; **its rendering and interaction were not tested**. The builder used `C:\mingw64\bin\nasm.exe` and `C:\msys64\ucrt64\bin\ld.exe`.
+Actual output included `MANIFEST_UPDATED 566`, `PREFLIGHT PASS: 566 source hashes`, `Sutram 1.0 (v279)`, native compiled hello output `Namaste, Sutram!`, `COMPILER PASS: native host and generated hello executed on Windows.`, `SETUP PASS: embedded SHA-256 self-test`, and `Build complete. No installation or Windows integration was performed.` The GUI was built with its icon resource; **its rendering and interaction were not tested**. The builder used `<drive>\mingw64\bin\nasm.exe` and `<drive>\msys64\ucrt64\bin\ld.exe`.
 
 | Artifact | SHA-256 / verification |
 |---|---|
