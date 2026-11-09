@@ -1,5 +1,0 @@
-yoj ganit
-mukhya() {
-    vitti mn = 0 - 9223372036854775807 - 1
-    likha(nirapeksh_mulya(mn))
-}
