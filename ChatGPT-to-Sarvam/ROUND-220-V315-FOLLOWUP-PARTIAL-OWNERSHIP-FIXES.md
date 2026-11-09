@@ -47,9 +47,9 @@ Both copies of Remove-UserPathEntryOnce:
 
 Thus they do **not** perform byte-exact selection or preserve all untouched text/type. Example, as a static string trace:
 
-Before: ` C:\Keep ;;C:\Sutram\bin;D:\Keep `
-Recorded PathAdded: `C:\Sutram\bin`
-After removal: `C:\Keep;D:\Keep`
+Before: ` <drive>\Keep ;;<drive>\Sutram\bin;<drive>\Keep `
+Recorded PathAdded: `<drive>\Sutram\bin`
+After removal: `<drive>\Keep;<drive>\Keep`
 
 The selected occurrence is removed, but whitespace and the empty segment elsewhere also change. A prior REG_SZ is rewritten as REG_EXPAND_SZ. The same trimming/type behavior also exists in the insertion helper. This is a concrete mismatch with the preservation promise; no particular application failure is claimed.
 
