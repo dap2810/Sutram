@@ -1,6 +1,6 @@
-> **Status at compiler v315, 9 November 2026 (R163) — read this before the page below.**
+> **Status at compiler v316, 9 November 2026 (R163) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **79 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v316) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **80 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v316 (R163: the compiler, the linker and the two object readers never write over a file they read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -710,6 +710,37 @@ crashed. 500 levels, and the tree's deepest recursion (single digits), are far i
 | `sutram --lang gujarati in.sm out.exe` | compile with a language pack |
 | `sutram -i` | interactive shell (REPL) |
 | `sutram --version` | version |
+
+**The output is never a file the compile read (v316, R163).** Every file the compiler opens to read - the program,
+each `yoj` module, the `--lang` pack, the `--ffi` file, `--separate`'s root - is noted by its identity (Linux: device
+and inode; Windows: volume serial and file index). The output is opened **without** being emptied, its identity is
+compared with each of them, and only if it is none is it cut to nothing and written. Otherwise nothing is written,
+the file stays as it was, and the compile stops, exit 1:
+
+```
+Sutram truti [E_NIRGAM_NIVESH]: nirgam-patram 'hello.sm' nivesha-patram eva (pathitam) - tasmin na likhitam, tat yatha asit tatha eva
+```
+
+Identity, not the name: `./hello.sm`, `HELLO.SM` on Windows, a hard link and a symbolic link are the same file;
+two files with the same bytes are two. If an output's identity cannot be read it is refused the same way
+(`... nivesha-patrebhyah bhinnam iti na nishchitam ...`): not knowing is not taken for "different". A device such
+as `/dev/null` or `NUL` is written as before. `sutram-link`, `sutram-elf2smo` and `sutram-coff2smo` do the same for
+their objects (`Sutram Error [E_NIRGAM_NIVESH]: ... na likhitam: <output>`), and `tools/sutram_build.py` refuses a
+`-o` that is the program, one of its modules, the `--ffi` file or a `--foreign` object before it compiles anything
+(`sutram-build [E_NIRGAM_NIVESH]: ...`; the linker cannot see those - its inputs are the objects). An output that cannot be opened - a
+folder that does not exist, the running compiler itself - stops the compile, exit 1 (up to v315 it said `Siddh`,
+exit 0, and wrote nothing):
+
+```
+Sutram truti [E_NIRGAM_PATRA]: nirgam-patram 'out/hello' na udghatitam (lekhanaya) - kimapi na likhitam
+```
+
+Not covered, and why: the shell empties a file before the compiler starts (`sutram a.sm /dev/stdout > a.sm` has lost
+the program before anything runs; with `>>` the compiler refuses, and its message - printed on standard output - is
+what the shell appends). The REPL (`sutram -i`) and the Linux IDEs write fixed scratch files
+(`/tmp/.sutram_repl.sm`, `/tmp/.sutram_ide.sm`, `/tmp/.sutram_gui_run.sm`; on Windows the REPL's
+`.sutram_repl.sm` / `.sutram_repl.exe` in the current folder) and replace a file of that name without asking. A
+write that fails part-way (a full disk) is not reported.
 
 ## 7b. Danda — Sanskrit sentence punctuation as the terminator
 

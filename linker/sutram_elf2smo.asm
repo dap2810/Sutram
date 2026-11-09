@@ -42,6 +42,8 @@ MAGIC   equ 0x314F4D4152545553   ; "SUTRAMO1"
 section .data
     m_usage  db "Prayog: sutram-elf2smo videshi.o nirgat.smo", 10, 0
     m_open   db "Sutram Error: patram na udghatitam: ", 0
+    m_same   db "Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patram eva (pathitam) - na likhitam: ", 0
+    m_unsure db "Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patrat bhinnam iti na nishchitam - na likhitam: ", 0
     m_notelf db "Sutram Error: ELF64 x86-64 ET_REL vastu-patram na", 10, 0
     m_bounds db "Sutram Error: ELF-patram khanditam (seema-bahir)", 10, 0
     m_code   db "Sutram Error: ELF-patre ekam eva sanket-khandam apekshitam", 10, 0
@@ -202,6 +204,7 @@ _start:
     test rax, rax
     js .open_fail
     mov [rel fd], rax
+    call r163_note                        ; R163: the input is noted, so the output is never written over it
     xor ebx, ebx
 .read:
     mov rdi, [rel fd]
@@ -631,11 +634,15 @@ _start:
 .relocs_done:
 
     ; ---- the Sutram object: header, code, symbols, no relocations
+    ; R163: never over the input (sutram-elf2smo a.o a.o wrote the object over a.o): the output is opened
+    ; without truncation, checked against the input, and only then cut to 0
     mov rdi, [rel outpath]
-    mov esi, 0x241                        ; O_WRONLY|O_CREAT|O_TRUNC
     mov edx, 0o644
-    mov eax, 2
-    syscall
+    call r163_open_out
+    cmp rax, R163_SAME
+    je .r163_same
+    cmp rax, R163_UNSURE
+    je .r163_unsure
     test rax, rax
     js .out_fail
     mov [rel fd], rax
@@ -697,6 +704,16 @@ _start:
     jmp fail
 .out_fail:
     lea rdi, [rel m_open]
+    mov rsi, [rel outpath]
+    xor edx, edx
+    jmp fail
+.r163_same:
+    lea rdi, [rel m_same]
+    mov rsi, [rel outpath]
+    xor edx, edx
+    jmp fail
+.r163_unsure:
+    lea rdi, [rel m_unsure]
     mov rsi, [rel outpath]
     xor edx, edx
     jmp fail
@@ -773,3 +790,5 @@ _start:
     lea rdi, [rel m_full]
     xor esi, esi
     jmp fail
+
+%include "src/r163_same_file.inc"   ; R163: the output is not the input

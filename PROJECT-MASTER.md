@@ -1,9 +1,9 @@
 > **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
 > unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
 
-> **Status at compiler v315, 9 November 2026 (R163) — read this before the page below.**
+> **Status at compiler v316, 9 November 2026 (R163) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v315) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **79 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v315, rebuilt in R155 for the registry fix, and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v316) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **80 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v316 (R163: the compiler, the linker and the two object readers never write over a file they read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -167,7 +167,7 @@ build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Gates (`tools/gates.sh`) | **79 PASS, 0 FAIL, 1 NOT-RUN** (v315; the installer carries v315; NOT-RUN: Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
+| Gates (`tools/gates.sh`) | **80 PASS, 0 FAIL, 1 NOT-RUN** (v316; the installer carries v316; NOT-RUN: Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
 | Regression suite | **315 pass, 4 no-expectation** (v298) |
 | Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |

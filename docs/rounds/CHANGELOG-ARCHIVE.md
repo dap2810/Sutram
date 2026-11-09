@@ -1,5 +1,26 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v296 (Claude, R116) - fifteen of the sixteen library contracts (ChatGPT R189); long string literals work
+
+- **The policy, in the library:** a mathematical library function gives the exact answer or fails through a
+  declared channel. *Stops* (stderr `Sutram truti [CODE]: function: ...`, exit 1): `dvigun`, `trigun`, `vardh`
+  (`E_ATIPRAVAH`); `nirapeksh_mulya`, `ganita_nirapeksh`, `mahattam_samapavartak`, `viparyay_ank`,
+  `brihat_ank_tak_laghu` (`E_PHALA_SEEMA`; bad digits `E_MULYA_AYOGYA`); `brahmagupta_kshetr` (exact multiword
+  formula; bad sides `E_MULYA_AYOGYA`, area past the range `E_ATIPRAVAH`); `adish_gunan`, `bindu_gunan` (unequal
+  lengths, `E_AKARA_ASAMYA` - v295 used the shorter). *Status*, nothing printed: `brihat_ank_se` (0, digits
+  cleared), `suchi_shreni` (0, list unchanged), `varna_tak_dashm` (leading zeros no longer spend digits: twenty
+  characters `00000000000000000001` are 1, not 0). `yog_seema` saturates only the final sum
+  (`yog_seema(2^62, 2^62)` is 2^62, was 2^63 - 1). Messages exactly as R189's matrix.
+- **Not built: `patra_asti`** (row 11) - its contract needs an operating-system metadata query the compiler does
+  not have; reported, not improvised.
+- **`abhava(cond, "text")`:** the assertion takes an optional message, written to stderr before exit 1 - the
+  compiler-emitted failure path the library uses (no OS call in a core module).
+- **A compiler defect found on the way, fixed:** a string literal of 127 bytes or more was jumped over with a
+  one-byte jump that wrapped backwards, so the program crashed (SIGSEGV or SIGILL), or ran on and printed
+  nothing or the wrong text; `likha` and `likha_rup` of a literal also wrote only its length modulo 256. The R189
+  messages are 88-151 bytes. Every literal of 126 bytes or fewer compiles to the same bytes as before.
+- Examples 330-344 (one per row) and 207 (now the refusal); the suite checks a `<name>.err` when one is recorded.
+
 ## v295 (Claude, R115) - `sankhya_bindu` / `sankhya_dot` withdrawn; the arena branch's silent wrong answer found and fixed there
 
 - **Withdrawn, not missing:** a call to `sankhya_bindu` or `sankhya_dot` is refused when compiled -

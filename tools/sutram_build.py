@@ -206,6 +206,21 @@ def main(argv):
                 print("  yoj", os.path.relpath(d))
         if out is None:
             return 0
+    # R163: the output is never a file this build reads. sutram-link refuses an output that is one of ITS inputs,
+    # but those are the objects; the program, its modules, the --ffi file and the --foreign objects are read by the
+    # compiler and the readers, and a link to `-o main.sm` wrote the program over main.sm (v316's tools included).
+    # By identity (os.path.samefile: device and inode, or volume and file index), not by name.
+    if out is not None and os.path.exists(out):
+        read = [path for path, _deps in graph] + ([ffi] if ffi else []) + foreign
+        for f in read:
+            try:
+                same = os.path.samefile(out, f)
+            except OSError:
+                same = False
+            if same:
+                print(f"sutram-build [E_NIRGAM_NIVESH]: -o {out} is {f}, which this build reads - nothing compiled, "
+                      f"nothing written", file=sys.stderr)
+                return 1
     work = keep or tempfile.mkdtemp(prefix="sutram-build-")
     os.makedirs(work, exist_ok=True)
     objects = []

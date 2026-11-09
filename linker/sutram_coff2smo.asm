@@ -49,6 +49,8 @@ ARGBUF_CAP equ 8192
 section .data
     m_usage  db "Prayog: sutram-coff2smo videshi.obj nirgat.smo", 10, 0
     m_open   db "Sutram Error: patram na udghatitam: ", 0
+    m_same   db "Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patram eva (pathitam) - na likhitam: ", 0
+    m_unsure db "Sutram Error [E_NIRGAM_NIVESH]: nirgam-patram nivesha-patrat bhinnam iti na nishchitam - na likhitam: ", 0
     m_notcoff db "Sutram Error: COFF x64 vastu-patram na", 10, 0
     m_bounds db "Sutram Error: COFF-patram khanditam (seema-bahir)", 10, 0
     m_code   db "Sutram Error: COFF-patre ekam eva sanket-khandam apekshitam", 10, 0
@@ -118,6 +120,12 @@ os_read:
 os_open:
     mov eax, 2
     syscall
+    test esi, esi                   ; R163: an input is noted, so the output is never written over it
+    jnz .r163_ret
+    test rax, rax
+    js .r163_ret
+    call r163_note
+.r163_ret:
     ret
 os_close:
     mov eax, 3
@@ -742,11 +750,16 @@ _start:
 .rel_done:
 
     ; ------------------------------------------------ the SUTRAMO2 object
+    ; R163: never over the input (sutram-coff2smo a.obj a.obj wrote the object over a.obj): the output is
+    ; opened without truncation, checked against the input, and only then cut to 0
     mov rcx, [rel argv]
     mov rdi, [rcx + 16]
-    mov esi, 0x241                  ; O_WRONLY|O_CREAT|O_TRUNC
     mov edx, 0o644
-    call os_open
+    call r163_open_out
+    cmp rax, R163_SAME
+    je .r163_same
+    cmp rax, R163_UNSURE
+    je .r163_unsure
     test rax, rax
     js .out_fail
     mov [rel fd], rax
@@ -797,6 +810,18 @@ _start:
 
 .out_fail:
     lea rdi, [rel m_open]
+    mov rcx, [rel argv]
+    mov rsi, [rcx + 16]
+    xor edx, edx
+    jmp fail
+.r163_same:
+    lea rdi, [rel m_same]
+    mov rcx, [rel argv]
+    mov rsi, [rcx + 16]
+    xor edx, edx
+    jmp fail
+.r163_unsure:
+    lea rdi, [rel m_unsure]
     mov rcx, [rel argv]
     mov rsi, [rcx + 16]
     xor edx, edx
@@ -853,3 +878,5 @@ put_u64:
     lea rsi, [rel hdr]
     mov edx, 8
     jmp os_write
+
+%include "src/r163_same_file.inc"   ; R163: the output is not the input
