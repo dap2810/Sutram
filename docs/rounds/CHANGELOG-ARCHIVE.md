@@ -1,5 +1,24 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v297 (Claude, R118) - the library's English names become aliases; three compiler hints name the R111 builtins
+
+- **Ten library `prakriya` get Sanskrit names** (ChatGPT R191's bucket-1 words `bit`, `diff`, `pad`, `pre`,
+  `sign`, `sorted`): `ekanka_gan` (was `bit_gan`), `rakh_ubhaya_bhed` (`rakh_samroop_diff`), `roop_purti_vam` /
+  `_dakshin` / `_madhya` (`roop_pad_*`), `purti_vam` (`pad_vam`), `roop_ank_upasarga` (`roop_ank_pre`),
+  `roop_chihna_akshar` (`roop_sign_akshar`), `asti_kramabaddha` (`asti_sorted`), `suchi_asti_kramabaddha`
+  (`suchi_asti_sorted`). The library defines the new name; **a call written with the old one compiles to the same
+  bytes** and prints R111's warning once (`Sutram suchana: 'asti_sorted' purana nama - 'asti_kramabaddha'
+  likhatu`) - not for a program's own `prakriya` of that name, a variable, a `yoj`'d module or a `--lang` run.
+  Reference section 4c; gate `R118 library names`.
+- **Hints:** `kosh_gan(k)` (was `kosh_len(k)`) in the five `E_KOSH_*` hints, `likha_rup` in the `parikshita` hint,
+  `dvaram_likha(dvara, ...)` (was `fd`). Eight refusal goldens re-recorded: that hint line, and the old-name
+  warning gone because the examples now use the new names.
+- **Examples and the library now write the R111 names** (257 replacements in 72 examples, 57 in `lib/`; outside
+  string literals). Every changed program compiles to the bytes it did. `examples/323` keeps the old builtin
+  names, `346`/`347` the old library names, on purpose.
+- **Not changed, waiting for a decision:** the four pack-translated `kosh` messages (three compiled into
+  programs) that name `kosh_pop` / `kosh_peek` / `kosh_dequeue` / `kosh_push`, and the shell help's `mala arr[5]`.
+
 ## v296 (Claude, R116) - fifteen of the sixteen library contracts (ChatGPT R189); long string literals work
 
 - **The policy, in the library:** a mathematical library function gives the exact answer or fails through a

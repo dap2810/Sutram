@@ -1,6 +1,6 @@
-> **Status at compiler v316, 9 November 2026 (R163) — read this before the page below.**
+> **Status at compiler v317, 10 November 2026 (R172) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v316) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **82 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v316 (R163: the compiler, the linker and the two object readers never write over a file they read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v317) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **83 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v317 (R172: a `kosh` declared in a `chakra`'s own body is made once; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -1321,6 +1321,17 @@ variable, a `mala`, a `kosh`, a buffer made outside, a return value. That is how
 address made in the block.** Putting one in directly (`kosh_kship(k, buf)`, `k[i] = buf`) is refused; the one way
 it gets in unseen is through a `prakriya` that hands the address back (below). A `kosh` of *numbers* used in a
 block works; its storage is ordinary memory, which the block does not reclaim.
+
+**One case no longer grows: a `kosh` declared in a `chakra`'s own body (v317, R172).** Not a block's doing - the
+loop's. When the declaration is a statement of the loop's body itself, and in the whole loop the name is used only
+as `k[i]` and as the `kosh` a `kosh_*` built-in works on (not `kosh_ksham`), the `kosh` is made on the first pass
+and every later pass starts with the same one, emptied: same descriptor, same elements, same region if it grew to
+4,097 numbers. Each pass still sees an empty `kosh`. Measured (Linux x86-64): 800,000 passes of
+`kosh temp[1]`, one number added - **16-20 KB resident on v317, 37,516 KB on v316**. Anything else is made every
+pass and kept, as before: a second name (`vitti a = k`), a `kosh` given to a `prakriya` or sliced, a declaration
+under a `yadi` or in a `mandapa` inside the loop, a `yavat` loop. A `kosh` in an inner `chakra` is made once each
+time the inner loop starts. **A `mala` is not covered, and a block still returns no memory to the operating
+system.**
 
 **Nor a `mala`.** A `mala` declared inside a block takes ordinary memory as well, which the block never reclaims:
 200,000 calls that each declare a `mala` of 31 numbers inside a block end with `parimana()` at 51,200,000 and the

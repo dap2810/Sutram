@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v316) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v317) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1613,6 +1613,14 @@ section .bss
     r108_bk_gd  resq 256                    ;   name, the r82 depth of its block,
     r108_bk_node resq 256                   ;   a BN_NIRM_SCRATCH node carrying its depth and budgets
     r108_bk_n   resq 1
+    r172_decl   resq 256                    ; R172: kosh declarations made once for their chakra (r172_for_enter),
+    r172_slot   resq 256                    ;   the frame slot holding each one's descriptor,
+    r172_n      resq 1
+    r172_name   resq 1                      ;   the scan: the kosh's name,
+    r172_cnt    resq 1                      ;   declarations of that name met,
+    r172_esc    resq 1                      ;   1 = a use that is not proven local
+    r172_cur    resq 1                      ;   the slot of the kosh being declared, 0 if it is made every pass
+    r172_patch  resq 1                      ;   its jump over the allocation
     r107_kosh_hit resq 1                    ; R107: the last tainted name met was a kosh made in a block
     r107_knames resq 256                    ; R107: those kosh names
     r107_kn     resq 1
@@ -10859,6 +10867,381 @@ r82_gen_rewind:
 .r:
     ret
 
+; ---------------------------------------------------------------- R172: a kosh made every pass of a chakra
+; A kosh declared as a statement of a chakra's own body, and used in the loop only in ways that cannot make a
+; second reference to it, is made once: the first pass allocates it, every later pass finds its descriptor in
+; a frame slot and sets its length to 0. Descriptor, elements and (if it grew that far) region are the same
+; memory every pass; nothing is zeroed, because nothing past the length can be read. The descriptor's layout
+; is unchanged. A kosh that is not proven local is made anew every pass, as before.
+;
+; "Proven local" is a whitelist (r172_scan), not an escape analysis: in the whole loop the name may appear
+; only as the base of an index (k[i], k[i] = v) and as the first argument of kosh_kship (kosh_yuj), kosh_hri,
+; kosh_gan, kosh_shodh, kosh_rikt, kosh_iksh, kosh_apanay. Any other appearance - a right side (vitti a = k),
+; an argument of a prakriya, a slice, nivartanam, kosh_ksham (the capacity would show the reuse), a second
+; declaration of the name - or any construct the scan does not know, and the kosh is left alone. It fails
+; toward leaking.
+
+%macro R172_EMIT 1+                 ; as R23_EMIT, which is defined further down
+    jmp %%skip
+%%bytes: db %1
+%%end:
+%%skip:
+    lea rsi, [rel %%bytes]
+    mov ecx, %%end - %%bytes
+    call r23_emit_bytes
+%endmacro
+
+; r172_for_enter(rbx = an AST_FOR about to be generated). Every register preserved.
+; For each proven-local kosh declared in the loop's own body: a frame slot, and code that zeroes it.
+r172_for_enter:
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r12
+    push r13
+    push r14
+    mov r13, [rbx+32]              ; the body
+    test r13, r13
+    jz .out
+    mov r14, 1                     ; the body is one statement, or a BLOCK of them
+    lea r12, [rbx+32]
+    cmp qword [r13], AST_BLOCK
+    jne .l
+    mov r14, [r13+8]
+    lea r12, [r13+16]
+.l:
+    test r14, r14
+    jz .out
+    mov rdi, [r12]
+    add r12, 8
+    dec r14
+    test rdi, rdi
+    jz .l
+    cmp qword [rdi], AST_DECL
+    jne .l
+    mov rax, [rdi+32]
+    cmp rax, 2                     ; a kosh, a kosh of dasham
+    jb .l
+    cmp rax, 3
+    ja .l
+    push rdi
+    mov rax, [rdi+8]
+    mov [rel r172_name], rax
+    mov qword [rel r172_cnt], 0
+    mov qword [rel r172_esc], 0
+    mov rdi, rbx                   ; the whole loop: bounds and body
+    call r172_scan
+    pop rdi
+    cmp qword [rel r172_esc], 0
+    jne .l
+    cmp qword [rel r172_cnt], 1
+    jne .l
+    mov rcx, [rel var_cnt]         ; the slot is entered in the variable table under a name no program
+    cmp rcx, VAR_TABLE_CAP         ; can write, so the table's limit bounds the frame as before
+    jae .l
+    mov rax, [rel stack_dep]
+    add rax, 8
+    cmp rax, FUNC_SPILL_BYTES - 16
+    ja .l
+    mov [rel stack_dep], rax
+    neg rax
+    imul rcx, rcx, 16
+    lea rdx, [rel var_table]
+    lea rsi, [rel r172_hidden]
+    mov [rdx + rcx], rsi
+    mov [rdx + rcx + 8], rax
+    inc qword [rel var_cnt]
+    mov rcx, [rel r172_n]
+    and rcx, 255
+    lea rdx, [rel r172_decl]
+    mov [rdx + rcx*8], rdi
+    lea rdx, [rel r172_slot]
+    mov [rdx + rcx*8], rax
+    inc qword [rel r172_n]
+    push rax                       ; mov qword [rbp+slot],0: no kosh yet, on every entry to the loop
+    mov dil, 0x48
+    call emit_byte
+    mov dil, 0xC7
+    call emit_byte
+    pop rsi
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    xor edi, edi
+    call emit_u32
+    jmp .l
+.out:
+    pop r14
+    pop r13
+    pop r12
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+r172_hidden db "0k172", 0
+
+; r172_slot_of(rdi = a kosh AST_DECL) -> rax = its slot (negative), or 0. rcx, rdx used.
+r172_slot_of:
+    mov rcx, [rel r172_n]
+    cmp rcx, 256
+    jbe .l
+    mov rcx, 256
+.l:
+    xor eax, eax
+    test rcx, rcx
+    jz .r
+    dec rcx
+    lea rdx, [rel r172_decl]
+    cmp [rdx + rcx*8], rdi
+    jne .l
+    lea rdx, [rel r172_slot]
+    mov rax, [rdx + rcx*8]
+.r:
+    ret
+
+; r172_decl_begin(rbx = the kosh AST_DECL): generated code, after the capacity is in rax and checked.
+;   mov rcx,[rbp+slot] ; test rcx,rcx ; jz .fresh ; mov qword [rcx-16],0 ; mov rax,rcx ; jmp .have ; .fresh:
+r172_decl_begin:
+    mov rdi, rbx
+    call r172_slot_of
+    mov [rel r172_cur], rax
+    test rax, rax
+    jz .r
+    R172_EMIT 0x48,0x8B
+    mov esi, [rel r172_cur]
+    mov dil, 0x4D
+    call emit_rbp_modrm_disp
+    R172_EMIT 0x48,0x85,0xC9, 0x0F,0x84, 0x10,0x00,0x00,0x00, 0x48,0xC7,0x41,0xF0,0x00,0x00,0x00,0x00, 0x48,0x89,0xC8, 0xE9
+    mov rax, [rel code_sz]
+    mov [rel r172_patch], rax
+    xor edi, edi
+    call emit_u32
+.r:
+    ret
+
+; r172_decl_end: generated code, rax = the new descriptor: mov [rbp+slot],rax ; .have:
+r172_decl_end:
+    cmp qword [rel r172_cur], 0
+    je .r
+    R172_EMIT 0x48,0x89
+    mov esi, [rel r172_cur]
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    mov rdi, [rel r172_patch]
+    call r73_patch32
+    mov qword [rel r172_cur], 0
+.r:
+    ret
+
+; r172_scan(rdi = a node of the loop): r172_esc = 1 at a use of r172_name that is not proven local, or
+; at a node it does not know; r172_cnt counts the declarations of that name.
+r172_scan:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    test rbx, rbx
+    jz .out
+    cmp qword [rel r172_esc], 0
+    jne .out
+    mov rax, [rbx]
+    cmp rax, AST_NUM
+    je .out
+    cmp rax, AST_FLOAT
+    je .out
+    cmp rax, AST_STR
+    je .out
+    cmp rax, AST_SCRCUR
+    je .out
+    cmp rax, AST_REWIND
+    je .out
+    cmp rax, AST_BREAK
+    je .out
+    cmp rax, AST_CONTINUE
+    je .out
+    cmp rax, AST_VAR
+    je .var
+    cmp rax, AST_BINOP
+    je .two_16_24
+    cmp rax, AST_TERNARY
+    je .three
+    cmp rax, AST_IF
+    je .three
+    cmp rax, AST_WHILE
+    je .two_8_16
+    cmp rax, AST_DO_WHILE
+    je .two_8_16
+    cmp rax, AST_ASSIGN            ; the target: a VAR (the name itself escapes) or an INDEX
+    je .two_8_16
+    cmp rax, AST_RETURN
+    je .one_8
+    cmp rax, AST_ASSERT
+    je .one_8
+    cmp rax, AST_HALT
+    je .one_8
+    cmp rax, AST_PRASAR
+    je .one_8
+    cmp rax, AST_INDEX             ; k[i]: the base is a name, not a value
+    je .one_16
+    cmp rax, AST_BLOCK
+    je .block
+    cmp rax, AST_FOR
+    je .for
+    cmp rax, AST_DECL
+    je .decl
+    cmp rax, AST_CALL
+    je .builtin
+    cmp rax, AST_FUNCALL
+    je .args
+    jmp .esc                       ; FIELD, SLICE, FUNCREF, HANDLE, WRITEMEM, VEC, NISHKRIYA, anything new
+.var:
+    mov rdi, [rbx+8]
+    call r172_is_name
+    test rax, rax
+    jnz .esc
+    jmp .out
+.one_8:
+    mov rdi, [rbx+8]
+    call r172_scan
+    jmp .out
+.one_16:
+    mov rdi, [rbx+16]
+    call r172_scan
+    jmp .out
+.two_8_16:
+    mov rdi, [rbx+8]
+    call r172_scan
+    mov rdi, [rbx+16]
+    call r172_scan
+    jmp .out
+.three:
+    mov rdi, [rbx+8]
+    call r172_scan
+.two_16_24:
+    mov rdi, [rbx+16]
+    call r172_scan
+    mov rdi, [rbx+24]
+    call r172_scan
+    jmp .out
+.block:
+    xor r12d, r12d
+    mov r13, [rbx+8]
+.bl:
+    cmp r12, r13
+    jae .out
+    mov rdi, [rbx + 16 + r12*8]
+    call r172_scan
+    inc r12
+    jmp .bl
+.for:
+    mov rdi, [rbx+8]               ; a loop variable of that name is a second declaration
+    call r172_is_name
+    test rax, rax
+    jnz .esc
+    mov rdi, [rbx+16]
+    call r172_scan
+    mov rdi, [rbx+24]
+    call r172_scan
+    mov rdi, [rbx+32]
+    call r172_scan
+    mov rdi, [rbx+40]
+    call r172_scan
+    jmp .out
+.decl:
+    mov rdi, [rbx+8]
+    call r172_is_name
+    test rax, rax
+    jz .decl_other
+    inc qword [rel r172_cnt]
+.decl_other:
+    mov rax, [rbx+32]
+    cmp rax, 3
+    ja .esc                        ; a kind of declaration this scan does not know
+    mov rdi, [rbx+24]              ; a size or a capacity, when there is one
+    call r172_scan
+    cmp qword [rbx+32], 1
+    ja .out                        ; a kosh has no initializer
+    mov rdi, [rbx+16]
+    call r172_scan
+    jmp .out
+.builtin:
+    cmp qword [rbx+16], 6
+    ja .esc
+    xor r12d, r12d
+    mov rax, [rbx+8]
+    cmp rax, BN_KOSHPUSH
+    je .own
+    cmp rax, BN_KOSHPOP
+    je .own
+    cmp rax, BN_KOSHLEN
+    je .own
+    cmp rax, BN_KOSHCLEAR
+    je .own
+    cmp rax, BN_KOSHEMPTY
+    je .own
+    cmp rax, BN_KOSHPEEK
+    je .own
+    cmp rax, BN_KOSHDEQUEUE
+    je .own
+    jmp .al0
+.own:                              ; the kosh these work on: named, not copied
+    cmp qword [rbx+16], 0
+    je .out
+    mov rax, [rbx+24]
+    test rax, rax
+    jz .al0
+    cmp qword [rax], AST_VAR
+    jne .al0
+    mov r12d, 1
+    jmp .al0
+.args:
+    cmp qword [rbx+16], 6
+    ja .esc
+    xor r12d, r12d
+.al0:
+    mov r13, [rbx+16]
+.al:
+    cmp r12, r13
+    jae .out
+    mov rdi, [rbx + 24 + r12*8]
+    call r172_scan
+    inc r12
+    jmp .al
+.esc:
+    mov qword [rel r172_esc], 1
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r172_is_name(rdi = a name or 0) -> rax = 1 if it is r172_name.
+r172_is_name:
+    xor eax, eax
+    test rdi, rdi
+    jz .r
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rsi, [rel r172_name]
+    call strcmp
+    test rax, rax
+    mov eax, 0
+    jnz .o
+    mov eax, 1
+.o:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+.r:
+    ret
+
 ; r82_emit_kosh_header: rax = the new block, rcx = capacity (generated code). Writes
 ; [rax] line, [rax+8] slot address or 0, [rax+16] generation or 0, [rax+24] 0, [rax+32] cap,
 ; then rax += 40.
@@ -19321,6 +19704,7 @@ r142_gen_stmt_body:
     mov dil, 0xC0
     call emit_byte
     call r128_emit_cap_check  ; R128 (R203 F2): a capacity whose bytes would not fit stops here
+    call r172_decl_begin      ; R172: made in an earlier pass of its chakra - that one, emptied
     mov dil, 0x50             ; push capacity
     call emit_byte
     mov dil, 0x48             ; add rax,4: 2 header qwords + R127's elements pointer and region size
@@ -19380,6 +19764,7 @@ r142_gen_stmt_body:
     lea rsi, [rel r127_dk]    ; R127: the descriptor - [d] = the elements, first right after it
     mov rcx, r127_dk_len
     call r23_emit_bytes
+    call r172_decl_end        ; R172: remembered for the next pass
     mov rdi, [rbx+8]
     call alloc_var
     test rax, rax
@@ -20278,6 +20663,7 @@ r142_gen_stmt_body:
     mov esi, 5
     xor edx, edx
     call r126_bind
+    call r172_for_enter            ; R172: its proven-local kosh are made once, not every pass
     push r12
     push r13
     push r14

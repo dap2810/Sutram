@@ -1,4 +1,31 @@
-> **The 20 newest entries.** Older ones, from "v296" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v297" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v317 (Claude, R172) - a `kosh` declared in a `chakra`'s own body is made once, not every pass
+
+- **The 48 bytes a pass** (Sarvam R172 WS2; measured R168): `chakra j = 1 tak N { kosh k[1] ... }` allocated a
+  descriptor and a buffer every pass and kept them all. Now, for a `kosh` declared as a statement of the loop's own
+  body and proven local to the loop, the first pass allocates and every later pass sets the length to 0 and goes on
+  with the same descriptor, elements and region (`r172_for_enter`, `r172_decl_begin`, `r172_decl_end` in
+  `src/sutram_compiler.asm`; the descriptor's address is kept in a frame slot zeroed at each entry to the loop).
+  **The descriptor's layout is unchanged; nothing is zeroed and nothing is rewound** - a different mechanism from
+  the scratch-cursor design R172 quotes, chosen because it has no high-water mark to get wrong (R172-00).
+- **Proven local is a whitelist, not an escape analysis** (`r172_scan`): in the whole loop the name may appear only
+  as the base of an index and as the first argument of `kosh_kship`, `kosh_yuj`, `kosh_hri`, `kosh_gan`,
+  `kosh_shodh`, `kosh_rikt`, `kosh_iksh`, `kosh_apanay`. A second name, an argument of a `prakriya`, a slice,
+  `kosh_ksham` (the capacity would show the reuse), a second declaration of the name, or any construct the scan
+  does not know: the `kosh` is made every pass, as before. It fails toward leaking.
+- Not covered, as before: a `mala` (80 bytes a pass), a `kosh` in a `yavat` loop, under a `yadi`, or in a `mandapa`
+  inside the loop; a `kosh` in an inner `chakra` is made once for each entry to the inner loop. A block still
+  returns no memory to the operating system.
+- Measured (Linux x86-64): 800,000 passes, one number added each pass - 37,516 KB resident on v316, 16-20 KB on
+  v317 (the program's baseline is 12-20 KB); the loop itself 5 ms -> 0.9 ms per 200,000 passes.
+- Gate `R172 chakra kosh` (24 checks; 12 fail on v316): eighteen shapes (made once / made every pass, witnessed by
+  `parimana()`), nesting, and the redzone test - 64 bytes of `0xDEADBEEFCAFEBABE` before and after the descriptor,
+  1,000,000 passes, nested loops, a loop in a `mandapa`, growth to 20,000,000 three times, every redzone word and
+  the four descriptor words exact after each phase; a refused growth under an address-space limit.
+- Every program that compiled on v316 compiles to the same bytes (guard: 783 programs, ELF and PE, 0 DIFFER; 40 of
+  them contain a `chakra`, none declares a `kosh` in one). The 18 shapes and both redzone programs compiled and run under Wine; not run on
+  Windows. Installer rebuilt (payload v317).
 
 ## v316 (Claude, R163) - a file a tool read is never its output; an output that cannot be opened is an error
 
@@ -424,22 +451,3 @@
   appending into writable memory is unchanged (R54's raw test).
 - Examples 322/323 append into a `nirmmita` buffer instead of the literal; **their goldens are unchanged** - the
   golden was the right answer, Linux printed it by luck. Gate `R121 builtins` (14 checks, ELF and PE).
-
-## v297 (Claude, R118) - the library's English names become aliases; three compiler hints name the R111 builtins
-
-- **Ten library `prakriya` get Sanskrit names** (ChatGPT R191's bucket-1 words `bit`, `diff`, `pad`, `pre`,
-  `sign`, `sorted`): `ekanka_gan` (was `bit_gan`), `rakh_ubhaya_bhed` (`rakh_samroop_diff`), `roop_purti_vam` /
-  `_dakshin` / `_madhya` (`roop_pad_*`), `purti_vam` (`pad_vam`), `roop_ank_upasarga` (`roop_ank_pre`),
-  `roop_chihna_akshar` (`roop_sign_akshar`), `asti_kramabaddha` (`asti_sorted`), `suchi_asti_kramabaddha`
-  (`suchi_asti_sorted`). The library defines the new name; **a call written with the old one compiles to the same
-  bytes** and prints R111's warning once (`Sutram suchana: 'asti_sorted' purana nama - 'asti_kramabaddha'
-  likhatu`) - not for a program's own `prakriya` of that name, a variable, a `yoj`'d module or a `--lang` run.
-  Reference section 4c; gate `R118 library names`.
-- **Hints:** `kosh_gan(k)` (was `kosh_len(k)`) in the five `E_KOSH_*` hints, `likha_rup` in the `parikshita` hint,
-  `dvaram_likha(dvara, ...)` (was `fd`). Eight refusal goldens re-recorded: that hint line, and the old-name
-  warning gone because the examples now use the new names.
-- **Examples and the library now write the R111 names** (257 replacements in 72 examples, 57 in `lib/`; outside
-  string literals). Every changed program compiles to the bytes it did. `examples/323` keeps the old builtin
-  names, `346`/`347` the old library names, on purpose.
-- **Not changed, waiting for a decision:** the four pack-translated `kosh` messages (three compiled into
-  programs) that name `kosh_pop` / `kosh_peek` / `kosh_dequeue` / `kosh_push`, and the shell help's `mala arr[5]`.

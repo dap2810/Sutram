@@ -1,7 +1,7 @@
-# Sutram 1.0 (v316) — release notes
+# Sutram 1.0 (v317) — release notes
 
-**Compiler `Sutram 1.0 (v316) - sampurna sutra`, 9 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v316). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v317) - sampurna sutra`, 10 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v317). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,17 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v316 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v317 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v316 closes, and what it does not (R140-R163)
+## Status: what v317 closes, and what it does not (R140-R172)
+
+**A `kosh` made every pass of a `chakra` no longer grows the program (R172, v317)** - when it is declared in the
+loop's own body and proven local to the loop (reference §19). 800,000 passes: 37,516 KB resident on v316, 16-20 KB
+on v317. **Not closed:** a `mala` made every pass (80 bytes a pass), a `kosh` in a `yavat` loop or in a `mandapa`
+inside the loop, and a block still returns no memory to the operating system. **Found in R172 on v315 and v316 (earlier
+versions not checked), not fixed:** an ordinary `nirmmita` taken after a block ended can be given memory the block wrote -
+not zeros - once the two sides of the 1 GiB field have crossed the same addresses (R172-00).
 
 **A file that was read is never written over (R163, v316).** Up to v315 `sutram hello.sm hello.sm` compiled and
 then wrote the program over `hello.sm` - the source gone, exit 0 - and so did `--object`, `sutram-link` naming one
@@ -460,6 +467,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v317:** a `kosh` declared in a `chakra`'s own body, proven local, is made once for the loop (R172).
 - **v316:** a file a tool read is never its output (`E_NIRGAM_NIVESH`); an output that cannot be opened is an
   error (`E_NIRGAM_PATRA`), not a silent success.
 - **v315:** the tree limit's own code (`E_VRIKSHA_SEEMA`); the fold guard; the installer records what it did -
