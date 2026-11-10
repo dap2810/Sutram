@@ -1,0 +1,1076 @@
+{
+  "base": "27bed64a66371e7e526a6f17181a017d6193f2c8",
+  "method": "static lexer byte routing; no preprocessing or compiler execution",
+  "counts": {
+    "sutram_files": 3826,
+    "ChatGPT-to-Sarvam": 3,
+    "Claude-to-Sarvam": 421,
+    "Muse-to-Sarvam": 104,
+    "Windows-to-Sarvam": 2214,
+    "benchmarks": 8,
+    "examples": 361,
+    "lib": 24,
+    "python_files": 89,
+    "tests": 691
+  },
+  "raw_source_candidates": [
+    {
+      "path": "Claude-to-Sarvam/evidence-r7/probes/M02_unknown_alias.sm",
+      "hits": [
+        {
+          "offset": 9,
+          "line": 1,
+          "byte_column": 10,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "Claude-to-Sarvam/evidence-r7/probes/M04_alias_func_typo.sm",
+      "hits": [
+        {
+          "offset": 9,
+          "line": 1,
+          "byte_column": 10,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/149_namespaced_colliding_imports.sm",
+      "hits": [
+        {
+          "offset": 82,
+          "line": 2,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 101,
+          "line": 3,
+          "byte_column": 13,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/150_namespaced_same_module_two_aliases.sm",
+      "hits": [
+        {
+          "offset": 72,
+          "line": 2,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 92,
+          "line": 3,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/151_namespaced_and_legacy_import.sm",
+      "hits": [
+        {
+          "offset": 103,
+          "line": 3,
+          "byte_column": 13,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/152_namespaced_comment_string_preservation.sm",
+      "hits": [
+        {
+          "offset": 13,
+          "line": 1,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/153_namespaced_devanagari_function.sm",
+      "hits": [
+        {
+          "offset": 18,
+          "line": 1,
+          "byte_column": 19,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/154_namespaced_duplicate_idempotent.sm",
+      "hits": [
+        {
+          "offset": 72,
+          "line": 2,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 92,
+          "line": 3,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/155_namespaced_multi_alias_composition.sm",
+      "hits": [
+        {
+          "offset": 83,
+          "line": 2,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 102,
+          "line": 3,
+          "byte_column": 13,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 121,
+          "line": 4,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/156_namespaced_alias_collision.sm",
+      "hits": [
+        {
+          "offset": 63,
+          "line": 2,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 81,
+          "line": 3,
+          "byte_column": 13,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/157_namespaced_missing_module.sm",
+      "hits": [
+        {
+          "offset": 22,
+          "line": 1,
+          "byte_column": 23,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/158_namespaced_alias_digit.sm",
+      "hits": [
+        {
+          "offset": 13,
+          "line": 1,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/159_namespaced_path_traversal.sm",
+      "hits": [
+        {
+          "offset": 16,
+          "line": 1,
+          "byte_column": 17,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/160_namespaced_empty_alias.sm",
+      "hits": [
+        {
+          "offset": 13,
+          "line": 1,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/161_namespaced_overlong_alias.sm",
+      "hits": [
+        {
+          "offset": 13,
+          "line": 1,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/162_namespaced_import_capacity.sm",
+      "hits": [
+        {
+          "offset": 92,
+          "line": 2,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 112,
+          "line": 3,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 132,
+          "line": 4,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 152,
+          "line": 5,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 172,
+          "line": 6,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 192,
+          "line": 7,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 212,
+          "line": 8,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 232,
+          "line": 9,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 252,
+          "line": 10,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 272,
+          "line": 11,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 292,
+          "line": 12,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 313,
+          "line": 13,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 334,
+          "line": 14,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 355,
+          "line": 15,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 376,
+          "line": 16,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 397,
+          "line": 17,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        },
+        {
+          "offset": 418,
+          "line": 18,
+          "byte_column": 14,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/211_r41_v1_public.sm",
+      "hits": [
+        {
+          "offset": 105,
+          "line": 3,
+          "byte_column": 12,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/212_r41_v1_private.sm",
+      "hits": [
+        {
+          "offset": 115,
+          "line": 3,
+          "byte_column": 12,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "examples/213_r41_v1_dupexp.sm",
+      "hits": [
+        {
+          "offset": 112,
+          "line": 3,
+          "byte_column": 12,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-12832.sm",
+      "hits": [
+        {
+          "offset": 36,
+          "line": 1,
+          "byte_column": 37,
+          "byte": "00",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-25786.sm",
+      "hits": [
+        {
+          "offset": 4111,
+          "line": 120,
+          "byte_column": 14,
+          "byte": "0F",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-26963.sm",
+      "hits": [
+        {
+          "offset": 30,
+          "line": 1,
+          "byte_column": 31,
+          "byte": "00",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-27522.sm",
+      "hits": [
+        {
+          "offset": 189,
+          "line": 10,
+          "byte_column": 5,
+          "byte": "1C",
+          "import_line": false
+        },
+        {
+          "offset": 191,
+          "line": 10,
+          "byte_column": 7,
+          "byte": "24",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-40049.sm",
+      "hits": [
+        {
+          "offset": 880,
+          "line": 30,
+          "byte_column": 13,
+          "byte": "1E",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-45236.sm",
+      "hits": [
+        {
+          "offset": 257,
+          "line": 11,
+          "byte_column": 14,
+          "byte": "1E",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-47726.sm",
+      "hits": [
+        {
+          "offset": 4363,
+          "line": 105,
+          "byte_column": 16,
+          "byte": "00",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/negative/r17/r15-original/mutation-15-9720.sm",
+      "hits": [
+        {
+          "offset": 24,
+          "line": 2,
+          "byte_column": 16,
+          "byte": "19",
+          "import_line": false
+        }
+      ]
+    },
+    {
+      "path": "tests/r44_pending/01_undefined_export/main.sm",
+      "hits": [
+        {
+          "offset": 27,
+          "line": 2,
+          "byte_column": 9,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "tests/r44_pending/02_exported_constant/main.sm",
+      "hits": [
+        {
+          "offset": 29,
+          "line": 2,
+          "byte_column": 11,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "tests/r44_pending/03_unknown_qualified/main.sm",
+      "hits": [
+        {
+          "offset": 27,
+          "line": 2,
+          "byte_column": 9,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "tests/r44_pending/04_private_constant/main.sm",
+      "hits": [
+        {
+          "offset": 29,
+          "line": 2,
+          "byte_column": 11,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "tests/r44_pending/05_private_function/main.sm",
+      "hits": [
+        {
+          "offset": 27,
+          "line": 2,
+          "byte_column": 9,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "tests/r44_pending/06_public_function/main.sm",
+      "hits": [
+        {
+          "offset": 27,
+          "line": 2,
+          "byte_column": 9,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    },
+    {
+      "path": "tests/r51_check/namespaced_root.sm",
+      "hits": [
+        {
+          "offset": 17,
+          "line": 1,
+          "byte_column": 18,
+          "byte": "40",
+          "import_line": true
+        }
+      ]
+    }
+  ],
+  "invalid": [],
+  "python_literal_candidates": [
+    {
+      "path": "tests/gui/test_win_gui_colour_tables.py",
+      "host_line": 2,
+      "literal_length": 384,
+      "bytes": {
+        "27": 2
+      }
+    },
+    {
+      "path": "tests/r101/test_memory_claims.py",
+      "host_line": 2,
+      "literal_length": 1456,
+      "bytes": {
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r118/test_lib_aliases.py",
+      "host_line": 2,
+      "literal_length": 1234,
+      "bytes": {
+        "27": 5,
+        "60": 4
+      }
+    },
+    {
+      "path": "tests/r121/test_builtins.py",
+      "host_line": 2,
+      "literal_length": 885,
+      "bytes": {
+        "27": 2
+      }
+    },
+    {
+      "path": "tests/r123/test_pe_memory.py",
+      "host_line": 2,
+      "literal_length": 919,
+      "bytes": {
+        "60": 2,
+        "27": 3
+      }
+    },
+    {
+      "path": "tests/r126/test_kinds.py",
+      "host_line": 2,
+      "literal_length": 1047,
+      "bytes": {
+        "27": 3
+      }
+    },
+    {
+      "path": "tests/r126/test_kinds.py",
+      "host_line": 50,
+      "literal_length": 24,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r126/test_kinds.py",
+      "host_line": 51,
+      "literal_length": 23,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r126/test_kinds.py",
+      "host_line": 52,
+      "literal_length": 47,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r126/test_kinds.py",
+      "host_line": 62,
+      "literal_length": 40,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r126/test_kinds.py",
+      "host_line": 66,
+      "literal_length": 48,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r127/test_descriptor.py",
+      "host_line": 2,
+      "literal_length": 1469,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r133/test_veh_registration.py",
+      "host_line": 2,
+      "literal_length": 1528,
+      "bytes": {
+        "27": 2,
+        "60": 4
+      }
+    },
+    {
+      "path": "tests/r134/test_one_predicate.py",
+      "host_line": 2,
+      "literal_length": 1596,
+      "bytes": {
+        "27": 3,
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r137/test_slice_number.py",
+      "host_line": 2,
+      "literal_length": 3141,
+      "bytes": {
+        "27": 15,
+        "60": 8
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 2,
+      "literal_length": 3843,
+      "bytes": {
+        "27": 9,
+        "60": 10
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 395,
+      "literal_length": 35,
+      "bytes": {
+        "5C": 1,
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 401,
+      "literal_length": 105,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 519,
+      "literal_length": 105,
+      "bytes": {
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 296,
+      "literal_length": 36,
+      "bytes": {
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 300,
+      "literal_length": 44,
+      "bytes": {
+        "60": 4,
+        "5C": 3
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 303,
+      "literal_length": 39,
+      "bytes": {
+        "5C": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 304,
+      "literal_length": 46,
+      "bytes": {
+        "60": 2,
+        "5C": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 305,
+      "literal_length": 34,
+      "bytes": {
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 308,
+      "literal_length": 75,
+      "bytes": {
+        "5C": 5
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 310,
+      "literal_length": 84,
+      "bytes": {
+        "5C": 6
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 317,
+      "literal_length": 39,
+      "bytes": {
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 137,
+      "literal_length": 16,
+      "bytes": {
+        "5C": 2
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 168,
+      "literal_length": 15,
+      "bytes": {
+        "5C": 3
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 390,
+      "literal_length": 81,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 563,
+      "literal_length": 90,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 413,
+      "literal_length": 43,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 465,
+      "literal_length": 90,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r158/test_doc_currency.py",
+      "host_line": 467,
+      "literal_length": 53,
+      "bytes": {
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r28/test_link.py",
+      "host_line": 2,
+      "literal_length": 951,
+      "bytes": {
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r29/test_separate.py",
+      "host_line": 2,
+      "literal_length": 1386,
+      "bytes": {
+        "60": 10,
+        "27": 3,
+        "40": 1
+      }
+    },
+    {
+      "path": "tests/r30/test_vitti.py",
+      "host_line": 2,
+      "literal_length": 905,
+      "bytes": {
+        "60": 4,
+        "27": 3
+      }
+    },
+    {
+      "path": "tests/r32/test_ffi.py",
+      "host_line": 2,
+      "literal_length": 1262,
+      "bytes": {
+        "27": 2
+      }
+    },
+    {
+      "path": "tests/r33/test_ffi_kinds.py",
+      "host_line": 2,
+      "literal_length": 1889,
+      "bytes": {
+        "27": 3
+      }
+    },
+    {
+      "path": "tests/r34/test_link_windows.py",
+      "host_line": 2,
+      "literal_length": 1678,
+      "bytes": {
+        "60": 10,
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r35/test_ffi_windows.py",
+      "host_line": 2,
+      "literal_length": 2068,
+      "bytes": {
+        "27": 4
+      }
+    },
+    {
+      "path": "tests/r43/test_keyword_boundary.py",
+      "host_line": 2,
+      "literal_length": 1520,
+      "bytes": {
+        "60": 8
+      }
+    },
+    {
+      "path": "tests/r45/test_debug.py",
+      "host_line": 2,
+      "literal_length": 1629,
+      "bytes": {
+        "27": 4,
+        "60": 4
+      }
+    },
+    {
+      "path": "tests/r46/test_debug_usable.py",
+      "host_line": 2,
+      "literal_length": 1925,
+      "bytes": {
+        "40": 8,
+        "27": 1,
+        "60": 4
+      }
+    },
+    {
+      "path": "tests/r52/test_r52.py",
+      "host_line": 2,
+      "literal_length": 1227,
+      "bytes": {
+        "27": 7,
+        "60": 18
+      }
+    },
+    {
+      "path": "tests/r53/test_nivartanam.py",
+      "host_line": 2,
+      "literal_length": 1122,
+      "bytes": {
+        "60": 22,
+        "27": 1
+      }
+    },
+    {
+      "path": "tests/r53/test_nivartanam.py",
+      "host_line": 92,
+      "literal_length": 7,
+      "bytes": {
+        "60": 1
+      }
+    },
+    {
+      "path": "tests/r72_mandapa/test_mandapa.py",
+      "host_line": 2,
+      "literal_length": 742,
+      "bytes": {
+        "27": 1,
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r73_scratch/test_scratch.py",
+      "host_line": 2,
+      "literal_length": 1282,
+      "bytes": {
+        "27": 2,
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r74_compose/test_compose.py",
+      "host_line": 2,
+      "literal_length": 1481,
+      "bytes": {
+        "27": 3,
+        "60": 4
+      }
+    },
+    {
+      "path": "tests/r77_format/test_stray_tokens.py",
+      "host_line": 2,
+      "literal_length": 944,
+      "bytes": {
+        "27": 2,
+        "60": 8
+      }
+    },
+    {
+      "path": "tests/r79_real/test_real_program.py",
+      "host_line": 2,
+      "literal_length": 758,
+      "bytes": {
+        "60": 4,
+        "27": 3
+      }
+    },
+    {
+      "path": "tests/r81_parikshita/test_parikshita.py",
+      "host_line": 2,
+      "literal_length": 713,
+      "bytes": {
+        "27": 2,
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/r82_kosh_mandapa/test_kosh_mandapa.py",
+      "host_line": 2,
+      "literal_length": 616,
+      "bytes": {
+        "60": 2
+      }
+    },
+    {
+      "path": "tests/windows/test_oom_headroom.py",
+      "host_line": 2,
+      "literal_length": 1418,
+      "bytes": {
+        "60": 2,
+        "27": 5
+      }
+    }
+  ],
+  "limitations": [
+    "Models raw lexer routing, not import expansion, prelex validation, parsing or runtime acceptance.",
+    "Import @ candidates were manually classified against expand_imports.",
+    "Python constant extraction is a candidate search, not execution of generated tests; reported candidates were labels, documentation or patterns."
+  ],
+  "source_sha256": {
+    "src/sutram_compiler.asm": "8ed964414bc8efc37fdff3e92b64acb75df3a9dbd174550d87c0148dde8d3942",
+    "src/r66_indic_lexer.inc": "784ffeb1e140cb4be34e73e28f5397ddc01addbcc3cb4a19bec5f15d2be41d00",
+    "src/r68_diagnostics.inc": "33c356cbf75983c2f736f65ab12055f2abaf0f0d0991eac74994f3e4937a83a8",
+    "tests/run_tests.py": "11b8f85ec69d56cb0bca751d95e0f5f6d2186aa89ff8afccab0cfaf03d1b77fd",
+    "tools/crash_corpus.py": "9f25103dc3a3f8834ed13c0df9d78eef5628636c06cfad76a0bea872d669786b"
+  },
+  "classification": {
+    "main_examples": 331,
+    "accepted_example_skip_dependencies_found": 0,
+    "import_only_candidate_files": 26,
+    "import_only_candidate_bytes": 48,
+    "negative_fixture_files": 8,
+    "negative_fixture_bytes": 9,
+    "runtime": "NOT RUN - read-side role, no toolchain used"
+  }
+}
