@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R179 (v319, documents only):** reference §19 and the two books gained the sentence on a block's memory not being
+cleared; the compiler and every other binary are unchanged. Built from an empty `--work` folder.
+
 **R176 (v319):** the compiler changed (a proven-local `kosh` or `mala` is made once anywhere in a loop); nothing
 else in the payload but the documents. Built from an empty `--work` folder.
 

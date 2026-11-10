@@ -1351,6 +1351,14 @@ address stays good - but putting it in an outer `vitti` is (`E_VITTI_PRAKAR`, th
   program's 1 GiB field, zeroed, like any `nirmmita` buffer.
 - **Every exit gives it all back:** reaching the end of the body, `nivartanam`, `krama`, `agrim`, and a failure
   passed on by `prasar`. A later block reuses the same memory, and sees zeros, never the earlier block's data.
+- **What a block gives back is not cleared (a known defect, v315-v319; found R172).** A later *block* sees zeros
+  because its own `nirmmita` clears what it takes. An ordinary `nirmmita` or a `mala` outside any block clears
+  nothing: it counts on memory that was never used. So once a program's blocks and its ordinary allocations have,
+  between them, used more than the 1 GiB field, a new `nirmmita` buffer or a new `mala` outside a block can start
+  with numbers an ended block left there, not with 0. Measured: after a block that filled 600 MB, a new
+  `nirmmita(600000000)` read the block's value in 15,782,272 of its 75,000,000 words, and a new `mala m[8]` read
+  77 in `m[0]` and `m[7]`. Below 1 GiB in all it does not happen. **Until it is fixed: in a program that uses
+  that much memory, write every number of a new buffer or `mala` outside a block before reading it.**
 - **A negative size** is an error: written as a number (`nirmmita(-1)`), the compiler refuses it —
   `E_NIRMMITA_RNA`; computed (`nirmmita(n)` with `n` below 0), the program stops, exit 1:
   `Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`. (Outside a block, and in

@@ -790,6 +790,11 @@ Both are checked: reading <code>dinah[3]</code> stops the program with <code>Sut
 until the program ends. Inside a <code><span class="k" data-tip="scratch block">mandapa</span></code> it is
 <b>scratch</b>: everything made with <code>nirmmita</code> inside the block is given back, all at once, when the
 block ends - however it ends (its last line, <code>nivartanam</code>, <code>krama</code>, <code>agrim</code>).</p>
+<p><b>One exception to "zeroed" (up to compiler v319):</b> what a block gives back is not cleared. Once a program's
+blocks and its allocations outside blocks have together used more than the 1 GiB field, a new
+<code>nirmmita</code> buffer or a new <code>mala</code> outside a block can begin with numbers an ended block left
+there, not with zeros. In a program that large, write every number of a new buffer or <code>mala</code> before you
+read it. A smaller program never meets this.</p>
 <pre><code><span class="k" data-tip="function">prakriya</span> kaam(i) {
     <span class="k" data-tip="scratch block">mandapa</span> {
         <span class="k" data-tip="variable">vitti</span> b = nirmmita(256)     <span class="cm"># 256 bytes of scratch</span>

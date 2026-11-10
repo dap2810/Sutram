@@ -18,6 +18,9 @@
   given to a `prakriya` (over 8 MB).
 - Every program that compiled on v318, and on v315, compiles to the same bytes (guard: 783 programs, ELF and PE,
   0 DIFFER). Run under Wine; not run on Windows. Installer rebuilt (payload v319).
+- **The documents say what v319 does not fix** (R179 WS3): reference §19 and both books now carry the sentence that
+  what a block gives back is not cleared, when that can be seen (more than 1 GiB used between blocks and ordinary
+  allocations), and what to do until it is fixed. Documents only; the compiler's bytes are those of 4c1159be.
 - **Not in v319:** zeroing a block's memory at its exits (the fix for the `nirmmita`-after-a-block defect). It is
   staged separately as v320 because it changes the bytes of every program with a `mandapa` and costs time in every
   block (R175-00, R176-00).
