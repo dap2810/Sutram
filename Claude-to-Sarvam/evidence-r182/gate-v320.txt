@@ -1,0 +1,22 @@
+FAIL  curly-quote: refused at 2:11, '“' (U+201C) - Sanket: saral uddharana-chihnam " (U+0022) likhyatam  GOT "curly-quote.sm:2:12: Sutram truti [E_UNDEFINED_NAME]: agyat naam 'hello'\n      likha(“hello”)\n             ^\nSanket: prayogat purvam ghoshana avashyaki: vitti h"
+FAIL  en-dash: refused at 2:17, '–' (U+2013) - Sanket: vyavakalana-chihnam - (U+002D) likhyatam  GOT 'Siddh: 235 baait sankalit\n'
+FAIL  em-dash: refused at 2:17, '—' (U+2014) - Sanket: vyavakalana-chihnam - (U+002D) likhyatam  GOT 'Siddh: 74 baait sankalit\n'
+FAIL  minus-sign: refused at 2:17, '−' (U+2212) - Sanket: vyavakalana-chihnam - (U+002D) likhyatam  GOT 'Siddh: 74 baait sankalit\n'
+FAIL  no-break-space: refused at 2:12, (U+00A0) - Sanket: sadharanah avakashah (U+0020) likhyatam  GOT 'Siddh: 69 baait sankalit\n'
+FAIL  zero-width-space: refused at 2:12, (U+200B) - Sanket: adrishyam aksharam etat - apaniyatam  GOT 'Siddh: 69 baait sankalit\n'
+FAIL  bom-in-a-line: refused at 2:13, (U+FEFF) - Sanket: adrishyam aksharam etat - apaniyatam  GOT 'Siddh: 69 baait sankalit\n'
+FAIL  apostrophe: refused at 2:11, ''' (U+0027) - Sanket: Sutram-bhashayam vakyam " " madhye likhyate - " (U+0022) likhyatam  GOT "apostrophe.sm:2:12: Sutram truti [E_UNDEFINED_NAME]: agyat naam 'hi'\n      likha('hi')\n             ^\nSanket: prayogat purvam ghoshana avashyaki: vitti hi = ..."
+FAIL  curly-apostrophe: refused at 2:11, '‘' (U+2018) - Sanket: Sutram-bhashayam vakyam " " madhye likhyate - " (U+0022) likhyatam  GOT "curly-apostrophe.sm:2:12: Sutram truti [E_UNDEFINED_NAME]: agyat naam 'hi'\n      likha(‘hi’)\n             ^\nSanket: prayogat purvam ghoshana avashyaki: vitti hi"
+FAIL  times: refused at 2:13, '×' (U+00D7) - Sanket: gunana-chihnam * (U+002A) likhyatam  GOT 'Siddh: 326 baait sankalit\n'
+FAIL  not-equal: refused at 2:13, '≠' (U+2260) - Sanket: != likhyatam  GOT "\nSutram truti: vyakaran dosh, pankti 2:15, shabd '4'\n      yadi (3 ≠ 4) {\n                ^\nSanket: asmin sthane shabdam vyakaranam cha pashyatu.\n"
+FAIL  rupee: refused at 2:15, '₹' (U+20B9) - no Sanket  GOT 'Siddh: 195 baait sankalit\n'
+FAIL  dollar: refused at 2:17, '$' (U+0024) - no Sanket  GOT 'Siddh: 74 baait sankalit\n'
+FAIL  at-sign: refused at 2:15, '@' (U+0040) - no Sanket  GOT 'Siddh: 69 baait sankalit\n'
+FAIL  form-feed: refused at 2:13, (U+000C) - no Sanket  GOT 'Siddh: 195 baait sankalit\n'
+FAIL  emoji: refused at 2:14, '😀' (U+1F600) - no Sanket  GOT 'Siddh: 195 baait sankalit\n'
+FAIL  first-of-two: refused at 2:17, '$' (U+0024) - no Sanket  GOT 'Siddh: 79 baait sankalit\n'
+ok    in-comments-and-strings: compiles and prints '“quoted” – ₹100 $ @ in a string'
+ok    byte-order-mark-first: compiles and prints '7'
+ok    devanagari-digits: compiles and prints '3'
+ok    ascii-as-before: compiles and prints '3'
+r182 unknown character: 21 checks, 17 failed

@@ -1,0 +1,22 @@
+ok    curly-quote: refused at 2:11, '“' (U+201C) - Sanket: saral uddharana-chihnam " (U+0022) likhyatam
+ok    en-dash: refused at 2:17, '–' (U+2013) - Sanket: vyavakalana-chihnam - (U+002D) likhyatam
+ok    em-dash: refused at 2:17, '—' (U+2014) - Sanket: vyavakalana-chihnam - (U+002D) likhyatam
+ok    minus-sign: refused at 2:17, '−' (U+2212) - Sanket: vyavakalana-chihnam - (U+002D) likhyatam
+ok    no-break-space: refused at 2:12, (U+00A0) - Sanket: sadharanah avakashah (U+0020) likhyatam
+ok    zero-width-space: refused at 2:12, (U+200B) - Sanket: adrishyam aksharam etat - apaniyatam
+ok    bom-in-a-line: refused at 2:13, (U+FEFF) - Sanket: adrishyam aksharam etat - apaniyatam
+ok    apostrophe: refused at 2:11, ''' (U+0027) - Sanket: Sutram-bhashayam vakyam " " madhye likhyate - " (U+0022) likhyatam
+ok    curly-apostrophe: refused at 2:11, '‘' (U+2018) - Sanket: Sutram-bhashayam vakyam " " madhye likhyate - " (U+0022) likhyatam
+ok    times: refused at 2:13, '×' (U+00D7) - Sanket: gunana-chihnam * (U+002A) likhyatam
+ok    not-equal: refused at 2:13, '≠' (U+2260) - Sanket: != likhyatam
+ok    rupee: refused at 2:15, '₹' (U+20B9) - no Sanket
+ok    dollar: refused at 2:17, '$' (U+0024) - no Sanket
+ok    at-sign: refused at 2:15, '@' (U+0040) - no Sanket
+ok    form-feed: refused at 2:13, (U+000C) - no Sanket
+ok    emoji: refused at 2:14, '😀' (U+1F600) - no Sanket
+ok    first-of-two: refused at 2:17, '$' (U+0024) - no Sanket
+ok    in-comments-and-strings: compiles and prints '“quoted” – ₹100 $ @ in a string'
+ok    byte-order-mark-first: compiles and prints '7'
+ok    devanagari-digits: compiles and prints '3'
+ok    ascii-as-before: compiles and prints '3'
+r182 unknown character: 21 checks, 0 failed

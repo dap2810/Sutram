@@ -1,0 +1,46 @@
+curly.sm:2:11: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '“' (U+201C)
+      likha(“hello”)
+            ^
+Sanket: saral uddharana-chihnam " (U+0022) likhyatam
+
+endash.sm:2:17: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '–' (U+2013)
+      vitti a = 5 – 2
+                  ^
+Sanket: vyavakalana-chihnam - (U+002D) likhyatam
+
+rupee.sm:2:15: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '₹' (U+20B9)
+      likha(100 ₹)
+                ^
+
+nbsp.sm:2:12: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar (U+00A0)
+      vitti a = 5
+             ^
+Sanket: sadharanah avakashah (U+0020) likhyatam
+
+dollar.sm:2:17: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '$' (U+0024)
+      vitti a = 5 $ 3
+                  ^
+
+apos.sm:2:11: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar ''' (U+0027)
+      likha('hi')
+            ^
+Sanket: Sutram-bhashayam vakyam " " madhye likhyate - " (U+0022) likhyatam
+
+zw.sm:2:12: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar (U+200B)
+      vitti a​ = 5
+             ^
+Sanket: adrishyam aksharam etat - apaniyatam
+
+times.sm:2:13: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '×' (U+00D7)
+      likha(3 × 4)
+              ^
+Sanket: gunana-chihnam * (U+002A) likhyatam
+
+ctrl.sm:2:13: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar (U+000C)
+      likha(3)
+              ^
+
+emoji.sm:2:14: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '😀' (U+1F600)
+      likha(3) 😀
+               ^
+

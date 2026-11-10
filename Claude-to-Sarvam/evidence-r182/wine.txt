@@ -1,0 +1,10 @@
+ok   curly: win/sutram.exe under Wine says what the Linux compiler says: curly.sm:2:11: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '“' (U+201C)
+ok   endash: win/sutram.exe under Wine says what the Linux compiler says: endash.sm:2:17: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '–' (U+2013)
+ok   nbsp: win/sutram.exe under Wine says what the Linux compiler says: nbsp.sm:2:12: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar (U+00A0)
+ok   rupee: win/sutram.exe under Wine says what the Linux compiler says: rupee.sm:2:15: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '₹' (U+20B9)
+ok   apos: win/sutram.exe under Wine says what the Linux compiler says: apos.sm:2:11: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar ''' (U+0027)
+ok   zw: win/sutram.exe under Wine says what the Linux compiler says: zw.sm:2:12: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar (U+200B)
+ok   times: win/sutram.exe under Wine says what the Linux compiler says: times.sm:2:13: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '×' (U+00D7)
+ok   emoji: win/sutram.exe under Wine says what the Linux compiler says: emoji.sm:2:14: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '😀' (U+1F600)
+ok   comment: win/sutram.exe under Wine says what the Linux compiler says: Siddh: 127 baait sankalit
+ok   bom: win/sutram.exe under Wine says what the Linux compiler says: Siddh: 229 baait sankalit

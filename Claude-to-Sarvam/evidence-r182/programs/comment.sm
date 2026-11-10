@@ -1,0 +1,6 @@
+# “curly” – dash ₹ in a hash comment
+// “curly” in a slash comment
+/* — em dash in a block comment */
+mukhya() {
+    likha("“quoted” – ₹100 in a string\n")
+}
