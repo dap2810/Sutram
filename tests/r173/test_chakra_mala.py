@@ -51,9 +51,9 @@ CASES = [
     ('alias', 'a second name: vitti a = m', False, loop('        mala m[8]\n' + Z + W + '        vitti a = m\n        s = s + a[3]\n'), SUM),
     ('to-prakriya', 'given to a prakriya', False,
      loop('        mala m[8]\n' + Z + W + '        s = s + teen(m)\n', funcs='prakriya teen(a) {\n    nivartanam a[3]\n}\n'), SUM),
-    ('under-yadi', 'declared under a yadi', False,
+    ('under-yadi', 'declared under a yadi (made once from v319, R175)', True,
      loop('        yadi (j > 0) {\n            mala m[8]\n' + (Z + W + USE).replace('        ', '            ') + '        }\n'), SUM),
-    ('yavat', 'a yavat loop', False,
+    ('yavat', 'a yavat loop (made once from v319, R175)', True,
      'mukhya() {\n    vitti s = 0\n    vitti j = 1\n    yavat (j <= NPASS) {\n        mala m[8]\n' + Z + W + USE
      + '        j = j + 1\n    }\n    likha(s, " ", parimana(), "\\n")\n}\n', SUM),
 ]

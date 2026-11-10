@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v318) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v319) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1623,6 +1623,7 @@ section .bss
     r172_patch  resq 1                      ;   its jump over the allocation
     r173_mala   resq 1                      ; R173: the scan is for a mala (the name only as an index base)
     r173_p      resq 3                      ;   the three jumps to the allocation
+    r175_root   resq 1                      ; R175: the loop whose declarations are being looked at
     r107_kosh_hit resq 1                    ; R107: the last tainted name met was a kosh made in a block
     r107_knames resq 256                    ; R107: those kosh names
     r107_kn     resq 1
@@ -10893,67 +10894,104 @@ r82_gen_rewind:
     call r23_emit_bytes
 %endmacro
 
-; r172_for_enter(rbx = an AST_FOR about to be generated). Every register preserved.
-; For each proven-local kosh declared in the loop's own body: a frame slot, and code that zeroes it.
+; r172_for_enter(rbx = an AST_FOR about to be generated), r175_while_enter(rbx = an AST_WHILE).
+; Every register preserved. For each proven-local kosh or mala declared in the loop - in its own body, or
+; (R175) under a yadi / anya or in a block or a mandapa inside it, but not in a loop inside it, which has
+; its own entry: a frame slot, and code that zeroes it. The slot is zeroed once, at the entry to the loop;
+; a declaration that never runs never makes anything.
 r172_for_enter:
+    push rdi
+    mov [rel r175_root], rbx
+    mov rdi, [rbx+32]
+    call r175_walk
+    pop rdi
+    ret
+r175_while_enter:
+    push rdi
+    mov [rel r175_root], rbx
+    mov rdi, [rbx+16]
+    call r175_walk
+    pop rdi
+    ret
+
+; r175_walk(rdi = a statement of the loop): declarations, and the statements of blocks and yadi branches.
+r175_walk:
+    push rax
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    test rbx, rbx
+    jz .out
+    mov rax, [rbx]
+    cmp rax, AST_DECL
+    je .decl
+    cmp rax, AST_IF
+    je .if
+    cmp rax, AST_BLOCK
+    jne .out                       ; a loop inside has its own entry; anything else holds no declaration
+    xor r12d, r12d
+    mov r13, [rbx+8]
+.bl:
+    cmp r12, r13
+    jae .out
+    mov rdi, [rbx + 16 + r12*8]
+    call r175_walk
+    inc r12
+    jmp .bl
+.if:
+    mov rdi, [rbx+16]
+    call r175_walk
+    mov rdi, [rbx+24]              ; anya, or the next yadi of a chain
+    call r175_walk
+    jmp .out
+.decl:
+    mov rdi, rbx
+    call r175_cand
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    pop rax
+    ret
+
+; r175_cand(rdi = an AST_DECL in the loop r175_root). Every register preserved.
+r175_cand:
     push rax
     push rcx
     push rdx
     push rsi
     push rdi
-    push r12
-    push r13
-    push r14
-    mov r13, [rbx+32]              ; the body
-    test r13, r13
-    jz .out
-    mov r14, 1                     ; the body is one statement, or a BLOCK of them
-    lea r12, [rbx+32]
-    cmp qword [r13], AST_BLOCK
-    jne .l
-    mov r14, [r13+8]
-    lea r12, [r13+16]
-.l:
-    test r14, r14
-    jz .out
-    mov rdi, [r12]
-    add r12, 8
-    dec r14
-    test rdi, rdi
-    jz .l
-    cmp qword [rdi], AST_DECL
-    jne .l
     mov qword [rel r173_mala], 0
     mov rax, [rdi+32]
     cmp rax, 3
-    ja .l
+    ja .out
     cmp rax, 2                     ; a kosh, a kosh of dasham
     jae .cand
     cmp qword [rdi+24], 0          ; R173: a mala - a size and no initializer
-    je .l
+    je .out
     cmp qword [rdi+16], 0
-    jne .l
+    jne .out
     mov qword [rel r173_mala], 1
 .cand:
-    push rdi
     mov rax, [rdi+8]
     mov [rel r172_name], rax
     mov qword [rel r172_cnt], 0
     mov qword [rel r172_esc], 0
-    mov rdi, rbx                   ; the whole loop: bounds and body
+    mov rdi, [rel r175_root]       ; the whole loop: bounds or condition, and body
     call r172_scan
-    pop rdi
+    mov rdi, [rsp]
     cmp qword [rel r172_esc], 0
-    jne .l
-    cmp qword [rel r172_cnt], 1
-    jne .l
+    jne .out
+    cmp qword [rel r172_cnt], 0
+    je .out
     mov rcx, [rel var_cnt]         ; the slot is entered in the variable table under a name no program
     cmp rcx, VAR_TABLE_CAP         ; can write, so the table's limit bounds the frame as before
-    jae .l
+    jae .out
     mov rax, [rel stack_dep]
     add rax, 8
     cmp rax, FUNC_SPILL_BYTES - 16
-    ja .l
+    ja .out
     mov [rel stack_dep], rax
     neg rax
     imul rcx, rcx, 16
@@ -10969,7 +11007,7 @@ r172_for_enter:
     lea rdx, [rel r172_slot]
     mov [rdx + rcx*8], rax
     inc qword [rel r172_n]
-    push rax                       ; mov qword [rbp+slot],0: no kosh yet, on every entry to the loop
+    push rax                       ; mov qword [rbp+slot],0: nothing made yet, on every entry to the loop
     mov dil, 0x48
     call emit_byte
     mov dil, 0xC7
@@ -10979,11 +11017,7 @@ r172_for_enter:
     call emit_rbp_modrm_disp
     xor edi, edi
     call emit_u32
-    jmp .l
 .out:
-    pop r14
-    pop r13
-    pop r12
     pop rdi
     pop rsi
     pop rdx
@@ -11024,11 +11058,33 @@ r172_decl_begin:
     mov esi, [rel r172_cur]
     mov dil, 0x4D
     call emit_rbp_modrm_disp
-    R172_EMIT 0x48,0x85,0xC9, 0x0F,0x84, 0x10,0x00,0x00,0x00, 0x48,0xC7,0x41,0xF0,0x00,0x00,0x00,0x00, 0x48,0x89,0xC8, 0xE9
+    R172_EMIT 0x48,0x85,0xC9, 0x0F,0x84
+    mov rax, [rel code_sz]
+    push rax
+    xor edi, edi
+    call emit_u32
+    R172_EMIT 0x48,0xC7,0x41,0xF0,0x00,0x00,0x00,0x00
+    cmp qword [rel r82_on], 0      ; R175: declared in a mandapa inside the loop - this pass's block is a new
+    je .nostamp                    ; one; its generation goes into the header (the line and the slot's address
+    mov rax, [rel r82_gdepth]      ; are the same: the same block of the same frame)
+    lea rdx, [rel r82_off]
+    mov rax, [rdx + rax*8]
+    test rax, rax
+    jz .nostamp
+    push rax
+    R172_EMIT 0x48,0x8B            ; mov rdx,[rbp+the block's slot]
+    pop rsi
+    mov dil, 0x55
+    call emit_rbp_modrm_disp
+    R172_EMIT 0x48,0x89,0x51,0xE8  ; mov [rcx-24],rdx
+.nostamp:
+    R172_EMIT 0x48,0x89,0xC8, 0xE9
     mov rax, [rel code_sz]
     mov [rel r172_patch], rax
     xor edi, edi
     call emit_u32
+    pop rdi                        ; .fresh:
+    call r73_patch32
 .r:
     ret
 
@@ -11210,6 +11266,19 @@ r172_scan:
     test rax, rax
     jz .decl_other
     inc qword [rel r172_cnt]
+    mov rax, [rbx+32]              ; R175: the name may be declared more than once in the loop (a yadi and its
+    cmp qword [rel r173_mala], 0   ; anya) - each declaration gets its own slot - but only as the same kind
+    jne .decl_mala
+    cmp rax, 2
+    jb .esc
+    jmp .decl_other
+.decl_mala:
+    cmp rax, 1
+    ja .esc
+    cmp qword [rbx+24], 0
+    je .esc
+    cmp qword [rbx+16], 0
+    jne .esc
 .decl_other:
     mov rax, [rbx+32]
     cmp rax, 3
@@ -21117,6 +21186,7 @@ r142_gen_stmt_body:
     ; [AST_WHILE][cond][body]
     ; PERF2: test-at-bottom layout.  One initial jump preserves zero-iteration
     ; semantics; steady-state iterations use only one backward conditional.
+    call r175_while_enter          ; R175: a yavat's proven-local kosh and mala are made once, as a chakra's
     push r12
     push r13
     push r14

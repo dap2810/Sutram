@@ -1,5 +1,19 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v299 (Claude, R123) - the Linux memory model on Windows: merged from the Windows round 4 branch (PR #65)
+
+- **On PE, as on ELF:** `nirmmita` uses the arena, a `mandapa` gives its memory back, `mandapa parimita N`
+  refuses past its budget (`E_PARIMITA`), `parimana()` reports the bytes held, and a `kosh` has its own region
+  and never moves (`examples/288` prints `a[0]=99 k[0]=99` on Windows too). The Windows agent found the cause:
+  `r65_active` excluded PE by a compile-time `target_pe` test, and the runtime's `VirtualAlloc` adapter already
+  served the arena's `mmap` calls. **Ported onto v298, not merged whole:** the branch also carried Round 3's
+  new-string `vartani_sandhi`, which v298 does not take (R121); its own `INTEGRATION.md` says the same.
+- **The cost, on Windows only:** `VirtualAlloc` reserves *and commits*, so the arena is 1 GiB of commit charge
+  from a program's first allocation and each `kosh` region 64 MiB (measured there: 1.08 GB, 67.7 MB). ELF
+  output is unchanged byte for byte. Priced in R123, not changed.
+- The native Windows harness passes `--lang hindi` to example 220 and skips 29 (a raw Linux exit syscall).
+  Gate `R123 PE memory` (9 checks; PE under Wine).
+
 ## v298 (Claude, R121) - `anka_akshar` and `vartani_sandhi` fixed: the two builtin defects Windows exposed
 
 - **`anka_akshar(code)`** wrote its character **below the stack pointer** and returned that address, leaving

@@ -7,9 +7,11 @@
   4. a kosh grown to 100,000 with an allocation between pushes: up to v283 it moved at every doubling and
      the abandoned copies cost about one more kosh (1.8 MB against 0.8 MB). R101A (v284): a kosh has a
      region of its own and grows in place, so it costs the same as one that grows alone (within 1.25x)
-  5. a kosh made in a mandapa 100,000 times: NOT reclaimed by the block (about 100 MB). This pins a known,
-     documented gap: if it starts passing below 8 MB, the block reclaims kosh storage and the reference
-     (section 19) must change with it. (R101A: 400 MB, one page per kosh at least.)
+  5. a kosh made in a mandapa in a loop 100,000 times. Up to v318 it was NOT reclaimed (about 100 MB) and this
+     line pinned that gap, with the note that the reference (section 19) must change when it closed. From v319
+     (R175) a kosh used only as k[i] and with the kosh_* built-ins is made once for the loop: under 1 MB.
+     The gap that remains is pinned beside it: the same kosh given to a prakriya is still made every pass and
+     kept - over 8 MB. The block still reclaims no kosh storage; the loop no longer makes a new one.
   6. R101A: a kosh past its region (9,000,000 pushes; the region holds 8,388,603) moves once and keeps
      every value - the sum is exact.
   7. R103 (v285): 1,000,000 x nirmmita(64) in ONE block with `mandapa parimita 1048576` refuses (E_PARIMITA,
@@ -88,6 +90,9 @@ def main():
         m['kosh_in_place'] = peak(w, 'kosh_in_place', KOSH.format(obstacle=''))
         m['kosh_moving'] = peak(w, 'kosh_moving', KOSH.format(obstacle='        vitti o = nirmmita(8)\n'))
         m['kosh_in_block'] = peak(w, 'kosh_in_block', KOSH_IN_BLOCK)
+        m['kosh_in_block_given'] = peak(w, 'kosh_in_block_given',
+                                        'prakriya dekh(kosh q) {\n    nivartanam q[99]\n}\n'
+                                        + KOSH_IN_BLOCK.replace('s = s + k[99]', 's = s + dekh(k)'))
         big = os.path.join(w, 'kosh_past_region')
         open(big + '.sm', 'w').write('''mukhya() {
     kosh k[1]
@@ -124,7 +129,8 @@ def main():
             ('10,000,000 in a block: still under 1 MB (flat)', m['with_10m'][0] < 1024),
             ('a kosh of 100,000 grown past an allocation costs what one grown alone does (within 1.25x; R101A)',
              m['kosh_moving'][0] <= 1.25 * max(m['kosh_in_place'][0], 256)),
-            ('a kosh made in a block 100,000 times is NOT reclaimed (the documented gap): over 8 MB', m['kosh_in_block'][0] > 8192),
+            ('a kosh made in a block in a loop 100,000 times, used only as k[i] and with kosh_*: made once, under 1 MB (R175)', m['kosh_in_block'][0] < 1024),
+            ('the same kosh given to a prakriya is NOT reclaimed (the documented gap that remains): over 8 MB', m['kosh_in_block_given'][0] > 8192),
             ('a kosh past its region keeps every value (9,000,000 pushes; R101A)',
              past == f's {sum(range(9000000))} len 9000000'),
             ('a 1 MB budget refuses 1,000,000 x 64 bytes (E_PARIMITA, exit 1) with a peak under 2 MB (R103)',

@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R176 (v319):** the compiler changed (a proven-local `kosh` or `mala` is made once anywhere in a loop); nothing
+else in the payload but the documents. Built from an empty `--work` folder.
+
 **R173 (v318):** the compiler changed (a `mala` declared in a `chakra`'s own body is made once); nothing else in
 the payload but the documents. Built from an empty `--work` folder.
 

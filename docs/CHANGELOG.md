@@ -1,4 +1,26 @@
-> **The 20 newest entries.** Older ones, from "v298" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v299" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v319 (Claude, R175 + R176) - a proven-local `kosh` or `mala` is made once anywhere in a loop
+
+- **The nested-block gap** (Sarvam R175 WS1; staged alone in R176): v317 / v318 made a proven-local `kosh` or
+  `mala` once only when it was declared as a statement of a `chakra`'s own body. Now the declaration may be under
+  a `yadi` or an `anya`, in a plain block or a `mandapa` inside the loop, at any depth (`r175_walk`), and the loop
+  may be a `yavat` (`r175_while_enter`). The same name declared in a `yadi` and in its `anya` gets a slot for each
+  declaration; a declaration that never runs makes nothing (the slot is zeroed at the loop's entry and filled only
+  where the declaration runs); a `kosh` reused inside a `mandapa` gets this pass's block generation in its R82
+  header. Not walked into: a loop inside the loop - it has its own entry.
+- Measured, 800,000 passes (Linux x86-64, resident; time for 400,000 passes): under a `yadi` 37,516 -> 16 KB,
+  8.7-9.9 -> 1.6-3.0 ms; in a `mandapa` inside the loop 50,012 -> 16-20 KB, 18-20 -> 8.2-9.5 ms (a `mala` there
+  62,516 -> 16 KB); in a `yavat` 37,516 -> 20 KB.
+- Gate `R175 nested made once` (16 checks; 13 fail on v318). Five "made every pass" shapes of the R172 and R173
+  gates (under `yadi`, in a `mandapa`, `yavat`) are now "made once"; `R101 memory`'s pinned gap ("a `kosh` made in
+  a block 100,000 times is not reclaimed") is closed for a proven-local `kosh` (under 1 MB) and re-pinned for one
+  given to a `prakriya` (over 8 MB).
+- Every program that compiled on v318, and on v315, compiles to the same bytes (guard: 783 programs, ELF and PE,
+  0 DIFFER). Run under Wine; not run on Windows. Installer rebuilt (payload v319).
+- **Not in v319:** zeroing a block's memory at its exits (the fix for the `nirmmita`-after-a-block defect). It is
+  staged separately as v320 because it changes the bytes of every program with a `mandapa` and costs time in every
+  block (R175-00, R176-00).
 
 ## v318 (Claude, R173) - a `mala` declared in a `chakra`'s own body is made once; the R172 audits answered
 
@@ -443,17 +465,3 @@
 - **Measured under Wine** (its read-write mappings are what it committed): one `nirmmita(64)` **1073.7 MB → 0.0**;
   100 koshes **6,713 MB → 8.7**; a 100 MB buffer touched on every page **1073.7 → 100.0**. **ELF unchanged byte
   for byte.** Native Windows commit is the owner's measurement. Gate `R124 lazy commit` (7 checks).
-
-## v299 (Claude, R123) - the Linux memory model on Windows: merged from the Windows round 4 branch (PR #65)
-
-- **On PE, as on ELF:** `nirmmita` uses the arena, a `mandapa` gives its memory back, `mandapa parimita N`
-  refuses past its budget (`E_PARIMITA`), `parimana()` reports the bytes held, and a `kosh` has its own region
-  and never moves (`examples/288` prints `a[0]=99 k[0]=99` on Windows too). The Windows agent found the cause:
-  `r65_active` excluded PE by a compile-time `target_pe` test, and the runtime's `VirtualAlloc` adapter already
-  served the arena's `mmap` calls. **Ported onto v298, not merged whole:** the branch also carried Round 3's
-  new-string `vartani_sandhi`, which v298 does not take (R121); its own `INTEGRATION.md` says the same.
-- **The cost, on Windows only:** `VirtualAlloc` reserves *and commits*, so the arena is 1 GiB of commit charge
-  from a program's first allocation and each `kosh` region 64 MiB (measured there: 1.08 GB, 67.7 MB). ELF
-  output is unchanged byte for byte. Priced in R123, not changed.
-- The native Windows harness passes `--lang hindi` to example 220 and skips 29 (a raw Linux exit syscall).
-  Gate `R123 PE memory` (9 checks; PE under Wine).

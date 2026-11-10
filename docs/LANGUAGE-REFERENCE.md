@@ -1,6 +1,6 @@
-> **Status at compiler v318, 10 November 2026 (R173) — read this before the page below.**
+> **Status at compiler v319, 10 November 2026 (R176) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v318) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **84 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v318 (R172, R173: a `kosh` or a `mala` declared in a `chakra`'s own body is made once; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v319) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **85 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v319 (R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -1327,10 +1327,12 @@ loop's. When the declaration is a statement of the loop's body itself, and in th
 as `k[i]` and as the `kosh` a `kosh_*` built-in works on (not `kosh_ksham`), the `kosh` is made on the first pass
 and every later pass starts with the same one, emptied: same descriptor, same elements, same region if it grew to
 4,097 numbers. Each pass still sees an empty `kosh`. Measured (Linux x86-64): 800,000 passes of
-`kosh temp[1]`, one number added - **16-20 KB resident on v317, 37,516 KB on v316**. Anything else is made every
-pass and kept, as before: a second name (`vitti a = k`), a `kosh` given to a `prakriya` or sliced, a declaration
-under a `yadi` or in a `mandapa` inside the loop, a `yavat` loop. A `kosh` in an inner `chakra` is made once each
-time the inner loop starts. **A `mala` the same way:** declared in the loop's own body, without an initializer, its name used in the
+`kosh temp[1]`, one number added - **16-20 KB resident on v317, 37,516 KB on v316**. **From v319 (R175) the declaration may be anywhere in the loop** - under a `yadi` or an `anya`, in a `mandapa`
+inside the loop, at any depth - **and the loop may be a `yavat`.** A name declared in a `yadi` and again in its
+`anya` has a `kosh` of its own in each. A declaration that never runs makes nothing. 800,000 passes: under a
+`yadi` 16 KB (v318: 37,516 KB); in a `mandapa` inside the loop 16-20 KB (v318: 50,012 KB). Anything else is made
+every pass and kept, as before: a second name (`vitti a = k`), a `kosh` given to a `prakriya` or sliced. A `kosh`
+in a loop inside the loop is made once each time that inner loop starts. **A `mala` the same way:** declared in the loop's own body, without an initializer, its name used in the
 loop only as `m[i]`, the same length every pass - it is made on the first pass, and every later pass starts with
 the same one, **its numbers set to 0** as a new `mala`'s are. Measured: 800,000 passes of `mala m[8]` - **20 KB
 resident on v318, 62,516 KB on v317**. A `mala` given to a `prakriya`, given a second name, or put into a `kosh` is

@@ -73,11 +73,11 @@ CASES = [
     ('slice', 'a slice of it given to a prakriya', False,
      loop(K + P + '        s = s + pratham(k[0:1]) + kosh_gan(k)\n', funcs='prakriya pratham(vibhag v) {\n    nivartanam v[0]\n}\n'), 230),
     ('ksham', 'kosh_ksham: the capacity would show the reuse', False, loop(K + P + '        s = s + k[0] + kosh_ksham(k)\n'), 230),
-    ('under-yadi', 'declared under a yadi in the body, not in the body itself', False,
+    ('under-yadi', 'declared under a yadi in the body (made once from v319, R175)', True,
      loop('        yadi (j > 0) {\n            kosh k[1]\n            kosh_kship(k, j)\n            s = s + k[0] + kosh_gan(k)\n        }\n'), 230),
-    ('yavat', 'a yavat loop, not a chakra', False,
+    ('yavat', 'a yavat loop (made once from v319, R175)', True,
      'mukhya() {\n    vitti s = 0\n    vitti j = 1\n    yavat (j <= NPASS) {\n' + K + P + U + '        j = j + 1\n    }\n    likha(s, " ", parimana(), "\\n")\n}\n', 230),
-    ('mandapa-in-chakra', 'declared in a mandapa inside the chakra', False,
+    ('mandapa-in-chakra', 'declared in a mandapa inside the chakra (made once from v319, R175)', True,
      loop('        mandapa {\n            kosh k[1]\n            kosh_kship(k, j)\n            s = s + k[0] + kosh_gan(k)\n        }\n'), 230),
 ]
 

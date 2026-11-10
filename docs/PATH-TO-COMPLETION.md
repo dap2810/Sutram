@@ -1,6 +1,6 @@
-> **Status at compiler v318, 10 November 2026 (R173) — read this before the page below.**
+> **Status at compiler v319, 10 November 2026 (R176) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v318) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **84 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v318 (R172, R173: a `kosh` or a `mala` declared in a `chakra`'s own body is made once; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v319) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **85 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v319 (R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
