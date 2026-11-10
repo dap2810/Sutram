@@ -4,14 +4,18 @@
 
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
-staged r182-unknown-character (SHA in the follow-up commit)  Sutram 1.0 (v321) - sampurna sutra   (on the v320 tip fe90a9b1; NOT merged)
-     crash corpus, suite, gates: ITS FULL GATES WERE STILL RUNNING at this first push - NOT YET A RESULT (next commit)
+staged r182-unknown-character c0fdebe8  Sutram 1.0 (v321) - sampurna sutra   (on the v320 tip fe90a9b1; NOT merged)
+     crash corpus: 227 cases + manifest, 0 failed - AFTER a change to its runner: eight mutated inputs hold a NUL or
+       another unknown character and are now refused at it, in the positioned form file:line:col: Sutram truti [E_..]:,
+       which tools/crash_corpus.py did not count as a diagnostic (the first gate run read 8 failed; the runner now accepts it)
+     suite: NO-EXPECTATION=4 PASS=327
+     gates: 87 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; NOT-RUN = Windows execution; evidence-r182/gates-v321.txt)
      guard, the ordinary way, 783 programs, ELF and PE:
        against v320 (fe90a9b1): 587 byte-identical, 196 refused identically, 0 DIFFER
             - and the 196 refusals carry the same message and exit code from v320 and v321 (evidence-r182/refusals.txt)
        against v315 (main):     549 byte-identical, 196 refused identically, 38 DIFFER - v320's 38, the block programs;
                                 this round adds none
-     installer rebuilt (payload v321): 7e0df1da538bf7edc237ab1455a25a3f22336699c14608610427df80314c1a8f
+     installer rebuilt (payload v321): 006ef2cbf0e1c51108914ca8e5ad91dc899a9e3325ae3a7b76d8431df38b45b5
 staged v320 fe90a9b1 · v319 4c1159be · 12ef6329 · v318 · v317 · v316-ready - unchanged
 ```
 
