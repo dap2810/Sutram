@@ -1,0 +1,17 @@
+FAIL  kosh-yadi: a kosh under a yadi - made once: 40 passes hold 1920, 20 hold 960; sum 900
+FAIL  kosh-yadi-sometimes: a kosh under a yadi that runs every third pass - made once: 40 passes hold 624, 20 hold 288; sum 299
+FAIL  kosh-anya: a kosh under an anya - made once: 40 passes hold 960, 20 hold 480; sum 440
+FAIL  kosh-both-branches: the same name declared in a yadi and in its anya (two capacities): one each - made once: 40 passes hold 6080, 20 hold 3040; sum 880
+FAIL  kosh-deep: a kosh under a yadi under a yadi - made once: 40 passes hold 1872, 20 hold 912; sum 897
+FAIL  kosh-mandapa: a kosh in a mandapa inside the loop - made once: 40 passes hold 3200, 20 hold 1600; sum 900
+FAIL  kosh-mandapa-yadi: a kosh under a yadi in a mandapa inside the loop, the block also taking scratch - made once: 40 passes hold 3200, 20 hold 1600; sum 900
+FAIL  mala-yadi: a mala under a yadi - made once: 40 passes hold 1920, 20 hold 960; sum 860
+FAIL  mala-mandapa: a mala in a mandapa inside the loop - made once: 40 passes hold 1920, 20 hold 960; sum 860
+FAIL  yavat-kosh: a kosh in a yavat loop - made once: 40 passes hold 1920, 20 hold 960; sum 900
+FAIL  yavat-mala-yadi: a mala under a yadi in a yavat loop - made once: 40 passes hold 1920, 20 hold 960; sum 860
+ok    yadi-alias: under a yadi, but given a second name - made every pass, as before: 40 passes hold 1920, 20 hold 960; sum 820
+ok    mandapa-to-prakriya: in a mandapa, but given to a prakriya - made every pass, as before: 40 passes hold 2560, 20 hold 1280; sum 820
+ok    never: a kosh and a mala under a yadi that never runs are never made - the program holds 0
+FAIL  inner loop: a kosh in a yavat inside a chakra is made once for each time the yavat starts - 20 x 20 passes hold 19200, 20 x 1 hold 960, 1 x 1 holds 48
+FAIL  stamp: a kosh made once inside a mandapa carries this pass's block generation - sum, changed, live, same slot, held: [9, 0, 1, 1, 256]
+r175 nested made once: 16 checks, 13 failed

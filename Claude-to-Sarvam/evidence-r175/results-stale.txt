@@ -1,0 +1,6 @@
+[v318]
+big: a block wrote 77 into every word of nirmmita(600000000); a new nirmmita(600000000) after it
+     reads 77 in 15782272 of 75000000 words; the first at word 59217728
+[v319]
+big: a block wrote 77 into every word of nirmmita(600000000); a new nirmmita(600000000) after it
+     reads 77 in 0 of 75000000 words; the first at word -1

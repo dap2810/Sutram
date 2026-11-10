@@ -1,0 +1,6 @@
+./t_small.v318: best 5.6 ms, median 8.4 ms (7 runs), prints 500000500000
+./t_small.v319: best 13.2 ms, median 13.8 ms (7 runs), prints 500000500000
+./t_big.v318: best 921.4 ms, median 1026.8 ms (7 runs), prints 55
+./t_big.v319: best 1193.5 ms, median 1273.4 ms (7 runs), prints 55
+./t_sparse.v318: best 388.5 ms, median 402.2 ms (7 runs), prints 55
+./t_sparse.v319: best 587.1 ms, median 641.9 ms (7 runs), prints 55

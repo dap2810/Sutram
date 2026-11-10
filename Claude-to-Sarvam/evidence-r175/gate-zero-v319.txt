@@ -1,0 +1,9 @@
+ok    end: the block left by the block's last line - an ordinary nirmmita over the same bytes reads 0 words that are not 0 (of 15,782,272)
+ok    krama: the block left by krama - an ordinary nirmmita over the same bytes reads 0 words that are not 0 (of 15,782,272)
+ok    agrim: the block left by agrim - an ordinary nirmmita over the same bytes reads 0 words that are not 0 (of 15,782,272)
+ok    nivartanam: the block left by nivartanam with a value - an ordinary nirmmita over the same bytes reads 0 words that are not 0 (of 15,782,272)
+ok    nivartanam-bare: the block left by nivartanam without a value - an ordinary nirmmita over the same bytes reads 0 words that are not 0 (of 15,782,272)
+ok    prasar: the block left by a failure passed on by prasar - an ordinary nirmmita over the same bytes reads 0 words that are not 0 (of 15,782,272)
+ok    nested: the block left by an inner block left through the outer block's nivartanam - an ordinary nirmmita over the same bytes reads 0 words that are not 0 (of 15,782,272)
+ok    small: 100,000 blocks, each reading its nirmmita(64) before writing it - words that were not 0: 0
+r175 block exit zero: 8 checks, 0 failed

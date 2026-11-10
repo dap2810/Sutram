@@ -1,0 +1,24 @@
+== yadi, v318
+run 1 exit 0: 0: RSS 12 KB +4.47 ms | 400000: RSS 18,764 KB +8.99 ms | 800000: RSS 37,512 KB +9.92 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 20 KB +0.01 ms | 400000: RSS 18,772 KB +8.68 ms | 800000: RSS 37,520 KB +8.97 ms | (output 320000400000)
+== yadi, v319
+run 1 exit 0: 0: RSS 12 KB +0.02 ms | 400000: RSS 16 KB +1.55 ms | 800000: RSS 16 KB +1.73 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 12 KB +0.06 ms | 400000: RSS 16 KB +2.68 ms | 800000: RSS 16 KB +2.95 ms | (output 320000400000)
+== mandapa, v318
+run 1 exit 0: 0: RSS 12 KB +0.02 ms | 400000: RSS 25,012 KB +18.2 ms | 800000: RSS 50,012 KB +20.34 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 16 KB +0.01 ms | 400000: RSS 25,016 KB +19.16 ms | 800000: RSS 50,016 KB +18.8 ms | (output 320000400000)
+== mandapa, v319
+run 1 exit 0: 0: RSS 16 KB +0.02 ms | 400000: RSS 20 KB +8.17 ms | 800000: RSS 20 KB +8.33 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 12 KB +0.0 ms | 400000: RSS 16 KB +9.47 ms | 800000: RSS 16 KB +9.49 ms | (output 320000400000)
+== yavat, v318
+run 1 exit 0: 0: RSS 12 KB +0.02 ms | 400000: RSS 18,764 KB +9.8 ms | 800000: RSS 37,512 KB +9.26 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 20 KB +0.01 ms | 400000: RSS 18,772 KB +9.93 ms | 800000: RSS 37,520 KB +9.43 ms | (output 320000400000)
+== yavat, v319
+run 1 exit 0: 0: RSS 16 KB +0.02 ms | 400000: RSS 20 KB +1.4 ms | 800000: RSS 20 KB +1.35 ms | 320000400000: RSS 20 KB +0.01 ms
+run 2 exit 0: 0: RSS 16 KB +0.01 ms | 400000: RSS 20 KB +1.48 ms | 800000: RSS 20 KB +1.4 ms | (output 320000400000)
+== mala_mandapa, v318
+run 1 exit 0: 0: RSS 12 KB +0.1 ms | 400000: RSS 31,264 KB +14.39 ms | 800000: RSS 62,512 KB +13.88 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 16 KB +0.0 ms | 400000: RSS 31,268 KB +13.53 ms | 800000: RSS 62,516 KB +13.57 ms | (output 320000400000)
+== mala_mandapa, v319
+run 1 exit 0: 0: RSS 12 KB +0.01 ms | 400000: RSS 16 KB +5.95 ms | 800000: RSS 16 KB +5.79 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 12 KB +0.01 ms | 400000: RSS 16 KB +5.73 ms | 800000: RSS 16 KB +5.98 ms | (output 320000400000)
