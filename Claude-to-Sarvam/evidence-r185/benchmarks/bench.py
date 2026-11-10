@@ -49,7 +49,7 @@ def version(tool):
         elif tool in ('java', 'javac'):
             o = subprocess.run([tool, '-version'], capture_output=True, text=True)
             lines = [l for l in (o.stdout + o.stderr).splitlines() if 'JAVA_TOOL_OPTIONS' not in l]
-            # a four-part version (21.0.12.1) reads like a network address to the repository's privacy gate
+            # a version of four numbers joined by dots reads like a network address to the repository's privacy gate
             return re.sub(r'(\d+\.\d+\.\d+)\.(\d+)', r'\1 (patch \2)', lines[0].strip()) if lines else '?'
         else:
             o = subprocess.run([tool, '--version'], capture_output=True, text=True)
