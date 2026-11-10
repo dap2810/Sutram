@@ -1,0 +1,2 @@
+783 programs in the guard; 40 contain a chakra loop (32 of them compile; the rest are refused); 743 contain none
+0 of them declare a kosh on a line inside a chakra (textual screen):

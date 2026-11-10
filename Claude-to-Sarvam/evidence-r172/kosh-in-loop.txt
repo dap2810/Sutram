@@ -1,0 +1,1 @@
+783 programs; 0 declare a kosh on a line inside a loop:

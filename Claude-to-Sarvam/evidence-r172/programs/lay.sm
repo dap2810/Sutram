@@ -1,0 +1,24 @@
+prakriya dikha(a) {
+    likha(" len=", a[8], " cap=", a[9])
+    likha(" el-a=", a[10] - a, " reg=", a[11])
+    likha(" w12=", a[12], " w13=", a[13], "\n")
+    nivartanam 0
+}
+mukhya() {
+    vitti a = nirmmita(64)
+    vitti b = 0
+    vitti z = 0
+    chakra j = 1 tak 3 {
+        kosh k[1]
+        yadi (j == 1) {
+            b = nirmmita(64)
+        }
+        likha(j, " b-a=", b - a)
+        z = dikha(a)
+        kosh_kship(k, 7)
+        kosh_kship(k, 8)
+        kosh_kship(k, 9)
+        likha("   after 3:")
+        z = dikha(a)
+    }
+}

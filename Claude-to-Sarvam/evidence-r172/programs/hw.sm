@@ -1,0 +1,19 @@
+mukhya() {
+    vitti lo = 0
+    mandapa {
+        vitti p = nirmmita(900000000)
+        lo = 0
+        chakra i = 0 tak 999 {
+            p[i * 100000] = 77
+        }
+        likha("in the block wrote 77 at 1000 places; p[0] = ", p[0], "\n")
+    }
+    vitti q = nirmmita(400000000)
+    vitti bad = 0
+    chakra i = 0 tak 49999999 {
+        yadi (q[i] != 0) {
+            bad = bad + 1
+        }
+    }
+    likha("a nirmmita(400000000) after the block: words that are not 0: ", bad, "\n")
+}

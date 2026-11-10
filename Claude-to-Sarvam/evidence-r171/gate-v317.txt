@@ -1,0 +1,30 @@
+ok    plain: declared in the block, pushed to, indexed - 20 region(s) given back
+ok    no-block: no mandapa: no place where it is known dead - 0 region(s) given back
+ok    outer: declared outside the block (condition 1) - 0 region(s) given back
+ok    alias: a second name: vitti a = k - 0 region(s) given back
+ok    to-prakriya: given to a prakriya (even one that only reads it) - 0 region(s) given back
+ok    under-yadi: declared under a yadi inside the block, not in its own body - 0 region(s) given back
+ok    never-pushed: nothing is added to it: it cannot have a region, no code for it - 0 region(s) given back
+ok    small: proven local but small: the check runs, there is no region to give back - 0 region(s) given back
+ok    krama: krama out of the block - 1 region(s) given back
+ok    agrim: agrim out of the block - 20 region(s) given back
+ok    nivartanam: nivartanam of a value read from it - 20 region(s) given back
+ok    early-nivartanam: a nivartanam before the declaration (nothing to release) and one after - 10 region(s) given back
+ok    two: two kosh in one block - 40 region(s) given back
+ok    nested: a block in a block, one kosh each - 40 region(s) given back
+ok    krama-two-deep: krama leaving two blocks at once - 2 region(s) given back
+ok    long-block: a block of fifteen statements - 20 region(s) given back
+ok    every-builtin: every kosh_* built-in on it - 20 region(s) given back
+ok    dasham: a kosh of dasham - 20 region(s) given back
+ok    parimita: mandapa parimita - 20 region(s) given back
+ok    grown-twice: 9,000 elements: the growth path frees the first region, the block the second - 20 region(s) given back
+ok    inner-krama: krama out of a loop inside the block (the block is not left) - 20 region(s) given back
+ok    same-name-twice: the same name in two blocks, one after the other - 40 region(s) given back
+ok    recursion: a prakriya that calls itself from inside the block: five live at once - 5 region(s) given back
+ok    prasar: ten returns give it back; ten failures passed on by prasar do not (kept, as v316) - 10 region(s) given back
+ok    returned: nivartanam k (condition 3) is still refused when compiled (E_KOSH_MANDAPA)
+ok    pushed: kosh_kship(o, k) (condition 4) is still refused when compiled (E_KOSH_MANDAPA)
+ok    stored: o[1] = k (condition 4) is still refused when compiled (E_KOSH_MANDAPA)
+ok    limit-local: 1,000 passes finish with the address space limited to 8 GiB ('4097000', exit 0)
+ok    limit-alias: with a second name it is not reclaimed - the same loop stops under 8 GiB, as in v316 (exit 1)
+r171 kosh release: 29 checks, 0 failed

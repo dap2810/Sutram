@@ -1,0 +1,9 @@
+== hw.sm compiled by v316 (the defect is not in the R172 change)
+in the block wrote 77 at 1000 places; p[0] = 77
+a nirmmita(400000000) after the block: words that are not 0: 283
+== hw.sm compiled by v317
+in the block wrote 77 at 1000 places; p[0] = 77
+a nirmmita(400000000) after the block: words that are not 0: 283
+== hw.sm compiled by v315 (main)
+in the block wrote 77 at 1000 places; p[0] = 77
+a nirmmita(400000000) after the block: words that are not 0: 283

@@ -1,0 +1,25 @@
+ok    plain: declared in the body, pushed to, read - made once: 20 passes hold 48, 1 pass holds 48; sum 230
+ok    dasham: a kosh of dasham - made once: 20 passes hold 48, 1 pass holds 48; sum 20
+ok    grown: grown to 100 every pass - made once: 20 passes hold 1056, 1 pass holds 1056; sum 4000
+ok    region: grown to 4,097 every pass (a region: one, kept, not one a pass) - made once: 20 passes hold 98336, 1 pass holds 98336; sum 163880
+ok    capacity: a declared capacity that changes every pass - made once: 20 passes hold 48, 1 pass holds 48; sum 230
+ok    agrim: agrim after the declaration - made once: 20 passes hold 48, 1 pass holds 48; sum 230
+ok    builtins: kosh_hri, kosh_iksh, kosh_apanay, kosh_rikt, kosh_shodh, kosh_yuj, k[i] = v - made once: 20 passes hold 64, 1 pass holds 64; sum 490
+ok    two: two kosh in one body - made once: 20 passes hold 96, 1 pass holds 96; sum 290
+ok    in-prakriya: the chakra is in a prakriya - made once: 20 passes hold 48, 1 pass holds 48; sum 230
+ok    nivartanam: nivartanam out of the loop with the kosh alive (nothing to undo) - made once: 20 passes hold 48, 1 pass holds 48; sum 21
+ok    in-mandapa: the chakra is inside a mandapa - made once: 20 passes hold 64, 1 pass holds 64; sum 230
+ok    alias: a second name: vitti a = k - made every pass, as before: 20 passes hold 960, 1 pass holds 48; sum 230
+ok    to-prakriya: given to a prakriya (even one that only reads it) - made every pass, as before: 20 passes hold 960, 1 pass holds 48; sum 230
+ok    slice: a slice of it given to a prakriya - made every pass, as before: 20 passes hold 960, 1 pass holds 48; sum 230
+ok    ksham: kosh_ksham: the capacity would show the reuse - made every pass, as before: 20 passes hold 960, 1 pass holds 48; sum 230
+ok    under-yadi: declared under a yadi in the body, not in the body itself - made every pass, as before: 20 passes hold 960, 1 pass holds 48; sum 230
+ok    yavat: a yavat loop, not a chakra - made every pass, as before: 20 passes hold 960, 1 pass holds 48; sum 230
+ok    mandapa-in-chakra: declared in a mandapa inside the chakra - made every pass, as before: 20 passes hold 1280, 1 pass holds 64; sum 230
+ok    nested: a kosh in an inner chakra is made once for each entry to the inner loop - 20 x 20 passes hold 960, 20 x 1 hold 960, 1 x 1 holds 48
+ok    redzones (no kosh in a mandapa in the program: a 32-byte descriptor): 3 phases, every redzone word intact, d-16 d-8 d d+8 exact (phase 1 bad 0; phase 2 bad 0; phase 4 bad 0)
+ok    redzones (no kosh in a mandapa in the program: a 32-byte descriptor): after pass 1 the elements never move - every pass uses the same buffer
+ok    redzones (a chakra inside a mandapa: the 56-byte descriptor (R82)): 4 phases, every redzone word intact, d-16 d-8 d d+8 exact (phase 1 bad 0; phase 2 bad 0; phase 3 bad 0; phase 4 bad 0)
+ok    redzones (a chakra inside a mandapa: the 56-byte descriptor (R82)): after pass 1 the elements never move - every pass uses the same buffer
+ok    out of memory: with 1.2 GiB of address space the growth to 20,000,000 is refused with the kosh message, exit 1, after phases 1 and 2 reported intact (exit 1)
+r172 chakra kosh: 24 checks, 0 failed
