@@ -1,0 +1,2 @@
+a mala of 70,000,000 numbers declared after the block, never written: numbers that are not 0: 10782273
+a mala m[8] declared after 480 MB of ordinary memory and the block: m[0] 77 m[7] 77

@@ -1,0 +1,16 @@
+mukhya() {
+    mandapa {
+        vitti p = nirmmita(600000000)
+        chakra i = 0 tak 15782271 {
+            p[i] = 77
+        }
+    }
+    mala m[70000000]
+    vitti n = 0
+    chakra i = 0 tak 69999999 {
+        yadi (m[i] != 0) {
+            n = n + 1
+        }
+    }
+    likha("a mala of 70,000,000 numbers declared after the block, never written: numbers that are not 0: ", n, "\n")
+}

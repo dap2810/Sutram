@@ -1,0 +1,10 @@
+PASS  1,000,000 nirmmita(64) in a block: under 1 MB
+PASS  the same without the block: over 32 MB
+PASS  10,000,000 in a block: still under 1 MB (flat)
+PASS  a kosh of 100,000 grown past an allocation costs what one grown alone does (within 1.25x; R101A)
+PASS  a kosh made in a block in a loop 100,000 times, used only as k[i] and with kosh_*: made once, under 1 MB (R175)
+PASS  the same kosh given to a prakriya is NOT reclaimed (the documented gap that remains): over 8 MB
+PASS  a kosh past its region keeps every value (9,000,000 pushes; R101A)
+PASS  a 1 MB budget refuses 1,000,000 x 64 bytes (E_PARIMITA, exit 1) with a peak under 2 MB (R103)
+PASS  the same budget, one block per pass, runs to the end under 1 MB (R103)
+r101 memory: 9 checks, 0 failed

@@ -4,8 +4,13 @@
 
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
-staged r175-nested-and-zero (SHA in the follow-up commit)  Sutram 1.0 (v319) - sampurna sutra   (on r173-chakra-mala c1f516f8; NOT merged)
-     crash corpus, suite, gates: THE FULL GATES WERE STILL RUNNING at this first push - NOT YET A RESULT (next commit)
+CORRECTED IN R176: the one branch named here, r175-nested-and-zero, WAS NEVER PUSHED. Its first full gate run read
+     84 PASS / 2 FAIL (R101 memory's pin of the gap this round closes, not yet updated; and doc counts, which repeats
+     it). Before it was re-run, ROUND-176 asked for the two changes to be split. They are now two branches:
+       r176-made-once-anywhere 4c1159be  v319  the nested hoist alone  - gates 85 PASS / 0 FAIL / 1 NOT-RUN, 0 DIFFER
+       r176-block-exit-zero              v320  + the zeroing          - see R176-00 for its gate line
+     AND the cost figure below ("13.2 ms against 5.6") was one noisy batch: measured in turn over 25 rounds it is
+     8.9 ms against 5.5 (R176-00). The other two cost lines were not re-measured.
      the guard, the ordinary way, 783 programs, ELF and PE - in two steps, because the two changes differ:
        step 1, made once anywhere in a loop, against v318:   587 byte-identical, 196 refused identically, 0 DIFFER
        step 2, + zeroing at a block's exits, against step 1 and against v315 (main), four runs, the same line:

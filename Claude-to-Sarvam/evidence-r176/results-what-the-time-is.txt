@@ -1,0 +1,7 @@
+25 rounds, the programs run in turn; 1,000,000 passes each
+./t_small.v318: best 5.5 ms, 5th of 25 5.8 ms, median 6.2 ms
+./t_small.zero: best 8.9 ms, 5th of 25 9.5 ms, median 9.9 ms
+./t_small.exit_fixed_only: best 5.5 ms, 5th of 25 5.6 ms, median 5.9 ms
+./t_small.exit_zero_no_alloc_zero: best 6.3 ms, 5th of 25 6.8 ms, median 7.0 ms
+./t_small.neither: best 4.1 ms, 5th of 25 4.4 ms, median 4.6 ms
+./noblock.v319: best 27.7 ms, 5th of 25 28.5 ms, median 30.3 ms

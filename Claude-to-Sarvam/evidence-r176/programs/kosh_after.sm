@@ -1,0 +1,12 @@
+mukhya() {
+    mandapa {
+        vitti p = nirmmita(600000000)
+        chakra i = 0 tak 15782271 {
+            p[i] = 77
+        }
+    }
+    vitti q = nirmmita(480000000)
+    q[0] = 1
+    mala m[8]
+    likha("a mala m[8] declared after 480 MB of ordinary memory and the block: m[0] ", m[0], " m[7] ", m[7], "\n")
+}

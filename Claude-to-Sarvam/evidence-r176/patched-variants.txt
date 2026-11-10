@@ -1,0 +1,9 @@
+The variants in results-what-the-time-is.txt are ONE compiled program (t_small.sm, compiled with the zeroing) with
+bytes changed by hand - not compiler builds:
+  t_small.v318                      compiled by v318 (no zeroing at the exit)
+  t_small.zero                      compiled with the zeroing at the exit (R175's code; v320)
+  t_small.exit_fixed_only           the same, "jbe .none" made "jmp .none": the exit's instructions run, its loop does not
+  t_small.exit_zero_no_alloc_zero   the same as t_small.zero, with the zeroing loop inside the block's nirmmita removed
+                                    (its store made a no-op, its backward jump removed)
+  t_small.neither                   both removed
+  noblock.v319                      the same loop with no mandapa at all (each nirmmita(64) stays)
