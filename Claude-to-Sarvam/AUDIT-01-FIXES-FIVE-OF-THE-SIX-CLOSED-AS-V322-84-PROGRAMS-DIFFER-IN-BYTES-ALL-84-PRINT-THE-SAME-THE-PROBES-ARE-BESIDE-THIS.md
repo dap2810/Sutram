@@ -4,13 +4,13 @@
 
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
-staged audit-01-fixes (SHA in the follow-up commit)  Sutram 1.0 (v322) - sampurna sutra   (on v321 r182-unknown-character bcd0c9b1; NOT merged)
+staged audit-01-fixes (SHA in the follow-up commit)  Sutram 1.0 (v322) - sampurna sutra   (on v321 r182-unknown-character c0fdebe8; NOT merged)
      crash corpus, suite, gates: ITS FULL GATES WERE STILL RUNNING at this first push - NOT YET A RESULT (next commit)
      guard, the ordinary way, 783 programs, ELF and PE, against v321:
             503 byte-identical, 196 refused identically, 84 DIFFER, 0 newly refused
             all 84 run on v321 and on v322: 84 print and exit exactly the same (evidence-audit-01-fixes/differ-outputs.txt)
      installer rebuilt (payload v322): e6eb61f3536158c951bc1d99c7c7140b7498fcf335843aaf5790d6214b08ef25
-staged v321 bcd0c9b1 · v320 fe90a9b1 · v319 4c1159be · 12ef6329 · v318 · v317 · v316-ready - unchanged
+staged v321 c0fdebe8 · v320 fe90a9b1 · v319 4c1159be · 12ef6329 · v318 · v317 · v316-ready - unchanged
 ```
 
 **This is not a round of yours.** The owner asked for the audit in chat on 10 November, chose "correctness" and
