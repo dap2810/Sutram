@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v320) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v321) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -7443,9 +7443,28 @@ lex:
     je .check_le
     cmp r8, '>'
     je .check_ge
-    ; Unknown char — skip
-    inc r13
+    ; R182: a character the language does not know is refused where it stands (up to v320 it was
+    ; skipped, and `5 <en dash> 2` compiled and printed 5). One exception: a byte-order mark at the
+    ; start of the text or of a line - an editor's mark, not something the writer typed.
+    cmp byte [r13], 0xEF
+    jne .r182_refuse
+    lea rax, [r13+2]
+    cmp rax, r14
+    jae .r182_refuse
+    cmp byte [r13+1], 0xBB
+    jne .r182_refuse
+    cmp byte [r13+2], 0xBF
+    jne .r182_refuse
+    lea rax, [rel source_buf]
+    cmp r13, rax
+    je .r182_bom
+    cmp byte [r13-1], 10
+    jne .r182_refuse
+.r182_bom:
+    add r13, 3
     jmp .lex_loop
+.r182_refuse:
+    jmp r182_unknown_char
 
 .check_amp:
     movzx rax, byte [r13+1]
@@ -12214,6 +12233,207 @@ r80_src_valid:
 .no:
     pop rax
     xor eax, eax                   ; ZF = 1 (rax restored below is not needed by callers)
+    ret
+
+; ---------------------------------------------------------------- R182: the unknown character
+; r182_unknown_char(r13 = the character in source_buf, r14 = the end of the text). Does not return.
+;   file:line:col: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '<the character>' (U+XXXX)
+;   the source line, a caret, and a Sanket line when the likely intention is known.
+; The character is decoded as UTF-8; a byte that is not UTF-8 is named as a byte.
+section .data
+    r182_hdr     db ": Sutram truti [E_AGYAT_AKSHAR]: ", 0
+    r182_t_char  db "agyat akshar '", 0
+    r182_t_inv   db "agyat akshar (U+", 0          ; one that cannot be shown: a control or an invisible character
+    r182_t_byte  db "agyat baait (0x", 0
+    r182_t_bend  db ") - UTF-8 na asti", 10, 0
+    r182_h_quote db "Sanket: saral uddharana-chihnam ", 0x22, " (U+0022) likhyatam", 10, 0
+    r182_h_apos  db "Sanket: Sutram-bhashayam vakyam ", 0x22, " ", 0x22, " madhye likhyate - ", 0x22, " (U+0022) likhyatam", 10, 0
+    r182_h_dash  db "Sanket: vyavakalana-chihnam - (U+002D) likhyatam", 10, 0
+    r182_h_space db "Sanket: sadharanah avakashah (U+0020) likhyatam", 10, 0
+    r182_h_zw    db "Sanket: adrishyam aksharam etat - apaniyatam", 10, 0
+    r182_h_mul   db "Sanket: gunana-chihnam * (U+002A) likhyatam", 10, 0
+    r182_h_div   db "Sanket: bhaga-chihnam / (U+002F) likhyatam", 10, 0
+    r182_h_le    db "Sanket: <= likhyatam", 10, 0
+    r182_h_ge    db "Sanket: >= likhyatam", 10, 0
+    r182_h_ne    db "Sanket: != likhyatam", 10, 0
+    ; code point -> hint (0 ends the table)
+    align 8
+    r182_hints:
+        dq 0x201C, r182_h_quote, 0x201D, r182_h_quote, 0x201E, r182_h_quote, 0x201F, r182_h_quote
+        dq 0x00AB, r182_h_quote, 0x00BB, r182_h_quote
+        dq 0x2018, r182_h_apos, 0x2019, r182_h_apos, 0x0027, r182_h_apos, 0x0060, r182_h_apos
+        dq 0x2013, r182_h_dash, 0x2014, r182_h_dash, 0x2212, r182_h_dash, 0x2010, r182_h_dash, 0x2011, r182_h_dash
+        dq 0x00A0, r182_h_space, 0x202F, r182_h_space, 0x2007, r182_h_space, 0x3000, r182_h_space
+        dq 0x2002, r182_h_space, 0x2003, r182_h_space, 0x2009, r182_h_space
+        dq 0x200B, r182_h_zw, 0x200C, r182_h_zw, 0x200D, r182_h_zw, 0xFEFF, r182_h_zw, 0x2060, r182_h_zw
+        dq 0x00D7, r182_h_mul, 0x00F7, r182_h_div, 0x2264, r182_h_le, 0x2265, r182_h_ge, 0x2260, r182_h_ne
+        dq 0, 0
+section .bss
+    r182_buf resb 96
+section .text
+r182_unknown_char:
+    movzx eax, byte [r13]
+    mov ecx, 1                     ; rcx = the character's length in bytes, rbx = its code point
+    mov ebx, eax
+    cmp eax, 0x80
+    jb .have
+    cmp eax, 0xC2
+    jb .byte
+    cmp eax, 0xE0
+    jb .two
+    cmp eax, 0xF0
+    jb .three
+    cmp eax, 0xF5
+    jb .four
+    jmp .byte
+.two:
+    and ebx, 0x1F
+    mov ecx, 2
+    jmp .cont
+.three:
+    and ebx, 0x0F
+    mov ecx, 3
+    jmp .cont
+.four:
+    and ebx, 0x07
+    mov ecx, 4
+.cont:
+    lea rax, [r13 + rcx]
+    cmp rax, r14
+    ja .byte
+    mov edx, 1
+.cl:
+    movzx eax, byte [r13 + rdx]
+    mov esi, eax
+    and esi, 0xC0
+    cmp esi, 0x80
+    jne .byte
+    and eax, 0x3F
+    shl ebx, 6
+    or ebx, eax
+    inc edx
+    cmp edx, ecx
+    jb .cl
+.have:
+    lea rdi, [rel r182_buf]
+    ; shown, or only named? controls, DEL and the invisible ones are only named
+    cmp ebx, 0x20
+    jb .named
+    cmp ebx, 0x7F
+    je .named
+    cmp ebx, 0x80
+    jb .shown
+    cmp ebx, 0xA0
+    jbe .named                     ; C1 controls and the no-break space
+    cmp ebx, 0x2000
+    jb .shown
+    cmp ebx, 0x200F
+    jbe .named                     ; the spaces and zero-width characters
+    cmp ebx, 0x2028
+    jb .shown
+    cmp ebx, 0x202F
+    jbe .named
+    cmp ebx, 0x2060
+    je .named
+    cmp ebx, 0x3000
+    je .named
+    cmp ebx, 0xFEFF
+    je .named
+.shown:
+    lea rsi, [rel r182_t_char]
+    call .copy
+    xor edx, edx
+.raw:
+    mov al, [r13 + rdx]
+    mov [rdi], al
+    inc rdi
+    inc edx
+    cmp edx, ecx
+    jb .raw
+    mov byte [rdi], 0x27           ; '
+    mov word [rdi+1], " ("
+    mov word [rdi+3], "U+"
+    add rdi, 5
+    jmp .hex
+.named:
+    lea rsi, [rel r182_t_inv]
+    call .copy
+.hex:
+    mov ecx, 12                    ; four digits, five or six when the code point needs them
+    cmp ebx, 0x10000
+    jb .hx
+    mov ecx, 16
+    cmp ebx, 0x100000
+    jb .hx
+    mov ecx, 20
+.hx:
+    mov eax, ebx
+    shr eax, cl
+    and eax, 15
+    cmp eax, 10
+    jb .dg
+    add eax, 7
+.dg:
+    add eax, '0'
+    mov [rdi], al
+    inc rdi
+    sub ecx, 4
+    jns .hx
+    mov byte [rdi], ')'
+    mov byte [rdi+1], 10
+    mov byte [rdi+2], 0
+    ; the hint
+    lea rsi, [rel r182_hints]
+    xor ecx, ecx
+.ht:
+    mov rax, [rsi]
+    test rax, rax
+    jz .go
+    cmp rax, rbx
+    je .hit
+    add rsi, 16
+    jmp .ht
+.hit:
+    mov rcx, [rsi+8]
+.go:
+    mov rdi, r13
+    lea rsi, [rel r182_hdr]
+    lea rdx, [rel r182_buf]
+    jmp r80_compile_error
+.byte:                             ; not UTF-8: name the byte
+    lea rdi, [rel r182_buf]
+    lea rsi, [rel r182_t_byte]
+    call .copy
+    movzx ebx, byte [r13]
+    mov eax, ebx
+    shr eax, 4
+    call .nib
+    mov eax, ebx
+    and eax, 15
+    call .nib
+    lea rsi, [rel r182_t_bend]
+    call .copy
+    mov byte [rdi], 0
+    xor ecx, ecx
+    jmp .go
+.nib:
+    cmp eax, 10
+    jb .n2
+    add eax, 7
+.n2:
+    add eax, '0'
+    mov [rdi], al
+    inc rdi
+    ret
+.copy:                             ; rsi = a 0-ended text -> appended at rdi (rdi advanced); rax used
+    mov al, [rsi]
+    test al, al
+    jz .cd
+    mov [rdi], al
+    inc rdi
+    inc rsi
+    jmp .copy
+.cd:
     ret
 
 ; r80_compile_error(rdi = position in source_buf, rsi = ": Sutram truti [..]: ", rdx = text,

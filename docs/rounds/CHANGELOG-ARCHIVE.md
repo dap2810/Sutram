@@ -1,5 +1,21 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v301 (Claude, R126) - a name keeps one kind; the three defects R125 found are refused
+
+- **A name keeps the kind its first binding gave it, for the whole `prakriya`:** `kosh`, `kosh dasham`, `mala`,
+  `vibhag`, or a number / raw address. Every later declaration or assignment of that name must give the same
+  kind, or it is **`E_VITTI_PRAKAR`** - in any branch, any loop, any block. Up to v300 the compiler marked a name
+  from a bare variable only, never cleared the mark and did not see control flow, which gave **two SIGSEGVs and a
+  silent read past a `kosh`'s length** (R125's t2, t3, t4; now `examples/348`, `349`, `350`, refused).
+- **A `kosh` leaves its tracking only by doors that keep the kind:** its own name (`vitti b = k`, `(k)`), a `kosh`
+  parameter, a `kosh` builtin's first argument, or a `prakriya` that returns a `kosh` parameter or a `kosh` it
+  declares, by its own name, on every `nivartanam` (its caller's name is then marked and bounds-checked). A `kosh`
+  into a cell, a field, a module `vitti`, an untyped parameter, a raw builtin (`likha`, `pad8`, `likh8`, a value
+  of `kosh_kship`), `?:` or a `siddhi` / `dosh` value is **`E_KOSH_DVARA`**; `k + 0`, `k - 0`, `k * 1` are `E_KOSH_GANIT` like `k + 8`.
+- **No emitted byte changed:** every program v300 compiles, v301 compiles to the same bytes (ELF and PE); three
+  R38/R42 examples that wrote `vitti w = 0` and then `w = v` now declare `w` from a collection of `v`'s kind.
+  Gate `R126 kinds` (53 checks, ELF and PE under Wine).
+
 ## v300 (Claude, R124) - Windows commits what a program touches, not what it reserves
 
 - **The PE runtime reserves an `mmap` with `MAP_NORESERVE`** (the 1 GiB arena, each 64 MiB `kosh` region) instead

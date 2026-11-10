@@ -1,4 +1,27 @@
-> **The 20 newest entries.** Older ones, from "v300" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v301" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v321 (Claude, R182) - a character the language does not know is refused where it stands
+
+- **The defect** (Muse R166; Sarvam R182; in v315): the lexer skipped any character it did not recognise and
+  carried on (`; Unknown char - skip`). `vitti a = 5 <en dash> 2` compiled and printed 5; a string in curly quotes
+  was refused for an unknown *name*, away from the quotes; `$`, `@`, an apostrophe, a no-break space, a
+  zero-width space, an emoji all vanished without a word.
+- **Now** (`r182_unknown_char`, `src/sutram_compiler.asm`): `file:line:col: Sutram truti [E_AGYAT_AKSHAR]: agyat
+  akshar '<the character>' (U+XXXX)`, the source line with a caret under the character, and a `Sanket` line when
+  the intention is plain - a curly quote -> `"`, an en or em dash or a minus sign -> `-`, a no-break space -> a
+  space, an invisible character -> remove it, `x`-sign -> `*`, and the like. A character that cannot be shown is
+  named by its code point alone.
+- **Not refused:** anything inside a comment (`#`, `//`, `/* */`) or a string - the lexer has left those before
+  it reaches this point; a byte-order mark at the start of the file or of a line; Devanagari digits and names.
+- **It is a behaviour change: a program that compiled only because a character was swallowed is now refused.**
+  None of the 783 programs of the guard is one: 587 compile to the same bytes as on v320, and the 196 refused
+  are refused with the same message (ELF and PE). Gate `R182 unknown character` (21 checks; 17 fail on v320).
+- **Eight inputs of the crash corpus are refused differently:** mutated files with a NUL or another unknown
+  character outside a string, which used to reach a later syntax error and are now refused at the character. The
+  corpus runner accepted only a diagnostic that *begins* `Sutram truti`; it now also accepts the positioned form
+  `file:line:col: Sutram truti [E_...]:` that this and other errors print (`tools/crash_corpus.py`).
+- The release notes' first limitation (Muse's ranking) is closed by this. Installer rebuilt (payload v321).
+  Not run on Windows.
 
 ## v320 (Claude, R175 + R176) - a block's memory is zero when the block is left - STAGED, A DECISION NOT YET TAKEN
 
@@ -465,19 +488,3 @@
 - Muse R127's eight defect programs are goldens (`examples/351`-`359`); `examples/317` / `318` print the new
   `parimana()` byte counts. Every program without a `kosh` compiles to the same ELF bytes; every PE program
   differs (the runtime), with the same output. Gate `R127 descriptor`.
-
-## v301 (Claude, R126) - a name keeps one kind; the three defects R125 found are refused
-
-- **A name keeps the kind its first binding gave it, for the whole `prakriya`:** `kosh`, `kosh dasham`, `mala`,
-  `vibhag`, or a number / raw address. Every later declaration or assignment of that name must give the same
-  kind, or it is **`E_VITTI_PRAKAR`** - in any branch, any loop, any block. Up to v300 the compiler marked a name
-  from a bare variable only, never cleared the mark and did not see control flow, which gave **two SIGSEGVs and a
-  silent read past a `kosh`'s length** (R125's t2, t3, t4; now `examples/348`, `349`, `350`, refused).
-- **A `kosh` leaves its tracking only by doors that keep the kind:** its own name (`vitti b = k`, `(k)`), a `kosh`
-  parameter, a `kosh` builtin's first argument, or a `prakriya` that returns a `kosh` parameter or a `kosh` it
-  declares, by its own name, on every `nivartanam` (its caller's name is then marked and bounds-checked). A `kosh`
-  into a cell, a field, a module `vitti`, an untyped parameter, a raw builtin (`likha`, `pad8`, `likh8`, a value
-  of `kosh_kship`), `?:` or a `siddhi` / `dosh` value is **`E_KOSH_DVARA`**; `k + 0`, `k - 0`, `k * 1` are `E_KOSH_GANIT` like `k + 8`.
-- **No emitted byte changed:** every program v300 compiles, v301 compiles to the same bytes (ELF and PE); three
-  R38/R42 examples that wrote `vitti w = 0` and then `w = v` now declare `w` from a collection of `v`'s kind.
-  Gate `R126 kinds` (53 checks, ELF and PE under Wine).

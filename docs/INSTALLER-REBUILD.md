@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R182 (v321):** the compiler changed (an unknown character is refused); nothing else in the payload but the
+documents. Built from an empty `--work` folder.
+
 **R181 (v320, documents only):** reference §19, both books and the release notes changed; no binary changed.
 Built from an empty `--work` folder.
 

@@ -11,7 +11,10 @@ input this runner requires
 
   * exit status 1 (not a signal, not 0),
   * a diagnostic on stdout that starts with "Sutram truti" (after any
-    leading newline the diagnostic convention prints), and
+    leading newline the diagnostic convention prints) - or with the positioned
+    form "file:line:col: Sutram truti" that r80_compile_error prints (R182: eight
+    of the mutated inputs hold a NUL or another character the language does not
+    know, and are now refused at that character, E_AGYAT_AKSHAR, in that form) - and
   * no output file.
 
 tests/negative/r17/SHA256SUMS pins the bytes of every committed file (ROUND-21). Four of
@@ -35,6 +38,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -76,12 +80,16 @@ def run(comp: str, src: Path, out: Path, timeout: float):
     return str(r.returncode), r.stdout, produced
 
 
+POSITIONED = re.compile(rb'[^\n:]+:\d+:\d+: Sutram truti \[E_[A-Z0-9_]+\]: ')
+
+
 def judge(code: str, stdout: bytes, produced: bool, must_compile: bool) -> str:
     if must_compile:
         return '' if code == '0' and produced else 'expected to compile, got exit %s' % code
     if code != '1':
         return 'exit %s, expected 1' % code
-    if not stdout.lstrip(b'\n').startswith(b'Sutram truti'):
+    first = stdout.lstrip(b'\n')
+    if not (first.startswith(b'Sutram truti') or POSITIONED.match(first)):
         return 'no "Sutram truti" diagnostic on stdout'
     if produced:
         return 'an output file was written'

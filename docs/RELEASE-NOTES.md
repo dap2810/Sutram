@@ -1,7 +1,7 @@
-# Sutram 1.0 (v320) — release notes
+# Sutram 1.0 (v321) — release notes
 
-**Compiler `Sutram 1.0 (v320) - sampurna sutra`, 10 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v320). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v321) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v321). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,15 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v320 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v321 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v320 closes, and what it does not (R140-R176)
+## Status: what v321 closes, and what it does not (R140-R182)
+
+**v321 (R182): a character the language does not know is refused where it stands** - named, with its code point,
+line and column, and a hint when the intention is plain. Up to v320 it was skipped: `5 <en dash> 2` compiled and
+printed 5. Comments and strings are untouched. **A program that compiled only because a character was swallowed
+no longer compiles.**
 
 **v320 (R175, R176; chosen in R180/R181) - staged: a block's memory is zero when the block is left.** It closes
 the defect named in the next paragraph (an ordinary `nirmmita` or a `mala` handed memory an ended block wrote).
@@ -298,8 +303,8 @@ succeeded; use the checked form when the program must detect a failure and go on
 ## Limitations of what is included
 
 **What a student meets first - Muse's ranking (ROUND-166, 10 November 2026), recorded in R181; none started**
-1. **The lexer silently skips a character it does not know.** `vitti a = 5 $ 3` compiles and prints 5 (run on
-   v320, R181): the `$` vanishes, no message names it, and when the damage shows, the error is somewhere else.
+1. ~~The lexer silently skips a character it does not know.~~ **Closed in v321 (R182):** it is refused,
+   `E_AGYAT_AKSHAR`. (`vitti a = 5 $ 3` compiled and printed 5 on v320.)
 2. **There is no way to read text from the user.** `grahan` reads a number; no built-in or library function
    returns a line of text. "What is your name?" cannot be written without a raw read into a buffer.
 3. **Reading a file is the one basic thing the language can do that no example shows, and the reference
@@ -498,6 +503,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v321 (staged):** a character the language does not know is refused where it stands (R182).
 - **v320 (staged):** a block's memory is zeroed at every way out of the block (R175, R176).
 - **v319:** made once anywhere in a loop - under a `yadi`, in a `mandapa`, in a `yavat` (R175, R176).
 - **v318:** a `mala` declared in a `chakra`'s own body, proven local, is made once for the loop (R173).
