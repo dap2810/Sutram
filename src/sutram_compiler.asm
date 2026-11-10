@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v316) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v317) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1613,6 +1613,14 @@ section .bss
     r108_bk_gd  resq 256                    ;   name, the r82 depth of its block,
     r108_bk_node resq 256                   ;   a BN_NIRM_SCRATCH node carrying its depth and budgets
     r108_bk_n   resq 1
+    r171_ok     resq 256                    ; R171: 1 = that kosh is proven local to its block (r171_classify)
+    r171_slot   resq 256                    ;   the frame slot holding its descriptor's address
+    r171_blk    resq 64                     ;   the mandapa BLOCK open at each r82 depth
+    r171_name   resq 1                      ;   the scan: the kosh's name,
+    r171_cnt    resq 1                      ;   declarations of that name met,
+    r171_esc    resq 1                      ;   1 = a use that is not proven local,
+    r171_push   resq 1                      ;   1 = something is added to it (only then can it get a region)
+    r171_cur    resq 1                      ;   the slot of the kosh being declared, 0 if not proven local
     r107_kosh_hit resq 1                    ; R107: the last tainted name met was a kosh made in a block
     r107_knames resq 256                    ; R107: those kosh names
     r107_kn     resq 1
@@ -10728,6 +10736,8 @@ r82_block_enter:
     jae .full
     inc rcx
     mov [rel r82_gdepth], rcx
+    lea rax, [rel r171_blk]        ; R171: the block itself, for r171_classify
+    mov [rax + rcx*8], rbx
     lea rax, [rel r82_off]
     mov qword [rax + rcx*8], 0
     cmp qword [rbx+56], 0
@@ -10845,6 +10855,8 @@ r82_gen_rewind:
     mov rcx, 5
     div rcx
     lea r12, [rax+1]
+    mov rdi, r12
+    call r171_emit_release         ; R171: the proven-local kosh of those blocks give their regions back
 .l:
     cmp r12, [rel r82_gdepth]
     ja .out
@@ -10856,6 +10868,397 @@ r82_gen_rewind:
     jmp .l
 .out:
     pop r12
+.r:
+    ret
+
+; ---------------------------------------------------------------- R171: one narrow case
+; A kosh declared directly in a mandapa, and used in it only in ways that cannot make a second
+; reference to it, gives its separately mapped region back (munmap / VirtualFree) when the block is
+; left. The descriptor stays; elements in the arena stay; a kosh that is not proven local is as before.
+;
+; "Proven local" is a whitelist (r171_scan), not an escape analysis: the name may appear only as the
+; base of an index (k[i], k[i] = v) and as the first argument of kosh_kship (kosh_yuj), kosh_hri, kosh_gan,
+; kosh_ksham, kosh_shodh, kosh_rikt, kosh_iksh, kosh_apanay. Any other appearance - a right side, an
+; argument of a prakriya, nivartanam, a value pushed into a kosh, a second declaration of the name - or
+; any construct the scan does not know, and the kosh is not reclaimed. It fails toward leaking.
+; A kosh nothing is added to in the block gets no code either: only kosh_kship grows a kosh.
+
+%macro R171_EMIT 1+                 ; as R23_EMIT, which is defined further down
+    jmp %%skip
+%%bytes: db %1
+%%end:
+%%skip:
+    lea rsi, [rel %%bytes]
+    mov ecx, %%end - %%bytes
+    call r23_emit_bytes
+%endmacro
+
+; r171_classify(rbx = the kosh's AST_DECL, rcx = its r108_bk index). Every register preserved.
+r171_classify:
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r12
+    push r13
+    mov r12, rcx
+    lea rax, [rel r171_ok]
+    mov qword [rax + r12*8], 0
+    mov qword [rel r171_cur], 0
+    mov rax, [rel r82_gdepth]
+    cmp rax, 64
+    jae .no
+    lea rdx, [rel r171_blk]
+    mov r13, [rdx + rax*8]         ; the mandapa: BLOCK [16] mark, [24] body, [32] rewind
+    test r13, r13
+    jz .no
+    cmp qword [r13], AST_BLOCK
+    jne .no
+    cmp qword [r13+8], 3
+    jne .no
+    mov rdi, [r13+24]
+    test rdi, rdi
+    jz .no
+    cmp rdi, rbx
+    je .direct
+    cmp qword [rdi], AST_BLOCK
+    jne .no
+    mov rcx, [rdi+8]
+.f:
+    test rcx, rcx                  ; the declaration must be a statement of the block's own body:
+    jz .no                         ; then every way out after it has passed through it
+    dec rcx
+    cmp [rdi + 16 + rcx*8], rbx
+    jne .f
+.direct:
+    mov rax, [rbx+8]
+    mov [rel r171_name], rax
+    mov qword [rel r171_cnt], 0
+    mov qword [rel r171_esc], 0
+    mov qword [rel r171_push], 0
+    mov rdi, [r13+24]
+    call r171_scan
+    cmp qword [rel r171_esc], 0
+    jne .no
+    cmp qword [rel r171_push], 0   ; never added to: it never grows, so it never has a region -
+    je .no                         ; nothing to give back, and no code for it
+    cmp qword [rel r171_cnt], 1
+    jne .no
+    mov rcx, [rel var_cnt]         ; a frame slot for the descriptor's address. It is entered in the
+    cmp rcx, VAR_TABLE_CAP         ; variable table under a name no program can write, so the table's
+    jae .no                        ; limit bounds the frame as before; no room - not reclaimed
+    mov rax, [rel stack_dep]
+    add rax, 8
+    cmp rax, FUNC_SPILL_BYTES - 16
+    ja .no
+    mov [rel stack_dep], rax
+    neg rax
+    imul rcx, rcx, 16
+    lea rdx, [rel var_table]
+    lea rsi, [rel r171_hidden]
+    mov [rdx + rcx], rsi
+    mov [rdx + rcx + 8], rax
+    inc qword [rel var_cnt]
+    lea rdx, [rel r171_slot]
+    mov [rdx + r12*8], rax
+    mov [rel r171_cur], rax
+    lea rdx, [rel r171_ok]
+    mov qword [rdx + r12*8], 1
+.no:
+    pop r13
+    pop r12
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+    ret
+
+r171_hidden db "0k171", 0
+
+; r171_scan(rdi = a node of the block): r171_esc = 1 at a use of r171_name that is not proven local, or
+; at a node it does not know; r171_cnt counts the declarations of that name.
+r171_scan:
+    push rbx
+    push r12
+    push r13
+    mov rbx, rdi
+    test rbx, rbx
+    jz .out
+    cmp qword [rel r171_esc], 0
+    jne .out
+    mov rax, [rbx]
+    cmp rax, AST_NUM
+    je .out
+    cmp rax, AST_FLOAT
+    je .out
+    cmp rax, AST_STR
+    je .out
+    cmp rax, AST_SCRCUR
+    je .out
+    cmp rax, AST_REWIND
+    je .out
+    cmp rax, AST_BREAK
+    je .out
+    cmp rax, AST_CONTINUE
+    je .out
+    cmp rax, AST_VAR
+    je .var
+    cmp rax, AST_BINOP
+    je .two_16_24
+    cmp rax, AST_TERNARY
+    je .three
+    cmp rax, AST_IF
+    je .three
+    cmp rax, AST_WHILE
+    je .two_8_16
+    cmp rax, AST_DO_WHILE
+    je .two_8_16
+    cmp rax, AST_ASSIGN            ; the target: a VAR (the name itself escapes) or an INDEX
+    je .two_8_16
+    cmp rax, AST_RETURN
+    je .one_8
+    cmp rax, AST_ASSERT
+    je .one_8
+    cmp rax, AST_HALT
+    je .one_8
+    cmp rax, AST_PRASAR
+    je .one_8
+    cmp rax, AST_INDEX             ; k[i]: the base is a name, not a value
+    je .one_16
+    cmp rax, AST_BLOCK
+    je .block
+    cmp rax, AST_FOR
+    je .for
+    cmp rax, AST_DECL
+    je .decl
+    cmp rax, AST_CALL
+    je .builtin
+    cmp rax, AST_FUNCALL
+    je .args
+    jmp .esc                       ; FIELD, SLICE, FUNCREF, HANDLE, WRITEMEM, VEC, NISHKRIYA, anything new
+.var:
+    mov rdi, [rbx+8]
+    call r171_is_name
+    test rax, rax
+    jnz .esc
+    jmp .out
+.one_8:
+    mov rdi, [rbx+8]
+    call r171_scan
+    jmp .out
+.one_16:
+    mov rdi, [rbx+16]
+    call r171_scan
+    jmp .out
+.two_8_16:
+    mov rdi, [rbx+8]
+    call r171_scan
+    mov rdi, [rbx+16]
+    call r171_scan
+    jmp .out
+.three:
+    mov rdi, [rbx+8]
+    call r171_scan
+.two_16_24:
+    mov rdi, [rbx+16]
+    call r171_scan
+    mov rdi, [rbx+24]
+    call r171_scan
+    jmp .out
+.block:
+    xor r12d, r12d
+    mov r13, [rbx+8]
+.bl:
+    cmp r12, r13
+    jae .out
+    mov rdi, [rbx + 16 + r12*8]
+    call r171_scan
+    inc r12
+    jmp .bl
+.for:
+    mov rdi, [rbx+8]               ; a loop variable of that name is a second declaration
+    call r171_is_name
+    test rax, rax
+    jnz .esc
+    mov rdi, [rbx+16]
+    call r171_scan
+    mov rdi, [rbx+24]
+    call r171_scan
+    mov rdi, [rbx+32]
+    call r171_scan
+    mov rdi, [rbx+40]
+    call r171_scan
+    jmp .out
+.decl:
+    mov rdi, [rbx+8]
+    call r171_is_name
+    test rax, rax
+    jz .decl_other
+    inc qword [rel r171_cnt]
+.decl_other:
+    mov rax, [rbx+32]
+    cmp rax, 3
+    ja .esc                        ; a kind of declaration this scan does not know
+    mov rdi, [rbx+24]              ; a size or a capacity, when there is one
+    call r171_scan
+    cmp qword [rbx+32], 1
+    ja .out                        ; a kosh has no initializer
+    mov rdi, [rbx+16]
+    call r171_scan
+    jmp .out
+.builtin:
+    cmp qword [rbx+16], 6
+    ja .esc
+    xor r12d, r12d
+    mov rax, [rbx+8]
+    cmp rax, BN_KOSHPUSH
+    je .own
+    cmp rax, BN_KOSHPOP
+    je .own
+    cmp rax, BN_KOSHLEN
+    je .own
+    cmp rax, BN_KOSHCAP
+    je .own
+    cmp rax, BN_KOSHCLEAR
+    je .own
+    cmp rax, BN_KOSHEMPTY
+    je .own
+    cmp rax, BN_KOSHPEEK
+    je .own
+    cmp rax, BN_KOSHDEQUEUE
+    je .own
+    jmp .al0
+.own:                              ; the kosh these work on: named, not copied
+    cmp qword [rbx+16], 0
+    je .out
+    mov rax, [rbx+24]
+    test rax, rax
+    jz .al0
+    cmp qword [rax], AST_VAR
+    jne .al0
+    mov r12d, 1
+    cmp qword [rbx+8], BN_KOSHPUSH
+    jne .al0
+    mov rdi, [rax+8]
+    call r171_is_name
+    test rax, rax
+    jz .al0
+    mov qword [rel r171_push], 1
+    jmp .al0
+.args:
+    cmp qword [rbx+16], 6
+    ja .esc
+    xor r12d, r12d
+.al0:
+    mov r13, [rbx+16]
+.al:
+    cmp r12, r13
+    jae .out
+    mov rdi, [rbx + 24 + r12*8]
+    call r171_scan
+    inc r12
+    jmp .al
+.esc:
+    mov qword [rel r171_esc], 1
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r171_is_name(rdi = a name or 0) -> rax = 1 if it is r171_name.
+r171_is_name:
+    xor eax, eax
+    test rdi, rdi
+    jz .r
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    mov rsi, [rel r171_name]
+    call strcmp
+    test rax, rax
+    mov eax, 0
+    jnz .o
+    mov eax, 1
+.o:
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+.r:
+    ret
+
+; r171_emit_release(rdi = an r82 depth): generated code, at a way out of the blocks at that depth and
+; deeper. For each proven-local kosh of those blocks: if it has a region ([d+8] != 0), munmap([d], [d+8]),
+; parimana() gives back its capacity, and the descriptor is left an empty kosh with no region - so a
+; second pass over the same descriptor does nothing. Uses rax, rcx, rsi, rdi, r11 of the generated code.
+r171_emit_release:
+    push rbx
+    push r12
+    push r13
+    mov r12, rdi
+    xor ebx, ebx
+.l:
+    cmp rbx, [rel r108_bk_n]
+    jae .out
+    lea rax, [rel r171_ok]
+    cmp qword [rax + rbx*8], 1
+    jne .next
+    lea rax, [rel r108_bk_gd]
+    cmp [rax + rbx*8], r12
+    jb .next
+    R171_EMIT 0x48,0x8B             ; mov rax,[rbp+slot]
+    lea rax, [rel r171_slot]
+    mov esi, [rax + rbx*8]
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    ; mov rsi,[rax+8] ; test rsi,rsi ; jz .none
+    R171_EMIT 0x48,0x8B,0x70,0x08, 0x48,0x85,0xF6, 0x0F,0x84
+    mov r13, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    cmp qword [rel r107_used], 0
+    je .nc
+    ; mov rcx,[rax-8] ; shl rcx,3 ; neg rcx: a region's kosh is counted by its capacity (r127_emit_grow)
+    R171_EMIT 0x48,0x8B,0x48,0xF8, 0x48,0xC1,0xE1,0x03, 0x48,0xF7,0xD9
+    call r107_emit_count_rcx
+.nc:
+    ; push rax ; mov rsi,[rax+8] ; mov rdi,[rax] ; mov eax,11 ; syscall ; pop rax
+    R171_EMIT 0x50, 0x48,0x8B,0x70,0x08, 0x48,0x8B,0x38, 0xB8,0x0B,0x00,0x00,0x00
+    call emit_syscall
+    R171_EMIT 0x58
+    ; mov qword [rax],0 ; mov qword [rax+8],0 ; mov qword [rax-16],0 ; mov qword [rax-8],0
+    R171_EMIT 0x48,0xC7,0x00,0,0,0,0, 0x48,0xC7,0x40,0x08,0,0,0,0, 0x48,0xC7,0x40,0xF0,0,0,0,0, 0x48,0xC7,0x40,0xF8,0,0,0,0
+    mov rdi, r13                   ; .none:
+    call r73_patch32
+.next:
+    inc rbx
+    jmp .l
+.out:
+    pop r13
+    pop r12
+    pop rbx
+    ret
+
+; r171_gen_ret: a nivartanam. The value is in rax; the open blocks of this prakriya are all left.
+r171_gen_ret:
+    mov rcx, [rel r108_bk_n]
+.l:
+    test rcx, rcx
+    jz .r
+    dec rcx
+    lea rax, [rel r171_ok]
+    cmp qword [rax + rcx*8], 1
+    jne .l
+    mov dil, 0x50                  ; push rax
+    call emit_byte
+    xor edi, edi
+    call r171_emit_release
+    mov dil, 0x58                  ; pop rax
+    call emit_byte
 .r:
     ret
 
@@ -12684,6 +13087,7 @@ r108_kosh_alloc:
     mov rsi, [rel r82_gdepth]
     mov [rdx+rcx*8], rsi
     inc qword [rel r108_bk_n]
+    call r171_classify             ; R171: proven local to its block -> its region goes back at the block's end
     jmp r101a_emit_kosh_alloc
 r108_full:
     lea rdi, [rel r108_msg_full]
@@ -12723,6 +13127,8 @@ r108_note_alias:
     jae r108_full
     lea rdx, [rel r108_bk_node]
     mov [rdx+rcx*8], rax
+    lea rdx, [rel r171_ok]         ; R171: a second name releases nothing
+    mov qword [rdx+rcx*8], 0
     lea rdx, [rel r108_bk_name]
     mov [rdx+rcx*8], rsi
     lea rdx, [rel r108_bk_gd]
@@ -19380,6 +19786,14 @@ r142_gen_stmt_body:
     lea rsi, [rel r127_dk]    ; R127: the descriptor - [d] = the elements, first right after it
     mov rcx, r127_dk_len
     call r23_emit_bytes
+    cmp qword [rel r171_cur], 0
+    je .r171_dk_no
+    R171_EMIT 0x48,0x89       ; R171: mov [rbp+slot],rax - where the block's end finds the descriptor
+    mov esi, [rel r171_cur]
+    mov dil, 0x45
+    call emit_rbp_modrm_disp
+    mov qword [rel r171_cur], 0
+.r171_dk_no:
     mov rdi, [rbx+8]
     call alloc_var
     test rax, rax
@@ -21014,6 +21428,7 @@ r142_gen_stmt_body:
     jmp .gs_ret_epilogue       ; in main → emit sys_exit
 .gs_ret_func:
     call r73_gen_ret_rewind       ; R73: from inside a mandapa, rewind (rax kept)
+    call r171_gen_ret             ; R171: and the proven-local kosh of the open blocks (rax kept)
     call r25_emit_return_status   ; R25: rdx = 0 for siddhi, 1 for dosh
     ; User function return: lea rsp,[rbp-8]; pop rbx; pop rbp; ret
     mov dil, 0x48             ; lea rsp, [rbp-8]
@@ -21036,6 +21451,7 @@ r142_gen_stmt_body:
 .gs_ret_func_none:
     ; User function return with no value: xor rax; lea rsp,[rbp-8]; pop rbx; pop rbp; ret
     call r73_gen_ret_rewind       ; R73: from inside a mandapa, rewind
+    call r171_gen_ret             ; R171: and the proven-local kosh of the open blocks
     mov dil, 0x48             ; xor rax, rax
     call emit_byte
     mov dil, 0x31
