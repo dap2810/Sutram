@@ -1,0 +1,9 @@
+mukhya() {
+    vitti s = 0
+    chakra j = 1 tak 100000 {
+        vitti t = nirmmita(64)
+        t[0] = j
+        s = s + t[0]
+    }
+    likha(s, "\n")
+}

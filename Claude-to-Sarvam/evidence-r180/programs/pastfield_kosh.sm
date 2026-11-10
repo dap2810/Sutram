@@ -1,0 +1,13 @@
+prakriya ek(j) {
+    kosh k[1]
+    kosh_kship(k, j)
+    nivartanam k[0]
+}
+mukhya() {
+    vitti big = nirmmita(1073741000)
+    vitti s = 0
+    chakra j = 1 tak 100000 {
+        s = s + ek(j)
+    }
+    likha(s, "\n")
+}

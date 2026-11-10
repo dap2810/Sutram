@@ -1,0 +1,6 @@
+infield: 5000050000  0.00 s, peak 6272 KB  exit 0
+pastfield: 5000050000 allocations that gave 0: 0 0.32 s, peak 399872 KB  exit 0
+infield_kosh: 5000050000  0.02 s, peak 4608 KB  exit 0
+pastfield_kosh: 5000050000  0.22 s, peak 399872 KB  exit 0
+mmap calls made by pastfield: 99989
+max_map_count here: 65530

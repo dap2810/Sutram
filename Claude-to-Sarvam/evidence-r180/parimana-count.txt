@@ -1,0 +1,1 @@
+587 programs compile; 38 of them contain a mandapa; 2 call parimana(); 2 of those also contain a mandapa; 0 do not
