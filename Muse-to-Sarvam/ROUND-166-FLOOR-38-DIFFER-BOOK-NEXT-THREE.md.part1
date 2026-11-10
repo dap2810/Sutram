@@ -1,0 +1,379 @@
+# ROUND-166 — the floor, attacked; the 38 DIFFER, judged; the book, checked; and what is left
+
+**Round:** 166 (to Muse) · **Base:** main at v315 (`441a9baa`) · **Read only. Nothing compiled or run.** · **Deliver into:** `Muse-to-Sarvam/`
+
+**Code read:** v319 `4c1159be` (branch `r176-made-once-anywhere`), v319+book `12ef6329` (branch `r179-v319-book`), v320 `9bb059ea` (branch `r176-block-exit-zero`). **Deliverables:** this report and `r166.json`.
+
+## Verdicts
+
+| Task | Verdict |
+|---|---|
+| 1. The floor, attacked | **HOLDS as a correctness design — no breaking program found against the correctly-specified floor — but the brief's two headline claims need correction, and the floor as literally worded admits a broken implementation.** Strongest: the during-the-block hole (a persistent allocation inside a block can overlap the block's live scratch if the mark is recorded only at block exit). The "38 is the minimum" claim is true only under implementation B (split `end`); under implementation A (a new global `L`) the byte-DIFFER is 404. Under B, `parimana()` changes meaning and two programs change output. |
+| 2. The 38 DIFFER, judged | **A rule satisfaction, not a rule violation — for 37 of the 38, on the rule's own words.** The rule as written is not "0 DIFFER, unconditionally": it is 0 DIFFER for programs that do not use a `mandapa`, and for the rest a stated list with every changed program producing the same output. The 38th is carried by the project's own precedent, not by a waiver. |
+| 3. The book, checked | **All three passages are TRUE as far as they go, and all three share one imprecision of scope.** A `mala` declared inside a block is also an ordinary allocation and can read stale bytes the same way, but the passages warn only about one outside a block. The reference passage has one more imprecision: its measurement sentence omits the 480 MB ordinary allocation that the `mala m[8]` measurement depends on. The Sanskrit book was changed too, and it says the same thing as the English one. |
+| 4. What is left, ranked | **1. The lexer silently skips unknown characters. 2. There is no way to read text from the user. 3. Reading a file is the one basic thing the language can do that no example shows and the reference mislabels.** Plus a correction: R100 trap 5 (`likha(kosh)` prints an address) is **fixed**, not still live — the R126 doors refuse `likha(k)` at compile time. |
+
+## 0. Shared state, read first
+
+The brief's shared state is mostly right, and three of its facts need correction or a note before the tasks begin.
+
+**v319 is the branch that can merge.** `4c1159be`, "a proven-local `kosh` or `mala` is made once anywhere in a loop". Gates 85 PASS / 0 FAIL. Guard 0 DIFFER, four runs, ELF and PE. That much is as stated — with the standing gate-count correction: v319's `tools/gates.sh` has 82 `run_gate` invocations, so the total is 85 entries but the maximum PASS is **84**, not 85. The branch's "85 PASS" status line is off by one (the R159 P4 off-by-one, one gate higher each round; see §5.11).
+
+**v319 + three documents.** §19 and both books now say what a block gives back is NOT cleared. Compiler bytes untouched, so the guard is identity. True — with the caveat in §3.5 that the guard never looks at the installer at all, so the guard is not the evidence for the installer's compiler being unchanged; the rebuild record is.
+
+**v320 `9bb059ea` — the block-exit zeroing. 38 DIFFER, exactly the programs with a block. Not ready.** True, and **CORRECTION: v320 IS on origin.** It is branch `r176-block-exit-zero` at `9bb059ea` (commit message: "R175 + R176 (staged, v320, on r176-made-once-anywhere; NOT merged; NOT READY - a decision): a block's memory is zeroed when the block is left"). The brief's implication that its code is not readable here is stale, and the T1 agent's could-not-determine repeats the same stale premise — corrected in §1.7 and §5.1. This round read v320's code first-hand (the pin change in §2.4 was verified on the branch, not taken from the hand-back).
+
+**`madvise(MADV_DONTNEED)` — measured, works, NOT BUILT.** 274,880 KB -> 12,736 KB for 256 MiB. But 1.5 µs a page when the block runs again: a 16 MiB block in a loop goes 0.95 ms -> 7.2 ms. So a flat threshold is the wrong shape. True, and the R179 hand-back's table is the source: measured through libc from a small harness (`madv.py`, `results-madvise.txt`, best of 5), not a Sutram program, no compiler changed. The 16 MiB row: VmRSS written 29,116 KB, write again 0.95 ms, `madvise` 0.55 ms, VmRSS after 12,736 KB, reads 0, write again after the discard 6.67 ms. The 256 MiB row: 274,880 KB -> 12,736 KB, write again 27.7 ms -> 113 ms after the discard.
+
+**The bug, precisely.** A `mala m[8]` declared OUTSIDE any block, after a block had ended, read 77 — a value the block wrote. Inside a block a `mala` takes ordinary memory too, so the same could happen there, but that is not what was measured. True — and the inside-a-block half is the scope gap in the book passages (§3.1). The "0.8 ns when done once" figure came from a hand-patched program, not a build — true, and the R179 hand-back does not repeat it.
+
+**Sarvam's false-claim count now stands at 63** (was 59 at R164). The most recent: passing an outside review's five transformations to be built without checking them against the code — four of the five did not hold (R165). And two facts about the zeroing bug that Claude had to correct (the R179 hand-back names them: the 38 DIFFER set, and the "0.8 ns" figure's provenance).
+
+**Claude's R179-00 landed** (`96870d7b` + `db7e9bad`): `madvise` measured, not built; the zeroing questions answered; the book sentence on a documents-only branch. The documents branch is `r179-v319-book` at `12ef6329` (v319 + three documents; the compiler, `win/sutram.exe` and every other binary are byte for byte `4c1159be`'s; the installer is rebuilt because the documents are in it; gates 85 PASS / 0 FAIL / 1 NOT-RUN; installer payload v319 + the documents: `e84c39a2…`; the guard: no compiler changed — identity). R177 and R178 were not started.
+
+**ROUND-180 (to Claude, `94b6a318`)** is Claude's round on the same shared state: WS1 the floor (answer, do not build), WS2 choose with the numbers, WS3 the 38th program, WS4 v319 stays untouched. Not Muse's. This round's Task 1 and Task 2 are the reading-side answers to the same questions; Claude's answers are his.
+
+---
+
+## 1. Task 1 — the floor, attacked
+
+**Verdict: the floor HOLDS as a correctness design — no breaking program was found against the correctly-specified floor — but the brief's two headline claims need correction, and the floor as literally worded admits a broken implementation.**
+
+The three conditions for soundness (derived in the questions below, not assumed):
+
+1. **The marking mechanism** is a single global low-water mark of the scratch cursor (`end`), initialised to `sima` at reservation and updated at **every scratch allocation**, not only at block exit. If it is updated only at block exit, the during-the-block hole (§1.5) breaks it.
+2. **The re-entry mechanism** is the existing one: the mark variable `0mNN` is re-read from the live scratch cursor at each block entry, and the rewind restores the live scratch cursor to the mark. The low-water mark is untouched by exits. No additional state is needed for re-entry.
+3. **The nested-block rule:** the floor caps **only the persistent path**. The scratch path is never capped by the low-water mark. The distinction between "ordinary" and "block" is the allocation path (compile-time, via the lexical `BN_NIRM_SCRATCH` rewrite), not the range and not a runtime flag.
+
+The two corrections to the brief:
+
+- **(A) "The 38 is the minimum" is implementation-dependent.** It is true only under implementation B below (split `end`: `[end]` becomes the low-water mark, scratch gets a new cursor). Under implementation A (a new global `L`, persistent emitter reads `[L]`), the byte-DIFFER is **404** — every program that allocates — because the persistent emitter's bytes change at every allocation site. The brief's placement table does not name an implementation, so its "38" assumes B without saying so.
+- **(B) Under implementation B, two more programs change output.** `parimana()`'s scratch term is `(sima - end)`, and under B `[end]` is the low-water mark, so after a block `parimana()` counts the block's bytes as still held. `examples/317_r107_parimana.sm` changes two lines (`after the block 64` → `1072`; `a kosh of 1000 8288` → `9296`) and `examples/318_r108_parimana_moves.sm` changes one (`after the block 224` → `336`). Both contradict the reference's documented "a block gives its bytes back at its end". So under B the number of programs whose **output** changes goes from 1 (zeroing) to 2, while under A it is 0 but the byte-DIFFER is 404.
+
+| Option | Byte-DIFFER (binaries that change) | Output-DIFFER (programs that print differently) |
+|---|---|---|
+| Exit zeroing (v320) | 38 | 1 (`blind_kosh_via_call` 99 → 0) |
+| Floor, implementation A (new global `L`) | **404** | 0 |
+| Floor, implementation B (split `end`) | 38 | **2** (`317`, `318`, `parimana()`) |
+
+One point in the floor's favour, against the zeroing: the floor **preserves** the 38th program `tests/r73_scratch/blind_kosh_via_call.sm` at 99 (the scratch side is unchanged, so the second block's `other` still reuses `buf`'s address), where the zeroing changes it to 0. The floor does not disturb the pinned R75 known limit.
+
+### 1.1 How many cursors are there today? One, or more?
+
+**Two moving cursors, one fixed bound, plus one saved mark per mandapa depth. "Two cursors" is the right description of the moving state; "one cursor" is wrong; and counting the mark does not change the answer, because a mark is a snapshot, not a cursor.**
+
+The arena is one 1 GiB `MAP_NORESERVE` mmap per program (`R65_ARENA equ 0x40000000`, `src/r65_arena.inc:49`). Three hidden module globals are registered once by `r65_ensure_globals` (`src/r65_arena.inc:157`): `0kshetra_cur`, `0kshetra_end`, `0kshetra_sima`.
+
+| State | What it is | What it points at | Which allocations use it |
+|---|---|---|---|
+| `cur` (`0kshetra_cur`) | Persistent cursor, grows **up** from the arena base | Next free byte of the persistent side | Every ordinary allocation: `nirmmita`, `kosh`/`mala` descriptors and elements, `emit_nirmmita_from_rax` |
+| `end` (`0kshetra_end`) | Scratch cursor, grows **down** from the top | Next free byte of the scratch side (also the persistent side's limit: room = `end - cur`) | Every scratch allocation: `nirmmita` written lexically inside a `mandapa` |
+| `sima` (`0kshetra_sima`) | Fixed bound, **not a cursor** | The range's true end (base + 1 GiB), set once at reservation, never moves afterwards | Nothing allocates from it; it is the initial value of `end` and a term of `parimana()` |
+| `0mNN` marks | Saved snapshots of `end` at block entry, one per mandapa depth (names `"0m01".."0m32"`, max 32 depths) | The value of `end` when that block was entered | No allocation reads them directly; the rewind restores `end` to the mark |
+
+The four `cur` writes (`src/r65_arena.inc`): `:258` (reservation, `cur = base`), `:274` (the persistent fast path, `cur = align16(cur + size)`), `:319` (the kosh in-place extension), `:393` (the scratch-side reservation, `cur = base`). The five `end` writes: `:261` and `:396` (reservation, `end = sima`), `:412` (`r73_gen_rewind`, `end = the mark`), `:440` (`r73_gen_scratch_nirm`, `end` moves down by `align16(size)`), `:547` (`r73_gen_ret_rewind`, `end = the outermost block's mark`). `sima` is written at `:263` and `:398` (both at reservation) and never again; outside reservation it is read in exactly one place, `parimana()` (`src/sutram_compiler.asm:24443`).
+
+The mark mechanism (`src/sutram_compiler.asm:8364`, `r72_parse_mandapa`): a `mandapa` builds `AST_BLOCK [ vitti 0mNN = <scratch cursor> ; <body> ; <rewind to 0mNN> ]`, where `0mNN` is a hidden local, one per nesting depth. The mark is written once at block entry from the `AST_SCRCUR` node, whose single call site is `src/sutram_compiler.asm:22028` (`r73_gen_scrcur`, `src/r65_arena.inc:365`, loads `[end]`). It is read at block exit by the `AST_REWIND` node (`src/sutram_compiler.asm:19517`, calls `r82_gen_rewind` then `r73_gen_rewind`), and on the `nivartanam` paths at `:21529`, `:21551` and `src/r25_phal.inc:202` (via `r73_gen_ret_rewind`).
+
+**The ROUND-180 framing is wrong on the facts.** WS1 asks: "If a block's allocations and ordinary allocations share one cursor, the floor means the block's range must be marked and skipped…" They do **not** share one cursor — there are already two, and the persistent side's limit is the *current* `end`, not a shared cursor. The bug is not a shared cursor; it is that the persistent side's limit (`end`) is **restored upward** at block exit, so the persistent side walks into dead scratch afterwards. That is the precise mechanism of the R175 proof (`Claude-to-Sarvam/evidence-r175/programs/st_big.sm`): the block's scratch span is `[sima-600MB, sima)` = `[base+473,741,824, base+1,073,741,824)`; the second (persistent) allocation is `[base, base+600,000,000)`; the overlap is `[base+473,741,824, base+600,000,000)` = 126,258,176 bytes = 15,782,272 words, first at word 59,217,728 — exactly as measured.
+
+R82 liveness slots do not interact with the floor. `r82_emit_zero` (`src/sutram_compiler.asm:10804`) emits `mov qword [rbp+slot], 0` — a **stack** slot, one per mandapa depth, zeroed at block leave (`r82_block_leave`, `:10825`) and on rewind (`r82_gen_rewind`, `:10846`). They are never in the arena.
+
+### 1.2 If a block's range must be skipped, what marks it? And what re-enters it when the block runs again?
+
+**Nothing per-block needs to be recorded. The floor needs one new global word: a low-water mark of `end`. No list, no per-block record, no flag per address.**
+
+The persistent emitter `r65_emit_nirm` (`src/r65_arena.inc:245`) computes `room = end - cur` and takes `[cur, cur+size)` if it fits, else falls through to the per-call mmap fallback (`r38_nirm_mmap`). Its limit is the **current** `end`. A block exit restores `end` to the mark, so the limit jumps back up — that is the bug.
+
+For the floor to work, the persistent limit must be **monotonic (non-increasing)**: the lowest address scratch ever reached. Call it `L`:
+
+- `L` is initialised to `sima` at reservation (both reservation paths, `:258-263` and `:393-398`).
+- `L` is updated to `min(L, new_end)` at **every scratch allocation** (see §1.5 for why allocation-time, not exit-time, is required).
+- The persistent emitter's room becomes `L - cur` instead of `end - cur`.
+
+One word suffices, and no list of ranges is needed, because scratch always allocates **downward from the current `end`**: every scratch range ever taken is a sub-range of the single contiguous suffix `[min_end, sima)`, where `min_end` is the lowest `end` ever reached. The union of all block ranges is always one interval, so one word records it. A flag per address would be absurd (1 GiB / 16 bytes = 67 million flags) and is not needed; a per-block record would be redundant, because the ranges nest and overlap into one suffix.
+
+The mark variable `0mNN` is **not** the floor's mark. It is the block-entry snapshot used for the rewind, and it already exists. The floor's mark (`L`) is a different thing: a global low-water over the whole program, not a per-block snapshot.
+
+**That state does not exist today.** Today `[end]` is the live scratch cursor, not a low-water mark — it goes back up at every block exit. The floor must add it (either as a new global, implementation A, or by redefining `[end]` to be the low-water and giving scratch a new cursor, implementation B — see §1.3).
+
+**Re-entry needs nothing additional.** When the block runs again (a loop), the mark is re-read from the live scratch cursor at block entry (`AST_SCRCUR`, `:22028`, loads `[end]` — or `[scur]` under implementation B), and the live scratch cursor was restored to the mark at the previous exit (`r73_gen_rewind`, `:404`). So the next pass's scratch allocations walk down from the mark into the same range again. The range does not need to be "remembered" across passes, because the mark is re-derived from the live cursor each time and the live cursor is restored to it each time. The low-water mark `L` is untouched by exits — it stays at the deepest point, which is exactly the range the next pass re-enters.
+
+The brief's wording, corrected: the persistent allocation does not **skip** the range (the cursor does not jump past it); the persistent side is **capped** below it. `cur` never jumps: it advances to `cur + size` while `cur + size <= L`, and when the allocation does not fit in `[cur, L)` it falls through to the per-call mmap fallback — a separate mapping, not arena memory. There is no "skip past the range to the end of the arena"; the range is simply outside the persistent side's room.
+
+### 1.3 Does the floor need two cursors, and does that cost anything per allocation?
+
+**The ROUND-180 framing is incomplete. The floor needs two allocation cursors PLUS one monotonic limit word — three words of arena state, not two. The limit word is the crux, and it is new state. Saying "two cursors" alone omits it.**
+
+Today there are already two cursors (`cur` up, `end` down). The floor does not add a second cursor — it adds a **limit** on the persistent side. There are two ways to hold that limit, and they have different costs:
+
+- **Implementation A — a new global `L`.** `L` is the low-water mark of `end`, initialised to `sima`, updated at every scratch allocation. The persistent emitter reads `[L]` instead of `[end]`; the kosh-extension guard reads `[L]` instead of `[end]`; `parimana()` is untouched. The scratch cursor stays `[end]`.
+- **Implementation B — split `end`.** `[end]` **becomes** the low-water mark `L`. Scratch gets a new cursor global, call it `[scur]`, initialised to `sima` at reservation (both paths). The persistent emitter reads `[end]` exactly as today (byte-identical). The scratch emitter reads and writes `[scur]`, and updates `[end] = min([end], new_scur)` at each scratch allocation. The block entry reads the mark from `[scur]`; the rewinds restore `[scur] = mark` and do not touch `[end]`. `parimana()` is byte-identical but its scratch term changes meaning (see §1.6).
+
+The emitter already knows which path it is on **at compile time**: a `nirmmita` written with `r72_mdepth > 0` is rewritten to `BN_NIRM_SCRATCH` (equ 90) at parse time (`src/sutram_compiler.asm:18306`, condition at `:18299-18305`). No per-allocation runtime branch is needed to choose the path. The floor's cost is the low-water maintenance, not a path check.
+
+| Path | Cost under A | Cost under B |
+|---|---|---|
+| Persistent `r65_emit_nirm` (`:245`) | **Zero additional runtime cost** (loads `[L]` instead of `[end]` — same instruction count), but **bytes change at every allocation site** → DIFFER 404 (§1.6) | **Zero, and bytes unchanged** (still loads `[end]`, which is now `L`) |
+| Scratch `r73_gen_scratch_nirm` (`:416`) | **~3–4 instructions per scratch allocation** (load `[L]`, compare with new `end`, conditional store) | **~3–4 instructions per scratch allocation** (load `[end]`, compare with new `scur`, conditional store); the load of the working cursor is `[scur]` instead of `[end]` (same count) |
+| Block exit `r73_gen_rewind` (`:404`) and `r73_gen_ret_rewind` (`:535`) | ~0 if the update is at allocation time; ~4 instructions if the update is at exit (and then the during-the-block hole, §1.5, applies) | Same instruction count as today (stores `[scur] = mark` instead of `[end] = mark`); **bytes change, but only in block programs** |
+| Kosh in-place extension `r65_emit_kosh_extend` (`:305`), guard `r65_k3` | Must read `[L]` instead of `[end]` — **bytes change at every kosh-push site** | **Zero additional cost, bytes unchanged** (reads `[end]`, which is now `L`; the extension is capped at the floor exactly as the guard requires) |
+| `parimana()` (`src/sutram_compiler.asm:24420`) | Unchanged (reads `[cur]`, `[end]`, `[sima]` as today) | Byte-identical, but the scratch term `(sima - end)` becomes the **historical maximum** scratch, not the current — see §1.6 |
+
+The kosh extension does need to know about the floor. Its guard (`r65_k3`, `:315-317`) is `mov rax,[end]` then the comparison that the new cursor must not pass `end`. Under B that read is already the floor (`[end] = L`), so the extension is capped correctly with no change. Under A the guard must be changed to read `[L]`, or a kosh whose elements end at `cur` could extend upward past `L` into a block's range — the same bug through the extension path. The extension is refused when it would pass the floor, and the kosh then grows via `r127_emit_grow` (`src/r65_arena.inc:579`, `R127_BIG equ 65536` at `:571`, old region given back by `munmap` at `:712`) — a capacity cost, not a correctness break.
+
+R179 condition 2 applies to the floor too. Two routines give memory back — `r73_gen_rewind` and `r73_gen_ret_rewind`, called from four places (R175-00). If the low-water update were placed at exits (the exit-only variant), it would have to be in **both** routines. The allocation-time update avoids this: it lives in the one scratch emitter (`r73_gen_scratch_nirm`, single call site `src/sutram_compiler.asm:24219`), so both exit paths are covered without touching either.
+
+The scratch-side reservation (`r73_emit_reserve`, `:380-404`) must initialise the new state: under B it must also set `[scur] = sima` (an extra store, emitted only in block programs). A program whose first allocation is inside a block reserves the arena through this path, so the lazy initialisation question is answered there, not at program start.
+
+### 1.4 THE CASE TO CHECK FIRST: a block inside a block
+
+**The floor does NOT break nested blocks.** The inner block's range is re-entered by the outer block's scratch allocations exactly as today, because the floor restricts only the **persistent** path and the scratch path is unaffected.
+
+The trace: outer `mandapa` (mark `M0`, `end = E0`), inner `mandapa` (mark `M1 = current end`, `end = E1 < M1`), inner allocations take `[E1, M1)`.
+
+| Step | `end` / `scur` (live scratch cursor) | `L` (low-water) | `cur` |
+|---|---|---|---|
+| Outer entry | `M0 = E0` (mark saved in `0m01`) | `sima` (no scratch yet) | unchanged |
+| Outer allocates `a` | `E0 - A` | `E0 - A` | unchanged |
+| Inner entry | `M1 = E0 - A` (mark saved in `0m02`) | `E0 - A` | unchanged |
+| Inner allocates | `E0 - A - B` | `E0 - A - B` | unchanged |
+| Inner ends | restored to `M1 = E0 - A` | `E0 - A - B` (untouched by the exit) | unchanged |
+| **Outer allocates again** | moves down from `E0 - A` into `[E0 - A - B, E0 - A)` — **the inner block's old range, re-entered** | `E0 - A - B` | unchanged |
+| Outer ends | restored to `M0 = E0` | `E0 - A - B` | unchanged |
+
+The outer block's scratch allocation re-enters the inner's old range because it goes through the **scratch path** (`r73_gen_scratch_nirm`), which the floor does not cap. The floor distinguishes "the ordinary side" from "any block" by the **allocation path** — compile-time, via the lexical `BN_NIRM_SCRATCH` rewrite (`:18306`) — not by a runtime flag and not by the range. An ordinary allocation is refused entry to the range because its emitter's room is `L - cur`; a block allocation is allowed entry because its emitter never consults `L` as a limit (it consults `cur` only as a lower bound: `cmp rdx,rax; jb .full`, `:435-437`).
+
+The floor would break nested blocks **only if** its marking forbade **all** subsequent allocations (including scratch) from a block's old range. That is not what the low-water mark does, and it is the wrong implementation to avoid: a "this range is forbidden, check it on every allocation" design would make the outer block unable to re-enter the inner's range, and an inner block in a loop would leak one range per pass — the exact bug v319 fixed (a `kosh`/`mala` in a loop made fresh every pass). The low-water mark cannot break nested blocks this way, because it is a cap on one emitter, not a prohibition on a range.
+
+**Is the marking per-block-depth? No.** The floor's mark is a single global low-water, not per-depth. The per-depth state that already exists — the `0mNN` mark variables, one per depth (`r72_parse_mandapa`, `:8364`) — serves the **rewind**, not the floor: each block's entry mark is saved per depth so the rewind restores the right value when blocks nest. The floor needs no additional per-depth state; it needs the one global word. `r73_var_depth` (`src/sutram_compiler.asm:12974`, the block depth a name was declared at) is parse-time bookkeeping for the escape check, not arena state, and the floor does not need it.
+
+The program that would show a leak, if the floor broke nested blocks, is constructed (NOT RUN — read-only round):
+
+```
+mukhya() {
+    vitti s = 0
+    mandapa {
+        vitti a = nirmmita(32)
+        a[0] = 5
+        chakra i = 0 tak 2 {
+            mandapa {
+                vitti c = nirmmita(16)
+                c[0] = a[0] * 2
+                s = s + c[0]
+            }
+        }
+        s = s + a[0]
+    }
+    likha(s, "\n")
+}
+```
+
+Pass by pass (with `E0 = sima`): pass 1, inner entry `M1 = E0 - 32`, inner allocates `c` → `end = E0 - 48`, inner ends → `end = E0 - 32`; pass 2, inner entry re-reads `M1 = E0 - 32` from the live cursor, inner allocates `c` → `end = E0 - 48` (**the same range, reused**), inner ends → `end = E0 - 32`; pass 3, identical. `L = E0 - 48` after pass 1 and unchanged thereafter. **No leak.** The program prints 25 (`s = 10 + 10 + 10 + 5`) under v319 and under the floor. (The `kosh`/`mala` hoist of v319 does not apply here — it covers `kosh`/`mala`, not plain `nirmmita` — so the plain `nirmmita(16)` is allocated fresh from scratch each pass, which is the rewind's job.)
+
+No existing program is an inner `mandapa` inside a `chakra` inside an outer `mandapa`. The existing nested-block programs are small and loop-free: `tests/r73_scratch/allowed_nested.sm` (an outer block's address into a variable of the inner block — allowed) and `tests/r72_mandapa/nested_with.sm` (nested `mandapa`, `s = 5 + 10 + 5 = 20`).
+
+Sibling cases:
+
+**(a) A block inside a loop (not nested in another block).** The block re-enters its own range on pass 2. The mark is re-read from the live scratch cursor at each entry; the live cursor was restored to the mark at the previous exit; `L` is unchanged after pass 1. **No leak, no skip.** Existing program: `tests/r73_scratch/loop_with.sm` (in the 38). This is the case v319's hoist already fixed for `kosh`/`mala`, and the floor does not disturb it: the hoisted `kosh`/`mala` is a persistent allocation from `cur`, capped at `L` (see (d)).
+
+**(b) A block that runs once, then an ordinary allocation after it.** The floor's whole point. The ordinary allocation does **not** skip past the range to the end of the arena. It takes `[cur, cur+size)` if it fits in `[cur, L)`; if it does not fit, it falls through to the per-call mmap fallback (`r38_nirm_mmap`) — a separate mapping that cannot overlap the scratch span. Worked on the measured bug, `Claude-to-Sarvam/evidence-r175/programs/st_big.sm`: after the block, `L = sima - 600,000,000 = base + 473,741,824` and `cur = base`, so room `= 473,741,824 < 600,000,000` — the second `nirmmita(600000000)` does **not** fit in the arena and falls back to a fresh mmap, which reads 0 in all 75,000,000 words. The 77 is gone, not by zeroing and not by skipping, but because the persistent side can no longer reach the range. (The measured form of the bug for a `mala` is `evidence-r176/programs/kosh_after.sm` per the R179 hand-back WS2: a `mala m[8]` declared **outside** any block, after a block had ended, read 77. Inside a block a `mala` takes ordinary memory too, so the same could happen there, but that is not what was measured.)
+
+**(c) Two sibling blocks (two `mandapa`s in sequence, not nested).** Both start from the same mark `E0` (the rewind restores the live cursor to `E0` after the first ends, and the second's entry re-reads it). Their ranges overlap; the union is `[min(E_A, E_B), E0)`; `L` is the min. A third block — or the first block running again in a loop — re-enters from `E0` and walks down into the same union. **No break.** Existing program: `tests/r74_compose/c3_siblings.sm` (in the 38). Note the 38th program `tests/r73_scratch/blind_kosh_via_call.sm` is exactly two sibling blocks: the first block's `buf` and the second block's `other` are both `nirmmita(64)` from the same mark, so `other` reuses `buf`'s address. Under the floor the scratch side is unchanged, so `other[0] = 99` still lands where `buf` was, `p[0]` still reads 99, and the program still prints **99** — the floor preserves it, where the zeroing changes it to 0. The floor does not fix the pinned R75 known limit (a scratch address reaching a `kosh` unseen through `prakriya adr`), and does not claim to.
+
+**(d) A `kosh` declared in a block (persistent, from `cur`).** The floor's cap **does** affect it — its allocation comes from `cur`, which must fit in `[cur, L)`. If it does not fit, it falls back to the per-call mmap (for a `mala`) or to a region on growth (for a big `kosh`, `r127_emit_grow`). That is a **capacity cost, not a correctness issue**: the descriptor is still persistent, it still outlives the block, and the in-place extension is capped at `L` by the guard (§1.3). It is also the correct treatment: a `kosh`/`mala` declared in a block must outlive the block (its storage is not reclaimed at block exit — R82 generation-checks it instead), so it must not be scratch, and the `BN_NIRM_SCRATCH` rewrite correctly does not apply to it (the rewrite at `:18306` covers only the `nirmmita` builtin call; `.gs_decl_array` at `:19913` calls `emit_nirmmita_from_rax`, the persistent path, for both `kosh` and `mala`). Existing program: `examples/286_r82_kosh_in_mandapa.sm` (in the 38).
+
+**(e) The R82 liveness slots (stack, not arena).** No interaction at all (§1.1): they are `[rbp+slot]` frame slots, zeroed at block leave and on rewind, never in the arena, never read by any emitter. The floor changes no R82 behaviour.
+
+### 1.5 Finding 1 — the during-the-block hole (strongest)
+
+**The floor as naively specified — "a block's range must be skipped when the cursor moves forward after the block ends" — is broken, because it records the mark only at block exit. During a block, the mark is stale, and a persistent allocation inside the block can overlap the block's live scratch.**
+
+The hole needs a nearly-full arena, the same geometry as the R175 proof. Constructed program (NOT RUN — read-only round; the trace is by reading the two emitters):
+
+```
+mukhya() {
+    vitti fill = nirmmita(900000000)
+    mandapa {
+        vitti b = nirmmita(100000000)
+        mala m[12500000]
+        # m's elements overlap b's LIVE scratch in 26,258,184 bytes
+    }
+}
+```
+
+Trace (arena base `B`, `sima = B + 1,073,741,824`; all sizes are exact multiples of 16, so `align16` is identity):
+
+| Step | `cur` | `end` (live) | `L` (exit-only) | What happens |
+|---|---|---|---|---|
+| `fill = nirmmita(900000000)` | `B + 900,000,000` | `B + 1,073,741,824` | `B + 1,073,741,824` | Persistent; room `1,073,741,824`, fits |
+| Block entry | unchanged | `B + 1,073,741,824` (mark `M`) | unchanged (stale) | Mark saved in `0m01` |
+| `b = nirmmita(100000000)` | unchanged | `B + 973,741,824` | **still `B + 1,073,741,824`** (not updated until exit) | Scratch span `[B+973,741,824, B+1,073,741,824)` |
+| `mala m[12500000]` | `B + 1,000,000,008` | unchanged | unchanged | Persistent, size `(12,500,000+1)*8 = 100,000,008` (`:19913-19945`); room `= L - cur = 173,741,824 ≥ 100,000,008`, so it **fits in the arena** at `[B+900,000,000, B+1,000,000,008)` |
+| **Overlap** | | | | `[B+973,741,824, B+1,000,000,008)` = **26,258,184 bytes** of the mala's elements sit on top of `b`'s live scratch. Writes to `b` corrupt `m`; writes to `m` corrupt `b`. Silent, while the block is still open. |
+
+Why the persistent allocation is inside the block at all: a `mala` declaration is **not** rewritten to scratch — the rewrite at `:18306` covers only the `nirmmita` builtin call, and `.gs_decl_array` (`:19913`) calls `emit_nirmmita_from_rax`, the persistent path. A `kosh` declared in a block is the same (persistent), though a big one would take a region on growth rather than the arena. And the hole is reachable a second way: a `nirmmita` written inside a `prakriya` **called from** a block stays persistent, because the rewrite is lexical (`r72_mdepth > 0` at the call site, `:18301-18305`) — the `prakriya`'s body is lexically outside any `mandapa`. So a persistent allocation can run during a block without any declaration inside the block at all. The lexical choice cannot fix this; only a runtime `min(L, end)` (or the allocation-time update) can.
+
+**The fix is one of two, and the floor must name one:** (i) update `L` at every scratch allocation (`L = min(L, new_end)` in `r73_gen_scratch_nirm`, ~3–4 instructions per scratch allocation) — then in the trace above, `L = B + 973,741,824` after `b`, room `= 73,741,824 < 100,000,008`, and the `mala` falls back to the mmap, no overlap; or (ii) have the persistent emitter take `min(L, end_now)` at runtime (+1 load, +1 compare per persistent allocation). Option (i) is cheaper and lives in the single scratch emitter, so it covers both exit paths (R179 condition 2) without touching either. **A floor specified as "update at exit only" is broken for this case, and the break is silent corruption of live data, not a refusal.**
+
+### 1.6 Finding 2 — implementation A breaks the "38" claim; Finding 3 — implementation B changes `parimana()`
+
+**Finding 2.** Under implementation A (new global `L`, persistent emitter reads `[L]`), the persistent emitter `r65_emit_nirm` changes bytes: its `mov rax,[end]` becomes `mov rax,[L]`, a different `rel32`. That emitter is invoked at **every** persistent allocation site — every `nirmmita`, every `kosh`/`mala` descriptor and elements allocation — so the binary changes for every program that allocates. Counted with the guard's own globs on the v318 tree (R165 finding C): corpus 783, `nirmmita` 248, `kosh`/`mala` 241, **any allocation 404**. The byte-DIFFER under A is **404, not 38**. The kosh-extension guard (`r65_k3`) must also change to read `[L]`, changing bytes at every kosh-push site as well.
+
+So the brief's placement-table claim — "the floor … changes the same 38 programs" and "the 38 is the minimum" — is **true only under implementation B**. Under A the floor changes **more** programs than the zeroing (404 vs 38), which inverts the table's argument. The brief does not name an implementation, so the claim is unfounded as written. (This is a claim-break, not a correctness break: under A the floor is still correct, and its output-DIFFER is 0 — see the table in the verdict.)
+
+**Finding 3.** `parimana()` (`src/sutram_compiler.asm:24420`) is the **only** reader of `sima` outside reservation, and it reads all three globals: persistent side `(cur - start)`, scratch side `(sima - end)`, plus the kosh regions (`0parimana`). Under implementation B, `[end]` **is** the low-water mark, so the scratch term becomes `(sima - L)` — the **historical maximum** scratch, not the current. After a block ends, `parimana()` still counts the block's bytes as held.
+
+Two of the 38 DIFFER programs print `parimana()` after a block, and both change:
+
+- `examples/317_r107_parimana.sm` (expected `tests/expect/317_r107_parimana.out`): `after the block 64` → **`1072`** (64 + 1008, the block's `nirmmita(1000)` rounded to 1008); `a kosh of 1000 8288` → **`9296`** (8288 + 1008). The earlier lines (`start 0`, `after nirmmita(64) 64`, `in a block, nirmmita(1000) 1072`) are unchanged, because during the block `L` equals the live `end`.
+- `examples/318_r108_parimana_moves.sm` (expected `tests/expect/318_r108_parimana_moves.out`): `after the block 224` → **`336`** (224 + 112, the block's `nirmmita(100)` rounded to 112). Earlier lines unchanged.
+
+Both contradict the reference, which documents `after the block 64` (`docs/LANGUAGE-REFERENCE.md:1480`) and the example's own header, "A block gives its bytes back at its end" (`examples/317_r107_parimana.sm:1-3`). Under B that sentence becomes false: the block's bytes are still counted as held, because the floor keeps them reserved for blocks forever. Whether that is "more honest" is a design question for Task 3 (the book); as a fact, the gates asserting these expected outputs would **fail** unless the expectations and the reference are updated, and the number of programs whose output changes under the floor (B) is 2, not the zeroing's 1. Under implementation A, `parimana()` is unchanged and both programs print as today.
+
+### 1.7 What would have to be true for the floor to be sound
+
+1. **Marking:** a single global low-water mark of `end`, initialised to `sima` at reservation (both reservation paths), updated at **every scratch allocation** (or the persistent emitter takes `min(L, end_now)` at runtime). Never updated only at block exit.
+2. **Re-entry:** the existing mark/rewind pair, unchanged in shape — the mark `0mNN` re-read from the live scratch cursor at each block entry, the rewind restoring the live scratch cursor to the mark, the low-water untouched by exits. No per-block record, no list, no range remembered across passes.
+3. **Nested-block rule:** the floor caps **only the persistent path**. The scratch path is never capped. The ordinary/block distinction is the allocation path at compile time, not the range and not a runtime flag. Any implementation that forbids scratch allocations from a block's old range breaks nested blocks and leaks one range per loop pass.
+4. **Implementation:** B (split `end`) is required to hold the 38-DIFFER claim; A gives 404. Under B, `parimana()`'s scratch term must be redefined (historical maximum, not current) and the `317`/`318` expectations and the reference updated.
+5. **Both exit paths:** if any floor state were updated at exits, it would have to be in both `r73_gen_rewind` and `r73_gen_ret_rewind` (R179 condition 2). The allocation-time update sidesteps this by living in the single scratch emitter.
+
+**Correction to this task's own working notes:** the T1 note's could-not-determine says v320's code "is not on origin and its code is not readable here". That is wrong — v320 IS on origin (`r176-block-exit-zero` @ `9bb059ea`, §0). The T1 agent worked from the stale premise in its brief; its substantive findings do not depend on v320's code.
+
+---
+
+## 2. Task 2 — the 38 DIFFER, judged
+
+**Verdict: 38 DIFFER is a rule satisfaction, not a rule violation — for 37 of the 38, on the rule's own words. The 38th is the one place the rule as written bites, and it is carried by the project's own precedent, not by a waiver.**
+
+The brief's sentence — "The project's rule is 0 DIFFER: no program's bytes may change" — is a shorthand that drops the qualification every written statement of the rule carries. The rule as written is not "0 DIFFER, unconditionally". It is, in all three places it is written: **0 DIFFER for programs the change was meant to leave alone / that do not use a `mandapa` / that do not change behaviour — and, for the rest, a stated list of what changed, with every changed program producing the same output.** The 38 are exactly the programs the rule's first half excludes (they all use a `mandapa`), and 37 of them satisfy the rule's second half (same output). The 38th fails the second half's letter ("same OUTPUT") and is carried by the precedent the project has already set three times: a differing program whose output change IS the fix working, with the pin updated and the reason written into the program's own header.
+
+### 2.1 The rule where it is written
+
+The brief says "AGENTS.md or wherever the guard's purpose is stated". The answer is: **not in AGENTS.md.** The rule is written in three places, and they agree with each other.
+
+**The guard's own docstring — `tools/guard_pair.py:19-20`** (Claude, R58, 2026-10-29, commit `864e8cdd`): "To check a change yourself: `git worktree add /tmp/old <commit before>`, build or copy each tree's compiler, run this once per output format, and **expect 0 DIFFER wherever the change was meant to leave programs alone.**" Note the qualifier: "wherever the change was meant to leave programs alone". The docstring does not say "expect 0 DIFFER". It says expect 0 DIFFER *where the change was meant to leave programs alone* — i.e. the expectation is conditional on the change's intent, and the docstring's own definition of DIFFER ("anything else — the line that matters") is a report, not a verdict: the script exits 1 if there is any DIFFER, and a human reads the list.
+
+**The decision document — `docs/decisions/MEMORY-DECISION.md:102-108`** (owner, 2026-10-29). A whole section, headed **"What '0 DIFFER' can and cannot mean"**:
+
+> "**It cannot mean 'nothing changed'.** **Steps 0 to 2 change how `nirmmita` allocates, so they WILL change emitted bytes for existing programs.**"
+>
+> "**So the guard's claim is:**"
+> - "**Against a post-Step-1 baseline: 0 DIFFER for programs that do not use a `mandapa` block.**"
+> - "**Against v261: a stated list of what changed, and every changed program produces the same OUTPUT.**"
+
+This is the decisive text, for two reasons. First, it is the only statement that names the `mandapa` case explicitly — and it names it as the case 0 DIFFER does NOT cover. Second, it gives the rule's second half in operational form: a stated list, and same output for every changed program.
+
+**The design document — `docs/decisions/MEMORY-DESIGN.md:97`** (owner, 2026-10-29): "5. **Then implement, in that order, with the guard at 0 DIFFER for everything that does not change behaviour.**" Same qualification, same shape: 0 DIFFER for everything that does not change behaviour — which implies, by its own words, that a thing that DOES change behaviour is not in the 0-DIFFER claim.
+
+**AGENTS.md — the rule is not there.** `AGENTS.md` at the tip never states a 0-DIFFER rule. The closest line is `:56`, under "Sutram handoff and source discipline": "- Preserve the pure NASM compiler, native outputs, existing frozen baselines and agreed regression gates. Test what you claim, report failures and timing variance." "Agreed regression gates" is a reference to the gates, not a statement of the guard's rule. AGENTS.md is identical at the tip, on v319 and on v319+book. (AGENTS.md does state, in the "Evidence stays" paragraph, that "Cited evidence is not deleted" — which matters for §2.5: the differ-list is evidence, and the rule's second half depends on it staying.)
+
+**Where the guard is — and is not — enforced.** `tools/guard_pair.py` is **not invoked by `tools/gates.sh` and not invoked by any CI workflow** (grep for `guard_pair` in `.github/`, `tools/gates.sh` and `docs/` finds only the script itself and mentions of it). The "guard pages" gate in `gates.sh:198` is a different tool (`tools/guard_page.py`). The guard is a manual tool Claude runs, whose result is recorded in two places: the per-version line in `docs/CHANGELOG.md` ("Guard v314 -> v315: ELF and PE 587 identical / 196 refused / 0 DIFFER; refusal messages unchanged." — `docs/CHANGELOG.md:18`, and one such line per version back through the archive) and the evidence files in `Claude-to-Sarvam/`. So the rule is enforced by practice — a changelog line per version, plus the evidence — not by automation. An amendment to the rule would therefore be an amendment to a document (MEMORY-DECISION.md, and/or the guard's docstring), not a change to a gate.
+
+### 2.2 What the rule actually says — and what it does not say
+
+All three written statements say the same thing, in the same shape:
+
+| Statement | 0 DIFFER covers | The rest |
+|---|---|---|
+| `guard_pair.py:19-20` (Claude, R58) | "wherever the change was meant to leave programs alone" | (not stated — the script just reports DIFFER) |
+| `MEMORY-DECISION.md:102-108` (owner) | "programs that do not use a `mandapa` block" (against a post-Step-1 baseline) | "a stated list of what changed, and every changed program produces the same OUTPUT" (against v261) |
+| `MEMORY-DESIGN.md:97` (owner) | "everything that does not change behaviour" | (not stated) |
+
+None of them says "0 DIFFER, unconditionally, for every change, forever". Each carries the qualification that decides this round. The brief's "The project's rule is 0 DIFFER: no program's bytes may change" is the rule with the qualification removed — and the qualification is the whole rule: the decision document's section is headed "What '0 DIFFER' can and cannot mean" precisely because the bare phrase, read literally, would forbid the memory work it was written to govern. ("Steps 0 to 2 change how `nirmmita` allocates, so they WILL change emitted bytes for existing programs.")
+
+**The intent.** The brief states the intent correctly: "The rule exists so no working program changes behaviour by accident." All three written statements agree with that intent — and the intent is narrower than the letter of "0 DIFFER" in one direction and wider in another. Narrower: the intent is about *behaviour* ("no working program changes behaviour by accident"), not about *bytes*. A byte change with identical behaviour is not what the rule exists to catch. The guard reports bytes because bytes are the cheap, complete proof — "byte identity is the only complete, cheap proof that a change did nothing it was not meant to do" (Claude, R179 hand-back §2) — but the proof is a means, and the intent is the behaviour. Wider: the intent covers *accident*. A deliberate behaviour change is not an accident. The rule's own words already make room for it: the decision document's second bullet ("a stated list of what changed, and every changed program produces the same OUTPUT") is the form a deliberate change takes under the rule.
+
+**What the rule does NOT say.** It does not say that a non-zero DIFFER is a violation. It does not say that a change must wait for a version bump. It does not define "accounted for" — that phrase is the brief's, not the rule's. The rule's own words for the accounting are "a stated list of what changed" and "every changed program produces the same OUTPUT". The differ-list is the stated list; the differ-outputs run is the same-output check.
+
+One more distinction the rule forces: the guard reports DIFFER for *any* byte change, whether or not the output changes. The rule's second bullet cares about output ("every changed program produces the same OUTPUT"). So under the rule as written, a byte change with identical output and a byte change with different output are different things: the first satisfies the second bullet, the second does not — and needs a separate justification. That is exactly the split in the 38 (§2.4).
+
+### 2.3 Apply it to the 38
+
+The 38 differ because the change is deliberate (the exit zeroing / the floor) and contained (exactly the programs with a block). Verified first-hand, not taken from the hand-back:
+
+- All 38 files in `Claude-to-Sarvam/evidence-r175/differ-list.txt` contain a block: 37 contain the ASCII word `mandapa`, and the 38th (`tests/r72_mandapa/devanagari_with.sm`) uses the Devanagari keyword मण्डप ("# R72 pair 4 (with): the Devanagari keyword मण्डप.").
+- The corpus has 75 programs mentioning `mandapa` (counted with the guard's own globs, `tools/guard_pair.py:30`, on the v318 tree: 73 ASCII `mandapa` plus 2 Devanagari-only, `devanagari_with.sm` and `devanagari_without.sm`). The other 37 are not in the differ-list, and each is accounted for: 31 are escape / refusal tests (they are REFUSED at compile time — `REFUSED-SAME`, not DIFFER — e.g. `examples/264_r73_escape_arith.sm`, `examples/287_r82_kosh_after_mandapa.sm`, the `tests/r73_scratch/escape_*` set) and 6 mention `mandapa` only in a comment (`tests/r72_mandapa/flat_without.sm`, `loop_without.sm`, `nested_without.sm` — "with the mandapa line removed" — `tests/r72_mandapa/devanagari_without.sm`, `tests/r79_real/report_plain.sm`, "written the natural way, with no mandapa", and `examples/307_r105_string_join.sm`).
+- So the set that differs is exactly "the programs that compile and contain a `mandapa` block" — the same rule Claude states in the R179 hand-back ("How many guard programs differ: 38 — every program that compiles and has a `mandapa`"), verified here independently. And the guard's own counts agree: v319 is 587 byte-identical / 196 refused / 0 DIFFER; the step-2 run is 549 byte-identical / 196 refused / 38 DIFFER, 0 new (587 − 38 = 549 — the 38 come out of the compiling set, and the 196 refused are untouched).
+
+Under the decision document's first bullet ("0 DIFFER for programs that do not use a `mandapa` block"), the 38 are *outside* the 0-DIFFER claim by definition: they all use a `mandapa` block. The change was not "meant to leave [them] alone" (the guard's docstring) — it was meant to change exactly what a block does at its exit. And under the design document's wording ("0 DIFFER for everything that does not change behaviour"), the 38 are the programs whose behaviour the change *does* touch at the byte level — which is why the rule's second bullet, not its first, is the one that governs them.
+
+The second bullet requires two things: "a stated list of what changed, and every changed program produces the same OUTPUT." The stated list exists (`Claude-to-Sarvam/evidence-r175/differ-list.txt`, 38 lines, and `differ-outputs.txt` is the per-program accounting: "38 programs whose bytes differ: 37 print and exit exactly as on v315, 1 do not"). The set was also named beforehand by a rule a script can check ("compiles and contains a `mandapa`") — and §2.3 verifies the set that does differ equals that rule exactly, in every run, ELF and PE, against two baselines (v318 and v315), as the R175 evidence records. Same output: 37 of 38. `differ-outputs.txt` lists 37 "same output" entries (with byte counts and exit codes, e.g. `examples/266_r73_inside_only.sm (1034 -> 1087 bytes; exit 0)`) and 1 "OUTPUT DIFFERS" entry. So 37 programs satisfy the second bullet exactly as written. **The 38th does not satisfy the second bullet's letter.** Its output changes (99 → 0). That is the one place the rule as written bites — §2.4.
+
+**What "accounted for" would have to mean.** The rule's own words give the answer, and the evidence meets it: (a) a list — `differ-list.txt`, the stated list of what changed; (b) a checkable rule naming the set beforehand — "compiles and contains a `mandapa`", which §2.3 verifies the set equals exactly; (c) every program in it run old and new and compared — `differ-outputs.txt`, 37 same output and exit code; (d) every difference in behaviour explained one by one — the 38th, §2.4. That is the same four-part accounting Claude states in the R179 hand-back §2, and it is also the accounting the project has already accepted three times (§2.6). A waiver would be "38 DIFFER, accepted" with no list and no run; this is the opposite of that.
+
+### 2.4 The 38th program
+
+`tests/r73_scratch/blind_kosh_via_call.sm`, in full:
+
+```sm
+# R75: the one way a scratch address reaches a kosh unseen - through a prakriya that returns it.
+# A KNOWN LIMIT, pinned: this compiles, and prints 99 - the NEXT block's data, read through the kept address.
+# A future check that refuses it will fail this test; that is the point.
+prakriya adr(p)
+    nivartanam p
+mukhya()
+    kosh k[1]
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[0] = 42
+        kosh_push(k, adr(buf))
+    mandapa
+        vitti other = nirmmita(64)
+        other[0] = 99
+    vitti p = k[0]
+    likha(p[0], "\n")
+```
+
+Its pin is `tests/r73_scratch/test_scratch.py:30`: `'allowed_global_number': '42', 'blind_kosh_via_call': '99'`.
+
+**What it pins — and what it does not.** The program's own header says what it pins, and it is not the number 99. It pins that the program **compiles** and reads through a kept scratch address — a hole in the escape check (a scratch address that reaches a `kosh` through a `prakriya` the compiler cannot see into). "A future check that refuses it will fail this test; that is the point." The point is the refusal, not the value. The 99 is simply what a dangling address happened to read — the next block's data, written by the second block (`other[0] = 99`).
+
+This is a correction to ROUND-180 WS3's framing ("It asserted 99 and now gets 0 — it was checking the bug"), and Claude makes the same correction in the R179 hand-back §3: "I do not agree it 'was checking the bug'. It was written in R75 to pin a *different* thing: a scratch address that reaches a `kosh` through a `prakriya` the compiler cannot see into — a hole in the escape check. Its comment says so, and says that a future check which refuses the program will fail the test, 'and that is the point'. The 99 is simply what a dangling address happened to read. The zeroing changes what it reads; the hole it pins is still open on every branch."
+
+Verified against the program: the header's third line is the refusal sentence, and the second line's "prints 99" is stated as a consequence ("the NEXT block's data, read through the kept address"), not as the thing pinned. And the hole is still open: the zeroing does not refuse the program, does not close the escape check's blind spot, and does not make the address any less dangling — it only changes what the dangling address reads (0 instead of 99), because the second block's memory is now zeroed when the block is left.
+
+**Is its output change a behaviour change the rule exists to catch, or is it the bug being fixed?** Neither, exactly — and the distinction matters. It is **not** a behaviour change the rule exists to catch, because the rule exists to catch *accidental* behaviour change, and this change is the deliberate, intended effect of the fix: the zeroing is *supposed* to make the second block's memory read 0. The program reads through a dangling address; the fix changes what that address holds. There is no accident. It is **not** "the bug being fixed" either, in the sense WS3's framing suggests. The bug the program pins is the escape-check hole — and that hole is still open. What is fixed is a different thing: the stale-data defect (a later block reading the earlier block's bytes). The program happens to exhibit that defect (it reads 99, the earlier block's data, through a dangling address), so the fix changes its output — but the program was not written to check that defect, and fixing the defect does not close the hole it pins.
+
+The honest description is: **the output change is the fix working on a program that reads through a dangling address.** The program still pins the same hole (it still compiles, it still reads through the kept address), and the value it now reads (0) is the correct value for what the program does now (it reads zeroed memory). The pin must be updated — not because the program is fixed, but because the value it reads changed for a stated reason.
+
+**The pin update, as built.** On v320 (branch `r176-block-exit-zero` @ `9bb059ea`), the pin is `'0'` (`tests/r73_scratch/test_scratch.py:33`), and the program's own header was rewritten to say why:
+
+> "# R75: the one way a scratch address reaches a kosh unseen - through a prakriya that returns it."
+> "# A KNOWN LIMIT, pinned: this compiles, and reads through the kept address. Up to v318 it printed 99 - the NEXT block's data. From v320 (R175, R176) a block's memory is zeroed when the block is left, so it prints 0. The address is still dangling: had the read come while the second block was alive, it would have read that block's data."
+> "# A future check that refuses it will fail this test; that is the point."
+
+That is the right form for a pin update: the value changed, the reason is written into the program itself, the hole it pins is stated as still open, and the refusal sentence (the point of the pin) is untouched. The gate `R73 scratch` passes on that branch with 35 checks (per the R179 hand-back §3; not verified by running here — read-only round). On v319 the pin still asserts 99, and that is correct for v319, which still prints 99.
+
+**Does the differ-outputs entry change the answer?** Yes — it is what makes the answer *checkable* rather than asserted. The guard on its own reports DIFFER for any byte change, with no distinction between "same output" and "different output". The differ-outputs run is a second, separate check (run old and new, compare output and exit code) that the project applies on top of the guard — and it is the check the decision document's second bullet requires ("every changed program produces the same OUTPUT"). Without `differ-outputs.txt`, the 38 would be an unexamined number; with it, the 38 split into 37 (satisfying the rule's letter) and 1 (needing the §2.4 justification). The entry "OUTPUT DIFFERS" does not make the 38th a violation — it makes it *named*, which is what the rule's "stated list" requires. A byte change with identical output and a byte change with different output are different under the rule: the first satisfies the second bullet, the second needs the precedent's justification.
+
+### 2.5 The two options the brief names
+
+The brief: "If the rule says 0 unconditionally, then either the fix waits for a version bump or the rule needs amending — and which one is a decision, not a reading." The rule does not say 0 unconditionally (§2.2), so neither option is forced by the rule. But both are live as routes, and they mean different things in the repo's terms.
+
+**Option (a): the fix waits for a version bump.** A new compiler version is three things, all in the tree: the version string in the compiler (`src/sutram_compiler.asm:260`: `msg_version db "Sutram 1.0 (v315) - sampurna sutra", 10`) — bumped to v320 on the staged branch; the status line in the reference (`docs/LANGUAGE-REFERENCE.md:3`: "Status at compiler v315, 9 November 2026 (R163) — ... gates 81 PASS / 0 FAIL / 1 NOT-RUN") — rewritten per version; the per-version guard line in the changelog (`docs/CHANGELOG.md:18`: "Guard v314 -> v315: ELF and PE 587 identical / 196 refused / 0 DIFFER; refusal messages unchanged.") — one line per version pair, back through the archive.
+
+What would have to change for the guard to pass at the new version: nothing about the guard's mechanics. The guard is pairwise: `tools/guard_pair.py OLD_TREE OLD_COMPILER NEW_TREE NEW_COMPILER OUT_DIR` — there is no stored baseline, no version number in the tool, and no configuration that says "the baseline is v315". The "baseline" is whichever pair of trees you pass. So at v320, the guard is run v319 -> v320 (or v315 -> v320 — the same 38, since v319 is 0 DIFFER against v315), and it reads 38 DIFFER. The changelog records that line, with the differ-list. The *next* guard run (v320 -> v321) uses v320 as the old pair, so the 38 are never re-reported.
+
+Is that a real reset or a loophole? It is a real reset of the comparison — and the distinction is in the record. The guard can only detect change relative to its baseline, so it cannot detect the same change twice; that is the nature of a pairwise comparison, not a trick. It becomes a loophole only if the bump step's DIFFER is not recorded — if a version landed with 38 DIFFER and no changelog line, no differ-list, and no differ-outputs, the next comparison would silently absorb it. The project's safeguard against that is the record, not the number: every version has a changelog guard line, the differ-list and differ-outputs are evidence files, and AGENTS.md says "Cited evidence is not deleted". The v320 branch, as staged, carries the record (the differ-list and differ-outputs are in `Claude-to-Sarvam/evidence-r175/` at the tip, and the pin update is in the program's own header). So a bump is a real reset *provided* the step's differ-list is recorded — and the record is what has to be checked at the landing, not the count.
+
+**Option (b): the rule needs amending.** The concrete text on the table is Claude's, from the R179 hand-back §2 (his judgement, quoted here because the brief asks what an amendment would look like):
+
+> *"0 DIFFER outside the declared set; the declared set equals the differing set; every program in it run both ways."*
+
+with his reason: "A waiver is forgotten; a rule is checked." An amendment would be written into `docs/decisions/MEMORY-DECISION.md` (where the rule lives — the §"What '0 DIFFER' can and cannot mean" section) and/or into the guard's docstring (`tools/guard_pair.py:19-20`), replacing "expect 0 DIFFER wherever the change was meant to leave programs alone" with the declared-set form. It would also need the checkable part: the "declared set" must be a rule a script can check ("compiles and contains a `mandapa`"), not a sentence in a report — otherwise the amendment is a waiver with better wording.
+
+But note what an amendment would not do. The rule as written already contains the two-bullet structure that covers this case (§2.2) — so an amendment is not needed to make the 38 lawful. What an amendment would do is make the "declared set" machinery explicit and checkable, so the next deliberate change does not have to re-argue the same point from the decision document's prose. It would turn a reading into a procedure.
+
+**Which one is a decision — and who decides it.** Both routes need a decision, of different kinds, and neither is a reading. The amendment is the owner's to make. He wrote the rule (MEMORY-DECISION.md, 2026-10-29) and the design document's version of it (MEMORY-DESIGN.md, same day). Changing the words of a decision document he wrote is his. (Claude's R179 hand-back says "I did not write the rule and the decision is yours" — addressed to Sarvam; the authorship in the tree says the rule's words are the owner's. The two are not in conflict: Sarvam assigns the rounds and decides what lands as a round; the owner owns the repo's decision documents. An amendment to the decision document is the owner's; the landing decision is Sarvam's round plus the owner's merge.) The bump is a landing decision. Does v320 land with 38 DIFFER recorded, or does it wait? That is decided by whoever lands it — Sarvam assigning the round, the owner merging — on the basis of the reading in this report (the 38 are inside the rule as written) and the precedent (§2.6). It is not decided by the guard's exit code: the guard exits 1 on any DIFFER, and a human reads the list. That is the tool's design (the docstring's "the line that matters"), not a failure of it.
+
+**My answer to the brief's question, stated plainly:** the rule does not say 0 unconditionally, so neither option is forced. If the 38 land, they land under the rule as written (with the record), not under a waiver and not under an amended rule. An amendment is worth doing anyway — not to make the 38 lawful, but to make the next deliberate change checkable rather than arguable. That is a decision for the owner.
+
+### 2.6 Precedent: has the guard ever read non-zero DIFFER before, and what happened?
+
+Yes — many times, and in every case the pattern was the same: the set named (or discovered and stated), every differing program run old and new, the outputs compared, and the ones that changed explained one by one. **No non-zero DIFFER was ever reverted for the count alone.** The table below is from the evidence files in `Claude-to-Sarvam/`, not from the briefs.
+
+| Round / version | Guard | What differed | Output | What happened |
+|---|---|---|---|---|
+| R65 Step 1, v263 (`8e6ae35`) | 248 programs changed bytes — every program that allocates | the allocator (contiguous bump) | 247 of 248 same output; 1 changed | **Landed as v263.** The 1 differing program (`examples/217_r12_report.sm`) was investigated, not excused: "One program differing is acceptable only if the program was already wrong." It was — it wrote 16 bytes past its block on v261 too ("The old allocator only gave it somewhere harmless to land"). |
