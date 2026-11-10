@@ -1,0 +1,7 @@
+mukhya() {
+    chakra i = 1 tak 5 {
+        kosh k[1]
+        kosh_kship(k, i)
+        k_set(k, 0, 5)
+    }
+}

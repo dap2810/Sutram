@@ -1,0 +1,12 @@
+a v315: prints: 99  0  
+a v318: prints: 99  0  
+b1 v315: prints: 1 5 
+b1 v318: prints: 1 5 
+b1x v315: REFUSED: b1x.sm:5:14: Sutram truti [E_DUPLICATE_NAME]: punah ghoshana 'row'           mala row[2] 
+b1x v318: REFUSED: b1x.sm:5:14: Sutram truti [E_DUPLICATE_NAME]: punah ghoshana 'row'           mala row[2] 
+b2 v315: REFUSED: Sutram truti [E_VITTI_PRAKAR]: 'out' sankhya (smriti-sthanam va) asti; mala tasyam na sthapyate Sanket: ekasya vitteh prakarah sthirah - kosh, mala, vibhag athava sankhya; bhinnaya prakaraya anyam vit
+b2 v318: REFUSED: Sutram truti [E_VITTI_PRAKAR]: 'out' sankhya (smriti-sthanam va) asti; mala tasyam na sthapyate Sanket: ekasya vitteh prakarah sthirah - kosh, mala, vibhag athava sankhya; bhinnaya prakaraya anyam vit
+b3 v315: prints: 1 5 
+b3 v318: prints: 1 5 
+b4 v315: prints: 1 5 
+b4 v318: prints: 1 5 

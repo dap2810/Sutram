@@ -1,0 +1,25 @@
+mukhya() {
+    vitti s = 0
+    vitti bad = 0
+    chakra j = 1 tak 1000 {
+        mandapa {
+            kosh k[1]
+            chakra i = 1 tak 200 {
+                kosh_kship(k, i + j)
+            }
+            vitti t = nirmmita(4096)
+            chakra i = 0 tak 511 {
+                t[i] = 0 - 1
+            }
+            chakra i = 0 tak 199 {
+                yadi (k[i] != i + 1 + j) {
+                    bad = bad + 1
+                }
+            }
+            s = s + kosh_gan(k)
+        }
+        vitti u = nirmmita(64)
+        u[0] = 0 - 1
+    }
+    likha("c1 kosh in a mandapa in a chakra (not made once): wrong elements ", bad, ", lengths summed ", s, "\n")
+}

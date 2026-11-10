@@ -1,0 +1,7 @@
+mukhya() {
+    chakra i = 1 tak 5 {
+        mala m[4]
+        m[0] = i
+        k_set(m, 0, 5)
+    }
+}

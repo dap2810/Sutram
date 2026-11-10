@@ -1,0 +1,19 @@
+vitti rakha = 0
+vitti pratham = 0
+prakriya rakh(r) {
+    yadi (pratham == 0) {
+        pratham = r
+    }
+    rakha = r
+    nivartanam 0
+}
+mukhya() {
+    chakra i = 1 tak 5 {
+        mala row[2]
+        row[0] = i
+        rakh(row)
+    }
+    vitti a = pratham
+    vitti e = rakha
+    likha(a[0], " ", e[0], "\n")
+}

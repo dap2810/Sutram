@@ -1,0 +1,9 @@
+mukhya() {
+    chakra i = 1 tak 2 {
+        mala row[2]
+        yadi (i == 1) {
+            row[1] = 99
+        }
+        likha(row[1], "\n")
+    }
+}

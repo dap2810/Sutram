@@ -1,0 +1,6 @@
+[v315] c1 kosh in a mandapa in a chakra (not made once): wrong elements 0, lengths summed 200000 
+[v318] c1 kosh in a mandapa in a chakra (not made once): wrong elements 0, lengths summed 200000 
+[v315] c2 kosh made once in a chakra, two mandapa run and end in every pass: wrong elements 0, lengths summed 200000 held 2080000  
+[v318] c2 kosh made once in a chakra, two mandapa run and end in every pass: wrong elements 0, lengths summed 200000 held 2080  
+[v315] c3 the chakra is inside a mandapa, the kosh made once, scratch taken in every pass: wrong elements 0, lengths summed 200000 
+[v318] c3 the chakra is inside a mandapa, the kosh made once, scratch taken in every pass: wrong elements 0, lengths summed 200000 

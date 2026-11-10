@@ -1,0 +1,13 @@
+mukhya() {
+    vitti out = 0
+    vitti first = 0
+    chakra i = 1 tak 5 {
+        mala row[2]
+        row[0] = i
+        out = row
+        yadi (i == 1) {
+            first = out
+        }
+    }
+    likha(first[0], " ", out[0], "\n")
+}

@@ -1,0 +1,10 @@
+d1 (a kosh given, as a bare statement, to a prakriya that stores it in a module vitti): Sutram truti [E_KOSH_DVARA]: kosh 'q' vaishvika-vittau na sthapyate
+d2 (a kosh given, as a bare statement, to a prakriya that only reads it): Siddh: 2383 baait sankalit
+made-once code in the output: kosh 0, mala 0
+15 240
+d3 (k_set(k, 0, 5) - a foreign function, bare statement; --ffi --object): Siddh: 1489 baait sankalit
+made-once code in the output: kosh 0, mala 0
+d4 (k_set(m, 0, 5) - a foreign function, bare statement; --ffi --object): Siddh: 509 baait sankalit
+made-once code in the output: kosh 0, mala 0
+d0 (control: k_nothing() called, the kosh not given to it; --ffi --object): Siddh: 1650 baait sankalit
+made-once code in the output: kosh 1, mala 0

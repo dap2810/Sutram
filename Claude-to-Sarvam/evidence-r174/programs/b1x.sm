@@ -1,0 +1,11 @@
+mukhya() {
+    mala row[2]
+    kosh table[10]
+    chakra i = 1 tak 5 {
+        mala row[2]
+        row[0] = i
+        kosh_kship(table, row)
+    }
+    vitti a = table[0]
+    likha(a[0], "\n")
+}
