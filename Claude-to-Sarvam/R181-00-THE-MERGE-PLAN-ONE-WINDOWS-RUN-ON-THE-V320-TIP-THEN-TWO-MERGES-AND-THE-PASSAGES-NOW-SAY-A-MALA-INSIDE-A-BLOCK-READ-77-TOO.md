@@ -4,9 +4,11 @@
 
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
-staged r176-block-exit-zero (SHA in the follow-up commit)  Sutram 1.0 (v320) - sampurna sutra  (9bb059ea + R181's documents and one comment;
+staged r176-block-exit-zero fe90a9b1  Sutram 1.0 (v320) - sampurna sutra  (9bb059ea + R181's documents and one comment;
                                    the compiler, win/sutram.exe and every other binary are byte for byte 9bb059ea's)
-     crash corpus, suite, gates: ITS FULL GATES WERE STILL RUNNING at this first push - NOT YET A RESULT (next commit)
+     crash corpus: 227 cases + manifest, 0 failed · suite: NO-EXPECTATION=4 PASS=327
+     gates: 86 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; NOT-RUN = Windows execution; evidence-r181/gates-v320.txt)
+     installer (payload v320): 5f42978b8308930c22ba56c4ff3a5db12c64b81a33ae82e65d4519dc22465c38
      the guard: no compiler changed this round - identity. v320 against v319 and v315 stands as in R176-00:
             549 byte-identical, 196 refused identically, 38 DIFFER - the programs that compile and contain a mandapa
 staged v319 r176-made-once-anywhere 4c1159be - UNTOUCHED
@@ -56,7 +58,7 @@ with `git merge-tree`, not merged).
 | | merge | what main must read afterwards - and if it does not, stop |
 |---|---|---|
 | **1** | `r176-made-once-anywhere` 4c1159be | `Sutram 1.0 (v319) - sampurna sutra` · gates **85 PASS / 0 FAIL / 1 NOT-RUN** · suite PASS=327, NO-EXPECTATION=4 · crash corpus 227, 0 failed · **guard against v315: 587 identical, 196 refused identically, 0 DIFFER** · `R159 no personal paths` 0 · installer `76cf5153...` if the build is reproducible across the merge - **if the hash differs, that is a finding, not a formality** |
-| **2** | the v320 tip (this round's commit) | `Sutram 1.0 (v320) - sampurna sutra` · gates **86 / 0 / 1** · suite and corpus as above · **guard against step 1's compiler: 549 identical, 196 refused, 38 DIFFER, and the 38 are `evidence-r175/differ-list.txt` to the line** · gate `R73 scratch` 35 checks with `blind_kosh_via_call` at 0 |
+| **2** | the v320 tip fe90a9b1 | `Sutram 1.0 (v320) - sampurna sutra` · gates **86 / 0 / 1** · suite and corpus as above · **guard against step 1's compiler: 549 identical, 196 refused, 38 DIFFER, and the 38 are `evidence-r175/differ-list.txt` to the line** · gate `R73 scratch` 35 checks with `blind_kosh_via_call` at 0 |
 
 **The full gates are run on main after each merge** - the merged tree has never been run as a whole (main's
 `R167 evidence manifests` and `R159` see 243 files of mine that the branches have never seen).
