@@ -1,0 +1,89 @@
+noret :: 0
+prakriya f(a) {
+    vitti b = a * 3
+}
+mukhya() {
+    likha(f(5), "\n")
+}
+===
+noret_some :: 7 0
+prakriya f(a) {
+    yadi (a > 0) {
+        nivartanam 7
+    }
+}
+mukhya() {
+    likha(f(1), " ", f(0), "\n")
+}
+===
+noret_loop :: 0
+prakriya f(n) {
+    vitti s = 0
+    chakra i = 1 tak n {
+        s = s + i
+    }
+}
+mukhya() {
+    likha(f(4), "\n")
+}
+===
+ret_ok :: 15
+prakriya f(a) {
+    nivartanam a * 3
+}
+mukhya() {
+    likha(f(5), "\n")
+}
+===
+krama_out :: refused E_AVARTAN_VINA
+M:krama;likha(1, "\n")
+===
+agrim_out :: refused E_AVARTAN_VINA
+M:agrim;likha(1, "\n")
+===
+krama_fn :: refused E_AVARTAN_VINA (the loop is in the caller)
+prakriya f(a) {
+    krama
+    nivartanam 7
+}
+mukhya() {
+    chakra i = 1 tak 2 {
+        likha(f(1), "\n")
+    }
+}
+===
+krama_in :: 1 2
+M:chakra i = 1 tak 5 {;yadi (i == 3) {;krama;};likha(i);}
+===
+agrim_yavat :: 1 3
+M:vitti i = 0;yavat (i < 3) {;i = i + 1;yadi (i == 2) {;agrim;};likha(i);}
+===
+mala_neg_const :: refused E_MALA_PARIMAN
+M:mala m[-3];likha(1, "\n")
+===
+mala_neg_run :: a named stop E_MALA_PARIMAN
+M:vitti n = 0 - 1;mala m[n];likha(1, "\n")
+===
+mala_huge :: a named stop E_MALA_PARIMAN
+M:vitti n = 2000000000;mala m[n];m[0] = 1;likha(m[0], "\n")
+===
+mala_huge_const :: a named stop E_MALA_PARIMAN
+M:mala m[2000000000];m[0] = 1;likha(m[0], "\n")
+===
+mala_big_ok :: 1
+M:vitti n = 100000000;mala m[n];m[n - 1] = 1;likha(m[n - 1], "\n")
+===
+mala_zero :: 1
+M:mala m[0];likha(1, "\n")
+===
+mala_likha :: refused E_MALA_LIKHA
+M:mala m[2];likha(m, "\n")
+===
+mala_likha_elem :: 0
+M:mala m[2];likha(m[0], "\n")
+===
+kosh_cond :: refused E_KOSH_SATYA
+M:kosh k[1];yadi (k) {;likha("yes\n");}
+===
+kosh_cond_ok :: empty
+M:kosh k[1];yadi (kosh_gan(k) > 0) {;likha("yes\n");} anya {;likha("empty\n");}

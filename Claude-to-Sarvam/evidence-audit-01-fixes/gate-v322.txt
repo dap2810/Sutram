@@ -1,0 +1,24 @@
+ok    noret-value: a prakriya without nivartanam returns 0, not the last value computed - prints '0'
+ok    noret-statement: the same when its last statement is a likha - prints 'in f\n0'
+ok    noret-loop: the same when it ends with a loop - prints '0'
+ok    noret-some-paths: nivartanam on one path only: the other path returns 0 - prints '7 0'
+ok    ret-as-before: a prakriya that ends with nivartanam is as before - prints '15'
+ok    krama-outside: krama as a statement of mukhya - refused when compiled, E_AVARTAN_VINA
+ok    agrim-outside: agrim as a statement of mukhya - refused when compiled, E_AVARTAN_VINA
+ok    krama-under-yadi: krama under a yadi with no loop around it - refused when compiled, E_AVARTAN_VINA
+ok    krama-in-callee: krama in a prakriya called from inside a loop: the loop is not its own - refused when compiled, E_AVARTAN_VINA
+ok    krama-in-chakra: krama inside a chakra is as before - prints '1\n2'
+ok    agrim-in-yavat: agrim inside a yavat is as before - prints '1\n3'
+ok    mala-negative-number: mala m[-3] - refused when compiled, E_MALA_PARIMAN
+ok    mala-negative-computed: a computed negative length - stops with E_MALA_PARIMAN, exit 1 (got exit 1)
+ok    mala-16-gb-computed: a computed length of 2,000,000,000 (16 GB) - stops with E_MALA_PARIMAN, exit 1 (got exit 1)
+ok    mala-16-gb-number: mala m[2000000000] - stops with E_MALA_PARIMAN, exit 1 (got exit 1)
+ok    mala-zero: mala m[0] is as before - prints '1'
+ok    mala-computed-ok: a computed length that is fine - prints '7'
+ok    likha-mala: likha(m) - refused when compiled, E_MALA_LIKHA
+ok    likha-mala-second: a mala as a later value of likha - refused when compiled, E_MALA_LIKHA
+ok    likha-element: likha(m[0]) is as before - prints '4'
+ok    kosh-condition: yadi (k) - refused when compiled, E_KOSH_SATYA
+ok    kosh-yavat: yavat (k) - refused when compiled, E_KOSH_SATYA
+ok    kosh-length-condition: yadi (kosh_gan(k) > 0) is as before - prints 'empty'
+audit01 fixes: 23 checks, 0 failed

@@ -1,0 +1,8 @@
+dp_untyped         expect [2.5]  got [2]
+dp_typed           expect [2.5]  got [2.500000]
+dp_untyped_frac    expect [1.85 (3.7 / 2)]  got [exit 1: Sutram truti [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati]
+dp_literal         expect [1.25]  got [exit 1: Sutram truti [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati]
+dp_return_into_dasham expect [1.85]  got [exit 1: Sutram truti [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati]
+dp_identity        expect [3.7]  got [exit 1: Sutram truti [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati]
+dp_add             expect [4.7]  got [exit 1: Sutram truti [E_DASHAM_VITTI]: dashama-phalam purnanka-seemayam na bhavati]
+dret_typed         expect [0.5]  got [0.500000 |  0.500000 |  1.500000]

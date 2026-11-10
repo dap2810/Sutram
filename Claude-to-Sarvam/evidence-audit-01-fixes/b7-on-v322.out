@@ -1,0 +1,6 @@
+mala_n_neg1        expect [named stop]  got [exit 1: Sutram truti [E_MALA_PARIMAN]: mala-parimanam ayogyam - rinam ati-mahat va, athava smritih na labdha]
+mala_n_const_neg   expect [refused]  got [REFUSED: mala_n_const_neg.sm: Sutram truti [E_MALA_PARIMAN]: mala-parimanam rinam na bhavati]
+mala_n_big_ok      expect [1 (800 MB)]  got [1]
+mala_n_2e9         expect [named stop]  got [exit 1: Sutram truti [E_MALA_PARIMAN]: mala-parimanam ayogyam - rinam ati-mahat va, athava smritih na labdha]
+noret_mukhya_use   expect [value of a prakriya whose last statement is a loop]  got [0]
+krama_in_yadi_no_loop expect [refused]  got [REFUSED: krama_in_yadi_no_loop.sm:4:5: Sutram truti [E_AVARTAN_VINA]: krama agrim cha avartanasya antah eva bhavatah - ]
