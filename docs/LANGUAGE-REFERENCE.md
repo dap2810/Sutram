@@ -1,6 +1,6 @@
-> **Status at compiler v321, 11 November 2026 (R182) - staged, not merged: v321 refuses a character the language does not know (v320: a block's memory is zeroed at its exits) — read this before the page below.**
+> **Status at compiler v322, 11 November 2026 (AUDIT-01) - staged, not merged: v322 closes five defects of the owner's audit (v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v321) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **87 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v321 (R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v322) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **88 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v322 (AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -468,6 +468,10 @@ A program with no string comparison compiles to the same bytes as before (the gu
 |---|---|
 | a string as a whole condition: `yadi (s)`, `yavat (s)`, `s && x`, `s ? a : b` - every string, even `""`, was true | **`E_VARTANI_SATYA`** `vartani satyam asatyam va na bhavati` - write `yadi (s != "")` |
 | a `kosh` as an operand: `a == b` on two koshes (0 for two equal ones), `k + 1` | **`E_KOSH_GANIT`** `kosh-upari ganitam tulana va na sambhavati` - compare `k[i]` or `kosh_len(k)` |
+| a `kosh` as a whole condition (v322, AUDIT-01): `yadi (k)`, `yavat (k)` - every `kosh`, an empty one too, was true | **`E_KOSH_SATYA`** `kosh satyam asatyam va na bhavati` - write `yadi (kosh_gan(k) > 0)` |
+| `likha(m)` with a `mala` among its values (v322) - it printed the `mala`'s address | **`E_MALA_LIKHA`** - print `m[i]` |
+| `krama` or `agrim` outside every loop of its `prakriya` (v322) - it compiled and did nothing | **`E_AVARTAN_VINA`** |
+| `mala m[-3]` (v322) - it compiled and the program crashed; a computed length that is negative or cannot be had stops the program with the same code | **`E_MALA_PARIMAN`** |
 | a `mala` as an operand (v290): `a == b` on two mala, `a + 1` | **`E_MALA_GANIT`** `mala-upari ganitam tulana va na sambhavati` - compare `a[i]` (`examples/319`) |
 | a `rachana` reference as an operand (v293): `p == q`, `p != q`, `p < q`, `p + q`, `p asti q` - a name whose field the `prakriya` reads or writes (`p.x`), or a method's first parameter | **`E_RACHANA_GANIT`** `rachana-upari ganitam tulana va na sambhavati` - compare `p.x` (`examples/328`) |
 

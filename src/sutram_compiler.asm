@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v321) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v322) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -726,6 +726,19 @@ r54_builtin_arity_table:
     r73_msg_escape_mem db "Sutram truti [E_SCRATCH_ESCAPE]: asthayi smriti bahir na gacchati - mandapa-madhye nirmitam sthanam smritau na likhyate", 10
     db "Sanket: ayam parikshah prakriya-ahvane kosh-madhye va gacchantam sthanam na pashyati", 10, 0
     r73_msg_full db "Sutram truti: kshetra purnam - mandapa-smritih samapta", 10, 0
+    ; AUDIT-01 (the owner's audit, 10 November 2026)
+    a1_hdr_loop  db ": Sutram truti [E_AVARTAN_VINA]: ", 0
+    a1_txt_loop  db "krama agrim cha avartanasya antah eva bhavatah - atra avartanam na asti", 10, 0
+    a1_hint_loop db "Sanket: chakra athava yavat madhye likhyatam; prakriyam tyaktum nivartanam", 10, 0
+    a1_hdr_ksat  db ": Sutram truti [E_KOSH_SATYA]: ", 0
+    a1_txt_ksat  db "kosh satyam asatyam va na bhavati - riktah kosh api satya iva", 10, 0
+    a1_hint_ksat db "Sanket: yadi (kosh_gan(k) > 0) athava kosh_rikt(k) iti likhyatam", 10, 0
+    a1_hdr_mlik  db ": Sutram truti [E_MALA_LIKHA]: ", 0
+    a1_txt_mlik  db "mala likha-dvara na mudryate - tasya sthanam mudritam syat, na sankhyah", 10, 0
+    a1_hint_mlik db "Sanket: sankhyah m[i] ityena mudrayatu", 10, 0
+    a1_hdr_mpar  db ": Sutram truti [E_MALA_PARIMAN]: ", 0
+    a1_txt_mpar  db "mala-parimanam rinam na bhavati", 10, 0
+    a1_run_mpar  db "Sutram truti [E_MALA_PARIMAN]: mala-parimanam ayogyam - rinam ati-mahat va, athava smritih na labdha", 10, 0
     ; R75: a negative size. Written as a number, refused when compiled; computed, refused
     ; when a mandapa's nirmmita runs (it would otherwise give 0).
     r75_msg_neg_lit db "Sutram truti [E_NIRMMITA_RNA]: nirmmita-parimanam rnatmakam - rnam parimanam na sambhavati", 10
@@ -1624,6 +1637,7 @@ section .bss
     r173_mala   resq 1                      ; R173: the scan is for a mala (the name only as an index base)
     r173_p      resq 3                      ;   the three jumps to the allocation
     r175_root   resq 1                      ; R175: the loop whose declarations are being looked at
+    a1_mala_checked resq 1                  ; AUDIT-01: this mala's length is checked when the program runs
     r107_kosh_hit resq 1                    ; R107: the last tainted name met was a kosh made in a block
     r107_knames resq 256                    ; R107: those kosh names
     r107_kn     resq 1
@@ -9528,7 +9542,18 @@ rfx_check_truth:
     pop rdi
     cmp eax, 1
     je .bad
+    push rdi                       ; AUDIT-01: a bare kosh as a condition - every kosh, an empty one too,
+    call rfx_is_kosh_operand       ; is a non-zero address, so it always read as true
+    pop rdi
+    test rax, rax
+    jnz .kosh
     ret
+.kosh:
+    xor edi, edi
+    lea rsi, [rel a1_hdr_ksat]
+    lea rdx, [rel a1_txt_ksat]
+    lea rcx, [rel a1_hint_ksat]
+    jmp r80_compile_error
 .bad:
     xor edi, edi
 rfx_truth_error:
@@ -11382,6 +11407,204 @@ r172_is_name:
     pop rsi
     pop rdx
     pop rcx
+.r:
+    ret
+
+; ---------------------------------------------------------------- AUDIT-01: five defects of the owner's audit
+; a1_need_loop: at the word krama / agrim (the current token). Outside every loop of this prakriya the
+; word compiled and did nothing; now it is refused there. Preserves every register when it returns.
+a1_need_loop:
+    push rcx
+    mov rcx, [rel r73_loopn]
+    cmp rcx, [rel r73_loopbase]
+    pop rcx
+    ja .ok
+    mov rax, [rel token_idx]
+    imul rax, rax, TOKEN_SIZE
+    lea rcx, [rel token_arr]
+    mov rdi, [rax + rcx + 32]
+    lea rsi, [rel a1_hdr_loop]
+    lea rdx, [rel a1_txt_loop]
+    lea rcx, [rel a1_hint_loop]
+    jmp r80_compile_error
+.ok:
+    ret
+
+; a1_check_likha_mala(rbx = AST_CALL): likha with a bare mala among its values is refused.
+a1_check_likha_mala:
+    cmp qword [rbx+8], BN_LIKHA
+    jne .r
+    push rax
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r12
+    xor r12d, r12d
+.l:
+    cmp r12, [rbx+16]
+    jae .out
+    cmp r12, 6
+    jae .out
+    mov rdi, [rbx + 24 + r12*8]
+    call rfx_is_mala_operand
+    test rax, rax
+    jnz .bad
+    inc r12
+    jmp .l
+.bad:
+    xor edi, edi
+    lea rsi, [rel a1_hdr_mlik]
+    lea rdx, [rel a1_txt_mlik]
+    lea rcx, [rel a1_hint_mlik]
+    jmp r80_compile_error
+.out:
+    pop r12
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+    pop rax
+.r:
+    ret
+
+; a1_emit_fall_off(rbx = the prakriya's node, [rbx+24] its body): generated code at the end of the body.
+; A prakriya that is not a phal-prakriya and whose last statement is not nivartanam returns 0 there:
+; xor eax,eax. (Up to v321 it returned whatever the last instruction had left in rax.) A body that ends
+; with nivartanam gets nothing, and the same bytes as before.
+a1_emit_fall_off:
+    push rax
+    push rdi
+    mov rdi, [rel r25_cur_func]
+    call r25_is_phal
+    test rax, rax
+    jnz .done                      ; r25_emit_fall_off has done it
+    mov rax, [rbx+24]
+    test rax, rax
+    jz .emit
+    cmp qword [rax], AST_RETURN
+    je .done
+    cmp qword [rax], AST_BLOCK
+    jne .emit
+    mov rdi, [rax+8]
+    test rdi, rdi
+    jz .emit
+    mov rax, [rax + 16 + rdi*8 - 8]
+    test rax, rax
+    jz .emit
+    cmp qword [rax], AST_RETURN
+    je .done
+.emit:
+    mov dil, 0x31
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+.done:
+    pop rdi
+    pop rax
+    ret
+
+; a1_mala_len_check(rbx = the mala's AST_DECL): generated code, the length is in rax.
+; A length written as a number from 0 to 2^27 - 1 needs no code (the same bytes as before); written as a
+; negative number it is refused when compiled; anything else is checked when the program runs:
+;   mov rcx,R128_MAXCAP ; cmp rax,rcx ; jbe .ok ; <message, exit 1> ; .ok:     (a negative length is above it)
+a1_mala_len_check:
+    mov qword [rel a1_mala_checked], 0
+    push rax
+    mov rax, [rbx+24]
+    test rax, rax
+    jz .run
+    cmp qword [rax], AST_NUM
+    jne .run
+    mov rax, [rax+8]
+    test rax, rax
+    js .neg
+    cmp rax, 0x07FFFFFF
+    jbe .none
+.run:
+    pop rax
+    mov qword [rel a1_mala_checked], 1
+    mov dil, 0x48                  ; mov rcx, imm64
+    call emit_byte
+    mov dil, 0xB9
+    call emit_byte
+    mov rdi, R128_MAXCAP
+    call emit_u32
+    mov rdi, R128_MAXCAP >> 32
+    call emit_u32
+    mov dil, 0x48                  ; cmp rax,rcx
+    call emit_byte
+    mov dil, 0x39
+    call emit_byte
+    mov dil, 0xC8
+    call emit_byte
+    mov dil, 0x0F                  ; jbe .ok (rel32)
+    call emit_byte
+    mov dil, 0x86
+    call emit_byte
+    jmp a1_emit_mala_stop
+.none:
+    pop rax
+    ret
+.neg:
+    pop rax
+    xor edi, edi
+    lea rsi, [rel a1_hdr_mpar]
+    lea rdx, [rel a1_txt_mpar]
+    xor ecx, ecx
+    jmp r80_compile_error
+
+; a1_mala_got_check: generated code after the allocation, rax = the block or 0. Only where the length was
+; checked at run time:  test rax,rax ; jnz .ok ; <message, exit 1> ; .ok:
+a1_mala_got_check:
+    cmp qword [rel a1_mala_checked], 0
+    je a1_emit_mala_stop.r
+    mov dil, 0x48                  ; test rax,rax
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+    mov dil, 0xC0
+    call emit_byte
+    mov dil, 0x0F                  ; jnz .ok (rel32)
+    call emit_byte
+    mov dil, 0x85
+    call emit_byte
+; the rel32 of a jump to .ok is next; then the message and exit(1); .ok is patched to follow.
+a1_emit_mala_stop:
+    push rbx
+    push r12
+    mov r12, [rel code_sz]
+    xor edi, edi
+    call emit_u32
+    call alloc_ast
+    mov qword [rax], AST_STR
+    lea rcx, [rel a1_run_mpar]
+    call r11_tr_rcx
+    mov [rax+8], rcx
+    push rax
+    call alloc_ast
+    pop rcx
+    mov qword [rax], AST_CALL
+    mov qword [rax+8], BN_LIKHA
+    mov qword [rax+16], 1
+    mov [rax+24], rcx
+    push qword [rel lk_no_nl]
+    mov qword [rel lk_no_nl], 0
+    call gen_expr
+    pop qword [rel lk_no_nl]
+    mov dil, 0xB8                  ; mov eax,60 ; mov edi,1 ; syscall
+    call emit_byte
+    mov edi, 60
+    call emit_u32
+    mov dil, 0xBF
+    call emit_byte
+    mov edi, 1
+    call emit_u32
+    call emit_syscall
+    mov rdi, r12
+    call r73_patch32
+    pop r12
+    pop rbx
 .r:
     ret
 
@@ -16341,6 +16564,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
 
 .ps_krama:
     ; krama  — break out of loop
+    call a1_need_loop         ; AUDIT-01: outside any loop it is refused (it compiled, and did nothing)
     call advance_tok          ; consume 'krama'
     call maybe_semi
     push 0
@@ -16354,6 +16578,7 @@ r45_parse_stmt_body:                ; R45: parse_stmt is the wrapper in src/r45_
 
 .ps_uddeshya:
     ; uddeshya  — continue to next loop iteration
+    call a1_need_loop         ; AUDIT-01: as krama
     call advance_tok          ; consume 'uddeshya'
     call maybe_semi
     push 0
@@ -19460,6 +19685,7 @@ gen_all_functions:
     mov rax, [rbx+24]        ; body block node
     call gen_block
     call r25_emit_fall_off    ; R25: the end of a phal-prakriya is siddhi(0)
+    call a1_emit_fall_off     ; AUDIT-01: the end of any other prakriya is 0, not what was last computed
     ; Emit function epilogue: lea rsp,[rbp-8]; pop rbx; pop rbp; ret
     mov dil, 0x48             ; lea rsp, [rbp-8]
     call emit_byte
@@ -20141,6 +20367,7 @@ r142_gen_stmt_body:
     ; This removes compile-time name collisions and preserves dynamic lengths.
     mov rax, [rbx+24]        ; size expression
     call gen_expr             ; runtime length -> rax
+    call a1_mala_len_check    ; AUDIT-01: a negative or impossible length stops with a message, not SIGSEGV
     call r173_mala_begin      ; R173: made in an earlier pass of its chakra with this length - that one, zeroed
     ; push length while allocation is emitted
     mov dil, 0x50
@@ -20164,6 +20391,7 @@ r142_gen_stmt_body:
     mov dil, 0x03
     call emit_byte
     call emit_nirmmita_from_rax
+    call a1_mala_got_check    ; AUDIT-01: no memory for it - the same message
     ; pop length -> rcx; store header at allocation base
     mov dil, 0x59
     call emit_byte
@@ -22801,6 +23029,7 @@ r142_gen_expr_body:
     ; gen_expr emits CODE that leaves the value in rax at runtime.
     ; We emit push/pop to save args between evaluations.
     call r126_check_builtin  ; R126: a kosh only as a kosh builtin's first argument
+    call a1_check_likha_mala ; AUDIT-01: likha(m) printed a mala's address
     push r12
     mov r12, [rbx+8]         ; builtin id
     cmp r12, BN_VYOJ         ; R105: string + string

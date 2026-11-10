@@ -1,5 +1,24 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v302 (Claude, R127) - a `kosh` is a descriptor: two names stay one, and no region per `kosh`
+
+- **A `kosh` value is now a descriptor that never moves:** its length and capacity where they always were
+  (`[d-16]`, `[d-8]`), and at `[d]` the address of its elements. `k[i]`, `kosh_kship`, `kosh_hri`, `kosh_iksh`,
+  `kosh_apanay`, a slice of a `kosh`, and a `kosh` given to a foreign `ptr` parameter go through it. **Growth moves
+  the elements and updates `[d]`, so every name of the `kosh` sees it** - `vitti a = k` stays `k` at 4,194,305
+  numbers and at 20,000,000 (v301 parted them at 4,194,305).
+- **No 64 MiB region per `kosh`:** a small `kosh` is 32 bytes and its elements in the arena (20,000 koshes: one
+  `mmap`, 3 ms, was 20,000 `mmap`s and 99 ms; 1,000 under a 300 MB address limit, which v301 could not make). A
+  `kosh` past 64 KiB of elements gets a region of at least 64 MiB, reserved not committed, grows in place in it,
+  and moves to a larger one through the descriptor when it outgrows it; **the old region is given back**
+  (`munmap`; on Windows `VirtualFree`, a new import of the runtime).
+- **No memory for a `kosh` or its growth: a message and exit 1** (it was a write through 0, SIGSEGV). **A slice of
+  a `kosh` kept in a name is refused, `E_KOSH_VIBHAG`** (a growth would leave it behind); passing `k[a:b]` on
+  is unchanged. Reads cost the same (200 million `k[i]`: 601 ms on v301, 552 on v302).
+- Muse R127's eight defect programs are goldens (`examples/351`-`359`); `examples/317` / `318` print the new
+  `parimana()` byte counts. Every program without a `kosh` compiles to the same ELF bytes; every PE program
+  differs (the runtime), with the same output. Gate `R127 descriptor`.
+
 ## v301 (Claude, R126) - a name keeps one kind; the three defects R125 found are refused
 
 - **A name keeps the kind its first binding gave it, for the whole `prakriya`:** `kosh`, `kosh dasham`, `mala`,

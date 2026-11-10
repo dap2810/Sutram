@@ -1,9 +1,9 @@
 > **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
 > unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
 
-> **Status at compiler v321, 11 November 2026 (R182) - staged, not merged: v321 refuses a character the language does not know (v320: a block's memory is zeroed at its exits) — read this before the page below.**
+> **Status at compiler v322, 11 November 2026 (AUDIT-01) - staged, not merged: v322 closes five defects of the owner's audit (v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v321) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **87 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v321 (R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v322) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **88 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v322 (AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -167,7 +167,7 @@ build everything and run it, and its output is the truth about the tree:
 
 | Metric | Value |
 |---|---|
-| Gates (`tools/gates.sh`) | **87 PASS, 0 FAIL, 1 NOT-RUN** (v321; the installer carries v321; NOT-RUN: Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
+| Gates (`tools/gates.sh`) | **88 PASS, 0 FAIL, 1 NOT-RUN** (v322; the installer carries v322; NOT-RUN: Windows execution), with a display (Xvfb); without one, the X11 GUI gate is NOT-RUN as well |
 | Regression suite | **315 pass, 4 no-expectation** (v298) |
 | Crash corpus | **227 cases + manifest, 0 failed** |
 | Code-generation shape gates | **12 / 12** |

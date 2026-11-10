@@ -284,7 +284,8 @@ def check_changelog(docs, current):
         if v not in versions:
             bad.append(f'docs/CHANGELOG.md: no entry for v{v}')
     for v, rest in heads:
-        if not re.match(r'\s*\((?:[^()]*?),\s*R\d+', rest):
+        # a round (R123), or an audit asked for by the owner outside the rounds (AUDIT-01, 10 November 2026)
+        if not re.match(r'\s*\((?:[^()]*?),\s*(?:R\d+|AUDIT-\d+)', rest):
             bad.append(f'docs/CHANGELOG.md: v{v}\'s entry does not say who and which round: {rest.strip()[:60]!r}')
     return bad
 

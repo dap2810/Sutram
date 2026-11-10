@@ -1,4 +1,26 @@
-> **The 20 newest entries.** Older ones, from "v301" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v302" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v322 (Claude, AUDIT-01 - the owner's audit) - five defects found by 150 probes
+
+- **A `prakriya` that ends without `nivartanam` returns 0.** It returned whatever the last instruction had left:
+  `prakriya f(a) { vitti b = a * 3 }` gave 15 for `f(5)`, and a `prakriya` that forgot `nivartanam s` after a
+  summing loop gave the loop's bound. Now `xor eax,eax` at the end of a body whose last statement is not
+  `nivartanam` (`a1_emit_fall_off`); a body that ends with `nivartanam` is unchanged.
+- **`krama` and `agrim` outside every loop of their `prakriya` are refused: `E_AVARTAN_VINA`.** They compiled and
+  did nothing.
+- **A `mala`'s length is checked: `E_MALA_PARIMAN`.** `mala m[-3]` compiled and crashed (SIGSEGV), as did a computed
+  negative length and one too large to have. A negative number written out is refused when compiled; a length
+  that is not a small number written out is checked when the program runs, and so is the allocation. `mala m[8]`
+  gets no new code.
+- **`likha` with a `mala` among its values is refused: `E_MALA_LIKHA`.** It printed the `mala`'s address.
+- **A `kosh` as a whole condition is refused: `E_KOSH_SATYA`** - as a string is (`E_VARTANI_SATYA`), and for the same
+  reason: every `kosh`, an empty one too, was true.
+- **The guard, against v321: 84 of the 783 programs DIFFER, in bytes only.** Every one was run on v321 and on v322
+  and prints and exits the same; none is newly refused; 503 are byte-identical and 196 refused as before (ELF and
+  PE). The 84 are programs with a `prakriya` that does not end in `nivartanam` (two bytes each, `xor eax,eax`) or a
+  `mala` whose length is not a small number written out - most of them through the library they `yoj`.
+- Gate `audit01 fixes` (23 checks; 15 fail on v321). Not fixed here: a `chakra` whose end is the largest number
+  never ends (finding 6), and the eight unhelpful messages. Installer rebuilt (payload v322). Not run on Windows.
 
 ## v321 (Claude, R182) - a character the language does not know is refused where it stands
 
@@ -469,22 +491,3 @@
 - **Also R128:** the installer's payload rebuilt (on Linux, `tools/build_installer_linux.py`); `sutram-link.exe`
   rebuilt (its embedded runtime predated v300); `docs/RELEASE-NOTES.md`; the pack-message goldens no longer
   assert a compiled size.
-
-## v302 (Claude, R127) - a `kosh` is a descriptor: two names stay one, and no region per `kosh`
-
-- **A `kosh` value is now a descriptor that never moves:** its length and capacity where they always were
-  (`[d-16]`, `[d-8]`), and at `[d]` the address of its elements. `k[i]`, `kosh_kship`, `kosh_hri`, `kosh_iksh`,
-  `kosh_apanay`, a slice of a `kosh`, and a `kosh` given to a foreign `ptr` parameter go through it. **Growth moves
-  the elements and updates `[d]`, so every name of the `kosh` sees it** - `vitti a = k` stays `k` at 4,194,305
-  numbers and at 20,000,000 (v301 parted them at 4,194,305).
-- **No 64 MiB region per `kosh`:** a small `kosh` is 32 bytes and its elements in the arena (20,000 koshes: one
-  `mmap`, 3 ms, was 20,000 `mmap`s and 99 ms; 1,000 under a 300 MB address limit, which v301 could not make). A
-  `kosh` past 64 KiB of elements gets a region of at least 64 MiB, reserved not committed, grows in place in it,
-  and moves to a larger one through the descriptor when it outgrows it; **the old region is given back**
-  (`munmap`; on Windows `VirtualFree`, a new import of the runtime).
-- **No memory for a `kosh` or its growth: a message and exit 1** (it was a write through 0, SIGSEGV). **A slice of
-  a `kosh` kept in a name is refused, `E_KOSH_VIBHAG`** (a growth would leave it behind); passing `k[a:b]` on
-  is unchanged. Reads cost the same (200 million `k[i]`: 601 ms on v301, 552 on v302).
-- Muse R127's eight defect programs are goldens (`examples/351`-`359`); `examples/317` / `318` print the new
-  `parimana()` byte counts. Every program without a `kosh` compiles to the same ELF bytes; every PE program
-  differs (the runtime), with the same output. Gate `R127 descriptor`.

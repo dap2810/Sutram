@@ -1,7 +1,7 @@
-# Sutram 1.0 (v321) — release notes
+# Sutram 1.0 (v322) — release notes
 
-**Compiler `Sutram 1.0 (v321) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v321). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v322) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v322). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,17 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v321 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v322 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v321 closes, and what it does not (R140-R182)
+## Status: what v322 closes, and what it does not (R140-R182, AUDIT-01)
+
+**v322 (AUDIT-01, the owner's audit): five defects closed.** A `prakriya` that ends without `nivartanam` returns 0
+(it returned the last value computed); `krama` / `agrim` outside a loop, `likha` of a `mala` and a `kosh` as a
+condition are refused; a negative or impossible `mala` length is a message, not a crash. **Programs that relied
+on any of these change:** a `prakriya` used for its leftover value now gives 0, and the three refusals stop
+programs that compiled. **Not closed:** a `chakra` whose end is the largest number never ends; eight syntax
+errors say only `vyakaran dosh` (an unclosed string, a missing `mukhya`, seven parameters, and others).
 
 **v321 (R182): a character the language does not know is refused where it stands** - named, with its code point,
 line and column, and a hint when the intention is plain. Up to v320 it was skipped: `5 <en dash> 2` compiled and
@@ -503,6 +510,8 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v322 (staged):** five defects of the owner's audit (AUDIT-01): the value of a `prakriya` without `nivartanam`,
+  `krama` outside a loop, a `mala`'s length, `likha` of a `mala`, a `kosh` as a condition.
 - **v321 (staged):** a character the language does not know is refused where it stands (R182).
 - **v320 (staged):** a block's memory is zeroed at every way out of the block (R175, R176).
 - **v319:** made once anywhere in a loop - under a `yadi`, in a `mandapa`, in a `yavat` (R175, R176).
