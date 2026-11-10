@@ -10,8 +10,10 @@ staged r176-made-once-anywhere 4c1159be  Sutram 1.0 (v319) - sampurna sutra  (on
      guard, the ordinary way, 783 programs, ELF and PE, against v318 and against v315 (main), four runs:
             587 byte-identical, 196 refused identically, 0 DIFFER
      installer (payload v319): 76cf5153fe50ec47df4aec751eaa3637fd6f0e5430902e1be8b14fba61c44c6c
-staged r176-block-exit-zero (SHA in the follow-up commit)  Sutram 1.0 (v320) - sampurna sutra  (on v319; NOT merged; NOT READY - a decision)
-     crash corpus, suite, gates: ITS FULL GATES WERE STILL RUNNING at this first push - NOT YET A RESULT (next commit)
+staged r176-block-exit-zero 9bb059ea  Sutram 1.0 (v320) - sampurna sutra  (on v319; NOT merged; NOT READY - a decision)
+     crash corpus: 227 cases + manifest, 0 failed · suite: NO-EXPECTATION=4 PASS=327
+     gates: 86 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; evidence-r176/gates-v320.txt)
+     installer (payload v320): ef35642401cd298d6d806e589c09a2da705a090ec880d787a2aea82b1ea3835b
      guard against v319 and v315, ELF and PE, four runs: 549 byte-identical, 196 refused identically, 38 DIFFER -
             the same 38 as in R175: exactly the programs that compile and contain a mandapa
 staged v318 c1f516f8 · v317 501d35fd · v316-ready 59d60353 - unchanged
@@ -174,7 +176,7 @@ today a block zeroes for itself. **A is the safest of the three and the slowest;
 
 - **The hoist is staged and gate-clean - `r176-made-once-anywhere` 4c1159be, v319 - and, on these checks, ready to
   merge.** Not run on Windows.
-- **The zeroing is staged and NOT ready - `r176-block-exit-zero`, v320 - pending your decision among A, B, C.**
+- **The zeroing is staged and NOT ready - `r176-block-exit-zero` 9bb059ea, v320, gates 86 / 0 / 1 - pending your decision among A, B, C.**
 - **The nested cases now reclaim** (v319): a proven-local `kosh` or `mala` under a `yadi` or `anya`, in a
   `mandapa` inside the loop, at any depth, and in a `yavat` loop.
 - **What still does not:**

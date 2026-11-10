@@ -8,7 +8,7 @@ CORRECTED IN R176: the one branch named here, r175-nested-and-zero, WAS NEVER PU
      84 PASS / 2 FAIL (R101 memory's pin of the gap this round closes, not yet updated; and doc counts, which repeats
      it). Before it was re-run, ROUND-176 asked for the two changes to be split. They are now two branches:
        r176-made-once-anywhere 4c1159be  v319  the nested hoist alone  - gates 85 PASS / 0 FAIL / 1 NOT-RUN, 0 DIFFER
-       r176-block-exit-zero              v320  + the zeroing          - see R176-00 for its gate line
+       r176-block-exit-zero    9bb059ea  v320  + the zeroing          - gates 86 PASS / 0 FAIL / 1 NOT-RUN, 38 DIFFER
      AND the cost figure below ("13.2 ms against 5.6") was one noisy batch: measured in turn over 25 rounds it is
      8.9 ms against 5.5 (R176-00). The other two cost lines were not re-measured.
      the guard, the ordinary way, 783 programs, ELF and PE - in two steps, because the two changes differ:
