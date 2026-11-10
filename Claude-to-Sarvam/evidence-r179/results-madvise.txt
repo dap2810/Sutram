@@ -1,0 +1,8 @@
+page size 4096; baseline VmRSS 12,300 KB
+span      | VmRSS written | write again, kept | madvise | VmRSS after | reads 0 | write again, discarded | extra per page
+   1 MiB |     13,652 KB |     0.026 ms |   0.034 ms |   12,628 KB | True  |     0.369 ms |   1473 ns
+   4 MiB |     16,828 KB |     0.197 ms |   0.137 ms |   12,732 KB | True  |     1.543 ms |   1448 ns
+  16 MiB |     29,116 KB |     0.950 ms |   0.549 ms |   12,736 KB | True  |     6.666 ms |   1530 ns
+  64 MiB |     78,272 KB |     7.852 ms |   2.591 ms |   12,736 KB | True  |    33.907 ms |   1748 ns
+ 256 MiB |    274,880 KB |    27.733 ms |   7.490 ms |   12,736 KB | True  |   113.008 ms |   1415 ns
+ 512 MiB |    537,024 KB |    55.294 ms |  15.432 ms |   12,736 KB | True  |   231.452 ms |   1462 ns
