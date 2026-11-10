@@ -1,0 +1,2 @@
+[v319] a mala m[8] declared INSIDE a block, after a 600 MB block and 480 MB of ordinary memory: m[0] 77 m[7] 77
+[v320] a mala m[8] declared INSIDE a block, after a 600 MB block and 480 MB of ordinary memory: m[0] 0 m[7] 0
