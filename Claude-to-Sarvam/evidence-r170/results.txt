@@ -1,0 +1,20 @@
+# R170: v315 unchanged (Sutram 1.0 (v315) - sampurna sutra), Linux, empty environment; overcommit_memory 0
+# probe.py as R169: VmRSS, VmHWM, VmSize from /proc/<pid>/status at each numbered point (the program waits on grahan()).
+# Each pass makes a kosh and pushes 4,097 elements (so it has a 64 MiB region and its pages are written).
+
+== blk1000 (the kosh inside a mandapa
+run 1 exit 0: 0: RSS 16 KB (HWM 16, size 232) +0.02 ms | 250: RSS 17,032 KB (HWM 17,032, size 17,432,808) +9.49 ms | 500: RSS 34,048 KB (HWM 34,048, size 33,816,808) +10.02 ms | 1000: RSS 68,080 KB (HWM 68,080, size 66,584,808) +18.69 ms | (output 4097000)
+run 2 exit 0: 0: RSS 12 KB (HWM 12, size 232) +0.01 ms | 250: RSS 17,028 KB (HWM 17,028, size 17,432,808) +9.59 ms | 500: RSS 34,044 KB (HWM 34,044, size 33,816,808) +9.73 ms | 1000: RSS 68,076 KB (HWM 68,076, size 66,584,808) +18.19 ms | (output 4097000)
+
+== nob1000 (no mandapa
+run 1 exit 0: 0: RSS 12 KB (HWM 12, size 232) +0.02 ms | 250: RSS 17,020 KB (HWM 17,020, size 17,432,808) +9.06 ms | 500: RSS 34,028 KB (HWM 34,028, size 33,816,808) +9.0 ms | 1000: RSS 68,044 KB (HWM 68,044, size 66,584,808) +17.64 ms | (output 4097000)
+run 2 exit 0: 0: RSS 12 KB (HWM 12, size 232) +0.01 ms | 250: RSS 17,020 KB (HWM 17,020, size 17,432,808) +8.94 ms | 500: RSS 34,028 KB (HWM 34,028, size 33,816,808) +9.19 ms | 1000: RSS 68,044 KB (HWM 68,044, size 66,584,808) +17.47 ms | (output 4097000)
+
+== blk20000 (the kosh inside a mandapa
+run 1 exit 0: 0: RSS 16 KB (HWM 16, size 232) +0.02 ms | 5000: RSS 340,332 KB (HWM 340,332, size 328,728,808) +237.64 ms | 10000: RSS 680,644 KB (HWM 680,644, size 656,408,808) +269.34 ms | 20000: RSS 1,361,268 KB (HWM 1,361,268, size 1,311,768,808) +581.01 ms | (output 81940000)
+run 2 exit 0: 0: RSS 16 KB (HWM 16, size 232) +0.01 ms | 5000: RSS 340,332 KB (HWM 340,332, size 328,728,808) +200.95 ms | 10000: RSS 680,644 KB (HWM 680,644, size 656,408,808) +176.69 ms | 20000: RSS 1,361,268 KB (HWM 1,361,268, size 1,311,768,808) +365.24 ms | (output 81940000)
+
+== lim2: the same loop of 1,000 under an 8 GiB address-space limit (ulimit -v 8388608): the last pass printed, the message, the exit
+111
+Sutram truti: kosh vardhayitum smritih na labdha - kosh yatha asit tatha eva
+exit 1
