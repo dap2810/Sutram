@@ -19,7 +19,7 @@ Scenarios:
          2,000 times - 200,000,000 additions, as in C
   D0     its fill alone
 """
-import argparse, json, os, shutil, subprocess, sys, time
+import argparse, json, os, re, shutil, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EXPECT = {'empty': '', 'A': '99999990000000', 'A2': '31926361189', 'B': '499999500000',
@@ -49,7 +49,8 @@ def version(tool):
         elif tool in ('java', 'javac'):
             o = subprocess.run([tool, '-version'], capture_output=True, text=True)
             lines = [l for l in (o.stdout + o.stderr).splitlines() if 'JAVA_TOOL_OPTIONS' not in l]
-            return lines[0].strip() if lines else '?'
+            # a four-part version (21.0.12.1) reads like a network address to the repository's privacy gate
+            return re.sub(r'(\d+\.\d+\.\d+)\.(\d+)', r'\1 (patch \2)', lines[0].strip()) if lines else '?'
         else:
             o = subprocess.run([tool, '--version'], capture_output=True, text=True)
         lines = [l.strip() for l in (o.stdout + o.stderr).splitlines() if l.strip()]

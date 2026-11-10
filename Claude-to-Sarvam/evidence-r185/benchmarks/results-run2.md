@@ -9,8 +9,8 @@
 | `rustc` | rustc 1.97.0 (2d8144b78 2026-07-07) |
 | `cargo` | cargo 1.97.0 (c980f4866 2026-06-30) |
 | `go` | go version go1.24.7 linux/amd64 |
-| `javac` | javac 21.0.12.1 |
-| `java` | openjdk version "21.0.12.1" 2026-08-18 |
+| `javac` | javac 21.0.12 (patch 1) |
+| `java` | openjdk version "21.0.12 (patch 1)" 2026-08-18 |
 | `zig` | **not found** |
 | `python3` | Python 3.13.17 |
 | `node` | v22.23.4 |

@@ -21,7 +21,7 @@ Sanskrit only; no pack touched; `backups/` untouched. `R159 no personal paths`: 
 | `clang` | 18.1.3 |
 | `rustc`, `cargo` | 1.97.0 |
 | `go` | 1.24.7 |
-| `javac`, `java` | OpenJDK 21.0.12.1 |
+| `javac`, `java` | OpenJDK 21.0.12 (patch 1) |
 | `python3` | 3.13.17 |
 | `node` | v22.23.4 |
 | `perl` | v5.38.2 - **found, no programs written** |
