@@ -1,0 +1,1035 @@
+# Sutram — ROUND-165: five transformations, attacked before they are built
+
+**Base:** main at `b9dfba0c` (compiler v315) · **Code read:** v318 `c1f516f8`
+(R173 mala hoist, staged) and v319 `4c1159be` (R175+R176, "a proven-local
+kosh or mala is made once anywhere in a loop", staged on v318) ·
+**Deliver into:** `Muse-to-Sarvam/`
+
+**Read only. Nothing compiled or run.** All line numbers are
+`src/sutram_compiler.asm` unless noted, at `4c1159be` (v319) unless marked
+`c1f516f8` (v318) or `b9dfba0c` (the tip: the ROUND-165 and ROUND-177 briefs,
+the R175 hand-back). Every decisive claim in this report was re-read against
+the code by the parent after the four task notes were written; the
+brief-correction counts (gate counts, guard corpus, differ-list) were
+re-derived from the trees, not carried from a brief.
+
+## Verdicts first
+
+| Transformation | Verdict |
+|---|---|
+| A. Detach on escape | **Does not hold.** Two breaking programs, plus a design ambiguity that makes the brief's three-instruction sequence unimplementable as written. |
+| B. Ping-pong for `curr = next` | **Not closed.** The recycled descriptor is not finished in three ways, and the stated shape cannot carry a value at all. |
+| C. Move the zeroing from `mandapa` exit into `nirmmita` | **No.** The central premise ("a `mala` zeroes at creation") is false, the "below the block's mark" qualifier is unimplementable as written, and the guard claim is false — the DIFFER set grows from 38 to 404. |
+| D. `madvise(MADV_DONTNEED)` threshold at block exit | **Sound, with three conditions** (page-alignment rounding, both cursor-raising routines, the threshold named as unmeasured and the 38 DIFFER guard cost disclosed). |
+| E. Remove the compile-time-constant restriction on `kosh temp[n]` | **Sound but vacuous — the restriction does not exist.** The gate already asserts the runtime-capacity case is hoisted. |
+
+## 0. The premise correction, before anything else: v319 does NOT contain the block-exit zeroing
+
+All four tasks found this independently, and it changes what this round is
+attacking. The R175 hand-back (commit `7c2535d0`, at the tip) describes the
+block-exit zeroing as built and staged ("staged r175-nested-and-zero (SHA in
+the follow-up commit)"), with evidence files (`Claude-to-Sarvam/evidence-r175/`
+at the tip) and a pin change (`blind_kosh_via_call` 99 → 0). **The staged
+branch does not contain it:**
+
+- `git diff c1f516f8..4c1159be -- src/r65_arena.inc` is **0 lines**. The v319
+  diff is the hoist (`r175_walk`, `r175_cand`, `r175_while_enter`, the R82
+  generation stamp, the version bump, one new gate) plus version strings.
+- The v319 commit message says so in so many words, line 17: "NOT in this
+  branch (R176): zeroing a block's memory at its exits — staged separately, a
+  decision not yet taken."
+- There is no `r175_emit_zero_to_mark` anywhere in the tree, no
+  `r175-nested-and-zero` branch on origin, and the pin still reads `'99'` at
+  `4c1159be:tests/r73_scratch/test_scratch.py:30`.
+- `r73_gen_rewind` at v319 (`src/r65_arena.inc:404-412`) is exactly `end =
+  the mark` — `gen_expr` the mark, `mov [end],rax` — no zeroing, no `madvise`,
+  no call of any kind.
+
+So at v319, block exit is exactly as v315: **one cursor restore, no zeroing**.
+The v319 branch's own guard line is **0 DIFFER** (587 byte-identical, 196
+refused identically, ELF and PE, against v318 and v315 —
+`evidence-r175/g1_318_elf-summary.txt`, `g1_318_pe-summary.txt`); the 38
+DIFFER line belongs to step 2, the exit zeroing, measured against v315 and
+against step 1 (`g2_315_elf-summary.txt`, `g2_step1_elf-summary.txt`: 549
+byte-identical, 196 refused identically, 38 DIFFER, 0 new).
+
+This bears on ROUND-177 WS2 and WS6, whose premise ("the zeroing change
+broke the guard to 38, WS2 should restore it") refers to a build that is not
+in the repo. The exit zeroing exists only as described in the hand-back and
+measured in the evidence files; its code is not in any tree this round can
+read. Task 3 therefore attacks a **proposal** (C), not a build — and the code
+C would have to work with (the `kosh` read path, the `mala` creation path,
+both `nirmmita` paths) is what decides it.
+
+---
+
+## 1. Task 1 — A: detach on escape. Does not hold.
+
+The proposal (ROUND-165 §1.A / ROUND-177 WS1): stop proving non-escape by
+walking the syntax tree. Emit the hoist unconditionally, and at the moment the
+compiler emits an escape — `best = temp` where `best` was declared outside
+the loop — emit one extra instruction sequence:
+
+```
+mov  rax, [rbp - temp_slot]
+mov  [rbp - best_slot], rax      ; best now owns the descriptor
+mov  QWORD [rbp - temp_slot], 0  ; DETACH
+```
+
+Next pass sees zero and creates a fresh descriptor; `best` keeps the old one.
+The claim: "You need zero AST lookahead walk. Every `kosh` in every loop is
+hoisted unconditionally. Even a `kosh` that conditionally escapes on 3 out of
+800,000 passes reuses its memory on the other 799,997."
+
+### 1.0 Ground truth: the slot mechanics (v319)
+
+- **One slot per DECLARATION, not per name.** `r175_walk` (`:10918`) finds
+  declarations anywhere in a loop (under a `yadi`/`anya`, in a `mandapa`, in
+  a `yavat`); `r175_cand` (`:10959`) registers each one. Two declarations of
+  the same name (a `yadi` and its `anya`) get **two slots**. The scan
+  requirement changed from `r172_cnt == 1` (v317/v318) to `r172_cnt != 0`
+  (the name must appear at least once).
+- **Slot lookup is by DECL POINTER only.** `r172_slot_of` (`:11031`) scans
+  `r172_decl` (256 entries) for the pointer and returns the frame-slot
+  offset, or 0. There is NO name → slot map. The hidden var-table entries are
+  all named `r172_hidden` (`"0k172"`, `:11028`), indistinguishable by name;
+  `r7_find_var` returns the FIRST match. An `AST_VAR` node carries only
+  `[type][name_ptr]` — no link to its declaration.
+- **Two slots hold the descriptor.** After a declaration, BOTH the name's
+  var-table slot and the hoist's hidden slot hold it: `.gs_decl_kosh`
+  (`:19801`) allocates, `r172_decl_end` (`:11136`) emits `mov [rbp+slot],rax`
+  (the hoist slot), then `alloc_var` + `emit_store_reg` stores it in the
+  NAME's slot. On a reuse pass, `r172_decl_begin` (`:11051`) loads the hoist
+  slot (`mov rcx,[rbp+slot]; test rcx,rcx; jz .fresh; mov qword [rcx-16],0` —
+  length reset only) and the name's slot is refreshed from it.
+- **The hoist slot is read only by `r172_decl_begin`** (at the declaration,
+  i.e. at the top of the next pass). Every USE of a name loads from the NAME's
+  slot, per use, with no register caching across statements:
+  `emit_load_named_var` (`:29991`) → `lookup_var` → `mov rax,[rbp+offset]`.
+- **The descriptor is a persistent allocation** (from cursor `cur`, which
+  grows up, forward-only). The `mandapa` rewind (`r73_gen_rewind`,
+  `src/r65_arena.inc:404`) restores only the scratch cursor `end`.
+- **The scan (v319, `r172_scan` `:11151`) is name-based.** `.var` (`:11210`):
+  any `AST_VAR` of the name → `.esc`. `.decl` (`:11263`): a same-kind
+  re-declaration is tolerated and increments `r172_cnt`. `.args` (`:11325`)
+  and `.builtin` (`:11293`) scan all args except a whitelisted arg0
+  (builtins 37, 38, 39, 42, 44, 45; `kosh_ksham` 40 NOT whitelisted).
+
+### 1.1 STRONGEST — two names for one loop-local kosh (alias escape)
+
+```
+kosh best[1]
+chakra j = 1 tak 800000 {
+    kosh temp[10]
+    temp[0] = j
+    vitti b = temp
+    best = b
+}
+likha(best[0], "\n")
+```
+
+Note on the brief's form: "`kosh b = temp`" is not an alias form — a kosh has
+no initializer (scan comment `:11289`; `.gs_decl_kosh` ignores the
+initializer slot). The alias form is `vitti b = temp` (`.gs_decl` `:19728`
+calls `r38_mark_alias` when the initializer is an `AST_VAR`). The break
+stands with the `vitti` form. A second name created by assignment (`b =
+temp`, with `b` declared earlier) is the same as by declaration: both copy
+the descriptor into `b`'s name slot, and neither creates a hoist slot for
+`b`.
+
+**Why no detach fires.** The detach design fires on an escape — an assignment
+whose value is a hoisted kosh, to a name outside the loop. Neither assignment
+qualifies:
+
+- `vitti b = temp` — the value IS `temp`, but `b` is loop-local, so it is not
+  an escape. Correctly no detach.
+- `best = b` — the value is `b`, not a hoisted declaration. The detach
+  emitter sees the name `b` and has no way to know `b` holds `temp`'s
+  descriptor.
+
+**Why the emitter cannot see through the alias.**
+
+- `r38_mark_alias` (`:28286`) copies only the KIND to the target name (via
+  the `is_kosh_var` / `is_array_var` / `r23_is_slice_var` name lists). The
+  SOURCE is not recorded.
+- `r108_note_alias` (`:13202`) records (node, target name, depth) in the
+  `r108_bk` tables — but only for koshs made in an open `mandapa` (it returns
+  immediately if `r108_bk_n == 0`, and `r108_bk_of` on the value returns 0 for
+  a non-mandapa kosh). A loop-local kosh NOT in a `mandapa` is never in the
+  `r108_bk` table, so its aliases are recorded NOWHERE.
+- `r126_check_assign` (`:29751`) `.local` allows a kosh→kosh local assignment
+  via `r126_bind` (kind match). It does not distinguish "best outside the
+  loop" from "best inside the loop" — there is no `decl_depth` (R161: it does
+  not exist; only `r73_var_depth`, mandapa depth only).
+
+**Trace, pass by pass.**
+
+- Pass 1: `temp` declared; hoist slot S = D1 (fresh descriptor).
+  `temp[0] = 1`. `vitti b = temp`: `b`'s name slot = D1. `best = b`:
+  `best`'s name slot = D1. No detach fires.
+- Pass 2: `temp` declared; S still holds D1 (never detached) → reuse:
+  length reset to 0, `temp[0] = 2`. But `best` ALSO holds D1, so `best[0]`
+  is now 2, not 1. **Aliasing — wrong value.**
+- Pass 800,000: `best` holds D1 and `best[0]` = 800,000. The final
+  `likha(best[0])` prints **800,000 instead of 1**.
+
+**What it would take to close it.** Detach on EVERY copy of a hoisted
+descriptor (including `vitti b = temp`), i.e. detach on every assignment
+whose value holds a hoisted kosh — which requires the alias tracking the
+design does not have, and which undercuts the performance claim (a kosh
+passed to a read-only use would be remade every pass). That is a different
+design from "detach on escape". In v319 this program is safe, but only
+because the scan escapes the NAME (`temp` appears as an `AST_VAR` in `vitti
+b = temp`, `.var` → `.esc`), so `temp` is not hoisted at all — the break is
+specific to the unconditional-hoist detach design.
+
+### 1.2 Two declarations, one name (the anya-branch escape)
+
+```
+kosh best[1]
+chakra j = 1 tak 800000 {
+    yadi (j % 2 == 0) {
+        kosh temp[10]
+        temp[0] = j
+    } anya {
+        kosh temp[20]
+        temp[0] = j
+        best = temp
+    }
+}
+```
+
+Two hoist slots: A (the `yadi` branch) and B (the `anya` branch). The escape
+`best = temp` is in the `anya` branch (declaration B). A name-based detach
+resolves to the FIRST slot in source order (A) — `r7_find_var` returns the
+first match, and the hidden entries are all named `"0k172"` — while the escape
+is in branch B. Slot B is never detached, so the next `anya` pass reuses B's
+descriptor while `best` holds it. **Aliasing.** Slot A is detached
+needlessly, so the next `yadi` pass makes a fresh descriptor for A (a leak in
+the "memory not reused" sense — the old A descriptor is abandoned in the
+arena and still counted by `parimana()`).
+
+Detaching ALL slots for the name would close it, but that is not the design
+as described (singular "temp_slot"), and there is no name → slots map to
+detach from — the only lookup is by decl pointer (`r172_slot_of` `:11031`),
+and a use site carries no decl pointer (an `AST_VAR` carries only
+`[type][name_ptr]`). In v319 this program is safe (the scan escapes the NAME,
+so neither declaration is hoisted) — the break is specific to the
+unconditional-hoist detach design.
+
+### 1.3 The two-slot ambiguity — the brief's "temp_slot" does not exist
+
+The brief's sequence names ONE slot. There are TWO slots holding `temp`'s
+descriptor (§1.0). The three single-slot readings:
+
+- **"temp_slot" = the NAME's slot.** The sequence IS the assignment (`best`
+  gets the descriptor, `temp`'s name slot is zeroed). Then a later same-pass
+  `likha(temp[0])` loads `temp`'s descriptor from the name slot
+  (`emit_load_named_var` `:29991` reloads the slot per use) → loads 0 → the
+  index reads `[0-16]` for the length (bounds check) → **null deref,
+  crash**. AND the detach fails its purpose: the hoist slot still holds the
+  descriptor, so the next pass reuses it while `best` holds it → **aliasing**.
+  Double break.
+- **"temp_slot" = the HOIST slot.** The copy is redundant (the normal
+  assignment already stored the descriptor into `best`'s slot), and the zero
+  is the actual detach. Same-pass reads of `temp` work (the name slot still
+  holds the descriptor). Next pass is fresh. **Correct for this case.**
+- **Both slots zeroed.** The detach works, but same-pass reads of `temp`
+  crash (name slot is 0). Break.
+
+So the design must zero exactly the hoist slot and leave the name slot alone.
+The brief's sequence as written is ambiguous, and its literal reading
+(`temp_slot` = the name's slot, since that is the slot the assignment uses)
+is wrong on both counts. The design as described is not implementable as
+written — it needs the two-slot distinction spelled out.
+
+The same ambiguity decides the brief's case 2 (a detach inside a branch that
+runs twice) and case 8d below: under the "detach is extra, zero the hoist
+slot after the normal assignment" reading, a second detach on an
+already-zero slot is harmless; under the "detach replaces the assignment"
+reading, the second detach copies 0 into the target (null descriptor).
+
+### 1.4 Call escape — the FFI path is a missing hook (conditional break)
+
+The escape is a call, not an assignment. Where the detach fires:
+
+- **Typed kosh parameter.** The shared call-arg codegen `gen_typed_call_arg`
+  (`.gtca_kosh`) loads the argument and pushes it; no `r126`/`r108` check is
+  called there. The "keeps" information (`r108_param_kept` fixpoint) is
+  computed by `r108_check_call`, which runs ONLY on the expression path
+  (`.ge_funcall` `:22081`, call site `:22084`). On the statement path
+  (`.gs_funcall` `:19550`) the fixpoint is never computed. So a detach
+  emitter in `.gtca_kosh` cannot know whether the callee keeps the kosh.
+  Detaching on EVERY kosh-parameter call is CORRECT (fail-closed: the callee
+  gets the descriptor in a register before the detach zeroes the hoist slot;
+  a non-keeping call just forces a fresh descriptor next pass) but is a
+  performance loss, not a correctness break.
+- **Foreign call.** `.gs_funcall` dispatches to `r33_gen_foreign_funcall`
+  BEFORE the typed-arg path and before `r129`/`r25`/`r108` — and
+  `r108_check_call` never runs on this path. The FFI door affirmatively
+  permits a kosh by its own name to a `ptr` parameter
+  (`src/r32_ffi.inc:688-699`, `.ptr` `:736-755`: `mov rax,[rax]` hands C the
+  elements address). A detach in `.gtca_kosh` does NOT fire for an FFI call
+  — the FFI path bypasses `gen_typed_call_arg` entirely. The detach emitter
+  needs a SEPARATE hook in the FFI dispatch (both `.gs_funcall` and
+  `.ge_funcall`). For the FFI, "keeps" is unanswerable (C can keep the
+  pointer indefinitely), so the detach must fire on EVERY foreign call
+  passing a hoisted kosh to a `ptr` parameter. **If the hook is missed, the
+  break is real:** C keeps the elements address, the next pass reuses the
+  descriptor, and on growth the elements move / the old region is
+  `munmap`'d, so C's pointer dangles → stale read or crash.
+
+Ranked below §1.1–1.3 because the fix (detach on every kosh-parameter call,
+plus hook the FFI dispatch) is well-defined — but the design as described
+names only the assignment form, so the FFI hook is a genuine gap.
+
+### 1.5 Store in an outer kosh — closed today, conditional on the refusal
+
+`kosh_kship(outer, temp)`: `r126_check_builtin` (`:29807`) refuses a kosh at
+arg index 1 (`r134_holds_kosh` `:28923`, kinds 2/3/6; index ≠ 0 → `.bad`).
+**This program does not compile today**, so the detach is unnecessary here
+— closed by the refusal, not by the detach.
+
+If the refusal is removed (because the detach "makes it unnecessary"), the
+detach must fire at the `kosh_kship` call — and `kosh_kship` is a BUILTIN
+(`AST_CALL`), whose codegen is different from `.gs_funcall`, so the emitter
+needs a hook in the builtin call path too. If the refusal is removed but the
+detach is missed, the next pass reuses `temp`'s descriptor while `outer`'s
+element holds it → aliasing. The detach CAN handle it if hooked (the element
+keeps the old descriptor; the next pass is fresh) — but the design must say
+which it intends: refusal stays, or refusal goes and the detach is hooked.
+
+### 1.6 Cases closed by the design itself
+
+- **Detach inside a branch that runs twice** (brief case 2): `yadi (c)
+  { best = temp }` on pass 5 and pass 500. Under the "detach is extra"
+  reading: pass 5 detaches (`best` = D5, hoist slot = 0); pass 6 makes a
+  fresh D6; pass 500 detaches D500 into `best`; pass 501 makes a fresh D501.
+  `best` holds D500. Correct. (A branch runs at most once per pass, so the
+  hoist slot is non-zero at each detach.) The discriminating case is §1.7.
+- **Escape twice to two outer names** (case 8d): `best1 = temp;
+  best2 = temp`. Under the "detach is extra" reading, the first detach
+  zeroes the hoist slot and the second zeroes an already-zero slot
+  (harmless); `best1` and `best2` both hold the descriptor (both got it from
+  the normal assignments); the next pass is fresh. **Closed — but only under
+  the "detach is extra" reading.** Under the "detach replaces the
+  assignment" reading, the second detach copies 0 (the hoist slot is already
+  zero) into `best2` → null descriptor → wrong value.
+- **Escape on the last pass only** (case 8e): the detach fires, the loop
+  ends, `best` holds the descriptor. The loop-exit path does nothing to the
+  hoist slot (it is a stack slot in the function's frame). Correct.
+- **Recursion** (case 6): closed. The frame slot is per-frame
+  (`rbp`-relative); each recursive invocation has its own frame and its own
+  hoist slot at the same compile-time offset. The `r172_slot` table is a
+  per-function compile-time map (decl pointer → slot offset), not a holder
+  of runtime values; `var_cnt` resets per function (`:18585`).
+  `r172_for_enter` zeroes the slot at the loop's entry in the current frame.
+  A recursive call inside the loop gets a fresh frame with a fresh slot. No
+  interaction.
+- **Detach inside a `mandapa`** (case 7, the brief's first check): closed on
+  the brief's question. The descriptor is a persistent allocation (from
+  `cur`); the `mandapa` rewind (`r73_gen_rewind`,
+  `src/r65_arena.inc:404`) restores only the scratch cursor `end`, so the
+  detached descriptor's buffer survives the rewind. The hoist's frame slot is
+  NOT touched by the block's exit: `r82_block_leave` (`:10825`) zeroes the
+  block's own R82 slot (`r82_emit_zero` `:10804`) and sets
+  `r82_off[gdepth] = 0` — a different stack slot (allocated from the same
+  `stack_dep` counter but a different offset). So a detach inside a `mandapa`
+  persists: the slot is still zero on the next pass, and the next pass creates
+  a fresh descriptor.
+  - R82 note: a detached descriptor carries the block's generation at
+    `[d-24]` (written by the R175 stamp on reuse, or by
+    `r82_emit_kosh_header` at creation). After the block exits, the block's
+    liveness slot is zeroed, so if `best` is later passed to a `prakriya`,
+    `r82_emit_check` (`:11531`) reads `[rcx]` = 0 ≠ `[d-24]` → STALE → the
+    `prakriya` refuses it. That is CORRECT (the kosh escaped its block; the
+    check catches it) — the detach does not defeat the R82 liveness check —
+    but it means a detached `mandapa`-kosh handed to a `prakriya` is refused
+    at runtime, which the design should say is intended.
+- **Return escape** (case 8a): `nivartanam temp`. `.gs_return` (`:21483`):
+  `r126_check_return`, `r23_check_return`, `gen_expr` (value into `rax`),
+  `r73_gen_ret_rewind` (`src/r65_arena.inc:535`, `rax` kept), then the
+  epilogue (`ret`). A detach after `gen_expr` would zero the hoist slot in
+  the CURRENT frame — but the frame is about to be destroyed, so the detach
+  is meaningless and unnecessary (there is no next pass; the function
+  returns). A future invocation gets a fresh frame with a fresh slot (zeroed
+  at loop entry). Closed. (`r126_check_return`'s `phal` branch refuses a kosh
+  value outright; the plain branch allows a kosh-returning `prakriya` to
+  return a kosh.)
+
+### 1.7 Cases closed only by a pre-existing refusal (the detach does not help)
+
+- **Slice escape** (case 8b): a slice of a hoisted kosh stored outside the
+  loop (`vitti s = k[0:2]`, or `kosh_kship(outer, k[0:2])`). The slice holds
+  the ELEMENTS address directly. The detach (zeroing the hoist slot) does NOT
+  invalidate a stored slice — the slice still points at the old elements. If
+  the kosh grows, the elements move and the old region is `munmap`'d, so the
+  stored slice points at unmapped memory → crash on read. The detach does NOT
+  make slice-keeping safe. The slice refusal must stay (`r134_holds_kosh`
+  covers slices via `r134_kosh_slice`; `r23_check_return` refuses a slice
+  return; E_KOSH_VIBHAG). If the doors are removed, the slice escape breaks.
+- **Function-value escape** (case 8c): a kosh passed through a variable
+  holding the `prakriya`. `gen_typed_call_arg`'s scalar path calls
+  `r126_check_untyped_arg` (`:29871`), which for an indirect call (`.known`)
+  still checks `r134_holds_kosh` on the argument and refuses
+  (`r126_d_par`); `r108_check_call` refuses an unknown callee on the
+  expression path. The program does not compile. Closed by the refusal.
+- **The `mala` (open question, not a proven break).** The detach is described
+  for a kosh (a descriptor). A `mala` has no descriptor — its "descriptor" is
+  a frame address — and the design does not say whether the detach extends to
+  it. This matters because, for a `mala`, the scan is the ONLY net (R164: no
+  pre-existing door refuses a `mala` anywhere), so under the detach design (no
+  scan) a `mala` escape is handled ONLY by the detach. If the detach does not
+  cover malas, or covers them wrongly, there is no fallback. Not verified
+  (the `r173_mala_begin` fresh path was not traced in full); listed in §6.
+
+### 1.8 Design questions (ROUND-177 WS1)
+
+**(1) Does the detach break the current escape checks — can they stay, or
+does the detach make them unnecessary (and should they go or stay)?**
+
+The detach does NOT break the checks (it operates on the hoist slot; the
+checks operate on kinds/names at compile time). The checks CAN stay.
+
+The detach does NOT make them unnecessary, and **they should stay**. The
+checks close escape paths the detach cannot see or cannot fix:
+
+- **Slices** (§1.7): the detach does not invalidate a stored slice; the
+  refusal must stay, or a stored slice dangles after growth.
+- **The FFI door** (§1.4): the detach must fire in the FFI dispatch; the
+  door's refusal of a kosh to `i64`/`f64` parameters must stay (the detach
+  cannot fix a type mismatch).
+- **The `mala`** (§1.7): the scan is the only net; if the detach does not
+  cover malas, nothing does.
+- **The function-value and `kosh_kship` refusals** (§1.5, §1.7): they must
+  stay unless the detach is hooked into those paths.
+
+The "zero AST lookahead walk" claim is about the HOIST scan (`r172_scan`),
+not about the `r126`/`r108`/`r134` doors — those are per-site checks, not
+lookahead walks. So the detach can remove the scan but must keep the doors.
+The detach is a complement to the checks (it handles the assignment escape
+for a kosh), not a replacement.
+
+**(2) Does the detach make the hoist unconditional, so the nested-block work
+in R175 becomes the only rule?**
+
+No — the detach does NOT subsume the nested-block work. The two are
+independent, and the detach DEPENDS on it.
+
+The v319 diff (`c1f516f8..4c1159be`, 27 files; compiler
+`src/sutram_compiler.asm` +154 lines) is the nested-block work: `r175_walk`
+(`:10918`) finds declarations anywhere in a loop (under a `yadi`/`anya`, in
+a `mandapa`, in a `yavat`); `r175_cand` (`:10959`) registers each one; the
+scan requirement changed from `r172_cnt == 1` to `r172_cnt != 0`; a
+declaration that never runs makes nothing; a kosh reused inside a `mandapa`
+gets this pass's block generation in its header (the R175 stamp). New test
+`tests/r175/test_nested_made_once.py` (185 lines); new gate "R175 nested
+made once" in `tools/gates.sh`.
+
+- The nested-block work answers WHERE a declaration can be hoisted (anywhere
+  in a loop, one slot per DECLARATION). The detach answers WHAT HAPPENS when
+  a hoisted kosh escapes (detach its slot so the next pass is fresh).
+- The detach does not remove the need for per-declaration slots — §1.2 shows
+  the detach needs to know WHICH declaration's slot to detach, and there are
+  two, one per branch. The nested-block work's per-declaration slot table
+  (`r172_decl`/`r172_slot`) is exactly the structure the detach needs to
+  find the slot. Without it, the detach has no slot to zero for a
+  branch-local declaration.
+- Conversely, the nested-block work does not remove the need for the detach
+  (it still relies on the scan to refuse escapes; the detach replaces the
+  scan's refusal with a runtime detach).
+
+So: the detach makes the hoist unconditional in the sense that it removes the
+SCAN (the proof), but the nested-block work (per-declaration slots, the walk
+that finds declarations anywhere in the loop) remains the rule for WHERE the
+hoist applies — and the detach depends on it. The two are independent
+mechanisms that compose: R175 says "hoist every declaration anywhere in the
+loop"; the detach says "when one escapes, detach its slot".
+
+**Ranked breaking programs for A (strongest first):**
+
+1. **§1.1 — two names for one loop-local kosh** (`vitti b = temp` then
+   `best = b`): breaks even the best-form design. No detach fires; the next
+   pass reuses the descriptor `best` holds. Wrong value (final
+   `likha(best[0])` prints 800,000 instead of 1). The detach cannot see
+   through an alias, and no alias tracking records the source.
+2. **§1.2 — two declarations, one name** (the `anya`-branch escape): breaks
+   the best-form design. A name-based detach resolves to the wrong slot (the
+   `yadi` branch's), so the `anya` branch's slot is never detached. Aliasing,
+   plus a leak of the wrongly-detached slot.
+3. **§1.3 — the two-slot ambiguity**: the brief's "temp_slot" does not exist
+   as a single slot. The literal reading (zero the name's slot) is a double
+   break (same-pass read of `temp` crashes; the detach fails).
+4. **§1.4 — the FFI call path**: conditional break. If the detach is not
+   hooked into `r33_gen_foreign_funcall`, C keeps a dangling elements address
+   after growth.
+5. **§1.5 — `kosh_kship` into an outer kosh**: conditional break. Closed
+   today by the refusal; breaks only if the refusal is removed without
+   hooking the builtin path.
+
+---
+
+## 2. Task 2 — B: ping-pong for loop-carried `curr = next`. Not closed.
+
+The proposal (ROUND-165 §1.B / ROUND-177 WS1 question 2): instead of
+detaching, recycle — write the old `curr` descriptor into `next`'s slot.
+Claim: two descriptors for 800,000 passes. The loop-carried pattern is: each
+pass, `curr` holds the previous pass's value and `next` is built fresh, then
+`curr = next` at the end of the pass (so the next pass's `curr` is this pass's
+`next`).
+
+### 2.0 The slot states, and what `curr = next` does today
+
+A `kosh` variable's stack slot holds the **descriptor pointer** (8 bytes) —
+the address of `[d]`, the elements word. The descriptor is four qwords:
+`[d-16]` length, `[d-8]` capacity, `[d]` elements address, `[d+8]` region
+size (32 bytes; 56 with the R82 header).
+
+- **Load** (`.ge_var`, `:25839`): `mov rax,[rbp+offset]` — the descriptor
+  pointer.
+- **Store** (`.gs_assign` generic path, `:20019`): `gen_expr` of the value,
+  then store `rax` into the target's slot. So `curr = next` today copies the
+  8-byte pointer D2 from `next`'s slot into `curr`'s slot. After it, **both
+  names alias the same descriptor D2**; `next`'s slot still holds D2 too.
+- **Decl** (`.gs_decl_kosh`, `:19802`): evaluates the capacity, calls
+  `r172_decl_begin` (reuse path: `mov rcx,[rbp+slot]; test rcx,rcx;
+  jz .fresh; mov qword [rcx-16],0; mov rax,rcx; jmp .have`), otherwise
+  allocates via `r108_kosh_alloc`, then `r172_decl_end` (`mov [rbp+slot],rax`
+  — the hoist slot) and `alloc_var` + `emit_store_reg` (the variable's own
+  slot). **Both slots get the descriptor pointer, and both are refreshed from
+  it every pass.** The hoist slot is zeroed once at loop entry (`r175_cand`
+  emits `mov qword [rbp+slot],0`).
+- **Read** (`r127_ix`, `:577-578`): `mov rcx,[rax-16]` (length);
+  `mov rax,[rax]` (elements); `mov [rsp],rax; push rcx`. Then
+  `emit_array_bounds_check` (`:21658`): `cmp rax,[rsp]` (index vs the length
+  freshly read from the descriptor); `jb .ok` — otherwise the diagnostic and
+  exit 1. **A kosh read never looks past `length`.** Stale elements beyond the
+  length are invisible; a read of a length-0 kosh always refuses. (This
+  confirms the Task 3 premise for `kosh`, and it is what makes the recycled
+  descriptor safe *once its length is reset* — and unsafe before that.)
+- **Growth** (`r127_emit_grow`, `src/r65_arena.inc:579`): operates entirely
+  through the descriptor pointer in `r8` — `[r8+8]` region size, `[r8-8]`
+  capacity, `[r8]` elements. If the new size fits the region it stays in
+  place; otherwise it allocates a new buffer, copies element-by-element, then
+  releases the old region (`mov rdi,rsi; mov rsi,rcx; mov eax,11; syscall` —
+  munmap) and writes `[r8]`, `[r8-8]`, `[r8+8]` together. Every name holding
+  the descriptor pointer sees the new buffer, because no name holds the
+  elements pointer directly.
+
+The ping-pong as stated: at `curr = next`, instead of only copying D2 into
+`curr`'s slot, ALSO write D1 (the old `curr` descriptor) into `next`'s slot.
+Two descriptors for 800,000 passes: they alternate between the two names.
+
+### 2.1 What the ping-pong needs, and why it is not a small emitter change
+
+**The scan currently refuses to hoist either name in the loop-carried
+pattern.** `r172_scan`'s own comment (`:11187`) says it plainly:
+`AST_ASSIGN ; the target: a VAR (the name itself escapes) or an INDEX`. The
+`.two_8_16` handler (`:11224`) scans `[rbx+8]` (target) and `[rbx+16]`
+(value). For the `curr` candidate, the target `AST_VAR(curr)` → `.var` →
+`r172_is_name` matches → `.esc`. For the `next` candidate, the value
+`AST_VAR(next)` → `.var` → `.esc`. **So under the current scan, a loop
+containing `curr = next` hoists NEITHER name — both are made fresh every
+pass, and the ping-pong never fires.** The proposal therefore needs a scan
+change (whitelist this assignment as a *transfer*, not an escape) as well as
+an emitter change (the swap). The proposal describes neither.
+
+**And the scan cannot express the rule the ping-pong needs.** The rule is
+PAIRWISE: *this specific assignment, between these two specific names, is a
+transfer; every other assignment of these names is an escape.* But the scan
+is per-name — it walks the loop once per candidate and sees uses of ONE name
+at a time (`r172_is_name` compares one string). It has no notion of a pair,
+and no state that survives from one candidate's scan to the next. The emitter
+sees one assignment at a time and has no notion of a pair either. The alias
+machinery does not help: `r38_mark_alias` (`:28286`) records only the KIND
+(a target of a kosh assignment is marked a kosh), and `r108_note_alias`
+(`:13202`) records (node, name) pairs for block-kosh tracking — **neither
+records which descriptor a name holds at a given point.** Tracking that
+would need a dataflow analysis the compiler does not have.
+
+So any implementation must approximate the pair notion, and every
+approximation breaks on a concrete program (§2.4, §2.5). The breaks below are
+stated per approximation where they differ.
+
+**The two implementation shapes.** (A) *Emitter swap:* at every kosh-to-kosh
+assignment whose right-hand side is hoisted, emit the swap instead of the
+plain copy. (B) *Scan whitelist:* the scan whitelists the loop-carried
+assignment (by some rule), the name is hoisted, and the emitter swaps only at
+that assignment. The proposal does not say which. The strongest breaks (P3,
+P1) hit both shapes; P2a hits shape B's natural approximation, P2b hits
+shape A.
+
+### 2.2 Case 1 — `curr` is read after the swap; `next` is read after the swap
+
+**`curr` after the swap: fine.** `curr`'s slot holds D2 (this pass's `next`),
+so `curr[i]` reads this pass's values — the same as plain semantics.
+
+**`next` after the swap: BROKEN.** `next`'s slot holds D1 — the OLD `curr`
+descriptor, with its old length and its old elements. The length is reset
+only at the NEXT pass's decl (`r172_decl_begin`); between the swap and that
+decl, `next` is observable with D1's stale state. The program:
+
+```sm
+mukhya() {
+    kosh curr[2]
+    chakra i = 1 tak 2 {
+        kosh next[2]
+        kosh_kship(next, i * 10)
+        curr = next
+        yadi i == 2 { likha(next[0]) }
+    }
+}
+```
+
+Trace (outside reading, `curr` outside the loop, `next` hoisted):
+
+- Pass 1: `curr` = D1 (empty, from the outer decl). `next` decl → fresh D2.
+  `next` = [10]. Swap: `curr` ← D2 ([10]), `next` ← D1 (empty, length 0).
+- Pass 2: `next` decl → slot holds D1 → reset `[D1-16]` = 0 → `next` is D1,
+  empty. `next` = [20] (D1). Swap: `curr` ← D1 ([20]), `next` ← D2
+  ([10], length 1). `likha(next[0])` → D2[0] = **10**.
+- Plain semantics: after `curr = next`, `next` still holds D2 — on pass 2
+  that is the descriptor built this pass ([20]) — so it prints **20**.
+
+**Stale read: 10 instead of 20.** The recycled descriptor's old length (1)
+makes its old elements readable, because the kosh read bounds-checks against
+the length *currently in the descriptor* — and the swap does not reset it.
+
+Without the `yadi` guard the break is louder: on pass 1, `likha(next[0])`
+after the swap reads D1, which is empty (length 0) → the bounds check fails
+→ **exit 1 instead of printing 10**.
+
+**Mitigation that does not work:** reset D1's length to 0 at the swap
+(`mov qword [rax-16],0` after the moves). Then `next[0]` after the swap fails
+the bounds check (exit 1) instead of printing a stale value — still different
+from plain semantics (which prints D2's value). And the reset introduces a
+new crash on the zero case (§2.6): if `curr`'s slot is 0, the reset writes
+through address −16 → segfault. The only correct mitigation is to prove
+`next` is never read after the swap — which is an ordering property the scan
+does not track (it walks the AST in order but records no positions, and the
+proposal does not add any).
+
+### 2.3 Case 3 — three names: the strongest break (P3)
+
+**The ping-pong does not know about the third name.** `prev = curr` before
+the swap makes `prev` hold D1. The swap recycles D1 into `next`'s slot. The
+next pass writes into D1 through `next` — and `prev` still points at it. The
+program:
+
+```sm
+mukhya() {
+    kosh curr[2]
+    kosh prev[2]
+    chakra i = 1 tak 3 {
+        kosh next[2]
+        kosh_kship(next, i * 10)
+        yadi i == 1 { prev = curr }
+        curr = next
+        yadi i == 3 { likha(prev[0]) }
+    }
+}
+```
+
+Trace, plain semantics (current v319, no ping-pong — `next` is NOT hoisted,
+because the scan flags `curr = next`):
+
+- Pass 1: `curr` = D1 (empty). `next` = fresh D2 = [10]. `prev = curr` →
+  `prev` ← D1 (empty, length 0). `curr = next` (plain copy) → `curr` ← D2.
+- Pass 2: `next` = fresh D3 = [20]. `curr = next` → `curr` ← D3.
+- Pass 3: `next` = fresh D4 = [30]. `curr = next` → `curr` ← D4.
+  `likha(prev[0])`: `prev` holds D1, length 0 → bounds check fails → **exit 1**.
+
+Trace, with ping-pong (scan whitelists `curr = next`, `next` hoisted):
+
+- Pass 1: `curr` = D1 (empty). `next` decl → fresh D2 = [10]. `prev = curr`
+  → `prev` ← D1 (empty). Swap: `curr` ← D2 ([10]), `next` ← D1.
+- Pass 2: `next` decl → slot holds D1 → reset `[D1-16]` = 0 → `next` is D1,
+  empty. `next` = [20] (D1). Swap: `curr` ← D1 ([20]), `next` ← D2.
+- Pass 3: `next` decl → slot holds D2 → reset → `next` is D2, empty.
+  `next` = [30] (D2). Swap: `curr` ← D2 ([30]), `next` ← D1.
+  `likha(prev[0])`: `prev` holds D1 = **[20]** (built in pass 2, length 1)
+  → prints **20**.
+
+**Plain semantics exits 1; ping-pong prints 20.** The recycled descriptor
+D1 was written (as `next` in pass 2) while `prev` still held it. `prev` was
+assigned the *empty* `curr` of pass 1, and it now reads the *values* of pass
+2's `next` — a wrong value, and the wrong outcome class (a value where there
+should be a refusal).
+
+Why the ping-pong cannot see it: the scan for the `next` candidate looks only
+at uses of `next`. `prev = curr` does not mention `next`, so it cannot affect
+the scan — and it must not, because `prev = curr` is a legitimate program
+that compiles today. The alias machinery records that `prev` is a kosh
+(`r38_mark_alias`), but not that `prev` holds D1, and not that D1 is the
+descriptor about to be recycled. `r108_note_alias` records (node, name)
+pairs, not descriptor identities. **There is no table in the compiler that
+says "D1 is held by `prev`", so no emitter check can consult one.**
+
+The same break in the other two third-name shapes:
+
+- `saved = next` AFTER the swap: `saved` copies D1 (the recycled descriptor)
+  from `next`'s slot; the next pass overwrites D1 through `next`, corrupting
+  `saved`. (This is §2.5's case-2-after, with `saved` in place of `best`.)
+- `vitti x = curr`: `x` is marked a kosh by `r38_mark_alias` (a plain-variable
+  alias of a kosh marks the target the same kind), and holds D1 exactly as
+  `prev` does — same trace, same break. (Note: `vitti x = curr` where `curr`
+  is a kosh compiles because the kind is recorded, not refused — the kind
+  rule refuses a kind *change* on an existing name, not a name *born* a
+  kosh; R164 Task 2.)
+
+### 2.4 Case 2 — `next` escapes before the swap
+
+**Before the swap: CLOSED, if the scan gates the swap.** Any escape of `next`
+— given to a `prakriya` (`.args` → `.esc`), stored in an outer `kosh`
+(`kosh_kship` arg1 → `.esc`), returned (`.one_8` → `.esc`), assigned to an
+outer name (`.two_8_16` → `.esc`) — flags `next` in the scan, so `next` is
+not hoisted and the swap never fires. The escaped name holds D2, the next
+pass makes a fresh `next`, and nothing aliases. (The swap itself would also
+be safe here: after the swap `next`'s slot holds D1, the escaped name holds
+D2, and the next pass writes only into D1 — but the swap never fires, so the
+point is moot.)
+
+**After the swap: OPEN — and it is the same break as §2.3, through a different
+name.** `best = next` after `curr = next` copies the RECYCLED descriptor
+D1 out of `next`'s slot, and the next pass overwrites it. The program:
+
+```sm
+mukhya() {
+    kosh curr[2]
+    kosh best[2]
+    chakra i = 1 tak 2 {
+        kosh next[2]
+        kosh_kship(next, i * 10)
+        curr = next
+        best = next
+        yadi i == 2 { likha(best[0]) }
+    }
+}
+```
+
+Trace, plain semantics: pass 2 prints **20** (`best` = this pass's `next`).
+Trace, with ping-pong under approximation "whitelist assignments whose target
+is declared outside the loop" (the natural scan rule — `best` is outside, so
+`best = next` is whitelisted too, `next` is hoisted): pass 1, swap →
+`curr` ← D2 ([10]), `next` ← D1; `best = next` (plain copy) → `best` ← D1
+(empty). Pass 2: `next` = [20] (D1); swap → `curr` ← D1 ([20]), `next` ←
+D2 ([10]); `best = next` → `best` ← D2 ([10]). Prints **10** instead of
+**20** — and a third pass would reset D2 and overwrite `best`'s values.
+
+This break is shape-dependent: it needs the scan to whitelist `best = next`
+as well as `curr = next`. If the scan whitelists ONLY `curr = next` (by
+target name), then `best = next` flags `next` → not hoisted → no swap →
+prints 20. But whitelisting by target name requires designating `curr` as
+the carried name — a new mechanism the proposal does not describe, and one
+that still leaves §2.2 and §2.3 open (a read of `next` after the swap, and a
+third name, do not depend on how the transfer is designated).
+
+**Two swaps in one pass (shape A only).** Under the emitter-swap shape
+(swap at EVERY kosh-to-kosh assignment whose right-hand side is hoisted),
+`best = next; curr = next` in one pass inverts itself:
+
+```sm
+mukhya() {
+    kosh curr[2]
+    kosh best[2]
+    chakra i = 1 tak 2 {
+        kosh next[2]
+        kosh_kship(next, i * 10)
+        best = next
+        curr = next
+        likha(curr[0])
+    }
+}
+```
+
+Pass 1: `next` = D2 = [10]. `best = next` (swap) → `best` ← D2, `next` ←
+D1 (empty). `curr = next` (swap) → `curr` ← D1 (EMPTY), `next` ← D2.
+`likha(curr[0])` → D1 length 0 → **exit 1** (plain: prints 10). The second
+swap undoes the first for `curr` and hands `next`'s slot back the descriptor
+`best` holds. A swap is not idempotent and not composable: it assumes the
+assignment is the ONLY kosh-to-kosh assignment involving these names in the
+pass, exactly once, at the end. Under shape B (swap only at the whitelisted
+`curr = next`), `best = next` is a plain copy and this program prints 10 —
+so this break is specific to shape A. But shape A is the shape the detach
+(§1) uses — the emitter fires at the escape site, without a scan — and the
+proposal says "instead of detaching it", which reads as the same shape.
+
+### 2.5 Case 4 — a pass where `next` is never written: CLOSED
+
+```sm
+mukhya() {
+    kosh curr[2]
+    chakra i = 1 tak 2 {
+        kosh next[2]
+        yadi i == 2 { kosh_kship(next, 20) }
+        curr = next
+    }
+    likha(kosh_gan(curr))
+}
+```
+
+Pass 1: `next` is declared, reset to length 0, never written. Swap:
+`curr` ← D2 (empty, capacity 2), `next` ← D1 (empty, capacity 2). `curr`
+after the swap is empty — correct, exactly as plain semantics (a plain copy
+of an empty `next`). Pass 2: `next`'s decl resets D1 (length 0, capacity 2
+preserved — the grown buffer is NOT lost; the capacity travels with the
+descriptor). `next` = [20]. Swap: `curr` ← D1 ([20]), `next` ← D2.
+`kosh_gan(curr)` = 1. Correct. The capacities are preserved because the swap
+moves whole descriptors, and the growth path (§2.0) grows through the
+descriptor, not through the slot. The only wrinkle is §2.2 again: a read of
+`next` after the swap on the empty pass sees D1's old elements (with D1's old
+length) rather than an empty `kosh`.
+
+### 2.6 Case 5 — the first pass: `curr`'s slot is zero: CLOSED (for the plain swap)
+
+When is `curr`'s slot zero at the swap? Not on a normal first pass — the decl
+allocates D1 and stores it before the swap. It is zero only if `curr`'s decl
+did not run this pass: with v319, a declaration under a `yadi` / `anya` or in
+a `mandapa` inside the loop gets its own slot, and "a declaration that never
+runs never makes anything" (R175 commit message). Trace: `curr`'s slot = 0,
+`next`'s slot = D2. Swap: `curr` ← D2, `next` ← 0. After the swap, `curr`
+holds D2 (correct — `curr = next`), `next` holds nothing. Next pass,
+`next`'s decl sees slot 0 → fresh allocation D3. **Correct, but wasteful** —
+the swap bought nothing this pass (D1 was never allocated), and it is exactly
+what the detach would have written (0). No garbage is possible for a hoist
+slot (zeroed at loop entry) or for a declared var slot (it holds the last
+pass's descriptor, or the decl just stored one). The zero case is closed.
+
+**But it closes the length-resetting mitigation.** If the swap also resets
+the recycled descriptor's length (`mov qword [rax-16],0` with `rax` = the old
+`curr`), then on the zero pass `rax` = 0 and the reset writes through address
+−16 → **segfault**. So the two mitigations conflict: resetting the length
+makes §2.2 fail loudly instead of silently, and crashes §2.6. A correct
+implementation would need `test rax,rax; jz` around the reset — more
+instructions (§2.8) — and it still would not fix §2.2's semantic difference
+(refusal vs. value) or §2.3 at all.
+
+### 2.7 Case 7 — the reset, and the both-inside reading
+
+**The swap happens at the assignment (end of the pass); the reset happens at
+the decl (top of the next pass).** `r172_decl_begin` runs when the decl
+executes; the swap runs when `curr = next` executes. For `next`, the reset
+zeroes the length of the RECYCLED descriptor D1 — correct, that is the point:
+D1 is emptied for reuse. For `curr`, in the both-inside reading, the reset
+zeroes the length of the CARRIED descriptor D2 — wrong, it destroys the
+carried value. **The reset zeroes the right descriptor for `next` and the
+wrong one for `curr`.**
+
+The both-inside reading — ROUND-177's words, "where both are loop-local":
+
+```sm
+mukhya() {
+    chakra i = 1 tak 3 {
+        kosh curr[2]
+        kosh next[2]
+        yadi i == 1 { kosh_kship(curr, 10) }
+        likha(curr[0])
+        kosh_kship(next, i * 10)
+        curr = next
+    }
+}
+```
+
+Pass 1 (both hoisted, scan whitelisting `curr = next` for both candidates):
+`curr` decl → fresh D1; seed D1 = [10]; `likha(curr[0])` = 10. `next` decl
+→ fresh D2 = [10]. Swap → `curr` ← D2, `next` ← D1.
+Pass 2: `curr` decl → slot holds D2 → **reset `[D2-16]` = 0 → `curr` is
+EMPTY**. `likha(curr[0])` → bounds check fails → **exit 1** (it should print
+10, the carried value).
+
+And without the hoist (current v319, no scan change) the same program fails
+the same way: pass 2's `curr` decl allocates a FRESH empty descriptor, so
+`likha(curr[0])` exits 1 there too. **The both-inside pattern is broken by
+the language itself — a `kosh` declared inside a loop is fresh each pass —
+not by the ping-pong.** The ping-pong presupposes a carried value that the
+decl destroys, and it cannot fix that, because the swap and the reset are in
+the wrong order for `curr`: the value is carried at the end of pass N and
+destroyed at the top of pass N+1, before any read.
+
+The only way the both-inside reading works is a second, undescribed change:
+a "carried" decl mode in which `curr`'s decl does NOT reset the length — i.e.
+two hoist modes, "emptied" and "carried", with the scan designating which
+name is carried. The proposal does not describe it, and even with it, §2.2
+and §2.3 still break (they are about the recycled descriptor, not the carried
+one). **The loop-carried pattern, as the language stands, needs `curr`
+declared OUTSIDE the loop** — and there it needs the scan change of §2.1.
+
+The stale-elements half of the question is settled by the read path (§2.0): a
+kosh read bounds-checks against the length freshly read from the descriptor,
+so stale elements are invisible once the length is 0. The danger is the
+LENGTH, not the elements: between the swap and the next decl, the recycled
+descriptor D1 still carries its old length, so its old elements are readable
+through `next` (§2.2) and through any alias (§2.3).
+
+### 2.8 Case 6 — growth across the swap: CLOSED
+
+Growth operates through the descriptor, never through the slot. After the
+swap, `next`'s slot holds D1, so a push into `next` grows D1 via its `[d]`
+and `[d+8]` — in place if the new size fits the region, otherwise a new
+buffer, an element-by-element copy, a munmap of the old region, and the three
+words `[r8]`, `[r8-8]`, `[r8+8]` written together (`r127_emit_grow`,
+`src/r65_arena.inc:579-745`). Every name holding D1 sees the new buffer,
+because no name holds the elements pointer directly. The swap itself releases
+nothing and leaks nothing: D1's region stays live as long as D1 is reachable
+(via `next`'s slot), and when the loop ends D1 is still live (it is `next`'s
+last value) and D2 is still live (it is `curr`'s last value) — the normal "no
+`kosh` ever dies" state, no worse than today.
+
+Two details the implementer must preserve (not breaks):
+
+- The R82 generation stamp: `r172_decl_begin` (v319) stamps the current
+  block generation into `[rcx-24]` at the decl, so a recycled descriptor is
+  re-stamped every pass. The swap must not skip that stamp, and it does not
+  need to write one itself — the decl does it. (`[rcx-32]`, the block-slot
+  address, is NOT re-stamped by the decl; it still points at the block where
+  the descriptor was created. The liveness check (`r82_emit_check`, `:11531`)
+  reads `[rax-32]` then `[rax-24]` and compares the generation at that slot
+  with the stamped one — it runs only on `kosh` parameters in a `prakriya`
+  prologue, and a hoisted descriptor never becomes a parameter (the scan
+  flags the call), so the stale `[d-32]` is not reachable through the check
+  as the design stands. If the ping-pong ever let a swapped descriptor reach
+  a parameter, the check would compare a generation against a descriptor
+  pointer and fail falsely — a second reason the swap must stay behind the
+  scan.)
+- A pass where `next` grows past 4,097 elements (region-backed) and then the
+  swap recycles the SMALL D1 into `next`'s slot: the next pass grows D1
+  again — first in place at the arena cursor / a new arena allocation, then
+  past 4,097 a new region, copy, munmap of D1's old (arena, not a region —
+  nothing to munmap). Correct; the region is released when outgrown, not at
+  the swap.
+
+### 2.9 Instruction count — not the same as the detach
+
+Detach (ROUND-177 WS1), 3 instructions, 1 register:
+
+```
+mov  rax, [rbp - temp_slot]
+mov  [rbp - best_slot], rax     ; best now owns that descriptor
+mov  QWORD [rbp - temp_slot], 0 ; DETACH
+```
+
+Ping-pong, plain moves — 4 instructions, 2 registers:
+
+```
+mov  rax, [rbp - curr_slot]    ; rax = D1 (old curr)
+mov  rcx, [rbp - next_slot]    ; rcx = D2 (this pass's next)
+mov  [rbp - next_slot], rax    ; next = D1
+mov  [rbp - curr_slot], rcx    ; curr = D2
+```
+
+A swap of two memory locations needs a temporary and at least four memory
+operations; the detach needs three because one side is a constant (0). With
+a length reset on the recycled descriptor it is 5 (`mov qword [rax-16],0`);
+with a zero check around that reset it is 7. The only 3-instruction form is:
+
+```
+mov  rax, [rbp - curr_slot]
+xchg rax, [rbp - next_slot]    ; locked: an implicit LOCK prefix
+mov  [rbp - curr_slot], rax
+```
+
+— the same COUNT as the detach, but `xchg` with a memory operand is
+implicitly locked, so it costs more than three plain moves (a locked
+operation serialises). **So no: not the same instruction count with plain
+moves, and not the same cost with `xchg`.**
+
+One more implementation wrinkle: the assignment has MANY emitters
+(`.gs_assign`'s PERF1/PERF2/XMM/float fast paths, all returning early at
+`.gs_assign_fast_done`). The swap would have to hook every path that can emit
+a kosh-to-kosh assignment, or run before them in `.gs_assign`'s prologue
+(where `r126_check_assign` and `r38_mark_alias` already run for var-var
+assignments). A single hook point exists, but it is a hook the proposal does
+not name.
+
+**Ranked breaking programs for B (strongest first):**
+
+1. **§2.3 — three names** (`prev = curr` before the swap): the recycled
+   descriptor is aliased by a third name. Plain semantics exits 1;
+   ping-pong prints 20. The ping-pong does not know about the third name —
+   the alias machinery records only the KIND, never which descriptor a name
+   holds, and there is no table in the compiler that says "D1 is held by
+   `prev`".
+2. **§2.2 — `next` read after the swap**: `next`'s slot holds the old `curr`
+   descriptor D1 with its old length and old elements, until the next pass's
+   decl resets it. `likha(next[0])` on pass 2 prints 10 instead of 20 — a
+   stale read (unguarded, it exits 1 on pass 1 instead of printing 10).
+3. **§2.7 — the both-inside reading**: the proposal's stated shape — "both
+   are loop-local" (ROUND-177 WS1 Q2) — cannot carry a value at all. A `kosh`
+   declared inside the loop is fresh each pass; if hoisted, its decl resets
+   the carried descriptor's length to 0 at the top of the next pass, before
+   any read. The pattern only makes sense with `curr` declared OUTSIDE the
+   loop — and there it needs a scan change the proposal does not describe.
+
+**Closed:** §2.4 before the swap (any escape of `next` prevents hoisting, so
+the swap never fires); §2.5 empty `next` (capacities travel with the
+descriptors, `curr` correctly empty); §2.8 growth across the swap (growth
+operates entirely through the descriptor). §2.6 zero slot is closed for the
+plain pointer swap (correct, wasteful — it is exactly what the detach would
+write), but a length-resetting swap would segfault on it, so the two
+mitigations conflict.
+
+---
+
+## 3. Task 3 — C: move the zeroing from `mandapa` exit into `nirmmita`. No.
+
+The proposal (ROUND-165 §1.C / ROUND-177 WS2): leave `mandapa` exit
+untouched — one cursor restore, exactly as v315 — and zero inside `nirmmita`
+instead. Argument: a `kosh` cannot read stale bytes (length check), a `mala`
+zeroes at creation, so only `nirmmita` can observe stale data. Claim: this
+restores all 38 guard programs to byte-identical and takes block exit from
+13.2 ns back to 5.6. The WS2 design adds: zero only when the allocation is
+below the block's mark — a `nirmmita` into virgin pages needs nothing, because
+the kernel already zeroed them.
+
+The claim fails on its central premise and on both of its stated
+consequences. (And §0 first: the zeroing it would move is not in v319 at
+all — C is a proposal, not a move of existing code.)
+
+### 3.1 Q1 — does a `kosh` read ever look past `length`? No, through the language's own read paths. Yes, through FFI.
+
+`k[i]` (read) and `k[i] = v` (write) both go through the same sequence
+(`src/sutram_compiler.asm`, v318):
+
+- `gen_expr` evaluates the runtime index → `rax`.
+- `r128_emit_kosh_refresh` (`:21719`) re-reads the length and the elements
+  from the descriptor **after** the index expression, when the index contains
+  a call (`r12 = 0x102` — a call in the index may have grown the `kosh`, so
+  the length is read again, not the one from before the call).
+- `emit_array_bounds_check` (`:21588`) emits `cmp rax, [rsp]` — the unsigned
+  index against the runtime length on the stack — and `jb .ok`; otherwise it
+  prints the diagnostic and exits 1. Unsigned, so a negative index fails too.
+
+The check is emitted whenever `r12 != 0`, and for a `kosh`
+`r128_emit_kosh_base` sets `r12 = 2` (or `0x102` when the index has a call) —
+never 0. There is no constant-index exemption: a constant index cannot be
+proven `< length` at compile time, because `length` is runtime, so the check
+is emitted for constant indices too. The write path (`:22397-22400`) is
+identical.
+
+Slice creation (`r23_gen_slice`, `src/r23_capabilities.inc:574`) emits two
+runtime checks via `emit_array_bounds_check`: `hi <= length` (`hi < length +
+1`, unsigned, so a negative `hi` fails too; the length is re-read after `lo`
+and `hi` are evaluated, and an omitted `hi` takes the length after `lo` was
+evaluated, not before — R129) and `lo <= hi` (`lo < hi + 1`). Reads through
+the slice (`r23_index_slice`) push the slice's length and check against it
+(the `r12 = 3` path in the index handler). A slice of a `mala` is likewise
+checked against the `mala`'s stored length. A whole `mala` passed to a
+`vibhag` parameter becomes a slice `[0:length]` (`.r23_gtca_slice`, `:27833`),
+and reads through it are checked against that length.
+
+The other `kosh` readers are all bounded by `length`: `kosh_iksh` (search),
+`kosh_yuj` (concat), the growth copy (`r127_emit_grow`) — all iterate
+`[0, length)`. `kosh_gan` reads `[d-16]`; `kosh_ksham` reads `[d-8]`;
+`parimana()` reads capacity; the R82 liveness check reads the header words
+`[d-40]`, `[d-32]`, `[d-24]`. None reads past `length`. `likha(k)` prints the
+descriptor address (R100 trap #5, still live) — it hands the address to the
+output, not to the program.
+
+**The one exception: FFI.** A foreign function taking a `ptr` parameter
+receives the elements address (`src/r32_ffi.inc:736-755`, `.ptr` emits
+`mov rax,[rax]`), and C can read — and write — past `length`. A foreign
+function can also return the address (`ptr` / `i64` result kinds,
+`src/r32_ffi.inc:15-16`, `:297-298`), and the program can then read through
+it with `akshar` (raw byte read, no bounds check — R163 Task 3, `:24405`) or
+pointer arithmetic. This is the R162 hole's cousin: the bounds check is a
+Sutram-side check, and C is outside it. So the claim "a `kosh` cannot read
