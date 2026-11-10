@@ -1,0 +1,5 @@
+mukhya() {
+    likha("Tava nama kim? ")
+    vitti nama = vartani_grahan()
+    likha("Namaste, ", nama, "!\n")
+}

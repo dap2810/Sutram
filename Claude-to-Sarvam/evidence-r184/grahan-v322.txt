@@ -1,0 +1,13 @@
+'42\n7\n'          -> 42 7
+'hello\n7\n'       -> 0 7
+'hello world\n7\n' -> 0 7
+'12 34\n7\n'       -> 1234 7
+'\n7\n'            -> 0 7
+'-5\n7\n'          -> 5 7
+'42'               -> -1 -1
+'42\n7'            -> 42 -1
+''                 -> -1 -1
+read calls for '12345\n7\n' (8 bytes):
+  0.00    0.000000           0         8           read
+vartani_grahan, read calls for 'Asha Patel\n' (11 bytes):
+  0.00    0.000000           0        11           read

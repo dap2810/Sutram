@@ -1,0 +1,51 @@
+## v323 f05ddd7e, Linux
+--- name.sm < 'Asha Patel\n'
+Tava nama kim? Namaste, Asha Patel!
+
+--- name.sm < '\n' (Enter alone)
+Tava nama kim? Namaste, !
+--- name.sm < nothing
+Tava nama kim? Namaste, !
+--- loop.sm < 'one\n\ntwo words\r\nlast' (no final newline)
+1: [one] 3
+2: [] 0
+3: [two words] 9
+4: [last] 4
+panktayah: 4
+--- loop.sm < nothing
+panktayah: 0
+--- loop.sm: last field (the length) of lines of 100000, 63, 64, 5000000 bytes
+100000
+63
+64
+5000000
+4
+--- mix.sm < '12\nAsha\n' (grahan, then vartani_grahan twice more)
+vayah? nama? Asha 12
+[] 1 [samaAsha!
+--- obj.sm < 'hari\n'
+nama? [hari]--- dev.sm < 'राम\n'
+[राम] 0
+[] 1
+--- 2,000,000 lines (24,888,890 bytes): noblk.sm, then blk.sm (the read inside a mandapa): lines, [bytes], parimana(); time, peak RSS (taken while the gates were running; unloaded, earlier: 5.09 s and 5.07 s)
+2000000 128000064
+5.20s 124928KB
+2000000 22888890 128000064
+5.52s 124928KB
+--- bad1.sm (compile)
+
+Sutram truti: vyakaran dosh, pankti 2:31, shabd ')'
+      vitti s = vartani_grahan(1)
+                                ^
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.
+--- bad2.sm (compile)
+bad2.sm:2:32: Sutram truti [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na
+      vitti s = vartani_grahan() * 2
+                                 ^
+Sanket: dvayoh vartanyoh '+' navinam vartanim rachayati; '-' '*' '/' sankhyabhih eva
+--- bad3.sm (compile)
+
+Sutram truti: vyakaran dosh, pankti 2:11, shabd 'vartani_grahan'
+      vitti vartani_grahan = 2
+            ^
+Sanket: asmin sthane shabdam vyakaranam cha pashyatu.

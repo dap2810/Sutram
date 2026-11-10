@@ -1,0 +1,10 @@
+mukhya() {
+    vitti n = 0
+    yavat (1) {
+        vitti s = vartani_grahan()
+        yadi (nivesha_anta()) { krama }
+        n = n + 1
+        likha(n, ": [", s, "] ", vartani_aayam(s))
+    }
+    likha("panktayah: ", n)
+}

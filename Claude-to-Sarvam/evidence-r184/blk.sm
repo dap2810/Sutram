@@ -1,0 +1,12 @@
+mukhya() {
+    vitti n = 0
+    vitti tot = 0
+    yavat (1) {
+        mandapa {
+            vitti s = vartani_grahan()
+            yadi (nivesha_anta() == 0) { n = n + 1  tot = tot + vartani_aayam(s) }
+        }
+        yadi (nivesha_anta()) { krama }
+    }
+    likha(n, " ", tot, " ", parimana())
+}

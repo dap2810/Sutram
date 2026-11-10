@@ -1,0 +1,8 @@
+prakriya prashna(q) {
+    likha(q)
+    nivartanam vartani_grahan()
+}
+mukhya() {
+    vitti a = prashna("nama? ")
+    likha("[", a, "]")
+}

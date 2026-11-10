@@ -1,0 +1,13 @@
+mukhya() {
+    likha("vayah? ")
+    vitti v = grahan()
+    likha("nama? ")
+    vitti s = vartani_grahan()
+    likha(s, " ", v)
+    vitti t = vartani_grahan()
+    vitti u = vartani_grahan()
+    likha("[", t, "] ", nivesha_anta(), " [", u)
+    yadi (s == "Asha") { likha("sama") }
+    vitti j = s + "!"
+    likha(j)
+}
