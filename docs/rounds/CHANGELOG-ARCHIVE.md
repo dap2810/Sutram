@@ -1,5 +1,19 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v298 (Claude, R121) - `anka_akshar` and `vartani_sandhi` fixed: the two builtin defects Windows exposed
+
+- **`anka_akshar(code)`** wrote its character **below the stack pointer** and returned that address, leaving
+  `rsp` 8 bytes lower each call. Windows lost the character at once (the runtime's kernel32 call uses that
+  stack: example 322 printed a garbage byte); Linux lost it as soon as the value was kept past a call. **Now two
+  bytes from nirmmita's allocator**, as `s + t`; the result lives as long as the program.
+- **`vartani_sandhi(s, t)`** appends in place, and **`s` was allowed to be a string literal** - part of the
+  program's code. Windows: access violation (0xC0000005, example 322); Linux: it silently overwrote the code
+  after the literal, and crashed the second time round a loop. **Now a literal `s` is refused when compiled,
+  and a literal reached through a variable stops the program** (`E_VARTANI_STHIRA`, exit 1). In-place
+  appending into writable memory is unchanged (R54's raw test).
+- Examples 322/323 append into a `nirmmita` buffer instead of the literal; **their goldens are unchanged** - the
+  golden was the right answer, Linux printed it by luck. Gate `R121 builtins` (14 checks, ELF and PE).
+
 ## v297 (Claude, R118) - the library's English names become aliases; three compiler hints name the R111 builtins
 
 - **Ten library `prakriya` get Sanskrit names** (ChatGPT R191's bucket-1 words `bit`, `diff`, `pad`, `pre`,

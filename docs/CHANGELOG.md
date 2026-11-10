@@ -1,4 +1,24 @@
-> **The 20 newest entries.** Older ones, from "v297" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v298" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v318 (Claude, R173) - a `mala` declared in a `chakra`'s own body is made once; the R172 audits answered
+
+- **The 80 bytes a pass** (Sarvam R173 WS4; measured R168): a `mala` declared as a statement of a `chakra`'s own
+  body, without an initializer, whose name appears in the loop only as the base of an index, is allocated on the
+  first pass; every later pass with the same length finds it in its frame slot and zeroes its numbers
+  (`rep stosq`) - a `mala` has no length to reset, so each pass must see zeros (`r173_mala_begin`,
+  `src/sutram_compiler.asm`; the scan and the slot are R172's). A different length this pass: a new `mala`, as
+  before.
+- **No new refusal.** R173 asked for a `mala`'s escape to be refused first (`E_SCRATCH_ESCAPE`). It is not: a
+  `mala` that is given to a `prakriya`, given a second name, returned or put into a `kosh` is simply not made once
+  - it is a new `mala` every pass, as in v317 - so no program that compiled stops compiling and no two rows can
+  become one (gate: five rows put into a `kosh` stay five).
+- Measured (Linux x86-64): 800,000 passes of `mala m[8]` - 62,516 KB resident on v317, 20 KB on v318.
+- Gate `R173 chakra mala` (12 checks; 6 fail on v317): ten shapes, the rows, and redzones around the `mala` over
+  1,000,000 passes with every pass reading eight zeros.
+- Every program that compiled on v317, v316 and v315 compiles to the same bytes (guard: 783 programs, ELF and PE,
+  0 DIFFER). Run under Wine; not run on Windows. Installer rebuilt (payload v318).
+- The three audits of R172 (growth, a `kosh` put into a container, nested blocks) are answered in R173-00; no
+  code changed for them.
 
 ## v317 (Claude, R172) - a `kosh` declared in a `chakra`'s own body is made once, not every pass
 
@@ -437,17 +457,3 @@
   output is unchanged byte for byte. Priced in R123, not changed.
 - The native Windows harness passes `--lang hindi` to example 220 and skips 29 (a raw Linux exit syscall).
   Gate `R123 PE memory` (9 checks; PE under Wine).
-
-## v298 (Claude, R121) - `anka_akshar` and `vartani_sandhi` fixed: the two builtin defects Windows exposed
-
-- **`anka_akshar(code)`** wrote its character **below the stack pointer** and returned that address, leaving
-  `rsp` 8 bytes lower each call. Windows lost the character at once (the runtime's kernel32 call uses that
-  stack: example 322 printed a garbage byte); Linux lost it as soon as the value was kept past a call. **Now two
-  bytes from nirmmita's allocator**, as `s + t`; the result lives as long as the program.
-- **`vartani_sandhi(s, t)`** appends in place, and **`s` was allowed to be a string literal** - part of the
-  program's code. Windows: access violation (0xC0000005, example 322); Linux: it silently overwrote the code
-  after the literal, and crashed the second time round a loop. **Now a literal `s` is refused when compiled,
-  and a literal reached through a variable stops the program** (`E_VARTANI_STHIRA`, exit 1). In-place
-  appending into writable memory is unchanged (R54's raw test).
-- Examples 322/323 append into a `nirmmita` buffer instead of the literal; **their goldens are unchanged** - the
-  golden was the right answer, Linux printed it by luck. Gate `R121 builtins` (14 checks, ELF and PE).

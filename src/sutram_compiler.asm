@@ -257,7 +257,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v317) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v318) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1621,6 +1621,8 @@ section .bss
     r172_esc    resq 1                      ;   1 = a use that is not proven local
     r172_cur    resq 1                      ;   the slot of the kosh being declared, 0 if it is made every pass
     r172_patch  resq 1                      ;   its jump over the allocation
+    r173_mala   resq 1                      ; R173: the scan is for a mala (the name only as an index base)
+    r173_p      resq 3                      ;   the three jumps to the allocation
     r107_kosh_hit resq 1                    ; R107: the last tainted name met was a kosh made in a block
     r107_knames resq 256                    ; R107: those kosh names
     r107_kn     resq 1
@@ -10921,11 +10923,18 @@ r172_for_enter:
     jz .l
     cmp qword [rdi], AST_DECL
     jne .l
+    mov qword [rel r173_mala], 0
     mov rax, [rdi+32]
-    cmp rax, 2                     ; a kosh, a kosh of dasham
-    jb .l
     cmp rax, 3
     ja .l
+    cmp rax, 2                     ; a kosh, a kosh of dasham
+    jae .cand
+    cmp qword [rdi+24], 0          ; R173: a mala - a size and no initializer
+    je .l
+    cmp qword [rdi+16], 0
+    jne .l
+    mov qword [rel r173_mala], 1
+.cand:
     push rdi
     mov rax, [rdi+8]
     mov [rel r172_name], rax
@@ -11020,6 +11029,50 @@ r172_decl_begin:
     mov [rel r172_patch], rax
     xor edi, edi
     call emit_u32
+.r:
+    ret
+
+; r173_mala_begin(rbx = the mala AST_DECL): generated code, the length is in rax.
+;   test rax,rax ; jle .fresh ; mov rcx,[rbp+slot] ; test rcx,rcx ; jz .fresh ; cmp rax,[rcx-8] ; jne .fresh
+;   push rcx ; mov rdi,rcx ; mov rcx,rax ; xor eax,eax ; cld ; rep stosq ; pop rax ; jmp .have ; .fresh:
+; A mala has no length to reset: all its numbers are readable at once, so they are zeroed, as a new mala's
+; are. A different length this pass: a new mala, as before (the old one is kept; it fails toward leaking).
+r173_mala_begin:
+    mov rdi, rbx
+    call r172_slot_of
+    mov [rel r172_cur], rax
+    test rax, rax
+    jz .r
+    R172_EMIT 0x48,0x85,0xC0, 0x0F,0x8E
+    mov rax, [rel code_sz]
+    mov [rel r173_p], rax
+    xor edi, edi
+    call emit_u32
+    R172_EMIT 0x48,0x8B
+    mov esi, [rel r172_cur]
+    mov dil, 0x4D
+    call emit_rbp_modrm_disp
+    R172_EMIT 0x48,0x85,0xC9, 0x0F,0x84
+    mov rax, [rel code_sz]
+    mov [rel r173_p + 8], rax
+    xor edi, edi
+    call emit_u32
+    R172_EMIT 0x48,0x3B,0x41,0xF8, 0x0F,0x85
+    mov rax, [rel code_sz]
+    mov [rel r173_p + 16], rax
+    xor edi, edi
+    call emit_u32
+    R172_EMIT 0x51, 0x48,0x89,0xCF, 0x48,0x89,0xC1, 0x31,0xC0, 0xFC, 0xF3,0x48,0xAB, 0x58, 0xE9
+    mov rax, [rel code_sz]
+    mov [rel r172_patch], rax
+    xor edi, edi
+    call emit_u32
+    mov rdi, [rel r173_p]          ; .fresh:
+    call r73_patch32
+    mov rdi, [rel r173_p + 8]
+    call r73_patch32
+    mov rdi, [rel r173_p + 16]
+    call r73_patch32
 .r:
     ret
 
@@ -11189,6 +11242,8 @@ r172_scan:
     je .own
     jmp .al0
 .own:                              ; the kosh these work on: named, not copied
+    cmp qword [rel r173_mala], 0   ; R173: a mala has no built-in of its own - its name there is a use
+    jne .al0
     cmp qword [rbx+16], 0
     je .out
     mov rax, [rbx+24]
@@ -19797,6 +19852,7 @@ r142_gen_stmt_body:
     ; This removes compile-time name collisions and preserves dynamic lengths.
     mov rax, [rbx+24]        ; size expression
     call gen_expr             ; runtime length -> rax
+    call r173_mala_begin      ; R173: made in an earlier pass of its chakra with this length - that one, zeroed
     ; push length while allocation is emitted
     mov dil, 0x50
     call emit_byte
@@ -19837,6 +19893,7 @@ r142_gen_stmt_body:
     call emit_byte
     mov dil, 0x08
     call emit_byte
+    call r172_decl_end        ; R173: remembered for the next pass
     ; Store user pointer in the declared variable.
     mov rdi, [rbx+8]
     call alloc_var
