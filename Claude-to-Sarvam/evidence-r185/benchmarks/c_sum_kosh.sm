@@ -1,0 +1,21 @@
+# Scenarios C and D, checked: the same with a kosh, whose every index is checked against its length
+mukhya() {
+    vitti r = grahan()
+    vitti n = grahan()
+    kosh k[n]
+    chakra i = 0 tak n - 1 {
+        kosh_kship(k, i & 1023)
+    }
+    vitti t = 0
+    vitti q = 0
+    yavat (q < r) {
+        k[q] = k[q] + 1
+        vitti s = 0
+        chakra j = 0 tak n - 1 {
+            s = s + k[j]
+        }
+        t = t + s
+        q = q + 1
+    }
+    likha(t)
+}

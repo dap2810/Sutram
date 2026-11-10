@@ -1,0 +1,7 @@
+Sutram v315, best of 5, the same machine, after run 3. "as written" is c_sum_buffer.sm; "hot variables first"
+is c_sum_buffer_hot_first.sm (s and j declared before every other variable).
+
+as written           C: all 775.5 ms, fill 46.7 ms, 10,000,000 additions 36.44 ms, answer 102297542610
+as written           D: all 283.5 ms, fill 0.9 ms, 10,000,000 additions 14.13 ms, answer 102065457000
+hot variables first  C: all 650.1 ms, fill 55.3 ms, 10,000,000 additions 29.74 ms, answer 102297542610
+hot variables first  D: all 203.6 ms, fill 0.8 ms, 10,000,000 additions 10.14 ms, answer 102065457000

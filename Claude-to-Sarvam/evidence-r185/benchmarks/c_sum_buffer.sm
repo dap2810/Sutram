@@ -1,0 +1,21 @@
+# Scenarios C and D: fill a buffer of n numbers, then sum all of it r times (r and n come from the input)
+mukhya() {
+    vitti r = grahan()
+    vitti n = grahan()
+    vitti p = nirmmita(n * 8)
+    chakra i = 0 tak n - 1 {
+        p[i] = i & 1023
+    }
+    vitti t = 0
+    vitti q = 0
+    yavat (q < r) {
+        p[q] = p[q] + 1
+        vitti s = 0
+        chakra j = 0 tak n - 1 {
+            s = s + p[j]
+        }
+        t = t + s
+        q = q + 1
+    }
+    likha(t)
+}

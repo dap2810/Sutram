@@ -1,0 +1,12 @@
+# Scenario B: build a collection of 1,000,000 numbers, then sum it
+mukhya() {
+    kosh k[4]
+    chakra i = 0 tak 999999 {
+        kosh_kship(k, i)
+    }
+    vitti s = 0
+    chakra j = 0 tak kosh_gan(k) - 1 {
+        s = s + k[j]
+    }
+    likha(s)
+}

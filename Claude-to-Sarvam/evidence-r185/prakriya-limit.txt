@@ -1,0 +1,5 @@
+prakriya in one program (gen_big.py N), Sutram v315:
+100: Siddh: 23393 baait sankalit
+128: Siddh: 29889 baait sankalit
+129: Sutram truti: prakriya paribhasha-suchi seema atikram
+200: Sutram truti: prakriya paribhasha-suchi seema atikram

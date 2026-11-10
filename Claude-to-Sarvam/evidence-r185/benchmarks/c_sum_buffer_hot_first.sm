@@ -1,0 +1,27 @@
+# Scenarios C and D again, with one change: the two variables the hot loop uses (s and j) are declared
+# FIRST. The compiler keeps the first variables of a prakriya in registers; in c_sum_buffer.sm these two
+# come fifth and sixth and live in memory.
+mukhya() {
+    vitti s = 0
+    vitti j = 0
+    vitti r = grahan()
+    vitti n = grahan()
+    vitti p = nirmmita(n * 8)
+    chakra i = 0 tak n - 1 {
+        p[i] = i & 1023
+    }
+    vitti t = 0
+    vitti q = 0
+    yavat (q < r) {
+        p[q] = p[q] + 1
+        s = 0
+        j = 0
+        yavat (j < n) {
+            s = s + p[j]
+            j = j + 1
+        }
+        t = t + s
+        q = q + 1
+    }
+    likha(t)
+}

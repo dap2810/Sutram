@@ -1,0 +1,129 @@
+1:
+2:add    al,BYTE PTR [rax]
+3:ds add BYTE PTR [rcx],al
+4:add    BYTE PTR [rax],al
+5:add    BYTE PTR [rax+0x0],bh
+6:rex add BYTE PTR [rax],al
+7:add    BYTE PTR [rax],al
+8:add    BYTE PTR [rax+0x0],al
+9:
+10:add    BYTE PTR [rax],al
+11:add    BYTE PTR [rax],dil
+12:add    BYTE PTR [rcx],al
+13:add    BYTE PTR [rax],al
+14:add    BYTE PTR [rax],al
+15:add    BYTE PTR [rax],al
+16:add    BYTE PTR [rcx],al
+17:add    BYTE PTR [rax],al
+18:add    BYTE PTR [rdi],al
+19:add    BYTE PTR [rax],al
+20:add    BYTE PTR [rax+0x0],bh
+21:add    BYTE PTR [rax],al
+22:add    BYTE PTR [rax],al
+23:add    BYTE PTR [rax],al
+24:js     0x52
+25:rex add BYTE PTR [rax],al
+26:add    BYTE PTR [rax],al
+27:add    BYTE PTR [rax+0x0],bh
+28:rex add BYTE PTR [rax],al
+29:add    BYTE PTR [rax],al
+30:add    BYTE PTR [rdi],dl
+31:add    DWORD PTR [rax],eax
+32:add    BYTE PTR [rax],al
+33:add    BYTE PTR [rax],al
+34:add    BYTE PTR [rdi],dl
+35:add    DWORD PTR [rcx],eax
+36:add    BYTE PTR [rax],al
+37:add    BYTE PTR [rax],al
+38:add    BYTE PTR [rax],al
+39:adc    BYTE PTR [rax],al
+40:add    BYTE PTR [rax],al
+41:add    BYTE PTR [rax],al
+42:add    BYTE PTR [rax-0x77],cl
+43:and    eax,0x108
+44:push   rbp
+45:rex.W push rbx
+46:push   r12
+47:push   r13
+48:push   r14
+49:push   r15
+50:mov    rbp,rsp
+51:sub    rsp,0x800
+52:mov    ebx,0x0
+53:mov    eax,0x0
+54:mov    r12,rax
+55:jmp    0xd4
+56:mov    rax,rbx
+57:mov    r10,r12
+58:shl    r10,0x1
+59:add    rax,r10
+60:push   rax
+61:mov    rax,rbx
+62:push   rax
+63:mov    eax,0x3
+64:pop    rdx
+65:xchg   rax,rdx
+66:mov    rcx,rdx
+67:shr    rax,cl
+68:pop    rdx
+69:xchg   rax,rdx
+70:xor    rax,rdx
+71:mov    rbx,rax
+72:inc    r12
+73:mov    rax,r12
+74:push   rax
+75:mov    eax,0x98967f
+76:pop    rdx
+77:xchg   rax,rdx
+78:cmp    rax,rdx
+79:jle    0xa6
+80:mov    rax,rbx
+81:mov    r8,rax
+82:sub    rsp,0x20
+83:test   r8,r8
+84:jns    0x115
+85:neg    r8
+86:mov    BYTE PTR [rsp],0x2d
+87:mov    eax,0x1
+88:mov    edi,0x1
+89:lea    rsi,[rsp]
+90:mov    edx,0x1
+91:syscall
+92:lea    rsi,[rsp+0x1f]
+93:mov    BYTE PTR [rsi],0xa
+94:dec    rsi
+95:test   r8,r8
+96:jne    0x12d
+97:mov    BYTE PTR [rsi],0x30
+98:dec    rsi
+99:jmp    0x14b
+100:xor    rdx,rdx
+101:mov    rax,r8
+102:mov    ecx,0xa
+103:div    rcx
+104:mov    r8,rax
+105:add    dl,0x30
+106:mov    BYTE PTR [rsi],dl
+107:dec    rsi
+108:test   r8,r8
+109:jne    0x12d
+110:lea    rdx,[rsp+0x20]
+111:sub    rdx,rsi
+112:dec    rdx
+113:inc    rsi
+114:mov    rdi,0x1
+115:mov    eax,0x1
+116:syscall
+117:add    rsp,0x20
+118:mov    rsp,rbp
+119:pop    r15
+120:pop    r14
+121:pop    r13
+122:pop    r12
+123:pop    rbx
+124:pop    rbp
+125:movabs rax,0x3c
+126:
+127:xor    rdi,rdi
+128:syscall
+129:

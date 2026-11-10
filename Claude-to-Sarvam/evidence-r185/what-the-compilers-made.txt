@@ -1,0 +1,34 @@
+vector instructions in the scenario C / D executable (objdump -d, count of lines):
+C,_gcc_(no_flag)             paddq 0    ymm/zmm 0
+C,_gcc_-O2                   paddq 0    ymm/zmm 0
+C,_gcc_-O3_-marchnative      paddq 4    ymm/zmm 9
+C,_clang_(no_flag)           paddq 0    ymm/zmm 0
+C,_clang_-O2                 paddq 6    ymm/zmm 0
+
+gcc -O2, scenario A, main (the loop is gone; 0x5af30fe1a980 = 99999990000000):
+0000000000001060 <main>:
+endbr64
+sub    $0x8,%rsp
+lea    0xf95(%rip),%rsi        # 2004 <_IO_stdin_used+0x4>
+mov    $0x2,%edi
+xor    %eax,%eax
+movabs $0x5af30fe1a980,%rdx
+
+call   1050 <__printf_chk@plt>
+xor    %eax,%eax
+
+executable sizes, scenario A, bytes:
+Sutram_v315_main_a_arith.sutram                              372
+C,_gcc_(no_flag)_a_arith                                     15968
+C,_gcc_-O2_a_arith                                           15968
+C,_clang_-O2_a_arith                                         16016
+Rust,_rustc_(debug)_a_arith                                  4362592
+Rust,_rustc_-C_opt-level3_(what_--release_sets)_a_arith      4359144
+go_a_arith                                                   2209063
+
+Sutram v315 and v323 executables, cmp:
+a_arith: identical bytes
+a2_arith_dependent: identical bytes
+b_collect: identical bytes
+c_sum_buffer: identical bytes
+empty: identical bytes

@@ -1,0 +1,8 @@
+# Scenario A: 10,000,000 passes of s = s + i * 2
+mukhya() {
+    vitti s = 0
+    chakra i = 0 tak 9999999 {
+        s = s + i * 2
+    }
+    likha(s)
+}

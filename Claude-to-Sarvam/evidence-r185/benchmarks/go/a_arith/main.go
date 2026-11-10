@@ -1,0 +1,12 @@
+// Scenario A: 10,000,000 passes of s = s + i * 2
+package main
+
+import "fmt"
+
+func main() {
+	var s int64
+	for i := int64(0); i < 10000000; i++ {
+		s += i * 2
+	}
+	fmt.Println(s)
+}

@@ -1,0 +1,266 @@
+1:
+2:add    al,BYTE PTR [rax]
+3:ds add BYTE PTR [rcx],al
+4:add    BYTE PTR [rax],al
+5:add    BYTE PTR [rax+0x0],bh
+6:rex add BYTE PTR [rax],al
+7:add    BYTE PTR [rax],al
+8:add    BYTE PTR [rax+0x0],al
+9:
+10:add    BYTE PTR [rax],al
+11:add    BYTE PTR [rax],dil
+12:add    BYTE PTR [rcx],al
+13:add    BYTE PTR [rax],al
+14:add    BYTE PTR [rax],al
+15:add    BYTE PTR [rax],al
+16:add    BYTE PTR [rcx],al
+17:add    BYTE PTR [rax],al
+18:add    BYTE PTR [rdi],al
+19:add    BYTE PTR [rax],al
+20:add    BYTE PTR [rax+0x0],bh
+21:add    BYTE PTR [rax],al
+22:add    BYTE PTR [rax],al
+23:add    BYTE PTR [rax],al
+24:js     0x52
+25:rex add BYTE PTR [rax],al
+26:add    BYTE PTR [rax],al
+27:add    BYTE PTR [rax+0x0],bh
+28:rex add BYTE PTR [rax],al
+29:add    BYTE PTR [rax],al
+30:add    BYTE PTR [rax],al
+31:add    eax,DWORD PTR [rax]
+32:add    BYTE PTR [rax],al
+33:add    BYTE PTR [rax],al
+34:add    BYTE PTR [rax],al
+35:add    eax,DWORD PTR [rcx]
+36:add    BYTE PTR [rax],al
+37:add    BYTE PTR [rax],al
+38:add    BYTE PTR [rax],al
+39:adc    BYTE PTR [rax],al
+40:add    BYTE PTR [rax],al
+41:add    BYTE PTR [rax],al
+42:add    BYTE PTR [rax-0x77],cl
+43:and    eax,0x2d9
+44:push   rbp
+45:rex.W push rbx
+46:push   r12
+47:push   r13
+48:push   r14
+49:push   r15
+50:mov    rbp,rsp
+51:sub    rsp,0x800
+52:sub    rsp,0x10
+53:xor    r8d,r8d
+54:xor    eax,eax
+55:xor    edi,edi
+56:mov    rsi,rsp
+57:mov    edx,0x1
+58:syscall
+59:test   eax,eax
+60:jle    0xd1
+61:movzx  edx,BYTE PTR [rsp]
+62:cmp    dl,0xa
+63:je     0xcc
+64:cmp    dl,0x30
+65:jl     0x9b
+66:cmp    dl,0x39
+67:jg     0x9b
+68:sub    dl,0x30
+69:imul   r8,r8,0xa
+70:add    r8,rdx
+71:jmp    0x9b
+72:mov    rax,r8
+73:jmp    0xd8
+74:mov    rax,0xffffffffffffffff
+75:add    rsp,0x10
+76:mov    rbx,rax
+77:mov    r12d,0x989680
+78:mov    rax,r12
+79:shl    rax,0x3
+80:mov    rsi,rax
+81:mov    rax,QWORD PTR [rip+0x26a]        # 0x360
+82:test   rax,rax
+83:jne    0x152
+84:push   rsi
+85:xor    edi,edi
+86:mov    esi,0x40000000
+87:mov    edx,0x3
+88:mov    r10d,0x4022
+89:mov    r8,0xffffffffffffffff
+90:xor    r9d,r9d
+91:mov    eax,0x9
+92:syscall
+93:pop    rsi
+94:mov    edx,0x40000000
+95:cmp    rax,0xfffffffffffff001
+96:jb     0x134
+97:mov    eax,0x10
+98:xor    edx,edx
+99:mov    QWORD PTR [rip+0x225],rax        # 0x360
+100:mov    rcx,rax
+101:add    rax,rdx
+102:mov    QWORD PTR [rip+0x220],rax        # 0x368
+103:mov    QWORD PTR [rip+0x221],rax        # 0x370
+104:mov    rax,rcx
+105:mov    rdx,rax
+106:mov    rax,QWORD PTR [rip+0x20c]        # 0x368
+107:sub    rax,rdx
+108:cmp    rax,rsi
+109:jb     0x181
+110:test   rsi,rsi
+111:je     0x181
+112:lea    rax,[rdx+rsi*1+0xf]
+113:and    rax,0xfffffffffffffff0
+114:mov    QWORD PTR [rip+0x1e7],rax        # 0x360
+115:mov    rax,rdx
+116:jmp    0x1af
+117:mov    rax,rsi
+118:mov    rsi,rax
+119:xor    edi,edi
+120:mov    edx,0x3
+121:mov    r10d,0x22
+122:mov    r8,0xffffffffffffffff
+123:xor    r9d,r9d
+124:mov    eax,0x9
+125:syscall
+126:cmp    rax,0xfffffffffffff001
+127:jb     0x1af
+128:xor    eax,eax
+129:mov    r13,rax
+130:mov    eax,0x0
+131:mov    r14,rax
+132:jmp    0x1e2
+133:mov    rax,r14
+134:mov    r10d,0x3ff
+135:and    rax,r10
+136:push   rax
+137:mov    rax,r13
+138:push   rax
+139:mov    rax,r14
+140:shl    rax,0x3
+141:pop    rcx
+142:add    rax,rcx
+143:pop    rdx
+144:mov    QWORD PTR [rax],rdx
+145:inc    r14
+146:mov    rax,r14
+147:push   rax
+148:mov    rax,r12
+149:dec    rax
+150:pop    rdx
+151:xchg   rax,rdx
+152:cmp    rax,rdx
+153:jle    0x1bf
+154:mov    r15d,0x0
+155:mov    eax,0x0
+156:mov    QWORD PTR [rbp-0x8],rax
+157:jmp    0x2a6
+158:mov    rax,r13
+159:push   rax
+160:mov    rax,QWORD PTR [rbp-0x8]
+161:shl    rax,0x3
+162:pop    rcx
+163:add    rax,rcx
+164:mov    rax,QWORD PTR [rax]
+165:inc    rax
+166:push   rax
+167:mov    rax,r13
+168:push   rax
+169:mov    rax,QWORD PTR [rbp-0x8]
+170:shl    rax,0x3
+171:pop    rcx
+172:add    rax,rcx
+173:pop    rdx
+174:mov    QWORD PTR [rax],rdx
+175:mov    eax,0x0
+176:mov    QWORD PTR [rbp-0x10],rax
+177:mov    eax,0x0
+178:mov    QWORD PTR [rbp-0x18],rax
+179:jmp    0x277
+180:mov    rax,QWORD PTR [rbp-0x10]
+181:push   rax
+182:mov    rax,r13
+183:push   rax
+184:mov    rax,QWORD PTR [rbp-0x18]
+185:shl    rax,0x3
+186:pop    rcx
+187:add    rax,rcx
+188:mov    rax,QWORD PTR [rax]
+189:pop    rdx
+190:xchg   rax,rdx
+191:add    rax,rdx
+192:mov    QWORD PTR [rbp-0x10],rax
+193:add    QWORD PTR [rbp-0x18],0x1
+194:mov    rax,QWORD PTR [rbp-0x18]
+195:push   rax
+196:mov    rax,r12
+197:dec    rax
+198:pop    rdx
+199:xchg   rax,rdx
+200:cmp    rax,rdx
+201:jle    0x24f
+202:mov    rax,r15
+203:push   rax
+204:mov    rax,QWORD PTR [rbp-0x10]
+205:pop    rdx
+206:xchg   rax,rdx
+207:add    rax,rdx
+208:mov    r15,rax
+209:add    QWORD PTR [rbp-0x8],0x1
+210:mov    rax,QWORD PTR [rbp-0x8]
+211:push   rax
+212:mov    rax,rbx
+213:pop    rdx
+214:xchg   rax,rdx
+215:cmp    rax,rdx
+216:jl     0x20d
+217:mov    rax,r15
+218:mov    r8,rax
+219:sub    rsp,0x20
+220:test   r8,r8
+221:jns    0x2e6
+222:neg    r8
+223:mov    BYTE PTR [rsp],0x2d
+224:mov    eax,0x1
+225:mov    edi,0x1
+226:lea    rsi,[rsp]
+227:mov    edx,0x1
+228:syscall
+229:lea    rsi,[rsp+0x1f]
+230:mov    BYTE PTR [rsi],0xa
+231:dec    rsi
+232:test   r8,r8
+233:jne    0x2fe
+234:mov    BYTE PTR [rsi],0x30
+235:dec    rsi
+236:jmp    0x31c
+237:xor    rdx,rdx
+238:mov    rax,r8
+239:mov    ecx,0xa
+240:div    rcx
+241:mov    r8,rax
+242:add    dl,0x30
+243:mov    BYTE PTR [rsi],dl
+244:dec    rsi
+245:test   r8,r8
+246:jne    0x2fe
+247:lea    rdx,[rsp+0x20]
+248:sub    rdx,rsi
+249:dec    rdx
+250:inc    rsi
+251:mov    rdi,0x1
+252:mov    eax,0x1
+253:syscall
+254:add    rsp,0x20
+255:mov    rsp,rbp
+256:pop    r15
+257:pop    r14
+258:pop    r13
+259:pop    r12
+260:pop    rbx
+261:pop    rbp
+262:movabs rax,0x3c
+263:
+264:xor    rdi,rdi
+265:syscall
+266:
