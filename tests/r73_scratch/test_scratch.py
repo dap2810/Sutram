@@ -30,6 +30,8 @@ EXPECT = {
     'allowed_global_number': '42',
     # R175, staged as v320 (R176): was '99' - the next block's data, read through the kept address. A block's memory is now zeroed
     # when the block is left, so the kept address reads 0 here. Still a KNOWN LIMIT: the address is still dangling.
+    # R181: the 99 was not a value this program was owed - it was the SECOND block's data, readable only because a
+    # block's memory was given back uncleared. This line now pins the fix's effect (0) where it used to pin that.
     'blind_kosh_via_call': '0',
 }
 

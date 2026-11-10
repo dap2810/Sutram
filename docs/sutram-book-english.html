@@ -789,7 +789,10 @@ Both are checked: reading <code>dinah[3]</code> stops the program with <code>Sut
 <p><code>nirmmita(n)</code> gives you <code>n</code> bytes of fresh, zeroed memory. Outside a block it stays yours
 until the program ends. Inside a <code><span class="k" data-tip="scratch block">mandapa</span></code> it is
 <b>scratch</b>: everything made with <code>nirmmita</code> inside the block is given back, all at once, when the
-block ends - however it ends (its last line, <code>nivartanam</code>, <code>krama</code>, <code>agrim</code>).</p>
+block ends - however it ends (its last line, <code>nivartanam</code>, <code>krama</code>, <code>agrim</code>).
+From compiler v320, what a block gives back is also <b>cleared</b> as the block ends, so nothing made afterwards -
+a <code>nirmmita</code> buffer or a <code>mala</code>, inside another block or outside one - can begin with a
+finished block's numbers.</p>
 <pre><code><span class="k" data-tip="function">prakriya</span> kaam(i) {
     <span class="k" data-tip="scratch block">mandapa</span> {
         <span class="k" data-tip="variable">vitti</span> b = nirmmita(256)     <span class="cm"># 256 bytes of scratch</span>

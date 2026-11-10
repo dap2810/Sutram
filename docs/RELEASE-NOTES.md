@@ -14,7 +14,7 @@ run on Windows; it is a candidate.** The last package run there is v312's (the e
 
 ## Status: what v320 closes, and what it does not (R140-R176)
 
-**v320 (R175, R176) - staged, awaiting a decision: a block's memory is zero when the block is left.** It closes
+**v320 (R175, R176; chosen in R180/R181) - staged: a block's memory is zero when the block is left.** It closes
 the defect named in the next paragraph (an ordinary `nirmmita` or a `mala` handed memory an ended block wrote).
 It costs a second pass over every block's memory (1,000,000 small blocks: 5.5 -> 8.9 ms) and changes the bytes
 of every program that has a `mandapa`. **Where the next paragraph says that defect is still open, v320 has
@@ -297,6 +297,21 @@ succeeded; use the checked form when the program must detect a failure and go on
 
 ## Limitations of what is included
 
+**What a student meets first - Muse's ranking (ROUND-166, 10 November 2026), recorded in R181; none started**
+1. **The lexer silently skips a character it does not know.** `vitti a = 5 $ 3` compiles and prints 5 (run on
+   v320, R181): the `$` vanishes, no message names it, and when the damage shows, the error is somewhere else.
+2. **There is no way to read text from the user.** `grahan` reads a number; no built-in or library function
+   returns a line of text. "What is your name?" cannot be written without a raw read into a buffer.
+3. **Reading a file is the one basic thing the language can do that no example shows, and the reference
+   mislabels it.** `patra_path_sarv` (`lib/patra.smlib`) reads a file; no program in `examples/` uses `paadh`,
+   `dvaram(` or `patra_` (0 files, R181); and the reference's built-in table has the two rows the wrong way
+   round - it calls `dvaram` "patra descriptor helper" and `paadh` "open a file", where `dvaram` opens and
+   `paadh` reads (Muse's reading of the code; the rows are as quoted, the code comments were not re-read in R181).
+- **A correction to the record:** `likha(k)` on a `kosh` printing an address is **fixed, not live** - it is
+  refused when compiled, `E_KOSH_DVARA` (run on v320, R181).
+- The file the round named for this list, `docs/WHATS-LEFT.md`, was archived in R156 as
+  `docs/rounds/WHATS-LEFT.md` (last true at v258); this section is the live open list.
+
 **Memory and pointers**
 - **A raw `nirmmita` buffer is not bounds-checked**, except `p = nirmmita(CONST)` never reassigned (R78). Its
   extent and lifetime are the programmer's: the address is valid for the program's life, or until its block ends
@@ -483,7 +498,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
-- **v320 (staged, a decision not yet taken):** a block's memory is zeroed at every way out of the block (R175, R176).
+- **v320 (staged):** a block's memory is zeroed at every way out of the block (R175, R176).
 - **v319:** made once anywhere in a loop - under a `yadi`, in a `mandapa`, in a `yavat` (R175, R176).
 - **v318:** a `mala` declared in a `chakra`'s own body, proven local, is made once for the loop (R173).
 - **v317:** a `kosh` declared in a `chakra`'s own body, proven local, is made once for the loop (R172).

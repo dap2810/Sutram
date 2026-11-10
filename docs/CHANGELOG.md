@@ -20,6 +20,10 @@
   byte-identical or identically refused, against v319 and against v315, ELF and PE. Of the 38, 37 print and exit
   exactly as before; the 38th is the pinned known limit above. Run under Wine; not run on Windows. Installer
   rebuilt (payload v320).
+- **R181 (documents and a comment; the compiler's bytes are those of 9bb059ea):** reference §19 says the defect
+  reached a `mala` declared inside a later block as well as one after it, and gives the 480 MB of ordinary memory
+  the `mala m[8]` measurement needs; both books say a block's memory is cleared when the block ends; the release
+  notes' limitations open with Muse's three items; the R73 pin's comment says what the 0 pins.
 - **Why it is separate from v319:** it changes the bytes of every program with a block and costs time in every
   block; the alternatives (zeroing only at the exit; keeping the ordinary side out of memory a block has used;
   documenting the limit) are set out in R176-00.

@@ -1,4 +1,4 @@
-> **Status at compiler v320, 10 November 2026 (R176) - A STAGED CANDIDATE AWAITING A DECISION: v320 zeroes a block's memory at its exits; whether to keep that is not settled (R176-00) — read this before the page below.**
+> **Status at compiler v320, 10 November 2026 (R181) - staged, not merged: v320 zeroes a block's memory at its exits; chosen over the alternatives in R180/R181 — read this before the page below.**
 >
 > **Compiler `Sutram 1.0 (v320) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **86 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v320 (R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
@@ -1341,10 +1341,14 @@ memory to the operating system.**
 
 **What a block gives up is zero (v320, R175-R176).** Every way out of a block - its last line, `nivartanam`,
 `krama`, `agrim`, a failure passed on by `prasar` - writes 0 over what the block's `nirmmita` took, before that
-memory can be handed to anything else. Up to v319 an ordinary `nirmmita` or a `mala` outside any block could be
-given memory an ended block had written, and read it: after a block that filled `nirmmita(600000000)`, a new
-`nirmmita(600000000)` read the block's value in 15,782,272 of its 75,000,000 words. It took the block and the
-rest of the program to have used more than the 1 GiB field between them. The cost is one more pass over the
+memory can be handed to anything else. Up to v319 an ordinary `nirmmita` or a `mala` - **declared after a block
+or inside a later one: a `mala` takes ordinary memory wherever it is declared** - could be given memory an ended
+block had written, and read it. Measured on v319: after a block that wrote 77 into the lowest 126 MB of
+`nirmmita(600000000)`, a new `nirmmita(600000000)` read 77 in 15,782,272 of its 75,000,000 words; and after the
+same block **and then `nirmmita(480000000)` outside any block** (which brings the ordinary side up to where the
+block's memory began), a new `mala m[8]` read 77 in `m[0]` and `m[7]` - declared outside a block, and the same
+declared inside one. On v320 all of these read 0. It took the block and the rest of the program to have used
+more than the 1 GiB field between them. The cost is one more pass over the
 block's memory at its end: 1,000,000 blocks of `nirmmita(64)` take 8.9 ms (5.5 ms on v319; 27.7 ms with no block
 at all); a 200 MB block, about 20-27 ms more.
 

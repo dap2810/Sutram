@@ -1,7 +1,7 @@
 > **R95: this is the one project summary.** The earlier `PROJECT-OVERVIEW.md` (28 October) is archived,
 > unchanged, at [`docs/rounds/PROJECT-OVERVIEW.md`](docs/rounds/PROJECT-OVERVIEW.md).
 
-> **Status at compiler v320, 10 November 2026 (R176) - A STAGED CANDIDATE AWAITING A DECISION: v320 zeroes a block's memory at its exits; whether to keep that is not settled (R176-00) — read this before the page below.**
+> **Status at compiler v320, 10 November 2026 (R181) - staged, not merged: v320 zeroes a block's memory at its exits; chosen over the alternatives in R180/R181 — read this before the page below.**
 >
 > **Compiler `Sutram 1.0 (v320) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **86 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v320 (R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
