@@ -4,9 +4,9 @@
 
 ```
 main  (the commit carrying this file)   Sutram 1.0 (v315) - sampurna sutra, unchanged (this folder's files only)
-staged r172-chakra-kosh (SHA in the follow-up commit) Sutram 1.0 (v317) - sampurna sutra   (on top of v316-ready 59d60353; NOT merged)
-     crash corpus, suite, gates: THE FULL GATES WERE STILL RUNNING when this file was first pushed - NOT YET A RESULT;
-     the line is filled in by the next commit to this file
+staged r172-chakra-kosh 501d35fd  Sutram 1.0 (v317) - sampurna sutra   (on top of v316-ready 59d60353; NOT merged)
+     crash corpus: 227 cases + manifest, 0 failed · suite: NO-EXPECTATION=4 PASS=327
+     gates: 83 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; NOT-RUN = Windows execution; evidence-r172/gates.txt)
      guard, the ordinary way, 783 programs, against v316-ready AND against v315 (main), ELF and PE:
             587 byte-identical, 196 refused identically, 0 DIFFER - four runs, four times the same line
             the 196 refusals: the same message and exit code from v316 and v317
