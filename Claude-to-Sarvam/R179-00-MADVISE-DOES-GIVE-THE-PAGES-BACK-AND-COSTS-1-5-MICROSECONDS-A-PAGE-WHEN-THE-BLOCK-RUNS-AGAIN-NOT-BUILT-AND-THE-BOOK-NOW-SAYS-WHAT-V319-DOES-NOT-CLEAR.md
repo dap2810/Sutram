@@ -5,9 +5,11 @@
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
 staged r176-made-once-anywhere 4c1159be  v319  UNTOUCHED - gates 85 PASS / 0 FAIL / 1 NOT-RUN, 0 DIFFER (R176-00)
-staged r179-v319-book (SHA in the follow-up commit)  v319 + three documents (WS3); the compiler, win/sutram.exe and every other binary
+staged r179-v319-book 12ef6329  v319 + three documents (WS3); the compiler, win/sutram.exe and every other binary
                                 are byte for byte 4c1159be's; the installer is rebuilt because the documents are in it
-     crash corpus, suite, gates: ITS FULL GATES WERE STILL RUNNING at this first push - NOT YET A RESULT (next commit)
+     crash corpus: 227 cases + manifest, 0 failed · suite: NO-EXPECTATION=4 PASS=327
+     gates: 85 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; NOT-RUN = Windows execution; evidence-r179/gates-v319-book.txt)
+     installer (payload v319 + the documents): e84c39a28192633026083285e17c626c5921caf6b106e68443014f7bef7be3d1
      the guard: no compiler changed - identity
 staged r176-block-exit-zero 9bb059ea  v320  unchanged, NOT READY (the decision, WS2)
 staged v318 c1f516f8 · v317 501d35fd · v316-ready 59d60353 - unchanged
