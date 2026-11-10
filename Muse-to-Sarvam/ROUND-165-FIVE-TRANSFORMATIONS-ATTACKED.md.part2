@@ -1,0 +1,975 @@
+stale bytes" is true of every Sutram read and false once C holds the address.
+It needs FFI *and* the 1 GiB crossing (the elements buffer must sit on dead
+scratch — §3.3), so it is a weaker counterexample than the `mala` one, but it
+is a real one: the premise as stated has an exception the brief does not
+name.
+
+**Verdict on Q1:** the `kosh` half of the argument holds, with the FFI
+qualification. No Sutram-side `kosh` read looks past `length`.
+
+### 3.2 Q2 — does a `mala` zero at creation, or only at the top of a hoisted pass? Only at the top of a hoisted pass. A fresh `mala` is never zeroed at creation. The premise is FALSE.
+
+`.gs_decl_array` (`src/sutram_compiler.asm:19844-19900`, v318):
+
+1. `gen_expr` → runtime length in `rax`.
+2. `call r173_mala_begin` — the hoist reuse path. It does something only if
+   the frame slot holds a `mala` of the same length; otherwise it falls
+   through to `.fresh`.
+3. `push length`, `add rax,1`, `shl rax,3` → `(N+1)*8` bytes.
+4. `call emit_nirmmita_from_rax` — the **persistent** allocation
+   (`r65_emit_nirm`, §3.3). There is no scratch rewrite for a `mala`
+   declaration — no `BN_MALA_SCRATCH` exists, and `.gs_decl_array` calls the
+   persistent emitter unconditionally.
+5. `pop length -> rcx; mov [rax],rcx` — store the length in the header word at
+   the allocation base.
+6. `add rax,8` — user pointer = base + 8.
+7. `call r172_decl_end` — remember the pointer in the frame slot for the next
+   pass.
+
+There is no zeroing of the N elements at creation. The only zeroing in the
+whole `mala` story is `r173_mala_begin` (`:11040`, v318) — the **reuse** path
+for a hoisted `mala`: `rep stosq` over exactly N qwords, verified in R164
+(and re-verified here: `push rcx ; mov rdi,rcx ; mov rcx,rax ; xor eax,eax ;
+cld ; rep stosq ; pop rax`, with `rcx = rax` = the current pass's length,
+verified equal to the stored length `[rcx-8]` first).
+
+The v319 diff does not change `.gs_decl_array` at all (the v319 hunks are the
+version string, the `r175_*` state, `r172_for_enter`/`r175_walk`,
+`r172_decl_begin`'s R82 stamp, the `r172_scan` change, and the `yavat` entry
+call). So on v319, too, a fresh `mala` is not zeroed at creation.
+
+**The conflation in ROUND-177 §1 — two different zeroings.** ROUND-177 §1
+says: "Your R175 says the zeroing is a plain loop up to 1 KiB and
+`rep stosq` above — so it scales with `N`." That phrase — "a plain loop up to
+1 KiB and `rep stosq` above" — is the **block-exit** zeroing
+(`r175_emit_zero_to_mark`, `src/r65_arena.inc` in the hand-back's words), not
+the `mala` zeroing. The `mala`'s hoist zeroing is `rep stosq` over exactly N
+qwords, never a plain loop and never a fixed count — which is what ROUND-177
+§1 asks to confirm ("the zeroing emits exactly `N` qwords, never a fixed
+count"): **confirmed, for the hoist reuse zeroing.** But neither zeroing is a
+creation zeroing. The worry Sarvam raises ("a `mala small[2]` is not overrun
+and a `mala big[100]` is not under-cleared") is closed for the hoist path by
+R164; it was never about creation, because creation does not zero at all.
+
+**The small case does not bite — but not because of zeroing.** The brief's
+program ("a `mala` in a `mandapa` inside a loop, read before written, on pass
+2"):
+
+```sm
+chakra i = 1 tak 2 {
+    mandapa {
+        mala row[2]
+        yadi i == 1 { row[1] = 99 }
+        likha(row[1])
+    }
+}
+```
+
+On v318 it prints **99 then 0** — not because the `mala` is zeroed, but
+because the `mala` is allocated **persistently and forward-only**: pass 2's
+`mala` is at a new address (`cur` moved forward by pass 1's allocation), in
+virgin memory the kernel zeroed. A `mala` in a `mandapa` inside the loop is
+not a hoist candidate on v318 (candidacy is direct statements only), so it is
+made fresh every pass — and "fresh" here means a new persistent address,
+never a reused one. On v319 it is hoisted (made once anywhere in a loop) and
+zeroed on reuse by `r173_mala_begin` — also 99 then 0. So the small case does
+not show stale bytes on either version. The brief's mental model — that a
+fresh `mala` in a block reuses the previous block's addresses — is wrong for
+a `mala`: that is the *scratch* `nirmmita`'s behaviour, not the `mala`'s.
+
+**The case that DOES bite: the R175 proof shape, with a `mala`.** The premise
+fails where the persistent side has walked into dead scratch — the 1 GiB
+crossing, exactly the R175 proof (`programs/st_big.sm`: a block writes 77
+into every word of `nirmmita(600000000)`; an ordinary `nirmmita(600000000)`
+after it reads 77 in 15,782,272 of 75,000,000 words, first at word
+59,217,728). The same geometry with a `mala`:
+
+```sm
+mukhya() {
+    mandapa {
+        vitti p = nirmmita(600000000)
+        chakra i = 0 tak 74999999 {
+            p[i] = 77
+        }
+    }
+    mala m[75000000]
+    vitti n77 = 0
+    chakra i = 0 tak 74999999 {
+        yadi (m[i] == 77) {
+            n77 = n77 + 1
+        }
+    }
+    likha(n77, "\n")
+}
+```
+
+Trace: the `mala` is created fresh (persistent allocation,
+`emit_nirmmita_from_rax`, no zeroing at creation, §3.2). Its 600,000,008
+bytes land on the dead scratch bytes the block wrote — the same overlap as
+the R175 proof, first stale word around 59,217,728. The read `m[i]` is
+bounds-checked against the `mala`'s stored length (75,000,000 — the `r12 = 1`
+path, `mov rcx,[rax-8]`), so every one of the 75,000,000 slots is readable,
+and the ~15.7M in the overlap read **77, not 0**. This is a legal program: no
+FFI, no dangling address, no unchecked read. It falsifies "a `mala` zeroes at
+creation" directly. (The exact count is not determined by reading — the
+`mala`'s allocation is 8 bytes larger than the `nirmmita`'s in the proof, so
+the overlap starts one word earlier in the `mala`'s coordinates — but the
+order of magnitude is the proof's.)
+
+The alignment-tail question from R163 does not arise for the `mala`'s
+creation zeroing, because there is no creation zeroing at all: the whole N
+elements are un-zeroed (relying on virgin memory), not just the 8-byte tail.
+The tail (`[base+8+8N, base+align16((N+1)*8))`, 8 bytes when N+1 is odd) is
+beyond the `mala`'s readable region `[0, N)` and reachable only through the
+unchecked paths (FFI, `akshar`) — the same as R163's tail analysis.
+
+**Verdict on Q2:** the `mala` half of the argument FAILS. A `mala` zeroes on
+hoist reuse, never at creation. The small case does not bite, for a reason the
+brief does not give; the large case does.
+
+### 3.3 Q3 — does `nirmmita` itself zero at allocation today, and where? And what does "below the block's mark" mean?
+
+**The two `nirmmita` paths today.**
+
+**Persistent** (`BN_NIRMRITA` → `.ge_call_nirm`, `:24135` →
+`emit_nirmmita_from_rax`, `:27160` → `r65_emit_nirm`,
+`src/r65_arena.inc:245`): **no zeroing.** It loads `cur`, checks room
+against `end`, stores the advanced `cur`, and returns the block. The design
+is stated in the comment at `src/r65_arena.inc:23`: "Memory from the arena
+is never reused, so it arrives zeroed like mmap memory." The allocation
+relies on virgin memory — the kernel zeroed the 1 GiB mmap at reservation
+time, and the persistent cursor never revisits an address.
+
+**Scratch** (`BN_NIRM_SCRATCH` → `.r73_ge_scratch`, `:24142` →
+`r73_gen_scratch_nirm`, `src/r65_arena.inc:416`): **zeroes
+`ceil(size/8)*8` bytes** via the `r73_s6` qword loop (`:346`: `lea
+rcx,[rsi+7] ; shr rcx,3 ; xor edx,edx ; .z: mov qword [rax+rdx*8],0 ;
+inc rdx ; cmp rdx,rcx ; jb .z`). The block is `align16(size)` bytes, so the
+8-byte tail `[ceil(size/8)*8, align16(size))` is un-zeroed when `size mod 16`
+is 1..8 — R163 Task 3's tail, re-verified here. (The header comment at
+`:416-421` says `rep stosb`; the emitted template is the qword loop — the
+comment is stale, the template is what runs.)
+
+The rewrite that decides which path a `nirmmita` takes is **lexical**
+(`:18232-18241`): at parse time, a `nirmmita` written with `r72_mdepth > 0`
+is rewritten to `BN_NIRM_SCRATCH`, recording the depth. A `nirmmita` inside a
+`prakriya` called from a block stays ordinary (persistent) — the rewrite sees
+only the source position, not the call site. (R163 established this; the code
+is unchanged on v318 and v319.)
+
+**"Below the block's mark" — unimplementable as written.** The WS2 qualifier
+is: "zero only when the allocation is below the block's mark — a `nirmmita`
+into virgin pages needs nothing, because the kernel already zeroed them."
+Work through what "the block's mark" can mean in the emitted code:
+
+- **For a scratch `nirmmita`:** the allocation is `[end - align16(size),
+  end)`, where `end` starts at the mark and only moves down. It is *always*
+  below its own block's mark — that is what "below the mark" means for a
+  scratch allocation. The check is vacuous: it always fires, so the scratch
+  path zeroes exactly as it does today. C changes nothing there.
+- **For a persistent `nirmmita`:** there is no block and no mark. The
+  `nirmmita` is lexically outside any `mandapa` (`r72_mdepth == 0` at the
+  call site, or it would have been rewritten to `BN_NIRM_SCRATCH`), so the
+  compiler has no mark variable to emit a comparison against. At runtime the
+  `nirmmita` may execute while a block is dynamically open (inside a
+  `prakriya` called from a block), but the generated code has no access to
+  that block's mark — the mark lives in a hidden variable (`0mNN`) of the
+  *enclosing* function, not in the callee. There is nothing to compare
+  against.
+- **For the stale case that matters:** the R175 proof's second `nirmmita` is
+  persistent and runs *after* the block has exited. The block's mark is dead
+  by then — its variable is out of scope and its value (the restored `end`)
+  no longer records where scratch was used. The only runtime state that
+  records "this address was once scratch" is a **global** low-water mark of
+  `end` — the lowest address scratch ever reached. That is the WS5 dirty-mark
+  design (assessed in R163 Task 3: right cursor, right event, but it must be
+  a global low-water of `end`, initialised to `sima`, updated on **every**
+  exit path — `r73_gen_rewind`, `r73_gen_ret_rewind`, `r73_wrap_jump` — or a
+  mark placed only on the normal exit introduces the bug it claims to fix;
+  and it fixes the tail only if the overlap uses the full aligned span). WS5
+  is a different design from WS2's "the block's mark": it needs a global
+  word, a compare per allocation, and a store per block exit. None of that is
+  in WS2 as specified.
+
+So as specified, C's check cannot fire for the one case that needs it: the
+persistent allocation after a block has exited. The R175 proof program
+(`st_big.sm`, §3.4) still reads 77 under C — the check has no mark to compare
+against, so no zeroing happens. **C does not close the stale-data defect it
+is built to close.**
+
+There is a second, quieter consequence. If the check is placed in the shared
+emitter `r65_emit_nirm` (the only place that serves every persistent
+allocation), then every `kosh` and `mala` creation pays it too — they all go
+through `emit_nirmmita_from_rax` (`:19877` for the `mala`, `:9148` for the
+`kosh`). If instead it is placed only at the `nirmmita` builtin call sites,
+then `kosh`/`mala` creation gets no check at all — and the `mala` hole
+(§3.2) stays open one level down. Either way, something is left out.
+
+**Verdict on Q3:** the scratch path already zeroes (C changes nothing there);
+the persistent path does not zero (and cannot be made to by a per-block-mark
+check). The qualifier as specified is unimplementable for the case that
+matters.
+
+### 3.4 Q4 — the 38 guard programs: would moving the zeroing restore them to byte-identical? No. It would move the byte differences, not remove them — and grow the set.
+
+What the 38 are: the guard compares compiled bytes. Step 1 (made once
+anywhere) alone is **0 DIFFER** (587 byte-identical, 196 refused
+identically). Step 2 (the exit zeroing) adds exactly the 38 — the programs
+that compile and contain a `mandapa`, in all four runs, with nothing outside
+the set (`evidence-r175/differ-list.txt`). Each of the 38 grew by ~53 bytes
+per block exit (e.g. `examples/266_r73_inside_only.sm` 1034 → 1087 bytes;
+`examples/263_r72_mandapa.sm`, with two blocks, 2120 → 2226).
+**37 of the 38 print and exit exactly as on v315; the 38th does not**:
+`tests/r73_scratch/blind_kosh_via_call.sm` — OUTPUT DIFFERS
+(`differ-outputs.txt`).
+
+The 38th, in full:
+
+```sm
+# R75: the one way a scratch address reaches a kosh unseen - through a prakriya that returns it.
+# A KNOWN LIMIT, pinned: this compiles, and prints 99 - the NEXT block's data, read through the kept address.
+prakriya adr(p)
+    nivartanam p
+mukhya()
+    kosh k[1]
+    mandapa
+        vitti buf = nirmmita(64)
+        buf[0] = 42
+        kosh_push(k, adr(buf))
+    mandapa
+        vitti other = nirmmita(64)
+        other[0] = 99
+    vitti p = k[0]
+    likha(p[0], "\n")
+```
+
+A scratch address smuggled out through a `prakriya`, kept in a `kosh`, read
+after its block has ended. It prints **99** (the next block's data, read
+through the dangling address) and, with the exit zeroing, **0** (the second
+block's memory is zeroed when that block is left). The address is still
+dangling and the program is still wrong; it just reads zero now — which is
+why the hand-back changed the pin in `tests/r73_scratch/test_scratch.py`
+from 99 to 0 (a change that is NOT in the v319 branch, §0). Under C the
+program prints **99** again, as on v315: the second block's scratch
+`nirmmita(64)` zeroes at allocation (kept, §3.3), `other[0] = 99` is written
+after the zeroing, and no exit zeroing removes it. So C does not close even
+this stale read — it restores the pinned known limit to its pinned value.
+
+Now the bytes. Moving the zeroing into `nirmmita` removes the exit
+instructions (the ~53 bytes per program) but adds a check — and, where it
+fires, a zeroing call — at every allocation site. Counted at the tip (re-derived
+by the parent with the guard's own glob patterns, `tools/guard_pair.py:30`,
+on the v318 tree; corpus is exactly 783):
+
+- **38 / 38** of the differ-programs contain an allocation (`nirmmita`,
+  `kosh`, or `mala`). 37 contain the word `nirmmita`; the 38th
+  (`examples/286_r82_kosh_in_mandapa.sm`) contains only `kosh`/`mala` — whose
+  creation goes through `emit_nirmmita_from_rax` just the same. So all 38
+  would still differ in bytes from v315 — at the allocation sites instead of
+  the block exits.
+- **248** of the 783 corpus programs contain `nirmmita`; **241** contain
+  `kosh` or `mala`; **404** contain one of the three allocation words. Under
+  C, the DIFFER set is every program that allocates — 404 programs, not 38,
+  and not 0. The hand-back says the same thing: "It would also change the
+  bytes of *every* program that allocates, not 38."
+
+And one more consequence, in the other direction: the 38 differ **only** in
+the zeroing — step 1 alone is 0 DIFFER, so no other change is hiding in the
+38. The claim's first half ("the 38 differ only in the zeroing") is true; its
+second half ("moving the zeroing restores them to byte-identical") is false,
+because the zeroing does not disappear — it moves to a place every one of the
+38 (and hundreds more) also has.
+
+**Verdict on Q4:** the 38 differ only in the zeroing (true), but C does not
+restore them to byte-identical (false), and it makes the DIFFER set larger,
+not smaller.
+
+### 3.5 Q5 — the block-exit time claim (13.2 ns back to 5.6)
+
+`evidence-r175/results-cost.txt` (whole-program time, `timeit.py`, 7 runs,
+best and median):
+
+| program | v318 | v319 (exit zeroing) |
+|---|---|---|
+| 1,000,000 blocks, each `nirmmita(64)` and one store | best 5.6 ms, median 8.4 ms | best 13.2 ms, median 13.8 ms |
+| 10 blocks of 200 MB, every word written | best 921 ms, median 1027 ms | best 1194 ms, median 1273 ms |
+| 10 blocks of 200 MB, only the first 4 KiB written | best 389 ms, median 402 ms | best 587 ms, median 642 ms |
+
+So "13.2 ns" and "5.6 ns" are **whole-program per-block costs** (13.2 ms /
+1,000,000 blocks), best-of-7 — not exit-only costs. On the median the gap is
+5.4 ns/block (8.4 → 13.8 ms), not 7.6. The exit itself on v318 is one cursor
+restore: `r73_gen_rewind` (`src/r65_arena.inc:404`) evaluates the mark and
+emits `mov [end],rax`; `r73_gen_ret_rewind` (`:535`) does the same around the
+return value; `krama`/`agrim` reach it through the `AST_REWIND` node
+`r73_wrap_jump` inserts (`:19448` in `gen_stmt` calls `r82_gen_rewind` then
+`r73_gen_rewind`); `prasar` goes through `r73_gen_ret_rewind`
+(`src/r25_phal.inc:202`). The hand-back's claim that every way out goes
+through one of those two routines checks out against the code (with the
+`krama`/`agrim` nuance that they reach `r73_gen_rewind` via the inserted
+`AST_REWIND` node, not by a direct call). The exit zeroing adds a second pass
+over the rewound span — the +7.6 ns/block best-of-7 is the plain loop up to
+1 KiB (the hand-back: `rep stosq` takes ~46 ns just to start, so small spans
+use the loop).
+
+The cost does not disappear — it moves to `nirmmita`. Removing the exit
+zeroing restores the exit to one cursor restore. But every `nirmmita` gains
+the check (§3.3) — a load, a compare, and a branch per allocation, paid
+whether or not the allocation needs zeroing. For the `t_small` program
+(1,000,000 blocks, one `nirmmita(64)` each), the check is paid 1,000,000
+times — once per block — so the program returns to ~5.6 ms *plus* the check
+cost, not to 5.6 ms. The claim "takes block exit from 13.2 ns back to 5.6" is
+true of the exit in isolation and false of the program, because the check is
+paid at the same rate as the exit was.
+
+And the program shape that pays **more** under C than under the current
+design is the one with no blocks at all:
+
+```sm
+mukhya() {
+    chakra i = 1 tak 1000000 {
+        vitti p = nirmmita(64)
+        p[0] = i
+    }
+    likha("done\n")
+}
+```
+
+No `mandapa` anywhere. Today each `nirmmita` pays only the cursor advance —
+virgin memory, no zeroing needed, no exit to pay for. Under C each pays the
+cursor advance **plus** the check, and gets nothing in return: there is no
+block exit to speed up. If the check lives in `r65_emit_nirm` (§3.3), the
+same applies to every `kosh`/`mala` creation — including the programs the
+hoist exists to speed up, on their one creation per loop. C trades a cost
+paid only by programs with blocks (per block exit) for a cost paid by every
+program that allocates (per allocation). Whether that trade wins depends on
+the ratio of block exits to allocations in the program — and for a program
+with no blocks, it loses by construction.
+
+**Verdict on Q5:** the exit-time numbers are approximately right for the exit
+(best-of-7, whole-program per-block); the net effect is not a win. The cost
+moves from the exit to the allocation, and a program with no blocks pays more
+under C than it does today.
+
+### 3.6 The breaking programs, strongest first
+
+1. **The fresh `mala` after a big block** (§3.2). Falsifies the premise "a
+   `mala` zeroes at creation" directly, with a legal program — no FFI, no
+   dangling address, no unchecked read. Under C it reads ~15.7M stale words;
+   under the exit zeroing it reads 0. The `mala`'s creation has no block mark
+   to check against and no zeroing, so C cannot fix it.
+2. **`st_big.sm`, unchanged** (the R175 proof). An ordinary `nirmmita` after
+   a big block reads 77 in 15,782,272 of 75,000,000 words. Under C the
+   persistent `nirmmita` has no block mark — the block has exited — so no
+   zeroing happens and it still reads 77. This is the program that directly
+   falsifies "zero inside `nirmmita`" as specified.
+3. **`blind_kosh_via_call.sm`** (§3.4). Under C it prints **99** again, as
+   on v315 — C leaves the pinned known limit in place, while the exit
+   zeroing makes it print 0. Weaker than 1 and 2, because the program is
+   already a pinned known limit (a dangling address), not a legal program —
+   but it shows C does not close even the stale read the exit zeroing was
+   built to close.
+4. **A `kosh` read past `length` through FFI** (§3.1). Qualifies the "`kosh`
+   cannot read stale bytes" premise: C hands the elements address to a
+   foreign function, which reads past `length` and returns the value. Needs
+   FFI *and* the 1 GiB crossing, so the weakest of the four — but it is a real
+   exception the brief does not name.
+
+### 3.7 What would have to be true for C to be sound
+
+- A `mala` would have to zero at creation (it does not — §3.2), or the
+  `mala` creation would have to go through the checked path (it goes through
+  the shared persistent emitter, which has no check — §3.3).
+- The "below the block's mark" check would have to be evaluable for a
+  persistent allocation after its block has exited (it cannot be — the mark is
+  dead; only a global dirty mark records it — §3.3).
+- The guard claim would have to survive the check being emitted at every
+  allocation site (it does not — §3.4).
+
+---
+
+## 4. Task 4 — D: `madvise(MADV_DONTNEED)` at block exit. Sound, with three conditions. E: remove the compile-time-constant restriction on `kosh temp[n]`. Sound but vacuous — the restriction does not exist.
+
+### 4.1 D.1 — Is it correct for a span that a later `nirmmita` will use? Yes, with one alignment condition
+
+**The geometry.** The rewound span is `[mark, old end)`: `mark` is the value
+of the scratch cursor `end` at block entry (stored in the hidden frame
+variable `0mNN` by `r73_gen_scrcur`, `src/r65_arena.inc:363-375`, which loads
+`[end]`), and `old end` is the value of `end` at block exit. The span sits on
+the scratch side, below `sima` (base + 1 GiB) and above `cur` — the scratch
+allocation refuses (`jb .full`, `r73_s2`/`r73_s4`) if the new `end` would go
+below `cur`, so the span is always above the persistent side. A later scratch
+allocation walks `end` down into that span again (`r73_gen_scratch_nirm`,
+`:416-460`: `mov rax,[end]; lea rdx,[rsi+15]; and rdx,-16; sub rax,rdx`).
+
+**After `MADV_DONTNEED`, the mapping stays and the cursor can still walk into
+it.** `madvise` (Linux syscall 28 on x86-64; the tree already emits syscalls
+the same way — `emit_syscall`, `src/sutram_compiler.asm:18402`, the 2-byte
+`0F 05`; mmap is eax 9, munmap eax 11) with advice 4 (`MADV_DONTNEED`)
+discards the contents of the pages in the range but does **not** unmap them:
+the VMA stays, the pages are removed from the page tables and returned to
+the kernel, and the next access faults in a zero-filled page. `end` is just a
+number in a global; nothing about the call changes what `end` may hold. The
+next scratch allocation writes into the span, faults the pages back in, and
+sees zeros. So the proposal is correct for the span's later use.
+
+**The kernel zeroing is redundant for checked reads, and replaces the exit
+zeroing, not the allocation-time zeroing.** The scratch path zeroes
+`ceil(size/8)*8` bytes at allocation time — the `r73_s6` qword loop
+(`src/r65_arena.inc:342-348`: `lea rcx,[rsi+7]; shr rcx,3; xor edx,edx; .z:
+mov qword [rax+rdx*8],0; inc rdx; cmp rdx,rcx; jb .z`). So a later `nirmmita`
+into a discarded span reads zeros either way for every **checked** read: the
+kernel would give zeros, and the allocation-time loop writes zeros anyway.
+The kernel zeroing is "free" only in the sense that no CPU writes zeros at
+exit; it is not free at allocation, because the `r73_s6` loop still runs
+unconditionally and faults the pages back in as it writes them. What the
+kernel zeroing actually replaces is the **exit** zeroing (R175 step 2): there
+is no need to zero a span at exit if the pages are about to be discarded. It
+does not replace the allocation-time zeroing, which still runs for every span
+— including spans below the 16 MiB threshold, which are never discarded and
+still hold the old block's bytes. (ROUND-177 WS4's "which also removes the
+need to zero that span" is true of the exit zeroing, not of the
+allocation-time zeroing; the two must not be conflated.)
+
+**The program shape that observes the difference.** For a checked read,
+madvise changes nothing observable — the allocation-time loop already gives
+zeros. The difference is observable only through an **unchecked** path, and
+only when the span is at least 16 MiB (otherwise the threshold skips the
+call). The R163 shape, scaled up: a block that allocates 20 MB and writes a
+distinctive value into the alignment tail through an unchecked path (a runtime
+size disables the bounds check), then a later block that allocates into the
+same span and reads that tail position:
+
+```sm
+mukhya() {
+    vitti n = 20000000
+    mandapa {
+        vitti a = nirmmita(n)
+        vitti p = a + n - 8
+        p[0] = 77
+    }
+    mandapa {
+        vitti b = nirmmita(n)
+        vitti q = b + n - 8
+        likha(q[0])
+    }
+}
+```
+
+On v319 (no exit zeroing, no madvise) the second read sees **77** — the first
+block's bytes, deterministically (the R163 finding: the tail
+`[ceil(size/8)*8, align16(size))` is un-zeroed, reachable only through
+unchecked access). With the madvise call at the first block's exit (span 20
+MB ≥ 16 MiB), the pages are discarded and the second read sees **0**. With
+the R175 exit zeroing (not in v319) it would also see 0 — same observable
+result, different mechanism (pages handed back vs zeroed in place).
+
+**The alignment condition.** `madvise` requires a page-aligned address
+(`EINVAL` otherwise) and rounds the length up to a page multiple. The mark is
+only 16-byte aligned (scratch allocations are `align16`), not page-aligned,
+so the emitted code cannot pass `[mark, old end)` raw. The discardable span
+is `[align_up(mark, 4096), align_down(old end, 4096))` — rounding the start
+**up** is the safe direction (rounding it down would discard live bytes below
+the mark, on the persistent side or in an enclosing block's live scratch);
+rounding the end down is safe. If the aligned span is empty, skip the call.
+The threshold should be applied to the **aligned** span, not the raw span (a
+16 MiB raw span discards at most 16 MiB minus up to 8 KiB — negligible, but
+the comparison must be against what is actually discarded).
+
+**Where it goes.** Exactly two routines raise the scratch cursor — the R175
+hand-back established this, and it checks out: `r73_gen_rewind`
+(`src/r65_arena.inc:404`, called from the AST_REWIND gen at
+`src/sutram_compiler.asm:19517` — the normal block exit, and via
+`r73_wrap_jump`'s rewind node for `krama`/`agrim`) and `r73_gen_ret_rewind`
+(`:535`, called from the `nivartanam` paths at `:21529` and `:21551`, and
+from `prasar` at `src/r25_phal.inc:202`). The madvise (threshold check +
+call) must go in **both**, or in a shared helper they both call — placed in
+only one, it misses the other exit path and the bug it claims to fix survives
+on that path. The emitted code needs the old `end` before overwriting
+`[end]` with the mark (a load into a register held across the mark's
+`gen_expr`).
+
+### 4.2 D.2 — What happens to the R82 header / the kosh descriptor if the span contains one? Nothing can be in it
+
+**The rewound span is scratch memory only, and that is guaranteed by the
+allocation paths — no descriptor, no header, and no live kosh elements can
+sit in `[mark, old end)`.**
+
+- **A kosh descriptor is a persistent allocation from `cur` (bottom of the
+  arena), never in the span.** `r108_kosh_alloc`
+  (`src/sutram_compiler.asm:13177-13200`) is explicit: "the storage is
+  unchanged — R101A's region (or nirmmita). A kosh declared in an open
+  mandapa is only remembered... No arena slot: reclaiming waits for the
+  descriptor." Every path through it ends at `r101a_emit_kosh_alloc`
+  (`:9148`), which is `jmp emit_nirmmita_from_rax` — the persistent path
+  (`r65_emit_nirm`, `src/r65_arena.inc:245`: block = `cur`, `cur =
+  align16(cur + size)`). The `.gs_decl_kosh` comment at `:19854` ("in a
+  mandapa, a slot of the block's arena") is stale — R162 Task 2 already
+  recorded the same staleness for the `:19331` comment. A kosh declared
+  inside a `mandapa` is allocated from `cur` exactly like one outside it.
+- **A kosh's grown region is a separate mapping, not in the arena at all.**
+  The 64 MiB region is taken by `mmap` (`r127_emit_grow`,
+  `src/r65_arena.inc:656-663`, `max(2*new, R101A_REGION)`) and released by
+  `munmap` (syscall 11, `:712`). It cannot be in the arena's scratch span.
+- **A mala is a persistent allocation too.** `.gs_decl_array`
+  (`src/sutram_compiler.asm:19920-19960`) calls `emit_nirmmita_from_rax` —
+  the persistent side. Its elements arrive zeroed because the persistent
+  side never reuses memory (fresh kernel pages), not because anything zeroes
+  them.
+- **The R82 header is part of the kosh descriptor allocation** (the three
+  extra qwords before the descriptor, `[d-40..d-16]`, written once by
+  `r82_emit_kosh_header`, `src/sutram_compiler.asm:11372`: `[rax] line,
+  [rax+8] slot address, [rax+16] generation, [rax+24] 0, [rax+32] cap`). It
+  is persistent, like the descriptor. Its slot word holds a **stack** address
+  (`lea rdx,[rbp+slot]`), and the R82 liveness slots themselves are on the
+  stack (`r82_emit_zero`, `:10804`, zeroes `[rbp+slot]`; `r82_gen_rewind`,
+  `:10845`, zeroes the slots of the blocks being left). Neither is in the
+  arena.
+- **The mark itself is a frame variable** (`0mNN`, declared via
+  `r7_declare_new` in the mandapa parse, `src/sutram_compiler.asm:8395-8400`)
+  — on the stack, not in the arena.
+- **The only thing that can sit in the span is scratch `nirmmita`** — the
+  `BN_NIRM_SCRATCH` rewrite is lexical (`:17781-17786`, `r72_mdepth > 0`),
+  so only a `nirmmita` written in the block's own lines takes scratch
+  memory. By the language's rule those buffers are dead at block exit
+  (scratch pointers may live in variables but never in memory —
+  `E_SCRATCH_ESCAPE`).
+
+**The one live thing that can be affected is a dangling pointer, and madvise
+changes its read the same way the exit zeroing does — but only for large
+spans.** The R75 pinned known limit, `tests/r73_scratch/blind_kosh_via_call.sm`:
+a scratch address smuggled out through a `prakriya`, kept in a `kosh`, read
+after its block has ended. On v319 it prints **99** (the next block's data,
+read through the dangling address); with the R175 exit zeroing it prints
+**0**. With the madvise threshold, that program is **unaffected** — its block
+is small, the span is far below 16 MiB, the call never fires, and it still
+prints 99. The madvise proposal fixes the large-span stale read and leaves
+the small-span dangling read exactly as it is. That is a scope difference
+from the exit zeroing, not a defect — but the report that ships the madvise
+must say it, because a reader who assumes "madvise fixes the stale-data bug"
+will be wrong for every program below the threshold.
+
+**One more path, checked and safe:** the kosh in-place extension
+(`r65_emit_kosh_extend`, `src/r65_arena.inc:305-330`) grows `cur` upward with
+the guard `new cursor <= end`. After a block exit, `end` is the (higher)
+mark, so a later extension could grow `cur` into `[mark, old end)` — into
+pages the madvise just discarded. That is safe: the extension writes the
+kosh's elements there (copying from the old elements), faulting the pages
+back in as zeros first, then overwriting them. No stale read, because the
+extension never reads the span — it only writes the kosh's own elements into
+it. (Without madvise the same extension writes over stale bytes; also safe,
+for the same reason. The R163 Task 3 note on this path stands.)
+
+### 4.3 D.3 — On Windows, is `VirtualAlloc(MEM_RESET)` the equivalent? Yes — and `MEM_DECOMMIT` also works, through a different path
+
+**The Windows arena code** (`win/winrt_blob.asm`):
+
+- `.alloc` (`:168-180`): `VirtualAlloc(NULL, size, MEM_RESERVE (0x2000) if
+  MAP_NORESERVE else MEM_COMMIT|MEM_RESERVE (0x3000), PAGE_READWRITE (4))`.
+  The arena is reserved only; `rt_veh` commits on fault.
+- `.free` (`:183-191`): `VirtualFree(addr, 0, MEM_RELEASE (0x8000))` —
+  releases the whole reservation (a kosh's old region).
+- `rt_veh` (`:270-300`): on a fault in a `MEM_RESERVE` + `MEM_PRIVATE` region
+  (`cmp dword [rsp+48+32],0x2000`, `:280`), it commits up to 64 KiB (`cmp
+  rdx,0x10000; jbe .v_size; mov edx,0x10000`, `:285-287`) via
+  `VirtualAlloc(addr, size, MEM_COMMIT (0x1000), PAGE_READWRITE)` and returns
+  `EXCEPTION_CONTINUE_EXECUTION`.
+
+**`MEM_RESET` is the documented equivalent of `MADV_DONTNEED`.**
+`VirtualAlloc(addr, size, MEM_RESET, PAGE_READWRITE)` discards the contents
+of the committed pages in the range but keeps the mapping and the commitment:
+the pages are trimmed from the working set, and the next access faults them
+back in as zero pages. That is exactly the madvise shape (mapping +
+commitment kept, contents discarded, kernel zero-fills on next access). The
+range must be page-aligned, like madvise — the same align-up/align-down
+rounding applies.
+
+**`MEM_DECOMMIT` is the other candidate, and it composes with the existing
+`rt_veh` path.** `VirtualAlloc(addr, size, MEM_DECOMMIT, ...)` drops the
+commitment but keeps the reservation: the pages go back to `MEM_RESERVE`. The
+next access then raises an access violation, which `rt_veh` catches (it
+checks `State == MEM_RESERVE`, `:280`) and re-commits up to 64 KiB per fault
+— the re-committed pages are fresh, hence zero-filled by the kernel. So
+`MEM_DECOMMIT` also works, and it exercises code that already exists and is
+already tested (the lazy-commit path). The difference: after `MEM_RESET` the
+pages stay committed, so the next access is a kernel demand-zero fault and
+`rt_veh` never runs; after `MEM_DECOMMIT` the next access goes through
+`rt_veh` (one fault per 64 KiB, as on first touch). The design needs
+`MEM_RESET` if it wants the exact madvise shape; it needs `MEM_DECOMMIT` if
+it wants the re-commit to go through the handler it already has. Either is
+sound; the choice is which path the re-commit takes, not whether the memory
+comes back.
+
+**The re-commit after `MEM_RESET` is by the kernel, not by `rt_veh`.**
+`rt_veh` is a vectored exception handler: it runs only on an exception, and
+it only commits when the faulting page's state is `MEM_RESERVE`. After
+`MEM_RESET` the pages are still `MEM_COMMIT`, so an access to them raises no
+exception at all — the kernel resolves it as a soft fault (demand-zero)
+without involving the handler. That is the correct behaviour, and it means
+the `MEM_RESET` path needs no change to `rt_veh`.
+
+**Two Windows caveats, not verifiable from the tree (no `MEM_RESET` call
+exists in it — grep over `src/`, `win/`, `tools/`, `tests/` finds no
+`madvise`, `MADV_DONTNEED`, or `MEM_RESET`):** first, `MEM_RESET` on a range
+that was never committed is a no-op (the task's framing) — in the Sutram
+arena the rewound span may contain pages never touched (never committed by
+`rt_veh`), e.g. a 200 MB block of which only 4 KiB was written; the
+implementation must not assume the whole span is committed, and must check
+the call's result rather than assuming it succeeded. Second, the exact
+zero-guarantee on next access after `MEM_RESET` is the documented behaviour
+(the pages are discarded and re-read as zeros), but it is documented, not
+read in the tree — it needs a Windows run to confirm, like every Windows
+behaviour in this project.
+
+### 4.4 D.4 — Is the syscall cheap enough that a 16 MiB threshold is sensible? The comparison is cheap; the threshold is ungrounded
+
+**The threshold check is one comparison at block exit — cheap.** The emitted
+code is a load of `[end]`, a load of the mark, a subtract, a compare against
+16 MiB (`0x1000000`), and a conditional jump: a few instructions, on the
+order of 1–2 ns. That is far cheaper than the R175 exit zeroing, which the
+hand-back measured at 13.2 ns against 5.6 ns for a tiny block in a loop (+7.6
+ns a block). Below the threshold, a block pays one comparison and nothing
+else — which is what the brief claims, and it checks out.
+
+**The syscall itself scales with the span.** `madvise` walks the page tables
+over the range and unmaps the pages: its cost is roughly proportional to the
+number of pages (4,096 pages per 16 MiB, 51,200 per 200 MB). It is one
+syscall per block exit that crosses the threshold, not per allocation — a 200
+MB one-off pays one syscall and hands 200 MB back (RSS drops by the span
+size). That is the right shape for the one-off the brief names.
+
+**But 16 MiB is not grounded by any measurement in the tree.** The R163 WS5
+assessment said the 200 MB case is "a case nobody has measured", and nothing
+since has measured it: there is no madvise timing, no span-size sweep, and no
+RSS measurement for the threshold anywhere in the tree. 16 MiB is a round
+number, not a derived one — it could as well be 1 MiB or 64 MiB. What would
+ground it: measure the `madvise` syscall latency against span size (1, 4,
+16, 64, 256 MiB) on the target machine, compare it with the block-exit cost
+it is being weighed against (5.6 ns for a tiny block) and with the RSS saved
+(the span size), and pick the threshold where the syscall cost is negligible
+next to the work the block did and the saving is worth having. Until that
+measurement exists, the threshold is a guess — a defensible guess (below a
+few MiB the RSS saving is small and the page-table walk may cost more than
+it saves; above it the saving dominates), but a guess, and the report that
+ships it should say so.
+
+**The guard cost is the same class as the exit zeroing, and must be named.**
+Emitting the comparison at every block exit changes the bytes of every
+program with a `mandapa` — the guard would read **38 DIFFER** (the same 38
+as the R175 exit zeroing: exactly the compiling programs that contain a
+`mandapa`), because the new instructions are in every block exit. The R175
+hand-back established the guard rule is 0 DIFFER and step 2 broke it to 38;
+the madvise change breaks it the same way, even though its runtime cost for
+small blocks is much lower (one comparison vs a zeroing loop). A merge
+decision for the madvise needs the same "confined change" argument R175 step
+2 needed — or the guard rule to be amended — and the 38th program
+(`blind_kosh_via_call.sm`) is unaffected by it (its span is small, so it
+still prints 99; the exit zeroing changed it to 0).
+
+**Verdict on D: sound, with three conditions.** (1) Round the span to page
+boundaries (start up, end down) and apply the threshold to the aligned span.
+(2) Put the call in both cursor-raising routines (`r73_gen_rewind` and
+`r73_gen_ret_rewind`), or a shared helper. (3) Say plainly that the 16 MiB
+threshold is unmeasured, and that the guard will read 38 DIFFER. With those,
+the proposal is correct: the mapping stays, the cursor still walks into the
+span, the next access sees zeros, and nothing live can be in the span.
+
+### 4.5 E — Where is the compile-time-constant restriction today? There is none
+
+**The restriction does not exist in the code at v317, v318, or v319.** The
+ROUND-177 WS5 premise — "the only reason it is not hoisted today is that the
+compiler's check requires `n` to be a compile-time constant" — is false.
+Checked in all four places a restriction could live:
+
+- **Parser.** `.ps_kosh` (`src/sutram_compiler.asm:15595-15640`): `kosh name`
+  then an optional `[cap]` parsed with `call parse_expr` — **any expression**,
+  not a constant. The default capacity (no brackets) is `AST_NUM 4`
+  (`:15562`). The capacity expression is stored intact in `[rax+24]`. No
+  node-type check, no constant check, no refusal.
+- **Decl codegen.** `.gs_decl_kosh` (`:19801-19895`): `mov rax,[rbx+24]; call
+  gen_expr` — the capacity is evaluated **at runtime, every pass**. No
+  `AST_NUM` check anywhere in the decl codegen (grep over the decl codegen
+  range finds none). `fold_const` may fold a constant capacity expression at
+  parse time (`:17322`, folds a `BINOP` of two `AST_NUM`s) — that is an
+  optimisation, not a restriction: a non-constant capacity is simply
+  evaluated at runtime.
+- **Hoist candidacy.** `r175_cand` at v319 (`:10959-10990`) checks only the
+  kind (`[rdi+32]`, 2 or 3 for a kosh), and for a mala a size and no
+  initializer. The v317 candidacy (`501d35fd`, `:10920-10960`) and the v318
+  candidacy check the same three things. **None of them looks at the size
+  expression's node type.**
+- **The scan.** `r172_scan`'s `.decl_other` handler (`:11295-11305`) scans
+  `[rbx+24]` — the size/capacity expression — as an ordinary node. A size
+  expression using another name is fine (an `AST_VAR` of a different name is
+  not `.esc`); a size expression using the hoisted name itself is `.esc`
+  (fail-closed: `kosh temp[kosh_gan(temp)]` is not hoisted).
+
+**And the test file already covers the case.** `tests/r172/test_chakra_kosh.py`
+(`:56`, present at v318 `c1f516f8` and unchanged at v319):
+
+```python
+('capacity', 'a declared capacity that changes every pass', True, loop('        kosh k[j]\n' + P + U), 230),
+```
+
+`kosh k[j]` — a declared capacity that **changes every pass** (j is the loop
+variable, 1..20) — expected made-once = **True**. The runtime-capacity kosh
+is already a hoisted case in the gate. So WS5's "remove the restriction" is a
+no-op: there is no restriction to remove, and the behaviour it asks for is
+already the behaviour (whether the test passes is not verified by reading —
+nothing was run in this round — but the case exists and asserts it).
+
+### 4.6 E — A pass with a smaller `n` after a pass with a larger one: the buffer is kept, the length is reset, and the elements beyond the new length are not visible
+
+**Trace.** The decl codegen evaluates the size expression into `rax` every
+pass (`gen_expr`), normalises a negative capacity to zero, runs
+`r128_emit_cap_check`, then calls `r172_decl_begin`
+(`src/sutram_compiler.asm:11050-11090`): `mov rcx,[rbp+slot]; test rcx,rcx;
+jz .fresh; mov qword [rcx-16],0; mov rax,rcx; jmp .have`. On a reuse pass the
+new `n` is **discarded** — `rax` is overwritten with the descriptor pointer
+and the code jumps to `.have`, skipping the allocation. The emitted sequence
+contains **no comparison of the new capacity against the stored capacity
+`[d-8]`**. So a pass with a smaller `n` reuses a buffer whose capacity is the
+larger, earlier one. That is a memory hold, not a break: the buffer is held
+once for the whole loop, not once per pass.
+
+**The elements beyond the new length are not visible, because reads are
+bounds-checked against the freshly-read length, not against capacity.** The
+kosh index read path (`:20368-20371`): `call r128_emit_kosh_refresh` (reads
+`length` and `elements` from the descriptor after the index is computed) then
+`call emit_array_bounds_check` (`:21658`: `cmp rax,[rsp]` — the index against
+the length — `jb .ok`, else the failure block prints the diagnostic and exits
+1). The length is reset to 0 by `r172_decl_begin` at the start of every pass,
+so on pass 2 the length is whatever pass 2 pushed, and an index at or past it
+is refused at runtime.
+
+**The program:**
+
+```sm
+mukhya() {
+    chakra i = 1 tak 2 {
+        vitti n = 5
+        yadi i == 2 {
+            n = 2
+        }
+        kosh temp[n]
+        chakra j = 1 tak n {
+            kosh_kship(temp, j * 10)
+        }
+        likha(temp[3])
+    }
+}
+```
+
+Pass 1: n = 5, pushes 10, 20, 30, 40, 50, length 5, `temp[3]` = **40**. Pass
+2: n = 2, the hoist reuses the descriptor (capacity 5, length reset to 0),
+pushes 10, 20, length 2, `temp[3]`: index 3 ≥ length 2 → **runtime refusal**
+(the bounds diagnostic, exit 1). It prints 40, then stops. It does **not**
+read the stale 40 that pass 1 left at index 3 — the old value is unreachable,
+because the bounds check reads the current length. The same program without
+the hoist prints 40, then refuses identically (a fresh descriptor with
+capacity 2, length 2, index 3 out of bounds). The hoist changes nothing
+observable here.
+
+### 4.7 E — `n` is 0 or negative on some pass: it grows correctly
+
+**Trace.** The decl codegen normalises a negative capacity to zero before
+anything else (`:19815-19825`: `test rax,rax; jns +3; xor eax,eax` — the
+emitted `test rax,rax ; jns .ok ; xor eax,eax`). Then `r128_emit_cap_check`
+(`:21879`: 0 ≤ 2^40, passes) and `r172_decl_begin`.
+
+- **First pass, n = 0:** the slot is 0 → `.fresh` → `push 0; add rax,4; shl
+  rax,3` → 32 bytes → `r108_kosh_alloc` allocates → the header is written
+  with length 0, capacity 0. The first `kosh_kship`: length 0 == capacity 0
+  → grow, and the growth computes `newcap = cap ? cap*2 : 4` (the emitted
+  sequence at `:23030-23055`: `mov r11,rcx; shl r11,1` with the zero-capacity
+  fallback `mov r11,4`) → **4**. So a cap-0 descriptor grows correctly on
+  its first push, through the ordinary growth path (`r127_emit_grow`, small
+  path: a new arena allocation and an element-by-element copy of zero
+  elements).
+- **Second pass, n = 5, after a first pass with n = 0:** the slot holds the
+  descriptor (capacity 0 if nothing was pushed, 4 if something was).
+  `r172_decl_begin` reuses it, length reset to 0. Pushes grow it as needed.
+  Correct.
+- **A later pass with n = 0 after passes with n = 5:** normalised to 0,
+  `r172_decl_begin` reuses the descriptor (capacity 5), length reset. Pushes
+  work. The negative/zero `n` is silently treated as 0 — exactly as a
+  non-hoisted decl treats it (the normalisation happens before
+  `r172_decl_begin` in both cases). No difference between hoisted and
+  non-hoisted.
+- **n above `R128_MAXCAP` (2^40) on any pass:** `r128_emit_cap_check` refuses
+  with the make message and exits 1 — and it runs **before**
+  `r172_decl_begin`, so a reuse pass with a huge `n` is refused even though
+  the descriptor would be reused. That is correct (the program asked for a
+  capacity it cannot have), and identical to the non-hoisted behaviour.
+
+### 4.8 E — The R82 header when the capacity changes across passes: written once, and no check compares the new `n` against `[d-8]`
+
+**The header is written once, at creation, on the `.fresh` path only.**
+`r82_emit_kosh_header` (`src/sutram_compiler.asm:11372-11410`) writes `[rax]
+line, [rax+8] slot address, [rax+16] generation, [rax+24] 0 (length), [rax+32]
+cap`, then `rax += 40`. It runs in `.gs_decl_kosh` after `r108_kosh_alloc`,
+which on a reuse pass is skipped (`jmp .have`). The length word `[d-16]` is
+reset per pass by `r172_decl_begin` (`mov qword [rcx-16],0`). The capacity
+word `[d-8]` is updated only by growth (`r127_emit_grow` writes `mov
+[r8-8],r11` — newcap — in both the in-place path and the copy path,
+`src/r65_arena.inc:612` and `:708`).
+
+**No check compares the new `n` against `[d-8]`, and none is needed.** The
+reuse path in `r172_decl_begin` is `mov rcx,[rbp+slot]; test rcx,rcx;
+jz .fresh; mov qword [rcx-16],0; mov rax,rcx; jmp .have` — no capacity
+comparison, no reallocation, no refusal. If a pass with a smaller `n` reuses a
+descriptor whose capacity is larger, the buffer is simply larger than needed.
+That is not a leak: the buffer is held **once** for the whole loop, not once
+per pass — the same as if the program had declared the larger capacity in the
+first place. `parimana()` counts capacity, so it reports the larger capacity
+— observable, but correct, because the bytes **are** held. (The R175
+generation stamp, `mov [rcx-24],rdx` in `r172_decl_begin`, writes the
+liveness generation for a kosh declared in a `mandapa` inside the loop; it
+does not depend on `n` and is unaffected by a capacity change.)
+
+**Verdict on E: sound, but vacuous — there is no restriction to remove.** The
+reviewer's premise is wrong: no check in the compiler requires `n` to be a
+compile-time constant, and the gate already asserts the runtime-capacity case
+is hoisted (`kosh k[j]`, `tests/r172/test_chakra_kosh.py:56`). A pass with a
+smaller `n` keeps the buffer (a hold, not a break), a pass with a larger `n`
+grows it through the ordinary growth path, `n = 0` or negative grows
+correctly from `newcap = cap ? cap*2 : 4`, and the R82 header needs no change.
+If WS5 is built, the change is the deletion of a check that does not exist —
+the honest report is that the restriction was never there.
+
+---
+
+## 5. Brief corrections
+
+1. **The v319 premise is wrong.** The staged v319 (`4c1159be`) does **not**
+   zero a block's memory at its exits. The zeroing was R175 step 2, left out
+   of the staged branch ("one commit's worth of `src/r65_arena.inc` to leave
+   out"); `git diff c1f516f8..4c1159be -- src/r65_arena.inc` is 0 lines, and
+   `r73_gen_rewind` is exactly `end = the mark`. ROUND-177 WS2 moves the
+   zeroing into `nirmmita` instead — but its premise ("the zeroing change
+   broke the guard to 38") refers to a build that is not in the repo, and
+   WS6's rule (0 DIFFER; the zeroing change broke it to 38, WS2 should
+   restore it) cannot be checked against the staged branch.
+2. **The WS5 premise is wrong.** There is no compile-time-constant
+   restriction on `kosh temp[n]` in the parser, the decl codegen, the hoist
+   candidacy, or the scan at v317/v318/v319, and the gate already asserts the
+   runtime-capacity case is hoisted (`kosh k[j]`,
+   `tests/r172/test_chakra_kosh.py:56` at v318).
+3. **ROUND-177 §1 conflates two zeroings.** "A plain loop up to 1 KiB and
+   `rep stosq` above" is the **block-exit** zeroing, not the `mala` zeroing.
+   The `mala`'s hoist zeroing is `rep stosq` over exactly N qwords
+   (confirmed again here, and in R164) — and the `mala` has no zeroing at
+   creation at all.
+4. **ROUND-177 WS4's "which also removes the need to zero that span" needs
+   the qualifier.** The kernel zeroing removes the need to zero the span
+   **at block exit**; it does not remove the allocation-time zeroing
+   (`r73_s6`), which still runs unconditionally for every span, including
+   spans below the threshold.
+5. **The `.gs_decl_kosh` comment at `:19854` is stale** ("in a mandapa, a
+   slot of the block's arena") — the same staleness R162 Task 2 recorded for
+   the `:19331` comment. `r108_kosh_alloc` always takes the persistent path;
+   a kosh declared in a `mandapa` is allocated from `cur` exactly like one
+   outside it. (Also: the `r73_gen_scratch_nirm` header comment at
+   `src/r65_arena.inc:416-421` says `rep stosb`; the emitted template is the
+   qword loop — the comment is stale, the template is what runs.)
+6. **"Restores all 38 guard programs to byte-identical" is false** (§3.4) —
+   the DIFFER set would grow to every program that allocates (404, counted
+   with the guard's own glob patterns on the v318 tree).
+7. **"A `mala` zeroes at creation" is false** (§3.2) — a fresh `mala` is
+   never zeroed at creation.
+8. **The 13.2 / 5.6 ns figures are whole-program best-of-7 per-block costs,
+   not exit-only costs** (§3.5; median 13.8 / 8.4 ms). The exit itself on
+   v318 is one cursor restore.
+9. **Gate counts, one round later.** v319 `tools/gates.sh` has **82**
+   `run_gate` invocations (v318: 81, +1 for "R175 nested made once"; main:
+   78). Total entries on v319: 82 + X11 + doc_counts + Windows skip = 85, so
+   max PASS is **84** — the branch's own status line ("85 PASS / 0 FAIL / 1
+   NOT-RUN", `docs/LANGUAGE-REFERENCE.md:3` on v319) and the commit
+   message's "Gates 85 PASS" are off by one the same way as before. The
+   R159 P4 / R161 / R162 / R163 / R164 off-by-one persists, one gate higher.
+   On main the reference still says "81 PASS" where max PASS is 80.
+10. **The brief's "`kosh b = temp`" alias form is not an alias form** (§1.1)
+    — a kosh has no initializer; the alias form is `vitti b = temp`.
+11. **ROUND-177 WS1's "both are loop-local" reading of the loop-carried
+    pattern cannot carry a value** (§2.7) — a `kosh` declared inside a loop
+    is fresh each pass, and the hoist's decl resets the carried descriptor's
+    length to 0 at the top of the next pass, before any read. The pattern
+    needs `curr` declared OUTSIDE the loop.
+
+## 6. Could not determine (from source — read-only round, nothing run)
+
+- The exact runtime behaviour of the breaking programs (§1.1, §1.2, §2.2,
+  §2.3, §2.4, §3.2, §3.4) — not run, by rule. The traces are from the
+  emitted code and the check routines, not from execution. (The programs are
+  written so that plain semantics and the proposed semantics differ
+  observably: a printed value vs a refusal, or 10 vs 20, or 800,000 vs 1.)
+- Whether `kosh b = temp` parses at all (a kosh has no initializer per the
+  compiler's model; the alias form is `vitti b = temp`). Not verified by
+  running the compiler (read-only).
+- Whether the detach extends to a `mala` (whose "descriptor" is a frame
+  address), and whether a fresh `mala` on the next pass after a detach is
+  allocated at a different stack slot (the `r173_mala_begin` fresh path was
+  not traced in full). For a `mala` the scan is the only net, so this gap has
+  no fallback.
+- The exact hook points for the detach in the builtin call path
+  (`kosh_kship`) and the FFI dispatch — this report says WHERE they would
+  have to go, not that they are specified.
+- The exact runtime effect of a stale R82 generation when a detached
+  `mandapa`-kosh is read by INDEX after the block (index reads do not check
+  the generation; only a `prakriya` prologue does). By design the check is a
+  liveness check at the call boundary; the interaction is a design question,
+  not a verified break.
+- Whether the detach emitter can be placed in `gen_typed_call_arg`'s
+  `.gtca_kosh` path without disturbing the scalar path's
+  `r126_check_untyped_arg` (which refuses a kosh to a non-kosh parameter).
+  The two paths are distinct, so it should be separable, but the exact hook
+  point needs the build brief to specify it.
+- Which implementation shape Claude would choose for the ping-pong (emitter
+  swap at every kosh assignment, or scan whitelist + swap at one assignment)
+  — the proposal does not say, and the breaks differ by shape (§2.4). P3
+  and P1 hit both shapes; P2a hits the whitelist-by-outside-target
+  approximation; P2b hits the emitter-swap shape.
+- Whether the scan whitelist, if built, would be by target name, by target
+  declared outside the loop, or by some other rule — each rule has a
+  different break (§2.4, §2.5), and no rule fixes §2.2 or §2.3.
+- Whether a "carried" decl mode (skip the reset for the carried name) is
+  intended for the both-inside reading — the proposal does not describe one,
+  and it would be a second change, not part of the ping-pong.
+- The exact cost of the locked `xchg` form vs four plain moves on the
+  owner's machine — not measured, by rule.
+- Whether the exit-zeroing implementation described in the hand-back
+  (`r175_emit_zero_to_mark`, plain loop up to 1 KiB, `rep stosq` above)
+  matches any code — the routine is not in any tree this round can read (not
+  in v319; no `r175-nested-and-zero` branch on origin). The hand-back and
+  the evidence files are the only source for step 2.
+- Whether `tests/r175/test_nested_made_once.py` and the other v319 gate
+  files actually pass on v319, and whether the claimed numbers (RSS figures,
+  guard 587/196/0, gates 85 PASS) reproduce — nothing run.
+- The exact per-allocation cost of the check C would add (not built, not
+  measured) — and therefore the exact net time for `t_small` under C.
+- The exact first stale word and count for the `mala` program in §3.2 (the
+  `mala`'s allocation is 8 bytes larger than the `nirmmita`'s in the proof, so
+  the overlap starts one word earlier in the `mala`'s coordinates; order of
+  magnitude is the proof's 15,782,272 / 59,217,728).
+- The `madvise` syscall latency against span size (1, 4, 16, 64, 256 MiB) —
+  the measurement that would ground the 16 MiB threshold. Nothing in the
+  tree measures it, and no `madvise` call exists in the tree.
+- The exact Windows behaviour of `VirtualAlloc(MEM_RESET)` on a range
+  containing never-committed pages, and the zero-guarantee on next access
+  after `MEM_RESET` — documented behaviour, not read in the tree; needs a
+  Windows run.
+- Whether the guard would read exactly 38 DIFFER for the madvise change —
+  the set is the same class as the R175 exit zeroing (every compiling
+  program with a `mandapa`), but the count was not re-derived by running the
+  guard.
+- The `parimana()` `.zero`-path displacement question from R155/R158: still
+  open, still needs execution; unrelated to this round, noted only so it is
+  not mistaken for resolved.
+
+---
+
+**Files delivered:** this report and `r165.json`.
+**Counts in this report, re-derived, not carried:** guard corpus 783;
+programs containing `nirmmita` 248, `kosh`/`mala` 241, any allocation word
+404; differ-list 38 (37 with `nirmmita`, 1 without); differ-outputs 37 same
+output, 1 OUTPUT DIFFERS; gates main 78 / v318 81 / v319 82 run_gate
+invocations, max PASS on v319 84.
