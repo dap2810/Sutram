@@ -1,0 +1,105 @@
+noret_garbage :: 0 (or refused); 15 would be a leftover
+prakriya f(a) {
+    vitti b = a * 3
+}
+mukhya() {
+    likha(f(5), "\n")
+}
+===
+noret_bare_stmt :: 0
+prakriya f(a) {
+    likha("in f\n")
+}
+mukhya() {
+    vitti r = f(5)
+    likha(r, "\n")
+}
+===
+krama_in_fn_no_loop :: refused
+prakriya f(a) {
+    krama
+    nivartanam 7
+}
+mukhya() {
+    likha(f(1), "\n")
+}
+===
+agrim_outside :: refused
+M:agrim;likha(1, "\n")
+===
+nested_fn_call :: refused or 6
+mukhya() {
+    prakriya f(a) {
+        nivartanam a + 1
+    }
+    likha(f(5), "\n")
+}
+===
+index_number :: refused or a named stop, not a crash
+M:vitti a = 5;likha(a[0], "\n")
+===
+index_number_write :: refused or a named stop
+M:vitti a = 5;a[0] = 1;likha(a, "\n")
+===
+num_as_str :: refused or named stop
+M:vitti a = 5;likha(vartani_dairghya(a), "\n")
+===
+str_arith :: refused
+M:vitti a = "abc";likha(a * 2, "\n")
+===
+str_index :: a code or refused
+M:vitti a = "abc";likha(a[0], "\n")
+===
+mala_assign_whole :: refused or shared
+M:mala m[2];mala n[2];m[0] = 4;n = m;likha(n[0], "\n")
+===
+mala_likha :: refused or a listing, not an address
+M:mala m[2];likha(m, "\n")
+===
+mala_cmp :: refused
+M:mala m[2];mala n[2];likha(m == n, "\n")
+===
+mala_arith :: refused
+M:mala m[2];likha(m + 1, "\n")
+===
+kosh_as_cond :: refused
+M:kosh k[1];yadi (k) {;likha("yes\n");}
+===
+nirm_neg :: a named stop
+M:vitti n = 0 - 8;vitti p = nirmmita(n);likha(p, "\n")
+===
+nirm_zero :: 0
+M:vitti p = nirmmita(0);likha(p, "\n")
+===
+nirm_oob :: (unchecked by design) but no crash expected within page
+M:vitti n = 16;vitti p = nirmmita(n);p[1] = 7;likha(p[1], "\n")
+===
+grahan_text :: 0 or a named error
+M:vitti a = grahan();likha(a, "\n")
+===
+cond_str :: refused or truthy
+M:yadi ("abc") {;likha("yes\n");}
+===
+yadi_no_paren :: refused with a hint
+M:vitti a = 1;yadi a == 1 {;likha("yes\n");}
+===
+eq_single :: refused with a hint
+M:vitti a = 1;yadi (a = 1) {;likha("yes\n");}
+===
+likha_no_args :: newline or refused
+M:likha()
+===
+likha_7 :: refused clearly
+M:likha(1, 2, 3, 4, 5, 6, 7)
+===
+mod_neg_divisor :: 1
+M:likha(7 % (0 - 2), "\n")
+===
+big_shift :: defined?
+M:vitti s = 64;likha(1 << s, " ", 1 << 63, "\n")
+===
+cmp_neg :: 1
+M:vitti a = 0 - 1;likha(a < 1, "\n")
+===
+deep_nesting :: 1
+M:yadi (1) {;yadi (1) {;yadi (1) {;yadi (1) {;yadi (1) {;yadi (1) {;yadi (1) {;yadi (1) {;likha(1, "\n");};};};};};};};}

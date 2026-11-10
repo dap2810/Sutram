@@ -1,0 +1,77 @@
+dp_untyped :: 2.5
+prakriya half(x) {
+    nivartanam x / 2
+}
+mukhya() {
+    dasham a = 5.0
+    likha(half(a), "\n")
+}
+===
+dp_typed :: 2.5
+prakriya half(dasham x) {
+    nivartanam x / 2
+}
+mukhya() {
+    dasham a = 5.0
+    likha(half(a), "\n")
+}
+===
+dp_untyped_frac :: 1.85 (3.7 / 2)
+prakriya half(x) {
+    nivartanam x / 2
+}
+mukhya() {
+    dasham a = 3.7
+    likha(half(a), "\n")
+}
+===
+dp_literal :: 1.25
+prakriya half(x) {
+    nivartanam x / 2
+}
+mukhya() {
+    likha(half(2.5), "\n")
+}
+===
+dp_return_into_dasham :: 1.85
+prakriya half(x) {
+    nivartanam x / 2
+}
+mukhya() {
+    dasham a = 3.7
+    dasham r = half(a)
+    likha(r, "\n")
+}
+===
+dp_identity :: 3.7
+prakriya same(x) {
+    nivartanam x
+}
+mukhya() {
+    dasham a = 3.7
+    dasham r = same(a)
+    likha(r, " ")
+    likha(same(a), "\n")
+}
+===
+dp_add :: 4.7
+prakriya inc(x) {
+    nivartanam x + 1
+}
+mukhya() {
+    dasham a = 3.7
+    dasham r = inc(a)
+    likha(r, "\n")
+}
+===
+dret_typed :: 0.5
+prakriya h() {
+    dasham r = 0.5
+    nivartanam r
+}
+mukhya() {
+    likha(h(), " ")
+    dasham q = h()
+    likha(q, " ")
+    likha(h() + 1, "\n")
+}

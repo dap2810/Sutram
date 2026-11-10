@@ -1,0 +1,101 @@
+mala_oob_hi :: a named stop
+M:mala m[3];vitti i = 3;m[i] = 5;likha(m[i], "\n")
+===
+mala_oob_neg :: a named stop
+M:mala m[3];vitti i = 0 - 1;likha(m[i], "\n")
+===
+mala_oob_const :: refused at compile
+M:mala m[3];likha(m[5], "\n")
+===
+mala_size0 :: refused or stop
+M:mala m[0];likha(1, "\n")
+===
+mala_size_neg :: a named stop
+M:vitti n = 0 - 5;mala m[n];likha(1, "\n")
+===
+mala_huge :: a named stop
+M:vitti n = 2000000000000;mala m[n];m[0] = 1;likha(m[0], "\n")
+===
+kosh_oob :: a named stop
+M:kosh k[2];kosh_kship(k, 1);likha(k[1], "\n")
+===
+kosh_neg :: a named stop
+M:kosh k[2];kosh_kship(k, 1);vitti i = 0 - 1;likha(k[i], "\n")
+===
+kosh_pop_empty :: a named stop
+M:kosh k[2];likha(kosh_hri(k), "\n")
+===
+kosh_cap0 :: works or refused
+M:kosh k[0];kosh_kship(k, 4);likha(k[0], "\n")
+===
+kosh_capneg :: a named stop
+M:vitti n = 0 - 1;kosh k[n];kosh_kship(k, 4);likha(k[0], "\n")
+===
+chakra_empty :: nothing then done
+M:chakra i = 5 tak 1 {;likha(i);};likha("done\n")
+===
+chakra_modify :: 1 3 5 or refused
+M:chakra i = 1 tak 5 {;likha(i);i = i + 1;}
+===
+chakra_limit_reeval :: 1 2 3 (limit evaluated once) or more
+M:vitti n = 3;chakra i = 1 tak n {;likha(i);n = 5;}
+===
+chakra_max :: ends (no endless loop)
+M:vitti c = 0;chakra i = 9223372036854775806 tak 9223372036854775807 {;c = c + 1;};likha(c, "\n")
+===
+chakra_var_after :: refused or value
+M:chakra i = 1 tak 3 {;};likha(i, "\n")
+===
+yavat_never :: done
+M:yavat (0) {;likha("x");};likha("done\n")
+===
+krama_outside :: refused
+M:krama;likha(1)
+===
+shadow :: refused or 5 7
+M:vitti a = 5;yadi (1) {;vitti a = 7;likha(a);};likha(a, "\n")
+===
+use_before :: refused
+M:likha(a, "\n");vitti a = 5
+===
+dup_decl :: refused
+M:vitti a = 5;vitti a = 6;likha(a, "\n")
+===
+uninit :: 0 or refused
+M:vitti a;likha(a, "\n")
+===
+str_cmp :: 1 0
+M:vitti a = "abc";vitti b = "abc";likha(a == b, "\n")
+===
+str_plus_num :: refused or text
+M:vitti a = "abc" + 5;likha(a, "\n")
+===
+str_escape :: tab and quote and backslash
+M:likha("a\tb \"q\" \\ end\n")
+===
+str_unterminated :: refused, named
+M:likha("abc)
+===
+str_newline_in :: refused or kept
+mukhya() {
+    likha("ab
+cd")
+}
+===
+likha_neg :: -5
+M:likha(-5, "\n")
+===
+likha_expr_str :: abc5
+M:likha("abc", 5, "\n")
+===
+dasham_basic :: 0.3 or 0.30000000000000004
+M:dasham a = 0.1;dasham b = 0.2;likha(a + b, "\n")
+===
+dasham_int_mix :: 2.5
+M:dasham a = 5;likha(a / 2, "\n")
+===
+dasham_div0 :: stop or inf
+M:dasham a = 1.0;dasham z = 0.0;likha(a / z, "\n")
+===
+int_div_float :: 2 (integers)
+M:likha(5 / 2, "\n")

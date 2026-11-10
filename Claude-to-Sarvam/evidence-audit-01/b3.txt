@@ -1,0 +1,164 @@
+fn_args_few :: refused
+prakriya f(a, b) {
+    nivartanam a + b
+}
+mukhya() {
+    likha(f(1), "\n")
+}
+===
+fn_args_many :: refused
+prakriya f(a) {
+    nivartanam a
+}
+mukhya() {
+    likha(f(1, 2), "\n")
+}
+===
+fn_no_return :: 0 or refused
+prakriya f(a) {
+    vitti b = a
+}
+mukhya() {
+    likha(f(5), "\n")
+}
+===
+fn_ret_some_paths :: 0 for the path without, or refused
+prakriya f(a) {
+    yadi (a > 0) {
+        nivartanam 7
+    }
+}
+mukhya() {
+    likha(f(1), " ", f(0), "\n")
+}
+===
+fn_undefined :: refused
+mukhya() {
+    likha(g(1), "\n")
+}
+===
+fn_after_use :: works or refused with a clear message
+mukhya() {
+    likha(g(1), "\n")
+}
+prakriya g(a) {
+    nivartanam a + 1
+}
+===
+fn_dup :: refused
+prakriya f(a) {
+    nivartanam 1
+}
+prakriya f(a) {
+    nivartanam 2
+}
+mukhya() {
+    likha(f(0), "\n")
+}
+===
+fn_name_var :: refused or sane
+prakriya f(a) {
+    nivartanam 1
+}
+mukhya() {
+    vitti f = 5
+    likha(f, "\n")
+}
+===
+fn_recursion_deep :: a named stop, not a crash
+prakriya d(n) {
+    nivartanam d(n + 1) + 1
+}
+mukhya() {
+    likha(d(0), "\n")
+}
+===
+fn_7args :: works or refused clearly
+prakriya f(a, b, c, d, e, g, h) {
+    nivartanam a + b + c + d + e + g + h
+}
+mukhya() {
+    likha(f(1, 2, 3, 4, 5, 6, 7), "\n")
+}
+===
+fn_param_assign :: 6 then 5 (by value)
+prakriya f(a) {
+    a = a + 1
+    nivartanam a
+}
+mukhya() {
+    vitti x = 5
+    likha(f(x), " ", x, "\n")
+}
+===
+fn_mala_param :: 9 (malas are shared)
+prakriya f(m) {
+    m[0] = 9
+    nivartanam 0
+}
+mukhya() {
+    mala m[2]
+    f(m)
+    likha(m[0], "\n")
+}
+===
+no_mukhya :: refused, named
+prakriya f(a) {
+    nivartanam a
+}
+===
+two_mukhya :: refused
+mukhya() {
+    likha(1)
+}
+mukhya() {
+    likha(2)
+}
+===
+code_after_return :: fine
+prakriya f(a) {
+    nivartanam 1
+    likha("never")
+}
+mukhya() {
+    likha(f(0), "\n")
+}
+===
+nested_fn :: refused
+mukhya() {
+    prakriya f(a) {
+        nivartanam a
+    }
+    likha(1)
+}
+===
+empty_file :: refused, named
+
+===
+stmt_garbage :: refused
+M:5 + 3
+===
+missing_brace :: refused pointing near
+mukhya() {
+    yadi (1) {
+        likha(1)
+    likha(2)
+}
+===
+anya_without_yadi :: refused
+M:anya {;likha(1);}
+===
+semicolons :: works or refused
+mukhya() {
+    vitti a = 1; vitti b = 2;
+    likha(a + b, "\n");
+}
+===
+long_expr :: 50
+M:likha(1+2+3+4+5+6+7+8+9+10-5, "\n")
+===
+deep_paren :: 1
+M:likha((((((((((((((((((((1)))))))))))))))))))), "\n")
+===
+many_locals :: sum
+M:vitti a=1;vitti b=2;vitti c=3;vitti d=4;vitti e=5;vitti f=6;vitti g=7;vitti h=8;likha(a+b+c+d+e+f+g+h, "\n")

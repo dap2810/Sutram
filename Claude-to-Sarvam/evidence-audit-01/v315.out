@@ -1,0 +1,5 @@
+noret              expect [15 on v321]  got [15]
+krama_out          expect [compiles on v321]  got [1]
+mala_neg           expect [SIGSEGV on v321]  got [exit -11: ]
+mala_likha         expect [an address on v321]  got [an address]
+kosh_cond          expect [yes on v321]  got [yes]

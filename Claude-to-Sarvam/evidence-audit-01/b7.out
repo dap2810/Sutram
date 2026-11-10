@@ -1,0 +1,6 @@
+mala_n_neg1        expect [named stop]  got [exit -11: ]
+mala_n_const_neg   expect [refused]  got [exit -11: ]
+mala_n_big_ok      expect [1 (800 MB)]  got [1]
+mala_n_2e9         expect [named stop]  got [exit -11: ]
+noret_mukhya_use   expect [value of a prakriya whose last statement is a loop]  got [5]
+krama_in_yadi_no_loop expect [refused]  got [2]

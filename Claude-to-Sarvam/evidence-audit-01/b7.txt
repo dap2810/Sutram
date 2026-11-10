@@ -1,0 +1,25 @@
+mala_n_neg1 :: named stop
+M:vitti n = 0 - 1;mala m[n];likha(1, "\n")
+===
+mala_n_const_neg :: refused
+M:mala m[-3];likha(1, "\n")
+===
+mala_n_big_ok :: 1 (800 MB)
+M:vitti n = 100000000;mala m[n];m[n - 1] = 1;likha(m[n - 1], "\n")
+===
+mala_n_2e9 :: named stop
+M:vitti n = 2000000000;mala m[n];m[0] = 1;likha(m[0], "\n")
+===
+noret_mukhya_use :: value of a prakriya whose last statement is a loop
+prakriya f(n) {
+    vitti s = 0
+    chakra i = 1 tak n {
+        s = s + i
+    }
+}
+mukhya() {
+    likha(f(4), "\n")
+}
+===
+krama_in_yadi_no_loop :: refused
+M:vitti a = 1;yadi (a) {;krama;};likha(2, "\n")

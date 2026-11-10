@@ -1,0 +1,19 @@
+noret :: 15 on v321
+prakriya f(a) {
+    vitti b = a * 3
+}
+mukhya() {
+    likha(f(5), "\n")
+}
+===
+krama_out :: compiles on v321
+M:krama;likha(1, "\n")
+===
+mala_neg :: SIGSEGV on v321
+M:mala m[-3];likha(1, "\n")
+===
+mala_likha :: an address on v321
+M:mala m[2];likha(m, "\n")
+===
+kosh_cond :: yes on v321
+M:kosh k[1];yadi (k) {;likha("yes\n");}
