@@ -1,0 +1,12 @@
+# R184: read every line until the input ends. vartani_grahan() gives "" for an empty line AND at the end
+# of the input; nivesha_anta() is 1 only at the end - so the loop stops there and nowhere else.
+mukhya() {
+    vitti n = 0
+    yavat (1) {
+        vitti s = vartani_grahan()
+        yadi (nivesha_anta()) { krama }
+        n = n + 1
+        likha(n, ": ", s, "\n")
+    }
+    likha("panktayah: ", n)
+}

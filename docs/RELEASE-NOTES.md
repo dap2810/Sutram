@@ -1,7 +1,7 @@
-# Sutram 1.0 (v322) — release notes
+# Sutram 1.0 (v323) — release notes
 
-**Compiler `Sutram 1.0 (v322) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v322). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v323) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v323). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,16 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v322 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v323 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v322 closes, and what it does not (R140-R182, AUDIT-01)
+## Status: what v323 closes, and what it does not (R140-R184, AUDIT-01)
+
+**v323 (R184): a program can read text.** `vartani_grahan()` reads one line and returns it as a string, without
+its newline and without a length limit; `nivesha_anta()` is 1 once the input has ended, so a loop that reads
+every line stops. `grahan()` is unchanged. **No existing program changes** (guard: 0 DIFFER against v322).
+**Not closed:** it reads a byte at a time (5.1 s for a 24.9 MB file), and each line's memory is kept until the
+program ends.
 
 **v322 (AUDIT-01, the owner's audit): five defects closed.** A `prakriya` that ends without `nivartanam` returns 0
 (it returned the last value computed); `krama` / `agrim` outside a loop, `likha` of a `mala` and a `kosh` as a
@@ -261,7 +267,7 @@ Measured, with where:
   - division by zero stops with `E_SHUNYA_BHAJAN`;
   - a literal or constant expression past 64 bits is refused (`E_ATIPRAVAH`).
 - **Tests:**
-  - 331 examples (327 with a golden);
+  - 333 examples (329 with a golden);
   - 69 Linux gates, including a guard that compiles every program before and after each change and compares
     the bytes;
   - 227 crash-corpus cases;
@@ -312,8 +318,8 @@ succeeded; use the checked form when the program must detect a failure and go on
 **What a student meets first - Muse's ranking (ROUND-166, 10 November 2026), recorded in R181; none started**
 1. ~~The lexer silently skips a character it does not know.~~ **Closed in v321 (R182):** it is refused,
    `E_AGYAT_AKSHAR`. (`vitti a = 5 $ 3` compiled and printed 5 on v320.)
-2. **There is no way to read text from the user.** `grahan` reads a number; no built-in or library function
-   returns a line of text. "What is your name?" cannot be written without a raw read into a buffer.
+2. ~~There is no way to read text from the user.~~ **Closed in v323 (R184):** `vartani_grahan()` returns a
+   line of text (reference section 4d; `examples/360_r184_vartani_grahan.sm`). `grahan` reads a number, as before.
 3. **Reading a file is the one basic thing the language can do that no example shows, and the reference
    mislabels it.** `patra_path_sarv` (`lib/patra.smlib`) reads a file; no program in `examples/` uses `paadh`,
    `dvaram(` or `patra_` (0 files, R181); and the reference's built-in table has the two rows the wrong way
@@ -510,6 +516,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v323 (staged):** `vartani_grahan()` reads a line of text; `nivesha_anta()` says the input has ended (R184).
 - **v322 (staged):** five defects of the owner's audit (AUDIT-01): the value of a `prakriya` without `nivartanam`,
   `krama` outside a loop, a `mala`'s length, `likha` of a `mala`, a `kosh` as a condition.
 - **v321 (staged):** a character the language does not know is refused where it stands (R182).

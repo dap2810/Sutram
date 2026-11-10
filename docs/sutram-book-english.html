@@ -343,7 +343,9 @@ instantly without leaving your flow.</div>
 <tr><td><code><span class="k" data-tip="negation (-)">abhava</span></code></td><td>assert</td></tr>
 <tr><td><code><span class="k" data-tip="inline assembly">yantra</span></code></td><td>inline machine code</td></tr>
 <tr><td><code><span class="k" data-tip="print (no newline)">likha_santat</span></code></td><td>print without newline</td></tr>
-<tr><td><code><span class="k" data-tip="input">grahan</span></code></td><td>read input (-1 on EOF)</td></tr>
+<tr><td><code><span class="k" data-tip="input">grahan</span></code></td><td>read a number from input (-1 on EOF)</td></tr>
+<tr><td><code>vartani_grahan</code></td><td>read a line of text from input</td></tr>
+<tr><td><code>nivesha_anta</code></td><td>1 once the input has ended</td></tr>
 <tr><td><code># / //</code></td><td>comments</td></tr>
 </table>
 <h3>Running the compiler</h3>
@@ -412,6 +414,20 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <span class="k" data-tip="if">yadi</span> (a == -1) {
     <span class="k" data-tip="print">likha</span>("Input ended\n")
     <span class="k" data-tip="break">krama</span>
+}</code></pre>
+
+<h3>Reading text: <code>vartani_grahan</code>()</h3>
+<p><code><span class="k" data-tip="input">grahan</span>()</code> reads a number: type <code>hello</code> and it gives 0. To read what was typed as text, use <code>vartani_grahan()</code> (वर्तनी-ग्रहण, "taking a string"). It reads one whole line and gives it back as a string, without the newline at its end, however long the line is:</p>
+<pre><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="print">likha</span>("Tava nama kim? ")
+    <span class="k" data-tip="variable">vitti</span> nama = vartani_grahan()
+    <span class="k" data-tip="print">likha</span>("Namaste, ", nama, "!\n")
+}</code></pre>
+<p>If the user presses Enter without typing, the result is the empty string <code>""</code>. When the input has ended it is <code>""</code> too, so there is a second function to tell the two apart: <code>nivesha_anta()</code> (निवेश-अन्त, "end of input") is 1 once a <code>vartani_grahan()</code> has found nothing left to read. A loop that reads every line stops like this (from v323):</p>
+<pre><code><span class="k" data-tip="while">yavat</span> (1) {
+    <span class="k" data-tip="variable">vitti</span> s = vartani_grahan()
+    <span class="k" data-tip="if">yadi</span> (nivesha_anta()) { <span class="k" data-tip="break">krama</span> }
+    <span class="k" data-tip="print">likha</span>(s, "\n")
 }</code></pre>
 </div>
 
@@ -967,7 +983,7 @@ stops the program with a sentence that says which, not a crash.</p>
 <code>nirmmita(64)</code>, print <code>parimana()</code> each time round, and find the pass on which the budget
 refuses. Then move <code>mandapa</code> inside the loop, so the block starts again on every pass, and watch it never refuse.</div>
 </div>
-<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v322)</div>
+<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v323)</div>
 </div>
 </body>
 </html>

@@ -1,6 +1,6 @@
-> **Status at compiler v322, 11 November 2026 (AUDIT-01) - staged, not merged: v322 closes five defects of the owner's audit (v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
+> **Status at compiler v323, 11 November 2026 (R184) - staged, not merged: v323 adds `vartani_grahan()`, which reads a line of text, and `nivesha_anta()` (v322: five defects of the owner's audit closed; v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v322) - sampurna sutra`.** Suite **PASS=327** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **88 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v322 (AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v323) - sampurna sutra`.** Suite **PASS=329** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **89 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v323 (R184: `vartani_grahan()` reads a line of text; AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -176,6 +176,8 @@ warning naming the new one** (§4b).
 | `likha_rup` (was `likha_fmt`) | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
 | `shabda` | print a string variable |
 | `grahan` | read a number from input |
+| `vartani_grahan` (वर्तनी_ग्रहण) | `vartani_grahan()`: read one line of text from input - a new string, without the line's newline (v323; section 4d) |
+| `nivesha_anta` (निवेश_अन्त) | `nivesha_anta()`: 1 once a `vartani_grahan()` has found the input ended, else 0 (v323; section 4d) |
 | `sthagita` | halt the program |
 | `dvaram` | patra descriptor helper |
 | `paadh` | open a file |
@@ -364,6 +366,52 @@ x = 42
 `likha_rup` currently outputs the literal format/prefix string and numeric value sequentially. It does **not** interpret `{0}` or other format placeholders; its integer number path **already writes a final LF**. Therefore an extra `likha("\n")` gives an unwanted blank line. The existing `examples/format_demo.sm` has this extra newline; its golden records the blank lines. Do not edit either without running and updating acceptance.
 
 **Evidence:** `src/sutram_compiler.asm:15956-15964,16144-16242,18050-18183`; `tests/r52/test_r52.py:55-74`; `tests/expect/43_nested_likha.out` and `tests/expect/format_demo.out`. Exact outputs are source/committed-test expectations, **NOT RUN by ChatGPT**.
+### 4d. Input: a number, a line of text, and the end of input (v323, R184)
+
+| | reads | gives | an empty line (Enter alone) | the end of the input |
+|---|---|---|---|---|
+| `grahan()` | one line, as a number | the number made of the line's digits (`hello` gives 0; `12 34` gives 1234; a `-` is not read) | 0 | -1 |
+| `vartani_grahan()` (वर्तनी_ग्रहण) | one line, as text | a new string: the line **without its newline** (a CR before the LF is dropped too) | `""` | `""`, and `nivesha_anta()` becomes 1 |
+| `nivesha_anta()` (निवेश_अन्त) | nothing | 1 once a `vartani_grahan()` found nothing left to read; 0 before that | - | - |
+
+```
+mukhya() {
+    likha("Tava nama kim? ")
+    vitti nama = vartani_grahan()
+    likha("Namaste, ", nama, "!\n")
+}
+```
+
+- **The whole line is one read.** `hello world` comes back as `hello world`; the next `vartani_grahan()` reads
+  the next line.
+- **No length limit, and nothing is cut.** The buffer starts at 64 bytes and doubles as the line grows; a line
+  of 5,000,000 bytes comes back whole (tested).
+- **An empty line and the end of the input both give `""` - `nivesha_anta()` tells them apart.** Read every line
+  like this; the loop ends at the end of the input and not at an empty line:
+
+  ```
+  yavat (1) {
+      vitti s = vartani_grahan()
+      yadi (nivesha_anta()) { krama }
+      ...
+  }
+  ```
+
+  A last line that has no newline is returned whole; the call after it finds the end. Once 1, `nivesha_anta()`
+  stays 1, and every further `vartani_grahan()` returns `""` at once - a loop cannot wait for ever on input that
+  has ended. `grahan()` does not set it (its own end sign is -1).
+- **The result is a string like any other** (section 5a): `==`, `<` and `+` work on its text, `likha` prints it,
+  arithmetic on it is refused (`E_VARTANI_GANIT`), and as a condition it is refused (`E_VARTANI_SATYA`).
+  To turn it into a number, use `grahan()` for that line instead.
+- **`grahan()` and `vartani_grahan()` read the same input, a line each,** so a number's line can be followed by a
+  text line.
+- **Cost.** Each call takes at least 64 bytes of ordinary memory, which - like the result of string `+` - is
+  not given back while the program runs, also not by a `mandapa` (the text may be kept after the block).
+  Measured: 2,000,000 lines read, `parimana()` 128,000,064. Like `grahan`, it asks the system for one byte at
+  a time: a 24.9 MB file of 2,000,000 lines took 5.1 s. Fine for a keyboard and for small files; for a large
+  file use the file functions.
+- **If memory cannot be had** the program stops with `E_VARTANI_SMRITI` (Linux), as string `+` does.
+
 ## 4b. Standard library (`lib/`)
 
 `yoj <name>` inlines `lib/<name>.smlib` into your program at compile time —
@@ -530,6 +578,7 @@ mukhya()
     vitti s = "hello"
     shabda(s)                       # print a string variable
     vitti n = grahan()              # read a number
+    vitti t = vartani_grahan()      # read a line of text (v323)
 
 prakriya joda(a, b)                 # function (up to 6 arguments)
     nivartanam a + b                 # return
@@ -1108,7 +1157,7 @@ named themselves, but the tree limit had no code):
   refuses it, `87316` compiles it); no measured statement reaches the default. 349,521 is an upper bound for any
   statement the tree holds, not a statement anyone has built: whether a shape above 200,000 can be written is not
   established (if one is, raise the flag for it). The largest statement in
-  the example programs (`examples/*.sm` and `examples/*/*.sm`: 344 files, the set gate `R143 walk budget` compiles)
+  the example programs (`examples/*.sm` and `examples/*/*.sm`: 346 files, the set gate `R143 walk budget` compiles)
   and the 310 library functions takes 52 steps (`lib/brihat.smlib`, line 174; measured at v312, R144).
 - **History:** v311 200,000 fixed; v312 65,536 (16,384 terms of `x + x + ...` compile and 16,385 refuse - measured natively on Windows against the
   v312 baseline, `Windows-to-Sarvam/win-v313-2026-11-08/BUDGET.md`, and relayed in Sarvam's ROUND-148); v313 349,521;

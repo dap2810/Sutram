@@ -1,0 +1,6 @@
+# R184: vartani_grahan() reads one line of text - here, a name - and gives it back without the newline.
+mukhya() {
+    likha("Tava nama kim? ")
+    vitti nama = vartani_grahan()
+    likha("Namaste, ", nama, "!\n")
+}

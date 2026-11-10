@@ -1,4 +1,26 @@
-> **The 20 newest entries.** Older ones, from "v302" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v303" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v323 (Claude, R184) - `vartani_grahan()` reads a line of text; `nivesha_anta()` says the input has ended
+
+- **`vartani_grahan()`** (वर्तनी_ग्रहण) reads one line from the input and returns it as a new string, without
+  the line's newline (LF, or CR LF). `grahan()` reads a number - `hello` gave 0 - and there was no way to read
+  text. An empty line is `""`. **No length limit:** the buffer starts at 64 bytes and doubles; a 5,000,000-byte
+  line comes back whole.
+- **`nivesha_anta()`** (निवेश_अन्त) is 1 once a `vartani_grahan()` found nothing left to read, and stays 1. At
+  the end of the input `vartani_grahan()` returns `""` at once, every time; a last line without a newline is
+  returned whole first. So `yavat (1) { vitti s = vartani_grahan() ; yadi (nivesha_anta()) { krama } ... }`
+  ends at the end of the input and not at an empty line.
+- **How:** two builtins (48, 49), generated inline; a byte per `read`, as `grahan` does, so the two share the
+  input line by line. The memory is `nirmmita`'s ordinary side, as string `+` takes - at least 64 bytes a call,
+  not given back (2,000,000 lines: `parimana()` 128,000,064; 5.1 s for 24.9 MB). The end flag is a hidden
+  module `vitti`, made only in a program that uses either function.
+- **Examples** `360_r184_vartani_grahan` (asks a name) and `361_r184_pankti_ganana` (reads to the end), both
+  with goldens; reference section 4d; a passage in the English and the Sanskrit book beside `grahan`.
+- **Gate `R184 read a line`** (`tests/r184/test_read_line.py`, 17 checks: a known line, an empty line, no
+  input, a loop to the end, an unfinished last line, CR LF, 63 / 64 / 65 / 100,000 / 5,000,000 bytes, a number
+  line then a text line, the string kind, the Devanagari names, three refusals).
+- **The guard, against v322: 0 DIFFER** - no existing program's bytes change. Run under Wine (the name example
+  and the loop). Installer rebuilt (payload v323). Not run on Windows.
 
 ## v322 (Claude, AUDIT-01 - the owner's audit) - five defects found by 150 probes
 
@@ -473,21 +495,3 @@
   it. A slice holds the elements' address as they were. No program in the tree does either.
 - `docs/reports/HOW-DEFECTS-WERE-FOUND.md`: reading and testing found different defects; neither alone was enough.
   Gate `R127 descriptor` +5 checks.
-
-## v303 (Claude, R128) - three descriptor defects ChatGPT R203 found by reading: fixed
-
-- **A `kosh`'s length and elements are read after its index is evaluated** (`k[i]`, `k[i] = v`) and after a
-  slice's bounds (`k[lo:hi]`) **whenever the index or a bound has a call in it** - the only way it can change
-  the `kosh`; an index without a call compiles to v302's bytes (the codegen-shape ceilings hold). v302 read them first, so an index that grew the `kosh` (`k[kosh_kship(k, 5) - 2]`)
-  read the old elements - **SIGSEGV once an outgrown region had been given back** - and one that shrank it
-  (`k[kosh_hri(k) - 1]`) was checked against the old length. (R203 F1.)
-- **A declared capacity past 2^40 numbers stops with `kosh rachayitum smritih na labdha`.** v302 multiplied it
-  by 8 without a check: `kosh k[2305843009213693952]` became a 32-byte allocation and the pushes overwrote the
-  next block (measured: another buffer's 77 became 1). (R203 F2.)
-- **`parimana()` counts a region `kosh`'s bytes right:** v302 took the new capacity from `r11`, which the Linux
-  `syscall` had just overwritten (20,000 numbers: 234,096 printed, 294,976 right). (R203 F3.)
-- Gate `R127 descriptor` +6 checks (24 with PE; v302 fails all six). No program in the tree changes output; the
-  92 that change bytes are the `kosh` programs (a declared capacity's check).
-- **Also R128:** the installer's payload rebuilt (on Linux, `tools/build_installer_linux.py`); `sutram-link.exe`
-  rebuilt (its embedded runtime predated v300); `docs/RELEASE-NOTES.md`; the pack-message goldens no longer
-  assert a compiled size.

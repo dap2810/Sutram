@@ -1,5 +1,23 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v303 (Claude, R128) - three descriptor defects ChatGPT R203 found by reading: fixed
+
+- **A `kosh`'s length and elements are read after its index is evaluated** (`k[i]`, `k[i] = v`) and after a
+  slice's bounds (`k[lo:hi]`) **whenever the index or a bound has a call in it** - the only way it can change
+  the `kosh`; an index without a call compiles to v302's bytes (the codegen-shape ceilings hold). v302 read them first, so an index that grew the `kosh` (`k[kosh_kship(k, 5) - 2]`)
+  read the old elements - **SIGSEGV once an outgrown region had been given back** - and one that shrank it
+  (`k[kosh_hri(k) - 1]`) was checked against the old length. (R203 F1.)
+- **A declared capacity past 2^40 numbers stops with `kosh rachayitum smritih na labdha`.** v302 multiplied it
+  by 8 without a check: `kosh k[2305843009213693952]` became a 32-byte allocation and the pushes overwrote the
+  next block (measured: another buffer's 77 became 1). (R203 F2.)
+- **`parimana()` counts a region `kosh`'s bytes right:** v302 took the new capacity from `r11`, which the Linux
+  `syscall` had just overwritten (20,000 numbers: 234,096 printed, 294,976 right). (R203 F3.)
+- Gate `R127 descriptor` +6 checks (24 with PE; v302 fails all six). No program in the tree changes output; the
+  92 that change bytes are the `kosh` programs (a declared capacity's check).
+- **Also R128:** the installer's payload rebuilt (on Linux, `tools/build_installer_linux.py`); `sutram-link.exe`
+  rebuilt (its embedded runtime predated v300); `docs/RELEASE-NOTES.md`; the pack-message goldens no longer
+  assert a compiled size.
+
 ## v302 (Claude, R127) - a `kosh` is a descriptor: two names stay one, and no region per `kosh`
 
 - **A `kosh` value is now a descriptor that never moves:** its length and capacity where they always were

@@ -52,6 +52,8 @@ STDIN = {
     "number_game": "3\n",
     "46_language_reference": "7\n",
     "59_windows_grahan_runtime": "42\n",
+    "360_r184_vartani_grahan": "Asha Patel\n",                  # R184: one line of text
+    "361_r184_pankti_ganana": "ekam\n\ndve trini\nantim",       # R184: an empty line, and a last line without a newline
 }
 # examples whose exit code is intentionally non-zero
 EXIT_OVERRIDE = {

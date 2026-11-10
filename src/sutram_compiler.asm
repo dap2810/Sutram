@@ -242,6 +242,8 @@ RFX2_STACK_CAP equ 65536   ; R105: the walk's node stack
 BN_VYOJ equ 91             ; R105: internal (no name): string + string -> a new string
 BN_VKRAM equ 92            ; R105: internal (no name): string ordering -> the byte difference
 BN_PARIMANA equ 47        ; R107: parimana() -> bytes the program's nirmmita and kosh hold now
+BN_VGRAHAN  equ 48        ; R184: vartani_grahan() -> one line of text from the input, without its newline
+BN_NIVANTA  equ 49        ; R184: nivesha_anta() -> 1 once a vartani_grahan found the input ended
 BN_DVARLIKHA equ 46 ; FIXALL (a): dvaram_likha(dvara, smriti, sankhya) -> bytes written (raw fd write)
 BN_NIRM_SCRATCH equ 90 ; R73: nirmmita written inside a mandapa - the scratch side
 
@@ -257,7 +259,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v322) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v323) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -325,6 +327,8 @@ r54_builtin_arity_table:
     db 1,1               ; 45 kosh_dequeue
     db 3,3               ; 46 dvaram_likha (FIXALL (a))
     db 0,0               ; 47 parimana (R107)
+    db 0,0               ; 48 vartani_grahan (R184)
+    db 0,0               ; 49 nivesha_anta (R184)
 
     r48_msg_undefined db ": Sutram truti [E_UNDEFINED_FUNCTION]: agyat prakriya '",0
     ; R4: a read of a name that was never declared or assigned is an error
@@ -967,6 +971,10 @@ r54_builtin_arity_table:
         dq bn_dvarlikha, TOK_BUILTIN, BN_DVARLIKHA
         dq bn_parimana, TOK_BUILTIN, BN_PARIMANA
         dq bn_dev_parimana, TOK_BUILTIN, BN_PARIMANA
+        dq bn_vgrahan,  TOK_BUILTIN, BN_VGRAHAN
+        dq bn_nivanta,  TOK_BUILTIN, BN_NIVANTA
+        dq bn_dev_vgrahan, TOK_BUILTIN, BN_VGRAHAN
+        dq bn_dev_nivanta, TOK_BUILTIN, BN_NIVANTA
     ; R111: the old names - still accepted, the same builtin; a program that writes one in its own file
     ; gets a warning naming the replacement (r111_note_old). r111_old_repl is parallel to these rows.
     r111_old_bn:
@@ -1403,6 +1411,11 @@ r54_builtin_arity_table:
     bn_dvaram    db "dvaram", 0
     bn_dvarlikha db "dvaram_likha", 0
     bn_parimana db "parimana", 0
+    bn_vgrahan  db "vartani_grahan", 0
+    bn_nivanta  db "nivesha_anta", 0
+    r184_gname  db "0nivesha_anta", 0
+    bn_dev_vgrahan db 0xE0,0xA4,0xB5,0xE0,0xA4,0xB0,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xA8,0xE0,0xA5,0x80,0x5F,0xE0,0xA4,0x97,0xE0,0xA5,0x8D,0xE0,0xA4,0xB0,0xE0,0xA4,0xB9,0xE0,0xA4,0xA3, 0  ; वर्तनी_ग्रहण
+    bn_dev_nivanta db 0xE0,0xA4,0xA8,0xE0,0xA4,0xBF,0xE0,0xA4,0xB5,0xE0,0xA5,0x87,0xE0,0xA4,0xB6,0x5F,0xE0,0xA4,0x85,0xE0,0xA4,0xA8,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4, 0  ; निवेश_अन्त
     bn_dev_parimana db 0xE0,0xA4,0xAA,0xE0,0xA4,0xB0,0xE0,0xA4,0xBF,0xE0,0xA4,0xAE,0xE0,0xA4,0xBE,0xE0,0xA4,0xA3, 0  ; परिमाण
     bn_paadh     db "paadh", 0
     msg_guna_dbg1  db "G1", 10
@@ -9620,6 +9633,8 @@ rfx_kind:
 .call:
     cmp qword [rbx+8], BN_VYOJ
     je .one
+    cmp qword [rbx+8], BN_VGRAHAN  ; R184: vartani_grahan() is a string
+    je .one
     jmp .two
 .tern:                             ; c ? x : y - a string when both are; 3 when one is
     mov rdi, [rbx+16]
@@ -10363,6 +10378,8 @@ rfx2_val_bits:
     ret
 .call:
     cmp qword [rdi+8], BN_VYOJ
+    je .one
+    cmp qword [rdi+8], BN_VGRAHAN  ; R184: vartani_grahan() is a string
     je .one
     jmp .two
 .tern:
@@ -11606,6 +11623,67 @@ a1_emit_mala_stop:
     pop r12
     pop rbx
 .r:
+    ret
+
+; ---------------------------------------------------------------- R184: reading a line of text
+section .data
+    ; sub rsp,32 ; mov qword [rsp+8],0 ; mov qword [rsp+16],64 ; mov eax,64
+    r184_c1 db 0x48,0x83,0xEC,0x20, 0x48,0xC7,0x44,0x24,0x08,0,0,0,0, 0x48,0xC7,0x44,0x24,0x10,0x40,0,0,0, 0xB8,0x40,0,0,0
+    r184_c1_len equ $ - r184_c1
+    ; mov [rsp],rax ; .loop: mov rax,[rsp+8] ; inc rax ; cmp rax,[rsp+16] ; jb rel32
+    r184_c3 db 0x48,0x89,0x04,0x24, 0x48,0x8B,0x44,0x24,0x08, 0x48,0xFF,0xC0, 0x48,0x3B,0x44,0x24,0x10, 0x0F,0x82
+    r184_c3_len equ $ - r184_c3
+    ; shl qword [rsp+16],1 ; mov rax,[rsp+16]
+    r184_c4 db 0x48,0xD1,0x64,0x24,0x10, 0x48,0x8B,0x44,0x24,0x10
+    r184_c4_len equ $ - r184_c4
+    ; mov rdi,rax ; mov rsi,[rsp] ; mov rcx,[rsp+8] ; cld ; rep movsb ; mov [rsp],rax
+    r184_c5 db 0x48,0x89,0xC7, 0x48,0x8B,0x34,0x24, 0x48,0x8B,0x4C,0x24,0x08, 0xFC, 0xF3,0xA4, 0x48,0x89,0x04,0x24
+    r184_c5_len equ $ - r184_c5
+    ; xor eax,eax ; xor edi,edi ; mov rsi,[rsp] ; add rsi,[rsp+8] ; mov edx,1
+    r184_c6 db 0x31,0xC0, 0x31,0xFF, 0x48,0x8B,0x34,0x24, 0x48,0x03,0x74,0x24,0x08, 0xBA,0x01,0,0,0
+    r184_c6_len equ $ - r184_c6
+    ; test rax,rax ; jle .eof (+24) ; mov rsi,[rsp] ; add rsi,[rsp+8] ; cmp byte [rsi],10 ; je .done (+25) ;
+    ; inc qword [rsp+8] ; jmp rel32 (.loop)
+    r184_c7 db 0x48,0x85,0xC0, 0x7E,0x18, 0x48,0x8B,0x34,0x24, 0x48,0x03,0x74,0x24,0x08, 0x80,0x3E,0x0A, 0x74,0x19
+            db 0x48,0xFF,0x44,0x24,0x08, 0xE9
+    r184_c7_len equ $ - r184_c7
+    ; .eof: cmp qword [rsp+8],0 ; jne .done (+12: mov eax,1 and the 7-byte store) ; mov eax,1
+    r184_c8 db 0x48,0x83,0x7C,0x24,0x08,0x00, 0x75,0x0C, 0xB8,0x01,0,0,0
+    r184_c8_len equ $ - r184_c8
+    ; .done: mov rsi,[rsp] ; mov rcx,[rsp+8] ; test rcx,rcx ; jz .t (+10) ; cmp byte [rsi+rcx-1],13 ; jne .t (+3) ;
+    ; dec rcx ; .t: mov byte [rsi+rcx],0 ; mov rax,rsi ; add rsp,32
+    r184_c9 db 0x48,0x8B,0x34,0x24, 0x48,0x8B,0x4C,0x24,0x08, 0x48,0x85,0xC9, 0x74,0x0A, 0x80,0x7C,0x0E,0xFF,0x0D, 0x75,0x03
+            db 0x48,0xFF,0xC9, 0xC6,0x04,0x0E,0x00, 0x48,0x89,0xF0, 0x48,0x83,0xC4,0x20
+    r184_c9_len equ $ - r184_c9
+section .bss
+    r184_gidx resq 1
+    r184_gset resq 1
+section .text
+; r184_ensure_flag: the hidden module vitti 0nivesha_anta, registered at the first use (as 0parimana).
+r184_ensure_flag:
+    cmp qword [rel r184_gset], 0
+    jne .have
+    push rbx
+    lea rbx, [rel r184_gname]
+    call alloc_ast
+    mov qword [rax], AST_DECL
+    mov [rax + 8], rbx
+    mov qword [rax + 16], 0
+    call r56_register_global
+    mov rdi, rbx
+    call r56_global_index
+    dec rax
+    mov [rel r184_gidx], rax
+    mov qword [rel r184_gset], 1
+    cmp qword [rel r28_object_mode], 0
+    je .owned
+    cmp qword [rel r28_no_mukhya], 0
+    je .owned
+    lea rcx, [rel r30_gextern]
+    mov byte [rcx + rax], 1
+.owned:
+    pop rbx
+.have:
     ret
 
 ; r82_emit_kosh_header: rax = the new block, rcx = capacity (generated code). Writes
@@ -18819,7 +18897,7 @@ parse_primary_inner:
 ; The check is before any AST argument pointer dereference in codegen.
 ; Updating a builtin ABI requires updating this table and the R54 test matrix.
 r54_builtin_arity_ok:
-    cmp rdi, BN_PARIMANA           ; R107: the last row (47)
+    cmp rdi, BN_NIVANTA            ; R184: the last row (49)
     ja .bad
     lea rax, [rel r54_builtin_arity_table]
     lea rax, [rax+rdi*2]
@@ -23036,6 +23114,10 @@ r142_gen_expr_body:
     je .ge_call_vyoj
     cmp r12, BN_PARIMANA     ; R107
     je .ge_call_parimana
+    cmp r12, BN_VGRAHAN      ; R184
+    je .ge_call_vgrahan
+    cmp r12, BN_NIVANTA      ; R184
+    je .ge_call_nivanta
     cmp r12, BN_VKRAM        ; R105: string < > <= >=
     je .ge_call_vkram
     ; Check builtin type
@@ -24864,6 +24946,68 @@ r142_gen_expr_body:
     lea rsi, [rel rfx2_v5]         ; copy a, copy b, NUL; rax = the new string
     mov rcx, rfx2_v5_len
     call r23_emit_bytes
+    jmp .ge_call_done
+
+.ge_call_vgrahan:
+    ; R184: vartani_grahan() -> one line of text from standard input: a new 0-ended string, without the
+    ; line's LF (or CR LF). It reads a byte at a time, as grahan does, into a buffer that starts at 64
+    ; bytes and doubles - a line is never cut. At the end of the input it returns what was read of an
+    ; unfinished last line; with nothing left to read it returns "" and sets the flag nivesha_anta() reads.
+    ; The memory is nirmmita's ordinary side, as string + takes (it lives as long as the program).
+    ;   sub rsp,32                      [rsp] = buffer, [rsp+8] = bytes in it, [rsp+16] = its size
+    call r184_ensure_flag
+    lea rsi, [rel r184_c1]         ; sub rsp,32 ; mov qword [rsp+8],0 ; mov qword [rsp+16],64 ; mov eax,64
+    mov rcx, r184_c1_len
+    call r23_emit_bytes
+    call emit_nirmmita_from_rax
+    call r121_emit_nomem_check     ; Linux: no memory stops with E_VARTANI_SMRITI, as string + does
+    lea rsi, [rel r184_c3]         ; mov [rsp],rax ; .loop: mov rax,[rsp+8] ; inc rax ; cmp rax,[rsp+16] ; jb .read (rel32)
+    mov rcx, r184_c3_len
+    call r23_emit_bytes
+    mov rax, [rel code_sz]
+    sub rax, r184_c3_len - 4       ; .loop is 4 bytes into r184_c3
+    push rax                       ; the address of .loop
+    mov rax, [rel code_sz]
+    push rax                       ; jb .read
+    xor edi, edi
+    call emit_u32
+    lea rsi, [rel r184_c4]         ; shl qword [rsp+16],1 ; mov rax,[rsp+16]
+    mov rcx, r184_c4_len
+    call r23_emit_bytes
+    call emit_nirmmita_from_rax
+    call r121_emit_nomem_check
+    lea rsi, [rel r184_c5]         ; copy the old bytes: mov rdi,rax ; mov rsi,[rsp] ; mov rcx,[rsp+8] ; cld ; rep movsb ; mov [rsp],rax
+    mov rcx, r184_c5_len
+    call r23_emit_bytes
+    pop rdi                        ; .read:
+    call r73_patch32
+    lea rsi, [rel r184_c6]         ; xor eax,eax ; xor edi,edi ; mov rsi,[rsp] ; add rsi,[rsp+8] ; mov edx,1
+    mov rcx, r184_c6_len
+    call r23_emit_bytes
+    call emit_syscall
+    lea rsi, [rel r184_c7]         ; test rax,rax ; jle .eof (rel8) ; mov rsi,[rsp] ; add rsi,[rsp+8] ;
+    mov rcx, r184_c7_len           ; cmp byte [rsi],10 ; je .done (rel8) ; inc qword [rsp+8] ; jmp .loop (rel32)
+    call r23_emit_bytes
+    pop rax                        ; the jump back to .loop
+    sub rax, [rel code_sz]
+    sub rax, 4
+    mov edi, eax
+    call emit_u32
+    lea rsi, [rel r184_c8]         ; .eof: cmp qword [rsp+8],0 ; jne .done (rel8) ; mov eax,1
+    mov rcx, r184_c8_len
+    call r23_emit_bytes
+    mov rdi, [rel r184_gidx]
+    call r56_emit_global_store     ; mov [0nivesha_anta],rax
+    lea rsi, [rel r184_c9]         ; .done: mov rsi,[rsp] ; mov rcx,[rsp+8] ; test rcx,rcx ; jz .t ;
+    mov rcx, r184_c9_len           ; cmp byte [rsi+rcx-1],13 ; jne .t ; dec rcx ; .t: mov byte [rsi+rcx],0 ;
+    call r23_emit_bytes            ; mov rax,rsi ; add rsp,32
+    jmp .ge_call_done
+
+.ge_call_nivanta:
+    ; R184: nivesha_anta() -> 1 once a vartani_grahan() found nothing left to read, else 0
+    call r184_ensure_flag
+    mov rdi, [rel r184_gidx]
+    call r56_emit_global_load
     jmp .ge_call_done
 
 .ge_call_parimana:
