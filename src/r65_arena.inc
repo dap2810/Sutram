@@ -335,6 +335,15 @@ section .data
     r73_s2 db 0x48,0x8D,0x56,0x0F, 0x48,0x83,0xE2,0xF0, 0x48,0x29,0xD0, 0x0F,0x82
     ; mov rdx,rax
     r73_s3 db 0x48,0x89,0xC2
+    ; R175: push rax ; mov rcx,rax
+    r175_z1 db 0x50, 0x48,0x89,0xC1
+    ; R175: mov rdi,rax ; sub rcx,rdi ; jbe .none ; shr rcx,3 ; xor eax,eax ; cmp rcx,128 ; ja .big ;
+    ; .z: mov [rdi],rax ; add rdi,8 ; dec rcx ; jnz .z ; jmp .none ; .big: cld ; rep stosq ; .none: pop rax
+    ; (up to 1 KiB a plain loop: rep stosq measured 46 ns to start, 1,000,000 blocks of 64 bytes 5.6 -> 52 ms)
+    r175_z2 db 0x48,0x89,0xC7, 0x48,0x29,0xF9, 0x76,0x21, 0x48,0xC1,0xE9,0x03, 0x31,0xC0
+            db 0x48,0x81,0xF9,0x80,0x00,0x00,0x00, 0x77,0x0E
+            db 0x48,0x89,0x07, 0x48,0x83,0xC7,0x08, 0x48,0xFF,0xC9, 0x75,0xF4, 0xEB,0x04
+            db 0xFC, 0xF3,0x48,0xAB, 0x58
     ; (mov rax,[cur]) cmp rdx,rax ; jb .full (rel32)
     r73_s4 db 0x48,0x39,0xC2, 0x0F,0x82
     ; mov rax,rdx
@@ -353,6 +362,8 @@ section .text
 r73_s1_len equ 8
 r73_s2_len equ 13
 r73_s3_len equ 3
+r175_z1_len equ 4
+r175_z2_len equ 42
 r73_s4_len equ 5
 r73_s5_len equ 3
 r73_s6_len equ 27
@@ -408,9 +419,26 @@ r73_gen_rewind:
     call r65_ensure_globals
     mov rax, [rbx+8]
     call gen_expr                  ; rax = the mark
+    call r175_emit_zero_to_mark    ; R175: what the block took is zero again before it is given up
     mov rdi, [rel r65_idx_end]
     call r56_emit_global_store
 .r:
+    ret
+
+; r175_emit_zero_to_mark: generated code, rax = the mark the scratch cursor is about to go back to.
+; Zeroes [end, mark) - everything taken on the scratch side since the mark - and leaves rax = the mark.
+;   push rax ; mov rcx,rax ; (mov rax,[end]) ; mov rdi,rax ; sub rcx,rdi ; jbe .none ;
+;   shr rcx,3 ; xor eax,eax ; (a loop up to 1 KiB, rep stosq above) ; .none: pop rax
+; Why here: the persistent side is bounded by where the scratch cursor is now and does not zero what it
+; gives (memory never used arrives zeroed). Before R175, memory a block had written went back unzeroed,
+; and an ordinary nirmmita taken later, once the persistent side had climbed that far, read the block's
+; data. The cursor moves back only in r73_gen_rewind and r73_gen_ret_rewind, so zeroing in these two
+; covers every way out; a way out that did not rewind would keep the memory, and nothing could reach it.
+r175_emit_zero_to_mark:
+    R65_BYTES r175_z1
+    mov rdi, [rel r65_idx_end]
+    call r56_emit_global_load      ; mov rax,[end]
+    R65_BYTES r175_z2
     ret
 
 ; r73_gen_scratch_nirm: rax (generated) = size -> rax = a zeroed block on the scratch side.
@@ -543,6 +571,7 @@ r73_gen_ret_rewind:
     push rbx
     mov rax, [rbx+48]
     call gen_expr                  ; rax = the mark
+    call r175_emit_zero_to_mark    ; R175: as r73_gen_rewind
     mov rdi, [rel r65_idx_end]
     call r56_emit_global_store
     pop rbx

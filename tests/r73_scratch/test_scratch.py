@@ -27,7 +27,10 @@ EXPECT = {
     'jumps': '250000000000\n5\n5050', 'reuse_zeroed': '0\n11', 'allowed_nested': '7', 'blind_call': '1',
     # R74: ChatGPT R146's F1-F4, closed in v271
     'allowed_f1_numbers': '42 41', 'allowed_f2_numbers': '123', 'prasar_rewind': '3500000 500000',
-    'allowed_global_number': '42', 'blind_kosh_via_call': '99',
+    'allowed_global_number': '42',
+    # R175, staged as v320 (R176): was '99' - the next block's data, read through the kept address. A block's memory is now zeroed
+    # when the block is left, so the kept address reads 0 here. Still a KNOWN LIMIT: the address is still dangling.
+    'blind_kosh_via_call': '0',
 }
 
 

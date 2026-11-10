@@ -1,5 +1,7 @@
 # R75: the one way a scratch address reaches a kosh unseen - through a prakriya that returns it.
-# A KNOWN LIMIT, pinned: this compiles, and prints 99 - the NEXT block's data, read through the kept address.
+# A KNOWN LIMIT, pinned: this compiles, and reads through the kept address. Up to v318 it printed 99 - the NEXT
+# block's data. From v320 (R175, R176) a block's memory is zeroed when the block is left, so it prints 0. The address is
+# still dangling: had the read come while the second block was alive, it would have read that block's data.
 # A future check that refuses it will fail this test; that is the point.
 prakriya adr(p)
     nivartanam p

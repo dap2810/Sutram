@@ -1,5 +1,17 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v300 (Claude, R124) - Windows commits what a program touches, not what it reserves
+
+- **The PE runtime reserves an `mmap` with `MAP_NORESERVE`** (the 1 GiB arena, each 64 MiB `kosh` region) instead
+  of reserving and committing it, and **a vectored exception handler commits 64 KiB where a page is first
+  touched** - only inside memory the program reserved, never its stack. `ReadFile` / `WriteFile` buffers are
+  touched first, since the kernel does not fault on the program's behalf (without that, reading a file into a
+  fresh buffer returned -1; the gate shows it). Two new kernel32 imports: `AddVectoredExceptionHandler`,
+  `VirtualQuery`.
+- **Measured under Wine** (its read-write mappings are what it committed): one `nirmmita(64)` **1073.7 MB → 0.0**;
+  100 koshes **6,713 MB → 8.7**; a 100 MB buffer touched on every page **1073.7 → 100.0**. **ELF unchanged byte
+  for byte.** Native Windows commit is the owner's measurement. Gate `R124 lazy commit` (7 checks).
+
 ## v299 (Claude, R123) - the Linux memory model on Windows: merged from the Windows round 4 branch (PR #65)
 
 - **On PE, as on ELF:** `nirmmita` uses the arena, a `mandapa` gives its memory back, `mandapa parimita N`

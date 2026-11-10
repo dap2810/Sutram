@@ -1,4 +1,28 @@
-> **The 20 newest entries.** Older ones, from "v299" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v300" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v320 (Claude, R175 + R176) - a block's memory is zero when the block is left - STAGED, A DECISION NOT YET TAKEN
+
+- **The stale-data defect** (found R172; in v315): an ordinary `nirmmita` - and so a `mala` - is bounded by where
+  the scratch cursor is now and is not zeroed, so after a block ended it could be handed memory the block wrote:
+  15,782,272 words of 77 in a `nirmmita(600000000)` taken after a 600 MB block; a newly declared `mala m[8]`
+  reading 77 in its first and last number (the two read). Now `r73_gen_rewind` and `r73_gen_ret_rewind` - the only two places the cursor
+  moves back - zero `[cursor, mark)` first (`r175_emit_zero_to_mark`, `src/r65_arena.inc`: a plain loop up to
+  1 KiB, `rep stosq` above). `nirmmita` itself is unchanged, so a block's memory is written twice.
+- **Cost** (1,000,000 passes, best of 25 interleaved runs): a block of `nirmmita(64)` 5.5 -> 8.9 ms; the same
+  loop with no block 27.7 ms. Ten 200 MB blocks written fully 921 -> 1,194 ms; written in their first 4 KiB
+  389 -> 587 ms.
+- **One pinned output changes:** `tests/r73_scratch/blind_kosh_via_call.sm` - the known limit, a scratch address
+  kept through a `prakriya` and read after its block - printed 99 (the next block's data) and now prints 0. The
+  address is still dangling; the pin and its comment say so.
+- Gate `R175 block exit zero` (8 checks; 7 fail on v319: each way out of a block, then an ordinary `nirmmita` over
+  the same bytes).
+- **The guard: 38 DIFFER - exactly the 38 programs that compile and contain a `mandapa`**; every other program is
+  byte-identical or identically refused, against v319 and against v315, ELF and PE. Of the 38, 37 print and exit
+  exactly as before; the 38th is the pinned known limit above. Run under Wine; not run on Windows. Installer
+  rebuilt (payload v320).
+- **Why it is separate from v319:** it changes the bytes of every program with a block and costs time in every
+  block; the alternatives (zeroing only at the exit; keeping the ordinary side out of memory a block has used;
+  documenting the limit) are set out in R176-00.
 
 ## v319 (Claude, R175 + R176) - a proven-local `kosh` or `mala` is made once anywhere in a loop
 
@@ -453,15 +477,3 @@
 - **No emitted byte changed:** every program v300 compiles, v301 compiles to the same bytes (ELF and PE); three
   R38/R42 examples that wrote `vitti w = 0` and then `w = v` now declare `w` from a collection of `v`'s kind.
   Gate `R126 kinds` (53 checks, ELF and PE under Wine).
-
-## v300 (Claude, R124) - Windows commits what a program touches, not what it reserves
-
-- **The PE runtime reserves an `mmap` with `MAP_NORESERVE`** (the 1 GiB arena, each 64 MiB `kosh` region) instead
-  of reserving and committing it, and **a vectored exception handler commits 64 KiB where a page is first
-  touched** - only inside memory the program reserved, never its stack. `ReadFile` / `WriteFile` buffers are
-  touched first, since the kernel does not fault on the program's behalf (without that, reading a file into a
-  fresh buffer returned -1; the gate shows it). Two new kernel32 imports: `AddVectoredExceptionHandler`,
-  `VirtualQuery`.
-- **Measured under Wine** (its read-write mappings are what it committed): one `nirmmita(64)` **1073.7 MB → 0.0**;
-  100 koshes **6,713 MB → 8.7**; a 100 MB buffer touched on every page **1073.7 → 100.0**. **ELF unchanged byte
-  for byte.** Native Windows commit is the owner's measurement. Gate `R124 lazy commit` (7 checks).

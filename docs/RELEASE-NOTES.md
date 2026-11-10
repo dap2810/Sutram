@@ -1,7 +1,7 @@
-# Sutram 1.0 (v319) — release notes
+# Sutram 1.0 (v320) — release notes
 
-**Compiler `Sutram 1.0 (v319) - sampurna sutra`, 10 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v319). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v320) - sampurna sutra`, 10 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v320). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,16 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v319 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v320 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v319 closes, and what it does not (R140-R176)
+## Status: what v320 closes, and what it does not (R140-R176)
+
+**v320 (R175, R176) - staged, awaiting a decision: a block's memory is zero when the block is left.** It closes
+the defect named in the next paragraph (an ordinary `nirmmita` or a `mala` handed memory an ended block wrote).
+It costs a second pass over every block's memory (1,000,000 small blocks: 5.5 -> 8.9 ms) and changes the bytes
+of every program that has a `mandapa`. **Where the next paragraph says that defect is still open, v320 has
+closed it.**
 
 **v319 (R175, R176): made once anywhere in a loop.** The declaration may be under a `yadi`, in a `mandapa`
 inside the loop, or in a `yavat` loop (800,000 passes: 16-20 KB where v318 held 37,516 and 50,012 KB). **Not
@@ -477,6 +483,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v320 (staged, a decision not yet taken):** a block's memory is zeroed at every way out of the block (R175, R176).
 - **v319:** made once anywhere in a loop - under a `yadi`, in a `mandapa`, in a `yavat` (R175, R176).
 - **v318:** a `mala` declared in a `chakra`'s own body, proven local, is made once for the loop (R173).
 - **v317:** a `kosh` declared in a `chakra`'s own body, proven local, is made once for the loop (R172).
