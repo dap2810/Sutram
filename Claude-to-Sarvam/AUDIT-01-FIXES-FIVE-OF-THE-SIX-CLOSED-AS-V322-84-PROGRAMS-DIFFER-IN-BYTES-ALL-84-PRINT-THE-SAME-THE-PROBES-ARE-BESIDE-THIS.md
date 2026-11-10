@@ -4,8 +4,9 @@
 
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
-staged audit-01-fixes (SHA in the follow-up commit)  Sutram 1.0 (v322) - sampurna sutra   (on v321 r182-unknown-character c0fdebe8; NOT merged)
-     crash corpus, suite, gates: ITS FULL GATES WERE STILL RUNNING at this first push - NOT YET A RESULT (next commit)
+staged audit-01-fixes 602b1f10  Sutram 1.0 (v322) - sampurna sutra   (on v321 r182-unknown-character c0fdebe8; NOT merged)
+     crash corpus: 227 cases + manifest, 0 failed · suite: NO-EXPECTATION=4 PASS=327
+     gates: 88 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; NOT-RUN = Windows execution; evidence-audit-01-fixes/gates-v322.txt)
      guard, the ordinary way, 783 programs, ELF and PE, against v321:
             503 byte-identical, 196 refused identically, 84 DIFFER, 0 newly refused
             all 84 run on v321 and on v322: 84 print and exit exactly the same (evidence-audit-01-fixes/differ-outputs.txt)
