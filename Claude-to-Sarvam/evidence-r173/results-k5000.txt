@@ -1,0 +1,2 @@
+[v315] Command terminated by signal 9 5.36 s, peak 5810816 KB  exit 0
+[v318] passes finished: 100000 0.62 s, peak 440 KB  exit 0

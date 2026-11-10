@@ -1,0 +1,21 @@
+mukhya() {
+    mandapa {
+        vitti p = nirmmita(600000000)
+        chakra i = 0 tak 74999999 {
+            p[i] = 77
+        }
+    }
+    vitti q = nirmmita(600000000)
+    vitti n77 = 0
+    vitti first = 0 - 1
+    chakra i = 0 tak 74999999 {
+        yadi (q[i] == 77) {
+            n77 = n77 + 1
+            yadi (first < 0) {
+                first = i
+            }
+        }
+    }
+    likha("big: a block wrote 77 into every word of nirmmita(600000000); a new nirmmita(600000000) after it", "\n")
+    likha("     reads 77 in ", n77, " of 75000000 words; the first at word ", first, "\n")
+}

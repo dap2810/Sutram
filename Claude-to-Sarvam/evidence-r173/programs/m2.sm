@@ -1,0 +1,13 @@
+mukhya() {
+    kosh matrix[10]
+    chakra i = 1 tak 5 {
+        kosh_kship(matrix, 0)
+    }
+    chakra i = 1 tak 5 {
+        kosh row[2]
+        kosh_kship(row, i)
+        matrix[i - 1] = row
+    }
+    vitti r = matrix[0]
+    likha(r[0])
+}

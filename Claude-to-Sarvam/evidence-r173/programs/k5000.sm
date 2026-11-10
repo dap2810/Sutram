@@ -1,0 +1,11 @@
+mukhya() {
+    vitti s = 0
+    chakra j = 1 tak 100000 {
+        kosh k[1]
+        chakra i = 1 tak 5000 {
+            kosh_kship(k, i)
+        }
+        s = j
+    }
+    likha("passes finished: ", s, "\n")
+}

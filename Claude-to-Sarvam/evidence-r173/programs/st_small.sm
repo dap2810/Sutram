@@ -1,0 +1,10 @@
+mukhya() {
+    mandapa {
+        vitti p = nirmmita(64)
+        chakra i = 0 tak 7 {
+            p[i] = 77
+        }
+    }
+    vitti q = nirmmita(64)
+    likha("small: after a block that wrote 77 into nirmmita(64), a new nirmmita(64) reads ", q[0], " ", q[7], "\n")
+}

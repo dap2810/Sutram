@@ -1,0 +1,10 @@
+m1 v316: REFUSED:  Sutram truti: vyakaran dosh, pankti 8:22, shabd ']' 
+m1 v317: REFUSED:  Sutram truti: vyakaran dosh, pankti 8:22, shabd ']' 
+m2 v316: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'row' koshthe, kshetre athava smritau na likhyate Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 
+m2 v317: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'row' koshthe, kshetre athava smritau na likhyate Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 
+m3 v316: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'h' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...) Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 
+m3 v317: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'h' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...) Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 
+m4 v316: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'row' koshthe, kshetre athava smritau na likhyate Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 
+m4 v317: REFUSED: Sutram truti [E_KOSH_DVARA]: kosh 'row' koshthe, kshetre athava smritau na likhyate Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 
+m1b (the brief's program without the double index, which is a syntax error in itself) v316: Sutram truti [E_KOSH_DVARA]: kosh 'row' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...) Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 
+m1b (the brief's program without the double index, which is a syntax error in itself) v317: Sutram truti [E_KOSH_DVARA]: kosh 'row' smriti-sthanam iva na upayujyate (likha, pad8, likh8 ...) Sanket: kosh tasya namna eva gacchati - vitti b = k, kosh-tarkah (kosh k), kosh_* prakriyah; mulyani k[i] ityena 

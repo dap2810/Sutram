@@ -1,0 +1,13 @@
+ok    plain: mala m[8], read, written, read - made once: 20 passes hold 80, 1 pass holds 80; sum 270
+ok    named-length: the length is a variable, the same every pass - made once: 20 passes hold 80, 1 pass holds 80; sum 270
+ok    two: two mala in one body - made once: 20 passes hold 128, 1 pass holds 128; sum 270
+ok    with-kosh: a mala and a kosh in one body - made once: 20 passes hold 128, 1 pass holds 128; sum 270
+ok    agrim: agrim after the mala is written - made once: 20 passes hold 80, 1 pass holds 80; sum 270
+ok    changing-length: a length that changes every pass: a new mala each time, as before - made every pass, as before: 20 passes hold 3040, 1 pass holds 80; sum 270
+ok    alias: a second name: vitti a = m - made every pass, as before: 20 passes hold 1600, 1 pass holds 80; sum 270
+ok    to-prakriya: given to a prakriya - made every pass, as before: 20 passes hold 1600, 1 pass holds 80; sum 270
+ok    under-yadi: declared under a yadi - made every pass, as before: 20 passes hold 1600, 1 pass holds 80; sum 270
+ok    yavat: a yavat loop - made every pass, as before: 20 passes hold 1600, 1 pass holds 80; sum 270
+ok    rows: a mala put into a kosh every pass - five rows stay five (printed '11 33 55')
+ok    redzones: 64 bytes of 0xDEADBEEFCAFEBABE before the mala's length word and after its last number, 1,000,000 passes - both intact, the length word 8, every pass read eight zeros ('bad 0 dirty 0 held 208\n sum 500007500000')
+r173 chakra mala: 12 checks, 0 failed

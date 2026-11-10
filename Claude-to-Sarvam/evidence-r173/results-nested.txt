@@ -1,0 +1,18 @@
+== direct, v316
+run 1 exit 0: 0: RSS 16 KB +0.02 ms | 400000: RSS 18,768 KB +12.72 ms | 800000: RSS 37,516 KB +13.12 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 16 KB +0.01 ms | 400000: RSS 18,768 KB +9.39 ms | 800000: RSS 37,516 KB +9.77 ms | (output 320000400000)
+== direct, v317
+run 1 exit 0: 0: RSS 12 KB +0.01 ms | 400000: RSS 16 KB +1.73 ms | 800000: RSS 16 KB +1.8 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 16 KB +0.0 ms | 400000: RSS 20 KB +1.86 ms | 800000: RSS 20 KB +1.93 ms | (output 320000400000)
+== mandapa, v316
+run 1 exit 0: 0: RSS 16 KB +0.01 ms | 400000: RSS 25,016 KB +19.24 ms | 800000: RSS 50,016 KB +21.98 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 12 KB +0.0 ms | 400000: RSS 25,012 KB +17.73 ms | 800000: RSS 50,012 KB +17.97 ms | (output 320000400000)
+== mandapa, v317
+run 1 exit 0: 0: RSS 12 KB +0.01 ms | 400000: RSS 25,012 KB +19.22 ms | 800000: RSS 50,012 KB +19.25 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 12 KB +0.0 ms | 400000: RSS 25,012 KB +18.33 ms | 800000: RSS 50,012 KB +18.48 ms | (output 320000400000)
+== yadi, v316
+run 1 exit 0: 0: RSS 12 KB +0.02 ms | 400000: RSS 18,764 KB +8.92 ms | 800000: RSS 37,512 KB +8.98 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 16 KB +0.01 ms | 400000: RSS 18,768 KB +9.17 ms | 800000: RSS 37,516 KB +9.07 ms | (output 320000400000)
+== yadi, v317
+run 1 exit 0: 0: RSS 16 KB +0.01 ms | 400000: RSS 18,768 KB +8.85 ms | 800000: RSS 37,516 KB +8.59 ms | (output 320000400000)
+run 2 exit 0: 0: RSS 16 KB +0.01 ms | 400000: RSS 18,768 KB +8.95 ms | 800000: RSS 37,516 KB +8.73 ms | (output 320000400000)

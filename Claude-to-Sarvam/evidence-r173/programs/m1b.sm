@@ -1,0 +1,9 @@
+mukhya() {
+    kosh matrix[10]
+    chakra i = 1 tak 5 {
+        kosh row[2]
+        kosh_kship(row, i)
+        kosh_kship(matrix, row)
+    }
+    likha(kosh_gan(matrix))
+}

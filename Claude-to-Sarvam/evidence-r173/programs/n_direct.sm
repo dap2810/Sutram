@@ -1,0 +1,19 @@
+prakriya ruk(n) {
+    likha(n)
+    vitti x = grahan()
+    nivartanam x
+}
+mukhya() {
+    vitti s = 0
+    vitti t = ruk(0)
+    chakra j = 1 tak 800000 {
+        kosh temp[1]
+        kosh_kship(temp, j)
+        s = s + temp[0]
+        yadi (j == 400000) {
+            t = ruk(j)
+        }
+    }
+    t = ruk(800000)
+    likha(s)
+}
