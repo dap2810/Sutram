@@ -5,9 +5,9 @@
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
 staged r184-read-a-line f05ddd7e   Sutram 1.0 (v323) - sampurna sutra      (on audit-01-fixes 602b1f10 = v322)
-     crash corpus: GATES-PENDING
+     crash corpus: 227 cases + manifest, 0 failed
      suite: NO-EXPECTATION=4 PASS=329 (333 run; two new examples, both with goldens)
-     gates: GATES-PENDING
+     gates: 89 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; NOT-RUN = Windows execution; evidence-r184/gates-v323.txt)
      installer (payload v323): 709d560bdd74909ceedb95866f92997ceef7e374ab5f232fde81ceb80898ee97
      the guard, v323 against v322: 785 programs - 587 byte-identical, 196 refused identically, 0 DIFFER, 2 new
             (Linux executables, and the same line for Windows executables)
@@ -142,8 +142,10 @@ version it was added to.**
 
 ## Not done, and why
 
-- **Windows: not run.** Under Wine, the name program and the loop (CR LF input) print what Linux prints - two
-  programs, run before the last rebuild of the failure path; **WINE-PENDING** for the final build.
+- **Windows: not run.** Under Wine (`evidence-r184/wine.txt`, the final build): five programs - the name, the
+  loop on CR LF input with an unfinished last line and on no input, a number line then a text line, the
+  `prakriya` that returns the text, the Devanagari names, and lines of 100,000 and 5,000,000 bytes - print what
+  Linux prints. **Wine is not Windows; a console's Ctrl-Z end of input has not been tried anywhere.**
 - **`grahan` is unchanged** - the three behaviours above are reported.
 - **No buffered read, no release of a line's memory** - both named above with their figures.
 - **On Windows, running out of memory in `vartani_grahan` is not a message** - as for string `+` there

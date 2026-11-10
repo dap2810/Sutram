@@ -1,0 +1,31 @@
+## v323 f05ddd7e, Windows executables under Wine (not Windows)
+Siddh: 818 baait sankalit
+Siddh: 1285 baait sankalit
+Siddh: 2976 baait sankalit
+Siddh: 853 baait sankalit
+Siddh: 1743 baait sankalit
+--- name.exe < 'Asha Patel\r\n'
+Tava nama kim? Namaste, Asha Patel!
+
+--- name.exe < nothing
+Tava nama kim? Namaste, !
+--- loop.exe < 'one\r\n\r\ntwo words\r\nlast'
+1: [one] 3
+2: [] 0
+3: [two words] 9
+4: [last] 4
+panktayah: 4
+--- loop.exe < nothing
+panktayah: 0
+--- mix.exe < '12\r\nAsha\r\n'
+vayah? nama? Asha 12
+[] 1 [samaAsha!
+--- obj.exe < 'hari\r\n'
+nama? [hari]
+--- dev.exe < 'राम\n'
+[राम] 0
+[] 1
+--- loop.exe, lengths of lines of 100000 and 5000000 bytes
+100000
+5000000
+2
