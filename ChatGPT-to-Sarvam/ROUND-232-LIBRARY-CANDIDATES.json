@@ -1,0 +1,2011 @@
+{
+  "base_commit": "cb132a77a99e0a6b80e8bdeef8ae28405613f938",
+  "source_version": "v315",
+  "validation": "NOT RUN — read-side role, no toolchain used. Static text inventory only.",
+  "scope": "All function declarations enumerated; candidate bodies read by family. Not a full clone detector or proof of whole-library equivalence.",
+  "module_count": 24,
+  "function_definition_count": 310,
+  "candidate_family_count": 15,
+  "candidate_body_count": 34,
+  "candidate_excess_bodies": 19,
+  "modules": [
+    {
+      "path": "lib/aadhar.smlib",
+      "definitions": 2,
+      "sha256": "784b98a178b79b6856161ac2f474226c8121ee63d5236ff3f098a14ad0280876"
+    },
+    {
+      "path": "lib/ank.smlib",
+      "definitions": 10,
+      "sha256": "e3d262bbb3950cc0f567000732fc3c3319aff9174385cd294e00acba53290c76"
+    },
+    {
+      "path": "lib/anukram.smlib",
+      "definitions": 5,
+      "sha256": "789017ade05175680644a9c8ebd8610be5c4f001fe8ce2ea3794ae25a0402c26"
+    },
+    {
+      "path": "lib/brihat.smlib",
+      "definitions": 13,
+      "sha256": "fb8ec5094d4d14d98ccbbd126baab088a252da892dfa4759c1a86ebac5534479"
+    },
+    {
+      "path": "lib/chandas.smlib",
+      "definitions": 6,
+      "sha256": "0dbacaa0924254ed407235b49042d1751bae264acdf2114da275b93187c1ad52"
+    },
+    {
+      "path": "lib/ganit.smlib",
+      "definitions": 18,
+      "sha256": "e736ad00f26ddddda89b24f8df13ce165543c92bd13e8f163b8f7ce8564eb24e"
+    },
+    {
+      "path": "lib/ganita.smlib",
+      "definitions": 27,
+      "sha256": "eca1d107de2e5f2a9d1d9f10df80371cb3617b938ad5c85b619103589ab78b09"
+    },
+    {
+      "path": "lib/gudh.smlib",
+      "definitions": 2,
+      "sha256": "56863804379068bfe2078c51652c3fd7a64975fdc4fcadd16d61ae3b23fe7379"
+    },
+    {
+      "path": "lib/kalana.smlib",
+      "definitions": 6,
+      "sha256": "add85a133c2ca27063ae6446db53c38f9cd36b0c3c5cea6c2cd269026fd6847a"
+    },
+    {
+      "path": "lib/khand.smlib",
+      "definitions": 22,
+      "sha256": "ec39276f86a40d9b2ea0af598781000b0fd20bc1a356f4d576815a2f3805101c"
+    },
+    {
+      "path": "lib/madhava.smlib",
+      "definitions": 5,
+      "sha256": "f3e43d8238f84071abde2891b5048c959827215ff1f99d262827c310aec2d8c1"
+    },
+    {
+      "path": "lib/mala.smlib",
+      "definitions": 8,
+      "sha256": "d64d9ef51a55f1fede6803e5825209c70be9c61253fe826fb36d63ce5da8affe"
+    },
+    {
+      "path": "lib/nighantu.smlib",
+      "definitions": 17,
+      "sha256": "3ef007b04fc1aabbb4bc1328c0e9859ee50201b554613747d7ce50f840bc254e"
+    },
+    {
+      "path": "lib/patra.smlib",
+      "definitions": 3,
+      "sha256": "b13d64a5c8413ac4eca7cf96cd4ff101e3368f42fbaf22634088f36757162398"
+    },
+    {
+      "path": "lib/phal.smlib",
+      "definitions": 14,
+      "sha256": "cf1cd9eda5050effa84c128f92728b3830608523e918a03ea448ad722141a140"
+    },
+    {
+      "path": "lib/roop.smlib",
+      "definitions": 23,
+      "sha256": "40b9b487bca41e3629242af3b1e007c82260de5b40c4cca1c59793e829ce356a"
+    },
+    {
+      "path": "lib/sadhan.smlib",
+      "definitions": 7,
+      "sha256": "c403c105a6d085fc147a3084b6c6e9cdb0db3ce278e83598b24ff529cfc74fc0"
+    },
+    {
+      "path": "lib/samanvaya.smlib",
+      "definitions": 11,
+      "sha256": "48d491c0261716201637d34b4add8918d616937fc19a58c28b112241b3c17afd"
+    },
+    {
+      "path": "lib/sangrah.smlib",
+      "definitions": 14,
+      "sha256": "55ff91f5098161ff8eb205d49b3bc1924815ca2e2837e7f2a4970071e21617a4"
+    },
+    {
+      "path": "lib/sankhyiki.smlib",
+      "definitions": 16,
+      "sha256": "84f32473e3c03fb2a8641fd7f66aad1c96706c51cd6c0010d5c8e30a60636a2e"
+    },
+    {
+      "path": "lib/shreni.smlib",
+      "definitions": 14,
+      "sha256": "951db41d7bfb85d34d7ecdec7670d4ce424b791a7c08f36c0eb28eddea2394ae"
+    },
+    {
+      "path": "lib/suchi.smlib",
+      "definitions": 34,
+      "sha256": "296baeda1ee7f794e3a0787088c686974bf7d12ede2ecb13e32cc5e9d073d424"
+    },
+    {
+      "path": "lib/vakyank.smlib",
+      "definitions": 6,
+      "sha256": "9d9563112cd9c877a7bf6cc36324403fc4f3d027374d7b2b5cf6ab0a94acf296"
+    },
+    {
+      "path": "lib/varna.smlib",
+      "definitions": 27,
+      "sha256": "1f75779507465e3ca11de500a3af54c907fe840ecfffd89f55363d73e9e54352"
+    }
+  ],
+  "families": [
+    {
+      "family": "sum",
+      "classification": "numeric and representation",
+      "members": [
+        {
+          "name": "yog",
+          "path": "lib/shreni.smlib",
+          "line": 66,
+          "sig": "a, n) {"
+        },
+        {
+          "name": "mala_yog",
+          "path": "lib/mala.smlib",
+          "line": 62,
+          "sig": "arr, n) {"
+        },
+        {
+          "name": "purna_yoga",
+          "path": "lib/sankhyiki.smlib",
+          "line": 131,
+          "sig": "xs, n) {"
+        },
+        {
+          "name": "yoga",
+          "path": "lib/sankhyiki.smlib",
+          "line": 16,
+          "sig": "kosh dasham xs) {"
+        }
+      ],
+      "candidate_body_reduction": 3,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "minimum",
+      "classification": "numeric and representation",
+      "members": [
+        {
+          "name": "laghu",
+          "path": "lib/shreni.smlib",
+          "line": 39,
+          "sig": "a, n) {"
+        },
+        {
+          "name": "purna_laghutama",
+          "path": "lib/sankhyiki.smlib",
+          "line": 148,
+          "sig": "xs, n) {"
+        },
+        {
+          "name": "laghutama",
+          "path": "lib/sankhyiki.smlib",
+          "line": 34,
+          "sig": "kosh dasham xs) {"
+        }
+      ],
+      "candidate_body_reduction": 2,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "maximum",
+      "classification": "numeric and representation",
+      "members": [
+        {
+          "name": "adhik",
+          "path": "lib/shreni.smlib",
+          "line": 53,
+          "sig": "a, n) {"
+        },
+        {
+          "name": "purna_adhikatama",
+          "path": "lib/sankhyiki.smlib",
+          "line": 161,
+          "sig": "xs, n) {"
+        },
+        {
+          "name": "adhikatama",
+          "path": "lib/sankhyiki.smlib",
+          "line": 47,
+          "sig": "kosh dasham xs) {"
+        }
+      ],
+      "candidate_body_reduction": 2,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "pratisthap",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_pratisthap",
+          "path": "lib/varna.smlib",
+          "line": 189,
+          "sig": "src, sn, find, fn, repl, out) {"
+        },
+        {
+          "name": "khand_pratisthap",
+          "path": "lib/khand.smlib",
+          "line": 142,
+          "sig": "src, sn, find, fn, repl, out) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "bhed",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_bhed",
+          "path": "lib/varna.smlib",
+          "line": 251,
+          "sig": "src, sn, sep, sepn, parts, maxparts) {"
+        },
+        {
+          "name": "khand_bhed",
+          "path": "lib/khand.smlib",
+          "line": 206,
+          "sig": "src, sn, sep, sepn, parts, maxparts) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "yuj",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_yuj",
+          "path": "lib/varna.smlib",
+          "line": 338,
+          "sig": "parts, count, sep, sepn, out) {"
+        },
+        {
+          "name": "khand_yuj",
+          "path": "lib/khand.smlib",
+          "line": 289,
+          "sig": "parts, count, sep, sepn, out) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "anwesh",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_anwesh",
+          "path": "lib/varna.smlib",
+          "line": 155,
+          "sig": "hay, hn, needle, nn) {"
+        },
+        {
+          "name": "khand_anwesh",
+          "path": "lib/khand.smlib",
+          "line": 105,
+          "sig": "hay, hn, needle, nn) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "chhid",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_chhid",
+          "path": "lib/varna.smlib",
+          "line": 373,
+          "sig": "src, sn, out) {"
+        },
+        {
+          "name": "khand_chhid",
+          "path": "lib/khand.smlib",
+          "line": 327,
+          "sig": "src, sn, out) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "unnat",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_unnat",
+          "path": "lib/varna.smlib",
+          "line": 409,
+          "sig": "src, sn, out) {"
+        },
+        {
+          "name": "khand_unnat",
+          "path": "lib/khand.smlib",
+          "line": 365,
+          "sig": "src, sn, out) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "avanat",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_avanat",
+          "path": "lib/varna.smlib",
+          "line": 431,
+          "sig": "src, sn, out) {"
+        },
+        {
+          "name": "khand_avanat",
+          "path": "lib/khand.smlib",
+          "line": 388,
+          "sig": "src, sn, out) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "aadi",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_aadi",
+          "path": "lib/varna.smlib",
+          "line": 455,
+          "sig": "src, sn, pre, pn) {"
+        },
+        {
+          "name": "khand_aadi",
+          "path": "lib/khand.smlib",
+          "line": 413,
+          "sig": "src, sn, pre, pn) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "ant",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_ant",
+          "path": "lib/varna.smlib",
+          "line": 471,
+          "sig": "src, sn, suf, sn2) {"
+        },
+        {
+          "name": "khand_ant",
+          "path": "lib/khand.smlib",
+          "line": 429,
+          "sig": "src, sn, suf, sn2) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "tul",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_tul",
+          "path": "lib/varna.smlib",
+          "line": 487,
+          "sig": "a, an, b, bn) {"
+        },
+        {
+          "name": "khand_tul",
+          "path": "lib/khand.smlib",
+          "line": 445,
+          "sig": "a, an, b, bn) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "viparyay",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_viparyay",
+          "path": "lib/varna.smlib",
+          "line": 510,
+          "sig": "src, sn, out) {"
+        },
+        {
+          "name": "khand_viparyay",
+          "path": "lib/khand.smlib",
+          "line": 473,
+          "sig": "src, sn, out) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    },
+    {
+      "family": "gan",
+      "classification": "qword-cell versus packed-byte representation",
+      "members": [
+        {
+          "name": "varna_gan",
+          "path": "lib/varna.smlib",
+          "line": 541,
+          "sig": "hay, hn, needle, nn) {"
+        },
+        {
+          "name": "khand_gan",
+          "path": "lib/khand.smlib",
+          "line": 504,
+          "sig": "hay, hn, needle, nn) {"
+        }
+      ],
+      "candidate_body_reduction": 1,
+      "status": "conditional candidate; not semantic equivalence proof"
+    }
+  ],
+  "all_definitions": {
+    "brihat_ank_tak": {
+      "path": "lib/aadhar.smlib",
+      "line": 20,
+      "sig": "x, n, base, out) {"
+    },
+    "brihat_ank_se": {
+      "path": "lib/aadhar.smlib",
+      "line": 80,
+      "sig": "d, count, base, x, n) {"
+    },
+    "asti_yugm": {
+      "path": "lib/ank.smlib",
+      "line": 4,
+      "sig": "n)"
+    },
+    "asti_visham": {
+      "path": "lib/ank.smlib",
+      "line": 8,
+      "sig": "n)"
+    },
+    "ank_gan": {
+      "path": "lib/ank.smlib",
+      "line": 12,
+      "sig": "n) {"
+    },
+    "ank_yog": {
+      "path": "lib/ank.smlib",
+      "line": 27,
+      "sig": "n) {"
+    },
+    "viparyay_ank": {
+      "path": "lib/ank.smlib",
+      "line": 44,
+      "sig": "n) {"
+    },
+    "asti_viparyay_sam": {
+      "path": "lib/ank.smlib",
+      "line": 70,
+      "sig": "n) {"
+    },
+    "seemit": {
+      "path": "lib/ank.smlib",
+      "line": 78,
+      "sig": "n, lo, hi) {"
+    },
+    "fib": {
+      "path": "lib/ank.smlib",
+      "line": 89,
+      "sig": "n) {"
+    },
+    "asti_sampurna": {
+      "path": "lib/ank.smlib",
+      "line": 106,
+      "sig": "n) {"
+    },
+    "collatz_charan": {
+      "path": "lib/ank.smlib",
+      "line": 125,
+      "sig": "n) {"
+    },
+    "anukram_maap_aayam_purva": {
+      "path": "lib/anukram.smlib",
+      "line": 30,
+      "sig": "n) {"
+    },
+    "anukram_khip_i64": {
+      "path": "lib/anukram.smlib",
+      "line": 36,
+      "sig": "out, pos, cap, v) {"
+    },
+    "anukram_grah_i64": {
+      "path": "lib/anukram.smlib",
+      "line": 61,
+      "sig": "buf, pos, cap, out) {"
+    },
+    "anukram_khip_aayam_purva": {
+      "path": "lib/anukram.smlib",
+      "line": 88,
+      "sig": "out, pos, cap, src, n) {"
+    },
+    "anukram_grah_aayam_purva": {
+      "path": "lib/anukram.smlib",
+      "line": 110,
+      "sig": "buf, pos, cap, dst, out_n) {"
+    },
+    "brihat_shunyank": {
+      "path": "lib/brihat.smlib",
+      "line": 13,
+      "sig": "arr, n) {"
+    },
+    "brihat_ank_se_laghu": {
+      "path": "lib/brihat.smlib",
+      "line": 29,
+      "sig": "val, arr, n) {"
+    },
+    "brihat_ank_tak_laghu": {
+      "path": "lib/brihat.smlib",
+      "line": 71,
+      "sig": "arr, n) {"
+    },
+    "brihat_pratilip": {
+      "path": "lib/brihat.smlib",
+      "line": 88,
+      "sig": "dst, src, n) {"
+    },
+    "brihat_tul": {
+      "path": "lib/brihat.smlib",
+      "line": 101,
+      "sig": "a, b, n) {"
+    },
+    "brihat_yuj": {
+      "path": "lib/brihat.smlib",
+      "line": 117,
+      "sig": "a, b, res, n) {"
+    },
+    "brihat_nyun": {
+      "path": "lib/brihat.smlib",
+      "line": 134,
+      "sig": "a, b, res, n) {"
+    },
+    "brihat_gun": {
+      "path": "lib/brihat.smlib",
+      "line": 157,
+      "sig": "a, b, res, n) {"
+    },
+    "brihat_asti_shunyank": {
+      "path": "lib/brihat.smlib",
+      "line": 186,
+      "sig": "arr, n) {"
+    },
+    "brihat_bhajshesh": {
+      "path": "lib/brihat.smlib",
+      "line": 200,
+      "sig": "a, b, q, r, n) {"
+    },
+    "brihat_shesh": {
+      "path": "lib/brihat.smlib",
+      "line": 263,
+      "sig": "ank, shesh, res, n) {"
+    },
+    "brihat_shesh_sahaya": {
+      "path": "lib/brihat.smlib",
+      "line": 276,
+      "sig": "ank, shesh, res, n, scratch) {"
+    },
+    "brihat_ghatmod": {
+      "path": "lib/brihat.smlib",
+      "line": 327,
+      "sig": "base, exp, shesh, res, n) {"
+    },
+    "dwi_ghat": {
+      "path": "lib/chandas.smlib",
+      "line": 13,
+      "sig": "n) {"
+    },
+    "meru": {
+      "path": "lib/chandas.smlib",
+      "line": 29,
+      "sig": "n, k) {"
+    },
+    "matra_meru": {
+      "path": "lib/chandas.smlib",
+      "line": 63,
+      "sig": "n) {"
+    },
+    "asti_guru": {
+      "path": "lib/chandas.smlib",
+      "line": 81,
+      "sig": "pat, i) {"
+    },
+    "guru_gan": {
+      "path": "lib/chandas.smlib",
+      "line": 98,
+      "sig": "pat) {"
+    },
+    "meru_mala": {
+      "path": "lib/chandas.smlib",
+      "line": 110,
+      "sig": "a, n) {"
+    },
+    "varg": {
+      "path": "lib/ganit.smlib",
+      "line": 7,
+      "sig": "n) {"
+    },
+    "vargit": {
+      "path": "lib/ganit.smlib",
+      "line": 15,
+      "sig": "n) {"
+    },
+    "ghan": {
+      "path": "lib/ganit.smlib",
+      "line": 23,
+      "sig": "n) {"
+    },
+    "nirapeksh_mulya": {
+      "path": "lib/ganit.smlib",
+      "line": 34,
+      "sig": "n) {"
+    },
+    "laghu2": {
+      "path": "lib/ganit.smlib",
+      "line": 45,
+      "sig": "a, b) {"
+    },
+    "adhik2": {
+      "path": "lib/ganit.smlib",
+      "line": 53,
+      "sig": "a, b) {"
+    },
+    "mahattam_samapavartak": {
+      "path": "lib/ganit.smlib",
+      "line": 63,
+      "sig": "a, b) {"
+    },
+    "laghuttam_samapavartya": {
+      "path": "lib/ganit.smlib",
+      "line": 86,
+      "sig": "a, b) {"
+    },
+    "ghat": {
+      "path": "lib/ganit.smlib",
+      "line": 108,
+      "sig": "base, e) {"
+    },
+    "kramgun": {
+      "path": "lib/ganit.smlib",
+      "line": 139,
+      "sig": "n) {"
+    },
+    "asti_abhajya": {
+      "path": "lib/ganit.smlib",
+      "line": 155,
+      "sig": "n) {"
+    },
+    "yog_tak": {
+      "path": "lib/ganit.smlib",
+      "line": 171,
+      "sig": "n) {"
+    },
+    "dvigun": {
+      "path": "lib/ganit.smlib",
+      "line": 186,
+      "sig": "n) {"
+    },
+    "trigun": {
+      "path": "lib/ganit.smlib",
+      "line": 194,
+      "sig": "n) {"
+    },
+    "vardh": {
+      "path": "lib/ganit.smlib",
+      "line": 202,
+      "sig": "n) {"
+    },
+    "ekanka_gan": {
+      "path": "lib/ganit.smlib",
+      "line": 209,
+      "sig": "n) {"
+    },
+    "ganit_yadricch": {
+      "path": "lib/ganit.smlib",
+      "line": 228,
+      "sig": "state) {"
+    },
+    "ganit_seemit": {
+      "path": "lib/ganit.smlib",
+      "line": 237,
+      "sig": "v, lo, hi) {"
+    },
+    "kuttaka": {
+      "path": "lib/ganita.smlib",
+      "line": 21,
+      "sig": "a, b, c) {"
+    },
+    "kuttaka_gun_shesh": {
+      "path": "lib/ganita.smlib",
+      "line": 51,
+      "sig": "x, y, m) {"
+    },
+    "ganita_vargmool": {
+      "path": "lib/ganita.smlib",
+      "line": 66,
+      "sig": "n) {"
+    },
+    "ganita_nirapeksh": {
+      "path": "lib/ganita.smlib",
+      "line": 92,
+      "sig": "n) {"
+    },
+    "chakravala": {
+      "path": "lib/ganita.smlib",
+      "line": 102,
+      "sig": "out, n) {"
+    },
+    "samasa": {
+      "path": "lib/ganita.smlib",
+      "line": 186,
+      "sig": "out, a, b, c, d, n) {"
+    },
+    "brahmagupta_kshetr": {
+      "path": "lib/ganita.smlib",
+      "line": 205,
+      "sig": "a, b, c, d) {"
+    },
+    "bk_khand": {
+      "path": "lib/ganita.smlib",
+      "line": 265,
+      "sig": "v, out, o) {"
+    },
+    "bk_kaarak": {
+      "path": "lib/ganita.smlib",
+      "line": 273,
+      "sig": "S, k, f) {"
+    },
+    "bk_gunan": {
+      "path": "lib/ganita.smlib",
+      "line": 294,
+      "sig": "x, nx, y, ny, z) {"
+    },
+    "bk_na_adhik": {
+      "path": "lib/ganita.smlib",
+      "line": 317,
+      "sig": "q, p, n) {"
+    },
+    "ganita_janchit_yuj": {
+      "path": "lib/ganita.smlib",
+      "line": 363,
+      "sig": "a, b, ok) {"
+    },
+    "ganita_janchit_nyun": {
+      "path": "lib/ganita.smlib",
+      "line": 389,
+      "sig": "a, b, ok) {"
+    },
+    "ganita_janchit_gun": {
+      "path": "lib/ganita.smlib",
+      "line": 416,
+      "sig": "a, b, ok) {"
+    },
+    "ganita_janchit_bhaj": {
+      "path": "lib/ganita.smlib",
+      "line": 453,
+      "sig": "a, b, ok) {"
+    },
+    "ganita_janchit_shesh": {
+      "path": "lib/ganita.smlib",
+      "line": 474,
+      "sig": "a, b, ok) {"
+    },
+    "ganita_paripurna_yuj": {
+      "path": "lib/ganita.smlib",
+      "line": 495,
+      "sig": "a, b) {"
+    },
+    "ganita_paripurna_nyun": {
+      "path": "lib/ganita.smlib",
+      "line": 514,
+      "sig": "a, b) {"
+    },
+    "ganita_paripurna_gun": {
+      "path": "lib/ganita.smlib",
+      "line": 534,
+      "sig": "a, b) {"
+    },
+    "ganita_janchit_ghat": {
+      "path": "lib/ganita.smlib",
+      "line": 565,
+      "sig": "a, e, ok) {"
+    },
+    "ganita_janchit_kramgun": {
+      "path": "lib/ganita.smlib",
+      "line": 588,
+      "sig": "n, ok) {"
+    },
+    "ganita_paripurna_ghat": {
+      "path": "lib/ganita.smlib",
+      "line": 615,
+      "sig": "a, e) {"
+    },
+    "ganita_paripurna_bhaj": {
+      "path": "lib/ganita.smlib",
+      "line": 647,
+      "sig": "a, b) {"
+    },
+    "ganita_paripurna_shesh": {
+      "path": "lib/ganita.smlib",
+      "line": 665,
+      "sig": "a, b) {"
+    },
+    "ganita_janchit_nirapeksh": {
+      "path": "lib/ganita.smlib",
+      "line": 680,
+      "sig": "a, ok) {"
+    },
+    "ganita_paripurna_nirapeksh": {
+      "path": "lib/ganita.smlib",
+      "line": 695,
+      "sig": "a) {"
+    },
+    "ganita_paripurna_kramgun": {
+      "path": "lib/ganita.smlib",
+      "line": 710,
+      "sig": "n) {"
+    },
+    "fnv1a": {
+      "path": "lib/gudh.smlib",
+      "line": 15,
+      "sig": "s, len) {"
+    },
+    "fnv1a_varna": {
+      "path": "lib/gudh.smlib",
+      "line": 30,
+      "sig": "s) {"
+    },
+    "kalana_trapiz": {
+      "path": "lib/kalana.smlib",
+      "line": 18,
+      "sig": "kosh dasham xs, kosh dasham ys) {"
+    },
+    "simpson": {
+      "path": "lib/kalana.smlib",
+      "line": 34,
+      "sig": "kosh dasham xs, kosh dasham ys) {"
+    },
+    "pravan": {
+      "path": "lib/kalana.smlib",
+      "line": 60,
+      "sig": "kosh dasham xs, kosh dasham ys, i) {"
+    },
+    "dvitiya_pravan": {
+      "path": "lib/kalana.smlib",
+      "line": 80,
+      "sig": "kosh dasham xs, kosh dasham ys, i) {"
+    },
+    "bahu_ganana": {
+      "path": "lib/kalana.smlib",
+      "line": 103,
+      "sig": "kosh dasham c, dasham x) {"
+    },
+    "bahu_mula": {
+      "path": "lib/kalana.smlib",
+      "line": 120,
+      "sig": "kosh dasham c, dasham lo, dasham hi, kosh dasham ok) {"
+    },
+    "khand_bandh": {
+      "path": "lib/khand.smlib",
+      "line": 39,
+      "sig": "cells, n, out) {"
+    },
+    "khand_mukt": {
+      "path": "lib/khand.smlib",
+      "line": 61,
+      "sig": "bytes, n, out) {"
+    },
+    "khand_pratilip": {
+      "path": "lib/khand.smlib",
+      "line": 81,
+      "sig": "src, n, out) {"
+    },
+    "khand_maap": {
+      "path": "lib/khand.smlib",
+      "line": 99,
+      "sig": "s) {"
+    },
+    "khand_anwesh": {
+      "path": "lib/khand.smlib",
+      "line": 105,
+      "sig": "hay, hn, needle, nn) {"
+    },
+    "khand_antah": {
+      "path": "lib/khand.smlib",
+      "line": 131,
+      "sig": "hay, hn, needle, nn) {"
+    },
+    "khand_pratisthap": {
+      "path": "lib/khand.smlib",
+      "line": 142,
+      "sig": "src, sn, find, fn, repl, out) {"
+    },
+    "khand_bhed": {
+      "path": "lib/khand.smlib",
+      "line": 206,
+      "sig": "src, sn, sep, sepn, parts, maxparts) {"
+    },
+    "khand_yuj": {
+      "path": "lib/khand.smlib",
+      "line": 289,
+      "sig": "parts, count, sep, sepn, out) {"
+    },
+    "khand_chhid": {
+      "path": "lib/khand.smlib",
+      "line": 327,
+      "sig": "src, sn, out) {"
+    },
+    "khand_unnat": {
+      "path": "lib/khand.smlib",
+      "line": 365,
+      "sig": "src, sn, out) {"
+    },
+    "khand_avanat": {
+      "path": "lib/khand.smlib",
+      "line": 388,
+      "sig": "src, sn, out) {"
+    },
+    "khand_aadi": {
+      "path": "lib/khand.smlib",
+      "line": 413,
+      "sig": "src, sn, pre, pn) {"
+    },
+    "khand_ant": {
+      "path": "lib/khand.smlib",
+      "line": 429,
+      "sig": "src, sn, suf, sn2) {"
+    },
+    "khand_tul": {
+      "path": "lib/khand.smlib",
+      "line": 445,
+      "sig": "a, an, b, bn) {"
+    },
+    "khand_viparyay": {
+      "path": "lib/khand.smlib",
+      "line": 473,
+      "sig": "src, sn, out) {"
+    },
+    "khand_gan": {
+      "path": "lib/khand.smlib",
+      "line": 504,
+      "sig": "hay, hn, needle, nn) {"
+    },
+    "khand_gan_swar": {
+      "path": "lib/khand.smlib",
+      "line": 527,
+      "sig": "s, n) {"
+    },
+    "khand_gan_akshar": {
+      "path": "lib/khand.smlib",
+      "line": 546,
+      "sig": "s, n, code) {"
+    },
+    "khand_anwesh_akshar": {
+      "path": "lib/khand.smlib",
+      "line": 561,
+      "sig": "s, n, code) {"
+    },
+    "khand_asti_sarv_ank": {
+      "path": "lib/khand.smlib",
+      "line": 576,
+      "sig": "s, n) {"
+    },
+    "khand_sam": {
+      "path": "lib/khand.smlib",
+      "line": 592,
+      "sig": "a, an, b, bn) {"
+    },
+    "madhava_vargmool": {
+      "path": "lib/madhava.smlib",
+      "line": 13,
+      "sig": "dasham v) {"
+    },
+    "madhava_pi": {
+      "path": "lib/madhava.smlib",
+      "line": 26,
+      "sig": ") {"
+    },
+    "madhava_sin": {
+      "path": "lib/madhava.smlib",
+      "line": 50,
+      "sig": "dasham x) {"
+    },
+    "madhava_cos": {
+      "path": "lib/madhava.smlib",
+      "line": 80,
+      "sig": "dasham x) {"
+    },
+    "madhava_atan": {
+      "path": "lib/madhava.smlib",
+      "line": 115,
+      "sig": "dasham x) {"
+    },
+    "mala_nava": {
+      "path": "lib/mala.smlib",
+      "line": 8,
+      "sig": "n) {"
+    },
+    "mala_sangrah": {
+      "path": "lib/mala.smlib",
+      "line": 20,
+      "sig": "arr, i, val) {"
+    },
+    "mala_grah": {
+      "path": "lib/mala.smlib",
+      "line": 29,
+      "sig": "arr, i) {"
+    },
+    "mala_purn": {
+      "path": "lib/mala.smlib",
+      "line": 36,
+      "sig": "arr, val, n) {"
+    },
+    "mala_pratilip": {
+      "path": "lib/mala.smlib",
+      "line": 49,
+      "sig": "dst, src, n) {"
+    },
+    "mala_yog": {
+      "path": "lib/mala.smlib",
+      "line": 62,
+      "sig": "arr, n) {"
+    },
+    "mala_sangrah_surakshit": {
+      "path": "lib/mala.smlib",
+      "line": 75,
+      "sig": "arr, i, val, n) {"
+    },
+    "mala_grah_surakshit": {
+      "path": "lib/mala.smlib",
+      "line": 87,
+      "sig": "arr, i, n) {"
+    },
+    "nighantu_kunji_gudh": {
+      "path": "lib/nighantu.smlib",
+      "line": 38,
+      "sig": "key, keyn, cap) {"
+    },
+    "nighantu_kunji_sam": {
+      "path": "lib/nighantu.smlib",
+      "line": 47,
+      "sig": "m, slot, cap, key, keyn) {"
+    },
+    "nighantu_koshtha_likh": {
+      "path": "lib/nighantu.smlib",
+      "line": 62,
+      "sig": "m, slot, cap, key, keyn, val) {"
+    },
+    "nighantu_anwesh": {
+      "path": "lib/nighantu.smlib",
+      "line": 85,
+      "sig": "m, cap, key, keyn) {"
+    },
+    "nighantu_srij": {
+      "path": "lib/nighantu.smlib",
+      "line": 107,
+      "sig": "cap) {"
+    },
+    "nighantu_khip": {
+      "path": "lib/nighantu.smlib",
+      "line": 132,
+      "sig": "m, cap, key, keyn, val) {"
+    },
+    "nighantu_grah": {
+      "path": "lib/nighantu.smlib",
+      "line": 159,
+      "sig": "m, cap, key, keyn) {"
+    },
+    "nighantu_antah": {
+      "path": "lib/nighantu.smlib",
+      "line": 169,
+      "sig": "m, cap, key, keyn) {"
+    },
+    "nighantu_apanay": {
+      "path": "lib/nighantu.smlib",
+      "line": 181,
+      "sig": "m, cap, key, keyn) {"
+    },
+    "nighantu_rikta": {
+      "path": "lib/nighantu.smlib",
+      "line": 250,
+      "sig": "m) {"
+    },
+    "nighantu_vardh": {
+      "path": "lib/nighantu.smlib",
+      "line": 279,
+      "sig": "m, newcap) {"
+    },
+    "nighantu_grah_mool": {
+      "path": "lib/nighantu.smlib",
+      "line": 312,
+      "sig": "m, cap, key, keyn, def) {"
+    },
+    "nighantu_maap": {
+      "path": "lib/nighantu.smlib",
+      "line": 322,
+      "sig": "m) {"
+    },
+    "nighantu_mil": {
+      "path": "lib/nighantu.smlib",
+      "line": 333,
+      "sig": "dst, dcap, src, scap) {"
+    },
+    "nighantu_mulya": {
+      "path": "lib/nighantu.smlib",
+      "line": 360,
+      "sig": "m, out) {"
+    },
+    "nighantu_kunjika": {
+      "path": "lib/nighantu.smlib",
+      "line": 383,
+      "sig": "m, out) {"
+    },
+    "nighantu_kunjika_ashtak": {
+      "path": "lib/nighantu.smlib",
+      "line": 417,
+      "sig": "m, out) {"
+    },
+    "patra_path_sarv": {
+      "path": "lib/patra.smlib",
+      "line": 29,
+      "sig": "path, out, cap) {"
+    },
+    "patra_likh_sarv": {
+      "path": "lib/patra.smlib",
+      "line": 57,
+      "sig": "path, data, n) {"
+    },
+    "patra_asti": {
+      "path": "lib/patra.smlib",
+      "line": 81,
+      "sig": "path) {"
+    },
+    "phal_siddhi": {
+      "path": "lib/phal.smlib",
+      "line": 33,
+      "sig": "out, v) {"
+    },
+    "phal_dosh": {
+      "path": "lib/phal.smlib",
+      "line": 41,
+      "sig": "out) {"
+    },
+    "phal_asti_siddhi": {
+      "path": "lib/phal.smlib",
+      "line": 49,
+      "sig": "r) {"
+    },
+    "phal_mulya": {
+      "path": "lib/phal.smlib",
+      "line": 56,
+      "sig": "r) {"
+    },
+    "phal_mulya_va": {
+      "path": "lib/phal.smlib",
+      "line": 62,
+      "sig": "r, def) {"
+    },
+    "phal_se_siddhi": {
+      "path": "lib/phal.smlib",
+      "line": 69,
+      "sig": "out, v, ok) {"
+    },
+    "phal_janchit_yuj": {
+      "path": "lib/phal.smlib",
+      "line": 85,
+      "sig": "out, a, b) {"
+    },
+    "phal_janchit_nyun": {
+      "path": "lib/phal.smlib",
+      "line": 100,
+      "sig": "out, a, b) {"
+    },
+    "phal_janchit_gun": {
+      "path": "lib/phal.smlib",
+      "line": 115,
+      "sig": "out, a, b) {"
+    },
+    "phal_janchit_bhaj": {
+      "path": "lib/phal.smlib",
+      "line": 130,
+      "sig": "out, a, b) {"
+    },
+    "phal_janchit_shesh": {
+      "path": "lib/phal.smlib",
+      "line": 145,
+      "sig": "out, a, b) {"
+    },
+    "phal_janchit_ghat": {
+      "path": "lib/phal.smlib",
+      "line": 161,
+      "sig": "out, a, e) {"
+    },
+    "phal_janchit_kramgun": {
+      "path": "lib/phal.smlib",
+      "line": 174,
+      "sig": "out, n) {"
+    },
+    "phal_janchit_nirapeksh": {
+      "path": "lib/phal.smlib",
+      "line": 187,
+      "sig": "out, a) {"
+    },
+    "roop_ank": {
+      "path": "lib/roop.smlib",
+      "line": 32,
+      "sig": "v, out) {"
+    },
+    "roop_ank_aadhar": {
+      "path": "lib/roop.smlib",
+      "line": 73,
+      "sig": "v, base, upper, out) {"
+    },
+    "roop_ank_aadhar_saral": {
+      "path": "lib/roop.smlib",
+      "line": 150,
+      "sig": "v, base, out) {"
+    },
+    "roop_ank_dhvaj": {
+      "path": "lib/roop.smlib",
+      "line": 174,
+      "sig": "v, base, flags, out) {"
+    },
+    "roop_dash": {
+      "path": "lib/roop.smlib",
+      "line": 212,
+      "sig": "v, out) {"
+    },
+    "roop_shodash": {
+      "path": "lib/roop.smlib",
+      "line": 217,
+      "sig": "v, out) {"
+    },
+    "roop_shodash_unnat": {
+      "path": "lib/roop.smlib",
+      "line": 222,
+      "sig": "v, out) {"
+    },
+    "roop_asht": {
+      "path": "lib/roop.smlib",
+      "line": 227,
+      "sig": "v, out) {"
+    },
+    "roop_dwi": {
+      "path": "lib/roop.smlib",
+      "line": 232,
+      "sig": "v, out) {"
+    },
+    "roop_ank_upasarga": {
+      "path": "lib/roop.smlib",
+      "line": 239,
+      "sig": "v, base, upper, out) {"
+    },
+    "roop_purti_vam": {
+      "path": "lib/roop.smlib",
+      "line": 252,
+      "sig": "src, sn, width, padbyte, out) {"
+    },
+    "roop_purti_dakshin": {
+      "path": "lib/roop.smlib",
+      "line": 285,
+      "sig": "src, sn, width, padbyte, out) {"
+    },
+    "roop_purti_madhya": {
+      "path": "lib/roop.smlib",
+      "line": 319,
+      "sig": "src, sn, width, padbyte, out) {"
+    },
+    "roop_varg_sahaya": {
+      "path": "lib/roop.smlib",
+      "line": 363,
+      "sig": "src, sn, step, out) {"
+    },
+    "roop_varg_bharatiya": {
+      "path": "lib/roop.smlib",
+      "line": 438,
+      "sig": "src, sn, out) {"
+    },
+    "roop_varg_vishwa": {
+      "path": "lib/roop.smlib",
+      "line": 443,
+      "sig": "src, sn, out) {"
+    },
+    "roop_varg": {
+      "path": "lib/roop.smlib",
+      "line": 450,
+      "sig": "src, sn, out) {"
+    },
+    "roop_varg_ank": {
+      "path": "lib/roop.smlib",
+      "line": 456,
+      "sig": "v, indian, out) {"
+    },
+    "roop_sthir_mool": {
+      "path": "lib/roop.smlib",
+      "line": 478,
+      "sig": "dasham x, places, always_sign, out) {"
+    },
+    "roop_sthir": {
+      "path": "lib/roop.smlib",
+      "line": 597,
+      "sig": "dasham x, places, out) {"
+    },
+    "roop_sthir_chinhit": {
+      "path": "lib/roop.smlib",
+      "line": 603,
+      "sig": "dasham x, places, out) {"
+    },
+    "roop_chinhit": {
+      "path": "lib/roop.smlib",
+      "line": 609,
+      "sig": "v, out) {"
+    },
+    "roop_chihna_akshar": {
+      "path": "lib/roop.smlib",
+      "line": 646,
+      "sig": "v, signch, out) {"
+    },
+    "antarveshan": {
+      "path": "lib/sadhan.smlib",
+      "line": 9,
+      "sig": "a, b, t)"
+    },
+    "yog_seema": {
+      "path": "lib/sadhan.smlib",
+      "line": 16,
+      "sig": "start, end) {"
+    },
+    "shesh": {
+      "path": "lib/sadhan.smlib",
+      "line": 93,
+      "sig": "a, b) {"
+    },
+    "bhaj_urdhva": {
+      "path": "lib/sadhan.smlib",
+      "line": 100,
+      "sig": "a, b) {"
+    },
+    "ank_chihna": {
+      "path": "lib/sadhan.smlib",
+      "line": 118,
+      "sig": "n)"
+    },
+    "satya_tak_ank": {
+      "path": "lib/sadhan.smlib",
+      "line": 122,
+      "sig": "b)"
+    },
+    "ank_adhik": {
+      "path": "lib/sadhan.smlib",
+      "line": 126,
+      "sig": ")"
+    },
+    "samanvaya_akar_ayogya": {
+      "path": "lib/samanvaya.smlib",
+      "line": 23,
+      "sig": "m, n, len) {"
+    },
+    "ekaka_matrika": {
+      "path": "lib/samanvaya.smlib",
+      "line": 32,
+      "sig": "n, kosh dasham out) {"
+    },
+    "vivartana": {
+      "path": "lib/samanvaya.smlib",
+      "line": 50,
+      "sig": "kosh dasham a, m, n, kosh dasham out) {"
+    },
+    "matrika_yoga": {
+      "path": "lib/samanvaya.smlib",
+      "line": 66,
+      "sig": "kosh dasham a, kosh dasham b, m, n, kosh dasham out) {"
+    },
+    "skalar": {
+      "path": "lib/samanvaya.smlib",
+      "line": 79,
+      "sig": "kosh dasham a, dasham c, m, n, kosh dasham out) {"
+    },
+    "matrika_gunana": {
+      "path": "lib/samanvaya.smlib",
+      "line": 91,
+      "sig": "kosh dasham a, kosh dasham b, m, n, p, kosh dasham out) {"
+    },
+    "karna_yog": {
+      "path": "lib/samanvaya.smlib",
+      "line": 111,
+      "sig": "kosh dasham a, n) {"
+    },
+    "saranik2": {
+      "path": "lib/samanvaya.smlib",
+      "line": 122,
+      "sig": "kosh dasham a) {"
+    },
+    "saranik3": {
+      "path": "lib/samanvaya.smlib",
+      "line": 127,
+      "sig": "kosh dasham a) {"
+    },
+    "adish_gunan": {
+      "path": "lib/samanvaya.smlib",
+      "line": 136,
+      "sig": "kosh dasham u, kosh dasham v) {"
+    },
+    "rekha_manak": {
+      "path": "lib/samanvaya.smlib",
+      "line": 150,
+      "sig": "kosh dasham a, m, n) {"
+    },
+    "rakh_srij": {
+      "path": "lib/sangrah.smlib",
+      "line": 33,
+      "sig": "cap) {"
+    },
+    "rakh_yuj": {
+      "path": "lib/sangrah.smlib",
+      "line": 40,
+      "sig": "s, cap, elem, elem_n) {"
+    },
+    "rakh_antah": {
+      "path": "lib/sangrah.smlib",
+      "line": 45,
+      "sig": "s, cap, elem, elem_n) {"
+    },
+    "rakh_apanay": {
+      "path": "lib/sangrah.smlib",
+      "line": 50,
+      "sig": "s, cap, elem, elem_n) {"
+    },
+    "rakh_maap": {
+      "path": "lib/sangrah.smlib",
+      "line": 55,
+      "sig": "s) {"
+    },
+    "rakh_ubhaya_bhed": {
+      "path": "lib/sangrah.smlib",
+      "line": 63,
+      "sig": "a, cap, b, bcap, out) {"
+    },
+    "rakh_sangam": {
+      "path": "lib/sangrah.smlib",
+      "line": 96,
+      "sig": "a, cap, b, bcap, out) {"
+    },
+    "rakh_sampat": {
+      "path": "lib/sangrah.smlib",
+      "line": 126,
+      "sig": "a, cap, b, bcap, out) {"
+    },
+    "rakh_bhed": {
+      "path": "lib/sangrah.smlib",
+      "line": 148,
+      "sig": "a, cap, b, bcap, out) {"
+    },
+    "rakh_vardh": {
+      "path": "lib/sangrah.smlib",
+      "line": 171,
+      "sig": "s, newcap) {"
+    },
+    "rakh_rikta": {
+      "path": "lib/sangrah.smlib",
+      "line": 179,
+      "sig": "s) {"
+    },
+    "rakh_sam": {
+      "path": "lib/sangrah.smlib",
+      "line": 186,
+      "sig": "a, cap, b, bcap) {"
+    },
+    "rakh_asti_upasamuh": {
+      "path": "lib/sangrah.smlib",
+      "line": 194,
+      "sig": "a, cap, b, bcap) {"
+    },
+    "rakh_tak_mala": {
+      "path": "lib/sangrah.smlib",
+      "line": 217,
+      "sig": "s, cap, out) {"
+    },
+    "yoga": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 16,
+      "sig": "kosh dasham xs) {"
+    },
+    "madhya": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 27,
+      "sig": "kosh dasham xs) {"
+    },
+    "laghutama": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 34,
+      "sig": "kosh dasham xs) {"
+    },
+    "adhikatama": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 47,
+      "sig": "kosh dasham xs) {"
+    },
+    "vyapti": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 60,
+      "sig": "kosh dasham xs) {"
+    },
+    "prasaran": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 65,
+      "sig": "kosh dasham xs) {"
+    },
+    "sankhyiki_vargmool": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 82,
+      "sig": "dasham v) {"
+    },
+    "vichalan": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 94,
+      "sig": "kosh dasham xs) {"
+    },
+    "bindu_gunan": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 100,
+      "sig": "kosh dasham a, kosh dasham b) {"
+    },
+    "manak": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 114,
+      "sig": "kosh dasham a) {"
+    },
+    "purna_yoga": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 131,
+      "sig": "xs, n) {"
+    },
+    "purna_madhya": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 142,
+      "sig": "xs, n) {"
+    },
+    "purna_laghutama": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 148,
+      "sig": "xs, n) {"
+    },
+    "purna_adhikatama": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 161,
+      "sig": "xs, n) {"
+    },
+    "purna_vyapti": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 174,
+      "sig": "xs, n) {"
+    },
+    "purna_prasaran": {
+      "path": "lib/sankhyiki.smlib",
+      "line": 182,
+      "sig": "xs, n) {"
+    },
+    "vinimay": {
+      "path": "lib/shreni.smlib",
+      "line": 6,
+      "sig": "a, i, j) {"
+    },
+    "budbud_shreni": {
+      "path": "lib/shreni.smlib",
+      "line": 13,
+      "sig": "a, n) {"
+    },
+    "viparyay_mala": {
+      "path": "lib/shreni.smlib",
+      "line": 28,
+      "sig": "a, n) {"
+    },
+    "laghu": {
+      "path": "lib/shreni.smlib",
+      "line": 39,
+      "sig": "a, n) {"
+    },
+    "adhik": {
+      "path": "lib/shreni.smlib",
+      "line": 53,
+      "sig": "a, n) {"
+    },
+    "yog": {
+      "path": "lib/shreni.smlib",
+      "line": 66,
+      "sig": "a, n) {"
+    },
+    "anwesh_sarak": {
+      "path": "lib/shreni.smlib",
+      "line": 77,
+      "sig": "a, n, target) {"
+    },
+    "gan": {
+      "path": "lib/shreni.smlib",
+      "line": 87,
+      "sig": "a, n, target) {"
+    },
+    "asti_kramabaddha": {
+      "path": "lib/shreni.smlib",
+      "line": 98,
+      "sig": "a, n) {"
+    },
+    "dwi_anwesh": {
+      "path": "lib/shreni.smlib",
+      "line": 108,
+      "sig": "a, n, target) {"
+    },
+    "shankh_shreni": {
+      "path": "lib/shreni.smlib",
+      "line": 120,
+      "sig": "a, n) {"
+    },
+    "nivesh_shreni": {
+      "path": "lib/shreni.smlib",
+      "line": 148,
+      "sig": "a, n) {"
+    },
+    "mil_shreni_punar": {
+      "path": "lib/shreni.smlib",
+      "line": 174,
+      "sig": "a, tmp, lo, hi) {"
+    },
+    "mil_shreni": {
+      "path": "lib/shreni.smlib",
+      "line": 223,
+      "sig": "a, n) {"
+    },
+    "suchi_srij": {
+      "path": "lib/suchi.smlib",
+      "line": 46,
+      "sig": "cap) {"
+    },
+    "suchi_vardh": {
+      "path": "lib/suchi.smlib",
+      "line": 67,
+      "sig": "l) {"
+    },
+    "suchi_khip": {
+      "path": "lib/suchi.smlib",
+      "line": 87,
+      "sig": "l, v) {"
+    },
+    "suchi_grah": {
+      "path": "lib/suchi.smlib",
+      "line": 100,
+      "sig": "l, i) {"
+    },
+    "suchi_sangrah": {
+      "path": "lib/suchi.smlib",
+      "line": 110,
+      "sig": "l, i, v) {"
+    },
+    "suchi_maap": {
+      "path": "lib/suchi.smlib",
+      "line": 122,
+      "sig": "l) {"
+    },
+    "suchi_nivesh": {
+      "path": "lib/suchi.smlib",
+      "line": 128,
+      "sig": "l, i, v) {"
+    },
+    "suchi_apanay": {
+      "path": "lib/suchi.smlib",
+      "line": 152,
+      "sig": "l, i) {"
+    },
+    "suchi_vinimay": {
+      "path": "lib/suchi.smlib",
+      "line": 173,
+      "sig": "l, i, j) {"
+    },
+    "suchi_viparyay": {
+      "path": "lib/suchi.smlib",
+      "line": 193,
+      "sig": "l) {"
+    },
+    "suchi_shreni": {
+      "path": "lib/suchi.smlib",
+      "line": 214,
+      "sig": "l) {"
+    },
+    "suchi_laghu": {
+      "path": "lib/suchi.smlib",
+      "line": 226,
+      "sig": "l, ok) {"
+    },
+    "suchi_adhik": {
+      "path": "lib/suchi.smlib",
+      "line": 237,
+      "sig": "l, ok) {"
+    },
+    "suchi_yog": {
+      "path": "lib/suchi.smlib",
+      "line": 249,
+      "sig": "l) {"
+    },
+    "suchi_gan": {
+      "path": "lib/suchi.smlib",
+      "line": 256,
+      "sig": "l, v) {"
+    },
+    "suchi_anwesh": {
+      "path": "lib/suchi.smlib",
+      "line": 263,
+      "sig": "l, v) {"
+    },
+    "suchi_asti_kramabaddha": {
+      "path": "lib/suchi.smlib",
+      "line": 270,
+      "sig": "l) {"
+    },
+    "suchi_dwi_anwesh": {
+      "path": "lib/suchi.smlib",
+      "line": 278,
+      "sig": "l, v) {"
+    },
+    "suchi_rikta": {
+      "path": "lib/suchi.smlib",
+      "line": 288,
+      "sig": "l) {"
+    },
+    "suchi_antah": {
+      "path": "lib/suchi.smlib",
+      "line": 300,
+      "sig": "l, v) {"
+    },
+    "suchi_kramank": {
+      "path": "lib/suchi.smlib",
+      "line": 313,
+      "sig": "l, v) {"
+    },
+    "chay_khip": {
+      "path": "lib/suchi.smlib",
+      "line": 328,
+      "sig": "l, v) {"
+    },
+    "chay_apanay": {
+      "path": "lib/suchi.smlib",
+      "line": 334,
+      "sig": "l, ok) {"
+    },
+    "chay_avalok": {
+      "path": "lib/suchi.smlib",
+      "line": 351,
+      "sig": "l, ok) {"
+    },
+    "chay_rikta": {
+      "path": "lib/suchi.smlib",
+      "line": 365,
+      "sig": "l) {"
+    },
+    "avali_srij": {
+      "path": "lib/suchi.smlib",
+      "line": 384,
+      "sig": "cap) {"
+    },
+    "avali_pravesh": {
+      "path": "lib/suchi.smlib",
+      "line": 407,
+      "sig": "q, v) {"
+    },
+    "avali_nishkas": {
+      "path": "lib/suchi.smlib",
+      "line": 441,
+      "sig": "q, ok) {"
+    },
+    "avali_avalok": {
+      "path": "lib/suchi.smlib",
+      "line": 459,
+      "sig": "q, ok) {"
+    },
+    "avali_tak_mala": {
+      "path": "lib/suchi.smlib",
+      "line": 478,
+      "sig": "q, out) {"
+    },
+    "avali_antah": {
+      "path": "lib/suchi.smlib",
+      "line": 494,
+      "sig": "q, v) {"
+    },
+    "avali_rikta": {
+      "path": "lib/suchi.smlib",
+      "line": 511,
+      "sig": "q) {"
+    },
+    "avali_shunya": {
+      "path": "lib/suchi.smlib",
+      "line": 524,
+      "sig": "q) {"
+    },
+    "avali_maap": {
+      "path": "lib/suchi.smlib",
+      "line": 530,
+      "sig": "q) {"
+    },
+    "ank_tak_varna": {
+      "path": "lib/vakyank.smlib",
+      "line": 15,
+      "sig": "n, out) {"
+    },
+    "varna_tak_ank": {
+      "path": "lib/vakyank.smlib",
+      "line": 84,
+      "sig": "buf, n, ok) {"
+    },
+    "ank_tak_aadhar_varna": {
+      "path": "lib/vakyank.smlib",
+      "line": 142,
+      "sig": "n, base, out) {"
+    },
+    "varna_tak_ank_aadhar": {
+      "path": "lib/vakyank.smlib",
+      "line": 186,
+      "sig": "buf, n, base, ok) {"
+    },
+    "purti_vam": {
+      "path": "lib/vakyank.smlib",
+      "line": 241,
+      "sig": "out, count, width, fill) {"
+    },
+    "varna_tak_dashm": {
+      "path": "lib/vakyank.smlib",
+      "line": 277,
+      "sig": "buf, n, ok) {"
+    },
+    "varna_maap": {
+      "path": "lib/varna.smlib",
+      "line": 19,
+      "sig": "s)"
+    },
+    "akshar_sanket": {
+      "path": "lib/varna.smlib",
+      "line": 23,
+      "sig": "s, i)"
+    },
+    "asti_ank_akshar": {
+      "path": "lib/varna.smlib",
+      "line": 27,
+      "sig": "s, i) {"
+    },
+    "asti_unnat_akshar": {
+      "path": "lib/varna.smlib",
+      "line": 34,
+      "sig": "s, i) {"
+    },
+    "asti_avanat_akshar": {
+      "path": "lib/varna.smlib",
+      "line": 41,
+      "sig": "s, i) {"
+    },
+    "asti_akshar_akshar": {
+      "path": "lib/varna.smlib",
+      "line": 48,
+      "sig": "s, i) {"
+    },
+    "asti_avakash_akshar": {
+      "path": "lib/varna.smlib",
+      "line": 56,
+      "sig": "s, i) {"
+    },
+    "gan_swar": {
+      "path": "lib/varna.smlib",
+      "line": 63,
+      "sig": "s) {"
+    },
+    "gan_akshar": {
+      "path": "lib/varna.smlib",
+      "line": 78,
+      "sig": "s, code) {"
+    },
+    "anwesh_akshar": {
+      "path": "lib/varna.smlib",
+      "line": 90,
+      "sig": "s, code) {"
+    },
+    "asti_sarv_ank": {
+      "path": "lib/varna.smlib",
+      "line": 101,
+      "sig": "s) {"
+    },
+    "unnat_sanket": {
+      "path": "lib/varna.smlib",
+      "line": 113,
+      "sig": "c) {"
+    },
+    "avanat_sanket": {
+      "path": "lib/varna.smlib",
+      "line": 120,
+      "sig": "c) {"
+    },
+    "varna_sam": {
+      "path": "lib/varna.smlib",
+      "line": 127,
+      "sig": "a, b) {"
+    },
+    "varna_anwesh": {
+      "path": "lib/varna.smlib",
+      "line": 155,
+      "sig": "hay, hn, needle, nn) {"
+    },
+    "varna_antah": {
+      "path": "lib/varna.smlib",
+      "line": 178,
+      "sig": "hay, hn, needle, nn) {"
+    },
+    "varna_pratisthap": {
+      "path": "lib/varna.smlib",
+      "line": 189,
+      "sig": "src, sn, find, fn, repl, out) {"
+    },
+    "varna_bhed": {
+      "path": "lib/varna.smlib",
+      "line": 251,
+      "sig": "src, sn, sep, sepn, parts, maxparts) {"
+    },
+    "varna_yuj": {
+      "path": "lib/varna.smlib",
+      "line": 338,
+      "sig": "parts, count, sep, sepn, out) {"
+    },
+    "varna_chhid": {
+      "path": "lib/varna.smlib",
+      "line": 373,
+      "sig": "src, sn, out) {"
+    },
+    "varna_unnat": {
+      "path": "lib/varna.smlib",
+      "line": 409,
+      "sig": "src, sn, out) {"
+    },
+    "varna_avanat": {
+      "path": "lib/varna.smlib",
+      "line": 431,
+      "sig": "src, sn, out) {"
+    },
+    "varna_aadi": {
+      "path": "lib/varna.smlib",
+      "line": 455,
+      "sig": "src, sn, pre, pn) {"
+    },
+    "varna_ant": {
+      "path": "lib/varna.smlib",
+      "line": 471,
+      "sig": "src, sn, suf, sn2) {"
+    },
+    "varna_tul": {
+      "path": "lib/varna.smlib",
+      "line": 487,
+      "sig": "a, an, b, bn) {"
+    },
+    "varna_viparyay": {
+      "path": "lib/varna.smlib",
+      "line": 510,
+      "sig": "src, sn, out) {"
+    },
+    "varna_gan": {
+      "path": "lib/varna.smlib",
+      "line": 541,
+      "sig": "hay, hn, needle, nn) {"
+    }
+  }
+}
