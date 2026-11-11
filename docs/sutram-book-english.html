@@ -442,7 +442,10 @@ n--      <span class="cm"># n = 5</span></code></pre>
     <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">tak</span> n - 1 {
         <span class="k" data-tip="variable">vitti</span> b = akshar(buf, i)
         <span class="k" data-tip="if">yadi</span> (b &gt;= 48 &amp;&amp; b &lt;= 57) { ank = ank * 10 + b - 48 }
-        <span class="k" data-tip="else">anya</span> { yoga = yoga + ank  ank = 0 }
+        <span class="k" data-tip="else">anya</span> {
+            yoga = yoga + ank
+            ank = 0
+        }
     }
     <span class="k" data-tip="print">likha</span>("yogah: ", yoga + ank)
 }</code></pre>

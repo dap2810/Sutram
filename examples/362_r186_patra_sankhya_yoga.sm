@@ -13,7 +13,10 @@ mukhya() {
         chakra i = 0 tak n - 1 {
             vitti b = akshar(buf, i)
             yadi (b >= 48 && b <= 57) { ank = ank * 10 + b - 48 }
-            anya { yoga = yoga + ank  ank = 0 }
+            anya {
+                yoga = yoga + ank
+                ank = 0
+            }
         }
         likha("yogah: ", yoga + ank)
     }
