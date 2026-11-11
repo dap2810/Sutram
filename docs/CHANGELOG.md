@@ -20,7 +20,12 @@
   leading `-`. It reports `abc`, `5abc`, `12 34`, an empty line and an overflow, each of which `grahan()` turns into
   a number. **`varna_tak_ank`, named as the existing converter, does not take a string** (`"42"` gives 0, `ok` 0:
   it reads a code per eight-byte cell). Example `364_r190_vartani_tak_ank` with a golden; reference §4d; both books.
-- **Gate `R190 chakra and converter`** (`tests/r190/test_chakra_and_converter.py`, 19 checks).
+- **Gate `R190 chakra and converter`** (`tests/r190/test_chakra_and_converter.py`, 19 checks; 20 from R191).
+- **R191 (documents only; the compiler and the library are byte for byte R190's):** the three lines taught for
+  `vartani_tak_ank` printed `n * 2` without looking at `ok[0]`, so `hello` printed 0 - the silent answer the function
+  prevents. **The taught program now tests `ok[0]`** (reference §4d, both books), and the gate runs the reference's
+  own program on `42` and on `hello`. `docs/WHATS-LEFT.md` names the open design question: a word for counting down,
+  proposed `avaroha`.
 - **The guard, against v325:** the compiler's change is a message - no program's bytes change through it; the
   programs that bring in `vakyank` differ by the new function and print what they printed (R190-00). Installer
   rebuilt (payload v326). Not run on Windows.

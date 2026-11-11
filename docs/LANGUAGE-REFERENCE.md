@@ -242,7 +242,7 @@ v293 it was `Sutram Error`, the last English word a program could print. The tok
 keeps it word for word around its own translation, so a failure looks the same, and can be searched for, in any
 language. **`truti` is the severity, not a verdict on the program** - a syntax error, a safety refusal
 (`E_APARIKSHITA_AHVAN`) and a resource limit all stop what was asked, for the reasons their codes and text give.
-A notice that stops nothing begins `Sutram suchana:` (the deprecation warning, §4b).
+A notice that stops nothing begins `Sutram suchana:` - there are two: the deprecation warning (§4b) and, from v326, the `chakra` shaped like a countdown (§6a). Both go to stderr, change nothing in the compiled program, have no `E_` code (they are not errors), and are not printed in a `--lang` run.
 
 The change was made by the owner's narrow exception to the pack freeze, written down in
 `docs/decisions/R114-SUTRAM-TRUTI.md`: one token, in the compiler and all eleven packs, nothing else in them.
@@ -424,13 +424,17 @@ mukhya() {
 
   mukhya() {
       mala ok[1]
-      vitti s = vartani_grahan()
-      vitti n = vartani_tak_ank(s, ok)
-      likha(n * 2)
+      vitti s = vartani_grahan()            # read a line
+      vitti n = vartani_tak_ank(s, ok)      # convert it
+      yadi (ok[0]) { likha(n * 2) }         # it was a number: use it
+      anya { likha("sankhya na: ", s) }     # it was not: say so
   }
   ```
 
-  `ok[0]` is 1 when `s` was a number and 0 when it was not. **It is strict where `grahan()` is not:** decimal
+  `42` prints 84; **`hello` prints `sankhya na: hello`.** `ok[0]` is 1 when `s` was a number and 0 when it was
+  not, **and the value returned is then 0 - so a program that does not look at `ok[0]` prints 0 for `hello`, the
+  silent answer this function exists to prevent. Always test `ok[0]`** (up to R191 this page's own example did
+  not). **It is strict where `grahan()` is not:** decimal
   digits with one leading `-` and nothing else. `abc`, `5abc`, `12 34`, ` 42`, `+5`, `-`, the empty string, a
   number past the largest `vitti` and any text longer than 31 characters all give `ok[0] = 0` (and return 0) - each of them is a number to `grahan()`.
   **`varna_tak_ank(buf, n, ok)`, its older sibling, cannot take a string:** it reads one character code per

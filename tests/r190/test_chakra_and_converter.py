@@ -112,6 +112,16 @@ def main():
         r = subprocess.run([exe], capture_output=True, timeout=30) if exe else None
         check(bool(exe) and r.stdout == b'0 0\n', 'older-sibling', 'varna_tak_ank("42", 2, ok) is 0 with ok 0: it does not take a string',
               '- %r' % (r.stdout if r else c.stdout[-100:]))
+        # R191: the program the reference teaches must itself report a word, not print 0 for it
+        ref = open(os.path.join(ROOT, 'docs', 'LANGUAGE-REFERENCE.md'), encoding='utf-8').read()
+        i = ref.index('- **From text to a number: `vartani_tak_ank(s, ok)`**')
+        i = ref.index('```\n', i) + 4
+        taught = '\n'.join(l[2:] if l.startswith('  ') else l for l in ref[i:ref.index('```', i)].split('\n'))
+        exe, c = build(comp, work, 'taught', taught)
+        got = ([subprocess.run([exe], input=x, capture_output=True, timeout=30).stdout for x in (b'42\n', b'hello\n')]
+               if exe else ['did not compile: ' + c.stdout.decode('utf-8', 'replace')[-120:]])
+        check(got == [b'84\n', b'sankhya na: hello'], 'taught-program',
+              "the reference's own program prints 84 for 42 and reports hello", '- %r' % got)
         ex = os.path.join(ROOT, 'examples', '364_r190_vartani_tak_ank.sm')
         exe = os.path.join(work, 'ex.bin')
         subprocess.run([comp, ex, exe], capture_output=True, cwd=ROOT)

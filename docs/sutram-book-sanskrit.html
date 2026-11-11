@@ -402,8 +402,10 @@ n--      <span class="cm"># n = 5</span></code></pre>
     <span class="k" data-tip="अर्थः: array">mala</span> ok[1]
     <span class="k" data-tip="अर्थः: variable">vitti</span> s = vartani_grahan()
     <span class="k" data-tip="अर्थः: variable">vitti</span> n = vartani_tak_ank(s, ok)
-    <span class="k" data-tip="अर्थः: print">likha</span>(n * 2)
+    <span class="k" data-tip="अर्थः: if">yadi</span> (ok[0]) { <span class="k" data-tip="अर्थः: print">likha</span>(n * 2) }
+    <span class="k" data-tip="अर्थः: else">anya</span> { <span class="k" data-tip="अर्थः: print">likha</span>("sankhya na: ", s) }
 }</code></pre>
+<p><b><code>ok[0]</code> सर्वदा परीक्ष्यताम्।</b> पाठ्यं सङ्ख्या न चेत् कार्यं 0 प्रयच्छति; अतः यः क्रमादेशः परीक्षां त्यजति सः <code>hello</code> इत्यस्य कृते 0 मुद्रयति - सूचनां विना अशुद्धम् उत्तरम्।</p>
 
 <h3>सञ्चिकायाः पठनम्</h3>
 <p>स एव आवर्तः सञ्चिकां पङ्क्तिशः पठति यदा क्रमादेशाय सा सञ्चिका निवेशरूपेण दीयते: <code>./program &lt; numbers.txt</code>। सञ्चिकां तस्याः नाम्ना पठितुं <code><span class="k" data-tip="अर्थः: include">yoj</span> patra</code> <code>patra_path_sarv(path, buf, cap)</code> आनयति, यत् सम्पूर्णां सञ्चिकां स्मृतौ पठति, पठितानां बाइट्-सङ्ख्यां च प्रयच्छति (सञ्चिका न उद्घाट्यते चेत् -1); <code>akshar(buf, i)</code> <code>i</code>-तमं बाइट् प्रयच्छति। अयं क्रमादेशः सञ्चिकायां स्थितानां सर्वासां सङ्ख्यानां योगं करोति - <code>examples/362_r186_patra_sankhya_yoga.sm</code> इति उदाहरणं पश्यतु।</p>

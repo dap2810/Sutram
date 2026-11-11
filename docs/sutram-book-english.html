@@ -444,8 +444,10 @@ n--      <span class="cm"># n = 5</span></code></pre>
     <span class="k" data-tip="array">mala</span> ok[1]
     <span class="k" data-tip="variable">vitti</span> s = vartani_grahan()            <span class="cm"># read a line</span>
     <span class="k" data-tip="variable">vitti</span> n = vartani_tak_ank(s, ok)       <span class="cm"># convert it</span>
-    <span class="k" data-tip="print">likha</span>(n * 2)                          <span class="cm"># use it: 42 gives 84</span>
+    <span class="k" data-tip="if">yadi</span> (ok[0]) { <span class="k" data-tip="print">likha</span>(n * 2) }         <span class="cm"># it was a number: 42 gives 84</span>
+    <span class="k" data-tip="else">anya</span> { <span class="k" data-tip="print">likha</span>("sankhya na: ", s) }     <span class="cm"># it was not: hello is reported</span>
 }</code></pre>
+<p><b>Always look at <code>ok[0]</code>.</b> When the text is not a number the function returns 0, so a program that skips the test prints 0 for <code>hello</code> - a wrong answer with no message.</p>
 
 <h3>Reading a file</h3>
 <p>The same loop reads a file line by line when the program is given the file as its input: <code>./program &lt; numbers.txt</code>. To read a file by its name, <code><span class="k" data-tip="include">yoj</span> patra</code> brings in <code>patra_path_sarv(path, buf, cap)</code>, which reads the whole file into a buffer and returns how many bytes it read (-1 if the file cannot be opened); <code>akshar(buf, i)</code> gives byte <code>i</code>. This program adds up every number in a file:</p>
