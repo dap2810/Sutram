@@ -1,0 +1,53 @@
+Each program in evidence-r190/programs/, compiled with v325 (r189-audit-fixes 22466bda) and v326 (r190-chakra-and-converter c3b7b9ef), Linux.
+'compile stderr' is what the compiler printed on stderr; 'runs' is the program's output on one line.
+
+### chakra_5_tak_3.sm
+          chakra i = 5 tak 3 {
+          }
+  v325  runs: 5 4 3 end      compile stderr: 
+  v326  runs: 5 4 3 end      compile stderr: 
+
+### chakra_1_tak_0.sm
+          chakra i = 1 tak 0 {
+          }
+  v325  runs: 1 0 end        compile stderr: 
+  v326  runs: 1 0 end        compile stderr: 
+
+### chakra_5_tak_e.sm
+          vitti e = 3
+          chakra i = 5 tak e {
+  v325  runs: end            compile stderr: 
+  v326  runs: end            compile stderr: 
+
+### chakra_a_tak_b.sm
+          vitti a = 5
+          vitti b = 3
+          chakra i = a tak b {
+  v325  runs: end            compile stderr: 
+  v326  runs: end            compile stderr: 
+
+### chakra_n_tak_1.sm
+          vitti n = 5
+          chakra i = n tak 1 {
+  v325  runs: end            compile stderr: 
+  v326  runs: end            compile stderr: Sutram suchana: chakra 'i' urdhvam eva ganayati - arambhah antat adhikah chet ekavaram api na chalati; avarohaya 'yavat' likhatu
+
+### conv1.sm - varna_tak_ank given the string vartani_grahan() returns (v325 and v326 alike)
+  42        -> n = 0  ok = 0
+  -17       -> n = 0  ok = 0
+  7         -> n = 7  ok = 1
+  12345678  -> n = 0  ok = 0
+
+### conv2.sm - vartani_tak_ank (v326; v325 refuses it: the function does not exist)
+  '42'                   -> sankhya? dvigunam: 84
+  '-17'                  -> sankhya? dvigunam: -34
+  '0'                    -> sankhya? dvigunam: 0
+  '9223372036854775807'  -> sankhya? dvigunam: -2
+  '9223372036854775808'  -> sankhya? '9223372036854775808' sankhya na
+  'abc'                  -> sankhya? 'abc' sankhya na
+  '5abc'                 -> sankhya? '5abc' sankhya na
+  '12 34'                -> sankhya? '12 34' sankhya na
+  ' 42'                  -> sankhya? ' 42' sankhya na
+  '+5'                   -> sankhya? '+5' sankhya na
+  '-'                    -> sankhya? '-' sankhya na
+  ''                     -> sankhya? '' sankhya na

@@ -1,0 +1,8 @@
+mukhya() {
+    vitti a = 5
+    vitti b = 3
+    chakra i = a tak b {
+        likha(i)
+    }
+    likha("end")
+}

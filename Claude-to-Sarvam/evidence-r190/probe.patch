@@ -1,0 +1,56 @@
+diff --git a/src/sutram_compiler.asm b/src/sutram_compiler.asm
+index 09fd0ef7..8412276e 100644
+--- a/src/sutram_compiler.asm
++++ b/src/sutram_compiler.asm
+@@ -11676,6 +11676,9 @@ section .data
+     r186_g1_len equ $ - r186_g1
+     r186_g2 db 0x50, 0xB8,0x01,0,0,0
+     r186_g2_len equ $ - r186_g2
++    ; pop rdx ; xchg rax,rdx ; cmp rax,rdx ; jle +12 ; mov eax,60 ; mov edi,77 ; syscall
++    r190_probe_bytes db 0x5A, 0x48,0x87,0xD0, 0x48,0x39,0xD0, 0x7E,0x0C, 0xB8,0x3C,0,0,0, 0xBF,0x4D,0,0,0, 0x0F,0x05
++    r190_probe_len equ $ - r190_probe_bytes
+ section .bss
+     r184_gidx resq 1
+     r184_gset resq 1
+@@ -21411,6 +21414,41 @@ r142_gen_stmt_body:
+     pop rsi
+ 
+ .gf2_emit_entry_jump:
++    ; R190 PROBE (measurement only, never shipped): an ascending loop entered with start > end exits 77.
++    cmp qword [rel for_descend], 0
++    jne .r190_probe_done
++    test r14, r14
++    jle .r190_stk
++    mov rdi, r14
++    call emit_load_reg
++    jmp .r190_have
++.r190_stk:
++    cmp r14, -65536
++    jg .r190_stack
++    mov rdi, r14
++    neg rdi
++    sub rdi, 65537
++    call r56_emit_global_load
++    jmp .r190_have
++.r190_stack:
++    mov dil, 0x48
++    call emit_byte
++    mov dil, 0x8B
++    call emit_byte
++    push rsi
++    mov esi, r14d
++    mov dil, 0x45
++    call emit_rbp_modrm_disp
++    pop rsi
++.r190_have:
++    mov dil, 0x50               ; push rax
++    call emit_byte
++    mov rax, [rbx+24]
++    call gen_expr
++    lea rsi, [rel r190_probe_bytes]
++    mov rcx, r190_probe_len
++    call r23_emit_bytes
++.r190_probe_done:
+     ; Zero-iteration correctness: skip the body and test the bounds first.
+     mov dil, 0xE9
+     call emit_byte

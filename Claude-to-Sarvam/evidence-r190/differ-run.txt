@@ -1,0 +1,12 @@
+examples/217_r12_report.sm                       brings in vakyank  same output and exit
+examples/344_r116_varna_tak_dashm.sm             brings in vakyank  same output and exit
+examples/346_r118_old_library_names.sm           brings in vakyank  same output and exit
+tests/stdlib/breadth26.sm                        brings in vakyank  same output and exit
+tests/stdlib/r11_misc_edges.sm                   brings in vakyank  same output and exit
+tests/stdlib/r8_base_digits.sm                   brings in vakyank  same output and exit
+tests/stdlib/strconv_base.sm                     brings in vakyank  same output and exit
+tests/stdlib/strconv_int_str.sm                  brings in vakyank  same output and exit
+tests/stdlib/strconv_overflow.sm                 brings in vakyank  same output and exit
+tests/stdlib/strconv_pad.sm                      brings in vakyank  same output and exit
+
+10 programs: 10 same output and exit code on v325 and v326, 0 different; 0 do not bring in vakyank

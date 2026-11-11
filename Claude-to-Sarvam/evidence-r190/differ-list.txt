@@ -1,0 +1,10 @@
+examples/217_r12_report.sm
+examples/344_r116_varna_tak_dashm.sm
+examples/346_r118_old_library_names.sm
+tests/stdlib/breadth26.sm
+tests/stdlib/r11_misc_edges.sm
+tests/stdlib/r8_base_digits.sm
+tests/stdlib/strconv_base.sm
+tests/stdlib/strconv_int_str.sm
+tests/stdlib/strconv_overflow.sm
+tests/stdlib/strconv_pad.sm

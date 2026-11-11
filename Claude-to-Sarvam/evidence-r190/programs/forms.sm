@@ -1,0 +1,21 @@
+mukhya() {
+    vitti e = 3
+    vitti n = 0
+    chakra i = 5 arabhya e paryantam {
+        n = n + 1
+    }
+    likha(n, " ")
+    chakra j = 5 arabhya 3 paryantam {
+        likha(j, " ")
+    }
+    vitti k = 5
+    yavat (k >= e) {
+        likha(k, " ")
+        k = k - 1
+    }
+    vitti q = 5
+    kuru {
+        likha(q, " ")
+        q = q - 1
+    } yavat (q >= e)
+}

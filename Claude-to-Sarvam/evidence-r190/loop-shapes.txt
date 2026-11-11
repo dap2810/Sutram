@@ -1,0 +1,43 @@
+NOTE: the counting pattern below reads only unsigned numbers as 'a number', so the 19 loops it lists under
+'START NOT a number, END a number' are all NEGATIVE WRITTEN NUMBERS (-3 tak 0, -1 tak 4, ...), which the compiler
+does treat as numbers. Corrected: loops with a start that is truly not a number and an end that is: 0 of 157.
+(Confirmed by compiling: v326 warns about that shape, and warns about none of the guard's 787 programs.)
+
+chakra loops in tracked .sm and .smlib (not the partners' folders): 157 in 1088 files
+  both ends written as numbers, counting up:    72
+  both ends written as numbers, counting DOWN:  18 in 12 files
+  start a number, end not:                      25
+  neither a number:                             23
+  START NOT a number, END a number:             19
+  end written as "... - 1" (the empty-range shape when the count is 0): 24
+
+start not a number, end a number:
+   tests/negative/r17/r15-original/mutation-15-11196.sm:98  chakra i57 = -3 tak 0 {
+   tests/negative/r17/r15-original/mutation-15-14386.sm:48  chakra i43 = -3 tak 4 {
+   tests/negative/r17/r15-original/mutation-15-14386.sm:252  chakra i186 = -2 tak 4 {
+   tests/negative/r17/r15-original/mutation-15-1981.sm:133  chakra i78 = -2 tak 0 {
+   tests/negative/r17/r15-original/mutation-15-1981.sm:190  chakra i94 = -3 tak 1 {
+   tests/negative/r17/r15-original/mutation-15-1981.sm:348  chakra i180 = -3 tak 1 {
+   tests/negative/r17/r15-original/mutation-15-25786.sm:145  chakra i83 = -3 tak 4 {
+   tests/negative/r17/r15-original/mutation-15-2693.sm:49  chakra i40 = -2 tak 1 {
+   tests/negative/r17/r15-original/mutation-15-2693.sm:192  chakra i127 = -1 tak 2 {
+   tests/negative/r17/r15-original/mutation-15-2693.sm:303  chakra i165 = -3 tak 0 {
+   tests/negative/r17/r15-original/mutation-15-29767.sm:29  chakra i22 = -1 tak 3 {
+   tests/negative/r17/r15-original/mutation-15-34901.sm:177  chakra i127 = -1 tak 1 {
+   tests/negative/r17/r15-original/mutation-15-34901.sm:180  chakra i129 = -1 tak 2 {
+   tests/negative/r17/r15-original/mutation-15-34901.sm:289  chakra i178 = -1 tak 0 {
+   tests/negative/r17/r15-original/mutation-15-34901.sm:290  chakra i179 = -1 tak 1 {
+   tests/negative/r17/r15-original/mutation-15-34901.sm:347  chakra i217 = -3 tak 4 {
+   tests/negative/r17/r15-original/mutation-15-40049.sm:104  chakra i62 = -1 tak 0 {
+   tests/negative/r17/r15-original/mutation-15-47726.sm:104  chakra i62 = -1 tak 0 {
+   tests/negative/r17/r15-original/mutation-15-6125.sm:178  chakra i120 = -1 tak 4 {
+
+counting down with written ends (first 8):
+   examples/115_perf_loop_bottom.sm:24  chakra d = 3 tak 1 { desc = desc + d }
+   examples/36_descending.sm:3  chakra i = 5 tak 1 {
+   examples/36_descending.sm:10  chakra t = 10 tak 1 {
+   examples/36_descending.sm:17  chakra n = 9 tak 1 {
+   examples/46_language_reference.sm:21  chakra j = 5 tak 1 {
+   tests/negative/r17/r15-original/mutation-15-14386.sm:128  chakra i95 = 2 tak 0 {
+   tests/negative/r17/r15-original/mutation-15-1981.sm:118  chakra i73 = 4 tak 1 {
+   tests/negative/r17/r15-original/mutation-15-1981.sm:311  chakra i171 = 2 tak 1 {

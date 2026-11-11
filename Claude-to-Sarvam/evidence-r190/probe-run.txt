@@ -1,0 +1,12 @@
+A measurement-only compiler (never shipped; the patch is probe.patch): v325 with one addition - an ascending chakra
+entered with its start already past its end makes the program exit with code 77. Every program of the guard's set
+that compiles was compiled with it and run with the input the suite gives it.
+
+programs in the guard set that compile on v325: 591
+ran to an exit: 591   did not compile with the probe: 0   timed out: 0
+entered a counting-up chakra with its start already past its end: 1
+   examples/115_perf_loop_bottom.sm
+
+examples/362_r186_patra_sankhya_yoga.sm with an EMPTY data file (a loop over nothing):
+  v325:              prints 'yogah: 0', exit 0
+  the probe compiler: exit 77 - what a refusal at run time would do to it

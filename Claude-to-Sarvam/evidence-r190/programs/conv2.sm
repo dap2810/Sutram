@@ -1,0 +1,10 @@
+yoj vakyank
+
+mukhya() {
+    likha("sankhya? ")
+    vitti s = vartani_grahan()
+    mala ok[1]
+    vitti n = vartani_tak_ank(s, ok)
+    yadi (ok[0]) { likha("dvigunam: ", n * 2, "\n") }
+    anya { likha("'", s, "' sankhya na\n") }
+}
