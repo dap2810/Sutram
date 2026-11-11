@@ -367,9 +367,9 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <span class="k" data-tip="अर्थः: inline assembly">yantra</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
 
 <h3><span class="k" data-tip="अर्थः: input">grahan</span>() तथा निवेशस्य अन्तः</h3>
-<p>निवेशः समाप्तः चेत् <code><span class="k" data-tip="अर्थः: input">grahan</span>()</code> इदानीं <code>-1</code> प्रयच्छति, येन क्रमादेशः शुद्धतया निवृत्तः भवितुम् अर्हति:</p>
+<p><code><span class="k" data-tip="अर्थः: input">grahan</span>()</code> पूर्णसङ्ख्यां तस्याः चिह्नेन सह पठति: <code>-5</code> इति लिखिते -5 प्रयच्छति (v324 तः; ततः पूर्वं ऋणचिह्नं लुप्तम् अभवत्)। निवेशे समाप्ते <code>-1</code> प्रयच्छति - किन्तु प्रयोक्ता अपि <code>-1</code> लिखितुं शक्नोति, अतः <code>nivesha_anta()</code> पृच्छ्यताम्, यत् अन्ते एव 1 भवति। अन्तिमा सङ्ख्या यस्याः अनन्तरं नवीनपङ्क्तिः नास्ति, सा अपि पठ्यते:</p>
 <pre><code><span class="k" data-tip="अर्थः: variable">vitti</span> a = <span class="k" data-tip="अर्थः: input">grahan</span>()
-<span class="k" data-tip="अर्थः: if">yadi</span> (a == -1) {
+<span class="k" data-tip="अर्थः: if">yadi</span> (nivesha_anta()) {
     <span class="k" data-tip="अर्थः: print">likha</span>("निवेशः समाप्तः\n")
     <span class="k" data-tip="अर्थः: break">krama</span>
 }</code></pre>
@@ -387,6 +387,9 @@ n--      <span class="cm"># n = 5</span></code></pre>
     <span class="k" data-tip="अर्थः: if">yadi</span> (nivesha_anta()) { <span class="k" data-tip="अर्थः: break">krama</span> }
     <span class="k" data-tip="अर्थः: print">likha</span>(s, "\n")
 }</code></pre>
+
+<h3>सञ्चिकायाः पठनम्</h3>
+<p>स एव आवर्तः सञ्चिकां पङ्क्तिशः पठति यदा क्रमादेशाय सा सञ्चिका निवेशरूपेण दीयते: <code>./program &lt; numbers.txt</code>। सञ्चिकां तस्याः नाम्ना पठितुं <code><span class="k" data-tip="अर्थः: include">yoj</span> patra</code> <code>patra_path_sarv(path, buf, cap)</code> आनयति, यत् सम्पूर्णां सञ्चिकां स्मृतौ पठति, पठितानां बाइट्-सङ्ख्यां च प्रयच्छति (सञ्चिका न उद्घाट्यते चेत् -1); <code>akshar(buf, i)</code> <code>i</code>-तमं बाइट् प्रयच्छति। अयं क्रमादेशः सञ्चिकायां स्थितानां सर्वासां सङ्ख्यानां योगं करोति - <code>examples/362_r186_patra_sankhya_yoga.sm</code> इति उदाहरणं पश्यतु।</p>
 </div>
 
 
@@ -904,7 +907,7 @@ Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sam
 आवृणु, प्रतिवारं <code>parimana()</code> मुद्रय, कस्मिन् आवर्ते परिमितिः निषेधति इति अन्विष्य। ततः <code>mandapa</code>
 पाशस्य अन्तः नय - खण्डः प्रत्यावर्तं नवः आरभते - कदापि न निषेधति इति पश्य।</div>
 </div>
-<div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0 (compiler v323)</div>
+<div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0 (compiler v324)</div>
 </div>
 </body>
 </html>

@@ -259,7 +259,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v323) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v324) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1107,64 +1107,85 @@ r54_builtin_arity_table:
     ; Replacing the 2-byte Linux syscall with a 5-byte PE call changes the
     ; backwards branch distances in the parse loop, so the common prefix and
     ; target-specific tails are stored separately.
+    ; R186: grahan reads a sign and no longer loses an unfinished last line.
+    ; [rsp+8] = 1 when the number is negative, [rsp+9] = 1 once a digit has been read.
+    ; A '-' or '+' BEFORE the first digit sets the sign (the last one wins); after the first
+    ; digit they are passed over like any other non-digit, as before. At end of input the
+    ; digits already read are returned (with their sign); -1 only when there were none.
+    ; Written as instructions, not hand-counted db displacements; the one jump that leaves
+    ; the tail (back to .read_loop in the prefix) is computed from the labels and the size
+    ; of the platform read (2-byte syscall on Linux, 5-byte call rt_syscall in a PE).
     grahan_prefix_bytes:
-        db 0x48, 0x83, 0xEC, 0x10            ; sub rsp, 16
-        db 0x45, 0x31, 0xC0                  ; xor r8d, r8d
-        ; --- .read_loop ---
-        db 0x31, 0xC0                        ; xor eax, eax         (sys_read)
-        db 0x31, 0xFF                        ; xor edi, edi         (fd=0)
-        db 0x48, 0x89, 0xE6                  ; mov rsi, rsp         (buf)
-        db 0xBA, 0x01, 0x00, 0x00, 0x00      ; mov edx, 1          (len)
+        sub rsp, 16
+        xor r8d, r8d
+        mov word [rsp+8], 0
+    grahan_read_loop:
+        xor eax, eax                         ; sys_read
+        xor edi, edi                         ; fd = 0
+        mov rsi, rsp                         ; buf
+        mov edx, 1                           ; one byte, as always
     grahan_prefix_end:
     GRAHAN_PREFIX_LEN equ grahan_prefix_end - grahan_prefix_bytes
+    GRAHAN_LOOP_OFF   equ grahan_prefix_end - grahan_read_loop
 
-    ; Tail for Linux: follows a 2-byte syscall at offset 19.
+%macro R186_GRAHAN_TAIL 1
+        ; %1 = bytes of the platform read between the prefix and this tail
+%%t:
+        test eax, eax
+        jle short %%eof
+        movzx edx, byte [rsp]
+        cmp dl, 10
+        je short %%done
+        cmp dl, '0'
+        jl short %%notdig
+        cmp dl, '9'
+        jg short %%back                      ; above '9': passed over
+        sub dl, '0'
+        imul r8, r8, 10
+        add r8, rdx
+        mov byte [rsp+9], 1                  ; a digit has been read
+        jmp short %%back
+%%notdig:
+        cmp byte [rsp+9], 0
+        jne short %%back                     ; after the first digit: passed over, as before
+        cmp dl, '-'
+        jne short %%plus
+        mov byte [rsp+8], 1
+        jmp short %%back
+%%plus:
+        cmp dl, '+'
+        jne short %%back
+        mov byte [rsp+8], 0
+        jmp short %%back
+%%back:                                      ; the one jump out of the tail: back to .read_loop
+        db 0xEB
+        db (%%t - $ - 1) - GRAHAN_LOOP_OFF - %1
+%%eof:
+        cmp byte [rsp+9], 0
+        jne short %%done                     ; digits were read: return them
+        mov rax, -1                          ; nothing was read: end of input
+        mov edx, 1                           ; edx = 1: tells the code after the tail to set nivesha_anta
+        jmp short %%ret
+%%done:
+        xor edx, edx                         ; edx = 0: a number (or an empty line), not the end
+        mov rax, r8
+        cmp byte [rsp+8], 0
+        je short %%ret
+        neg rax
+%%ret:
+        add rsp, 16
+%endmacro
+
     grahan_linux_tail:
-        db 0x85, 0xC0                        ; test eax, eax
-        db 0x7E, 0x24                        ; jle .eof (+36)
-        db 0x0F, 0xB6, 0x14, 0x24            ; movzx edx,[rsp]
-        db 0x80, 0xFA, 0x0A                  ; cmp dl, 10
-        db 0x74, 0x16                        ; je .done (+22)
-        db 0x80, 0xFA, 0x30                  ; cmp dl, '0'
-        db 0x7C, 0xE0                        ; jl .read_loop (-32)
-        db 0x80, 0xFA, 0x39                  ; cmp dl, '9'
-        db 0x7F, 0xDB                        ; jg .read_loop (-37)
-        db 0x80, 0xEA, 0x30                  ; sub dl, '0'
-        db 0x4D, 0x6B, 0xC0, 0x0A            ; imul r8, r8, 10
-        db 0x49, 0x01, 0xD0                  ; add r8, rdx
-        db 0xEB, 0xCF                        ; jmp .read_loop (-49)
-        ; --- .done ---
-        db 0x4C, 0x89, 0xC0                  ; mov rax, r8
-        db 0xEB, 0x07                        ; jmp .ret (+7)
-        ; --- .eof: EOF -> return -1 ---
-        db 0x48, 0xC7, 0xC0, 0xFF, 0xFF, 0xFF, 0xFF ; mov rax, -1
-        ; --- .ret ---
-        db 0x48, 0x83, 0xC4, 0x10            ; add rsp, 16
+        R186_GRAHAN_TAIL 2
     grahan_linux_tail_end:
     GRAHAN_TAIL_LEN equ grahan_linux_tail_end - grahan_linux_tail
 
-    ; Tail for PE: follows a 5-byte call to rt_syscall.  Forward branches keep
-    ; the same displacement; only the three branches back to .read_loop grow by 3.
     grahan_pe_tail:
-        db 0x85, 0xC0                        ; test eax, eax
-        db 0x7E, 0x24                        ; jle .eof (+36)
-        db 0x0F, 0xB6, 0x14, 0x24            ; movzx edx,[rsp]
-        db 0x80, 0xFA, 0x0A                  ; cmp dl, 10
-        db 0x74, 0x16                        ; je .done (+22)
-        db 0x80, 0xFA, 0x30                  ; cmp dl, '0'
-        db 0x7C, 0xDD                        ; jl .read_loop (-35)
-        db 0x80, 0xFA, 0x39                  ; cmp dl, '9'
-        db 0x7F, 0xD8                        ; jg .read_loop (-40)
-        db 0x80, 0xEA, 0x30                  ; sub dl, '0'
-        db 0x4D, 0x6B, 0xC0, 0x0A            ; imul r8, r8, 10
-        db 0x49, 0x01, 0xD0                  ; add r8, rdx
-        db 0xEB, 0xCC                        ; jmp .read_loop (-52)
-        db 0x4C, 0x89, 0xC0                  ; mov rax, r8
-        db 0xEB, 0x07                        ; jmp .ret (+7)
-        db 0x48, 0xC7, 0xC0, 0xFF, 0xFF, 0xFF, 0xFF ; mov rax, -1
-        db 0x48, 0x83, 0xC4, 0x10            ; add rsp, 16
+        R186_GRAHAN_TAIL 5
     grahan_pe_tail_end:
     GRAHAN_PE_TAIL_LEN equ grahan_pe_tail_end - grahan_pe_tail
+
 
     ; T12 fixed-six-decimal float printer. Input: raw binary64 bits in RAX.
     ; Prefix ends immediately before the platform write syscall/call so the
@@ -11655,6 +11676,11 @@ section .data
     r184_c9 db 0x48,0x8B,0x34,0x24, 0x48,0x8B,0x4C,0x24,0x08, 0x48,0x85,0xC9, 0x74,0x0A, 0x80,0x7C,0x0E,0xFF,0x0D, 0x75,0x03
             db 0x48,0xFF,0xC9, 0xC6,0x04,0x0E,0x00, 0x48,0x89,0xF0, 0x48,0x83,0xC4,0x20
     r184_c9_len equ $ - r184_c9
+    ; R186: after grahan's tail - test edx,edx ; jz rel32   and   push rax ; mov eax,1
+    r186_g1 db 0x85,0xD2, 0x0F,0x84
+    r186_g1_len equ $ - r186_g1
+    r186_g2 db 0x50, 0xB8,0x01,0,0,0
+    r186_g2_len equ $ - r186_g2
 section .bss
     r184_gidx resq 1
     r184_gset resq 1
@@ -23667,6 +23693,9 @@ r142_gen_expr_body:
     jmp .ge_lk_3reg
 
 .ge_call_grahan:
+    ; R186: grahan sets nivesha_anta() too when it meets the end of input with nothing read, so that a
+    ; typed -1 (read correctly from v324) can be told from the end. Registered before the blob.
+    call r184_ensure_flag
     ; Inline integer input parser.  Crucially, emit the read through
     ; emit_syscall so PE output reaches rt_syscall -> kernel32!ReadFile rather
     ; than executing a Linux 0F 05 instruction inside a Windows process.
@@ -23702,6 +23731,23 @@ r142_gen_expr_body:
     inc r13
     jmp .grahan_emit_tail
 .grahan_emit_done:
+    ; R186: test edx,edx ; jz .skip (rel32) ; push rax ; mov eax,1 ; mov [0nivesha_anta],rax ; pop rax ; .skip:
+    lea rsi, [rel r186_g1]
+    mov rcx, r186_g1_len
+    call r23_emit_bytes
+    mov rax, [rel code_sz]
+    push rax                       ; the rel32 of jz .skip
+    xor edi, edi
+    call emit_u32
+    lea rsi, [rel r186_g2]
+    mov rcx, r186_g2_len
+    call r23_emit_bytes
+    mov rdi, [rel r184_gidx]
+    call r56_emit_global_store
+    mov dil, 0x58                  ; pop rax
+    call emit_byte
+    pop rdi
+    call r73_patch32
     pop r14
     pop r13
     pop r12

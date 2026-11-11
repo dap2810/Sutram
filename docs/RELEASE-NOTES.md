@@ -1,7 +1,7 @@
-# Sutram 1.0 (v323) — release notes
+# Sutram 1.0 (v324) — release notes
 
-**Compiler `Sutram 1.0 (v323) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v323). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v324) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v324). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,14 +9,21 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v323 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v324 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v323 closes, and what it does not (R140-R184, AUDIT-01)
+## Status: what v324 closes, and what it does not (R140-R186, AUDIT-01)
+
+**v324 (R186): `grahan()` no longer gives a silent wrong number.** `-5` read as 5, and a last number with no
+newline after it was lost; both are fixed, and `grahan()` sets `nivesha_anta()` at the end of input so a typed
+`-1` is not taken for the end. **7 programs' bytes change - the seven that call `grahan`;** on ordinary input
+they print what they printed. **Not closed:** `grahan()` still passes over letters (`5abc` is 5) and a number
+past the largest `vitti` wraps. Reading a file is now shown (`examples/362`, `363`) and the reference's `dvaram`
+and `paadh` rows, which said each other's job, are corrected.
 
 **v323 (R184): a program can read text.** `vartani_grahan()` reads one line and returns it as a string, without
 its newline and without a length limit; `nivesha_anta()` is 1 once the input has ended, so a loop that reads
-every line stops. `grahan()` is unchanged. **No existing program changes** (guard: 0 DIFFER against v322).
+every line stops. `grahan()` is unchanged in v323. **No existing program changes** (guard: 0 DIFFER against v322).
 **Not closed:** it reads a byte at a time (5.1 s for a 24.9 MB file), and each line's memory is kept until the
 program ends.
 
@@ -267,7 +274,7 @@ Measured, with where:
   - division by zero stops with `E_SHUNYA_BHAJAN`;
   - a literal or constant expression past 64 bits is refused (`E_ATIPRAVAH`).
 - **Tests:**
-  - 333 examples (329 with a golden);
+  - 335 examples (331 with a golden);
   - 69 Linux gates, including a guard that compiles every program before and after each change and compares
     the bytes;
   - 227 crash-corpus cases;
@@ -516,6 +523,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v324 (staged):** `grahan()` reads a sign and an unfinished last number; a file read in two examples; the `dvaram` / `paadh` rows corrected (R186).
 - **v323 (staged):** `vartani_grahan()` reads a line of text; `nivesha_anta()` says the input has ended (R184).
 - **v322 (staged):** five defects of the owner's audit (AUDIT-01): the value of a `prakriya` without `nivartanam`,
   `krama` outside a loop, a `mala`'s length, `likha` of a `mala`, a `kosh` as a condition.

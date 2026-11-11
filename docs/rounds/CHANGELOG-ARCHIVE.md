@@ -1,5 +1,19 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v304 (Claude, R129) - a `kosh` parameter can grow, and the caller sees it
+
+- **`kosh_kship` onto a `kosh` parameter compiles, and the growth is the caller's** - the parameter holds the
+  descriptor (v302), as an alias does. Up to v303 it was refused with `kosh-tarke kosh_push asamarthitam`, a
+  message that gave neither the current name nor the reason; the refusal dated from T18, when a parameter held
+  the elements' address. Measured: 10 pushes through `jod(kk, i)` give `kosh_gan(kk)` 10; 9,000,000 through a
+  parameter, past a region move, all seen; a block's `kosh` grown by a `prakriya` in 100 blocks.
+  `examples/121` (which pinned the refusal, "until Sutram gains a descriptor ABI") now prints 1.
+- **What it rules out, `E_KOSH_VIBHAG`:** a slice of a `kosh` given to a `prakriya` that may grow a `kosh` (it, or
+  one it calls - worked out for the whole program to a fixpoint), or given beside an argument that has a call in
+  it. A slice holds the elements' address as they were. No program in the tree does either.
+- `docs/reports/HOW-DEFECTS-WERE-FOUND.md`: reading and testing found different defects; neither alone was enough.
+  Gate `R127 descriptor` +5 checks.
+
 ## v303 (Claude, R128) - three descriptor defects ChatGPT R203 found by reading: fixed
 
 - **A `kosh`'s length and elements are read after its index is evaluated** (`k[i]`, `k[i] = v`) and after a

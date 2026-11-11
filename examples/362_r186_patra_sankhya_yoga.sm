@@ -1,0 +1,20 @@
+# R186: read a whole file by its path (yoj patra, patra_path_sarv) and sum the numbers in it.
+# examples/data/r186_sankhya.txt holds: 10 20 / ankah 3 / 9 - the sum is 42.
+# akshar(buf, i) gives byte i of the buffer; anything that is not a digit ends a number.
+yoj patra
+
+mukhya() {
+    vitti buf = nirmmita(65536)
+    vitti n = patra_path_sarv("examples/data/r186_sankhya.txt", buf, 65536)
+    yadi (n < 0) { likha("patra na labdham\n") }
+    anya {
+        vitti yoga = 0
+        vitti ank = 0
+        chakra i = 0 tak n - 1 {
+            vitti b = akshar(buf, i)
+            yadi (b >= 48 && b <= 57) { ank = ank * 10 + b - 48 }
+            anya { yoga = yoga + ank  ank = 0 }
+        }
+        likha("yogah: ", yoga + ank)
+    }
+}

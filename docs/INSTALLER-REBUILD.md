@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R186 (v324):** the compiler changed (`grahan()`); nothing else in the payload but the documents, two examples
+and their fixture. Built from an empty `--work` folder.
+
 **R184 (v323):** the compiler changed (`vartani_grahan()`, `nivesha_anta()`); nothing else in the payload but
 the documents and two examples. Built from an empty `--work` folder.
 

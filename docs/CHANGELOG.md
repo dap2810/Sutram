@@ -1,4 +1,35 @@
-> **The 20 newest entries.** Older ones, from "v303" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v304" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v324 (Claude, R186) - `grahan()` reads a sign and an unfinished last number; reading a file, shown; two reference rows that said each other's job
+
+- **`grahan()` lost a minus sign: `-5` read as 5** - a silent wrong answer (found R184, measured again: v323
+  `-5` -> 5, `+5` -> 5). From v324 a `-` or `+` before the first digit is the sign (the last one wins; after the
+  first digit both are still passed over, so `12-34` is 1234). The smallest `vitti`, `-9223372036854775808`,
+  reads exactly.
+- **`grahan()` lost a last number with no newline after it:** `42` then the end of input gave -1. From v324 it
+  gives 42, and the next call gives -1.
+- **`grahan()` now sets `nivesha_anta()` at the end of input** - it must, because a typed `-1` is now read as
+  -1, which was `grahan()`'s only end sign. A loop of `grahan()` asks `nivesha_anta()`; the books' example does.
+  `vartani_grahan()` is unchanged (it never had the unfinished-last-line defect - tested).
+- **How:** the `grahan` code was written as hand-counted `db` bytes; it is now instructions in a macro, two
+  flags on its stack frame (sign, a digit seen), and one jump whose length is computed from labels for the
+  Linux and the Windows read. A program that uses `grahan` now carries the hidden `0nivesha_anta`.
+- **Not changed, and stated in reference section 4d:** `5abc` is 5, `12 34` is 1234, `abc` is 0, a number past
+  the largest `vitti` wraps.
+- **Reading a file:** `examples/362_r186_patra_sankhya_yoga.sm` reads `examples/data/r186_sankhya.txt` by its
+  path (`yoj patra`, `patra_path_sarv`) and sums its numbers (42); `363_r186_pankti_ganana_patra.sm` counts its
+  lines given as the program's input (3). Both with goldens; the fixture is in the tree. Reference: "Reading a
+  file", after section 4d; both books, a section after `vartani_grahan`.
+- **The reference's `dvaram` row said "patra descriptor helper" and `paadh`'s "open a file": `dvaram` opens,
+  `paadh` reads.** Corrected, with their arguments. Eight more rows corrected after measuring each: `pad`
+  reads one byte; `likh8` and `pad8` move eight bytes, not eight bits; `likh8c` / `pad8c` are bounds-checked
+  stores, not "print / read a character"; `aksharank`'s "index currently ignored" was false; `vartani_tul`
+  gives equal / not equal, no order; three rows said "varna" where a string is meant.
+- **Gate `R186 grahan and files`** (`tests/r186/test_grahan_and_files.py`, 24 checks; 10 of them fail on v323).
+- **The guard, against v323: 7 DIFFER - the seven programs that compile and call `grahan`;** run on both
+  compilers with five ordinary inputs each, they print the same; they differ on `-5` and on an unfinished last
+  number, which is the fix. 582 identical, 196 refused identically, 2 new. Installer rebuilt (payload v324).
+  Not run on Windows; the Windows executables run under Wine.
 
 ## v323 (Claude, R184) - `vartani_grahan()` reads a line of text; `nivesha_anta()` says the input has ended
 
@@ -481,17 +512,3 @@
 - **The release notes corrected as R204 lists:** what a `mandapa` and `parimana()` cover, finite limits, what the
   out-of-memory message covers, the slice rules, what the allocator keeps, the v298 history, objects of mixed
   versions. Gate `R127 descriptor` +5 checks.
-
-## v304 (Claude, R129) - a `kosh` parameter can grow, and the caller sees it
-
-- **`kosh_kship` onto a `kosh` parameter compiles, and the growth is the caller's** - the parameter holds the
-  descriptor (v302), as an alias does. Up to v303 it was refused with `kosh-tarke kosh_push asamarthitam`, a
-  message that gave neither the current name nor the reason; the refusal dated from T18, when a parameter held
-  the elements' address. Measured: 10 pushes through `jod(kk, i)` give `kosh_gan(kk)` 10; 9,000,000 through a
-  parameter, past a region move, all seen; a block's `kosh` grown by a `prakriya` in 100 blocks.
-  `examples/121` (which pinned the refusal, "until Sutram gains a descriptor ABI") now prints 1.
-- **What it rules out, `E_KOSH_VIBHAG`:** a slice of a `kosh` given to a `prakriya` that may grow a `kosh` (it, or
-  one it calls - worked out for the whole program to a fixpoint), or given beside an argument that has a call in
-  it. A slice holds the elements' address as they were. No program in the tree does either.
-- `docs/reports/HOW-DEFECTS-WERE-FOUND.md`: reading and testing found different defects; neither alone was enough.
-  Gate `R127 descriptor` +5 checks.

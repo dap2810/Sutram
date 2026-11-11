@@ -1,0 +1,13 @@
+# R186: count the lines of a file. A Sutram program reads a file line by line by being GIVEN the
+# file as its input:   ./363_r186_pankti_ganana_patra < examples/data/r186_sankhya.txt
+# vartani_grahan() reads each line; nivesha_anta() is 1 when the file ends. There is no
+# line-reader that takes a path - for that, read the whole file with patra_path_sarv (example 362).
+mukhya() {
+    vitti n = 0
+    yavat (1) {
+        vitti s = vartani_grahan()
+        yadi (nivesha_anta()) { krama }
+        n = n + 1
+    }
+    likha("panktayah: ", n)
+}

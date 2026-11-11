@@ -409,9 +409,9 @@ n--      <span class="cm"># n = 5</span></code></pre>
 <span class="k" data-tip="inline assembly">yantra</span>("0F 05")            <span class="cm"># syscall → exit(42)</span></code></pre>
 
 <h3><span class="k" data-tip="input">grahan</span>() and end of input</h3>
-<p>When input ends, <code><span class="k" data-tip="input">grahan</span>()</code> now returns <code>-1</code>, so programs can exit cleanly:</p>
+<p><code><span class="k" data-tip="input">grahan</span>()</code> reads a whole number, with its sign: type <code>-5</code> and it gives -5 (from v324; before that the minus sign was lost). When the input has ended it returns <code>-1</code> - but a person can also type <code>-1</code>, so ask <code>nivesha_anta()</code>, which is 1 only at the end. A last number with no newline after it is still read:</p>
 <pre><code><span class="k" data-tip="variable">vitti</span> a = <span class="k" data-tip="input">grahan</span>()
-<span class="k" data-tip="if">yadi</span> (a == -1) {
+<span class="k" data-tip="if">yadi</span> (nivesha_anta()) {
     <span class="k" data-tip="print">likha</span>("Input ended\n")
     <span class="k" data-tip="break">krama</span>
 }</code></pre>
@@ -428,6 +428,23 @@ n--      <span class="cm"># n = 5</span></code></pre>
     <span class="k" data-tip="variable">vitti</span> s = vartani_grahan()
     <span class="k" data-tip="if">yadi</span> (nivesha_anta()) { <span class="k" data-tip="break">krama</span> }
     <span class="k" data-tip="print">likha</span>(s, "\n")
+}</code></pre>
+
+<h3>Reading a file</h3>
+<p>The same loop reads a file line by line when the program is given the file as its input: <code>./program &lt; numbers.txt</code>. To read a file by its name, <code><span class="k" data-tip="include">yoj</span> patra</code> brings in <code>patra_path_sarv(path, buf, cap)</code>, which reads the whole file into a buffer and returns how many bytes it read (-1 if the file cannot be opened); <code>akshar(buf, i)</code> gives byte <code>i</code>. This program adds up every number in a file:</p>
+<pre><code><span class="k" data-tip="include">yoj</span> patra
+
+<span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="variable">vitti</span> buf = <span class="k" data-tip="allocate">nirmmita</span>(65536)
+    <span class="k" data-tip="variable">vitti</span> n = patra_path_sarv("examples/data/r186_sankhya.txt", buf, 65536)
+    <span class="k" data-tip="variable">vitti</span> yoga = 0
+    <span class="k" data-tip="variable">vitti</span> ank = 0
+    <span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">tak</span> n - 1 {
+        <span class="k" data-tip="variable">vitti</span> b = akshar(buf, i)
+        <span class="k" data-tip="if">yadi</span> (b &gt;= 48 &amp;&amp; b &lt;= 57) { ank = ank * 10 + b - 48 }
+        <span class="k" data-tip="else">anya</span> { yoga = yoga + ank  ank = 0 }
+    }
+    <span class="k" data-tip="print">likha</span>("yogah: ", yoga + ank)
 }</code></pre>
 </div>
 
@@ -983,7 +1000,7 @@ stops the program with a sentence that says which, not a crash.</p>
 <code>nirmmita(64)</code>, print <code>parimana()</code> each time round, and find the pass on which the budget
 refuses. Then move <code>mandapa</code> inside the loop, so the block starts again on every pass, and watch it never refuse.</div>
 </div>
-<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v323)</div>
+<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v324)</div>
 </div>
 </body>
 </html>

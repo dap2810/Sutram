@@ -54,6 +54,7 @@ STDIN = {
     "59_windows_grahan_runtime": "42\n",
     "360_r184_vartani_grahan": "Asha Patel\n",                  # R184: one line of text
     "361_r184_pankti_ganana": "ekam\n\ndve trini\nantim",       # R184: an empty line, and a last line without a newline
+    "363_r186_pankti_ganana_patra": open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "examples", "data", "r186_sankhya.txt")).read(),  # R186: the fixture file as input
 }
 # examples whose exit code is intentionally non-zero
 EXIT_OVERRIDE = {
