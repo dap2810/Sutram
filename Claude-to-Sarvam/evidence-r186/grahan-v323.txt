@@ -1,0 +1,21 @@
+## grahan() on v323 (r184-read-a-line f05ddd7e), program g1.sm, Linux
+'-5\n'                     -> 5
+'+5\n'                     -> 5
+'5abc\n'                   -> 5
+'\n'                       -> 0
+'42'                       -> -1
+'9223372036854775807\n'    -> 9223372036854775807
+'9223372036854775808\n'    -> -9223372036854775808
+'99999999999999999999\n'   -> 7766279631452241919
+'12 34\n'                  -> 1234
+'abc\n'                    -> 0
+''                         -> -1
+
+## the same compiler, more inputs
+'-1\n'                     -> 1
+'-42'                      -> -1
+'a-5\n'                    -> 5
+'12-34\n'                  -> 1234
+
+## g3.sm (grahan loop ended by nivesha_anta) on v323: grahan never sets the flag
+exit 124 (124 = stopped after 3 s: the loop does not end)

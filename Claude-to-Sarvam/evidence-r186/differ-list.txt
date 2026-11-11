@@ -1,0 +1,7 @@
+examples/23_grahan_input.sm
+examples/24_guess_game.sm
+examples/26_calculator.sm
+examples/46_language_reference.sm
+examples/59_windows_grahan_runtime.sm
+tests/r79_real/report_blocks.sm
+tests/r79_real/report_plain.sm

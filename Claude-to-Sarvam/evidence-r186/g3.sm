@@ -1,0 +1,11 @@
+mukhya() {
+    vitti n = 0
+    vitti s = 0
+    yavat (1) {
+        vitti a = grahan()
+        yadi (nivesha_anta()) { krama }
+        n = n + 1
+        s = s + a
+    }
+    likha(n, " sankhyah, yogah ", s)
+}

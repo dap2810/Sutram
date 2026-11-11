@@ -1,0 +1,35 @@
+## grahan() on v324 (r186-grahan-and-files b180bda4), program g1.sm, Linux
+'-5\n'                     -> -5
+'+5\n'                     -> 5
+'5abc\n'                   -> 5
+'\n'                       -> 0
+'42'                       -> 42
+'-42'                      -> -42
+'12 34\n'                  -> 1234
+'abc\n'                    -> 0
+'a-5\n'                    -> -5
+'12-34\n'                  -> 1234
+'+-5\n'                    -> -5
+'-+5\n'                    -> 5
+'-\n'                      -> 0
+''                         -> -1
+'-1\n'                     -> -1
+'9223372036854775807\n'    -> 9223372036854775807
+'-9223372036854775808\n'   -> -9223372036854775808
+'9223372036854775808\n'    -> -9223372036854775808
+'99999999999999999999\n'   -> 7766279631452241919
+
+## g2.sm (two reads)
+'42'       -> 42 -1
+'-7\n42'   -> -7 42
+'5\n'      -> 5 -1
+
+## g3.sm (a loop of grahan ended by nivesha_anta)
+'-1\n5\n-4'    -> 3 sankhyah, yogah 0
+''             -> 0 sankhyah, yogah 0
+'\n\n'         -> 2 sankhyah, yogah 0
+
+## loop.sm (vartani_grahan, the sibling) < 'one\nlast'
+1: [one] 3
+2: [last] 4
+panktayah: 2

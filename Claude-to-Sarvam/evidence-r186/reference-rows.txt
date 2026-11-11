@@ -1,0 +1,24 @@
+Each suspect row of the reference's built-in table, run on v324 (Linux). The program and what it printed.
+
+dvaram / paadh : read in lib/patra.smlib (fd = dvaram(p, 0); n = paadh(fd, dst + total, c - total)) and in the
+                 builtins' own comments; dvaram opens, paadh reads. The reference said "patra descriptor
+                 helper" and "open a file".
+likh8c(65)     : refused - vyakaran dosh. Its arity is 3: likh8c(addr, val, bound).
+pad8c()        : refused - vyakaran dosh. Its arity is 2: pad8c(addr, bound).
+likh8c(p, 1, 65) with p[0] = -1: p[0] still -1 (p, an address, is >= the bound 65: nothing written);
+                 pad8c(p, 1) gives 0 (p >= 1). The source: "likh8c(addr, val, bound) - bounds-checked write",
+                 "pad8c(addr, bound) - bounds-checked read". The reference said "print / read a character".
+p[0] = 123456789 ; pad(p), pad8(p)   -> 21 123456789     pad reads ONE byte (123456789 & 255 = 21); pad8 reads 8
+p[0] = -1 ; likh(p, 65) ; p[0]       -> 65               likh writes 8 bytes
+p[0] = -1 ; likh8(p, 65) ; p[0]      -> 65               likh8 writes 8 bytes (an 8-bit write would leave -191)
+aksharank("ABC", 0), aksharank("ABC", 2) -> 65 67        the index is used ("index currently ignored" is false)
+akshar("ABC", 0), akshar("ABC", 2)       -> 65 67
+vartani_tul("ab","ab"), ("ab","ac"), ("ac","ab") -> 0 1 1   equal / not equal; no order
+vartani_tul("ab","ab"), ("ab","abc"), ("b","a")  -> 0 1 1
+vartani_aayam("abcd")                    -> 4
+b = nirmmita(16) ; vartani_pratilip(b, "hey") ; shabda(b) -> hey
+mala m[7] ; pankti_gan(m)                -> 7
+akshar_guru(97), akshar_laghu(65)        -> 65 97
+smaran(p, 7, 3) ; pad8(p), pad8(p+2), pad8(p+3) -> 460551 7 0   smaran(p, v, n) fills n bytes with v
+                                                            (460551 = 0x070707: three bytes of 7)
+sthagita() between two likha: prints "a" only                -> halts, as the row says

@@ -1,0 +1,7 @@
+examples/23_grahan_input.sm              same output for inputs: '5\n':= '7\n3\n2\n':= '20\n4\n':= '12\n30\n1\n':= '-5\n3\n':DIFF '42':DIFF '':=
+examples/24_guess_game.sm                same output for inputs: '5\n':= '7\n3\n2\n':= '20\n4\n':= '12\n30\n1\n':= '-5\n3\n':= '42':DIFF '':=
+examples/26_calculator.sm                same output for inputs: '5\n':= '7\n3\n2\n':= '20\n4\n':= '12\n30\n1\n':= '-5\n3\n':DIFF '42':DIFF '':=
+examples/46_language_reference.sm        same output for inputs: '5\n':= '7\n3\n2\n':= '20\n4\n':= '12\n30\n1\n':= '-5\n3\n':= '42':= '':=
+examples/59_windows_grahan_runtime.sm    same output for inputs: '5\n':= '7\n3\n2\n':= '20\n4\n':= '12\n30\n1\n':= '-5\n3\n':DIFF '42':DIFF '':=
+tests/r79_real/report_blocks.sm          same output for inputs: '5\n':= '7\n3\n2\n':= '20\n4\n':= '12\n30\n1\n':= '-5\n3\n':DIFF '42':DIFF '':=
+tests/r79_real/report_plain.sm           same output for inputs: '5\n':= '7\n3\n2\n':= '20\n4\n':= '12\n30\n1\n':= '-5\n3\n':DIFF '42':DIFF '':=
