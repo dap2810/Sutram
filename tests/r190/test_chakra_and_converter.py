@@ -129,6 +129,39 @@ def main():
                if os.path.exists(exe) else ['did not compile'])
         check(got == [b'sankhya? dvigunam: 42\n', b"sankhya? 'abc' sankhya na\n"], 'example-364',
               'the example doubles 21 and reports abc', '- %r' % got)
+        # R192: a student follows the books literally. The first program's printed size must be the size the
+        # compiler prints, and every whole program in the input section must compile and do what the page says.
+        import html as _html
+        import re as _re
+        for book in ('english', 'sanskrit'):
+            doc = open(os.path.join(ROOT, 'docs', 'sutram-book-%s.html' % book), encoding='utf-8').read()
+            text = lambda h: _html.unescape(_re.sub(r'<[^>]+>', '', h))
+            ch2 = doc[doc.index('id="ch2"'):doc.index('id="ch3"')]
+            blocks = [text(b) for b in _re.findall(r'<pre><code>(.*?)</code></pre>', ch2, _re.S)]
+            exe, c = build(comp, work, 'first_' + book, blocks[0] + '\n')
+            said = _re.search(r'Siddh: \d+ baait sankalit', blocks[1])
+            out = c.stdout.decode('utf-8', 'replace') + c.stderr.decode('utf-8', 'replace')
+            check(bool(exe) and bool(said) and said.group(0) in out, 'book-first-' + book,
+                  'the first program compiles and the book prints the size the compiler prints',
+                  '- book %r, compiler %r' % (said.group(0) if said else None, out[:60]))
+            a = doc.index('nivesha_anta()')
+            a = doc.rindex('<h3>', 0, a)
+            sec = doc[a:doc.index('patra_path_sarv', a)]
+            progs = [text(b) for b in _re.findall(r'<pre><code>(.*?)</code></pre>', sec, _re.S)]
+            whole = [b for b in progs if 'mukhya' in b]
+            bad = []
+            for n, src in enumerate(whole):
+                exe, c = build(comp, work, 'in_%s_%d' % (book, n), src + '\n')
+                if not exe:
+                    bad.append(src.split('\n')[1].strip())
+            check(len(whole) >= 3 and not bad, 'book-input-' + book,
+                  'every whole program in the input section compiles (%d)' % len(whole), '- %r' % bad)
+            adder = [b for b in whole if 'grahan()' in b and 'vartani_grahan' not in b]
+            exe = build(comp, work, 'adder_' + book, adder[0] + '\n')[0] if adder else None
+            got = ([subprocess.run([exe], input=x, capture_output=True, timeout=30).stdout
+                    for x in (b'5\n-1\n3\n', b'1\n2', b'hello\n', b'')] if exe else ['no grahan program'])
+            check(got == [b'yoga: 7\n', b'yoga: 3\n', b'yoga: 0\n', b'yoga: 0\n'], 'book-grahan-' + book,
+                  'the grahan program adds 5 -1 3 to 7, reads an unfinished last number, counts hello as 0', '- %r' % got)
     finally:
         shutil.rmtree(work, ignore_errors=True)
     print('r190 chakra and converter: %d checks, %d failed' % (checks, fails))

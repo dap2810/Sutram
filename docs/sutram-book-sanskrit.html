@@ -97,10 +97,10 @@ x86-64 मशीन-कोड्-रूपेण परिवर्तते। 
     <span class="k" data-tip="अर्थः: print">likha</span>("Namaste, Sutram!\n")</code></pre>
 <p>एतत् <code>namaste.sm</code> इति नाम्ना रक्षतु, ततः संकलय च प्रचालय:</p>
 <pre><code>$ sutram namaste.sm namaste.bin
-Siddh: 97 baait sankalit
+Siddh: 112 baait sankalit
 $ ./namaste.bin
 <span class="out">Namaste, Sutram!</span></code></pre>
-<div class="note">संकलकःः सम्पूर्णं चालनीयं ELF-बाइनरी निर्माति — अस्मै क्रमादेशःाय केवलं ९० बाइट्।</div>
+<div class="note">संकलकःः सम्पूर्णं चालनीयं ELF-बाइनरी निर्माति — अस्मै क्रमादेशःाय केवलं ११२ बाइट्।</div>
 </div>
 <div class="ch" id="ch3"><h2>3. चराणि च स्थिराङ्काः <span class="en-gloss">(Variables and constants)</span></h2>
 <p><code><span class="k" data-tip="अर्थः: variable">vitti</span></code> ("वृत्तिः / अवस्था") इत्यनेन चरं निर्माति। पूर्णाङ्कस्य कृते <code><span class="k" data-tip="अर्थः: integer">anka</span></code>।
@@ -232,9 +232,9 @@ Sutram-kathanam likhatu, Enter nudatu. Sadyah chalishyati.
 Aadeshah: sahayata (sahayata) | nirgat (nirgamanam) | sarvam (sarvam pashyatu)
 
 <span class="k" data-tip="अर्थः: constant">sutra</span>> <span class="k" data-tip="अर्थः: variable">vitti</span> x = 21
-Siddh: 54 baait sankalit
+Siddh: 69 baait sankalit
 <span class="k" data-tip="अर्थः: constant">sutra</span>> <span class="k" data-tip="अर्थः: print">likha</span>(x / 3)
-Siddh: 201 baait sankalit
+Siddh: 216 baait sankalit
 7
 <span class="k" data-tip="अर्थः: constant">sutra</span>> nirgat</code></pre>
 <p>भवतः प्रत्येका पङ्क्तिः एके वर्धमाने सत्र-क्रमादेशःे युज्यते, तत्क्षणं संकल्य च चाल्यते।
@@ -374,11 +374,16 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="अर्थः: input">grahan</span>() तथा निवेशस्य अन्तः</h3>
 <p><code><span class="k" data-tip="अर्थः: input">grahan</span>()</code> पूर्णसङ्ख्यां तस्याः चिह्नेन सह पठति: <code>-5</code> इति लिखिते -5 प्रयच्छति (v324 तः; ततः पूर्वं ऋणचिह्नं लुप्तम् अभवत्)। निवेशे समाप्ते <code>-1</code> प्रयच्छति - किन्तु प्रयोक्ता अपि <code>-1</code> लिखितुं शक्नोति, अतः <code>nivesha_anta()</code> पृच्छ्यताम्, यत् अन्ते एव 1 भवति। अन्तिमा सङ्ख्या यस्याः अनन्तरं नवीनपङ्क्तिः नास्ति, सा अपि पठ्यते:</p>
-<pre><code><span class="k" data-tip="अर्थः: variable">vitti</span> a = <span class="k" data-tip="अर्थः: input">grahan</span>()
-<span class="k" data-tip="अर्थः: if">yadi</span> (nivesha_anta()) {
-    <span class="k" data-tip="अर्थः: print">likha</span>("निवेशः समाप्तः\n")
-    <span class="k" data-tip="अर्थः: break">krama</span>
+<pre><code><span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: variable">vitti</span> yoga = 0
+    <span class="k" data-tip="अर्थः: while">yavat</span> (1) {
+        <span class="k" data-tip="अर्थः: variable">vitti</span> a = <span class="k" data-tip="अर्थः: input">grahan</span>()
+        <span class="k" data-tip="अर्थः: if">yadi</span> (nivesha_anta()) { <span class="k" data-tip="अर्थः: break">krama</span> }
+        yoga = yoga + a
+    }
+    <span class="k" data-tip="अर्थः: print">likha</span>("yoga: ", yoga, "\n")
 }</code></pre>
+<p>एषः क्रमादेशः प्रतिपङ्क्ति एकैकां सङ्ख्यां योजयति यावत् निवेशः समाप्यते (Linux-टर्मिनल् मध्ये Ctrl-D, अथवा सञ्चिकां ददातु: <code>./yoga.bin &lt; numbers.txt</code>): <code>5</code>, <code>-1</code>, <code>3</code> इति लिखिते <code>yoga: 7</code> मुद्रयति - <code>-1</code> सङ्ख्या आसीत्, न अन्तः। <b><code>hello</code> इति लिखिते तत् 0 इति गण्यते, सन्देशं विना</b>: <code>grahan()</code> शब्दं शून्यात् भेत्तुं न शक्नोति। यत्र एतत् महत्त्वपूर्णम्, तत्र पङ्क्तिं पाठ्यरूपेण पठित्वा परिवर्तयतु - अग्रिमौ द्वौ अनुभागौ पश्यतु।</p>
 
 <h3>पाठ्यस्य पठनम्: <code>vartani_grahan</code>()</h3>
 <p><code><span class="k" data-tip="अर्थः: input">grahan</span>()</code> सङ्ख्यां पठति; <code>hello</code> इति लिखिते 0 प्रयच्छति। यत् लिखितं तत् पाठ्यरूपेण प्राप्तुं <code>vartani_grahan()</code> (वर्तनी-ग्रहणम्) प्रयुज्यते। एतत् एकां सम्पूर्णां पङ्क्तिं पठति, तां च वर्तनीरूपेण प्रयच्छति - पङ्क्तेः अन्ते स्थितं नवीनपङ्क्ति-चिह्नं विना; पङ्क्तिः कियती अपि दीर्घा भवतु, न छिद्यते:</p>

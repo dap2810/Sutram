@@ -91,8 +91,11 @@ itself a compiler-writing tool — you can build the compiler for your next lang
 <p><b>3. Your language, your words.</b> With language packs you can write every keyword in Hindi,
 Telugu, Bengali, Tamil, and nine other Indian languages. The Sanskrit keywords are the default —
 the thread that holds all the languages together.</p>
-<div class="try"><b>What you need:</b> a Linux x86-64 system (or WSL on Windows). No other
-dependency — not even a C compiler. The compiler is a single self-contained binary.</div>
+<div class="try"><b>What you need:</b> a Linux x86-64 system, or 64-bit Windows 10 or 11 (chapter 17 installs
+Sutram there; WSL is not needed). No other dependency — not even a C compiler. The compiler is a single
+self-contained binary. <b>On Linux</b> it is the file <code>sutram_compiler</code> at the top of the Sutram folder:
+run it as <code>./sutram_compiler</code>, or copy it to a folder on your PATH under the name <code>sutram</code>,
+which is the name this book types.</div>
 </div>
 <div class="ch" id="ch2"><h2>2. Your First Program</h2>
 <p>Every Sutram program starts with <code><span class="k" data-tip="main">mukhya</span>()</code> — the "main" thread of execution.
@@ -102,10 +105,10 @@ comments start with <code>//</code>.</p>
     <span class="k" data-tip="print">likha</span>("Namaste, Sutram!\n")</code></pre>
 <p>Save this as <code>namaste.sm</code> (sm = Sutram), then compile and run:</p>
 <pre><code>$ sutram namaste.sm namaste.bin
-Siddh: 97 baait sankalit
+Siddh: 112 baait sankalit
 $ ./namaste.bin
 <span class="out">Namaste, Sutram!</span></code></pre>
-<div class="note">The compiler emits a complete, runnable ELF binary — about 90 bytes for this
+<div class="note">The compiler emits a complete, runnable ELF binary — 112 bytes for this
 program. That is the whole program: prologue, your <code><span class="k" data-tip="print">likha</span></code> call, exit syscall. Nothing else.</div>
 </div>
 <div class="ch" id="ch3"><h2>3. Variables and Constants</h2>
@@ -256,9 +259,9 @@ Sutram-kathanam likhatu, Enter nudatu. Sadyah chalishyati.
 Aadeshah: sahayata (sahayata) | nirgat (nirgamanam) | sarvam (sarvam pashyatu)
 
 <span class="k" data-tip="constant">sutra</span>> <span class="k" data-tip="variable">vitti</span> x = 21
-Siddh: 54 baait sankalit
+Siddh: 69 baait sankalit
 <span class="k" data-tip="constant">sutra</span>> <span class="k" data-tip="print">likha</span>(x / 3)
-Siddh: 201 baait sankalit
+Siddh: 216 baait sankalit
 7
 <span class="k" data-tip="constant">sutra</span>> nirgat</code></pre>
 <p>Every line you type is added <span class="k" data-tip="range-to">to</span> a growing session program, compiled, and run instantly.
@@ -292,8 +295,8 @@ Variables persist between lines — <code>x</code> sangrah on one line is there 
         <span class="k" data-tip="print">લખો</span>(સંખ્યા * હું)
     }</code></pre>
 <pre><code>$ sutram --lang gujarati namaste.sm namaste.bin
-Bhasha pak prapt: gujarati
-Siddh: 228 baait sankalit</code></pre>
+ભાષા પેક મળ્યો: gujarati
+સફળ: 243 બાઇટ સંકલિત</code></pre>
 <div class="note"><b>11 language packs:</b> Sanskrit, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu. Errors also localize automatically. Don't like a word? Add your own in <code>lang/&lt;language&gt;.lang</code> — every entry is one line.</div>
 </div>
 
@@ -416,11 +419,16 @@ n--      <span class="cm"># n = 5</span></code></pre>
 
 <h3><span class="k" data-tip="input">grahan</span>() and end of input</h3>
 <p><code><span class="k" data-tip="input">grahan</span>()</code> reads a whole number, with its sign: type <code>-5</code> and it gives -5 (from v324; before that the minus sign was lost). When the input has ended it returns <code>-1</code> - but a person can also type <code>-1</code>, so ask <code>nivesha_anta()</code>, which is 1 only at the end. A last number with no newline after it is still read:</p>
-<pre><code><span class="k" data-tip="variable">vitti</span> a = <span class="k" data-tip="input">grahan</span>()
-<span class="k" data-tip="if">yadi</span> (nivesha_anta()) {
-    <span class="k" data-tip="print">likha</span>("Input ended\n")
-    <span class="k" data-tip="break">krama</span>
+<pre><code><span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="variable">vitti</span> yoga = 0
+    <span class="k" data-tip="while">yavat</span> (1) {
+        <span class="k" data-tip="variable">vitti</span> a = <span class="k" data-tip="input">grahan</span>()
+        <span class="k" data-tip="if">yadi</span> (nivesha_anta()) { <span class="k" data-tip="break">krama</span> }
+        yoga = yoga + a
+    }
+    <span class="k" data-tip="print">likha</span>("yoga: ", yoga, "\n")
 }</code></pre>
+<p>It adds the numbers it is given, one to a line, until the input ends (Ctrl-D in a Linux terminal, or give it a file: <code>./yoga.bin &lt; numbers.txt</code>): type <code>5</code>, <code>-1</code>, <code>3</code> and it prints <code>yoga: 7</code> - the <code>-1</code> was a number, not the end. <b>Type <code>hello</code> and it is counted as 0, with no message</b>: <code>grahan()</code> cannot tell a word from a nought. When that matters, read the line as text and convert it, as the next two sections show.</p>
 
 <h3>Reading text: <code>vartani_grahan</code>()</h3>
 <p><code><span class="k" data-tip="input">grahan</span>()</code> reads a number: type <code>hello</code> and it gives 0. To read what was typed as text, use <code>vartani_grahan()</code> (वर्तनी-ग्रहण, "taking a string"). It reads one whole line and gives it back as a string, without the newline at its end, however long the line is:</p>

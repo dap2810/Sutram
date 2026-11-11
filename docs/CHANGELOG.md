@@ -20,12 +20,26 @@
   leading `-`. It reports `abc`, `5abc`, `12 34`, an empty line and an overflow, each of which `grahan()` turns into
   a number. **`varna_tak_ank`, named as the existing converter, does not take a string** (`"42"` gives 0, `ok` 0:
   it reads a code per eight-byte cell). Example `364_r190_vartani_tak_ank` with a golden; reference §4d; both books.
-- **Gate `R190 chakra and converter`** (`tests/r190/test_chakra_and_converter.py`, 19 checks; 20 from R191).
+- **Gate `R190 chakra and converter`** (`tests/r190/test_chakra_and_converter.py`, 19 checks; 20 from R191, 26 from R192).
 - **R191 (documents only; the compiler and the library are byte for byte R190's):** the three lines taught for
   `vartani_tak_ank` printed `n * 2` without looking at `ok[0]`, so `hello` printed 0 - the silent answer the function
   prevents. **The taught program now tests `ok[0]`** (reference §4d, both books), and the gate runs the reference's
   own program on `42` and on `hello`. `docs/WHATS-LEFT.md` names the open design question: a word for counting down,
   proposed `avaroha`.
+- **R192 (documents and one test; the compiler and the library are byte for byte R190's):** the books were
+  walked as a student would, from the first program to the input section. **Four things the books said that the
+  language does not do, corrected in the English and Sanskrit books:** the first program's printed size was
+  `Siddh: 97 baait sankalit` and "about 90 bytes" - the compiler prints 112, and has since before v315 (and 69 and
+  216, not 54 and 201, in the `sutram -i` session; and a `--lang gujarati` run answers in Gujarati, 243 bytes);
+  "What you need" said Linux "or WSL on Windows" while chapter 17 installs natively, and never said that on Linux
+  the compiler is the file `sutram_compiler`; and the `grahan()` example was a fragment with `krama` outside any
+  loop, which is refused (`E_AVARTAN_VINA`) if typed as printed - it is now a whole program that adds the numbers
+  it is given, and says in words that `hello` is counted as 0. **The four paused books** (Hindi, Gujarati, Tamil,
+  Telugu) keep their text; their notice now names the one sentence in them known to be false ("counts down
+  automatically") and what they do not cover. **`docs/WHATS-LEFT.md`** sets out `avaroha` as a question with what
+  a decision needs, and the `yavat` lines a student uses today. Gate `R190 chakra and converter`: 26 checks - it
+  now compiles the books' first program and compares the printed size, and compiles and runs every whole program
+  in the books' input section.
 - **The guard, against v325:** the compiler's change is a message - no program's bytes change through it; the
   programs that bring in `vakyank` differ by the new function and print what they printed (R190-00). Installer
   rebuilt (payload v326). Not run on Windows.

@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R192 (v326, documents and one test):** both current books, the four paused books' notices, the changelog and
+`docs/WHATS-LEFT.md` changed; the compiler and the library did not. Rebuilt so the payload carries them.
+
 **R191 (v326, documents only):** the reference, both books, the changelog and `docs/WHATS-LEFT.md` changed; the compiler
 and the library did not. Rebuilt so the payload carries the corrected documents.
 

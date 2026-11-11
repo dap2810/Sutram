@@ -33,10 +33,67 @@ page can be done before or after; this cannot be done by anyone else. *(R167, R1
 | | tier | what | why it waits |
 |---|---|---|---|
 | **`grahan` and Python's `input()`** | - | the owner asked that one function read text as well as numbers | **answered in v326 without a breaking change:** `vartani_grahan()` reads the text and `vartani_tak_ank(s, ok)` converts it and says whether it was a number (reference §4d). `grahan` returning text was simulated: 6 of 7 programs break (`R189-00`). **Open only if the owner wants `grahan` itself changed** |
-| **A word for counting down - an open design question (R191)** | 1 | `chakra i = 5 tak e` with `e = 3`, and `chakra i = a tak b`, run no times in silence; v326 warns only for `chakra i = n tak 1` | **Proposed name: `avaroha`** (अवरोह, "descent") - `chakra i = n avaroha 1` counts n, n-1, ... 1, and runs no times when `n` is below 1. A contextual word in the `chakra` grammar, as `arabhya` and `paryantam` are, so it reserves nothing; unused in the compiler, the library, the packs and the examples (`avarohi` is a function in `examples/246`). **With it, `tak` can mean "up" and nothing else, and the silence ends: a start past the end is then always an empty range.** What it leaves to decide: whether `5 tak 1` in written numbers keeps counting down (18 loops in 12 files do), and the word in the ten frozen packs. **Not designed further, not built: a language addition is the owner's** (`R190-00`, `R191-00`) |
+| **A word for counting down - an open design question (R191, R192)** | 1 | `chakra i = 5 tak e` with `e = 3`, and `chakra i = a tak b`, run no times in silence; v326 warns only for `chakra i = n tak 1` | **Proposed: `avaroha`** (अवरोह, "descent") - `chakra i = n avaroha 1`. **Everything a decision needs - what it would mean, what it costs, why it is not built, and how a student counts down today - is set out under this table, in "Counting down".** Not designed further, not built: a language addition is the owner's (`R190-00`, `R191-00`, `R192-00`) |
 | **`grahan` accepts what is not a number** | 1 | `5abc` is 5, `12 34` is 1234, `abc` is 0, and a number past the largest `vitti` wraps | each is a decision about what a running program should do with bad input; all four are stated in reference §4d |
 | **`nivesha_anta()` is set by `grahan` too** | - | from v324, so a typed `-1` can be told from the end | if it should belong to `vartani_grahan` alone, the books' end-of-input test must change instead (`R186-00`) |
 | **v324's refusals and v322's** | - | five refusals added by AUDIT-01 fixes, and the unknown-character refusal (v321) | each refuses programs that compiled before |
+
+### Counting down: `avaroha`, as a question with everything a decision needs (R192)
+
+**How a student counts down today.** A `chakra` counts down only when both ends are written as numbers
+(`chakra i = 5 tak 1`). With a variable at either end, use `yavat`. **Three lines make the loop** - copy them and
+put the body between the second and the third:
+
+```
+vitti i = n                 # 1. start at the top
+yavat (i >= 1) {            # 2. go on while i has not passed the bottom
+    likha(i)                #    ... the body of your loop ...
+    i = i - 1               # 3. step down - the last line of the body
+}
+```
+
+Run with `n = 5` it prints 5 4 3 2 1; with `n = 0` it runs no times, which is right. **One thing to watch:** an
+`agrim` (continue) written above line 3 skips the step and the loop never ends - step down before any `agrim`.
+Both books teach this form in "Descending Loops", and the compiler's notice for `chakra i = n tak 1` names `yavat`.
+
+**1. What `avaroha` would mean.** Three shapes are possible:
+
+| shape | example | |
+|---|---|---|
+| **a word in the place of `tak`** | `chakra i = n avaroha 1 { ... }` | **proposed.** `i` is n, n-1, ... 1, both ends included, as with `tak`; **no passes when the start is below the end** |
+| a modifier on the loop | `chakra avaroha i = n tak 1 { ... }` | `tak` then still reads "to" in both directions |
+| a loop of its own | `avaroha i = n tak 1 { ... }` | a new statement: a new keyword in fact, and a second loop to teach |
+
+The first is proposed because the direction is then said at the one place it is decided, and because it is the shape
+`arabhya ... paryantam` already has: a word that means something only inside a `chakra` header.
+
+**2. What it would cost.**
+
+- **Keywords: none, if it is contextual.** The reference counts 25 core keywords and 34 built-ins. `arabhya` and
+  `paryantam` are neither: they are read only inside a `chakra` header and reserve nothing. `avaroha` the same way
+  breaks no program that has a variable of that name (there is none in the tree; `avarohi` is a function in
+  `examples/246`). **As a reserved word it would be the 26th**, and any program using the name would stop compiling.
+- **One parser branch,** where the header reads `tak`: on `avaroha`, mark the loop as counting down whatever the
+  ends are. The compiler already makes a counting-down loop - it is what `5 tak 1` compiles to. **Whether that code
+  is right when the end is a variable is NOT TESTED: today it is only ever reached with two written numbers.**
+- **Around it:** a version step; the reference's §6a; "Descending Loops" in both books; an example with a golden; a
+  gate; the editor's word lists. **The ten frozen packs have no word for it** - a program written in a pack would
+  have to use the Sanskrit word until a pack is resumed.
+- **What happens to `chakra i = 5 tak 3`.** Two answers, and this is the real decision:
+
+  | | `chakra i = 5 tak 3` | cost |
+  |---|---|---|
+  | **keep it** | counts 5 4 3, as today | nothing breaks; no program's bytes change. `tak` keeps two meanings when both ends are written numbers, and the rule in §6a stays |
+  | **make `tak` mean "up" only** | **must be refused when compiled** ("start is past the end: write `avaroha`") - it cannot be left to run no times, or 18 loops go silent | **18 loops in 12 files** of the tree are rewritten, and every program outside the tree that counts down this way stops compiling until it is |
+
+  With the second, the rule becomes one sentence - `tak` up, `avaroha` down, a start past the end is an empty range -
+  and `chakra i = 5 tak e` stops being a trap, because the student who meant a countdown had a word for it. With the
+  first, that trap is only made avoidable, not removed.
+
+**3. Why it was not done now.** At run time a countdown and an empty range cannot be told apart when an end is a
+variable (`chakra i = 1 tak n` with `n = 0` must run no times), so the compiler cannot guess the direction without
+breaking loops that are right - only a word can say it, and a new word in the language is the owner's to decide,
+not a repair (`R190-00`).
 
 ## 4. Open defects, worst first
 
