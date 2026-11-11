@@ -1,0 +1,770 @@
+{
+  "main-inventory": {
+    "guard_programs": 783,
+    "top_level_examples": 331,
+    "aliases": [
+      "grahan",
+      "ग्रहण",
+      "पढ़ो",
+      "वाचा",
+      "পড়ো",
+      "ਪੜ੍ਹੋ",
+      "વાંચો",
+      "ପଢ଼",
+      "படி",
+      "చదువు",
+      "ಓದು",
+      "വായിക്കു"
+    ],
+    "input_callers": [
+      {
+        "path": "examples/23_grahan_input.sm",
+        "lines": [
+          3,
+          4
+        ]
+      },
+      {
+        "path": "examples/24_guess_game.sm",
+        "lines": [
+          6
+        ]
+      },
+      {
+        "path": "examples/26_calculator.sm",
+        "lines": [
+          5,
+          7
+        ]
+      },
+      {
+        "path": "examples/349_r126_kosh_in_one_branch.sm",
+        "lines": [
+          10
+        ]
+      },
+      {
+        "path": "examples/46_language_reference.sm",
+        "lines": [
+          34
+        ]
+      },
+      {
+        "path": "examples/59_windows_grahan_runtime.sm",
+        "lines": [
+          5
+        ]
+      },
+      {
+        "path": "tests/r79_real/report_blocks.sm",
+        "lines": [
+          115,
+          124,
+          125,
+          126,
+          127
+        ]
+      },
+      {
+        "path": "tests/r79_real/report_plain.sm",
+        "lines": [
+          108,
+          117,
+          118,
+          119,
+          120
+        ]
+      }
+    ],
+    "call_sites": 18,
+    "routine_metric": "conditional jump instructions per non-local labelled source block; excludes macro expansion, includes conditional-assembly alternatives; not cyclomatic complexity",
+    "routine_blocks": 532,
+    "top_ten": [
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r142_gen_expr_body",
+        "start_line": 21484,
+        "instructions": 4297,
+        "conditional_jumps": 219,
+        "unconditional_jumps": 113,
+        "calls": 1641,
+        "returns": 58,
+        "end_line": 26701
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r142_gen_stmt_body",
+        "start_line": 18924,
+        "instructions": 1767,
+        "conditional_jumps": 170,
+        "unconditional_jumps": 54,
+        "calls": 445,
+        "returns": 39,
+        "end_line": 21129
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r45_parse_stmt_body",
+        "start_line": 14836,
+        "instructions": 1115,
+        "conditional_jumps": 164,
+        "unconditional_jumps": 37,
+        "calls": 266,
+        "returns": 26,
+        "end_line": 16187
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "lex",
+        "start_line": 6976,
+        "instructions": 595,
+        "conditional_jumps": 107,
+        "unconditional_jumps": 62,
+        "calls": 21,
+        "returns": 1,
+        "end_line": 7730
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "expand_imports_pass",
+        "start_line": 3619,
+        "instructions": 411,
+        "conditional_jumps": 84,
+        "unconditional_jumps": 24,
+        "calls": 42,
+        "returns": 1,
+        "end_line": 4151
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "parse_primary_inner",
+        "start_line": 17075,
+        "instructions": 638,
+        "conditional_jumps": 75,
+        "unconditional_jumps": 18,
+        "calls": 93,
+        "returns": 23,
+        "end_line": 17853
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "_start",
+        "start_line": 2745,
+        "instructions": 369,
+        "conditional_jumps": 56,
+        "unconditional_jumps": 20,
+        "calls": 56,
+        "returns": 8,
+        "end_line": 3239
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r81_walk",
+        "start_line": 11296,
+        "instructions": 241,
+        "conditional_jumps": 51,
+        "unconditional_jumps": 17,
+        "calls": 41,
+        "returns": 1,
+        "end_line": 11562
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r137_check_stmt",
+        "start_line": 28454,
+        "instructions": 262,
+        "conditional_jumps": 51,
+        "unconditional_jumps": 17,
+        "calls": 39,
+        "returns": 3,
+        "end_line": 28752
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "rfx_check_str_binop",
+        "start_line": 9679,
+        "instructions": 212,
+        "conditional_jumps": 51,
+        "unconditional_jumps": 16,
+        "calls": 17,
+        "returns": 1,
+        "end_line": 9922
+      }
+    ]
+  },
+  "v324-inventory": {
+    "guard_programs": 787,
+    "top_level_examples": 335,
+    "aliases": [
+      "grahan",
+      "ग्रहण",
+      "पढ़ो",
+      "वाचा",
+      "পড়ো",
+      "ਪੜ੍ਹੋ",
+      "વાંચો",
+      "ପଢ଼",
+      "படி",
+      "చదువు",
+      "ಓದು",
+      "വായിക്കു"
+    ],
+    "input_callers": [
+      {
+        "path": "examples/23_grahan_input.sm",
+        "lines": [
+          3,
+          4
+        ]
+      },
+      {
+        "path": "examples/24_guess_game.sm",
+        "lines": [
+          6
+        ]
+      },
+      {
+        "path": "examples/26_calculator.sm",
+        "lines": [
+          5,
+          7
+        ]
+      },
+      {
+        "path": "examples/349_r126_kosh_in_one_branch.sm",
+        "lines": [
+          10
+        ]
+      },
+      {
+        "path": "examples/46_language_reference.sm",
+        "lines": [
+          34
+        ]
+      },
+      {
+        "path": "examples/59_windows_grahan_runtime.sm",
+        "lines": [
+          5
+        ]
+      },
+      {
+        "path": "tests/r79_real/report_blocks.sm",
+        "lines": [
+          115,
+          124,
+          125,
+          126,
+          127
+        ]
+      },
+      {
+        "path": "tests/r79_real/report_plain.sm",
+        "lines": [
+          108,
+          117,
+          118,
+          119,
+          120
+        ]
+      }
+    ],
+    "call_sites": 18,
+    "routine_metric": "conditional jump instructions per non-local labelled source block; excludes macro expansion, includes conditional-assembly alternatives; not cyclomatic complexity",
+    "routine_blocks": 563,
+    "top_ten": [
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r142_gen_expr_body",
+        "start_line": 22564,
+        "instructions": 4370,
+        "conditional_jumps": 221,
+        "unconditional_jumps": 115,
+        "calls": 1669,
+        "returns": 58,
+        "end_line": 27868
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r142_gen_stmt_body",
+        "start_line": 19996,
+        "instructions": 1775,
+        "conditional_jumps": 170,
+        "unconditional_jumps": 54,
+        "calls": 453,
+        "returns": 39,
+        "end_line": 22209
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r45_parse_stmt_body",
+        "start_line": 15905,
+        "instructions": 1117,
+        "conditional_jumps": 164,
+        "unconditional_jumps": 37,
+        "calls": 268,
+        "returns": 26,
+        "end_line": 17258
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "lex",
+        "start_line": 7050,
+        "instructions": 610,
+        "conditional_jumps": 113,
+        "unconditional_jumps": 63,
+        "calls": 21,
+        "returns": 1,
+        "end_line": 7823
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "expand_imports_pass",
+        "start_line": 3693,
+        "instructions": 411,
+        "conditional_jumps": 84,
+        "unconditional_jumps": 24,
+        "calls": 42,
+        "returns": 1,
+        "end_line": 4225
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "parse_primary_inner",
+        "start_line": 18146,
+        "instructions": 638,
+        "conditional_jumps": 75,
+        "unconditional_jumps": 18,
+        "calls": 93,
+        "returns": 23,
+        "end_line": 18924
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "_start",
+        "start_line": 2811,
+        "instructions": 377,
+        "conditional_jumps": 57,
+        "unconditional_jumps": 20,
+        "calls": 58,
+        "returns": 8,
+        "end_line": 3313
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r81_walk",
+        "start_line": 12164,
+        "instructions": 241,
+        "conditional_jumps": 51,
+        "unconditional_jumps": 17,
+        "calls": 41,
+        "returns": 1,
+        "end_line": 12430
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "r137_check_stmt",
+        "start_line": 29621,
+        "instructions": 262,
+        "conditional_jumps": 51,
+        "unconditional_jumps": 17,
+        "calls": 39,
+        "returns": 3,
+        "end_line": 29919
+      },
+      {
+        "path": "src/sutram_compiler.asm",
+        "label": "rfx_check_str_binop",
+        "start_line": 9785,
+        "instructions": 212,
+        "conditional_jumps": 51,
+        "unconditional_jumps": 16,
+        "calls": 17,
+        "returns": 1,
+        "end_line": 10028
+      }
+    ]
+  },
+  "input-model": {
+    "model": "Replace direct grahan() calls with existing v324 vartani_grahan(); not the final compiler implementation",
+    "compiler_sha256": "02bda66abe16c8ff211eb46da2abee1d5edf6ed60b1875c2fbd17dbffba72b6c",
+    "programs": [
+      {
+        "path": "examples/23_grahan_input.sm",
+        "call_sites": 2,
+        "stdin": "5\n",
+        "original": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 965 baait sankalit\n",
+          "exit": 0,
+          "stdout": "Enter two numbers:\nSum: 4\nProduct: -5\nFirst is bigger\nThey are equal\n",
+          "stderr": ""
+        },
+        "text_reader": {
+          "compile_exit": 1,
+          "diagnostic": "text_reader.sm:6:26: Sutram truti [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na\n      likha(\"Product: \", a * b)\n                           ^\nSanket: dvayoh vartanyoh '+' navinam vartanim rachayati; '-' '*' '/' sankhyabhih eva\n"
+        }
+      },
+      {
+        "path": "examples/24_guess_game.sm",
+        "call_sites": 1,
+        "stdin": "7\n",
+        "original": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 601 baait sankalit\n",
+          "exit": 0,
+          "stdout": "Guess the secret number (1-100): Correct! You found it!\n",
+          "stderr": ""
+        },
+        "text_reader": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 1277 baait sankalit\n",
+          "timeout": true
+        }
+      },
+      {
+        "path": "examples/26_calculator.sm",
+        "call_sites": 2,
+        "stdin": "20\n4\n",
+        "original": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 2566 baait sankalit\n",
+          "exit": 0,
+          "stdout": "Simple Calculator\n=================\nEnter first number: Enter second number: Sum: 24\n\nDifference: 16\n\nProduct: 80\n\nQuotient: 5\n\nRemainder: 0\n\nFirst is greater\n",
+          "stderr": ""
+        },
+        "text_reader": {
+          "compile_exit": 1,
+          "diagnostic": "text_reader.sm: Sutram truti [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam\nSanket: vartani vartanya saha tulyate (s == \"ab\"); ekasmin vitti vartani sankhya cha na sthapyatam\n"
+        }
+      },
+      {
+        "path": "examples/349_r126_kosh_in_one_branch.sm",
+        "call_sites": 1,
+        "stdin": "",
+        "original": {
+          "compile_exit": 1,
+          "diagnostic": "Sutram truti [E_VITTI_PRAKAR]: 'a' sankhya (smriti-sthanam va) asti; kosh tasyam na sthapyate\nSanket: ekasya vitteh prakarah sthirah - kosh, mala, vibhag athava sankhya; bhinnaya prakaraya anyam vittim ghoshaya\n"
+        },
+        "text_reader": {
+          "compile_exit": 1,
+          "diagnostic": "text_reader.sm: Sutram truti [E_VARTANI_TUL]: '==' ekatah vartani anyatah na - ubhau vartani, athava ubhau sankhye, bhavetam\nSanket: vartani vartanya saha tulyate (s == \"ab\"); ekasmin vitti vartani sankhya cha na sthapyatam\n"
+        }
+      },
+      {
+        "path": "examples/46_language_reference.sm",
+        "call_sites": 1,
+        "stdin": "7\n",
+        "original": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 1534 baait sankalit\n",
+          "exit": 0,
+          "stdout": "big1\n2\n4\n5\n4\n3\n2\n1\n7\nx = 3\nhello",
+          "stderr": ""
+        },
+        "text_reader": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 2210 baait sankalit\n",
+          "exit": 0,
+          "stdout": "big1\n2\n4\n5\n4\n3\n2\n1\n7\nx = 3\nhello",
+          "stderr": ""
+        }
+      },
+      {
+        "path": "examples/59_windows_grahan_runtime.sm",
+        "call_sites": 1,
+        "stdin": "42\n",
+        "original": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 367 baait sankalit\n",
+          "exit": 0,
+          "stdout": "42\n",
+          "stderr": ""
+        },
+        "text_reader": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 953 baait sankalit\n",
+          "exit": 0,
+          "stdout": "42",
+          "stderr": ""
+        }
+      },
+      {
+        "path": "tests/r79_real/report_blocks.sm",
+        "call_sites": 5,
+        "stdin": "1\n1\n2\n3\n4\n",
+        "original": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 26053 baait sankalit\nSutram suchana: 'lkhb' purana nama - 'likha_santat' likhatu\n",
+          "exit": 0,
+          "stdout": "subject    mean  median  lowest highest\nganita         2       2       2       2\nvijnana        3       3       3       3\nbhasha         4       4       4       4\ntotals:\n   0- 29       1\n  30- 59       0\n  60- 89       0\n  90-119       0\n 120-149       0\n 150-179       0\n 180-209       0\n 210-239       0\n 240-269       0\n 270-299       0\ngrades: A 0  B 0  C 0  D 0  F 1\nrank   roll  ganita vijnana bhasha  total grade\n   1      1       2       3      4      9     F\n",
+          "stderr": ""
+        },
+        "text_reader": {
+          "compile_exit": 1,
+          "diagnostic": "text_reader.sm:116:29: Sutram truti [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na\n      vitti roll = nirmmita(n * 8)\n                              ^\nSanket: dvayoh vartanyoh '+' navinam vartanim rachayati; '-' '*' '/' sankhyabhih eva\nSutram suchana: 'lkhb' purana nama - 'likha_santat' likhatu\n"
+        }
+      },
+      {
+        "path": "tests/r79_real/report_plain.sm",
+        "call_sites": 5,
+        "stdin": "1\n1\n2\n3\n4\n",
+        "original": {
+          "compile_exit": 0,
+          "diagnostic": "Siddh: 24740 baait sankalit\nSutram suchana: 'lkhb' purana nama - 'likha_santat' likhatu\n",
+          "exit": 0,
+          "stdout": "subject    mean  median  lowest highest\nganita         2       2       2       2\nvijnana        3       3       3       3\nbhasha         4       4       4       4\ntotals:\n   0- 29       1\n  30- 59       0\n  60- 89       0\n  90-119       0\n 120-149       0\n 150-179       0\n 180-209       0\n 210-239       0\n 240-269       0\n 270-299       0\ngrades: A 0  B 0  C 0  D 0  F 1\nrank   roll  ganita vijnana bhasha  total grade\n   1      1       2       3      4      9     F\n",
+          "stderr": ""
+        },
+        "text_reader": {
+          "compile_exit": 1,
+          "diagnostic": "text_reader.sm:109:29: Sutram truti [E_VARTANI_GANIT]: vartanya saha '-' '*' '/' '%' (bit-kriyah api) na sambhavanti - vartani sankhya na\n      vitti roll = nirmmita(n * 8)\n                              ^\nSanket: dvayoh vartanyoh '+' navinam vartanim rachayati; '-' '*' '/' sankhyabhih eva\nSutram suchana: 'lkhb' purana nama - 'likha_santat' likhatu\n"
+        }
+      }
+    ]
+  },
+  "boundary-probes": {
+    "probe_sources": {
+      "chakra_max": "mukhya() {\nvitti n = 0\nchakra i = 9223372036854775807 tak 9223372036854775807 {\nlikha(i)\nn = n + 1\nyadi (n == 3) { krama }\n}\n}\n",
+      "chakra_kosh": "mukhya() {\nchakra i = 1 tak 3 {\nkosh k[1]\nkosh_kship(k, i)\n}\nlikha(parimana())\n}\n",
+      "kuru_kosh": "mukhya() {\nvitti i = 0\nkuru {\nkosh k[1]\nkosh_kship(k, i)\ni = i + 1\n} yavat (i < 3)\nlikha(parimana())\n}\n"
+    },
+    "adapter_source": "yoj khand\nyoj vakyank\nmukhya() {\n    vitti text = vartani_grahan()\n    vitti n = vartani_aayam(text)\n    abhava(n < 32, \"input too long\\n\")\n    mala cells[33]\n    mala ok[1]\n    khand_mukt(text, n, cells)\n    vitti value = varna_tak_ank(cells, n, ok)\n    likha(ok[0])\n    likha(value)\n}\n",
+    "boundaries": {
+      "v315": {
+        "compiler_sha256": "813850f84b638848ec291c0fa8cf76de846ef605cdc3b6cd49f0a15b109f72ef",
+        "runs": {
+          "chakra_max": {
+            "compile_exit": 0,
+            "diagnostic": "Siddh: 267 baait sankalit\n",
+            "exit": 0,
+            "stdout": "9223372036854775807\n-9223372036854775808\n-9223372036854775807\n",
+            "stderr": ""
+          },
+          "chakra_kosh": {
+            "compile_exit": 0,
+            "diagnostic": "Siddh: 1750 baait sankalit\n",
+            "exit": 0,
+            "stdout": "144\n",
+            "stderr": ""
+          },
+          "kuru_kosh": {
+            "compile_exit": 0,
+            "diagnostic": "Siddh: 1752 baait sankalit\n",
+            "exit": 0,
+            "stdout": "144\n",
+            "stderr": ""
+          }
+        }
+      },
+      "v324": {
+        "compiler_sha256": "02bda66abe16c8ff211eb46da2abee1d5edf6ed60b1875c2fbd17dbffba72b6c",
+        "runs": {
+          "chakra_max": {
+            "compile_exit": 0,
+            "diagnostic": "Siddh: 267 baait sankalit\n",
+            "exit": 0,
+            "stdout": "9223372036854775807\n-9223372036854775808\n-9223372036854775807\n",
+            "stderr": ""
+          },
+          "chakra_kosh": {
+            "compile_exit": 0,
+            "diagnostic": "Siddh: 1791 baait sankalit\n",
+            "exit": 0,
+            "stdout": "48\n",
+            "stderr": ""
+          },
+          "kuru_kosh": {
+            "compile_exit": 0,
+            "diagnostic": "Siddh: 1752 baait sankalit\n",
+            "exit": 0,
+            "stdout": "144\n",
+            "stderr": ""
+          }
+        }
+      }
+    },
+    "adapter": [
+      {
+        "stdin": "42\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "1\n42\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "-42\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "1\n-42\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "0\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "1\n0\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "-9223372036854775808\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "1\n-9223372036854775808\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "9223372036854775807\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "1\n9223372036854775807\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "9223372036854775808\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "0\n0\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "hello\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "0\n0\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "12 34\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "0\n0\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "0\n0\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "+42\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "0\n0\n",
+        "stderr": ""
+      },
+      {
+        "stdin": "12\u0000x\n",
+        "compile_exit": 0,
+        "diagnostic": "Siddh: 21649 baait sankalit\n",
+        "exit": 0,
+        "stdout": "1\n12\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "pins": {
+    "main": "adf4f8c6625b119dedacc5386be05174b2588974",
+    "v324": "e1f29f14b58be21e5b9eb8a09a2bc2f94fc22e65",
+    "r233_candidate": "55008b4e36e9a69bf448ac4d6162ae976611dad0"
+  },
+  "classification": {
+    "documentation_only": [
+      "R01",
+      "R02",
+      "R05",
+      "R07",
+      "R08",
+      "R15",
+      "R17",
+      "R27",
+      "R29"
+    ],
+    "source_only": [
+      "R11",
+      "R14",
+      "R33"
+    ],
+    "intent_decision": [
+      "R04",
+      "R24"
+    ]
+  },
+  "validation": {
+    "full_suite": "NOT RUN in R234",
+    "full_gates": "NOT RUN in R234",
+    "crash_corpus": "NOT RUN in R234",
+    "native_windows": "NOT RUN",
+    "compiler_build": "NOT RUN; existing committed binaries used",
+    "tokenizer_control": "PASS: comments and quoted string do not count as calls",
+    "fully_read_identical_blocks": [
+      "r81_walk",
+      "r137_check_stmt",
+      "rfx_check_str_binop"
+    ]
+  },
+  "commands": [
+    "python3 ChatGPT-to-Sarvam/ROUND-234-INVENTORY.py <main>",
+    "python3 ChatGPT-to-Sarvam/ROUND-234-INVENTORY.py <v324>",
+    "python3 ChatGPT-to-Sarvam/ROUND-234-INPUT-MODEL.py <v324>",
+    "python3 ChatGPT-to-Sarvam/ROUND-234-BOUNDARY-PROBES.py <main> <v324>"
+  ],
+  "changelog_versions": {
+    "main": [
+      "315",
+      "314",
+      "313",
+      "312",
+      "311",
+      "310",
+      "309",
+      "308",
+      "307",
+      "306",
+      "305",
+      "304",
+      "303",
+      "302",
+      "301",
+      "300",
+      "299",
+      "298",
+      "297",
+      "296"
+    ],
+    "v324": [
+      "324",
+      "323",
+      "322",
+      "321",
+      "320",
+      "319",
+      "318",
+      "317",
+      "316",
+      "315",
+      "314",
+      "313",
+      "312",
+      "311",
+      "310",
+      "309",
+      "308",
+      "307",
+      "306",
+      "305"
+    ]
+  }
+}
