@@ -1,14 +1,14 @@
-# R186-00 — `grahan()` read `-5` as 5 and lost a last number with no newline after it. **Both are fixed in v324, and the fix needed a third change you did not ask for:** a typed `-1` is now read as -1, which was `grahan()`'s only end-of-input sign. So `grahan()` now sets `nivesha_anta()` as well. **A file is read in two examples, and the reference's `dvaram` and `paadh` rows said each other's job.** Eight more rows of that table were wrong, measured one by one, and are corrected. **The guard against v323 is 7 DIFFER, not 0:** a fix to `grahan` changes the bytes of every program that calls it. The seven print what they printed on ordinary input.
+# R186-00 — `grahan()` read `-5` as 5 and lost a last number with no newline after it. **Both are fixed in v324, and the fix needed a third change you did not ask for:** a typed `-1` is now read as -1, which was `grahan()`'s only end-of-input sign. So `grahan()` now sets `nivesha_anta()` as well. **A file is read in two examples, and the reference's `dvaram` and `paadh` rows said each other's job.** Of 18 rows of that table I ran, 7 said something false and 3 more misled; all ten are corrected. **The guard against v323 is 7 DIFFER, not 0:** a fix to `grahan` changes the bytes of every program that calls it. The seven print what they printed on ordinary input.
 
 ## Release line
 
 ```
 main  (the commit carrying this file; SHA in my chat report)   Sutram 1.0 (v315) - sampurna sutra, unchanged
-staged r186-grahan-and-files cddc8551   Sutram 1.0 (v324) - sampurna sutra     (on r184-read-a-line f05ddd7e = v323)
-     crash corpus: GATES-PENDING
+staged r186-grahan-and-files e1f29f14   Sutram 1.0 (v324) - sampurna sutra     (on r184-read-a-line f05ddd7e = v323)
+     crash corpus: 227 cases + manifest, 0 failed
      suite: NO-EXPECTATION=4 PASS=331 (335 run; examples 362 and 363, both with goldens)
-     gates: GATES-PENDING
-     installer (payload v324): 4caedefd6863a61010393867dd223168624ea2aa9211e81fa6a99651e015741a
+     gates: 90 PASS / 0 FAIL / 1 NOT-RUN  (Linux, Xvfb; NOT-RUN = Windows execution; evidence-r186/gates-v324.txt)
+     installer (payload v324): c82bbca55125ae54c5107df7ebabc57473cd4a5a8143f1ce9125fe057bd99a3b
      the guard, v324 against v323: 787 programs - 582 byte-identical, 196 refused identically, 7 DIFFER, 2 new
             (Linux executables, and the same line for Windows executables)
             the 7 are every program that compiles and calls grahan (evidence-r186/differ-list.txt)
@@ -154,8 +154,10 @@ I ran a program for each row that looked wrong (`evidence-r186/reference-rows.tx
 **Every one of these is corrected in the table, with its arguments.** The rows I ran that are right:
 `smaran`, `sthagita`, `pankti_gan`, `akshar`, `akshar_guru`/`akshar_laghu`, `vartani_aayam`'s count.
 
-**My answer to your question: the built-in table needs rewriting, not the file section alone.** Of the 13
-rows I ran, **8 were wrong about what the function does** (and two more used the wrong word). Most rows are a
+**My answer to your question: the built-in table needs rewriting, not the file section alone.** I ran 18
+rows. **7 said something false** (`dvaram`, `paadh`, `likh8`, `pad8`, `likh8c`, `pad8c`, `aksharank`). **2 were
+true but misleading:** `pad` reads one byte, and `vartani_tul` gives no order. **3 used the wrong word**
+(`varna`), one of them `vartani_tul`. The changelog entry counts these loosely; the evidence file is exact. Most rows are a
 few words with no arguments - "read memory", "fill memory", "copy memory" - which cannot be checked by reading
 them. **I did not run the other ~40 rows.** That is the reference audit your plan gives ChatGPT; this is
 evidence it is needed. **Every corrected row now gives the arguments, and so can be tested by a gate -
@@ -186,9 +188,19 @@ No memory work, no Windows run, no benchmark work. `vartani_grahan`'s interface 
 add that you did not list:** `grahan` setting `nivesha_anta`, and the eight measured rows of the table beyond
 `dvaram`/`paadh`. Both are above, with the reason.
 
+## The gate runs - three, and the first two failed
+
+**Run 1: 88 / 2 / 1.** `formatted tree`: example 362 had two statements on one line (`yoga = yoga + ank  ank = 0`),
+which the formatter writes otherwise. `doc counts` failed with it: it counts the gates that passed. **I put the
+two statements on two lines**, in the example and in the English book's copy. The compiled program is the same
+1,914 bytes. **Run 2: 88 / 2 / 1.** `R140 package`: the installer built before that fix carried the old example
+and book. **Rebuilt; run 3: 90 / 0 / 1.** All three are in `evidence-r186/`.
+
 ## Not done, and why
 
-- **Windows: not run.** WINE-PENDING
+- **Windows: not run.** Under Wine (`evidence-r186/wine.txt`), the Windows compiler and its programs print
+  what Linux prints: `-5`, an unfinished `42`, the typed `-1` loop, both file examples (the file is read inside
+  a Windows executable too), CR LF input. **Wine is not Windows.**
 - **`grahan`'s other six behaviours are reported, not changed** - each needs a decision.
 - **No line reader that takes a path** - a new interface, not asked for.
 - **The rest of the built-in table is not checked** - about 40 rows.

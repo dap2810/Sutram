@@ -1,0 +1,19 @@
+mukhya() {
+    likha("nama? ")
+    vitti nama = vartani_grahan()
+    vitti a = grahan()
+    vitti yoga = 0
+    chakra i = 1 tak 800000 {
+        kosh k[4]
+        kosh_kship(k, i)
+        yoga = yoga + kosh_gan(k)
+    }
+    mandapa {
+        vitti p = nirmmita(1000000)
+        p[0] = 7
+        yoga = yoga + p[0]
+    }
+    likha("Namaste, ", nama, "!\n")
+    likha("sankhya: ", a, "  yoga: ", yoga, "\n")
+    likha("smriti: ", parimana(), "\n")
+}

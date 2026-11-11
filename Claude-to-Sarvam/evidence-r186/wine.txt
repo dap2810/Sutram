@@ -1,0 +1,37 @@
+## the Windows compiler (win/sutram.exe of r186-grahan-and-files) run under Wine - not Windows
+--- sutram.exe --version
+Sutram 1.0 (v324) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+--- compile g1.sm: Siddh: 361 baait sankalit
+--- compile g2.sm: Siddh: 703 baait sankalit
+--- compile g3.sm: Siddh: 607 baait sankalit
+--- compile accept.sm: Siddh: 3827 baait sankalit
+--- compile smriti.sm: Siddh: 2119 baait sankalit
+--- compile 362_r186_patra_sankhya_yoga.sm: Siddh: 1589 baait sankalit
+--- compile 363_r186_pankti_ganana_patra.sm: Siddh: 876 baait sankalit
+--- g1.exe < '-5\r\n'
+-5
+--- g1.exe < '42' (no newline)
+42
+--- g2.exe < '-7\r\n42'
+-7 42
+--- g3.exe < '-1\r\n5\r\n-4'
+3 sankhyah, yogah 0
+--- 362 (reads examples/data/r186_sankhya.txt)
+yogah: 42
+--- 363 < examples/data/r186_sankhya.txt
+panktayah: 3
+--- accept.exe < 'Asha Patel\r\n-5\r\n'
+nama? Namaste, Asha Patel!
+sankhya: -5  yoga: 800007
+smriti: 128
+--- smriti.exe
+yoga: 800000
+smriti: 64
+--- sutram.exe curly.sm curly.exe
+curly.sm:2:11: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '“' (U+201C)
+      likha(“namaste”)
+            ^
+Sanket: saral uddharana-chihnam " (U+0022) likhyatam
+compiler exit code (run again without a pipe): 1
+curly.exe: not written
