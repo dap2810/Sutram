@@ -117,7 +117,12 @@ run_gate() {                      # name, then the command
     "R118 library names")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r118 library names: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R121 builtins")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r121 builtins: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R123 PE memory")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r123 pe memory: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
-    "R124 lazy commit")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r124 lazy commit: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R124 lazy commit")
+      if grep -q '^NOT RUN' /tmp/g_out.$$; then
+        skip "$name" "$(grep -m1 '^NOT RUN' /tmp/g_out.$$ | cut -c10-)"
+      else
+        line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r124 lazy commit: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac
+      fi ;;
     "R167 evidence manifests") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r167 evidence manifests: //; s/; [0-9]* checks, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R159 no personal paths") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 with system details"*) ok "$name ($(echo "$line" | sed 's/r159 no personal paths: //'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R163 output collision") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r163 output collision: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
@@ -129,6 +134,8 @@ run_gate() {                      # name, then the command
     "AUDIT-01 fixes") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/audit01 fixes: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R184 read a line") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r184 read a line: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R186 grahan and files") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r186 grahan and files: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R189 audit fixes") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r189 audit fixes: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
+    "R233 verification") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r233 verification: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R158 doc currency") line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r158 doc currency: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R126 kinds")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r126 kinds: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
     "R127 descriptor")  line=$(tail -1 /tmp/g_out.$$); case "$line" in *", 0 failed"*) ok "$name ($(echo "$line" | sed 's/r127 descriptor: //; s/, 0 failed//'))";; *) bad "$name" "$(grep -m1 '^FAIL' /tmp/g_out.$$ | cut -c7-80)";; esac ;;
@@ -282,6 +289,8 @@ run_gate "R182 unknown character" python3 -B tests/r182/test_unknown_character.p
 run_gate "AUDIT-01 fixes" python3 -B tests/audit01/test_audit01.py --compiler ./sutram_compiler   # AUDIT-01: a prakriya without nivartanam returns 0; krama outside a loop, likha of a mala, a kosh as a condition refused; a bad mala length is a message
 run_gate "R184 read a line" python3 -B tests/r184/test_read_line.py --compiler ./sutram_compiler   # R184: vartani_grahan() returns a line of text without its newline, uncut; an empty line is ""; nivesha_anta() ends a read loop
 run_gate "R186 grahan and files" python3 -B tests/r186/test_grahan_and_files.py --compiler ./sutram_compiler   # R186: grahan reads -5 as -5 and an unfinished last number; a file read by its path and as input
+run_gate "R189 audit fixes" python3 -B tests/r189/test_audit_fixes.py --compiler ./sutram_compiler   # R189: brihat refuses -1, lcm with 0 is 0, and the behaviours the v325 reference states
+run_gate "R233 verification" python3 -B tests/r233/run_all.py --compiler ./sutram_compiler   # ChatGPT R233: reference checks, guard outcomes, doc counts, gate skips (registered in R189)
 run_gate "R133 handler registration" python3 -B tests/r133/test_veh_registration.py   # R133 (ChatGPT W1): a failed AddVectoredExceptionHandler stops with a message, not an access violation (Wine)
 run_gate "R93 installer gate" python3 -B tests/r93/test_installer_version.py   # R93: the installer check passes a current installer and fails each stale shape
 run_gate "installer version" python3 tools/check_installer_version.py   # R93: Sutram-Setup.exe must embed the compiler of this version (bin/ and win/sutram.exe), and Sutram-Setup.sha256 must be its hash - the installer fell behind twice with nothing failing

@@ -82,8 +82,14 @@ prakriya mahattam_samapavartak(a, b) {
 }
 
 # laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0);
-# -1 when it is larger than 2^63 - 1 (R80).
+# -1 when it is larger than 2^63 - 1 (R80). Any pair with 0 is 0, and (MIN, MIN) is -1 (R189); it never stops.
 prakriya laghuttam_samapavartya(a, b) {
+    # R189 (ChatGPT R233 row R16): the gcd is 2^63 - and refused - only for (MIN, 0), (0, MIN), (MIN, MIN).
+    # Settle those first: an lcm with 0 is 0, and lcm(MIN, MIN) = 2^63 does not fit, so -1 as for any
+    # other lcm that does not fit. Every other pair reaches the gcd as before.
+    yadi (a == 0 || b == 0) { nivartanam 0 }
+    vitti minv0 = (0 - 9223372036854775807) - 1
+    yadi (a == minv0 && b == minv0) { nivartanam 0 - 1 }
     vitti g = mahattam_samapavartak(a, b)
     # mahattam_samapavartak(0, 0) is 0; without this guard (a / g) divides by zero and
     # the program traps (SIGFPE). laghuttam_samapavartya(0, 0) = 0 by convention.

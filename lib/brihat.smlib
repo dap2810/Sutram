@@ -76,7 +76,7 @@ prakriya brihat_ank_tak_laghu(arr, n) {
     vitti i = n - 1
     yavat (i >= 0) {
         vitti d = pad8(a + i * 8)
-        abhava(d <= 9, "Sutram truti [E_MULYA_AYOGYA]: brihat_ank_tak_laghu: dattam mulyam ayogyam; kriyayah niyaman parikshatam.\n")
+        abhava(d >= 0 && d <= 9, "Sutram truti [E_MULYA_AYOGYA]: brihat_ank_tak_laghu: dattam mulyam ayogyam; kriyayah niyaman parikshatam.\n")
         abhava(r < 922337203685477580 || (r == 922337203685477580 && d <= 7), "Sutram truti [E_PHALA_SEEMA]: brihat_ank_tak_laghu: ankasya mulyam purnanke na dharyate; adhikatamam mulyam 9223372036854775807.\n")
         r = r * 10 + d
         i = i - 1

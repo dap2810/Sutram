@@ -52,13 +52,12 @@ Semicolons and braces are optional. The full reference is in
 
 ## What is in this release
 
-- **222 example programs** in `examples/` — 209 numbered plus 13 others, and
-  13 more in its subfolders — with regression expectations in the test corpus. Cases without an
-  accepted expectation are not counted as passing tests
-- **24 standard-library modules with code** in `lib/`, 305 functions between
-  them — mathematics, sorting, strings, statistics, calculus, matrix work, and
-  heritage modules built on classical Indian mathematics. Three further files
-  (`mala`, `io`, `net`) are comment-only design sketches, not working modules
+- **335 example programs** in `examples/` — 322 numbered plus 13 others, and
+  16 more in its subfolders — with regression expectations in the test corpus (331 have one; the 4 without are not
+  counted as passing tests)
+- **24 standard-library modules** in `lib/`, 310 functions between
+  them — mathematics, sorting, strings, files, statistics, calculus, matrix work, and
+  heritage modules built on classical Indian mathematics
 - **11 language packs** in `lang/` — Sanskrit, Hindi, Bengali, Gujarati, Kannada,
   Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu
 - **Six book editions** at `docs/sutram-book-*.html` — English, Hindi, Sanskrit, Tamil, Telugu,
@@ -168,6 +167,32 @@ Windows target:
 | `ide/` | terminal IDE and Linux X11 GUI |
 | `ROADMAP.md` | what is done, what is planned, what is not attempted |
 
+## Reading input
+
+```
+mukhya() {
+    likha("Tava nama kim? ")
+    vitti nama = vartani_grahan()
+    likha("Namaste, ", nama, "!\n")
+}
+```
+
+**`vartani_grahan()` reads one line of text** - whole, without its newline, however long it is. **`grahan()`
+reads a number** from a line, with its sign. Both give an empty result at the end of the input, and
+**`nivesha_anta()`** is 1 once the input has ended, so a loop that reads every line knows when to stop:
+
+```
+yavat (1) {
+    vitti s = vartani_grahan()
+    yadi (nivesha_anta()) { krama }
+    likha(s, "\n")
+}
+```
+
+A file is read line by line by giving it to the program as its input (`./prog < data.txt`), or all at once by its
+name with `yoj patra` and `patra_path_sarv` (`examples/362_r186_patra_sankhya_yoga.sm`). Details:
+`docs/LANGUAGE-REFERENCE.md`, §4d.
+
 ## Memory
 
 **Sutram releases memory when a block ends, refuses the common escapes at compile time, and has no garbage collector and no runtime.**
@@ -178,10 +203,14 @@ Three known gaps, in plain words:
   it keeps the address (stores it, or returns it so you can put it in a `kosh` or a variable), the compiler does
   not see it, and the program later reads memory that another block is using. Pass scratch buffers to functions
   to be read or written, never to be kept.
-- **Memory is released only on Linux.** In a Windows program a `mandapa` block works, but releases nothing.
 - **A block releases only what `nirmmita` asks for inside it.** A `kosh`'s storage, and what a called function
   allocates, are not released by the block; and released memory is reused by the next block, not handed back to
-  the operating system.
+  the operating system. **It is cleared as the block ends (v320)**, so nothing made afterwards starts with a
+  finished block's numbers.
+
+**A `kosh` or `mala` declared in a loop is made once and used again on every pass (v317-v319)** - 800,000 passes of
+`kosh k[4]` hold 64 bytes, not 51,200,000. This works the same in a Windows program (measured under Wine; a block
+there gives its memory back too - an earlier version of this page said it did not).
 
 The details are in `docs/LANGUAGE-REFERENCE.md`, §19.
 
@@ -209,9 +238,10 @@ declared without a value in a function is `E_MULYA_VINA`; a recursion that runs 
 
 ## Honest status
 
-The clean-project handoff reports a Linux baseline of **225 passing cases,
-4 no-expectation cases, and 12/12 code-generation shape gates**. These are
-maintainer-reported baseline measurements, not a Windows release certificate.
+At the staged tip (v325) the Linux run reports **331 passing cases and 4 without an expectation**, a crash corpus of
+**227 cases, 0 failed**, and the gate script's **93 gates: every one that can run here passes; the one NOT-RUN is
+execution on real Windows**. These are Linux measurements, not a Windows release certificate - the Windows run is
+`Claude-to-Sarvam/SUTRAM-WINDOWS-ACCEPTANCE.md`, and it has not been made.
 A clean-source audit must rerun them independently; a percentage-complete
 estimate is not a substitute for those gates.
 

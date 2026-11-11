@@ -1,5 +1,19 @@
 > **Older changelog entries**, "v281" and earlier. The 20 newest are in [../CHANGELOG.md](../CHANGELOG.md) (split in R88). Entries are kept as written; only links were updated for the R88 move.
 
+## v305 (Claude, R129) - ChatGPT R204's slice findings: S1 closed by v304, S2 fixed; the release notes corrected
+
+- **`k[lo:]` ends at the length after `lo` is evaluated** (R204 S2): `k[kosh_kship(k, 8) - 1:]` is `[1:2]` and gives 8
+  (v304 refused it with the old length 1); after a `kosh_hri` or `kosh_shodh` in `lo`, the shorter or empty end.
+  An explicit `hi` is evaluated once, as before.
+- **R204 S1** - a slice passed beside an argument that grows the same `kosh` - crashed on v303 (SIGSEGV after a
+  region move, reproduced here); **v304's rule already refuses it** (`E_KOSH_VIBHAG`), for an expression call, a
+  statement call, a whole `kosh` to a `vibhag` parameter, and a growth through an alias.
+- **A growth past 2^40 numbers stops with the grow message** - R204's F2 qualification: the declared limit is now
+  checked on growth too. No machine reaches it (2^40 pushes first need 8 TiB).
+- **The release notes corrected as R204 lists:** what a `mandapa` and `parimana()` cover, finite limits, what the
+  out-of-memory message covers, the slice rules, what the allocator keeps, the v298 history, objects of mixed
+  versions. Gate `R127 descriptor` +5 checks.
+
 ## v304 (Claude, R129) - a `kosh` parameter can grow, and the caller sees it
 
 - **`kosh_kship` onto a `kosh` parameter compiles, and the growth is the caller's** - the parameter holds the

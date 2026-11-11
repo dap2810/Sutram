@@ -1,4 +1,34 @@
-> **The 20 newest entries.** Older ones, from "v304" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+> **The 20 newest entries.** Older ones, from "v305" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
+
+## v325 (Claude, R188 + R189) - the audit's fixes in, the reference's false rows corrected, a live list of what is left
+
+- **Library, two silent or fatal answers fixed** (ChatGPT R233; proved again here). `brihat_ank_tak_laghu` took a
+  digit of -1 and returned -1; it now stops with its documented `E_MULYA_AYOGYA`. `laghuttam_samapavartya` (lcm) of
+  (MIN, 0), (0, MIN) and (MIN, MIN) stopped the program from the gcd it calls; an lcm with 0 is now 0 and (MIN, MIN)
+  is -1, as for any lcm that does not fit.
+- **The verification tools made honest** (ChatGPT R233, ported onto the chain): the guard rejects crashes, timeouts
+  and changed refusal messages; `doc counts` separates all gates from those that passed; `R124 lazy commit` reports
+  NOT-RUN without Wine instead of PASS with no checks. Their four tests are now a gate, `R233 verification`.
+- **The reference, every Tier 1 row of the audit** fixed or stated, each against a run: `likh8` / `pad8` move eight
+  bytes; `likh8c` / `pad8c` are bounds-checked stores; `dvaram` opens and `paadh` reads, **both returning a negative
+  error code, not -1** (measured -2 and -9 - R186's rows said -1); `aksharank`'s index is used; `vartani_tul` gives no
+  order; `akshar` and its family work on bytes, ASCII only; `nirmmita`'s zeroing is from v320; `brihat_ank_se` leaves
+  `x` alone for a bad base; `purna_prasaran`, `ekanka_gan` and `ganita_paripurna_*`'s other failures; the `madhya`
+  example now sorts what it says it sorts; **the braces section said a brace-less `prakriya` holds one statement -
+  false since v265**; and Tier 3 rows R03, R12, R19 (made precise, not removed: a value not known to be a string is
+  true when empty), R26.
+- **Found this round, stated, not changed:** **a `chakra` counts down only when both ends are written as numbers** -
+  `chakra i = 5 tak e` with `e = 3` runs no times, silently (v315 too). Choosing the direction when the loop runs
+  would make `chakra i = 0 tak n - 1` with `n = 0` run twice; the choice is the owner's. And a `chakra` that counts
+  up to the largest `vitti` never ends (AUDIT-01 finding 6).
+- **Documents:** a live `docs/WHATS-LEFT.md` (archived in R156; eight briefs named it); the ROADMAP's v261 status block
+  marked as history, its "nothing ever returns memory" corrected; the README's counts, its Windows memory sentence (a
+  block gives memory back on Windows too - measured) and a section on reading input; the books' `mala` paragraph
+  (a `mala` in a loop is made once from v319: 256 bytes, not 51,200,000) and two English sentences an old rename had
+  damaged ("operator sangrah", "the suchi of folders").
+- **Gates `R189 audit fixes` (13 checks; 2 fail on v324) and `R233 verification` (21)**. **The compiler's bytes are
+  v324's** - only its version string and comments changed; **the guard against v324 differs only where a program
+  brings in `ganit` or `brihat`** (R189-00). Installer rebuilt (payload v325). Not run on Windows.
 
 ## v324 (Claude, R186) - `grahan()` reads a sign and an unfinished last number; reading a file, shown; two reference rows that said each other's job
 
@@ -498,17 +528,3 @@
 - **The Windows harness:** `79_ayojan_cwd` runs the root `sutram.exe` (its `lib/` beside it) from a folder outside the
   project, as the Linux suite runs the root compiler from `/tmp`. The compiler is unchanged.
 - `sutram-link.exe` rebuilt (it embeds the runtime). No Linux program changes bytes.
-
-## v305 (Claude, R129) - ChatGPT R204's slice findings: S1 closed by v304, S2 fixed; the release notes corrected
-
-- **`k[lo:]` ends at the length after `lo` is evaluated** (R204 S2): `k[kosh_kship(k, 8) - 1:]` is `[1:2]` and gives 8
-  (v304 refused it with the old length 1); after a `kosh_hri` or `kosh_shodh` in `lo`, the shorter or empty end.
-  An explicit `hi` is evaluated once, as before.
-- **R204 S1** - a slice passed beside an argument that grows the same `kosh` - crashed on v303 (SIGSEGV after a
-  region move, reproduced here); **v304's rule already refuses it** (`E_KOSH_VIBHAG`), for an expression call, a
-  statement call, a whole `kosh` to a `vibhag` parameter, and a growth through an alias.
-- **A growth past 2^40 numbers stops with the grow message** - R204's F2 qualification: the declared limit is now
-  checked on growth too. No machine reaches it (2^40 pushes first need 8 TiB).
-- **The release notes corrected as R204 lists:** what a `mandapa` and `parimana()` cover, finite limits, what the
-  out-of-memory message covers, the slice rules, what the allocator keeps, the v298 history, objects of mixed
-  versions. Gate `R127 descriptor` +5 checks.

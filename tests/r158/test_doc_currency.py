@@ -37,6 +37,11 @@ versions; they are not read except where a check says so.
  10  fields     - R167: a paragraph that lists what a `kosh` descriptor holds (descriptor, length, capacity) names
                  all four fields - the region size too - and gives the size in bytes. A field list with no size is
                  a size nobody wrote and everybody computes: three fields read as 24 bytes (it is 32).
+ 11  paths      - R188: every repository path a current document cites (docs/..., tests/..., tools/..., lib/...,
+                 examples/..., src/..., windows/..., lang/..., win/...) is a tracked file or folder, or the start of
+                 one (examples/276 is examples/276_*.sm). ROUND-188 found eight briefs naming docs/WHATS-LEFT.md
+                 after R156 had archived it, and ROADMAP.md citing it too; no check here read a path. Two citations
+                 are allowed by name, each with its reason, in PATH_ALLOWED.
 What it cannot check (ROUND-158 WS3): that a paragraph is still true. A version number and a symbol can be
 found; a false sentence cannot. Read the narrative.
 
@@ -436,6 +441,32 @@ STALE_FIGURES = [(r'(?<![\d,])52,?760\s*KB', 'the v284 measurement without a blo
                  (r'308 (?:or|अथवा) 436', 'R163\'s first figure, from 55 runs in one shell (v315: 264 KB with env -i)')]
 
 
+PATH_RE = re.compile(r'(?<![\w/.<-])((?:docs|tests|tools|lib|examples|src|windows|lang|win)/[\w./-]*[\w-])')
+PATH_ALLOWED = {
+    'lib/lang': 'prose for the two folders lib/ and lang/ ("its lib/lang files"), not a path',
+    'lib/fileio.smlib': 'named as deleted (in R1), on purpose',
+}
+
+
+def check_paths(docs, files):
+    bad = []
+    for rel, t in docs.items():
+        if rel not in CURRENT or t is None:
+            continue
+        for p in sorted(set(PATH_RE.findall(t))):
+            q = p.rstrip('.,);:')
+            if '*' in q or '...' in q or q in PATH_ALLOWED:
+                continue
+            if any(f == q or f.startswith(q) for f in files):
+                continue
+            bad.append(f'{rel}: cites `{q}`, which is not in the tree')
+    return bad
+
+
+def tracked_files(root):
+    return sorted(set(subprocess.run(['git', '-C', root, 'ls-files'], capture_output=True, text=True).stdout.split()))
+
+
 def check_figures(docs):
     bad = []
     for rel, t in docs.items():
@@ -522,6 +553,10 @@ def self_test(compiler, root, flags, labels, codes_text, current):
     four = f'The descriptor holds four fields, {sizes[0]} bytes: the length, the capacity, the address of the elements and the region size.'
     found = [bool(check_fields({LR: x}, sizes)) for x in (three, nosize, four, 'a 32-byte descriptor in the arena')]
     ok.append((found == [True, True, False, False], 'self-test: fields rejects three fields, and four without a size; accepts four with the size, and a bare mention'))
+    files = tracked_files(root)
+    found = check_paths({'README.md': 'see docs/NO-SUCH-FILE.md and examples/01_hello.sm and examples/02'}, files)
+    ok.append((len(found) == 1 and 'NO-SUCH-FILE' in found[0],
+               'self-test: paths rejects a missing file and accepts a tracked one and the start of one'))
     bad_log = {'docs/CHANGELOG.md': '## v315 (Claude, R154) - x\n## v313 - no who\n'}
     found = check_changelog(bad_log, current)
     ok.append((any('v314' in f for f in found) and any('v313' in f for f in found),
@@ -562,7 +597,8 @@ def main():
             ('reference', check_reference(compiler, root, docs), 'the nineteen corrected reference claims (R161) stay corrected, and the measurable ones agree with the compiler'),
             ('sizes', check_sizes(docs, descriptor_sizes(compiler, root)), 'every kosh descriptor size a current document gives is one the compiler makes (R163)'),
             ('fields', check_fields(docs, descriptor_sizes(compiler, root)), 'a paragraph that lists a kosh descriptor\'s fields names all four and gives the size (R167)'),
-            ('figures', check_figures(docs), 'no current document gives a replaced measurement as current - 52,760 / 13,480 KB, 392 KB, 308 or 436 (R166)')):
+            ('figures', check_figures(docs), 'no current document gives a replaced measurement as current - 52,760 / 13,480 KB, 392 KB, 308 or 436 (R166)'),
+            ('paths', check_paths(docs, tracked_files(root)), 'every repository path a current document cites is in the tree (R188)')):
         report(not found, f'{name}: {what}')
         for f in found:
             print('      ' + f)

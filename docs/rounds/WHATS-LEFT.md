@@ -1,3 +1,5 @@
+> **HISTORY - not the live list.** The live list is [`docs/WHATS-LEFT.md`](../WHATS-LEFT.md) (from R188, 11 November 2026).
+>
 > **Archived in R156 (9 November 2026).** Last true at compiler v258. Its open list was superseded: the current one is in `docs/RELEASE-NOTES.md` ("Not included in v1.0", "Limitations of what is included").
 
 # Where Sutram stands, and everything left — updated after the nivartanam round

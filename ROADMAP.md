@@ -4,7 +4,17 @@
 > The status block below is the owner's, at v411 - the current numbers are in `PROJECT-MASTER.md` and the
 > top of `docs/CHANGELOG.md`.
 
-> **Status at v411, 29 October 2026 — read this before the page below.**
+> **Current status (v325, 11 November 2026, R188-R189) - read this first.** Main is **v315**; v316 to v325 are
+> staged on one chain of branches and **wait on one Windows run** (`Claude-to-Sarvam/SUTRAM-WINDOWS-ACCEPTANCE.md`).
+> **What is left, in order, with the reason for each, is in [`docs/WHATS-LEFT.md`](docs/WHATS-LEFT.md).** The
+> current numbers are at the top of `docs/CHANGELOG.md` and `PROJECT-MASTER.md`.
+>
+> **The block below is the owner's status at v261 and is kept as a record. Two of its statements are no longer
+> true:** (1) *"there is no `munmap` anywhere - nothing ever returns memory"*: a growing `kosh` gives its old region
+> back with `munmap` (`VirtualFree` on Windows; v302, R127), a block rewinds its memory (on Windows too - measured), and from v320 clears
+> it; (2) *"`docs/WHATS-LEFT.md`"* was archived in R156 and is live again from R188.
+
+> **Status at v411, 29 October 2026 (history - see the current status above).**
 >
 > **Compiler v261.** Suite **PASS=225** · crash corpus **227/0** · library proofs **226/226** · property proofs 86/86 · doc signatures PASS · layers 14/9/1 · alloc bounds 26 (13 bounded, 13 exempt) · built-in packs CURRENT · gates **48 PASS / 0 FAIL / 1 NOT-RUN**.
 > **The NOT-RUN is Windows execution, and that is the owner's own test.**

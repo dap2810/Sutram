@@ -7,8 +7,8 @@ The programs are every examples/*.sm, examples/*/*.sm, tests/stdlib/*.sm, tests/
 NEW_TREE. Each is compiled from OLD_TREE by OLD_COMPILER and from NEW_TREE by NEW_COMPILER, with the tree as the
 working directory (so `yoj` finds that tree's lib/), and the two outputs are compared byte for byte:
 
-    IDENTICAL     both compiled, same exit code, the same bytes
-    REFUSED-SAME  neither wrote an output, with the same exit code
+    IDENTICAL     both exited 0 and wrote the same bytes
+    REFUSED-SAME  both exited 1 without output, with matching normalized stdout/stderr
     DIFFER        anything else - the line that matters
     NEW           the program does not exist in OLD_TREE
 
@@ -32,18 +32,26 @@ PATTERNS = ['examples/*.sm', 'examples/*/*.sm', 'tests/stdlib/*.sm', 'tests/r*/*
 
 def compile_one(compiler, root, rel, out):
     try:
-        rc = subprocess.run([compiler, os.path.join(root, rel), out], cwd=root, capture_output=True,
-                            timeout=60).returncode
+        result = subprocess.run([compiler, os.path.join(root, rel), out], cwd=root, capture_output=True,
+                                timeout=60)
     except subprocess.TimeoutExpired:
-        rc = 'timeout'
-    return rc, (open(out, 'rb').read() if os.path.exists(out) else None)
+        return 'timeout', None, None
+    # Only invocation-dependent paths are normalized; diagnostic bytes otherwise matter.
+    def normalize(data):
+        return data.replace(os.fsencode(out), b'<OUTPUT>').replace(os.fsencode(root), b'<ROOT>')
+    diagnostics = (normalize(result.stdout), normalize(result.stderr))
+    output = None
+    if os.path.isfile(out):
+        with open(out, 'rb') as f:
+            output = f.read()
+    return result.returncode, output, diagnostics
 
 
 def main(argv):
     if len(argv) < 5:
         print(__doc__)
         return 2
-    old_root, old_c, new_root, new_c, out = argv[:5]
+    old_root, old_c, new_root, new_c, out = map(os.path.abspath, argv[:5])
     ext = '.exe' if '--pe' in argv else ''
     rels = sorted({os.path.relpath(p, new_root) for pat in PATTERNS for p in glob.glob(os.path.join(new_root, pat))})
     shutil.rmtree(out, ignore_errors=True)
@@ -55,15 +63,16 @@ def main(argv):
             new += 1
             print(f'NEW          {rel}')
             continue
-        same_src = open(os.path.join(old_root, rel), 'rb').read() == open(os.path.join(new_root, rel), 'rb').read()
+        with open(os.path.join(old_root, rel), 'rb') as old_source, open(os.path.join(new_root, rel), 'rb') as new_source:
+            same_src = old_source.read() == new_source.read()
         changed_src += not same_src
         tag = '' if same_src else ' (source changed)'
-        orc, od = compile_one(old_c, old_root, rel, f'{out}/{i}.old{ext}')
-        nrc, nd = compile_one(new_c, new_root, rel, f'{out}/{i}.new{ext}')
-        if od is None and nd is None and orc == nrc:
+        orc, od, om = compile_one(old_c, old_root, rel, f'{out}/{i}.old{ext}')
+        nrc, nd, nm = compile_one(new_c, new_root, rel, f'{out}/{i}.new{ext}')
+        if od is None and nd is None and orc == nrc == 1 and om == nm:
             refused += 1
             print(f'REFUSED-SAME {rel}{tag}')
-        elif od is not None and od == nd and orc == nrc:
+        elif od is not None and od == nd and orc == nrc == 0:
             ident += 1
             print(f'IDENTICAL    {rel}{tag}')
         else:

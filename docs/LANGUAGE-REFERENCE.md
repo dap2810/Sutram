@@ -1,6 +1,6 @@
-> **Status at compiler v324, 11 November 2026 (R186) - staged, not merged: v324 fixes `grahan()` - it reads a minus sign and no longer loses an unfinished last number - and shows a file being read (v323: `vartani_grahan()` reads a line of text, and `nivesha_anta()`; v322: five defects of the owner's audit closed; v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
+> **Status at compiler v325, 11 November 2026 (R188, R189) - staged, not merged: v325 brings the audit's fixes in - a negative digit refused by `brihat_ank_tak_laghu`, `lcm` of a pair with 0 no longer stops the program, the reference's false rows corrected - and the live `docs/WHATS-LEFT.md` (v324: `grahan()` reads a minus sign and no longer loses an unfinished last number, and a file is read; v323: `vartani_grahan()` reads a line of text, and `nivesha_anta()`; v322: five defects of the owner's audit closed; v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v324) - sampurna sutra`.** Suite **PASS=331** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **90 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v324 (R186: `grahan()` reads a sign and an unfinished last number; R184: `vartani_grahan()` reads a line of text; AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v325) - sampurna sutra`.** Suite **PASS=331** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **92 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v325 (R189: the audit's library fixes and corrected documents; R186: `grahan()` reads a sign and an unfinished last number; R184: `vartani_grahan()` reads a line of text; AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -111,11 +111,15 @@ error.** In detail:
 | `/` and `%` of negative numbers | `/` **truncates toward zero** and `%` **takes the sign of the left side**: `-7 / 2` is −3 and `-7 % 2` is −1; `-9 / 8` is −1 and `-9 % 8` is −1 (the same for a written divisor and a variable one). |
 | `<<` and `>>` | the shift count is taken **modulo 64**: `1 << 64` is 1, `1 << 63` is the smallest `vitti`. **`>>` is a logical shift** - it fills with zeros, so a negative number becomes a large positive one: `-8 >> 1` is 9223372036854775804. To halve a negative number, use `/ 2`. |
 | `/` and `%` by −1 | the smallest `vitti` divided by −1 wraps to itself; `% -1` is 0 (before v276 this crashed; written as numbers, `(0 - 9223372036854775808) / (0 - 1)` is refused) |
-| when you need to know | the library's checked arithmetic says whether the answer fits: `ganita_janchit_yuj` / `_nyun` / `_gun` (`ok[0]` is 1 or 0); `ganita_paripurna_*` stops at the largest or smallest `vitti` instead of wrapping |
+| when you need to know | the library's checked arithmetic says whether the answer fits: `ganita_janchit_yuj` / `_nyun` / `_gun` (`ok[0]` is 1 or 0); `ganita_paripurna_*` stops at the largest or smallest `vitti` instead of wrapping - **an overflow saturates; an undefined answer gives 0** (`ganita_paripurna_bhaj(7, 0)`, `ganita_paripurna_shesh(7, 0)`, `ganita_paripurna_kramgun(-1)`), so read each function's own contract |
 
 The library's number functions do not wrap on ordinary inputs (v276): `kramgun` (factorial), `fib`, `matra_meru`,
 `varg`, `vargit`, `dwi_ghat`, `yog_tak`, `meru`, `laghuttam_samapavartya` (lcm) and `purna_prasaran` (integer
-variance) return **−1** when the answer is too large to fit; `ghat` (power), `ghan` (cube) and `yog_seema` (range
+variance) return **−1** when the answer is too large to fit. **Two of them say more:** `laghuttam_samapavartya`
+of any pair with 0 is 0 and of (smallest, smallest) is −1 - **from v325; up to v324 those three pairs stopped the
+program** (`E_PHALA_SEEMA`, from the gcd it calls). And **`purna_prasaran` uses the mean truncated to a whole
+number, and gives −1 also when one deviation's square alone does not fit** - `[0, 0, 6000000000]` gives −1 though its
+variance, 8000000000000000000, fits; `ghat` (power), `ghan` (cube) and `yog_seema` (range
 sum) return the largest or smallest `vitti`.
 
 **The policy (ChatGPT R189 WS3, accepted in R116; implemented in v296):**
@@ -133,7 +137,8 @@ means a return value says it failed and nothing is printed.
 | `mahattam_samapavartak` (`ganit`) | the gcd is 2^63: `(MIN, 0)`, `(0, MIN)`, `(MIN, MIN)` only | stops | `E_PHALA_SEEMA` |
 | `viparyay_ank` (`ank`) | the reversed number does not fit | stops | `E_PHALA_SEEMA` |
 | `brahmagupta_kshetr` (`ganita`) | not the sides of a quadrilateral (or triangle, `d = 0`) / the area is past the range | stops | `E_MULYA_AYOGYA` / `E_ATIPRAVAH` |
-| `brihat_ank_se` (`aadhar`) | a bad digit or base, or the number needs more than `n` digits | status 0, the digits cleared | — |
+| `brihat_ank_se` (`aadhar`) | a bad base (outside 2..16), `count < 0` or `n < 1` | **status 0, `x` not written** (corrected v325, R189: this row said the digits were cleared) | — |
+| `brihat_ank_se` (`aadhar`) | a digit outside `0..base-1`, or the number needs more than `n` digits | status 0, all `n` digits of `x` cleared | — |
 | `brihat_ank_tak_laghu` (`brihat`) | a digit outside 0..9, `n < 0` / the value is past the range | stops | `E_MULYA_AYOGYA` / `E_PHALA_SEEMA` |
 | `patra_asti` (`patra`) | **not changed in v296** - the contract needs a new operating-system query (R116 report) | — | — |
 | `yog_seema` (`sadhan`) | never: the exact sum, saturated only when the sum itself is past the range | — | — |
@@ -164,10 +169,10 @@ warning naming the new one** (§4b).
 |---|---|
 | `likh` | `likh(addr, v)`: write the 8-byte number `v` at `addr` |
 | `pad` | `pad(addr)`: read **one byte** at `addr` (0-255). Corrected v324: it said only "read memory" |
-| `likh8` | `likh8(addr, v)`: write **8 bytes** (a whole number) at `addr`, as `likh` does. Corrected v324: it said "8-bit" |
-| `pad8` | `pad8(addr)`: read **8 bytes** (a whole number) at `addr`. Corrected v324: it said "8-bit"; the one-byte read is `pad` |
-| `likh8c` | `likh8c(addr, v, bound)`: `likh8` that writes nothing when `addr >= bound` (an address). Corrected v324: it said "print a character" |
-| `pad8c` | `pad8c(addr, bound)`: `pad8` that gives 0 when `addr >= bound`. Corrected v324: it said "read a character" |
+| `likh8(addr,value)` | store one 64-bit value (**eight bytes**) at a valid writable address - as `likh` does. Corrected (R233, v324): it said "8-bit" |
+| `pad8(addr)` | load one 64-bit value (**eight bytes**) from a valid readable address. Corrected (R233, v324): it said "8-bit"; the one-byte read is `pad` |
+| `likh8c(addr,value,bound)` | store eight bytes only when the unsigned start address is below `bound` (an address); otherwise nothing is written. **No lower-bound check, and the eight bytes are not checked to end below `bound`.** Corrected (R233, v324): it said "print a character" |
+| `pad8c(addr,bound)` | load eight bytes only when the unsigned start address is below `bound`; otherwise 0. No lower-bound or full-eight-byte check. Corrected (R233, v324): it said "read a character" |
 | `pankti_gan` (was `pankti_len`) | length of a constant-length `mala` mala |
 | `likha` | 1–6 arguments: value(s); see §4a (string literals do not append LF, numeric final values do). Three values always print (v287); raw writes are `dvaram_likha` |
 | `parimana` | `parimana()`: the bytes the program's `nirmmita` and `kosh` hold now (v289; section 19) |
@@ -175,25 +180,25 @@ warning naming the new one** (§4b).
 | `likha_santat` (was `lkhb`) | numeric output without LF; includes `dasham` numeric printing since R52 |
 | `likha_rup` (was `likha_fmt`) | literal prefix plus integer followed by LF (no placeholder substitution; see §4a) |
 | `shabda` | print a string variable |
-| `grahan` | `grahan()`: read a number from input, with its sign (v324); -1 at the end of input, and `nivesha_anta()` becomes 1 (section 4d) |
+| `grahan` | `grahan()`: read one line and make a number of **its digits** (other bytes are passed over: `5abc` is 5, `12 34` is 1234, `abc` is 0), with a sign before the first digit (v324); **past the largest `vitti` it wraps, with no message**; -1 at the end of input, and `nivesha_anta()` becomes 1 (section 4d) |
 | `vartani_grahan` (वर्तनी_ग्रहण) | `vartani_grahan()`: read one line of text from input - a new string, without the line's newline (v323; section 4d) |
 | `nivesha_anta` (निवेश_अन्त) | `nivesha_anta()`: 1 once a `vartani_grahan()` or (from v324) a `grahan()` has found the input ended, else 0 (v323; section 4d) |
 | `sthagita` | halt the program |
-| `dvaram` | `dvaram(path, flags)`: **open** a file; returns a file descriptor, -1 on failure (flags 0 = read; 577 = write, create, truncate - Linux values). **Corrected v324: this row and `paadh`'s said each other's job** |
-| `paadh` | `paadh(fd, buf, len)`: **read** up to `len` bytes from descriptor `fd` into `buf`; returns the count read, 0 at end of file, -1 on failure (corrected v324) |
-| `band` | `band(fd)`: close a file descriptor |
-| `nirmmita` | allocate memory: `nirmmita(n)` gives `n` **bytes**, zeroed — `nirmmita(count * 8)` for `count` cells. Checked only when the size is a number and the name is never reassigned; otherwise writing past `n` bytes is your mistake, as in C (§6c) |
+| `dvaram(path,flags[,mode])` | **open** a file; returns its descriptor, or **a negative error code** (measured: -2 for a missing file). Flags 0 = read; 577 = write, create, truncate (Linux values); the optional creation mode defaults to 0644 on Linux. Corrected (R233, v324): this row and `paadh`'s said each other's job |
+| `paadh(fd,buf,count)` | **read** up to `count` bytes from descriptor `fd` into `buf`; returns the bytes read, 0 at end of file, or a negative error code (measured: -9 for a descriptor that is not open). **A successful read can be short** - read again until 0 |
+| `band(fd)` | close a file descriptor |
+| `nirmmita` | allocate memory: `nirmmita(n)` gives `n` **bytes**, zeroed (**from v320**: up to v319 - and on main, v315 - a buffer made after a block could start with the block's old numbers once the 1 GiB field was used up; §19, "What a block gives up is zero") — `nirmmita(count * 8)` for `count` cells. Checked only when the size is a number and the name is never reassigned; otherwise writing past `n` bytes is your mistake, as in C (§6c) |
 | `smaran` | fill memory |
 | `smaran_pratilip` (was `smaran_cp`) | copy memory |
-| `vartani_aayam` | `vartani_aayam(s)`: the length of the string in bytes |
-| `vartani_tul` | `vartani_tul(s, t)`: 0 when the two strings are equal, 1 when they are not - **it gives no order** (`ab`/`ac` and `ac`/`ab` both give 1); for order use `<` |
+| `vartani_aayam` | `vartani_aayam(s)`: the length of the string in **bytes** (not letters: `आ` is 3) |
+| `vartani_tul(a,b)` | compare two 0-ended byte strings: **0 if equal, 1 if different - not an order** (`ab`/`ac` and `ac`/`ab` both give 1); for order use `<` |
 | `vartani_sandhi` (was `vartani_cat`) | append `t` to `s` **in place** and return `s`: `vartani_sandhi(s, t)` - `s` must be writable memory with room (`b = nirmmita(n)`, `vartani_pratilip(b, "...")`), as C's `strcat`. **A string literal as `s` is refused when compiled, and stops the program at run time when it arrives through a variable** (`E_VARTANI_STHIRA`, v298): a literal is part of the program. For a new string, `s + t` |
 | `vartani_pratilip` | `vartani_pratilip(dst, s)`: copy the string `s` into `dst` |
-| `akshar` | character code at an index |
-| `aksharank` | `aksharank(s, i)`: the code of byte `i` of `s`, as `akshar` (the old note "index currently ignored" was false: measured v324, `aksharank("ABC", 2)` is 67) |
-| `anka_akshar` (was `char_from`) | a new one-character string from a code: `shabda(anka_akshar(66))` prints `B`. From v298 each call gets its own two bytes (as `s + t` does), so the result can be kept; up to v297 it pointed at stack memory the next call overwrote |
-| `akshar_guru` (was `char_upper`) | uppercase a character |
-| `akshar_laghu` (was `char_lower`) | lowercase a character |
+| `akshar` | `akshar(s, i)`: **byte** `i` of `s`, 0-255 - not a letter: the three bytes of `आ` are 224, 164, 134 |
+| `aksharank(s[,index])` | the unsigned byte at `index` (default 0) of `s` - as `akshar`; the caller supplies a valid readable address. The old note "index currently ignored" was false (measured: `aksharank("ABC", 2)` is 67) |
+| `anka_akshar` (was `char_from`) | a new **one-byte** string from a code - only its low eight bits are kept (`anka_akshar(300)` is `,`, 44), and `anka_akshar(0)` is the empty string: `shabda(anka_akshar(66))` prints `B`. From v298 each call gets its own two bytes (as `s + t` does), so the result can be kept; up to v297 it pointed at stack memory the next call overwrote |
+| `akshar_guru` (was `char_upper`) | `akshar_guru(c)`: `a`-`z` to `A`-`Z`; **every other code, Devanagari and accented letters too, is returned unchanged** (ASCII only) |
+| `akshar_laghu` (was `char_lower`) | `akshar_laghu(c)`: `A`-`Z` to `a`-`z`; every other code unchanged (ASCII only) |
 | `sankhya_yog` | four 32-bit **float** lanes in raw memory, added: `sankhya_yog(dst, a, b)` (`addps`). No Sutram value holds 32-bit floats - `sankhya_bindu`, their dot-product sibling, is withdrawn (v295) |
 | `sankhya_gunan` | four 32-bit **float** lanes in raw memory, multiplied: `sankhya_gunan(dst, a, b)` (`mulps`); the same limit |
 | `sankhya_bindu` (was `sankhya_dot`) | **withdrawn (v295, R115):** refused when compiled - `E_PRATYAHRITA`, *"pratyahrita - asyah phalam ashuddham, sanshodhanam pratiksate"* (withdrawn: its result was wrong; awaiting repair). v292 read four 32-bit floats from each argument; v293 multiplied 8-byte cells as integers, which is wrong for a `kosh dasham`. **For two `kosh dasham`: `yoj sankhyiki`, then `bindu_gunan(a, b)`** (a `dasham`; the two lengths must be equal - unequal lengths stop the program with `E_AKARA_ASAMYA`, as in section 3a; until R162 this cell said it read the shorter length, which v295 did). |
@@ -257,7 +262,7 @@ Sutram suchana: 'asti_sorted' purana nama - 'asti_kramabaddha' likhatu
 
 | new | old | module | what it does |
 |---|---|---|---|
-| `ekanka_gan` | `bit_gan` | `ganit` | the count of 1-digits (एकाङ्क) in `n`'s binary form |
+| `ekanka_gan` | `bit_gan` | `ganit` | the count of 1-digits (एकाङ्क) in `n`'s binary form - **for `n >= 0`; every negative `n` gives 0** (not its 64-bit count) |
 | `rakh_ubhaya_bhed` | `rakh_samroop_diff` | `sangrah` | the difference both ways (उभय-भेद): `(a - b)` with `(b - a)` |
 | `roop_purti_vam` | `roop_pad_vam` | `roop` | fill (पूर्ति) on the left to `width` |
 | `roop_purti_dakshin` | `roop_pad_dakshin` | `roop` | fill on the right |
@@ -332,7 +337,7 @@ mukhya() {
 raw
 ```
 Here `1` is stdout's file descriptor; the second value is a byte-buffer pointer and the third is its byte count;
-the result is the number of bytes written. `dvaram` (an opening) is the fd family's word, with `dvaram`/`band`/`grahan`.
+the result is the number of bytes written. `dvaram` (an opening) is the fd family's word, with `dvaram` (open), `paadh` (read) and `band` (close). (`grahan` is not one of them: it reads standard input only, and takes no descriptor - corrected v325, R233 R03.)
 
 **Up to v285 this was `likha(fd, buf, len)`:** a three-argument `likha` whose first argument was not a string
 literal wrote raw bytes, so `likha(a, " ", b)` printed nothing. v286 refused that form (`E_LIKHA_TRAYA`); **from
@@ -442,7 +447,8 @@ no runtime dependency, the code becomes part of your binary. `lib/` ships:
 | madhava | `yoj madhava` | 5 — `madhava_pi`, `madhava_sin`, `madhava_cos`, `madhava_atan`, `madhava_vargmool` (Kerala school, T12 floats) |
 | varna | `yoj varna` | 13 — `varna_maap`, `akshar_sanket`, `asti_ank_akshar`, `asti_unnat_akshar`, `asti_avanat_akshar`, `asti_akshar_akshar`, `asti_avakash_akshar`, `gan_swar`, `gan_akshar`, `anwesh_akshar`, `asti_sarv_ank`, `unnat_sanket`, `avanat_sanket` |
 
-60 functions across six modules. `shankh_shreni` is markedly faster than `budbud_shreni` on real
+**The table is a selection: 60 of the 101 functions these six modules hold** (ganit 18, ank 10, shreni 14, ganita 27,
+madhava 5, varna 27); the whole library is 310 functions in 24 modules. `shankh_shreni` is markedly faster than `budbud_shreni` on real
 arrays. **How many modules a program can bring in:** there is no count. `examples/99_ast_multimodule_capacity.sm`
 brings in seven. The limits are sizes: the program and everything it brings in, expanded, at most 128 KiB
 (`IMPORT_BUF_CAP`), and the syntax tree, 3 MiB (`E_VRIKSHA_SEEMA`, "Size limits" below). (Until R161 this page
@@ -470,6 +476,8 @@ assignment to a parameter.
 Each digit occupies one 8-byte cell; callers allocate an array of `n` cells (for example with `nirmmita(n * 8)`).
 After `brihat_ank_se_laghu(1234, digits, 4)`, `pad8(digits + 0 * 8)` is `4`, `pad8(digits + 1 * 8)` is `3`, `pad8(digits + 2 * 8)` is `2`, and `pad8(digits + 3 * 8)` is `1`.
 `brihat_ank_tak_laghu(digits, 4)` reads that same LSB-first representation back as `1234`. Do not reverse the cells when passing them to other `brihat_*` functions.
+
+From v325 (R233, R189): every digit cell must be in 0..9. Negative digits now stop with `E_MULYA_AYOGYA`, as do digits above 9 and negative lengths; zero length returns 0. A positive value above the signed 64-bit maximum stops with `E_PHALA_SEEMA`. This repairs the v315 missing lower-bound check; the compiler version remains v315.
 
 ## 5. Types
 
@@ -555,7 +563,7 @@ Up to v292 `p == q` compared the two addresses (1 only for one record), `p < q` 
 
 **Not known to be strings, and so not handled:** module-level variables, `kosh` and `mala` elements, and a
 `prakriya` used as a value (`vitti g = f`). Compared with a string they are refused, not guessed. Two of them
-compared with each other still compare as numbers. An empty string is still true in `yadi (s)`.
+compared with each other still compare as numbers. **And one of them holding an empty string is true in `yadi`** (measured v325: a module-level `vitti g = ""`, and a `mala` element set to `""`, both run the branch) - the `E_VARTANI_SATYA` refusal applies only to a value the compiler knows is a string; test `x != ""` instead.
 
 ## 6. Syntax by example
 
@@ -580,7 +588,7 @@ mukhya()
         likha(i)
     }
 
-    chakra j = 5 tak 1 {      # for (descending)
+    chakra j = 5 tak 1 {      # for (descending - both ends written as numbers: §6a)
         likha(j)
     }
 
@@ -612,36 +620,28 @@ kuru {                            # do-while (kuru ... yavat)
 } yavat (i < 10)
 ```
 
-A brace-less function body is exactly **one statement**. For anything longer,
-wrap the body in `{ }`.
-
-**`prakriya` requires the braces. `mukhya` does not.** They behave differently:
-
-```sm
-mukhya()
-    vitti x = 1        # this compiles - mukhya accepts a brace-less body
-    likha(x)
-    likha(x + 1)
-```
+**Braces are optional on a function body, for `prakriya` and `mukhya` alike.** Without them, indentation decides
+(§6a-2):
 
 ```sm
 prakriya f(n)
-    vitti x = n        # this does NOT compile - parse error
+    vitti x = n + 1    # three statements, no braces
+    x = x * 2
     nivartanam x
+
+mukhya()
+    likha(f(5))        # prints 12
 ```
 
-**Verified:** `mukhya()` with three brace-less statements compiles and runs; `prakriya f(n)` with
-three brace-less statements fails with `vyakaran dosh, pankti 3:5, shabd 'nivartanam'`.
+**Verified (v325, R189): it prints 12.** **Up to v324 this section said the opposite** - that a brace-less
+`prakriya` holds one statement, and that a three-line `prakriya` without braces does not compile. The parser has
+accepted indented bodies since v265-v267. **The failure the section quoted came from a file with no `mukhya`:** a
+`prakriya` alone - braced or not - ends with `vyakaran dosh, pankti 4:1, shabd 'patra-ant'`, because every
+program needs a `mukhya`. (That message does not say so; it is one of the eight unhelpful messages in
+`Claude-to-Sarvam/AUDIT-01-*`.)
 
-**This is an inconsistency, not a rule**, and it is recorded rather than resolved. **Every example in every
-book writes `mukhya()` without braces** - 84 complete book programs, all of which compile - **so a beginner
-learns the brace-less form from the first page and then hits the wall on their first `prakriya`.**
-
-**If you are writing a function with more than one statement, always use braces.** It works for both, and it
-is what the books should show.
-
-*Open question for the owner: should `mukhya` and `prakriya` be made consistent? Documenting it is what this
-section does; unifying them would be a language change.*
+A body on the header's own line is still one statement (§6a-2). Braces are never wrong, and a body you may
+grow later is easier to extend with them.
 
 
 ### 6a. Counted loops: `tak` and `arabhya … paryantam` (R52)
@@ -670,6 +670,18 @@ mukhya() {
 3
 4
 ```
+**Which way a `chakra` counts is decided when it is compiled, not when it runs.** It counts **down only when both
+ends are written as numbers** (or as arithmetic on numbers, such as `0 - 5`) and the start is the larger:
+`chakra j = 5 tak 1` gives 5 4 3 2 1. **If either end is a variable or a call, it counts up - and when the start is
+already past the end it runs no times, with no message:** `vitti e = 3` and then `chakra i = 5 tak e` runs 0 times
+(measured on v315 and v324). That is also why `chakra i = 0 tak n - 1` with `n = 0` safely runs no times. **To count
+down from a variable, use `yavat`:** `vitti i = n` and `yavat (i >= 1) { ... i = i - 1 }`.
+
+**Both ends are included, and the end is read again on every pass** (`n = 5` inside `chakra i = 1 tak n` changes the
+end). **A loop that counts up to the largest `vitti`, 9223372036854775807, never ends:** after its last pass the
+counter wraps to the smallest `vitti`, which is still not past the end (measured: `chakra i = 9223372036854775805 tak
+9223372036854775807` passes its third pass and goes on). End one short of it, or use `yavat`.
+
 **A `chakra` counts in whole numbers (v283).** Its counter is a `vitti` and steps by 1, so both ends must be
 whole numbers: `chakra i = 0 tak 3.0`, `chakra i = 0.5 tak 2.5`, a `dasham` variable as an end
 (`chakra i = 0 tak n` with `dasham n`), or a `dasham` variable as the counter are refused when compiled:
@@ -1376,7 +1388,22 @@ prakriya madhya(a, b, c)            # the middle of three numbers
         t[0] = a
         t[1] = b
         t[2] = c
-        # ... sort t ...
+        vitti s = 0
+        yadi (t[0] > t[1]) {        # three compare-and-swap steps sort t
+            s = t[0]
+            t[0] = t[1]
+            t[1] = s
+        }
+        yadi (t[1] > t[2]) {
+            s = t[1]
+            t[1] = t[2]
+            t[2] = s
+        }
+        yadi (t[0] > t[1]) {
+            s = t[0]
+            t[0] = t[1]
+            t[1] = s
+        }
         nivartanam t[1]             # a NUMBER read from scratch: allowed
     nivartanam 0
 ```
@@ -1435,8 +1462,9 @@ address stays good - but putting it in an outer `vitti` is (`E_VITTI_PRAKAR`, th
   passed on by `prasar`. A later block reuses the same memory, and sees zeros, never the earlier block's data.
 - **A negative size** is an error: written as a number (`nirmmita(-1)`), the compiler refuses it —
   `E_NIRMMITA_RNA`; computed (`nirmmita(n)` with `n` below 0), the program stops, exit 1:
-  `Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati`. (Outside a block, and in
-  a Windows program, a computed negative size still gives 0.)
+  `Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati` - **in a Windows program
+  too** (measured v325 under Wine: the same message, exit 1; an earlier sentence here said Windows gave 0). Outside a
+  block a computed negative size still gives 0.
 - **Measured (Linux x86-64, v270/v271):** 1,000,000 × `nirmmita(64)` in a loop — **264 KB** peak with the block,
   **62 MB** without it. A `kosh` outside the block filled with 1,000,000 numbers from inside it: **7.8 MB** (the
   `kosh` itself) against **78 MB** without the block. A block recursing 1,000 deep, 1,000 times: **2 MB**

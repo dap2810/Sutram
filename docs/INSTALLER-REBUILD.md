@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R189 (v325):** the compiler's version string and comments changed (its code did not), the library (`ganit`, `brihat`)
+and the documents. Built from an empty `--work` folder.
+
 **R186 (v324):** the compiler changed (`grahan()`); nothing else in the payload but the documents, two examples
 and their fixture. Built from an empty `--work` folder.
 

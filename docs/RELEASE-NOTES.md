@@ -1,7 +1,7 @@
-# Sutram 1.0 (v324) — release notes
+# Sutram 1.0 (v325) — release notes
 
-**Compiler `Sutram 1.0 (v324) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v324). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v325) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v325). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,16 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v324 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v325 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v324 closes, and what it does not (R140-R186, AUDIT-01)
+## Status: what v325 closes, and what it does not (R140-R189, AUDIT-01, R233)
+
+**v325 (R188, R189): the audit's fixes.** A negative digit given to `brihat_ank_tak_laghu` is refused instead of
+returned; an `lcm` with 0 is 0 instead of a stop; the reference's rows that said something false are corrected, each
+against a run. **The live list of what is left is `docs/WHATS-LEFT.md` again.** **Not closed, and stated:** a `chakra`
+with a variable end counts only up (reference §6a), a `chakra` to the largest `vitti` never ends, and `grahan()` passes
+over what is not a digit.
 
 **v324 (R186): `grahan()` no longer gives a silent wrong number.** `-5` read as 5, and a last number with no
 newline after it was lost; both are fixed, and `grahan()` sets `nivesha_anta()` at the end of input so a typed
@@ -523,6 +529,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v325 (staged):** the audit's library fixes, the reference corrected, `docs/WHATS-LEFT.md` live (R188, R189).
 - **v324 (staged):** `grahan()` reads a sign and an unfinished last number; a file read in two examples; the `dvaram` / `paadh` rows corrected (R186).
 - **v323 (staged):** `vartani_grahan()` reads a line of text; `nivesha_anta()` says the input has ended (R184).
 - **v322 (staged):** five defects of the owner's audit (AUDIT-01): the value of a `prakriya` without `nivartanam`,

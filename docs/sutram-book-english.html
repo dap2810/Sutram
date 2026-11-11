@@ -124,7 +124,7 @@ automatically. More variables spill to the stack. You never manage memory for si
 <code>x = x + 5</code>. Variables are mutable; <code><span class="k" data-tip="constant">sutra</span></code> constants are folded at compile time.</div>
 </div>
 <div class="ch" id="ch4"><h2>4. Operators and Precedence</h2>
-<p>Sutram has the full operator sangrah you expect, with standard mathematical precedence:</p>
+<p>Sutram has the full operator set you expect, with standard mathematical precedence:</p>
 
 <table>
 <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
@@ -593,7 +593,7 @@ ld -mi386pep --entry=_start -o sutram.exe sutram.obj
 scripts are in <code>windows\</code> (run <code>BUILD-WINDOWS-SETUP.cmd</code>).</p>
 
 <h3>17.6 Understanding PATH</h3>
-<p><b>PATH</b> is the suchi of folders Windows searches when you type a command. If
+<p><b>PATH</b> is the list of folders Windows searches when you type a command. If
 Sutram's folder is on PATH, you can type <code>sutram</code> from anywhere; otherwise
 you must type the full path or be in the folder.</p>
 <p>To check: open a <b>new</b> terminal and run <code>sutram --version</code>. If it prints the
@@ -864,7 +864,7 @@ Only its life ends with the block, and it may not leave it (<code>E_KOSH_MANDAPA
 <li>a <code>mala</code> made inside a block - <b>never given back</b>: it keeps its bytes for the whole program, as a
 <code>mala</code> does anywhere. A <code>prakriya</code> may even return one from inside a block; nothing refuses that,
 because its memory stays. 200,000 calls that each make a <code>mala</code> of 31 numbers inside a block end holding
-51,200,000 bytes (<code>parimana()</code>) and peak at 49,920 KB - as if there were no block.</li>
+51,200,000 bytes (<code>parimana()</code>) and peak at 49,920 KB - as if there were no block. <b>Inside a loop it is different (from v319):</b> a <code>mala</code> declared in a loop's body - in a block there or not - is made once and used again on every pass, so the same 200,000 passes written as a <code>chakra</code> around the block hold 256 bytes, not 51,200,000.</li>
 </ul>
 <p>So inside a block that is meant to give its memory back, take that memory with <code>nirmmita</code>.</p>
 <p> Numbers may leave a block. An <i>address</i> made inside it may not: putting one
@@ -1003,7 +1003,7 @@ stops the program with a sentence that says which, not a crash.</p>
 <code>nirmmita(64)</code>, print <code>parimana()</code> each time round, and find the pass on which the budget
 refuses. Then move <code>mandapa</code> inside the loop, so the block starts again on every pass, and watch it never refuse.</div>
 </div>
-<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v324)</div>
+<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v325)</div>
 </div>
 </body>
 </html>
