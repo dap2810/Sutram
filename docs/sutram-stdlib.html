@@ -118,7 +118,7 @@ Do not edit by hand.</p>
 <tr><td><code>laghu2(a, b)</code></td><td>laghu2(a, b) — the smaller of a and b.</td></tr>
 <tr><td><code>adhik2(a, b)</code></td><td>adhik2(a, b) — the larger of a and b.</td></tr>
 <tr><td><code>mahattam_samapavartak(a, b)</code></td><td>mahattam_samapavartak(a, b) — greatest common divisor of a and b, always non-negative (mahattam_samapavartak(0, 0) = 0). Every -2^63 case works except a gcd of 2^63 - (MIN, 0), (0, MIN), (MIN, MIN) - which stops the program with E_PHALA_SEEMA (R116, R189 row 5).</td></tr>
-<tr><td><code>laghuttam_samapavartya(a, b)</code></td><td>laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0); -1 when it is larger than 2^63 - 1 (R80).</td></tr>
+<tr><td><code>laghuttam_samapavartya(a, b)</code></td><td>laghuttam_samapavartya(a, b) — least common multiple of a and b, always non-negative (laghuttam_samapavartya(0, 0) = 0); -1 when it is larger than 2^63 - 1 (R80). Any pair with 0 is 0, and (MIN, MIN) is -1 (R189); it never stops.</td></tr>
 <tr><td><code>ghat(base, e)</code></td><td>ghat(base, e) — base raised to the power e (e &gt;= 0; negative e returns 1, as the loop never runs); saturates at 2^63 - 1 / -2^63 past int64 (R80), as ganita_paripurna_ghat.</td></tr>
 <tr><td><code>kramgun(n)</code></td><td>kramgun(n) — n factorial (n!); 1 for n &lt; 2; -1 for n &gt;= 21, whose factorial is larger than 2^63 - 1 (R80: it used to wrap - kramgun(21) was negative). ganita_paripurna_kramgun saturates instead.</td></tr>
 <tr><td><code>asti_abhajya(n)</code></td><td>asti_abhajya(n) — 1 if n is prime, 0 otherwise (n &lt; 2 is not prime).</td></tr>
