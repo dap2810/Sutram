@@ -164,10 +164,10 @@ warning naming the new one** (§4b).
 |---|---|
 | `likh` | write to a memory location |
 | `pad` | read memory |
-| `likh8` | write 8-bit value |
-| `pad8` | read 8-bit value |
-| `likh8c` | print a character |
-| `pad8c` | read a character |
+| `likh8(addr,value)` | store one 64-bit value (eight bytes) at a valid writable address |
+| `pad8(addr)` | load one 64-bit value (eight bytes) from a valid readable address |
+| `likh8c(addr,value,bound)` | store eight bytes only when the unsigned start address is below `bound`; otherwise skip. No lower-bound or full-eight-byte extent check |
+| `pad8c(addr,bound)` | load eight bytes only when the unsigned start address is below `bound`; otherwise return 0. No lower-bound or full-eight-byte extent check |
 | `pankti_gan` (was `pankti_len`) | length of a constant-length `mala` mala |
 | `likha` | 1–6 arguments: value(s); see §4a (string literals do not append LF, numeric final values do). Three values always print (v287); raw writes are `dvaram_likha` |
 | `parimana` | `parimana()`: the bytes the program's `nirmmita` and `kosh` hold now (v289; section 19) |
@@ -177,18 +177,18 @@ warning naming the new one** (§4b).
 | `shabda` | print a string variable |
 | `grahan` | read a number from input |
 | `sthagita` | halt the program |
-| `dvaram` | patra descriptor helper |
-| `paadh` | open a file |
+| `dvaram(path,flags[,mode])` | open a file; return its descriptor or a negative error. The optional creation mode defaults to 0644 on Linux |
+| `paadh(fd,buf,count)` | read up to `count` bytes; return bytes read, 0 at EOF, or a negative error. A successful read can be short |
 | `band` | close a handle |
 | `nirmmita` | allocate memory: `nirmmita(n)` gives `n` **bytes**, zeroed — `nirmmita(count * 8)` for `count` cells. Checked only when the size is a number and the name is never reassigned; otherwise writing past `n` bytes is your mistake, as in C (§6c) |
 | `smaran` | fill memory |
 | `smaran_pratilip` (was `smaran_cp`) | copy memory |
 | `vartani_aayam` | varna length |
-| `vartani_tul` | varna compare |
+| `vartani_tul(a,b)` | compare NUL-terminated byte strings: 0 if equal, 1 if different; not lexical ordering |
 | `vartani_sandhi` (was `vartani_cat`) | append `t` to `s` **in place** and return `s`: `vartani_sandhi(s, t)` - `s` must be writable memory with room (`b = nirmmita(n)`, `vartani_pratilip(b, "...")`), as C's `strcat`. **A string literal as `s` is refused when compiled, and stops the program at run time when it arrives through a variable** (`E_VARTANI_STHIRA`, v298): a literal is part of the program. For a new string, `s + t` |
 | `vartani_pratilip` | varna copy |
 | `akshar` | character code at an index |
-| `aksharank` | character code (note: index currently ignored) |
+| `aksharank(s[,index])` | unsigned byte at `index` (default 0); caller supplies a valid readable address |
 | `anka_akshar` (was `char_from`) | a new one-character string from a code: `shabda(anka_akshar(66))` prints `B`. From v298 each call gets its own two bytes (as `s + t` does), so the result can be kept; up to v297 it pointed at stack memory the next call overwrote |
 | `akshar_guru` (was `char_upper`) | uppercase a character |
 | `akshar_laghu` (was `char_lower`) | lowercase a character |
@@ -406,6 +406,8 @@ assignment to a parameter.
 Each digit occupies one 8-byte cell; callers allocate an array of `n` cells (for example with `nirmmita(n * 8)`).
 After `brihat_ank_se_laghu(1234, digits, 4)`, `pad8(digits + 0 * 8)` is `4`, `pad8(digits + 1 * 8)` is `3`, `pad8(digits + 2 * 8)` is `2`, and `pad8(digits + 3 * 8)` is `1`.
 `brihat_ank_tak_laghu(digits, 4)` reads that same LSB-first representation back as `1234`. Do not reverse the cells when passing them to other `brihat_*` functions.
+
+R233 candidate: every digit cell must be in 0..9. Negative digits now stop with `E_MULYA_AYOGYA`, as do digits above 9 and negative lengths; zero length returns 0. A positive value above the signed 64-bit maximum stops with `E_PHALA_SEEMA`. This repairs the v315 missing lower-bound check; the compiler version remains v315.
 
 ## 5. Types
 

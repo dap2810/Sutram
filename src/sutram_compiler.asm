@@ -8736,15 +8736,10 @@ r73_check_call:
     pop rax
     ret
 
-; FIXALL (a): refuse likha of exactly 3 values whose first is not a string
-; literal. Called from the generic argument parser on every AST_CALL just
-; built (rax = call node), beside r73_check_call / r75_check_nirm_size.
-; Unconditional: unlike r73_check_call it is NOT gated on being inside a
-; mandapa, since the trap happens everywhere. The call node carries no
-; source position at parse time, so this is the message + Sanket form
-; (position 0), like the variable forms of E_CHAKRA_DASHAM.
-; 1-, 2- and 4-6-arg likha always print and are untouched; literal-first
-; 3-arg prints are untouched; only the raw-write shape refuses.
+; Historical FIXALL checker, disabled by R105. The first instruction returns:
+; the legacy checks and E_LIKHA_TRAYA route below cannot run through this entry.
+; Three-value likha prints normally. Keep the historical bytes here; this
+; comment correction does not change the compiler image or emitted programs.
 rfx_check_likha:
     ret                            ; R105: likha(a, " ", b) prints three values; no refusal
     cmp qword [rax+8], BN_LIKHA
@@ -17808,7 +17803,7 @@ parse_primary_inner:
 .pp_no_pop_b:
     call r73_check_call       ; R74 (R146 F1): a store call is checked wherever it is written
     call r75_check_nirm_size  ; R75: nirmmita(-1) written as a number is refused here
-    call rfx_check_likha      ; FIXALL (a): likha of 3 values with a non-literal first is refused
+    call rfx_check_likha      ; historical R105 no-op; three-value likha is accepted
     pop r12                   ; restore r12
     pop rbx
     ret

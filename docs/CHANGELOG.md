@@ -1,3 +1,12 @@
+## R233 candidate (compiler remains v315; not merged)
+
+- Reject negative cells in `brihat_ank_tak_laghu` with its documented `E_MULYA_AYOGYA`; add boundary regressions (139 contract checks).
+- Report the Windows lazy-commit gate as NOT-RUN when Wine is absent, instead of PASS with zero checks.
+- Distinguish the total number of gates from their passing subset when checking documentation counts; failures and skips no longer make a historical success count impossible.
+- Make the byte guard reject crashes, timeouts, missing success outputs and changed refusal diagnostics; nine focused harness checks.
+- Correct memory widths, conditional-memory access, file operations, indexed byte lookup and string equality in the reference. Correct the disabled `rfx_check_likha` comment; retain its historical bytes.
+- Proof and remaining audit work: `ChatGPT-to-Sarvam/ROUND-233-FIXES.md` and `ROUND-233-AUDIT.md`. Native Windows acceptance remains pending.
+
 > **The 20 newest entries.** Older ones, from "v295" back to the first, are in [rounds/CHANGELOG-ARCHIVE.md](rounds/CHANGELOG-ARCHIVE.md) (split in R88).
 
 ## v315 (Claude, R154) - the tree limit's code; the fold guard; ownership records, not flags

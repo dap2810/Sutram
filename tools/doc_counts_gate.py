@@ -181,6 +181,7 @@ def main():
     if not a.quiet:
         print(f"  the {len(DOCS)} documents should quote: gates {gp}, and suite {sp}")
 
+    total_gates = gp + gf + gn
     notes, problems = [], []
     for d in DOCS:
         p = os.path.join(repo, d)
@@ -193,8 +194,8 @@ def main():
         # every "N/N" pair that looks like a gate count
         for m in re.finditer(r"\b(\d{1,2})/(\d{1,2})\b", s):
             n = int(m.group(1))
-            if n > gp:
-                problems.append(f"{d}: quotes {m.group(0)} but only {gp} gates exist")
+            if n > total_gates:
+                problems.append(f"{d}: quotes {m.group(0)} but only {total_gates} gates exist")
         # a suite count that is ahead of the measured one is impossible
         for m in re.finditer(r"\b(\d{3})\s*pass\b", s, re.I):
             n = int(m.group(1))
@@ -208,9 +209,9 @@ def main():
         # (FAIL); quoting fewer is lag (NOTE), as with the other counts.
         for m in re.finditer(r"\b(\d{1,2})\s+PASS,\s*\d+\s+FAIL", s):
             n = int(m.group(1))
-            if n > gp:
-                problems.append(f"{d}: quotes {n} PASS but only {gp} gates exist")
-            elif n < gp:
+            if n > total_gates:
+                problems.append(f"{d}: quotes {n} PASS but only {total_gates} gates exist")
+            elif n != gp:
                 notes.append(f"{d}: says {n} PASS, measured {gp}")
 
         # R39: the labelled counts. Before R39 this gate checked only "N/N" pairs above the gate total and
@@ -230,7 +231,7 @@ def main():
         print(f"doc counts: {len(problems)} impossible claim(s)")
         return 1
     if notes:
-        print(f"doc counts: {len(set(notes))} document(s) behind - not a failure, but bump them")
+        print(f"doc counts: {len(set(notes))} distinct count mismatch(es) - not a failure; reconcile the quoted context")
         return 0
     print("doc counts: every document agrees with the measured tree")
     return 0

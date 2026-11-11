@@ -99,13 +99,13 @@ def main():
             ok('ank', 'viparyay_ank', [lit(n)], rev(n))
         for n in (8085774586302733229, -9085774586302733229, 1000000000000000039, -1000000000000000039):
             refused('ank', 'viparyay_ank', [lit(n)], MSG['viparyay_ank'])
-        # 10: digits least-significant first, one byte per 8-byte cell
+        # 10: digits least-significant first, one digit per 8-byte cell
         def digits(ds):
             s = f'    vitti a = nirmmita({max(1, len(ds)) * 8})\n'
             for i, dg in enumerate(ds):
-                s += f'    likh8(a + {i * 8}, {dg})\n'
+                s += f'    likh8(a + {i * 8}, {lit(dg)})\n'
             return s
-        for v in (MAX, 0, 1, 922337203685477580):
+        for v in (MAX, 0, 1, 9, 922337203685477580):
             ds = [int(c) for c in str(v)][::-1]
             ok('brihat', 'brihat_ank_tak_laghu', ['a', str(len(ds))], v, digits(ds))
         ok('brihat', 'brihat_ank_tak_laghu', ['a', '0'], 0, digits([]))
@@ -113,6 +113,8 @@ def main():
         for ds in ([int(c) for c in str(MAX + 1)][::-1], [int(c) for c in str(10**19)][::-1]):
             refused('brihat', 'brihat_ank_tak_laghu', ['a', str(len(ds))], MSG['brihat_ank_tak_laghu'], digits(ds))
         refused('brihat', 'brihat_ank_tak_laghu', ['a', '2'], INV.format(f='brihat_ank_tak_laghu'), digits([1, 10]))
+        for ds in ([-1], [MIN], [10], [1, -1], [-1, 1]):
+            refused('brihat', 'brihat_ank_tak_laghu', ['a', str(len(ds))], INV.format(f='brihat_ank_tak_laghu'), digits(ds))
         refused('brihat', 'brihat_ank_tak_laghu', ['a', '0 - 1'], INV.format(f='brihat_ank_tak_laghu'), digits([1]))
         # 13, 14
         def koshes(u, v):
