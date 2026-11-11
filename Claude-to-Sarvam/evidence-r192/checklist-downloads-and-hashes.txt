@@ -1,0 +1,5 @@
+Sutram-Setup.exe  c47936ca009e62c35503d64afd7d777ab9b22c26953335948ae698a93e7b8ef3  = the tree's file
+win/sutram.exe  f22fea3feefb0547816494ee53c4f6db878fb471c563e4776d0aa029ff252304  = the tree's file
+sutram-link.exe  c36d79ee3cc870d466eaa0deae559750a1892cd60c90cd1afe496d4ef0a28ce1  = the tree's file
+lib/ganit.smlib  adec447201e9f7b543e2720d24f33a2b3f1d6472adffbcf3191359675712cbd8  = the tree's file
+tests/windows/accept_v316.cmd  d5c0ddbaa8880c2e905c0133c82153e83946d864df515fd0ce60183bbc1aef4b  served with LF line ends; rewritten with CRLF (checklist step 8): 3E78CDBE2240D219FFD4FC52148EC66A05283753F89CF43921F1FDDEDD9BB1C7

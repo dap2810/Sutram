@@ -1,0 +1,81 @@
+== Chapter 1, "What you need", as printed
+   What you need: a Linux x86-64 system, or 64-bit Windows 10 or 11 (chapter 17 installs
+   Sutram there; WSL is not needed). No other dependency — not even a C compiler. The compiler is a single
+   self-contained binary. On Linux it is the file sutram_compiler at the top of the Sutram folder:
+   run it as ./sutram_compiler, or copy it to a folder on your PATH under the name sutram,
+   which is the name this book types.
+
+== Chapter 2, the first program, as printed
+   mukhya()
+       likha("Namaste, Sutram!\n")
+   -- the book says the student will see:
+   $ sutram namaste.sm namaste.bin
+   Siddh: 112 baait sankalit
+   $ ./namaste.bin
+   Namaste, Sutram!
+   -- the student sees:
+   $ sutram namaste.sm namaste.bin
+     Siddh: 112 baait sankalit
+   $ ./namaste.bin   typed ''           ->  'Namaste, Sutram!\n'
+
+== Input section, block 1
+     | mukhya() {
+     |     vitti yoga = 0
+     |     yavat (1) {
+     |         vitti a = grahan()
+     |         yadi (nivesha_anta()) { krama }
+     |         yoga = yoga + a
+     |     }
+     |     likha("yoga: ", yoga, "\n")
+     | }
+   $ sutram p1.sm p1.bin
+     Siddh: 487 baait sankalit
+   $ ./p1.bin   typed 'hello\n'    ->  'yoga: 0\n'
+   $ ./p1.bin   typed '42\n'       ->  'yoga: 42\n'
+   $ ./p1.bin   typed '5\n-1\n3\n' ->  'yoga: 7\n'
+   $ ./p1.bin   typed ''           ->  'yoga: 0\n'
+
+== Input section, block 2
+     | mukhya() {
+     |     likha("Tava nama kim? ")
+     |     vitti nama = vartani_grahan()
+     |     likha("Namaste, ", nama, "!\n")
+     | }
+   $ sutram p2.sm p2.bin
+     Siddh: 1072 baait sankalit
+   $ ./p2.bin   typed 'hello\n'    ->  'Tava nama kim? Namaste, hello!\n'
+   $ ./p2.bin   typed '42\n'       ->  'Tava nama kim? Namaste, 42!\n'
+   $ ./p2.bin   typed '5\n-1\n3\n' ->  'Tava nama kim? Namaste, 5!\n'
+   $ ./p2.bin   typed ''           ->  'Tava nama kim? Namaste, !\n'
+
+== Input section, block 3   (printed as a fragment; typed inside mukhya() { } )
+     | mukhya() {
+     |     yavat (1) {
+     |         vitti s = vartani_grahan()
+     |         yadi (nivesha_anta()) { krama }
+     |         likha(s, "\n")
+     |     }
+     | }
+   $ sutram p3.sm p3.bin
+     Siddh: 1025 baait sankalit
+   $ ./p3.bin   typed 'hello\n'    ->  'hello\n'
+   $ ./p3.bin   typed '42\n'       ->  '42\n'
+   $ ./p3.bin   typed '5\n-1\n3\n' ->  '5\n-1\n3\n'
+   $ ./p3.bin   typed ''           ->  ''
+
+== Input section, block 4
+     | yoj vakyank
+     | 
+     | mukhya() {
+     |     mala ok[1]
+     |     vitti s = vartani_grahan()            # read a line
+     |     vitti n = vartani_tak_ank(s, ok)       # convert it
+     |     yadi (ok[0]) { likha(n * 2) }         # it was a number: 42 gives 84
+     |     anya { likha("sankhya na: ", s) }     # it was not: hello is reported
+     | }
+   $ sutram p4.sm p4.bin
+     Siddh: 12912 baait sankalit
+   $ ./p4.bin   typed 'hello\n'    ->  'sankhya na: hello'
+   $ ./p4.bin   typed '42\n'       ->  '84\n'
+   $ ./p4.bin   typed '5\n-1\n3\n' ->  '10\n'
+   $ ./p4.bin   typed ''           ->  'sankhya na: '

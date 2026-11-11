@@ -1,0 +1,16 @@
+== docs/sutram-book-hindi.html
+399:प्रारंभ मान अंतिम मान से बड़ा हो, तो गणना स्वतः उलट जाती है:
+   chapters (h2): 21   memory chapter (id="memory"): 0   vartani_grahan in the text below the notice: 0   data-archived: data-archived="v294"
+== docs/sutram-book-gujarati.html
+364:શરૂઆતનું મૂલ્ય અંતિમ મૂલ્ય કરતાં મોટું હોય તો, ગણતરી આપોઆપ ઊતરે છે:
+   chapters (h2): 21   memory chapter (id="memory"): 0   vartani_grahan in the text below the notice: 0   data-archived: data-archived="v294"
+== docs/sutram-book-tamil.html
+370:தொடக்க மதிப்பு இறுதி மதிப்பை விட பெரியதாக இருந்தால், எண்ணிக்கை தானாகக் குறையும்:
+   chapters (h2): 21   memory chapter (id="memory"): 0   vartani_grahan in the text below the notice: 0   data-archived: data-archived="v294"
+== docs/sutram-book-telugu.html
+398:ప్రారంభ విలువ గరిష్ట విలువ కంటే పెద్దదైతే, లెక్క స్వయంగా తగ్గుతుంది:
+   chapters (h2): 21   memory chapter (id="memory"): 0   vartani_grahan in the text below the notice: 0   data-archived: data-archived="v294"
+--- a/docs/sutram-book-hindi.html
++++ b/docs/sutram-book-hindi.html
+-Archived edition (R157, 9 November 2026). This book describes Sutram as it was at v294 (3 November 2026). It is no longer kept up to date: development is in Sanskrit only, and the language has changed since - among other things, this edition has no chapter on memory (kosh, mandapa, slices). The current books are the English and Sanskrit editions (compiler v315).इदं संस्करणं v294-काले यथा सूत्रम् आसीत् तथा वर्णयति, अद्यतनं न क्रियते। वर्तमाने ग्रन्थौ: आङ्ग्ल-संस्करणं संस्कृत-संस्करणं च।
++Archived edition (R157, 9 November 2026). This book describes Sutram as it was at v294 (3 November 2026). It is no longer kept up to date: development is in Sanskrit only, and the language has changed since - among other things, this edition has no chapter on memory (kosh, mandapa, slices) and does not teach reading a line of text (vartani_grahan, vartani_tak_ank). One sentence in it is known to be false (R192, 11 November 2026): the section "Descending Loops" says a chakra counts down by itself whenever the start is greater than the end. That is true only when both ends are written as numbers (chakra i = 5 tak 1); with a variable at either end the loop counts up, and runs no times at all, with no message, when the start is past the end. To count down from a variable use yavat - see "Descending Loops" in the English edition. The text of this edition is left as it was. The current books are the English and Sanskrit editions.इदं संस्करणं v294-काले यथा सूत्रम् आसीत् तथा वर्णयति, अद्यतनं न क्रियते। वर्तमाने ग्रन्थौ: आङ्ग्ल-संस्करणं संस्कृत-संस्करणं च।

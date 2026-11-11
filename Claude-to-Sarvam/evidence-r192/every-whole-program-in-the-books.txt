@@ -1,0 +1,4 @@
+english book: 24 code blocks are whole programs (have mukhya()); 23 compile, 1 are refused; 13 other blocks are fragments or command lines, not compiled
+   line 292: Sutram truti: vyakaran dosh, pankti 1:1, shabd 'મુખ્ય'
+sanskrit book: 23 code blocks are whole programs (have mukhya()); 22 compile, 1 are refused; 13 other blocks are fragments or command lines, not compiled
+   line 258: Sutram truti: vyakaran dosh, pankti 1:1, shabd 'મુખ્ય'

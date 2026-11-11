@@ -1,0 +1,4 @@
+guard_pair.py  old tree: r191-input-story ad24e23e   new tree: r192-paused-books-and-avaroha 702d801c   Linux executables
+source files whose text changed: 0
+788 programs: 592 byte-identical, 196 refused identically, 0 DIFFER, 0 new
+the compiler rebuilt from source (nasm, ld) is byte-identical to the r191 tip's; win/sutram.exe sha256 f22fea3feefb0547816494ee53c4f6db878fb471c563e4776d0aa029ff252304 in both
