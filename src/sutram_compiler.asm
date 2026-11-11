@@ -259,7 +259,7 @@ str_dot_exe  db ".exe", 0
                   db "  sutram --lang <pak> <nivesh.sm> <nirgat.bin>  bhasha-pakena saha", 10
                   db "  sutram -i                               khol (samvad)", 10
                   db "  sutram --version                        sanskaran", 10, 0
-    msg_version  db "Sutram 1.0 (v325) - sampurna sutra", 10
+    msg_version  db "Sutram 1.0 (v326) - sampurna sutra", 10
                   db "Samskrita-mukhya bhasha -> x86-64 yantra-bhasha", 10, 0
     r48_flag db "--check",0
     r28_flag_object db "--object",0
@@ -1006,6 +1006,8 @@ r54_builtin_arity_table:
     r111_w_nasti db "nasti", 0
     r111_w_dnasti db 0xE0,0xA4,0xA8,0xE0,0xA4,0xBE,0xE0,0xA4,0xB8,0xE0,0xA5,0x8D,0xE0,0xA4,0xA4,0xE0,0xA4,0xBF, 0   ; नास्ति
     r111_msg_a db "Sutram suchana: '", 0   ; R111: the deprecation warning (stderr)
+    r190_msg_a db "Sutram suchana: chakra '", 0   ; R190: a variable start and a written end
+    r190_msg_b db "' urdhvam eva ganayati - arambhah antat adhikah chet ekavaram api na chalati; avarohaya 'yavat' likhatu", 10, 0
     r111_msg_b db "' purana nama - '", 0
     r111_msg_c db "' likhatu", 10, 0
     ; R118: the library's old English names (ChatGPT R191 bucket 1). The library defines only the new
@@ -21360,6 +21362,41 @@ r142_gen_stmt_body:
     jle .gf2_dir_done
     mov qword [rel for_descend], 1
 .gf2_dir_done:
+    ; R190: which way a chakra counts is decided HERE, when it is compiled, and only when both ends are
+    ; numbers. With a start that is not a number and an end that is - chakra i = n tak 1 - the loop counts
+    ; up, and runs no times when n is past 1. That is the shape of a countdown, and the compiler cannot know:
+    ; a countdown and an empty range (0 tak n - 1 with n = 0) look the same when the loop runs, so neither
+    ; counting down nor refusing at run time is sound. Say so once, on stderr; the program is unchanged.
+    ;   Sutram suchana: chakra 'i' urdhvam eva ganayati - arambhah antat adhikah chet ekavaram api na chalati; avarohaya 'yavat' likhatu
+    mov rax, [rbx+16]
+    cmp qword [rax], AST_NUM
+    je .r190_quiet
+    mov rax, [rbx+24]
+    cmp qword [rax], AST_NUM
+    jne .r190_quiet
+    push rcx
+    push rdx
+    push rsi
+    push rdi
+    push r8
+    push r9
+    push r10
+    push r11
+    lea rdi, [rel r190_msg_a]
+    call r111_err
+    mov rdi, [rbx+8]               ; the counter's name
+    call r111_err
+    lea rdi, [rel r190_msg_b]
+    call r111_err
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+    pop rdi
+    pop rsi
+    pop rdx
+    pop rcx
+.r190_quiet:
     ; Preserve outer loop patch ranges.
     mov rax, [rel break_patch_cnt]
     push rax

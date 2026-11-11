@@ -1,6 +1,6 @@
 # What is left - the live list
 
-> **Live from R188 (11 November 2026), at compiler v325 on the staged chain; main is v315.** This is the page the
+> **Live from R188 (11 November 2026), at compiler v326 on the staged chain; main is v315.** This is the page the
 > briefs name. The copy at `docs/rounds/WHATS-LEFT.md` is history (last true at v258). **When this page and another
 > disagree, check the code, then fix whichever is wrong.** Tiers are the audit's: **1** a silent wrong answer, or
 > guidance that leads to one · **2** a wrong or unhelpful message · **3** invisible (a stale sentence, dead code, a
@@ -8,7 +8,7 @@
 
 ## 1. The one thing before a release
 
-**One Windows run, then the merge.** v316 to v325 are one chain of branches; nothing above v315 can merge until
+**One Windows run, then the merge.** v316 to v326 are one chain of branches; nothing above v315 can merge until
 the owner runs `Claude-to-Sarvam/SUTRAM-WINDOWS-ACCEPTANCE.md` on a real Windows machine. Everything else on this
 page can be done before or after; this cannot be done by anyone else. *(R167, R181, R187.)*
 
@@ -32,8 +32,8 @@ page can be done before or after; this cannot be done by anyone else. *(R167, R1
 
 | | tier | what | why it waits |
 |---|---|---|---|
-| **`grahan` and Python's `input()`** | - | the owner asked that one function read text as well as numbers | three options and their cost in `Claude-to-Sarvam/R189-00-*`, WS1; recommended: keep both, add a text-to-number converter; **nothing built** |
-| **`chakra` counts down only with written ends** | 1 | `chakra i = 5 tak e` with `e = 3` runs no times, silently; `chakra j = 5 tak 1` counts down | deciding the direction at run time would make `chakra i = 0 tak n - 1` with `n = 0` run twice - the most common loop there is. **Documented in reference §6a (v325); the choice is the owner's** |
+| **`grahan` and Python's `input()`** | - | the owner asked that one function read text as well as numbers | **answered in v326 without a breaking change:** `vartani_grahan()` reads the text and `vartani_tak_ank(s, ok)` converts it and says whether it was a number (reference §4d). `grahan` returning text was simulated: 6 of 7 programs break (`R189-00`). **Open only if the owner wants `grahan` itself changed** |
+| **`chakra` counts down only with written ends** | 1 | `chakra i = 5 tak e` with `e = 3` runs no times, silently; `chakra j = 5 tak 1` counts down | a countdown and an empty range cannot be told apart when the loop runs (`R190-00`). **v326: a compile-time warning for `chakra i = n tak 1`; both books and reference §6a state the rule.** `5 tak e` and `a tak b` stay silent. **The sound fix is a word for counting down - a language addition, the owner's** |
 | **`grahan` accepts what is not a number** | 1 | `5abc` is 5, `12 34` is 1234, `abc` is 0, and a number past the largest `vitti` wraps | each is a decision about what a running program should do with bad input; all four are stated in reference §4d |
 | **`nivesha_anta()` is set by `grahan` too** | - | from v324, so a typed `-1` can be told from the end | if it should belong to `vartani_grahan` alone, the books' end-of-input test must change instead (`R186-00`) |
 | **v324's refusals and v322's** | - | five refusals added by AUDIT-01 fixes, and the unknown-character refusal (v321) | each refuses programs that compiled before |

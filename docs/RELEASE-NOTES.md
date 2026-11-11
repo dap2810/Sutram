@@ -1,7 +1,7 @@
-# Sutram 1.0 (v325) — release notes
+# Sutram 1.0 (v326) — release notes
 
-**Compiler `Sutram 1.0 (v325) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
-The installer `Sutram-Setup.exe` carries this compiler (payload v325). Its SHA-256 is in `Sutram-Setup.sha256`.
+**Compiler `Sutram 1.0 (v326) - sampurna sutra`, 11 November 2026.** Linux x86-64 (ELF) and Windows x64 (PE).
+The installer `Sutram-Setup.exe` carries this compiler (payload v326). Its SHA-256 is in `Sutram-Setup.sha256`.
 
 These notes say what the release does, what it **does not include**, and every limitation known. A limitation
 left out would be a false promise, so the list is long on purpose. Each claim names where it is pinned
@@ -9,10 +9,18 @@ left out would be a false promise, so the list is long on purpose. Each claim na
 contract table, the Windows rounds 1-4 and the v297 IDE run.
 
 **The shipping condition.** A package is a release only once it has been installed, run and uninstalled on Windows
-and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v325 package has not been
+and the results are recorded in `Windows-to-Sarvam/`. Until then it is a candidate. **The v326 package has not been
 run on Windows; it is a candidate.** The last package run there is v312's (the evidence scope below).
 
-## Status: what v325 closes, and what it does not (R140-R189, AUDIT-01, R233)
+## Status: what v326 closes, and what it does not (R140-R190, AUDIT-01, R233)
+
+**v326 (R190): the loop that runs no times, and text to a number.** A `chakra` counts down only when both ends are
+written as numbers; with a variable it counts up and is empty when the start is past the end. **That is not changed -
+a countdown and an empty range cannot be told apart when the loop runs - but the compiler now warns for
+`chakra i = n tak 1`, and both books, which said the loop "counts down automatically", say what is true.**
+`vartani_tak_ank(s, ok)` converts the text `vartani_grahan()` reads and says whether it was a number. **Not closed:**
+`chakra i = 5 tak e` and `chakra i = a tak b` still run no times in silence; the sound fix is a word for counting
+down.
 
 **v325 (R188, R189): the audit's fixes.** A negative digit given to `brihat_ank_tak_laghu` is refused instead of
 returned; an `lcm` with 0 is 0 instead of a stop; the reference's rows that said something false are corrected, each
@@ -280,7 +288,7 @@ Measured, with where:
   - division by zero stops with `E_SHUNYA_BHAJAN`;
   - a literal or constant expression past 64 bits is refused (`E_ATIPRAVAH`).
 - **Tests:**
-  - 335 examples (331 with a golden);
+  - 336 examples (332 with a golden);
   - 69 Linux gates, including a guard that compiles every program before and after each change and compares
     the bytes;
   - 227 crash-corpus cases;
@@ -296,7 +304,7 @@ Measured, with where:
 | **Threads, or any concurrent execution within a process** | none. The arena, its budgets and `kosh` growth are unsynchronised. **Deferred beyond v1.0, not ruled out** (ChatGPT R195: per-thread arenas, a multi-week design) |
 | **Freeing memory inside a live scope** | a `mandapa` block gives back its scratch `nirmmita` at its end; other memory lives as long as the program (see *Memory and pointers* for what the allocator returns by itself). No `free`, no garbage collector |
 | **Closures**, calling an expression directly (`t[0](x)`), a checked type for function values, methods dispatched on type / traits, slices of a `kosh dasham`, a slice outliving its function | reference §17 lists them as not done |
-| **Formal verification** | the library proofs and property proofs are **executable tests** - they run code and compare results - and the native and Windows tests run programs. **No library function is marked `parikshita`** (0 of 310): R81's checked-function marker exists and works for your own `prakriya`, but the library does not use it. None of this is a machine-checked proof of the compiler or the library |
+| **Formal verification** | the library proofs and property proofs are **executable tests** - they run code and compare results - and the native and Windows tests run programs. **No library function is marked `parikshita`** (0 of 311): R81's checked-function marker exists and works for your own `prakriya`, but the library does not use it. None of this is a machine-checked proof of the compiler or the library |
 | **Development of the ten non-Sanskrit packs** | Hindi, Gujarati and the other eight are frozen: in the tree and working, with no new development. A defect in one is reported, not fixed. Messages added since the freeze appear in the default (Sanskrit transliteration) form in those packs |
 
 ## Integer arithmetic: what wraps, what refuses, what reports
@@ -529,6 +537,7 @@ v298 fixed both. Then:
 - **v306:** the Windows out-of-memory path (a refused commit) is a message and exit 1, not an access violation; the
   installer refuses a second Sutram, checks a new terminal and cannot wait forever; the IDE clears its output on a
   refused load and says the editor kept the previous file.
+- **v326 (staged):** a warning for a `chakra` shaped like a countdown; `vartani_tak_ank` (R190).
 - **v325 (staged):** the audit's library fixes, the reference corrected, `docs/WHATS-LEFT.md` live (R188, R189).
 - **v324 (staged):** `grahan()` reads a sign and an unfinished last number; a file read in two examples; the `dvaram` / `paadh` rows corrected (R186).
 - **v323 (staged):** `vartani_grahan()` reads a line of text; `nivesha_anta()` says the input has ended (R184).

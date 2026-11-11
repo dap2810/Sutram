@@ -1,6 +1,6 @@
-> **Status at compiler v325, 11 November 2026 (R188, R189) - staged, not merged: v325 brings the audit's fixes in - a negative digit refused by `brihat_ank_tak_laghu`, `lcm` of a pair with 0 no longer stops the program, the reference's false rows corrected - and the live `docs/WHATS-LEFT.md` (v324: `grahan()` reads a minus sign and no longer loses an unfinished last number, and a file is read; v323: `vartani_grahan()` reads a line of text, and `nivesha_anta()`; v322: five defects of the owner's audit closed; v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
+> **Status at compiler v326, 11 November 2026 (R190) - staged, not merged: v326 warns when a `chakra` has the shape of a countdown it will not make (`chakra i = n tak 1`), states the rule in both books, and adds `vartani_tak_ank`, which turns the text `vartani_grahan()` reads into a number (v325 brings the audit's fixes in - a negative digit refused by `brihat_ank_tak_laghu`, `lcm` of a pair with 0 no longer stops the program, the reference's false rows corrected - and the live `docs/WHATS-LEFT.md`; v324: `grahan()` reads a minus sign and no longer loses an unfinished last number, and a file is read; v323: `vartani_grahan()` reads a line of text, and `nivesha_anta()`; v322: five defects of the owner's audit closed; v321: an unknown character is refused; v320: a block's memory is zeroed at its exits) — read this before the page below.**
 >
-> **Compiler `Sutram 1.0 (v325) - sampurna sutra`.** Suite **PASS=331** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **92 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v325 (R189: the audit's library fixes and corrected documents; R186: `grahan()` reads a sign and an unfinished last number; R184: `vartani_grahan()` reads a line of text; AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
+> **Compiler `Sutram 1.0 (v326) - sampurna sutra`.** Suite **PASS=332** (4 examples without a golden) · crash corpus **227/0** · library proofs **229 of 229** · property proofs **86 of 86** · gates **93 PASS / 0 FAIL / 1 NOT-RUN** (Linux, Xvfb). **The installer carries v326 (R190: the `chakra` warning and `vartani_tak_ank`; R189: the audit's library fixes and corrected documents; R186: `grahan()` reads a sign and an unfinished last number; R184: `vartani_grahan()` reads a line of text; AUDIT-01: a `prakriya` without `nivartanam` returns 0; `krama` outside a loop, `likha` of a `mala` and a `kosh` as a condition are refused; a bad `mala` length is a message; R182: an unknown character is refused where it stands; R172-R176: a proven-local `kosh` or `mala` declared anywhere in a loop is made once; a block's memory is zeroed when the block is left; R163: no tool writes over a file it read) and has not been run on Windows - a candidate, not a release; the NOT-RUN is Windows execution, the owner's own test.** Release notes: `docs/RELEASE-NOTES.md`.
 >
 > **The language today:**
 > - **Sanskrit names are primary.** 22 builtins renamed in v292 (R111): `kosh_kship`, `kosh_gan`, `likha_rup`, `anka_akshar`, `vartani_sandhi`, ...; the old English names still compile, to the same bytes, with a `Sutram suchana` warning. Ten library names followed in v297 (R118): `asti_kramabaddha`, `ekanka_gan`, `roop_purti_vam`, ... (reference §4b, §4c).
@@ -416,6 +416,25 @@ mukhya() {
   To turn it into a number, use `grahan()` for that line instead.
 - **`grahan()` and `vartani_grahan()` read the same input, a line each,** so a number's line can be followed by a
   text line.
+- **From text to a number: `vartani_tak_ank(s, ok)`** (`yoj vakyank`; v326, R190). Read a line, convert it, use
+  it:
+
+  ```
+  yoj vakyank
+
+  mukhya() {
+      mala ok[1]
+      vitti s = vartani_grahan()
+      vitti n = vartani_tak_ank(s, ok)
+      likha(n * 2)
+  }
+  ```
+
+  `ok[0]` is 1 when `s` was a number and 0 when it was not. **It is strict where `grahan()` is not:** decimal
+  digits with one leading `-` and nothing else. `abc`, `5abc`, `12 34`, ` 42`, `+5`, `-`, the empty string, a
+  number past the largest `vitti` and any text longer than 31 characters all give `ok[0] = 0` (and return 0) - each of them is a number to `grahan()`.
+  **`varna_tak_ank(buf, n, ok)`, its older sibling, cannot take a string:** it reads one character code per
+  eight-byte cell of a `mala`, and `varna_tak_ank("42", 2, ok)` is 0 with `ok[0] = 0` (measured).
 - **Cost.** Each call takes at least 64 bytes of ordinary memory, which - like the result of string `+` - is
   not given back while the program runs, also not by a `mandapa` (the text may be kept after the block).
   Measured: 2,000,000 lines read, `parimana()` 128,000,064. Like `grahan`, it asks the system for one byte at
@@ -448,7 +467,7 @@ no runtime dependency, the code becomes part of your binary. `lib/` ships:
 | varna | `yoj varna` | 13 — `varna_maap`, `akshar_sanket`, `asti_ank_akshar`, `asti_unnat_akshar`, `asti_avanat_akshar`, `asti_akshar_akshar`, `asti_avakash_akshar`, `gan_swar`, `gan_akshar`, `anwesh_akshar`, `asti_sarv_ank`, `unnat_sanket`, `avanat_sanket` |
 
 **The table is a selection: 60 of the 101 functions these six modules hold** (ganit 18, ank 10, shreni 14, ganita 27,
-madhava 5, varna 27); the whole library is 310 functions in 24 modules. `shankh_shreni` is markedly faster than `budbud_shreni` on real
+madhava 5, varna 27); the whole library is 311 functions in 24 modules. `shankh_shreni` is markedly faster than `budbud_shreni` on real
 arrays. **How many modules a program can bring in:** there is no count. `examples/99_ast_multimodule_capacity.sm`
 brings in seven. The limits are sizes: the program and everything it brings in, expanded, at most 128 KiB
 (`IMPORT_BUF_CAP`), and the syntax tree, 3 MiB (`E_VRIKSHA_SEEMA`, "Size limits" below). (Until R161 this page
@@ -676,6 +695,33 @@ ends are written as numbers** (or as arithmetic on numbers, such as `0 - 5`) and
 already past the end it runs no times, with no message:** `vitti e = 3` and then `chakra i = 5 tak e` runs 0 times
 (measured on v315 and v324). That is also why `chakra i = 0 tak n - 1` with `n = 0` safely runs no times. **To count
 down from a variable, use `yavat`:** `vitti i = n` and `yavat (i >= 1) { ... i = i - 1 }`.
+
+| written | what runs |
+|---|---|
+| `chakra i = 5 tak 3` | 5 4 3 |
+| `chakra i = 1 tak 0` | **1 0 - two passes**, not none: written numbers count down |
+| `chakra i = 0 tak -1` | **0 -1** |
+| `vitti a = 5`, `vitti b = 3`, `chakra i = a tak b` | **no passes** |
+| `vitti a = 1`, `vitti b = 0`, `chakra i = a tak b` | no passes |
+| `chakra i = 5 tak e` (`e = 3`), `chakra i = n tak 1` (`n = 5`) | no passes |
+
+`chakra ... arabhya ... paryantam` is the same loop and behaves the same. `yavat` and `kuru ... yavat` have no
+direction to choose: you write the condition.
+
+**Why the compiler does not count down, or stop, when the loop runs (R190).** A countdown and an empty range look
+the same at that moment: `5 tak e` with `e = 3` and `0 tak n - 1` with `n = 0` both start past their end. Counting
+down would make every loop over an empty collection run twice (0, then -1); stopping the program would stop every
+loop over an empty collection - `examples/362_r186_patra_sankhya_yoga.sm` on an empty file. **So the rule stays, and
+from v326 the compiler says so where the mistake is most likely:** when the start is not a number and the end is -
+`chakra i = n tak 1` - it prints, once, on stderr, and compiles the program unchanged:
+
+```
+Sutram suchana: chakra 'i' urdhvam eva ganayati - arambhah antat adhikah chet ekavaram api na chalati; avarohaya 'yavat' likhatu
+```
+
+(the `chakra` counts up only; if the start is past the end it runs not even once; to count down write `yavat`). It
+cannot warn about `5 tak e` or `a tak b`: those are also the shapes of every ordinary loop. Not printed in a
+`--lang` run.
 
 **Both ends are included, and the end is read again on every pass** (`n = 5` inside `chakra i = 1 tak n` changes the
 end). **A loop that counts up to the largest `vitti`, 9223372036854775807, never ends:** after its last pass the
@@ -1185,7 +1231,7 @@ named themselves, but the tree limit had no code):
   refuses it, `87316` compiles it); no measured statement reaches the default. 349,521 is an upper bound for any
   statement the tree holds, not a statement anyone has built: whether a shape above 200,000 can be written is not
   established (if one is, raise the flag for it). The largest statement in
-  the example programs (`examples/*.sm` and `examples/*/*.sm`: 348 files, the set gate `R143 walk budget` compiles)
+  the example programs (`examples/*.sm` and `examples/*/*.sm`: 349 files, the set gate `R143 walk budget` compiles)
   and the 310 library functions takes 52 steps (`lib/brihat.smlib`, line 174; measured at v312, R144).
 - **History:** v311 200,000 fixed; v312 65,536 (16,384 terms of `x + x + ...` compile and 16,385 refuse - measured natively on Windows against the
   v312 baseline, `Windows-to-Sarvam/win-v313-2026-11-08/BUDGET.md`, and relayed in Sarvam's ROUND-148); v313 349,521;

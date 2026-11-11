@@ -43,7 +43,7 @@ Do not edit by hand.</p>
 <li><a href="#sankhyiki"><code>sankhyiki</code></a> — 16 functions</li>
 <li><a href="#shreni"><code>shreni</code></a> — 14 functions</li>
 <li><a href="#suchi"><code>suchi</code></a> — 34 functions</li>
-<li><a href="#vakyank"><code>vakyank</code></a> — 6 functions</li>
+<li><a href="#vakyank"><code>vakyank</code></a> — 7 functions</li>
 <li><a href="#varna"><code>varna</code></a> — 27 functions</li>
 </ul>
 <h2 id="aadhar"><code>aadhar</code></h2>
@@ -439,6 +439,7 @@ Do not edit by hand.</p>
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td><code>ank_tak_varna(n, out)</code></td><td></td></tr>
 <tr><td><code>varna_tak_ank(buf, n, ok)</code></td><td>varna_tak_ank(buf, n, ok) — parse first n character codes of mala buf as a decimal integer. Leading &#x27;-&#x27; negates. Returns the value; sets ok[0] to 1 on success, 0 on malformed input (ok is a 1-cell mala).</td></tr>
+<tr><td><code>vartani_tak_ank(s, ok)</code></td><td>vartani_tak_ank(s, ok) — the number a STRING holds: vartani_tak_ank(&quot;42&quot;, ok) is 42 (R190). s is a string - a &quot;...&quot; literal, or what vartani_grahan() returns; ok is a 1-cell mala. It is varna_tak_ank on the string&#x27;s bytes, with the same rules: decimal digits only, one leading &#x27;-&#x27; allowed, nothing else - no spaces, no &#x27;+&#x27;, no letters. Sets ok[0] to 1 and returns the value; on anything else - the empty string, &quot;abc&quot;, &quot;12 34&quot;, &quot;5abc&quot;, a number that does not fit in a vitti, or any text longer than 31 characters (a number that fits has at most 20) - sets ok[0] to 0 and returns 0. (varna_tak_ank itself cannot take a string: it reads one character code per 8-byte cell, and a string is one byte per character - varna_tak_ank(&quot;42&quot;, 2, ok) is 0 with ok[0] = 0.) The scratch for the codes is given back before returning.</td></tr>
 <tr><td><code>ank_tak_aadhar_varna(n, base, out)</code></td><td>ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out as character codes (0-9, a-z). Returns count. No util_chinha handling; n &gt;= 0. Base outside 2..36: terminator only, returns 0 (base 0 trapped with SIGFPE, base 1 looped forever past the buffer).</td></tr>
 <tr><td><code>varna_tak_ank_aadhar(buf, n, base, ok)</code></td><td>varna_tak_ank_aadhar(buf, n, base, ok) — parse first n char codes of buf in `base` (2/8/10/16). Sets ok[0]. Returns value.</td></tr>
 <tr><td><code>purti_vam(out, count, width, fill)</code></td><td>purti_vam(out, count, width, fill) — left-pad the `count` character codes in mala `out` to `width` using fill character code `fill`, in place. Returns the new count (width if width &gt; count, else count). When it pads it writes cells 0 .. width - 1 and then out[ width ] = 0, the terminator every writer in this module leaves (as ank_tak_varna does at out[ count ]); when width &lt;= count it writes nothing. Caller must allocate &gt;= width + 1 cells (R68: the contract said `width`; the body was right). (R118: was `pad_vam`, still accepted.)</td></tr>
@@ -476,6 +477,6 @@ Do not edit by hand.</p>
 <tr><td><code>varna_viparyay(src, sn, out)</code></td><td>varna_viparyay(src, sn, out) — copy the cell array reversed into out (WS1, R20). Cell-array form of khand_viparyay: the same two-pointer vinimay, so it is safe in place (src == out works). Writes a 0 terminator cell at out[sn]. Returns sn. sn &lt;= 0 writes only the terminator, returns 0.</td></tr>
 <tr><td><code>varna_gan(hay, hn, needle, nn)</code></td><td>varna_gan(hay, hn, needle, nn) — count non-overlapping occurrences of needle in hay, over cell arrays (WS1, R20). Cell-array form of khand_gan. Empty needle returns 0. (Pointer arithmetic is in bytes: the suffix at cell pos is hay + pos * 8.)</td></tr>
 </table>
-<footer>24 modules, 310 functions. Generated from library sources.</footer>
+<footer>24 modules, 311 functions. Generated from library sources.</footer>
 </body>
 </html>

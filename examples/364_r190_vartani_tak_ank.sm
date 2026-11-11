@@ -1,0 +1,13 @@
+# R190: read a line, convert it to a number, use it. vartani_grahan() gives text; vartani_tak_ank(s, ok)
+# turns it into a number and sets ok[0] to 1 - or to 0 when the text was not a number (abc, 12 34, an
+# empty line), which grahan() would have turned into a number without a word.
+yoj vakyank
+
+mukhya() {
+    mala ok[1]
+    likha("sankhya? ")
+    vitti s = vartani_grahan()
+    vitti n = vartani_tak_ank(s, ok)
+    yadi (ok[0]) { likha("dvigunam: ", n * 2, "\n") }
+    anya { likha("'", s, "' sankhya na\n") }
+}

@@ -397,11 +397,17 @@ n--      <span class="cm"># n = 5</span></code></pre>
 }</code></pre>
 
 <h3>Descending Loops</h3>
-<p>If the start value is greater than the end value, the loop counts down automatically:</p>
+<p>If both ends are <b>written as numbers</b> and the start is the greater, the loop counts down:</p>
 <pre><code><span class="k" data-tip="for">chakra</span> i = 5 <span class="k" data-tip="range-to">tak</span> 1 {
     <span class="k" data-tip="print (no newline)">likha_santat</span>(i)
     <span class="k" data-tip="print">likha</span>(" ")
 }    <span class="cm"># output: 5 4 3 2 1</span></code></pre>
+<p><b>This works only with written numbers.</b> The compiler chooses the direction when it compiles the loop, and it can do so only when it can see both numbers. If either end is a variable, the loop counts <b>up</b> - and when the start is already past the end it runs <b>no times at all, with no message</b>: with <code>e = 3</code>, <code><span class="k" data-tip="for">chakra</span> i = 5 <span class="k" data-tip="range-to">tak</span> e</code> does nothing. (That is also what makes <code><span class="k" data-tip="for">chakra</span> i = 0 <span class="k" data-tip="range-to">tak</span> n - 1</code> safe when <code>n</code> is 0.) From v326 the compiler warns when the start is a variable and the end is a written number, the usual shape of this mistake. <b>To count down from a variable, use <code><span class="k" data-tip="while">yavat</span></code>:</b></p>
+<pre><code><span class="k" data-tip="variable">vitti</span> i = n
+<span class="k" data-tip="while">yavat</span> (i &gt;= 1) {
+    <span class="k" data-tip="print">likha</span>(i)
+    i = i - 1
+}</code></pre>
 
 <h3><span class="k" data-tip="inline assembly">yantra</span>() — inline machine code</h3>
 <pre><code><span class="k" data-tip="inline assembly">yantra</span>("B8 3C 00 00 00")  <span class="cm"># mov eax, 60</span>
@@ -428,6 +434,17 @@ n--      <span class="cm"># n = 5</span></code></pre>
     <span class="k" data-tip="variable">vitti</span> s = vartani_grahan()
     <span class="k" data-tip="if">yadi</span> (nivesha_anta()) { <span class="k" data-tip="break">krama</span> }
     <span class="k" data-tip="print">likha</span>(s, "\n")
+}</code></pre>
+
+<h3>From text to a number: <code>vartani_tak_ank</code></h3>
+<p>What <code>vartani_grahan()</code> gives is text, even when the user typed digits. To calculate with it, turn it into a number with <code>vartani_tak_ank(s, ok)</code> from the <code>vakyank</code> module (from v326). It also tells you whether the text <i>was</i> a number: <code>ok[0]</code> is 1 if it was, 0 if it was not - so <code>abc</code>, <code>12 34</code> and an empty line are reported, not turned into 0 as <code><span class="k" data-tip="input">grahan</span>()</code> does.</p>
+<pre><code><span class="k" data-tip="include">yoj</span> vakyank
+
+<span class="k" data-tip="main">mukhya</span>() {
+    <span class="k" data-tip="array">mala</span> ok[1]
+    <span class="k" data-tip="variable">vitti</span> s = vartani_grahan()            <span class="cm"># read a line</span>
+    <span class="k" data-tip="variable">vitti</span> n = vartani_tak_ank(s, ok)       <span class="cm"># convert it</span>
+    <span class="k" data-tip="print">likha</span>(n * 2)                          <span class="cm"># use it: 42 gives 84</span>
 }</code></pre>
 
 <h3>Reading a file</h3>
@@ -1003,7 +1020,7 @@ stops the program with a sentence that says which, not a crash.</p>
 <code>nirmmita(64)</code>, print <code>parimana()</code> each time round, and find the pass on which the budget
 refuses. Then move <code>mandapa</code> inside the loop, so the block starts again on every pass, and watch it never refuse.</div>
 </div>
-<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v325)</div>
+<div class="footer">सूत्रम् — the complete thread · English Edition · v1.0 (compiler v326)</div>
 </div>
 </body>
 </html>

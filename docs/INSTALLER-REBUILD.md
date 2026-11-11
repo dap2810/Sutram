@@ -143,6 +143,9 @@ compiler, runtime and `sutram-link.exe` are byte-unchanged. Built from an empty 
 association and class records) changed; the runtime and `sutram-link.exe` are unchanged. Built from an empty
 `--work` folder.
 
+**R190 (v326):** the compiler changed (one warning), the library (`vakyank`), the documents and one example.
+Built from an empty `--work` folder, after `docs/sutram-stdlib.html` was regenerated.
+
 **R189 (v325):** the compiler's version string and comments changed (its code did not), the library (`ganit`, `brihat`)
 and the documents. Built from an empty `--work` folder.
 

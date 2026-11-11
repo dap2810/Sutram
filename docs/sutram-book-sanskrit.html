@@ -354,11 +354,17 @@ n--      <span class="cm"># n = 5</span></code></pre>
 }</code></pre>
 
 <h3>अवरोही पुनरावृत्तिः (Descending Loops)</h3>
-<p>प्रारम्भिकमूल्यम् अन्तिमात् मूल्यात् बृहत्तरं भवति चेत्, गणना स्वतः अवरोहति:</p>
+<p>यदि उभे सीमे <b>सङ्ख्यारूपेण लिखिते</b> स्तः, प्रारम्भिकमूल्यं च बृहत्तरम्, तर्हि गणना अवरोहति:</p>
 <pre><code><span class="k" data-tip="अर्थः: for">chakra</span> i = 5 <span class="k" data-tip="अर्थः: range-to">tak</span> 1 {
     <span class="k" data-tip="अर्थः: print (no newline)">likha_santat</span>(i)
     <span class="k" data-tip="अर्थः: print">likha</span>(" ")
 }    <span class="cm"># फलम्: 5 4 3 2 1</span></code></pre>
+<p><b>एतत् लिखितसङ्ख्याभिः एव सिध्यति।</b> सङ्कलकः आवर्तस्य दिशं सङ्कलनकाले निश्चिनोति, तत् च तदा एव शक्यं यदा उभे सङ्ख्ये दृश्येते। यदि एका अपि सीमा चरः अस्ति, तर्हि आवर्तः <b>ऊर्ध्वम्</b> एव गणयति - प्रारम्भः अन्तात् अधिकः चेत् <b>एकवारम् अपि न चलति, सूचना अपि न भवति</b>: <code>e = 3</code> इति सति <code><span class="k" data-tip="अर्थः: for">chakra</span> i = 5 <span class="k" data-tip="अर्थः: range-to">tak</span> e</code> किमपि न करोति। v326 तः, यदा प्रारम्भः चरः अन्तः च लिखिता सङ्ख्या, तदा सङ्कलकः सूचनां ददाति। <b>चरात् अवरोहणाय <code><span class="k" data-tip="अर्थः: while">yavat</span></code> प्रयुज्यताम्:</b></p>
+<pre><code><span class="k" data-tip="अर्थः: variable">vitti</span> i = n
+<span class="k" data-tip="अर्थः: while">yavat</span> (i &gt;= 1) {
+    <span class="k" data-tip="अर्थः: print">likha</span>(i)
+    i = i - 1
+}</code></pre>
 
 <h3><span class="k" data-tip="अर्थः: inline assembly">yantra</span>() — इनलाइन यन्त्रकोडः</h3>
 <p>कच्चे x86-64 बैट्स् सर्वथा सोद्यत्नं उत्पन्ने कोडे स्थाप्यन्ते:</p>
@@ -386,6 +392,17 @@ n--      <span class="cm"># n = 5</span></code></pre>
     <span class="k" data-tip="अर्थः: variable">vitti</span> s = vartani_grahan()
     <span class="k" data-tip="अर्थः: if">yadi</span> (nivesha_anta()) { <span class="k" data-tip="अर्थः: break">krama</span> }
     <span class="k" data-tip="अर्थः: print">likha</span>(s, "\n")
+}</code></pre>
+
+<h3>पाठ्यात् सङ्ख्या: <code>vartani_tak_ank</code></h3>
+<p><code>vartani_grahan()</code> यत् प्रयच्छति तत् पाठ्यम् एव, प्रयोक्ता अङ्कान् लिखितवान् चेदपि। तेन गणनां कर्तुं <code>vakyank</code>-खण्डस्य <code>vartani_tak_ank(s, ok)</code> इत्यनेन तत् सङ्ख्यां कुर्यात् (v326 तः)। तत् पाठ्यं सङ्ख्या आसीत् न वा इत्यपि वदति: <code>ok[0]</code> 1 चेत् आसीत्, 0 चेत् न - अतः <code>abc</code>, <code>12 34</code>, रिक्ता पङ्क्तिः च निवेद्यन्ते, न तु <code><span class="k" data-tip="अर्थः: input">grahan</span>()</code> इव 0 क्रियन्ते।</p>
+<pre><code><span class="k" data-tip="अर्थः: include">yoj</span> vakyank
+
+<span class="k" data-tip="अर्थः: main">mukhya</span>() {
+    <span class="k" data-tip="अर्थः: array">mala</span> ok[1]
+    <span class="k" data-tip="अर्थः: variable">vitti</span> s = vartani_grahan()
+    <span class="k" data-tip="अर्थः: variable">vitti</span> n = vartani_tak_ank(s, ok)
+    <span class="k" data-tip="अर्थः: print">likha</span>(n * 2)
 }</code></pre>
 
 <h3>सञ्चिकायाः पठनम्</h3>
@@ -907,7 +924,7 @@ Sutram truti [E_PARIMITA]: pankti 2 - mandape parimitat adhikam nirmmitam na sam
 आवृणु, प्रतिवारं <code>parimana()</code> मुद्रय, कस्मिन् आवर्ते परिमितिः निषेधति इति अन्विष्य। ततः <code>mandapa</code>
 पाशस्य अन्तः नय - खण्डः प्रत्यावर्तं नवः आरभते - कदापि न निषेधति इति पश्य।</div>
 </div>
-<div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0 (compiler v325)</div>
+<div class="footer">सूत्रम् — the complete thread · संस्कृत-संस्करणम् · v1.0 (compiler v326)</div>
 </div>
 </body>
 </html>

@@ -52,10 +52,10 @@ Semicolons and braces are optional. The full reference is in
 
 ## What is in this release
 
-- **335 example programs** in `examples/` — 322 numbered plus 13 others, and
-  16 more in its subfolders — with regression expectations in the test corpus (331 have one; the 4 without are not
+- **336 example programs** in `examples/` — 323 numbered plus 13 others, and
+  16 more in its subfolders — with regression expectations in the test corpus (332 have one; the 4 without are not
   counted as passing tests)
-- **24 standard-library modules** in `lib/`, 310 functions between
+- **24 standard-library modules** in `lib/`, 311 functions between
   them — mathematics, sorting, strings, files, statistics, calculus, matrix work, and
   heritage modules built on classical Indian mathematics
 - **11 language packs** in `lang/` — Sanskrit, Hindi, Bengali, Gujarati, Kannada,
@@ -189,6 +189,9 @@ yavat (1) {
 }
 ```
 
+**To calculate with what was typed, convert it:** `vartani_tak_ank(s, ok)` (`yoj vakyank`) gives the number and
+sets `ok[0]` to 1, or to 0 when the text was not a number.
+
 A file is read line by line by giving it to the program as its input (`./prog < data.txt`), or all at once by its
 name with `yoj patra` and `patra_path_sarv` (`examples/362_r186_patra_sankhya_yoga.sm`). Details:
 `docs/LANGUAGE-REFERENCE.md`, §4d.
@@ -238,8 +241,8 @@ declared without a value in a function is `E_MULYA_VINA`; a recursion that runs 
 
 ## Honest status
 
-At the staged tip (v325) the Linux run reports **331 passing cases and 4 without an expectation**, a crash corpus of
-**227 cases, 0 failed**, and the gate script's **93 gates: every one that can run here passes; the one NOT-RUN is
+At the staged tip (v326) the Linux run reports **332 passing cases and 4 without an expectation**, a crash corpus of
+**227 cases, 0 failed**, and the gate script's **94 gates: every one that can run here passes; the one NOT-RUN is
 execution on real Windows**. These are Linux measurements, not a Windows release certificate - the Windows run is
 `Claude-to-Sarvam/SUTRAM-WINDOWS-ACCEPTANCE.md`, and it has not been made.
 A clean-source audit must rerun them independently; a percentage-complete

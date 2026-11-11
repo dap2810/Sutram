@@ -135,6 +135,37 @@ prakriya varna_tak_ank(buf, n, ok) {
     nivartanam val
 }
 
+# vartani_tak_ank(s, ok) — the number a STRING holds: vartani_tak_ank("42", ok) is 42 (R190).
+# s is a string - a "..." literal, or what vartani_grahan() returns; ok is a 1-cell mala.
+# It is varna_tak_ank on the string's bytes, with the same rules: decimal digits only, one
+# leading '-' allowed, nothing else - no spaces, no '+', no letters. Sets ok[0] to 1 and returns
+# the value; on anything else - the empty string, "abc", "12 34", "5abc", a number that does not
+# fit in a vitti, or any text longer than 31 characters (a number that fits has at most 20) - sets
+# ok[0] to 0 and returns 0.
+# (varna_tak_ank itself cannot take a string: it reads one character code per 8-byte cell, and
+# a string is one byte per character - varna_tak_ank("42", 2, ok) is 0 with ok[0] = 0.)
+# The scratch for the codes is given back before returning.
+prakriya vartani_tak_ank(s, ok) {
+    vitti src = s
+    vitti okp = ok
+    vitti cnt = vartani_aayam(src)
+    vitti r = 0
+    yadi (cnt > 31) {
+        okp[0] = 0
+        nivartanam 0
+    }
+    mandapa {
+        vitti c = nirmmita(32 * 8)
+        vitti i = 0
+        yavat (i < cnt) {
+            c[i] = akshar(src, i)
+            i = i + 1
+        }
+        r = varna_tak_ank(c, cnt, okp)
+    }
+    nivartanam r
+}
+
 # ank_tak_aadhar_varna(n, base, out) — write n in any base 2..36 into out
 # as character codes (0-9, a-z). Returns count. No util_chinha handling; n >= 0.
 # Base outside 2..36: terminator only, returns 0 (base 0 trapped
