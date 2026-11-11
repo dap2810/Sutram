@@ -1,0 +1,29 @@
+prakriya madhya(a, b, c)            # the middle of three numbers
+    mandapa
+        vitti t = nirmmita(3 * 8)   # scratch: three numbers
+        t[0] = a
+        t[1] = b
+        t[2] = c
+        vitti s = 0
+        yadi (t[0] > t[1]) {        # three compare-and-swap steps sort t
+            s = t[0]
+            t[0] = t[1]
+            t[1] = s
+        }
+        yadi (t[1] > t[2]) {
+            s = t[1]
+            t[1] = t[2]
+            t[2] = s
+        }
+        yadi (t[0] > t[1]) {
+            s = t[0]
+            t[0] = t[1]
+            t[1] = s
+        }
+        nivartanam t[1]             # a NUMBER read from scratch: allowed
+    nivartanam 0
+
+mukhya() {
+    likha(madhya(1, 2, 3), madhya(1, 3, 2), madhya(2, 1, 3), madhya(2, 3, 1), madhya(3, 1, 2), madhya(3, 2, 1))
+    likha(madhya(5, 5, 1), madhya(0 - 4, 9, 0))
+}

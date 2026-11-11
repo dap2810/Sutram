@@ -1,0 +1,15 @@
+prakriya f(x) {
+    mandapa {
+        mala m[31]
+        m[0] = x
+        nivartanam m[0]
+    }
+    nivartanam 0
+}
+mukhya() {
+    vitti s = 0
+    chakra i = 1 tak 200000 {
+        s = s + f(i)
+    }
+    likha(s, " ", parimana())
+}

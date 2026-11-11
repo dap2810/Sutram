@@ -1,0 +1,8 @@
+mukhya() {
+    vitti n = 0
+    vitti e = 3
+    chakra i = 5 tak e {
+        n = n + 1
+    }
+    likha(n)
+}

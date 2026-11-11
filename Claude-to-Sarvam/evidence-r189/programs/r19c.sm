@@ -1,0 +1,7 @@
+mukhya() {
+    mala m[2]
+    vitti s = ""
+    m[0] = s
+    yadi (m[0]) { likha("true") }
+    anya { likha("false") }
+}

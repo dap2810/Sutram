@@ -1,0 +1,7 @@
+mukhya() {
+    vitti n = 0 - 1
+    mandapa {
+        vitti b = nirmmita(n)
+        likha(b)
+    }
+}

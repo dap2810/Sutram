@@ -1,0 +1,7 @@
+prakriya f(n)
+    vitti x = n + 1    # three statements, no braces
+    x = x * 2
+    nivartanam x
+
+mukhya()
+    likha(f(5))        # prints 12

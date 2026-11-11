@@ -1,0 +1,5 @@
+Windows executables under Wine (not Windows), v325 unless said:
+wblk.sm  (200,000 passes, nirmmita(256) in a mandapa): sum and parimana()  ELF 20000100000 0   PE 20000100000 0
+wnoblk.sm (the same without the block):                                     ELF 20000100000 51200000   PE 20000100000 51200000
+wblk.sm compiled by v315, PE:                                                20000100000 0
+r12.sm (computed negative nirmmita inside a block), PE: exit 1, 'Sutram truti: nirmmita-parimanam rnatmakam - mandapa-madhye rnam parimanam na sambhavati'

@@ -1,6 +1,6 @@
 # Sutram on Windows — the acceptance run
 
-**What this is.** Eight versions of the Sutram compiler (v316 to v324) are built and tested on Linux, and none can
+**What this is.** Ten versions of the Sutram compiler (v316 to v325) are built and tested on Linux, and none can
 be released until one person runs them on a real Windows machine. This page is that run, step by step. **You do
 not need to know anything about Sutram.** Each step says what to type, what you should see, and what it means if
 you see something else.
@@ -17,14 +17,15 @@ send screenshots, and do not copy any line that shows your user name or a folder
 | | |
 |---|---|
 | the installer | `Sutram-Setup.exe` |
-| its SHA-256 | `c82bbca55125ae54c5107df7ebabc57473cd4a5a8143f1ce9125fe057bd99a3b` |
-| from the repository's commit | `e1f29f14b58be21e5b9eb8a09a2bc2f94fc22e65` on branch `r186-grahan-and-files` |
-| the compiler inside it | `Sutram 1.0 (v324) - sampurna sutra` |
-| the compiler file's SHA-256 | `54E69D63F7D3712B0D4910ED71FFF403E370EBCADC314C3708C23D2038FA347F` |
+| its SHA-256 | `9af56fad6ed498be43c5597a549821d77df13e173f6ce7ef74a33c1288786596` |
+| from the repository's commit | `22466bda87460a9571bb334e87a4ab5fee6ddc67` on branch `r189-audit-fixes` |
+| the compiler inside it | `Sutram 1.0 (v325) - sampurna sutra` |
+| the compiler file's SHA-256 | `F5EFD1F8EF5F810FB2DCBAB021896D812DD6C38FE219B8F2DAF2805E4F253685` |
 
-**Why v324 and not v323:** v324 is the top of the chain, so it contains all eight versions; one run here covers
-them all. v324 adds one change to v323 (`grahan` reads a minus sign). If the run is wanted on v323 instead, say so
-and this page is reissued for v323's installer.
+**Why v325:** it is the top of the chain, so it contains all ten versions; one run here covers them all. **This
+page was first issued for v324 (installer `c82bbca5...`) and is reissued for v325.** v325's compiler has the same
+code as v324's - only its version line differs - and it carries two library fixes and corrected documents. If the
+run is wanted on an earlier version, say so and the page is reissued for that installer.
 
 **How to read the expected output.** A grey block is what the screen must show. **Every character matters** unless
 the step says otherwise. Where a step cannot be checked from what is printed, it says so.
@@ -37,14 +38,14 @@ Open **PowerShell** (Start menu, type `powershell`, press Enter - *not* "Run as 
 
 ```powershell
 cd $env:USERPROFILE\Downloads
-Invoke-WebRequest -Uri https://github.com/dap2810/sutram/raw/e1f29f14b58be21e5b9eb8a09a2bc2f94fc22e65/Sutram-Setup.exe -OutFile Sutram-Setup.exe
+Invoke-WebRequest -Uri https://github.com/dap2810/sutram/raw/22466bda87460a9571bb334e87a4ab5fee6ddc67/Sutram-Setup.exe -OutFile Sutram-Setup.exe
 (Get-FileHash .\Sutram-Setup.exe -Algorithm SHA256).Hash
 ```
 
 **You should see exactly:**
 
 ```
-C82BBCA55125AE54C5107DF7EBABC57473CD4A5A8143F1CE9125FE057BD99A3B
+9AF56FAD6ED498BE43C5597A549821D77DF13E173F6CE7EF74A33C1288786596
 ```
 
 | if you see | it means | fatal? |
@@ -97,7 +98,7 @@ sutram --version
 **You should see exactly these two lines:**
 
 ```
-Sutram 1.0 (v324) - sampurna sutra
+Sutram 1.0 (v325) - sampurna sutra
 Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
 ```
 
@@ -110,13 +111,13 @@ Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
 
 ```
 %USERPROFILE%\AppData\Local\Programs\Sutram\bin\sutram.exe
-54E69D63F7D3712B0D4910ED71FFF403E370EBCADC314C3708C23D2038FA347F
+F5EFD1F8EF5F810FB2DCBAB021896D812DD6C38FE219B8F2DAF2805E4F253685
 ```
 
 | if you see | it means | fatal? |
 |---|---|---|
 | `sutram : The term 'sutram' is not recognized ...` | the PATH entry was not added, or this window was opened before the install | Open a **new** window and try again. Still there: **yes, fatal** - the PATH step failed. |
-| a version other than `(v324)` | a different compiler answers - check the next line | **Yes.** |
+| a version other than `(v325)` | a different compiler answers - check the next line | **Yes.** |
 | a path not ending `\AppData\Local\Programs\Sutram\bin\sutram.exe` | another `sutram.exe` comes first on your PATH | **Yes.** Record the path (with `%USERPROFILE%`). |
 | a different hash | the installed compiler is not the tested one | **Yes.** |
 | no output at all from `sutram --version`, or a Windows error box | the compiler does not start on this Windows | **Yes - the most important failure on this page.** Record the box's exact text. |
@@ -209,7 +210,7 @@ smriti: 128
 | `Siddh: ` with a number other than 3827 | the compiler made a different program | Not fatal by itself; record it and go on. |
 | a Windows error box, or nothing printed, when `accept.exe` runs | the program does not run on this Windows | **Yes.** |
 | `Namaste, Asha Patel` followed by anything other than `!` | the line was read with its line ending | **Yes** - `vartani_grahan` keeps the CR on Windows. |
-| `sankhya: 5` | the minus sign was lost (the v323 behaviour) | **Yes** - this is not v324. |
+| `sankhya: 5` | the minus sign was lost (the behaviour up to v323) | **Yes** - this compiler does not have v324's fix. |
 | `yoga:` other than 800007 | a loop or a block computed something else | **Yes.** |
 | the program never finishes (more than a minute) | | **Yes.** Press Ctrl+C; record it. |
 
@@ -282,7 +283,7 @@ repository, not by the installed copy. **The script needs four files from the pi
 ```powershell
 $r = Join-Path $env:TEMP 'sutram-v316'
 foreach ($f in 'win', 'lib', 'tests\windows') { New-Item -ItemType Directory -Force -Path (Join-Path $r $f) | Out-Null }
-$u = 'https://github.com/dap2810/sutram/raw/e1f29f14b58be21e5b9eb8a09a2bc2f94fc22e65/'
+$u = 'https://github.com/dap2810/sutram/raw/22466bda87460a9571bb334e87a4ab5fee6ddc67/'
 foreach ($f in 'win/sutram.exe', 'sutram-link.exe', 'lib/ganit.smlib', 'tests/windows/accept_v316.cmd') {
     Invoke-WebRequest -Uri ($u + $f) -OutFile (Join-Path $r $f)
 }
@@ -302,9 +303,9 @@ folder, they pass Windows' 260-character limit and the unpacking stops.)
 **The four hash lines must be exactly:**
 
 ```
-54E69D63F7D3712B0D4910ED71FFF403E370EBCADC314C3708C23D2038FA347F  win\sutram.exe
+F5EFD1F8EF5F810FB2DCBAB021896D812DD6C38FE219B8F2DAF2805E4F253685  win\sutram.exe
 C36D79EE3CC870D466EAA0DEAE559750A1892CD60C90CD1AFE496D4EF0A28CE1  sutram-link.exe
-E736AD00F26DDDDDA89B24F8DF13CE165543C92BD13E8F163B8F7CE8564EB24E  lib\ganit.smlib
+ADEC447201E9F7B543E2720D24F33A2B3F1D6472ADFFBCF3191359675712CBD8  lib\ganit.smlib
 3E78CDBE2240D219FFD4FC52148EC66A05283753F89CF43921F1FDDEDD9BB1C7  tests\windows\accept_v316.cmd
 ```
 
@@ -337,7 +338,7 @@ v316 acceptance: 17 passed, 1 failed, 0 skipped
 ```
 
 **Step 01 is expected to FAIL - read this before you worry.** The script was written for v316, and step 01 checks
-that the version line says `(v316)`. This compiler says `(v324)`, so 01 fails on the version text alone. What step
+that the version line says `(v316)`. This compiler says `(v325)`, so 01 fails on the version text alone. What step
 01 was really for - the compiler starts on Windows - is already shown by step 3. **Any other FAIL is fatal.** A
 `SKIP` on step 08 means this disk does not allow hard links; not fatal - record it.
 
@@ -347,7 +348,7 @@ as it is.
 ## 9. Uninstall
 
 Settings -> Apps -> Installed apps. **There must be an entry `Sutram`**, publisher *Sutram Project*, version
-**`1.0.324`** - record what it shows. Choose ... -> **Uninstall**. **You should see a message: *"Sutram was removed
+**`1.0.325`** - record what it shows. Choose ... -> **Uninstall**. **You should see a message: *"Sutram was removed
 from this user account."*** Then open a **new** PowerShell window:
 
 ```powershell
@@ -382,7 +383,7 @@ Copy this block, fill in each line with what you **saw**, and send it. Write `as
 matched the grey block exactly.
 
 ```
-Sutram Windows acceptance - installer c82bbca55125, commit e1f29f14
+Sutram Windows acceptance - installer 9af56fad6ed4, commit 22466bda
 Date:
 Windows: 10 / 11 (edition only - no build number)
 Account: ordinary user / administrator

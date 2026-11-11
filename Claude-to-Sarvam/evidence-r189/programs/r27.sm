@@ -1,0 +1,5 @@
+yoj ganit
+
+mukhya() {
+    likha(ekanka_gan(7), " ", ekanka_gan(0 - 1), " ", ekanka_gan(0 - 8))
+}

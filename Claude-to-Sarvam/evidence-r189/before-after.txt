@@ -1,0 +1,97 @@
+Each program in evidence-r189/programs/, compiled and run with each compiler (Linux). "exit" is the program's.
+
+### brihat_neg.sm - a digit of -1 given to brihat_ank_tak_laghu
+  v315: exit 0: -1
+  v324: exit 0: -1
+  v325: exit 1: Sutram truti [E_MULYA_AYOGYA]: brihat_ank_tak_laghu: dattam mulyam ayogyam; kriyayah niyaman parikshatam.
+
+### lcm.sm - lcm: (4,6) (0,7) (MIN,2) (MIN,1) (0,MIN) (MIN,0) (MIN,MIN)
+  v315: exit 1: 12 | 0 | -1 | -1 | Sutram truti [E_PHALA_SEEMA]: mahattam_samapavartak: mahattama-samapavartakah 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.
+  v324: exit 1: 12 | 0 | -1 | -1 | Sutram truti [E_PHALA_SEEMA]: mahattam_samapavartak: mahattama-samapavartakah 9223372036854775808; purnankasya adhikatamam mulyam 9223372036854775807.
+  v325: exit 0: 12 | 0 | -1 | -1 | 0 | 0 | -1
+
+### ankse.sm - brihat_ank_se: bad base, then bad digit
+  v315: exit 0: base 1:   0  x = 777 | digit 12: 0  x = 000
+  v324: exit 0: base 1:   0  x = 777 | digit 12: 0  x = 000
+  v325: exit 0: base 1:   0  x = 777 | digit 12: 0  x = 000
+
+### r17.sm - purna_prasaran
+  v315: exit 0: prasaran [0,0,6000000000]: -1 | prasaran [1,2]: 0
+  v324: exit 0: prasaran [0,0,6000000000]: -1 | prasaran [1,2]: 0
+  v325: exit 0: prasaran [0,0,6000000000]: -1 | prasaran [1,2]: 0
+
+### r29.sm - ganita_paripurna_*
+  v315: exit 0: gun MAX*2: 9223372036854775807 | bhag 7/0: 0 | shesh 7%0: 0 | bhaj MIN/-1: 9223372036854775807 | kramgun 30: 9223372036854775807 | kramgun -1: 0
+  v324: exit 0: gun MAX*2: 9223372036854775807 | bhag 7/0: 0 | shesh 7%0: 0 | bhaj MIN/-1: 9223372036854775807 | kramgun 30: 9223372036854775807 | kramgun -1: 0
+  v325: exit 0: gun MAX*2: 9223372036854775807 | bhag 7/0: 0 | shesh 7%0: 0 | bhaj MIN/-1: 9223372036854775807 | kramgun 30: 9223372036854775807 | kramgun -1: 0
+
+### r27.sm - ekanka_gan(7), (-1), (-8)
+  v315: exit 0: 3 0 0
+  v324: exit 0: 3 0 0
+  v325: exit 0: 3 0 0
+
+### r07.sm - akshar / anka_akshar / akshar_guru / akshar_laghu on bytes
+  v315: exit 0: 224 164 134 | , 0 | 65 224 | 97 192
+  v324: exit 0: 224 164 134 | , 0 | 65 224 | 97 192
+  v325: exit 0: 224 164 134 | , 0 | 65 224 | 97 192
+
+### br1.sm - a brace-less prakriya of two statements, with a mukhya
+  v315: exit 0: 5
+  v324: exit 0: 5
+  v325: exit 0: 5
+
+### br2.sm - the same prakriya alone, no mukhya
+  v315: REFUSED when compiled: Sutram truti: vyakaran dosh, pankti 4:1, shabd 'patra-ant'
+  v324: REFUSED when compiled: Sutram truti: vyakaran dosh, pankti 4:1, shabd 'patra-ant'
+  v325: REFUSED when compiled: Sutram truti: vyakaran dosh, pankti 4:1, shabd 'patra-ant'
+
+### br5.sm - the reference's new example
+  v315: exit 0: 12
+  v324: exit 0: 12
+  v325: exit 0: 12
+
+### up.sm - chakra 9223372036854775805 tak 9223372036854775807 (stopped at 11 passes)
+  v315: exit 0: 11
+  v324: exit 0: 11
+  v325: exit 0: 11
+
+### chakra_var_end.sm - vitti e = 3 ; chakra i = 5 tak e
+  v315: exit 0: 0
+  v324: exit 0: 0
+  v325: exit 0: 0
+
+### r19.sm - an empty string known to be a string, as a condition
+  v315: REFUSED when compiled: r19.sm: Sutram truti [E_VARTANI_SATYA]: vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate
+  v324: REFUSED when compiled: r19.sm: Sutram truti [E_VARTANI_SATYA]: vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate
+  v325: REFUSED when compiled: r19.sm: Sutram truti [E_VARTANI_SATYA]: vartani satyam asatyam va na bhavati - rikta vartani api satya iva drishyate
+
+### r19b.sm - an empty string in a module vitti, as a condition
+  v315: exit 0: true
+  v324: exit 0: true
+  v325: exit 0: true
+
+### r19c.sm - an empty string in a mala element, as a condition
+  v315: exit 0: true
+  v324: exit 0: true
+  v325: exit 0: true
+
+### r12o.sm - a computed negative nirmmita outside a block
+  v315: exit 0: 0
+  v324: exit 0: 0
+  v325: exit 0: 0
+
+### bk_mala.sm - 200,000 calls, each a mala of 31 in a block: sum and parimana()
+  v315: exit 0: 20000100000 51200000
+  v324: exit 0: 20000100000 51200000
+  v325: exit 0: 20000100000 51200000
+
+### bk_loopmala.sm - the same as a loop around the block
+  v315: exit 0: 20000100000 51200000
+  v324: exit 0: 20000100000 256
+  v325: exit 0: 20000100000 256
+
+### madhya.sm - the reference's madhya, six orders then two more
+  v315: exit 0: 222222 | 5 | 0
+  v324: exit 0: 222222 | 5 | 0
+  v325: exit 0: 222222 | 5 | 0
+

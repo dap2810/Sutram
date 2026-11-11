@@ -1,0 +1,20 @@
+## the Windows compiler of r189-audit-fixes 22466bda (v325) under Wine - not Windows
+--- sutram.exe --version
+Sutram 1.0 (v325) - sampurna sutra
+Samskrita-mukhya bhasha -> x86-64 yantra-bhasha
+--- compile accept.sm: Siddh: 3827 baait sankalit
+--- compile smriti.sm: Siddh: 2119 baait sankalit
+--- accept.exe < 'Asha Patel\r\n-5\r\n'
+nama? Namaste, Asha Patel!
+sankhya: -5  yoga: 800007
+smriti: 128
+--- smriti.exe
+yoga: 800000
+smriti: 64
+--- sutram.exe curly.sm curly.exe
+curly.sm:2:11: Sutram truti [E_AGYAT_AKSHAR]: agyat akshar '“' (U+201C)
+      likha(“namaste”)
+            ^
+Sanket: saral uddharana-chihnam " (U+0022) likhyatam
+compiler exit code: 1
+curly.exe: not written

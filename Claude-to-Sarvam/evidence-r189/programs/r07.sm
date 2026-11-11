@@ -1,0 +1,8 @@
+mukhya() {
+    vitti a = "आ"
+    likha(akshar(a, 0), " ", akshar(a, 1), " ", akshar(a, 2))
+    shabda(anka_akshar(300))
+    likha(" ", vartani_aayam(anka_akshar(0)))
+    likha(akshar_guru(97), " ", akshar_guru(224))
+    likha(akshar_laghu(65), " ", akshar_laghu(192))
+}

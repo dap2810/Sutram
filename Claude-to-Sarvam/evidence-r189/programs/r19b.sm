@@ -1,0 +1,6 @@
+vitti g = ""
+
+mukhya() {
+    yadi (g) { likha("true") }
+    anya { likha("false") }
+}

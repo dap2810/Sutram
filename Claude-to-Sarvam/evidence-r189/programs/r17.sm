@@ -1,0 +1,13 @@
+yoj sankhyiki
+
+mukhya() {
+    mala a[3]
+    a[0] = 0
+    a[1] = 0
+    a[2] = 6000000000
+    likha("prasaran [0,0,6000000000]: ", purna_prasaran(a, 3))
+    mala b[2]
+    b[0] = 1
+    b[1] = 2
+    likha("prasaran [1,2]: ", purna_prasaran(b, 2))
+}

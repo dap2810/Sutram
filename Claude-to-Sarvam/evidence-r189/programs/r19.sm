@@ -1,0 +1,4 @@
+mukhya() {
+    vitti s = ""
+    yadi (s) { likha("true") }
+}

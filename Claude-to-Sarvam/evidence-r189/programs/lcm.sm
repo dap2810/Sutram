@@ -1,0 +1,12 @@
+yoj ganit
+
+mukhya() {
+    vitti m = (0 - 9223372036854775807) - 1
+    likha(laghuttam_samapavartya(4, 6))
+    likha(laghuttam_samapavartya(0, 7))
+    likha(laghuttam_samapavartya(m, 2))
+    likha(laghuttam_samapavartya(m, 1))
+    likha(laghuttam_samapavartya(0, m))
+    likha(laghuttam_samapavartya(m, 0))
+    likha(laghuttam_samapavartya(m, m))
+}

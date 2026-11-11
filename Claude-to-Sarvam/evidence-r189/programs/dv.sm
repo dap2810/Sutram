@@ -1,0 +1,9 @@
+mukhya() {
+    likha(dvaram("no-such-file.txt", 0))
+    likha("\n")
+    vitti b = nirmmita(16)
+    likha(paadh(99, b, 8))
+    likha("\n")
+    likha(aksharank("ABC"))
+    likha("\n")
+}

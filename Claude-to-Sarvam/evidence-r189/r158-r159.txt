@@ -1,0 +1,18 @@
+## R158 and R159, before and after
+
+main adf4f8c6 (v315), the gate as it is on main:
+  r158 doc currency: 25 checks, 0 failed
+  r159 no personal paths: 11368 of 11368 tracked files inspected, 0 with system details
+
+v324 tip e1f29f14, the gate as it is there:
+  r158 doc currency: 25 checks, 0 failed
+  r159 no personal paths: 10890 of 10890 tracked files inspected, 0 with system details
+
+main adf4f8c6, run with v325's R158 (which has the new 'paths' check):
+  FAIL  paths: every repository path a current document cites is in the tree (R188)
+        ROADMAP.md: cites `docs/WHATS-LEFT.md`, which is not in the tree
+  r158 doc currency: 27 checks, 1 failed
+
+v325 9cf4227f:
+  r158 doc currency: 27 checks, 0 failed
+  r159 no personal paths: 10897 of 10897 tracked files inspected, 0 with system details

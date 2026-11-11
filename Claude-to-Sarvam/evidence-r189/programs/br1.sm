@@ -1,0 +1,6 @@
+prakriya f(n)
+    vitti x = n
+    nivartanam x
+
+mukhya()
+    likha(f(5))

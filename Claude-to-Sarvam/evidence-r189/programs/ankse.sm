@@ -1,0 +1,15 @@
+yoj aadhar
+
+mukhya() {
+    mala d[2]
+    d[0] = 1
+    d[1] = 12
+    mala x[3]
+    x[0] = 7
+    x[1] = 7
+    x[2] = 7
+    vitti r = brihat_ank_se(d, 2, 1, x, 3)
+    likha("base 1:   ", r, "  x = ", x[0], x[1], x[2])
+    r = brihat_ank_se(d, 2, 10, x, 3)
+    likha("digit 12: ", r, "  x = ", x[0], x[1], x[2])
+}

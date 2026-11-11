@@ -1,0 +1,12 @@
+yoj ganita
+
+mukhya() {
+    vitti m = 9223372036854775807
+    likha("gun MAX*2: ", ganita_paripurna_gun(m, 2))
+    likha("bhag 7/0: ", ganita_paripurna_bhaj(7, 0))
+    likha("shesh 7%0: ", ganita_paripurna_shesh(7, 0))
+    vitti mn = (0 - 9223372036854775807) - 1
+    likha("bhaj MIN/-1: ", ganita_paripurna_bhaj(mn, 0 - 1))
+    likha("kramgun 30: ", ganita_paripurna_kramgun(30))
+    likha("kramgun -1: ", ganita_paripurna_kramgun(0 - 1))
+}

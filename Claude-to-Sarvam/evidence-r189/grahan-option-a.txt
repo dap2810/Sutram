@@ -1,0 +1,17 @@
+Option A simulated: "grahan() returns text". In each of the seven programs that compile and call grahan,
+grahan() was replaced by vartani_grahan() (which is what a text-returning grahan is to the compiler) and the
+program compiled with v324, then run with the input the suite gives it.
+
+examples/23_grahan_input.sm            REFUSED  [E_VARTANI_GANIT]   (arithmetic on the text)
+examples/26_calculator.sm              REFUSED  [E_VARTANI_TUL]     (the text compared with a number)
+tests/r79_real/report_blocks.sm        REFUSED  [E_VARTANI_GANIT]
+tests/r79_real/report_plain.sm         REFUSED  [E_VARTANI_GANIT]
+examples/24_guess_game.sm              COMPILES - and does not end: `guess == -1` is never true for a text;
+                                       stopped after 10 s (input '7\n')
+examples/59_windows_grahan_runtime.sm  COMPILES - prints b'42' where it printed b'42\n' (input '42\n')
+examples/46_language_reference.sm      COMPILES - same output (it reads the value and does not use it)
+
+.sm files in the tree that call grahan( : examples 6, tests 4, Claude-to-Sarvam 3, Muse-to-Sarvam 1.
+A text-to-number function: none. lib/vakyank.smlib's varna_tak_ank(buf, n, ok) parses a mala of
+character codes (one per eight-byte cell), not a string; no builtin or library function takes a string
+and returns its number.

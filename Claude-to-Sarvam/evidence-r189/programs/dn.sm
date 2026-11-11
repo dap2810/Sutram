@@ -1,0 +1,9 @@
+mukhya() {
+    vitti n = 0
+    vitti m = (0 - 9223372036854775807) - 1
+    chakra i = m + 2 tak m {
+        n = n + 1
+        yadi (n > 10) { krama }
+    }
+    likha(n)
+}

@@ -1,0 +1,7 @@
+yoj brihat
+
+mukhya() {
+    vitti a = nirmmita(16)
+    likh8(a, 0 - 1)
+    likha(brihat_ank_tak_laghu(a, 1))
+}
