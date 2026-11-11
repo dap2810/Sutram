@@ -1,0 +1,9 @@
+yoj vakyank
+
+mukhya() {
+    mala ok[1]
+    vitti s = vartani_grahan()            # read a line
+    vitti n = vartani_tak_ank(s, ok)      # convert it
+    yadi (ok[0]) { likha(n * 2) }         # it was a number: use it
+    anya { likha("sankhya na: ", s) }     # it was not: say so
+}

@@ -1,0 +1,8 @@
+yoj vakyank
+
+mukhya() {
+    mala ok[1]
+    vitti s = vartani_grahan()
+    vitti n = vartani_tak_ank(s, ok)
+    likha(n * 2)
+}

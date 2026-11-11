@@ -1,0 +1,41 @@
+The descending-loop sentence, quoted from git at each commit (git show <commit>:<file>, the line after the
+'Descending Loops' heading).
+
+## docs/sutram-book-english.html
+  22466bda (v325, r189-audit-fixes), line 400:
+      <p>If the start value is greater than the end value, the loop counts down automatically:</p>
+  c3b7b9ef (v326, r190-chakra-and-converter), line 400:
+      <p>If both ends are <b>written as numbers</b> and the start is the greater, the loop counts down:</p>
+  ad24e23e (v326, r191-input-story), line 400:
+      <p>If both ends are <b>written as numbers</b> and the start is the greater, the loop counts down:</p>
+
+## docs/sutram-book-sanskrit.html
+  22466bda (v325, r189-audit-fixes), line 357:
+      <p>प्रारम्भिकमूल्यम् अन्तिमात् मूल्यात् बृहत्तरं भवति चेत्, गणना स्वतः अवरोहति:</p>
+  c3b7b9ef (v326, r190-chakra-and-converter), line 357:
+      <p>यदि उभे सीमे <b>सङ्ख्यारूपेण लिखिते</b> स्तः, प्रारम्भिकमूल्यं च बृहत्तरम्, तर्हि गणना अवरोहति:</p>
+  ad24e23e (v326, r191-input-story), line 357:
+      <p>यदि उभे सीमे <b>सङ्ख्यारूपेण लिखिते</b> स्तः, प्रारम्भिकमूल्यं च बृहत्तरम्, तर्हि गणना अवरोहति:</p>
+
+## docs/LANGUAGE-REFERENCE.md at ad24e23e
+      614:    chakra j = 5 tak 1 {      # for (descending - both ends written as numbers: §6a)
+      615-        likha(j)
+      --
+      696:**Which way a `chakra` counts is decided when it is compiled, not when it runs.** It counts **down only when both
+      697-ends are written as numbers** (or as arithmetic on numbers, such as `0 - 5`) and the start is the larger:
+
+## the commit that changed the two books' sentence
+  c744fc98  2026-11-11  v326 (R190): a chakra shaped like a countdown is warned about; vartani_tak_ank turns text into a number
+
+## 'counts down automatically' (or its Sanskrit) in the English book, the Sanskrit book or the reference at ad24e23e:
+  0 files
+
+## the four frozen books at ad24e23e - STILL say it (frozen: reported, not fixed)
+  hindi, line 399:
+      प्रारंभ मान अंतिम मान से बड़ा हो, तो गणना स्वतः उलट जाती है:
+  gujarati, line 364:
+      શરૂઆતનું મૂલ્ય અંતિમ મૂલ્ય કરતાં મોટું હોય તો, ગણતરી આપોઆપ ઊતરે છે:
+  tamil, line 370:
+      தொடக்க மதிப்பு இறுதி மதிப்பை விட பெரியதாக இருந்தால், எண்ணிக்கை தானாகக் குறையும்:
+  telugu, line 398:
+      ప్రారంభ విలువ గరిష్ట విలువ కంటే పెద్దదైతే, లెక్క స్వయంగా తగ్గుతుంది:

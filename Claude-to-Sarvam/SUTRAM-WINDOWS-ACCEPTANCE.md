@@ -17,14 +17,14 @@ send screenshots, and do not copy any line that shows your user name or a folder
 | | |
 |---|---|
 | the installer | `Sutram-Setup.exe` |
-| its SHA-256 | `160a1ab6f38b5263aabfd625aad3e624f705d9fd2d524c05644c197b7405f4fc` |
-| from the repository's commit | `c3b7b9ef185cfbe7e5a65d205f36a85bb195e168` on branch `r190-chakra-and-converter` |
+| its SHA-256 | `2a940c75bedd327dfdd3b1e9463ea179435d3aea11e76ae7ed84ec6b851e0f62` |
+| from the repository's commit | `ad24e23e4257327527f20960feb7b3a245bdefd5` on branch `r191-input-story` |
 | the compiler inside it | `Sutram 1.0 (v326) - sampurna sutra` |
 | the compiler file's SHA-256 | `F22FEA3FEEFB0547816494EE53C4F6DB878FB471C563E4776D0AA029FF252304` |
 
 **Why v326:** it is the top of the chain, so it contains all eleven versions; one run here covers them all. **This
-page was first issued for v324 (installer `c82bbca5...`), reissued for v325 (`9af56fad...`), and is reissued for
-v326.** v326 adds one compile-time warning and one library function to v325; every output below is the same as
+page was first issued for v324 (installer `c82bbca5...`), reissued for v325 (`9af56fad...`) and for v326 (`160a1ab6...`), and is reissued
+for v326 with its corrected documents (R191: the compiler is the same file).** v326 adds one compile-time warning and one library function to v325; every output below is the same as
 v325's except the version line. If the run is wanted on an earlier version, say so and the page is reissued for
 that installer.
 
@@ -39,14 +39,14 @@ Open **PowerShell** (Start menu, type `powershell`, press Enter - *not* "Run as 
 
 ```powershell
 cd $env:USERPROFILE\Downloads
-Invoke-WebRequest -Uri https://github.com/dap2810/sutram/raw/c3b7b9ef185cfbe7e5a65d205f36a85bb195e168/Sutram-Setup.exe -OutFile Sutram-Setup.exe
+Invoke-WebRequest -Uri https://github.com/dap2810/sutram/raw/ad24e23e4257327527f20960feb7b3a245bdefd5/Sutram-Setup.exe -OutFile Sutram-Setup.exe
 (Get-FileHash .\Sutram-Setup.exe -Algorithm SHA256).Hash
 ```
 
 **You should see exactly:**
 
 ```
-160A1AB6F38B5263AABFD625AAD3E624F705D9FD2D524C05644C197B7405F4FC
+2A940C75BEDD327DFDD3B1E9463EA179435D3AEA11E76AE7ED84EC6B851E0F62
 ```
 
 | if you see | it means | fatal? |
@@ -284,7 +284,7 @@ repository, not by the installed copy. **The script needs four files from the pi
 ```powershell
 $r = Join-Path $env:TEMP 'sutram-v316'
 foreach ($f in 'win', 'lib', 'tests\windows') { New-Item -ItemType Directory -Force -Path (Join-Path $r $f) | Out-Null }
-$u = 'https://github.com/dap2810/sutram/raw/c3b7b9ef185cfbe7e5a65d205f36a85bb195e168/'
+$u = 'https://github.com/dap2810/sutram/raw/ad24e23e4257327527f20960feb7b3a245bdefd5/'
 foreach ($f in 'win/sutram.exe', 'sutram-link.exe', 'lib/ganit.smlib', 'tests/windows/accept_v316.cmd') {
     Invoke-WebRequest -Uri ($u + $f) -OutFile (Join-Path $r $f)
 }
@@ -384,7 +384,7 @@ Copy this block, fill in each line with what you **saw**, and send it. Write `as
 matched the grey block exactly.
 
 ```
-Sutram Windows acceptance - installer 160a1ab6f38b, commit c3b7b9ef
+Sutram Windows acceptance - installer 2a940c75bedd, commit ad24e23e
 Date:
 Windows: 10 / 11 (edition only - no build number)
 Account: ordinary user / administrator

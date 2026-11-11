@@ -1,0 +1,16 @@
+Which chakra shapes v326 warns about (compile stderr), Linux. n is a VARIABLE in every warned case.
+  vitti n = 5          chakra i = n      tak 1    -> WARNED
+  vitti n = 5          chakra i = n - 1  tak 0    -> WARNED
+  vitti n = grahan()   chakra i = n      tak 1    -> WARNED
+  vitti n = 5          chakra i = 5      tak 1    -> no warning
+  vitti n = 5          chakra i = 5      tak n    -> no warning
+  vitti n = 5          chakra i = 1      tak n    -> no warning
+  vitti n = 5          chakra i = n      tak n    -> no warning
+
+The taught program (reference section 4d) on v326:
+  '42'     -> 84
+  'hello'  -> sankhya na: hello
+  ''       -> sankhya na:
+  '12 34'  -> sankhya na: 12 34
+  '-7'     -> -14
+The three lines as taught in R190 (no test of ok[0]) on 'hello': 0   <- the silent 0
